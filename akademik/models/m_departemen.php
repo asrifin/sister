@@ -87,7 +87,7 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['departemen']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
 			break;
 			// delete -----------------------------------------------------------------
 

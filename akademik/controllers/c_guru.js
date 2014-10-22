@@ -1,51 +1,32 @@
-var mnu       = 'tahunajaran';
+var mnu       = 'guru';
 var mnu2      = 'departemen';
+var mnu3      = 'tahunajaran';
+var mnu4      = 'pelajaran';
+
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = 'models/m_'+mnu2+'.php';
+var dir3      = 'models/m_'+mnu3+'.php';
+var dir4      = 'models/m_'+mnu4+'.php';
 var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-                        
-                        +'<label>Departemen</label>'
+                        +'<label>Mata Pelajaran</label>'
+                        +'<div class="input-control select span3">'
+                            +'<input type="text" name="pelajaranH" id="pelajaranH">'
+                            +'<select  name="pelajaranTB" id="pelajaranTB"></select>'
+                        +'</div>'
+                        +'<label>Pegawai</label>'
                         +'<div class="input-control text">'
-                            +'<input type="hidden" name="departemenH" id="departemenH">'
-                            +'<input disabled type="text" name="departemenTB" id="departemenTB">'
-                            +'<button class="btn-clear"></button>'
+                            +'<input class="span2" placeholder="NIP" type="text" name="nipTB" id="nipTB">'
+                            +'&nbsp; <input  class="span4"  placeholder="Pegawai" type="text" name="pegawaiTB" id="pegawaiTB">'
                         +'</div>'
-                        
-                        +'<label>Tahun Ajaran</label>'
-                        +'<div class="span3">'
-                            +'<div class="input-control text" >'
-                                +'<input placeholder="ex : 2011-2012 " name="tahunajaranTB" id="tahunajaranTB" type="text">'
-                            +'</div>'
-                        +'</div>'
-
-                        +'<label>Tanggal Mulai</label>'
-                        +'<div class="input-control text" data-role="datepicker"'
-                            +'data-date="2014-10-23"'
-                            +'data-format="yyyy-mm-dd"'
-                            +'data-effect="slide">'
-                            +'<input id="tglmulaiTB" name="tglmulaiTB" type="text">'
-                            +'<button class="btn-date"></button>'
-                        +'</div>'
-
-                        +'<label>Tanggal Akhir</label>'
-                        +'<div class="input-control text" data-role="datepicker"'
-                            +'data-date="2014-10-23"'
-                            +'data-format="yyyy-mm-dd"'
-                            +'data-effect="slide">'
-                            +'<input id="tglakhirTB" name="tglakhirTB" type="text">'
-                            +'<button class="btn-date"></button>'
-                        +'</div>'
-
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
-                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
+                            +'<textarea placeholder="keterangan ..." id="keteranganTB" name="keteranganTB"></textarea>'
                         +'</div>'
-                        
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -76,8 +57,18 @@ var contentFR = '';
             $('#cariTR').toggle('slow');
             $('#tahunajaranS').val('');
         });
+
+        //tanggal 
+         $("#tglmulaiTB").datepicker({
+            date: "2013-01-01", // set init date
+            format: "d/m/y", // set output format
+            effect: "none", // none, slide, fade
+            position: "bottom", // top or bottom,
+            locale: 'en', // 'ru' or 'en', default is $.Metro.currentLocale
+        });
+
     }); 
-// end of save process ---
+// end of main function ---
 
 //save process ---
     function simpan(){
@@ -112,7 +103,7 @@ var contentFR = '';
 // view table ---
     // function viewTB(dep){
     function viewTB(dep){
-        //alert('dep '+dep);
+        // alert(dep);
         var aksi ='aksi=tampil';
         var cari = '&departemenS='+dep
                     +'&tahunajaranS='+$('#tahunajaranS').val();
@@ -121,7 +112,7 @@ var contentFR = '';
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -188,7 +179,7 @@ var contentFR = '';
             type:"post",
             data: datax+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -239,12 +230,11 @@ function notif(cont,clr) {
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#tahunajaranTB').val('');
-        $('#tglmulaiTB').val('');
-        $('#tglakhirTB').val('');
+        $('#angkatanTB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---
+
 
 // combo departemen ---
     function cmbdepartemen(){
@@ -261,37 +251,12 @@ function notif(cont,clr) {
                     $.each(dt.departemen, function(id,item){
                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
+                    //panggil fungsi viewTB() ==> tampilkan tabel 
                     viewTB(dt.departemen[0].replid); 
+                    // alert(dt.departemen[0].replid);
                 }$('#departemenS').html(out);
             }
         });
     }
 //end of combo departemen ---
 
-//aktifkan process ---
-    function aktifkan(id){
-    	var th  = $('#'+mnu+'TD_'+id).html();
-    	var dep = $('#'+mnu2+'S').val();
-    	//alert('d '+dep);
-    	//return false;
-        if(confirm('melanjutkan untuk mengaktifkan '+th+' ?'))
-        $.ajax({
-            url:dir,
-            type:'post',
-            data:'aksi=aktifkan&replid='+id+'&departemen='+dep,
-            dataType:'json',
-            success:function(dt){
-                var cont,clr;
-                if(dt.status!='sukses'){
-                    cont = '..Gagal Mengaktifkan '+th+' ..';
-                    clr  ='red';
-                }else{
-                    viewTB($('#departemenS').val());
-                    cont = '..Berhasil Mengaktifkan '+th+' ..';
-                    clr  ='green';
-                }
-                notif(cont,clr);
-            }
-        });
-    }
-//end of aktifkan process ---

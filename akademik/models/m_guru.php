@@ -3,7 +3,6 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	require_once '../../lib/tglindo.php';
 	$tb = 'aka_tahunajaran';
 	// $out=array();
 
@@ -22,7 +21,7 @@
 							departemen like "%'.$departemen.'%" and 
 							tahunajaran like "%'.$tahunajaran.'%" 
 						ORDER 
-							BY tglmulai desc';
+							BY tahunajaran asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -42,23 +41,18 @@
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
 						$btn ='<td>
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
-									</button>'.
-										($res['aktif']==1?'
-											<button disabled data-hint="Telah Aktif"><i class="icon-checkmark"></i></button>':
-											'<button onclick="aktifkan('.$res['replid'].');" class="success" data-hint="Aktifkan"><i class="icon-blocked"></i></button>').'
 								 </td>';
-						$out.= '<tr class="'.($res['aktif']==1?'bg-lightGreen':'').'">
+						$out.= '<tr>
 									<td>'.$nox.'</td>
-									<td id="tahunajaranTD_'.$res['replid'].'">'.$res['tahunajaran'].'</td>
-									<td>'.tgl_indo($res['tglmulai']).'</td>
-									<td>'.tgl_indo($res['tglakhir']).'</td>
+									<td>'.$res['tahunajaran'].'</td>
+									<td>'.$res['tglmulai'].'</td>
+									<td>'.$res['tglakhir'].'</td>
 									<td>'.$res['keterangan'].'</td>
-									<td>'.($res['aktif']==1?'Aktif':'Tidak Aktif').'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -125,29 +119,7 @@
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
-
-			// aktifkan -----------------------------------------------------------------
-			case 'aktifkan':
-				$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0" where departemen = '.$_POST['departemen']);
-				if(!$e1){
-					$stat='gagal menonaktifkan';
-				}else{
-					$s2 = 'UPDATE  '.$tb.' set aktif="1" where replid = '.$_POST['replid'];
-					$e2 = mysql_query($s2);
-					if(!$e2){
-						$stat='gagal mengaktifkan';
-					}else{
-						$stat='sukses';
-					}
-				}$out  = json_encode(array('status'=>$stat));
-				//var_dump($stat);exit();
-
-			break;
-			// aktifkan -----------------------------------------------------------------
-
-
 		}
-	}
-	echo $out;
+	}echo $out;
 	// echo json_encode($out);
 ?>

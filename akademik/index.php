@@ -124,6 +124,7 @@
                 require $d.'v_home.php';
             }else{
                 switch ($_GET['page']) {
+                    // referensi
                     case 'vdepartemen':
                         require $d.'v_departemen.php';
                     break;
@@ -133,6 +134,12 @@
                     case 'vtahunajaran':
                         require $d.'v_tahunajaran.php';
                     break;
+
+                    // guru
+                    case 'vguru':
+                        require $d.'v_guru.php';
+                    break;
+
                     default:
                         require $d.'v_home.php';
                     break;
