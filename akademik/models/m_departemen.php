@@ -111,7 +111,30 @@
 							'keterangan' =>$r['keterangan']
 						));
 			break;
-			// ambiledit -----------------------------------------------------------------
+			// ambiledit ------			
+
+			// cmbdepartemen -----------------------------------------------------------------
+			case 'cmbdepartemen':
+				$s	= ' SELECT *
+						from '.$tb.'  
+						ORDER  BY nama asc';
+				$e 	= mysql_query($s);
+				$n 	= mysql_num_rows($e);
+				$ar=$dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error');
+				}else{
+					if($n=0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						while ($r=mysql_fetch_assoc($e)) {
+							$dt[]=$r;
+						}$ar = array('status'=>'sukses','departemen'=>$dt);
+					}
+				}$out=json_encode($ar);
+			break;
+			// cmbdepartemen -----------------------------------------------------------------
 		}
 	}echo $out;
 	// echo json_encode($out);

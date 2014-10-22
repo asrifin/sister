@@ -70,14 +70,13 @@ var contentFR ='';
             success:function(dt){
                 var out='';
                 if(dt.status!='sukses'){
-                    out+='<option value="'+dt.departemen[0].replid+'">'+dt.departemen[0].nama+'</option>';
+                    out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.departemen, function(id,item){
                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
                     //panggil fungsi viewTB() ==> tampilkan tabel 
                     viewTB(dt.departemen[0].replid); 
-                    // $('#departemenTB').val(dt.departemen[0].nama);
                     $('#departemenTB').val('ok');
                 }$('#departemenS').html(out);
             }
