@@ -2,19 +2,52 @@
 <div class="tile-group six">
     <div class="tile-group-title">Menu Utama</div>
 
-    <!-- periode penerimaan -->
-    <a href="periode-calon-siswa" class="tile bg-lightBlue" data-click="transform">
+    <!-- kriteria calon siswa -->
+    <a href="periode" class="tile double bg-lightBlue" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-cog"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Periode Penerimaan</div>
+        </div>
+    </a>
+    <!--end of  kriteria calon siswa -->
+
+    <!-- golongan calon siswa -->
+    <a href="kelompok" class="tile double bg-lightRed" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-user"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Kelompok Pendaftaran</div>
+        </div>
+    </a>
+    <!--end of  golongan calon siswa -->
+
+    <!-- golongan calon siswa -->
+    <a href="pendataan" class="tile double bg-green" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-pencil"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Pendataan Calon Siswa</div>
+        </div>
+    </a>
+    <!--end of  golongan calon siswa -->
+
+    <!-- golongan calon siswa -->
+    <a href="penerimaan" class="tile double bg-lightOrange" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">periode penerimaan</div>
+            <div class="label">Penerimaan Siswa Baru</div>
         </div>
     </a>
-    <!--end of  periode penerimaan -->
+    <!--end of  golongan calon siswa -->
 
     <!-- golongan calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile bg-lightOrange" data-click="transform">
+    <a href="kriteria-calon-siswa" class="tile double bg-lightOrange" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>
@@ -24,8 +57,8 @@
     </a>
     <!--end of  golongan calon siswa -->
 
-    <!-- golongan calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile bg-lightOrange" data-click="transform">
+    <!-- golongan calon siswa 
+    <a href="kriteria-calon-siswa" class="tile double bg-lightOrange" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>
@@ -35,92 +68,16 @@
     </a>
     <!--end of  golongan calon siswa -->
 
-    <!-- golongan calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile bg-lightOrange" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">golongan calon siswa</div>
-        </div>
-    </a>
-    <!--end of  golongan calon siswa -->
-
-    <!-- golongan calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile bg-lightOrange" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">golongan calon siswa</div>
-        </div>
-    </a>
-    <!--end of  golongan calon siswa -->
-
-    <!-- golongan calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile bg-lightOrange" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">golongan calon siswa</div>
-        </div>
-    </a>
-    <!--end of  golongan calon siswa -->
-
-    <!-- golongan calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile bg-lightOrange" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">golongan calon siswa</div>
-        </div>
-    </a>
-    <!--end of  golongan calon siswa -->
-
-    <!-- golongan calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile bg-lightOrange" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">golongan calon siswa</div>
-        </div>
-    </a>
-    <!--end of  golongan calon siswa -->
-
-    <!-- golongan calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile bg-lightOrange" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">golongan calon siswa</div>
-        </div>
-    </a>
-    <!--end of  golongan calon siswa -->
-
-    <!-- golongan calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile bg-lightOrange" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">golongan calon siswa</div>
-        </div>
-    </a>
-    <!--end of  golongan calon siswa -->
 
 </div> <!-- End group -->
 
-<div class="tile-group double">
+<div class="tile-group four">
     <div class="tile-group-title">Referensi</div>
 
     <!-- kriteria calon siswa -->
     <a href="kriteria-calon-siswa" class="tile bg-lightBlue" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-file"></span>
         </div>
         <div class="brand">
             <div class="label">Kriteria Calon Siswa</div>
@@ -129,17 +86,37 @@
     <!--end of  kriteria calon siswa -->
 
     <!-- golongan calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile bg-lightOrange" data-click="transform">
+    <a href="golongan-calon-siswa" class="tile bg-yellow" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-file"></span>
         </div>
         <div class="brand">
-            <div class="label">golongan calon siswa</div>
+            <div class="label">Golongan Calon Siswa</div>
         </div>
     </a>
     <!--end of  golongan calon siswa -->
 
-</div> <!-- End group -->
+    
+    <a href="set-biaya-calon-siswa" class="tile bg-lightRed" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-file"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Set Biaya Calon Siswa</div>
+        </div>
+    </a>
+    
+    <a href="set-angsuran" class="tile bg-green" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-file"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Set Angsuran</div>
+        </div>
+    </a>
+
+    
+</div> <!-- End group 2-->
 
 <!-- 
 <div class="tile-group double">

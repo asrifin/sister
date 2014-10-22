@@ -1,19 +1,19 @@
-<script src="controllers/c_kriteriaCalonSiswa.js"></script>
+<script src="controllers/c_setDiskon.js"></script>
 
-<h4>Kriteria Calon Siswa</h4>
+<h4>Set Diskon</h4>
 <div id="loadarea"></div>
-<button class="button" id="tambahBC"><i class="icon-add on-left"></i>Tambah </button>
+<button class="button" id="tambahBC"><i class="icon-plus on-left"></i>Tambah </button>
 <table class="table hovered bordered striped">
     <thead>
         <tr class="selected">
             <th class="text-left">No.</th>
-            <th class="text-left">Kriteria</th>
+            <th class="text-left">Diskon (%)</th>
             <th class="text-left">Keterangan</th>
             <th class="text-left">Aksi</th>
         </tr>
         <tr class="selected">
             <th class="text-left"></th>
-            <th class="text-left"><input placeholder="kriteria" id="kriteriaS"name="kriteriaS"></th>
+            <th class="text-left"><input placeholder="diskon" id="diskonS"name="diskonS"></th>
             <th class="text-left"><input placeholder="keterangan" id="keteranganS"name="keteranganS"></th>
             <th class="text-left"></th>
         </tr>

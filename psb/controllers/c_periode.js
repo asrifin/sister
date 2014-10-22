@@ -1,16 +1,34 @@
-var dir='models/m_kriteriaCalonSiswa.php';
+var dir='models/m_periode.php';
 var contentFR='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form onsubmit="simpan();return false;" id="kriteriaFR">' 
-                        +'<label>Kriteria</label>'
+        contentFR += '<form onsubmit="simpan();return false;" id="periodeFR">' 
+                        +'<label>Nama Periode</label>'
                         +'<input  id="idformH" type="hidden">' 
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="kriteriaTB" id="kriteriaTB">'
+                            +'<input required type="text" name="periodeTB" id="periodeTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>keterangan</label>'
+                        +'<label>Kode Awalan</label>'
+                        +'<div class="input-control text">'
+                            +'<input required type="text" name="kode_awalanTB" id="kode_awalanTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<label>Angkatan</label>' 
+                        +'<div class="input-control select">'
+                            +'<select>'
+                                +'<option>Value1</option>'
+                                +'<option>Value2</option>'
+                              +'</select>'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<label>Kapasitas</label>' 
+                        +'<div class="input-control text">'
+                            +'<input required type="text" name="kapasitasTB" id="kapasitasTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<label>Keterangan</label>'
                         +'<div class="input-control text">'
                             +'<input required type="text" name="keteranganTB" id="keteranganTB">'
                             +'<button class="btn-clear"></button>'
@@ -25,7 +43,7 @@ var contentFR='';
         viewTB();
 
         // search
-        $('#kriteriaS').on('keyup',viewTB);
+        $('#diskonS').on('keyup',viewTB);
         $('#keteranganS').on('keyup',viewTB);
 
         //add form
@@ -64,7 +82,7 @@ var contentFR='';
     function viewTB(){
         $('#tbody').html('<img src="img/loading82.gif"> ');
         var aksi ='aksi=tampil';
-        var cari = '&kriteriaS='+$('#kriteriaS').val()
+        var cari = '&diskonS='+$('#diskonS').val()
                     +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
@@ -103,11 +121,11 @@ var contentFR='';
                         dataType:'json',
                         success:function(data){
                             $('#idformH').val(id);
-                            $('#kriteriaTB').val(data.kriteria);
+                            $('#diskonTB').val(data.nilai);
                             $('#keteranganTB').val(data.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+"Kriteria");
+                }$.Dialog.title(titlex+"Set Diskon");
                 $.Dialog.content(contentFR);
             }
         });
@@ -118,7 +136,7 @@ var contentFR='';
     function pagination(page,aksix,menux){
         $('#isi').html('<img src="../img/loader.gif"> ').fadeIn();
         var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari = '&kriteriaS='+$('#keteranganS').val();
+        var cari = '&diskonS='+$('#keteranganS').val();
 
         $.ajax({
             url:dir,
@@ -154,7 +172,7 @@ var contentFR='';
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#kriteriaTB').val('');
+        $('#diskonTB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---

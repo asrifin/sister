@@ -1,18 +1,18 @@
-var dir='models/m_kriteriaCalonSiswa.php';
+var dir='models/m_setAngsuran.php';
 var contentFR='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form onsubmit="simpan();return false;" id="kriteriaFR">' 
-                        +'<label>Kriteria</label>'
+        contentFR += '<form onsubmit="simpan();return false;" id="angsuranFR">' 
+                        +'<label>Jumlah Angsuran</label>'
                         +'<input  id="idformH" type="hidden">' 
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="kriteriaTB" id="kriteriaTB">'
+                            +'<input required type="text" name="angsuran" id="angsuran">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>keterangan</label>'
+                        +'<label>Keterangan</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="keteranganTB" id="keteranganTB">'
+                            +'<input type="text" name="keteranganTB" id="keteranganTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<div class="form-actions">' 
@@ -25,7 +25,7 @@ var contentFR='';
         viewTB();
 
         // search
-        $('#kriteriaS').on('keyup',viewTB);
+        $('#angsuranS').on('keyup',viewTB);
         $('#keteranganS').on('keyup',viewTB);
 
         //add form
@@ -64,7 +64,7 @@ var contentFR='';
     function viewTB(){
         $('#tbody').html('<img src="img/loading82.gif"> ');
         var aksi ='aksi=tampil';
-        var cari = '&kriteriaS='+$('#kriteriaS').val()
+        var cari = '&angsuranS='+$('#angsuranS').val()
                     +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
@@ -103,11 +103,11 @@ var contentFR='';
                         dataType:'json',
                         success:function(data){
                             $('#idformH').val(id);
-                            $('#kriteriaTB').val(data.kriteria);
+                            $('#angsuran').val(data.cicilan);
                             $('#keteranganTB').val(data.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+"Kriteria");
+                }$.Dialog.title(titlex+"Angsuran");
                 $.Dialog.content(contentFR);
             }
         });
@@ -118,7 +118,7 @@ var contentFR='';
     function pagination(page,aksix,menux){
         $('#isi').html('<img src="../img/loader.gif"> ').fadeIn();
         var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari = '&kriteriaS='+$('#keteranganS').val();
+        var cari = '&angsuran='+$('#angsuran').val();
 
         $.ajax({
             url:dir,
@@ -134,7 +134,7 @@ var contentFR='';
     
 //del process ---
     function del(id){
-        if(confirm('melanjutkan untuk menghapus data?'))
+        if(confirm('Apakah ingin menghapus data?'))
         $.ajax({
             url:dir,
             type:'post',
@@ -154,7 +154,7 @@ var contentFR='';
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#kriteriaTB').val('');
+        $('#angsuran').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---
