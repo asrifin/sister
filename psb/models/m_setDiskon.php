@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$tb = 'psb_kriteria';
+	$tb = 'psb_disctunai';
 	// $out=array();
 
 	if(!isset($_POST)){
@@ -13,14 +13,14 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$kriteria = trim($_POST['kriteriaS'])?$_POST['kriteriaS']:'';
+				$nilai = trim($_POST['diskonS'])?$_POST['diskonS']:'';
 				$keterangan = trim($_POST['keteranganS'])?$_POST['keteranganS']:'';
 				$sql = 'SELECT *
-						FROM psb_kriteria
+						FROM psb_disctunai
 						WHERE 
-							kriteria like "%'.$kriteria.'%" and 
+							nilai like "%'.$nilai.'%" and 
 							keterangan like "%'.$keterangan.'%" 
-						ORDER BY kriteria asc';
+						ORDER BY nilai asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -48,7 +48,7 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$nox.'</td>
-									<td>'.$res['kriteria'].'</td>
+									<td>'.$res['nilai'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -70,7 +70,7 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	kriteria 	= "'.filter($_POST['kriteriaTB']).'",
+				$s 		= $tb.' set 	nilai 		= "'.filter($_POST['nilaiTB']).'",
 										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
@@ -96,7 +96,7 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'=>$stat,
-							'kriteria'=>$r['kriteria'],
+							'nilai'=>$r['nilai'],
 							'keterangan'=>$r['keterangan']
 						));
 			break;

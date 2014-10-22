@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$tb = 'psb_kriteria';
+	$tb = 'psb_golongan';
 	// $out=array();
 
 	if(!isset($_POST)){
@@ -12,14 +12,14 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$kriteria = trim($_POST['kriteriaS'])?$_POST['kriteriaS']:'';
+				$kriteria = trim($_POST['golonganS'])?$_POST['golonganS']:'';
 				$keterangan = trim($_POST['keteranganS'])?$_POST['keteranganS']:'';
 				$sql = 'SELECT *
-						FROM psb_kriteria
+						FROM psb_golongan
 						WHERE 
-							kriteria like "%'.$kriteria.'%" and 
+							golongan like "%'.$kriteria.'%" and 
 							keterangan like "%'.$keterangan.'%" 
-						ORDER BY kriteria asc';
+						ORDER BY golongan asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -40,16 +40,14 @@
 						$btn ='<td>
 									<button class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
-										edit
 									</button>
 									<button class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
-										hapus
 									</button>
 								 </td>';
 						$out.= '<tr>
 									<td>'.$nox.'</td>
-									<td>'.$res['kriteria'].'</td>
+									<td>'.$res['golongan'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -71,7 +69,7 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	kriteria 	= "'.filter($_POST['kriteriaTB']).'",
+				$s 		= $tb.' set 	golongan 	= "'.filter($_POST['golongan']).'",
 										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
@@ -97,7 +95,7 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'=>$stat,
-							'kriteria'=>$r['kriteria'],
+							'golongan'=>$r['golongan'],
 							'keterangan'=>$r['keterangan']
 						));
 			break;

@@ -1,6 +1,5 @@
 #php_flag display_errors off
-Options -Indexes
-#indexIgnore *
+
 
 RewriteEngine On
 #ErrorDocument 404 /404.html
@@ -9,7 +8,13 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^home/?$   									index.php?page=vhome
 	RewriteRule   ^kriteria-calon-siswa/?$   					index.php?page=vkriteriaCalonSiswa
 	RewriteRule   ^golongan-calon-siswa/?$   					index.php?page=vgolonganCalonSiswa
-	RewriteRule   ^golongan-calon-siswa/?$   					index.php?page=vgolonganCalonSiswa
+	RewriteRule   ^set-biaya-calon-siswa/?$   					index.php?page=vsetBiayaCalonSiswa
+	RewriteRule   ^set-angsuran/?$   							index.php?page=vsetAngsuran
+	RewriteRule   ^set-diskon/?$   								index.php?page=vsetDiskon
+	RewriteRule   ^periode/?$  				 					index.php?page=vperiode
+	RewriteRule   ^kelompok/?$				   					index.php?page=vkelompok
+	RewriteRule   ^pendataan/?$				   					index.php?page=vpendataan
+	RewriteRule   ^penerimaan/?$			   					index.php?page=vpenerimaan
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 
 # Send all blocked request to homepage with 403 Forbidden error!
