@@ -9,6 +9,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^home/?$   									index.php?page=vhome
 	RewriteRule   ^departemen/?$   								index.php?page=vdepartemen
 	RewriteRule   ^angkatan/?$   								index.php?page=vangkatan
+	RewriteRule   ^tahun-ajaran/?$   								index.php?page=vtahunajaran
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 
 # Send all blocked request to homepage with 403 Forbidden error!

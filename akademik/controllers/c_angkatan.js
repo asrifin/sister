@@ -77,7 +77,6 @@ var contentFR ='';
                     });
                     //panggil fungsi viewTB() ==> tampilkan tabel 
                     viewTB(dt.departemen[0].replid); 
-                    $('#departemenTB').val('ok');
                 }$('#departemenS').html(out);
             }
         });

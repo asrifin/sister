@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$tb = 'departemen';
+	$tb = 'aka_tahunajaran';
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -13,17 +13,15 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$nama    = trim($_POST['namaS'])?filter($_POST['namaS']):'';
-				$alamat  = trim($_POST['alamatS'])?filter($_POST['alamatS']):'';
-				$telepon = trim($_POST['teleponS'])?filter($_POST['teleponS']):'';
+				$departemen  = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
+				$tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
-							nama like "%'.$nama.'%" and 
-							alamat like "%'.$alamat.'%" and 
-							telepon like "%'.$telepon.'%" 
+							departemen like "%'.$departemen.'%" and 
+							tahunajaran like "%'.$tahunajaran.'%" 
 						ORDER 
-							BY urut asc';
+							BY tahunajaran asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -51,9 +49,10 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$nox.'</td>
-									<td>'.$res['nama'].'</td>
-									<td>'.$res['alamat'].'</td>
-									<td>'.$res['telepon'].'</td>
+									<td>'.$res['tahunajaran'].'</td>
+									<td>'.$res['tglmulai'].'</td>
+									<td>'.$res['tglakhir'].'</td>
+									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -71,9 +70,11 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	nama 	= "'.filter($_POST['namaTB']).'",
-										alamat 	= "'.filter($_POST['alamatTB']).'",
-										telepon	= "'.filter($_POST['teleponTB']).'"';
+				$s 		= $tb.' set 	departemen 	= "'.filter($_POST['departemenH']).'",
+										tahunajaran = "'.filter($_POST['tahunajaranTB']).'",
+										tglmulai    = "'.filter($_POST['tglmulaiTB']).'",
+										tglakhir    = "'.filter($_POST['tglakhirTB']).'",
+										keterangan  = "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
 				$stat 	= ($e)?'sukses':'gagal';
@@ -87,51 +88,37 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['departemen']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['tahunajaran']));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT *
-							from '.$tb.'  
+				$s 		= ' SELECT 
+								t.tahunajaran,
+								t.tglmulai,
+								t.tglakhir,
+								t.keterangan,
+								d.replid as id_departemen,
+								d.nama as departemen
+							from '.$tb.' t, departemen d 
 							WHERE 
-								replid='.$_POST['replid'];
+								t.departemen= d.replid and
+								t.replid='.$_POST['replid'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
-				// var_dump($s);
 				$out 	= json_encode(array(
-							'status'  =>$stat,
-							'nama'    =>$r['nama'],
-							'alamat'  =>$r['alamat'],
-							'telepon' =>$r['telepon']
+							'status'        =>$stat,
+							'tahunajaran'   =>$r['tahunajaran'],
+							'tglmulai'      =>$r['tglmulai'],
+							'tglakhir'      =>$r['tglakhir'],
+							'keterangan'    =>$r['keterangan'],
+							'id_departemen' =>$r['id_departemen'],
+							'departemen'    =>$r['departemen']
 						));
 			break;
-			// ambiledit ------			
-
-			// cmbdepartemen -----------------------------------------------------------------
-			case 'cmbdepartemen':
-				$s	= ' SELECT *
-						from '.$tb.'  
-						ORDER  BY nama asc';
-				$e 	= mysql_query($s);
-				$n 	= mysql_num_rows($e);
-				$ar=$dt=array();
-
-				if(!$e){ //error
-					$ar = array('status'=>'error');
-				}else{
-					if($n=0){ // kosong 
-						$ar = array('status'=>'kosong');
-					}else{ // ada data
-						while ($r=mysql_fetch_assoc($e)) {
-							$dt[]=$r;
-						}$ar = array('status'=>'sukses','departemen'=>$dt);
-					}
-				}$out=json_encode($ar);
-			break;
-			// cmbdepartemen -----------------------------------------------------------------
+			// ambiledit -----------------------------------------------------------------
 		}
 	}echo $out;
 	// echo json_encode($out);

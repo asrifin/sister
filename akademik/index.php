@@ -130,6 +130,9 @@
                     case 'vangkatan':
                         require $d.'v_angkatan.php';
                     break;
+                    case 'vtahunajaran':
+                        require $d.'v_tahunajaran.php';
+                    break;
                     default:
                         require $d.'v_home.php';
                     break;

@@ -144,7 +144,7 @@
     <!--end of  angkatan -->
 
     <!-- tahun ajaran -->
-    <a href="tahun ajaran" class="tile bg-lightRed" data-click="transform">
+    <a href="tahun-ajaran" class="tile bg-lightRed" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>
