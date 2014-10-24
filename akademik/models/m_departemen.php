@@ -115,9 +115,9 @@
 				$s	= ' SELECT *
 						from '.$tb.'  
 						ORDER  BY nama asc';
-				$e 	= mysql_query($s);
-				$n 	= mysql_num_rows($e);
-				$ar=$dt=array();
+				$e  = mysql_query($s);
+				$n  = mysql_num_rows($e);
+				$ar =$dt=array();
 
 				if(!$e){ //error
 					$ar = array('status'=>'error');

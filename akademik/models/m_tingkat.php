@@ -4,7 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'tahunajaran';
+	$mnu = 'tingkat';
 	$tb  = 'aka_'.$mnu;
 	// $out=array();
 
@@ -15,15 +15,17 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen  = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
 				$tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
+				$tingkat     = trim($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
+				$keterangan  = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
-							departemen like "%'.$departemen.'%" and 
-							tahunajaran like "%'.$tahunajaran.'%" 
+							tahunajaran like "%'.$tahunajaran.'%" and
+							tingkat like "%'.$tingkat.'%" and
+							keterangan like "%'.$keterangan.'%"
 						ORDER 
-							BY tglmulai desc';
+							BY urutan asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -42,7 +44,7 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
-						if($res['aktif']==1){
+						if($res['aktif']=1){
 							$dis  = 'disabled';
 							$ico  = 'checkmark';
 							$hint = 'telah Aktif';
@@ -57,20 +59,14 @@
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button '.$dis.' data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button data-hint="hapus" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 									</button>
-									<button '.$func.' '.$dis.' data-hint="'.$hint.'">
-										<i class="icon-'.$ico.'"></i>
-									</button>
 								 </td>';
-						$out.= '<tr class="'.($res['aktif']==1?'bg-lightGreen':'').'">
+						$out.= '<tr>
 									<td>'.$nox.'</td>
-									<td id="tahunajaranTD_'.$res['replid'].'">'.$res['tahunajaran'].'</td>
-									<td>'.tgl_indo($res['tglmulai']).'</td>
-									<td>'.tgl_indo($res['tglakhir']).'</td>
-									<td>'.$res['keterangan'].'</td>
-									<td>'.($res['aktif']==1?'Aktif':'Tidak Aktif').'</td>
+									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['tingkat'].'</td>
+									<td>'.tgl_indo($res['keterangan']).'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -115,6 +111,13 @@
 			
 			// delete -----------------------------------------------------------------
 			case 'hapus':
+				// $s1 ='UPDATE '.$tb.' set aktif="0" where departemen='.$_POST['departemenH'];
+				// $e1  = mysql_query($s1);
+				// // var_dump($e1);exit();
+				// if(!$e1){
+				// 	$stat = 'gagal menonaktifkan';
+				// }else{
+
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
@@ -165,36 +168,14 @@
 						$stat='sukses';
 					}
 				}$out  = json_encode(array('status'=>$stat));
+				//var_dump($stat);exit();
+
 			break;
 			// aktifkan -----------------------------------------------------------------
 
-			// cmbtahunajaran -----------------------------------------------------------------
-			case 'cmb'.$mnu:
-				$s	= ' SELECT *
-						from '.$tb.'  
-						WHERE 
-							departemen = '.$_POST['departemen'].'
-						ORDER BY  
-							tahunajaran desc';
-				$e 	= mysql_query($s);
-				$n 	= mysql_num_rows($e);
-				$ar=$dt=array();
-
-				if(!$e){ //error
-					$ar = array('status'=>'error');
-				}else{
-					if($n=0){ // kosong 
-						$ar = array('status'=>'kosong');
-					}else{ // ada data
-						while ($r=mysql_fetch_assoc($e)) {
-							$dt[]=$r;
-						}$ar = array('status'=>'sukses','tahunajaran'=>$dt);
-					}
-				}$out=json_encode($ar);
-			break;
-			// cmbtahunajaran -----------------------------------------------------------------
 
 		}
-	}echo $out;
+	}
+	echo $out;
 	// echo json_encode($out);
 ?>

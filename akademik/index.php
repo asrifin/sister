@@ -134,6 +134,9 @@
                     case 'vtahunajaran':
                         require $d.'v_tahunajaran.php';
                     break;
+                    case 'vtingkat':
+                        require $d.'v_tingkat.php';
+                    break;
 
                     // guru
                     case 'vguru':
