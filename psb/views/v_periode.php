@@ -2,7 +2,11 @@
 
 <h4>Periode Penerimaan</h4>
 <div id="loadarea"></div>
-<button class="button" id="tambahBC"><i class="icon-plus-2 on-left"></i>Tambah </button>
+<button data-hint="Tambah Data" class="button" id="tambahBC"><i class="icon-plus-2 on-left"></i>Tambah </button>
+<button data-hint="Field Pencarian" class="button" id="cariBC"><span class="icon-search"></span> </button>
+<div class="input-control select span3">
+    <select data-hint="Departemen" name="departemenTB" id="departemenS"></select>
+</div>
 <table class="table hovered bordered striped">
     <thead>
         <tr class="selected">
@@ -19,9 +23,9 @@
         </tr>
         
         <tr class="selected">
-            <th class="text-left"><input placeholder="periode" id="periodeS"name="periodeS"></th>
-            <th class="text-left"><input placeholder="kode_awalan" id="kode_awalanS"name="kode_awalanS"></th>
-            <th class="text-left"><input placeholder="angkatan" id="angkatanS"name="angkatanS"></th>
+            <th class="text-left"><input placeholder="periode" id="periodeS" name="periodeS"></th>
+            <th class="text-left"><input placeholder="kode_awalan" id="kode_awalanS" name="kode_awalanS"></th>
+            <th class="text-left"><input placeholder="angkatan" id="angkatanS" name="angkatanS"></th>
             <th class="text-left"></th>
             <th class="text-left"></th>
             <th class="text-left"></th>

@@ -1,6 +1,6 @@
 <script src="controllers/c_angkatan.js"></script>
-<script src="js/metro/metro-button-set.js"></script>
-<script src="js/metro/metro-hint.js"></script>
+<script src="../../js/metro/metro-button-set.js"></script>
+<script src="../../js/metro/metro-hint.js"></script>
 
 <h4 style="color:white;">Angkatan</h4>
 <div id="loadarea"></div>
