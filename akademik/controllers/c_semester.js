@@ -1,4 +1,4 @@
-var mnu       = 'tingkat';
+var mnu       = 'semester';
 var mnu2      = 'departemen';
 var mnu3      = 'tahunajaran';
 var dir       = 'models/m_'+mnu+'.php';
@@ -25,11 +25,12 @@ var contentFR = '';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
-                        +'<label>Tingkat</label>'
+                        +'<label>'+mnu+'</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="tingkat" oninvalid="this.setCustomValidity(\'isi dulu gan\');" required type="text" name="tingkatTB" id="tingkatTB">'
+                            +'<input placeholder="'+mnu+'" required type="text" name="'+mnu+'TB" id="'+mnu+'TB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+                            // +'<input placeholder="'+mnu+'" oninvalid="this.setCustomValidity(\'isi dulu gan\');" required type="text" name="'+mnu+'TB" id="'+mnu+'TB">'
                         
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
@@ -125,7 +126,6 @@ var contentFR = '';
 
 //save process ---
     function simpan(){
-        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
         var urlx ='&aksi=simpan';
         // edit mode
         if($('#idformH').val()!=''){
@@ -158,7 +158,7 @@ var contentFR = '';
     function viewTB(){
         var aksi ='aksi=tampil';
         var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&tingkatS='+$('#tingkatS').val()
+                    +'&semesterS='+$('#semesterS').val()
                     +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
@@ -223,7 +223,7 @@ var contentFR = '';
                                             dataType:'json',
                                             success:function(dt3){
                                                 $('#idformH').val(id);
-                                                $('#tingkatTB').val(dt3.tingkat);
+                                                $('#semesterTB').val(dt3.semester);
                                                 $('#keteranganTB').val(dt3.keterangan);
                                             }
                                         });
@@ -250,9 +250,8 @@ var contentFR = '';
     function pagination(page,aksix){
         var datax = 'starting='+page+'&aksi='+aksix;
         var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&tingkatS='+$('#tingkatS').val()
+                    +'&semesterS='+$('#semesterS').val()
                     +'&keteranganS='+$('#keteranganS').val();
-
         $.ajax({
             url:dir,
             type:"post",
@@ -309,7 +308,7 @@ function notif(cont,clr) {
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#tingkatTB').val('');
+        $('#'+mnu+'TB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---

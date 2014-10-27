@@ -117,7 +117,6 @@
     </nav>
 
     <div class="tile-area tile-area-dark">
-
         <?php
             $d='views/';
             if(!isset($_GET['page'])){
@@ -136,6 +135,9 @@
                     break;
                     case 'vtingkat':
                         require $d.'v_tingkat.php';
+                    break;
+                    case 'vsemester':
+                        require $d.'v_semester.php';
                     break;
 
                     // guru

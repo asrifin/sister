@@ -4,7 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'tingkat';
+	$mnu = 'semester';
 	$tb  = 'aka_'.$mnu;
 	// $out=array();
 
@@ -16,16 +16,16 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$tingkat     = trim($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
+				$semester    = trim($_POST[$mnu.'S'])?filter($_POST[$mnu.'S']):'';
 				$keterangan  = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
 							tahunajaran like "%'.$tahunajaran.'%" and
-							tingkat like "%'.$tingkat.'%" and
+							nama like "%'.$semester.'%" and
 							keterangan like "%'.$keterangan.'%"
 						ORDER 
-							BY urutan asc';
+							BY urut asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -65,7 +65,7 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$nox.'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['tingkat'].'</td>
+									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -85,7 +85,7 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
-								tingkat    	= "'.filter($_POST['tingkatTB']).'",
+								nama    	= "'.filter($_POST['semesterTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
@@ -104,7 +104,7 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
 			break;
 			// delete -----------------------------------------------------------------
 
@@ -119,34 +119,12 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'tingkat'    =>$r['tingkat'],
+							'semester'   =>$r['nama'],
 							'keterangan' =>$r['keterangan'],
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
-
-			// aktifkan -----------------------------------------------------------------
-			case 'aktifkan':
-				$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0" where departemen = '.$_POST['departemen']);
-				if(!$e1){
-					$stat='gagal menonaktifkan';
-				}else{
-					$s2 = 'UPDATE  '.$tb.' set aktif="1" where replid = '.$_POST['replid'];
-					$e2 = mysql_query($s2);
-					if(!$e2){
-						$stat='gagal mengaktifkan';
-					}else{
-						$stat='sukses';
-					}
-				}$out  = json_encode(array('status'=>$stat));
-				//var_dump($stat);exit();
-
-			break;
-			// aktifkan -----------------------------------------------------------------
-
-
 		}
-	}
-	echo $out;
+	}echo $out;
 	// echo json_encode($out);
 ?>
