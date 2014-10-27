@@ -3,33 +3,36 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$tb = 'psb_disctunai';
+	$tb = 'psb_proses';
 	// $out=array();
 
 	if(!isset($_POST)){
-		$out=array('status'=>'invalid_no_post');		
+		$out=json_encode(array('status'=>'invalid_no_post'));		
 		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$nilai = trim($_POST['diskonS'])?$_POST['diskonS']:'';
+				$proses = trim($_POST['periodeS'])?filter($_POST['periodeS']):'';
+				$kodeawal = trim($_POST['kode_awalanS'])?filter($_POST['kode_awalanS']):'';
+				// $angkatan = trim($_POST['angkatanS'])?filter($_POST['angkatanS']):'';
 				$keterangan = trim($_POST['keteranganS'])?$_POST['keteranganS']:'';
 				$sql = 'SELECT *
-						FROM psb_disctunai
+						FROM psb_proses
 						WHERE 
-							nilai like "%'.$nilai.'%" and 
-							keterangan like "%'.$keterangan.'%" 
-						ORDER BY nilai asc';
+							proses like "%'.$proses.'%" and 
+							kodeawalan like "%'.$kodeawal.'%" 
+						ORDER BY proses asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
-				$menu='tampil';	
+				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
-				$obj 	= new pagination_class($menu,$sql,$starting,$recpage);
+				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage);
 				$result =$obj->result;
 
 				#ada data
@@ -47,8 +50,8 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
-									<td>'.$res['nilai'].'</td>
+									<td>'.$res['proses'].'</td>
+									<td>'.$res['kodeawalan'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -70,7 +73,7 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	nilai 		= "'.filter($_POST['nilaiTB']).'",
+				$s 		= $tb.' set 	proses 		= "'.filter($_POST['periodeTB']).'",
 										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
@@ -101,6 +104,29 @@
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
+
+			// cmbdepartemen -----------------------------------------------------------------
+			case 'cmbdepartemen':
+				$s	= ' SELECT *
+						from departemen 
+						ORDER  BY nama asc';
+				$e 	= mysql_query($s);
+				$n 	= mysql_num_rows($e);
+				$ar=$dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error');
+				}else{
+					if($n=0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						while ($r=mysql_fetch_assoc($e)) {
+							$dt[]=$r;
+						}$ar = array('status'=>'sukses','departemen'=>$dt);
+					}
+				}$out=json_encode($ar);
+			break;
+			// cmbdepartemen -----------------------------------------------------------------
 		}
 
 	}

@@ -19,7 +19,7 @@
     <link href="../css/metro-bootstrap-responsive.css" rel="stylesheet">
     <link href="../css/iconFont.css" rel="stylesheet">
     <link href="../css/docs.css" rel="stylesheet">
-    <link href="js/prettify/prettify.css" rel="stylesheet">
+    <link href="../prettify/prettify.css" rel="stylesheet">
 
     <!-- Load JavaScript Libraries -->
     <script src="../js/jquery/jquery.min.js"></script>
@@ -29,6 +29,7 @@
 
     <!-- Metro UI CSS JavaScript plugins -->
     <script src="../js/load-metro.js"></script>
+     <script src="../js/metro.min.js"></script>
 
     <!-- Local JavaScript -->
     <script src="../js/docs.js"></script>
