@@ -173,9 +173,11 @@
 				$s	= ' SELECT *
 						from '.$tb.'  
 						WHERE 
-							departemen = '.$_POST['departemen'].'
+							departemen = '.$_POST['departemen']
+							.' '.(isset($_POST['replid'])?'and replid ='.$_POST['replid']:'').'
 						ORDER BY  
 							tahunajaran desc';
+// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
 				$ar=$dt=array();
@@ -186,8 +188,12 @@
 					if($n=0){ // kosong 
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
-						while ($r=mysql_fetch_assoc($e)) {
-							$dt[]=$r;
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
 						}$ar = array('status'=>'sukses','tahunajaran'=>$dt);
 					}
 				}$out=json_encode($ar);

@@ -11,6 +11,8 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^angkatan/?$   								index.php?page=vangkatan
 	RewriteRule   ^tahun-ajaran/?$   							index.php?page=vtahunajaran
 	RewriteRule   ^tingkat/?$   								index.php?page=vtingkat
+	RewriteRule   ^kelas/?$   									index.php?page=vkelas
+	RewriteRule   ^semester/?$   								index.php?page=vsemester
 
 	#guru dan pelajaran
 	RewriteRule   ^guru/?$   									index.php?page=vguru

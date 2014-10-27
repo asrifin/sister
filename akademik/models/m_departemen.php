@@ -113,9 +113,11 @@
 			// cmbdepartemen -----------------------------------------------------------------
 			case 'cmbdepartemen':
 				$s	= ' SELECT *
-						from '.$tb.'  
+						from '.$tb.'
+						'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
 						ORDER  BY nama asc';
 				$e  = mysql_query($s);
+				// var_dump($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
 
@@ -125,9 +127,14 @@
 					if($n=0){ // kosong 
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
-						while ($r=mysql_fetch_assoc($e)) {
-							$dt[]=$r;
-						}$ar = array('status'=>'sukses','departemen'=>$dt);
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}
+						$ar = array('status'=>'sukses','departemen'=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;
