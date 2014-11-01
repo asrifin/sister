@@ -1,15 +1,18 @@
-var dir       ='models/m_tempat.php';
-var dir2       ='models/m_lokasi.php';
+var mnu       ='tempat'; // edit by epiii
+var mnu2      ='lokasi'; // edit by epiii
+var dir       ='models/m_'+mnu+'.php'; //edit by epiii
+var dir2      ='models/m_'+mnu2+'.php'; //edit by epiii
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="tempatFR">' 
+        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         +'<label>Lokasi</label>'
                         +'<div class="input-control text">'
                             +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span2">'
-                            +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" class="span2">'
+                            // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" class="span2">'
+                            +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" class="span2">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
@@ -29,39 +32,51 @@ var contentFR ='';
                         +'</div>'
                     +'</form>';
 
-        //combo departemen
+        /*\
+        load pertama kali (pilihn salah satu) :
+        cmblokasi : bila ada combo box
+        viewTB : jika tanpa combo box
+        */
+
+        //combo lokasi
         cmblokasi();
         
-        //load table
-        viewTB();
+        //load table // edit by epiii
+        // viewTB();
 
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
         });
 
-        //search action
-        $('#lokasiS').keydown(function (e){
-            if(e.keyCode == 13)
+        //search action // edit by epiii
+        $('#lokasiS').on('change',function (e){ // change : combo box
                 viewTB($('#lokasiS').val());
-        // });$('#keteranganS').keydown(function (e){
-        //     if(e.keyCode == 13)
-        //         viewTB($('#departemenS').val());
-        // });$('#departemenS').on('change',function(){
-        //     viewTB($(this).val());
-        })
+        });
+        $('#tempatS').on('keydown',function (e){ // keydown : textbox
+            if(e.keyCode == 13)
+                // viewTB($('#tempatS').val());
+                viewTB($('#lokasiS').val());
+        });
+        $('#keteranganS').on('keydown',function (e){ // keydown : textbox
+            if(e.keyCode == 13)
+                // viewTB($('#keteranganS').val());
+                viewTB($('#lokasiS').val());
+        });
 
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
-            $('#lokasiS').val('');
+            // $('#lokasiS').val('');
+            $('#tempatS').val('');
+            $('#keteranganS').val('');
         });
-
     }); 
 // end of main function ---
 
 // combo departemen ---
-    function cmblokasi(lok){
+    // function cmblokasi(lok){ edited by epiii
+    function cmblokasi(){
         $.ajax({
             url:dir2,
             data:'aksi=cmblokasi',
@@ -73,7 +88,7 @@ var contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.lokasi, function(id,item){
-                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                        out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                     });
                     //panggil fungsi viewTB() ==> tampilkan tabel 
                     viewTB(dt.lokasi[0].replid); 
@@ -106,19 +121,19 @@ var contentFR ='';
                     viewTB($('#tempatS').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
-                }
-                notif(cont,clr);
+                }notif(cont,clr);
             }
         });
     }
 //end of save process ---
 
 // view table ---
-    function viewTB(nama){          
+    // function viewTB(nama){          
+    function viewTB(lok){ //edit by epiii 
         var aksi ='aksi=tampil';
-        var cari = '&lokasiS='+nama;    
-                    // +'&angkatanS='+$('#angkatanS').val();
-        //             +'&keteranganS='+$('#keteranganS').val();
+        var cari ='&lokasiS='+lok
+                    +'&tempatS='+$('#tempatS').val()
+                    +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -128,7 +143,6 @@ var contentFR ='';
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
-                    // $('#tbody').delay(4000).fadeIn().html(data);
                 },1000);
             }
         });
@@ -167,12 +181,14 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#tempatH').val($('#tempatS').val());
+                            // $('#tempatH').val($('#tempatS').val());
+                            $('#lokasiH').val($('#lokasiS').val()); // edit by epii
+                            $('#lokasiTB').val(dt.lokasi);
                             $('#namaTB').val(dt.nama);
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+"Kriteria");
+                }$.Dialog.title(titlex+' '+mnu); // edit by epiii
                 $.Dialog.content(contentFR);
             }
         });
@@ -180,11 +196,11 @@ var contentFR ='';
 // end of form ---
 
 //paging ---
-    function pagination(page,aksix,menux){
+    function pagination(page,aksix,menux){ // edit by epiii
         var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari =  '&lokasiS='+$('#lokasiS').val();
-        //             +'&angkatanS='+$('#angkatanS').val()
-        //             +'&keteranganS='+$('#keteranganS').val();
+        var cari  = '&lokasiS='+$('#lokasiS').val();
+                    +'&tempatS='+$('#tempatS').val()
+                    +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url:dir,
             type:"post",
@@ -245,3 +261,7 @@ function notif(cont,clr) {
         $('#keteranganTB').val('');
     }
 //end of reset form ---
+
+    // ---------------------- //
+    // -- created by rovi  -- //
+    // ---------------------- // 

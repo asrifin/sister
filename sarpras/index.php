@@ -59,39 +59,27 @@
             <span class="element-divider"></span>
             <a class="element brand" href="./">
                 <span class="icon-home"></span>  
-                Akademik
+                Sarana dan Prasarana
             </a>
             <span class="element-divider"></span>
             <div class="element">
-                <a class="dropdown-toggle" href="#">Kesiswaan</a>
+                <a class="dropdown-toggle" href="#">inventaris</a>
                 <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="pendataan-siswa">Pendataan Siswa</a></li>
                     <li><a href="presensi-siswa">Presensi Siswa</a></li>
                     <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
                     <li><a href="pendataan-mutasi-siswa">Pendataan Mutasi Siswa</a></li>
                 </ul>
             </div>
             <div class="element">
-                <a class="dropdown-toggle" href="#">Guru dan Pelajaran</a>
+                <a class="dropdown-toggle" href="#">Refrensi</a>
                 <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="pelajaran">Pelajaran</a></li>
-                    <li><a href="guru">guru</a></li>
-                    <li><a href="jadwal-pelajaran">Jadwal Pelajaran</a></li>
+                    <li><a href="lokasi">Lokasi</a></li>
+                    <li><a href="tempat">Tempat</a></li>
+                    <li><a href="jenis-barang">Jenis Barang</a></li>
                     <li><a href="presensi-guru">Presensi Guru</a></li>
                 </ul>
             </div>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Referensi</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="departemen">Departemen</a></li>
-                    <li><a href="angkatan">Angkatan</a></li>
-                    <li><a href="tahun-ajaran">Tahun Ajaran</a></li>
-                    <li><a href="tingkat">Tingkat </a></li>
-                    <li><a href="kelas">Kelas </a></li>
-                    <li><a href="semester">Semester </a></li>
-                </ul>
-            </div>
-             
+                         
             <span class="element-divider place-right"></span>
             <div class="element place-right">
                 <a class="dropdown-toggle" href="#">

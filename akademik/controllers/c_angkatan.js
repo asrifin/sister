@@ -248,3 +248,7 @@ function notif(cont,clr) {
         $('#keteranganTB').val('');
     }
 //end of reset form ---
+
+    // ---------------------- //
+    // -- created by epiii -- //
+    // ---------------------- //

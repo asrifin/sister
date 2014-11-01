@@ -3,7 +3,8 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$tb = 'sar_lokasi';
+	$mnu = 'lokasi';
+	$tb  = 'sar_'.$mnu;
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -58,12 +59,12 @@
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
-							<td  colspan=9 ><span style="color:red;text-align:center;">
+							<td  colspan="10" ><span style="color:red;text-align:center;">
 							... data tidak ditemukan...</span></td></tr>';
 				}
 				#link paging
-				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+				$out.= '<tr class="info"><td colspan="10">'.$obj->anchors.'</td></tr>';
+				$out.='<tr class="info"><td colspan="10">'.$obj->total.'</td></tr>';
 			break; 
 			// view -----------------------------------------------------------------
 
@@ -116,6 +117,8 @@
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
+			
+			// cmblokasi ---------------------------------------------------------
 			case 'cmblokasi':
 				$s	= ' SELECT *
 						from '.$tb.'
@@ -138,12 +141,15 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}
-						$ar = array('status'=>'sukses','lokasi'=>$dt);
+						}$ar = array('status'=>'sukses','lokasi'=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;
+			// end of cmblokasi ---------------------------------------------------------
 		}
 	}echo $out;
-	// echo json_encode($out);
+
+    // ---------------------- //
+    // -- created by rovi  -- //
+    // ---------------------- // 
 ?>

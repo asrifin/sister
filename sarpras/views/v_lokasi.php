@@ -5,7 +5,7 @@
 <h4 style="color:white;">Lokasi</h4>
 <div id="loadarea"></div>
 
-<button data-hint="Tambah Data" class="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 
 <table class="table hovered bordered striped">
     <thead>
@@ -26,3 +26,9 @@
         
     </tfoot>
 </table>
+
+<!--
+    // ---------------------- //
+    // -- created by rovi  -- //
+    // ---------------------- // 
+-->

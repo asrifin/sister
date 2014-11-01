@@ -3,7 +3,10 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$tb = 'sar_tempat';
+	$mnu  = 'tempat';
+	$mnu2 = 'lokasi';
+	$tb   = 'sar_'.$mnu;
+	$tb2  = 'sar_'.$mnu2;
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -13,15 +16,18 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				// $kode = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
-				// $lokasi   = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
-				// $alamat = trim($_POST['alamatS'])?filter($_POST['alamatS']):'';
-				// $kontak = trim($_POST['kontakS'])?filter($_POST['kontakS']):'';
-				// $keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
-				$sql = 'SELECT *
-						FROM '.$tb.'
-						ORDER BY nama asc';
-				// print_r($sql);exit();
+				$lokasi     = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
+				$tempat     = trim($_POST['tempatS'])?filter($_POST['tempatS']):'';
+				$keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$sql = 'SELECT t.*
+						FROM '.$tb.' t, '.$tb2.' l
+						WHERE 
+							l.replid = t.lokasi and
+							t.lokasi ='.$lokasi.' and
+							t.nama LIKE "%'.$tempat.'%" and
+							t.keterangan LIKE "%'.$keterangan.'%" 
+						ORDER BY t.nama asc';
+				// print_r($sql);exit(); 	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -47,6 +53,7 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
+									<td>'.$nox.'</td>
 									<td>'.$res['nama'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
@@ -88,41 +95,28 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT 
-								a.nama,
-								a.keterangan,
-								d.nama
-							from '.$tb.' a, sar_lokasi d 
+								t.nama,
+								t.keterangan,
+								l.nama as lokasi
+							from '.$tb.' t, sar_lokasi l 
 							WHERE 
-								a.departemen= d.replid and
-								a.replid='.$_POST['replid'];
+								t.lokasi= l.replid and
+								t.replid='.$_POST['replid'];
+				// var_dump($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				// $stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
+							'lokasi'     =>$r['lokasi'],
 							'nama'       =>$r['nama'],
 							'keterangan' =>$r['keterangan']
 						));
 			break;
-			// case 'ambiledit':
-			// 	$s 		= ' SELECT 
-			// 					nama,
-			// 					keterangan
-			// 				from '.$tb.' 
-			// 				WHERE 
-			// 				replid='.$_POST['replid'];
-			// 		// print_r($s);exit();
-			// 	$e 		= mysql_query($s);
-			// 	$r 		= mysql_fetch_assoc($e);
-			// 	// $stat 	= ($e)?'sukses':'gagal';
-			// 	$out 	= json_encode(array(
-			// 				// 'status'     =>$stat,
-			// 				'nama'       =>$r['nama'],
-			// 				'keterangan' =>$r['keterangan']
-			// 			));
-			// break;
 			// ambiledit -----------------------------------------------------------------
-			
 		}
 	}echo $out;
-	// echo json_encode($out);
+
+    // ---------------------- //
+    // -- created by rovi  -- //
+    // ---------------------- // 
 ?>

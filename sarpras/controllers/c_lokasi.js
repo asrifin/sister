@@ -1,16 +1,11 @@
-var dir       ='models/m_lokasi.php';
+var mnu       ='lokasi';
+var dir       ='models/m_'+mnu+'.php';
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="lokasiFR">' 
+        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-                        +'<label>Lokasi</label>'
-                        +'<div class="input-control text">'
-                            // +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span2">'
-                            // +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" class="span2">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
                         +'<label>Kode</label>'
                         +'<div class="input-control text">'
                             +'<input required type="text" name="kodeTB" id="kodeTB">'
@@ -138,7 +133,7 @@ var contentFR ='';
             type: 'post',
             data: aksi,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -184,12 +179,13 @@ var contentFR ='';
                             $('#lokasiH').val($('#lokasiS').val());
                             $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
-                            $('#alamatTB').val(dt.aolamat);
+                            $('#alamatTB').val(dt.alamat);
+                            // $('#alamatTB').val(dt.aolamat);
                             $('#kontakTB').val(dt.kontak);
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+"Kriteria");
+                }$.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
             }
         });
@@ -207,7 +203,7 @@ var contentFR ='';
             type:"post",
             data: datax+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -265,3 +261,7 @@ function notif(cont,clr) {
         $('#keteranganTB').val('');
     }
 //end of reset form ---
+
+    // ---------------------- //
+    // -- created by rovi  -- //
+    // ---------------------- // 

@@ -369,3 +369,7 @@ function notif(cont,clr) {
         });
     }
 //end of aktifkan process ---
+
+    // ---------------------- //
+    // -- created by epiii -- //
+    // ---------------------- //
