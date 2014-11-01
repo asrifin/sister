@@ -4,7 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'tingkat';
+	$mnu = 'kelas';
 	$tb  = 'aka_'.$mnu;
 	// $out=array();
 
@@ -15,26 +15,44 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$tingkat     = trim($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
-				$keterangan  = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
-				$sql = 'SELECT *
-						FROM '.$tb.'
-						WHERE 
-							tahunajaran like "%'.$tahunajaran.'%" and
-							tingkat like "%'.$tingkat.'%" and
-							keterangan like "%'.$keterangan.'%"
-						ORDER 
-							BY urutan asc';
+				$kelas       = trim($_POST['kelasS'])?filter($_POST['kelasS']):'';
+				$wali        = trim($_POST['waliS'])?filter($_POST['waliS']):'';
+
+				// $sql = 'SELECT *
+				// 		FROM '.$tb.'
+				// 		WHERE 
+				// 			tingkat like "%'.$tingkat.'%" and
+				// 			kelas like "%'.$kelas.'%" and
+				// 			wali like "%'.$wali.'%" 
+				// 		ORDER 
+				// 			BY kelas asc';
+				$sql ='SELECT 
+							k.replid,
+							k.kelas,
+							p.nama as wali,
+							k.kapasitas,
+							k.keterangan
+						FROM 
+							aka_kelas k,
+							aka_guru g,
+							hrd_pegawai p
+						WHERE
+							k.tingkat LIKE "%'.$tingkat.'%"
+							AND k.kelas LIKE "%'.$kelas.'%"
+							AND k.wali LIKE "%'.$wali.'%"
+							and k.wali    = g.replid
+							and g.pegawai = p.replid
+						ORDER BY
+							k.kelas ASC';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
+
 				$recpage= 5;//jumlah data per halaman
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
 				$obj 	= new pagination_class($sql,$starting,$recpage);
 				$result =$obj->result;
 
@@ -55,6 +73,7 @@
 							$hint = 'Aktifkan';
 							$func = 'onclick="aktifkan('.$res['replid'].');"';
 						}
+
 						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -65,10 +84,14 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$nox.'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['tingkat'].'</td>
+									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelas'].'</td>
+									<td>'.$res['wali'].'</td>
+									<td>'.$res['kapasitas'].'</td>
+									<td>-</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
+								// <td>'.$res['terisi'].'</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -140,13 +163,10 @@
 					}
 				}$out  = json_encode(array('status'=>$stat));
 				//var_dump($stat);exit();
-
 			break;
 			// aktifkan -----------------------------------------------------------------
 
-
 		}
-	}
-	echo $out;
+	}echo $out;
 	// echo json_encode($out);
 ?>

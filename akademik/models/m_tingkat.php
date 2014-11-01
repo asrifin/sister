@@ -140,10 +140,50 @@
 					}
 				}$out  = json_encode(array('status'=>$stat));
 				//var_dump($stat);exit();
-
 			break;
 			// aktifkan -----------------------------------------------------------------
 
+			// cmbtingkat -----------------------------------------------------------------
+			case 'cmbtingkat':
+				$w='';
+				if(isset($_POST['replid'])){
+					$w='where replid ='.$_POST['replid'];
+				}else{
+					if(isset($_POST['tahunajaran'])){
+						$w='where tahunajaran='.$_POST['tahunajaran'];
+					}
+				}
+				
+				$s	= ' SELECT *
+						from '.$tb.'
+						'.$w.'		
+						ORDER  BY '.$mnu.' asc';
+				// $s	= ' SELECT *
+				// 		from '.$tb.'
+				// 		'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
+				// 		ORDER  BY '.$mnu.' asc';
+				// var_dump($s);exit();
+				$e  = mysql_query($s);
+				$n  = mysql_num_rows($e);
+				$ar = $dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error');
+				}else{
+					if($n=0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}$ar = array('status'=>'sukses','tingkat'=>$dt);
+					}
+				}$out=json_encode($ar);
+			break;
+			// cmbtingkat -----------------------------------------------------------------
 
 		}
 	}

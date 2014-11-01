@@ -1,0 +1,19 @@
+#php_flag display_errors off
+Options -Indexes
+#indexIgnore *
+
+RewriteEngine On
+#ErrorDocument 404 /404.html
+ErrorDocument 404 Maaf-halaman-tidak-ditemukan
+
+	RewriteRule   ^home/?$   									index.php?page=vhome
+	RewriteRule   ^lokasi/?$   									index.php?page=vlokasi
+	RewriteRule   ^tempat/?$   									index.php?page=vtempat
+	RewriteRule   ^jenisbarang/?$   							index.php?page=vjenisbarang
+
+	#guru dan pelajaran
+	RewriteRule   ^guru/?$   									index.php?page=vguru
+	RewriteRule   ^keluar/?$ 									index.php?page=logout 
+
+# Send all blocked request to homepage with 403 Forbidden error!
+#RewriteRule ^(.*)$ index.php [F,L]

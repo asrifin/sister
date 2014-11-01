@@ -5,13 +5,13 @@
 <h4 style="color:white;">Departemen</h4>
 <div id="loadarea"></div>
 
-<button data-hint="Tambah Data" class="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
-<button data-hint="Field Pencarian" class="large" id="cariBC"><span class="icon-search"></span> </button>
+<button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
-            <th class="text-center">No.</th>
+            <th class="text-center">Urutan</th>
             <th class="text-left">Nama Departemen</th>
             <th class="text-left">Alamat</th>
             <th class="text-left">Telepon</th>

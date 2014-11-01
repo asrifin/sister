@@ -4,9 +4,9 @@
 
 <h4 style="color:white;">Angkatan</h4>
 <div id="loadarea"></div>
-
-<button data-hint="Tambah Data" class="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
-<button data-hint="Field Pencarian" class="large" id="cariBC"><span class="icon-search"></span> </button>
+okoko
+<button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 <div class="input-control select span3">
     <select data-hint="Departemen" name="departemenTB" id="departemenS"></select>
 </div>

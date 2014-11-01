@@ -1,9 +1,11 @@
-var mnu       = 'tingkat';
+var mnu       = 'kelas';
 var mnu2      = 'departemen';
 var mnu3      = 'tahunajaran';
+var mnu4      = 'tingkat';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = 'models/m_'+mnu2+'.php';
 var dir3      = 'models/m_'+mnu3+'.php';
+var dir4      = 'models/m_'+mnu4+'.php';
 var contentFR = '';
 
 // main function ---
@@ -52,14 +54,16 @@ var contentFR = '';
         });
 
         //search action
-        $('#tahunajaranS').on('change',function (){
-            viewTB();
-        });$('#departemenS').on('change',function(){
+        $('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
-        });$('#tingkatS').keydown(function(e){
+        });$('#tahunajaranS').on('change',function (){
+            viewTB();
+        });$('#tingkatS').on('change',function (){
+            viewTB();
+        });$('#kelasS').keydown(function(e){
             if(e.keyCode==13)
                 viewTB();
-        });$('#keteranganS').keydown(function(e){
+        });$('#waliS').keydown(function(e){
             if(e.keyCode==13)
                 viewTB();
         });
@@ -67,8 +71,8 @@ var contentFR = '';
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
-            $('#tingkatS').val('');
-            $('#keteraganS').val('');
+            $('#kelasS').val('');
+            $('#waliS').val('');
         });
     }); 
 // end of save process ---
@@ -88,8 +92,9 @@ var contentFR = '';
                     $.each(dt.departemen, function(id,item){
                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
-                    $('#departemenS').html(out);
-                }cmbtahunajaran(dt.departemen[0].replid);
+                }
+                $('#departemenS').html(out);
+                cmbtahunajaran(dt.departemen[0].replid);
             }
         });
     }
@@ -114,14 +119,39 @@ var contentFR = '';
                             out+='<option value="'+item.replid+'">'+item.tahunajaran+'</option>';
                         }
                     });
-                    // viewTB(dep,dt.tahunajaran[0].replid); 
-                }
-                $('#tahunajaranS').html(out);
-                viewTB(); 
+                }$('#tahunajaranS').html(out);
+                cmbtingkat(dt.tahunajaran[0].replid);
             }
         });
     }
 //end of combo tahunajaran ---
+
+// combo tingkat ---
+    function cmbtingkat(thn){
+        $.ajax({
+            url:dir4,
+            data:'aksi=cmbtingkat&tahunajaran='+thn,
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.tingkat, function(id,item){
+                        if(item.aktif=='1'){
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.tingkat+' (aktif)</option>';
+                        }else{
+                            out+='<option value="'+item.replid+'">'+item.tingkat+'</option>';
+                        }
+                    });
+                }$('#tingkatS').html(out);
+                viewTB(); 
+            }
+        });
+    }
+//end of combo tingkat ---
+
 
 //save process ---
     function simpan(){
@@ -157,9 +187,9 @@ var contentFR = '';
 // view table ---
     function viewTB(){
         var aksi ='aksi=tampil';
-        var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&tingkatS='+$('#tingkatS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        var cari =  '&tingkatS='+$('#tingkatS').val()
+                    +'&kelasS='+$('#kelasS').val()
+                    +'&waliS='+$('#waliS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -246,12 +276,11 @@ var contentFR = '';
 // end of form ---
 
 //paging ---
-    // function pagination(page,aksix,menux){
     function pagination(page,aksix){
         var datax = 'starting='+page+'&aksi='+aksix;
-        var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&tingkatS='+$('#tingkatS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        var cari =  '&tingkatS='+$('#tingkatS').val()
+                    +'&kelasS='+$('#kelasS').val()
+                    +'&waliS='+$('#waliS').val();
 
         $.ajax({
             url:dir,

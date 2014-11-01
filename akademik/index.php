@@ -139,6 +139,9 @@
                     case 'vsemester':
                         require $d.'v_semester.php';
                     break;
+                    case 'vkelas':
+                        require $d.'v_kelas.php';
+                    break;
 
                     // guru
                     case 'vguru':

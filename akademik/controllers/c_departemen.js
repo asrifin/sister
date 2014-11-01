@@ -1,10 +1,10 @@
-// var dir       ='models/m_angkatan.php';
-var dir       ='models/m_departemen.php';
+var mnu       ='departemen';
+var dir       ='models/m_'+mnu+'.php';
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="angkatanFR">' 
+        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         +'<label>Departemen</label>'
                         +'<div class="input-control text">'
@@ -52,7 +52,6 @@ var contentFR ='';
             $('#namaS').val('');
             $('#keteranganS').val('');
         });
-
     }); 
 // end of main function ---
 
@@ -87,7 +86,6 @@ var contentFR ='';
 //end of save process ---
 
 // view table ---
-    // function viewTB(dep){
     function viewTB(){
         var aksi ='aksi=tampil';
         var cari = '&namaS='+$('#namaS').val()
@@ -145,7 +143,7 @@ var contentFR ='';
                             $('#teleponTB').val(dt.telepon);
                         }
                     });
-                }$.Dialog.title(titlex+" Kriteria");
+                }$.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
             }
         });
@@ -198,17 +196,17 @@ var contentFR ='';
 //end of del process ---
     
 // notifikasi
-function notif(cont,clr) {
-    var not = $.Notify({
-        caption : "<b>Notifikasi</b>",
-        content : cont,
-        timeout : 3000,
-        style :{
-            background: clr,
-            color:'white'
-        },
-    });
-}
+    function notif(cont,clr) {
+        var not = $.Notify({
+            caption : "<b>Notifikasi</b>",
+            content : cont,
+            timeout : 3000,
+            style :{
+                background: clr,
+                color:'white'
+            },
+        });
+    }
 // end of notifikasi
 
 //reset form ---
@@ -218,3 +216,39 @@ function notif(cont,clr) {
         $('#keteranganTB').val('');
     }
 //end of reset form ---
+
+// urutan tabel
+    function urutFC (e) {
+        // alert(id1);return false;
+        // if(confirm('melanjutkan untuk merubah urutan ?')){
+            $.ajax({
+                url:dir,
+                dataType:'json',
+                type:'post',
+                data:'aksi=urutan&replid1='+$(e).attr('replid1')+'&urutan2='+$(e).val(),
+                beforeSend:function(){
+                    $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                },success:function(dt){
+                    var cont,clr;
+                    // cont = '..Gagal Merubah urutan '+$('#'+mnu+'TD_'+$(e).attr('replid1')).html()+' ..';
+                    if(dt.status!='sukses'){
+                        cont = '..Gagal Merubah urutan ';
+                        clr  ='red';
+                    }else{
+                        viewTB();
+                        cont = '..Berhasil Merubah Urutan ';
+                        clr  ='green';
+                    }
+                    // alert($(e).attr('urutan1'));return false;
+                    // var idx = $(e).attr('urutan1');
+                    // $('#TR_'+idx).addClass('success');
+                    // $('#TR_2').html('<td>aseeeeeeeeem</td>');
+                    // $('#TR_'+idx).html('<td>aseeeeeeeeem</td>');
+                    notif(cont,clr);
+                }
+            });
+        // }else{
+        //     alert('gak sido');
+        // }
+    }
+//end of urutan tabel
