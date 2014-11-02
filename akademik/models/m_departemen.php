@@ -88,7 +88,14 @@
 				$s 		= $tb.' set 	nama 	= "'.filter($_POST['namaTB']).'",
 										alamat 	= "'.filter($_POST['alamatTB']).'",
 										telepon	= "'.filter($_POST['teleponTB']).'"';
-				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				if(isset($_POST['replid'])){
+					$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
+				}else{
+					$n  = mysql_num_rows(mysql_query('SELECT * from '.$tb));
+					$s2 = 'INSERT INTO '.$s.', urut='.($n+1);
+
+				}
+				// $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array('status'=>$stat));
@@ -126,10 +133,24 @@
 
 			// cmbdepartemen -----------------------------------------------------------------
 			case 'cmbdepartemen':
+				$w='';
+				if(isset($_POST['replid'])){
+					$w='where replid ='.$_POST['replid'];
+				}else{
+					if(isset($_POST[$mnu])){
+						$w='where '.$mnu.'='.$_POST[$mnu];
+					}
+				}
+				
 				$s	= ' SELECT *
 						from '.$tb.'
-						'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
+						'.$w.'		
 						ORDER  BY urut asc';
+
+				// $s	= ' SELECT *
+				// 		from '.$tb.'
+				// 		'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
+				// 		ORDER  BY urut asc';
 				$e  = mysql_query($s);
 				// var_dump($s);
 				$n  = mysql_num_rows($e);

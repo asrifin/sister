@@ -19,14 +19,6 @@
 				$kelas       = trim($_POST['kelasS'])?filter($_POST['kelasS']):'';
 				$wali        = trim($_POST['waliS'])?filter($_POST['waliS']):'';
 
-				// $sql = 'SELECT *
-				// 		FROM '.$tb.'
-				// 		WHERE 
-				// 			tingkat like "%'.$tingkat.'%" and
-				// 			kelas like "%'.$kelas.'%" and
-				// 			wali like "%'.$wali.'%" 
-				// 		ORDER 
-				// 			BY kelas asc';
 				$sql ='SELECT 
 							k.replid,
 							k.kelas,
@@ -40,7 +32,7 @@
 						WHERE
 							k.tingkat LIKE "%'.$tingkat.'%"
 							AND k.kelas LIKE "%'.$kelas.'%"
-							AND k.wali LIKE "%'.$wali.'%"
+							AND p.nama LIKE "%'.$wali.'%"
 							and k.wali    = g.replid
 							and g.pegawai = p.replid
 						ORDER BY

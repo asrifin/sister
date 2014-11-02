@@ -5,22 +5,26 @@ var contentFR ='';
 // main function ---
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
-                        +'<input id="idformH" type="hidden">' 
+
+                        +'<input id="idformH" type="text">' 
                         +'<label>Departemen</label>'
                         +'<div class="input-control text">'
                             +'<input required type="text" name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+
                         +'<label>Alamat</label>'
                         +'<div class="input-control text">'
                             +'<input required type="text" name="alamatTB" id="alamatTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+
                         +'<label>Telepon</label>'
                         +'<div class="input-control text">'
                             +'<input required type="text" name="teleponTB" id="teleponTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -78,8 +82,7 @@ var contentFR ='';
                     viewTB($('#departemenS').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
-                }
-                notif(cont,clr);
+                }notif(cont,clr);
             }
         });
     }
@@ -118,17 +121,6 @@ var contentFR ='';
                 var titlex;
                 if(id==''){  //add mode
                     titlex='<span class="icon-plus-2"></span> Tambah ';
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=cmbdepartemen&replid='+$('#departemenS').val(),
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#departemenH').val($('#departemenS').val());
-                            $('#departemenTB').val(dt.departemen[0].nama);
-                        }
-                    });
-
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({

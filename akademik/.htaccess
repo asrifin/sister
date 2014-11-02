@@ -16,6 +16,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 
 	#guru dan pelajaran
 	RewriteRule   ^guru/?$   									index.php?page=vguru
+	RewriteRule   ^pelajaran/?$   								index.php?page=vpelajaran
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 
 # Send all blocked request to homepage with 403 Forbidden error!

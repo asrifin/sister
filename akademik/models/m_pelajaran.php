@@ -4,7 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'tingkat';
+	$mnu = 'pelajaran';
 	$tb  = 'aka_'.$mnu;
 	// $out=array();
 
@@ -16,16 +16,20 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$tingkat     = trim($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
+				$pelajaran   = trim($_POST['pelajaranS'])?filter($_POST['pelajaranS']):'';
+				$singkatan   = trim($_POST['singkatanS'])?filter($_POST['singkatanS']):'';
+				$skm         = trim($_POST['skmS'])?filter($_POST['skmS']):'';
 				$keterangan  = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.' 
 						WHERE 
 							tahunajaran like "%'.$tahunajaran.'%" and
-							tingkat like "%'.$tingkat.'%" and
+							nama like "%'.$pelajaran.'%" and
+							kode like "%'.$singkatan.'%" and
+							skm like "%'.$skm.'%" and
 							keterangan like "%'.$keterangan.'%"
 						ORDER 
-							BY urutan asc';
+							BY nama asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -44,17 +48,6 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
-						if($res['aktif']=1){
-							$dis  = 'disabled';
-							$ico  = 'checkmark';
-							$hint = 'telah Aktif';
-							$func = '';
-						}else{
-							$dis  = '';
-							$ico  = 'blocked';
-							$hint = 'Aktifkan';
-							$func = 'onclick="aktifkan('.$res['replid'].');"';
-						}
 						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -65,7 +58,9 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$nox.'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['tingkat'].'</td>
+									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
+									<td>'.$res['kode'].'</td>
+									<td>'.$res['skm'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -85,10 +80,12 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
-								tingkat    	= "'.filter($_POST['tingkatTB']).'",
+								nama = "'.filter($_POST['pelajaranTB']).'",
+								kode = "'.filter($_POST['singkatanTB']).'",
+								skm  = "'.filter($_POST['skmTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				var_dump($s2);exit();
 				$e2 = mysql_query($s2);
 				if(!$e2){
 					$stat = 'gagal menyimpan';

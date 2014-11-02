@@ -160,18 +160,18 @@ var contentFR ='';
             onShow: function(){
                 var titlex;
                 if(id==''){  //add mode
+                    // alert('halooo');
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                     $.ajax({
                         url:dir2,
-                        data:'aksi=replid',
+                        data:'aksi=cmblokasi',
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#tempatH').val($('#tempatS').val());
-                            $('#tempatTB').val(dt.tempat[0].kode);
+                            $('#lokasiTB').val(dt.lokasi[0].nama);
+                            $('#lokasiH').val($('#lokasiS').val());
                         }
                     });
-
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({
