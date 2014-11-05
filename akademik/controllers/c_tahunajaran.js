@@ -19,7 +19,7 @@ var contentFR = '';
                         +'<label>Tahun Ajaran</label>'
                         +'<div class="span3">'
                             +'<div class="input-control text" >'
-                                +'<input maxlength="9" placeholder="ex : 2011-2012 " name="tahunajaranTB" id="tahunajaranTB" type="text">'
+                                +'<input required maxlength="9" placeholder="ex : 2011-2012 " name="tahunajaranTB" id="tahunajaranTB" type="text">'
                             +'</div>'
                         +'</div>'
 
@@ -296,3 +296,7 @@ function notif(cont,clr) {
         });
     }
 //end of aktifkan process ---
+
+    // ---------------------- //
+    // -- created by epiii -- //
+    // ---------------------- //

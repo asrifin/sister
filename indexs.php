@@ -99,7 +99,7 @@
                 <!-- END OF PSB -->
 
                 <!-- HRD -->
-                <a class="tile double double-vertical bg-steel" data-click="transform">
+                <a href="hrd" class="tile double double-vertical bg-steel" data-click="transform">
                     <div class="tile-content bg-orange">
                         <div class="padding10">
                             <center>
@@ -145,7 +145,7 @@
                 <!-- END OF PERPUS -->
 
                 <!-- SARPRAS -->
-                <a class="tile double double-vertical bg-steel" data-click="transform">
+                <a href="sarpras" class="tile double double-vertical bg-steel" data-click="transform">
                     <div class="tile-content bg-violet">
                         <div class="padding10">
                             <center>

@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$tb = 'departemen';
+	$mnu= $tb = 'departemen';
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -30,9 +30,8 @@
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
+
 				$recpage= 5;//jumlah data per halaman
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
 				$obj 	= new pagination_class($sql,$starting,$recpage);
 				$result =$obj->result;
 
@@ -40,8 +39,19 @@
 				$jum	= mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
-					$nox 	= $starting+1;
+					// $nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
+						// urutan
+							$nox = '<select replid1="'.$res['replid'].'" urutan1="'.$res['urut'].'" onchange="urutFC(this);" >';
+							for($i=1; $i<=$jum; $i++){
+								if($i==$res['urut'])
+									$nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
+								else
+									$nox.='<option value="'.$i.'">'.$i.'</option>';
+							}$nox.='</select>';
+						// end of urutan
+
+						// action button
 						$btn ='<td>
 									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -49,23 +59,27 @@
 									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 								 </td>';
-						$out.= '<tr>
+						//end of  action button
+
+						// table row
+						$out.= '<tr id="TR_'.$res['replid'].'">
 									<td>'.$nox.'</td>
-									<td>'.$res['nama'].'</td>
+									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
 									<td>'.$res['alamat'].'</td>
 									<td>'.$res['telepon'].'</td>
 									'.$btn.'
 								</tr>';
+						// end of table row
 						$nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
-							<td  colspan=9 ><span style="color:red;text-align:center;">
+							<td  colspan="9" ><span style="color:red;text-align:center;">
 							... data tidak ditemukan...</span></td></tr>';
 				}
 				#link paging
-				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+				$out.= '<tr class="info"><td colspan="9">'.$obj->anchors.'</td></tr>';
+				$out.='<tr class="info"><td colspan="9">'.$obj->total.'</td></tr>';
 			break; 
 			// view -----------------------------------------------------------------
 
@@ -74,7 +88,14 @@
 				$s 		= $tb.' set 	nama 	= "'.filter($_POST['namaTB']).'",
 										alamat 	= "'.filter($_POST['alamatTB']).'",
 										telepon	= "'.filter($_POST['teleponTB']).'"';
-				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				if(isset($_POST['replid'])){
+					$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
+				}else{
+					$n  = mysql_num_rows(mysql_query('SELECT * from '.$tb));
+					$s2 = 'INSERT INTO '.$s.', urut='.($n+1);
+
+				}
+				// $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array('status'=>$stat));
@@ -112,10 +133,24 @@
 
 			// cmbdepartemen -----------------------------------------------------------------
 			case 'cmbdepartemen':
+				$w='';
+				if(isset($_POST['replid'])){
+					$w='where replid ='.$_POST['replid'];
+				}else{
+					if(isset($_POST[$mnu])){
+						$w='where '.$mnu.'='.$_POST[$mnu];
+					}
+				}
+				
 				$s	= ' SELECT *
 						from '.$tb.'
-						'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
-						ORDER  BY nama asc';
+						'.$w.'		
+						ORDER  BY urut asc';
+
+				// $s	= ' SELECT *
+				// 		from '.$tb.'
+				// 		'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
+				// 		ORDER  BY urut asc';
 				$e  = mysql_query($s);
 				// var_dump($s);
 				$n  = mysql_num_rows($e);
@@ -139,7 +174,41 @@
 				}$out=json_encode($ar);
 			break;
 			// cmbdepartemen -----------------------------------------------------------------
+
+			// urutan -----------------------------------------------------------------
+			case 'urutan':
+				// 1 = asal
+				// 2 = tujuan
+				$_1 = mysql_fetch_assoc(mysql_query('SELECT urut from '.$tb.' WHERE replid='.$_POST['replid1']));
+				$_2 = mysql_fetch_assoc(mysql_query('SELECT replid from '.$tb.' WHERE urut='.$_POST['urutan2']));
+				$s1		= ' UPDATE '.$tb.' 
+							SET urut = '.$_POST['urutan2'].'  
+							WHERE 
+								replid='.$_POST['replid1'];
+				$s2		= ' UPDATE '.$tb.' 
+							SET urut = '.$_1['urut'].'  
+							WHERE 
+								replid='.$_2['replid'];
+				// var_dump($s1);exit();
+				$e1 	= mysql_query($s1);
+				if(!$e1){
+					$stat='gagal ubah urutan semula ';
+				}else{
+					$e2 = mysql_query($s2);
+					if(!$e2)
+						$stat = 'gagal ubah urutan kedua';
+					else
+						$stat= 'sukses';
+				}
+				$out 	= json_encode(array(
+							'status'  =>$stat,
+						));
+			break;
+			// urutan ------			
 		}
 	}echo $out;
-	// echo json_encode($out);
+
+	// ---------------------- //
+	// -- created by epiii -- //
+	// ---------------------- //
 ?>

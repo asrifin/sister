@@ -19,7 +19,7 @@
 				$tingkat     = trim($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
 				$keterangan  = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT *
-						FROM '.$tb.'
+						FROM '.$tb.' 
 						WHERE 
 							tahunajaran like "%'.$tahunajaran.'%" and
 							tingkat like "%'.$tingkat.'%" and
@@ -140,13 +140,57 @@
 					}
 				}$out  = json_encode(array('status'=>$stat));
 				//var_dump($stat);exit();
-
 			break;
 			// aktifkan -----------------------------------------------------------------
 
+			// cmbtingkat -----------------------------------------------------------------
+			case 'cmb'.$mnu:
+				$w='';
+				if(isset($_POST['replid'])){
+					$w='where replid ='.$_POST['replid'];
+				}else{
+					if(isset($_POST[$mnu])){
+						$w='where'.$mnu.'='.$_POST[$mnu];
+					}elseif (isset($_POST['tahunajaran'])) {
+						$w='where tahunajaran='.$_POST['tahunajaran'];
+					}
+				}
+				
+				$s	= ' SELECT *
+						from '.$tb.'
+						'.$w.'		
+						ORDER  BY '.$mnu.' asc';
+				// var_dump($s);exit();
+				$e  = mysql_query($s);
+				$n  = mysql_num_rows($e);
+				$ar = $dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error');
+				}else{
+					if($n==0){ // kosong 
+						var_dump($n);exit();
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}$ar = array('status'=>'sukses','tingkat'=>$dt);
+					}
+				}
+				// print_r($n);exit();
+				$out=json_encode($ar);
+			break;
+			// cmbtingkat -----------------------------------------------------------------
 
 		}
 	}
 	echo $out;
-	// echo json_encode($out);
+
+	// ---------------------- //
+	// -- created by epiii -- //
+	// ---------------------- //
 ?>

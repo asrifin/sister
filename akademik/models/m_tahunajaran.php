@@ -170,14 +170,23 @@
 
 			// cmbtahunajaran -----------------------------------------------------------------
 			case 'cmb'.$mnu:
+				// var_dump($_POST);exit();
+				$w='';
+				if(isset($_POST['replid'])){
+					$w.='where replid ='.$_POST['replid'];
+				}else{
+					if(isset($_POST[$mnu])){
+						$w.='where '.$mnu.'='.$_POST[$mnu];
+					}elseif(isset($_POST['departemen'])){
+						$w.='where departemen ='.$_POST['departemen'];
+					}
+				}
+				
 				$s	= ' SELECT *
-						from '.$tb.'  
-						WHERE 
-							departemen = '.$_POST['departemen']
-							.' '.(isset($_POST['replid'])?'and replid ='.$_POST['replid']:'').'
-						ORDER BY  
-							tahunajaran desc';
-// var_dump($s);exit();
+						from '.$tb.'
+						'.$w.'		
+						ORDER  BY '.$mnu.' desc';
+				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
 				$ar=$dt=array();
@@ -202,5 +211,8 @@
 
 		}
 	}echo $out;
-	// echo json_encode($out);
+
+	// ---------------------- //
+	// -- created by epiii -- //
+	// ---------------------- //
 ?>

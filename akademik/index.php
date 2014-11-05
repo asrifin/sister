@@ -139,10 +139,17 @@
                     case 'vsemester':
                         require $d.'v_semester.php';
                     break;
+                    case 'vkelas':
+                        require $d.'v_kelas.php';
+                    break;
 
-                    // guru
+                    // guru dan pelajaran
                     case 'vguru':
                         require $d.'v_guru.php';
+                    break;
+
+                    case 'vpelajaran':
+                        require $d.'v_pelajaran.php';
                     break;
 
                     default:

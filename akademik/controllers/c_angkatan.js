@@ -1,10 +1,12 @@
-var dir       ='models/m_angkatan.php';
-var dir2      ='models/m_departemen.php';
+var mnu  ='angkatan';
+var mnu2 ='departemen';
+var dir  ='models/m_'+mnu+'.php';
+var dir2 ='models/m_'+mnu2+'.php';
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="angkatanFR">' 
+        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         +'<label>Departemen</label>'
                         +'<div class="input-control text">'
@@ -173,7 +175,7 @@ var contentFR ='';
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+"Kriteria");
+                }$.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
             }
         });
@@ -246,3 +248,7 @@ function notif(cont,clr) {
         $('#keteranganTB').val('');
     }
 //end of reset form ---
+
+    // ---------------------- //
+    // -- created by epiii -- //
+    // ---------------------- //
