@@ -1,6 +1,6 @@
 #php_flag display_errors off
 
-
+#tes lagi
 #nyar
 RewriteEngine On
 #ErrorDocument 404 /404.html
