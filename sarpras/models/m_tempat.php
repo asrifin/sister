@@ -54,6 +54,7 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$nox.'</td>
+									<td>'.$res['kode'].'</td>
 									<td>'.$res['nama'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
@@ -73,9 +74,12 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	nama 	= "'.filter($_POST['namaTB']).'",
+				$s 		= $tb.' set 	lokasi 	= "'.filter($_POST['lokasiH']).'",
+										kode 	= "'.filter($_POST['kodeTB']).'",
+										nama 	= "'.filter($_POST['namaTB']).'",
 										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				// var_dump($s2);exit();
 				$e 		= mysql_query($s2);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array('status'=>$stat));
@@ -95,6 +99,7 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT 
+								t.kode,
 								t.nama,
 								t.keterangan,
 								l.nama as lokasi
@@ -107,6 +112,7 @@
 				$r 		= mysql_fetch_assoc($e);
 				// $stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
+							'kode'       =>$r['kode'],
 							'lokasi'     =>$r['lokasi'],
 							'nama'       =>$r['nama'],
 							'keterangan' =>$r['keterangan']

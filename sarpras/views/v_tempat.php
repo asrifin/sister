@@ -18,12 +18,14 @@
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-center">no.</th>
+            <th class="text-center">Kode</th>
             <th class="text-center">Nama Tempat</th>
             <th class="text-left">Keterangan</th>
             <th class="text-left">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-left"></th>
+            <th class="text-left"><input placeholder="kode" id="kodeS" name="kodeS"></th>
             <th class="text-left"><input placeholder="tempat" id="tempatS" name="tempatS"></th>
             <th class="text-left"><input placeholder="keterangan" id="keteranganS" name="keteranganS"></th>
         </tr>

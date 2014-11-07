@@ -9,6 +9,7 @@ var contentFR ='';
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         +'<label>Lokasi</label>'
+
                         +'<div class="input-control text">'
                             +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span2">'
                             // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" class="span2">'
@@ -16,16 +17,23 @@ var contentFR ='';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
+                        +'<label>Kode Tempat</label>'
+                        +'<div class="input-control text">'
+                            +'<input placeholder="tempat" maxlength="3" class="span1" required type="text" name="kodeTB" id="kodeTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+
                         +'<label>Nama Tempat</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="namaTB" id="namaTB">'
+                            +'<input  placeholder="kode" required type="text" name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+
                         +'<label>Keterangan</label>'
-                        +'<div class="input-control text">'
-                            +'<input required type="text" name="keteranganTB" id="keteranganTB">'
-                            +'<button class="btn-clear"></button>'
+                        +'<div class="input-control textarea">'
+                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
+                        
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -55,7 +63,6 @@ var contentFR ='';
         });
         $('#tempatS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                // viewTB($('#tempatS').val());
                 viewTB($('#lokasiS').val());
         });
         $('#keteranganS').on('keydown',function (e){ // keydown : textbox
@@ -75,7 +82,6 @@ var contentFR ='';
 // end of main function ---
 
 // combo departemen ---
-    // function cmblokasi(lok){ edited by epiii
     function cmblokasi(){
         $.ajax({
             url:dir2,
@@ -118,7 +124,7 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#tempatS').val());
+                    viewTB($('#lokasiS').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }notif(cont,clr);
@@ -128,10 +134,10 @@ var contentFR ='';
 //end of save process ---
 
 // view table ---
-    // function viewTB(nama){          
     function viewTB(lok){ //edit by epiii 
         var aksi ='aksi=tampil';
         var cari ='&lokasiS='+lok
+                    +'&kodeS='+$('#kodeS').val()
                     +'&tempatS='+$('#tempatS').val()
                     +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
@@ -139,7 +145,7 @@ var contentFR ='';
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -181,9 +187,9 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            // $('#tempatH').val($('#tempatS').val());
                             $('#lokasiH').val($('#lokasiS').val()); // edit by epii
                             $('#lokasiTB').val(dt.lokasi);
+                            $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
                             $('#keteranganTB').val(dt.keterangan);
                         }
@@ -198,7 +204,8 @@ var contentFR ='';
 //paging ---
     function pagination(page,aksix,menux){ // edit by epiii
         var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari  = '&lokasiS='+$('#lokasiS').val();
+        var cari ='&lokasiS='+lok
+                    +'&kodeS='+$('#kodeS').val()
                     +'&tempatS='+$('#tempatS').val()
                     +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
@@ -206,7 +213,7 @@ var contentFR ='';
             type:"post",
             data: datax+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -230,7 +237,7 @@ var contentFR ='';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#tempatS').val());
+                    viewTB($('#lokasiS').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }
@@ -239,7 +246,7 @@ var contentFR ='';
         });
     }
 //end of del process ---
-    
+
 // notifikasi
 function notif(cont,clr) {
     var not = $.Notify({
