@@ -32,7 +32,7 @@ var contentFR ='';
                         +'</div>'
                     +'</form>';
 
-        /*\
+        /*
         load pertama kali (pilihn salah satu) :
         cmblokasi : bila ada combo box
         viewTB : jika tanpa combo box
@@ -164,7 +164,7 @@ var contentFR ='';
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                     $.ajax({
                         url:dir2,
-                        data:'aksi=cmblokasi',
+                        data:'aksi=cmblokasi&replid='+$('#lokasiS').val(),
                         type:'post',
                         dataType:'json',
                         success:function(dt){

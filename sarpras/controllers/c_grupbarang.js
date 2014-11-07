@@ -1,81 +1,130 @@
-var mnu       ='lokasi';
+var mnu       ='grupbarang'; 
+var mnu2      ='lokasi'; 
 var dir       ='models/m_'+mnu+'.php';
+var dir2      ='models/m_'+mnu2+'.php';
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
+                        +'<label>Lokasi</label>'
+                        +'<div class="input-control text">'
+                            +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span2">'
+                            +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" class="span2">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        
                         +'<label>Kode</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="kode" required type="text" name="kodeTB" id="kodeTB">'
+                            +'<input placeholder="kode" name="g_kodeTB" id="g_kodeTB" class="span2">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>Nama Lokasi</label>'
+                        
+                        +'<label>Nama</label>'
                         +'<div class="input-control text">'
-                            +'<input  placeholder="lokasi" required type="text" name="namaTB" id="namaTB">'
+                            +'<input  placeholder="nama"  required type="text" name="g_namaTB" id="g_namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>Alamat</label>'
-                        +'<div class="input-control text">'
-                            +'<input  placeholder="alamat" required type="text" name="alamatTB" id="alamatTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        +'<label>Kontak</label>'
-                        +'<div class="input-control text">'
-                            +'<input  placeholder="kontak / no telp" required type="text" name="kontakTB" id="kontakTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
+
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
-                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
+                            +'<textarea placeholder="keterangan" name="g_keteranganTB" id="g_keteranganTB"></textarea>'
                         +'</div>'
+                        
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
 
-        //combo departemen
-        // cmbdepartemen();
+        //combo lokasi
+        cmblokasi();
         
-        //load table
-        viewTB();
+        //load table // edit by epiii
+        // viewTB();
 
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
         });
 
-        //search action
-        $('#kodeS').keydown(function (e){
+        //search action // edit by epiii
+        $('#lokasiS').on('change',function (e){ // change : combo box
+                viewTB($('#lokasiS').val());
+        });
+        $('#g_kodeS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB();
-        });$('#namaS').keydown(function (e){
+                viewTB($('#lokasiS').val());
+        });
+        $('#g_namaS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB();
-        });$('#alamatS').keydown(function (e){
+                viewTB($('#lokasiS').val());
+        });
+        $('#g_keteranganS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB();
-        });$('#kontakS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB();
-        });$('#keteranganS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB();
+                viewTB($('#lokasiS').val());
         });
 
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
-            $('#kodeS').val('');
-            $('#namaS').val('');
-            $('#alamatS').val('');
-            $('#kontakS').val('');
-            $('#keteranganS').val('');
+            $('#g_kodeS').val('');
+            $('#g_namaS').val('');
+            $('#g_utotalS').val('');
+            $('#g_utersediaS').val('');
+            $('#g_udipinjamS').val('');
+            $('#g_keteranganS').val('');
+        });
+
+        // switch panel
+        switchPN(1);
+        $('.cl').on('click',function(){
+            switchPN($(this).text());
         });
     }); 
 // end of main function ---
+
+// view katalog barang
+    function vwKatalog(id) {
+        switchPN(2);
+    }   
+//end of view katalog barang
+
+// switch panel
+    function switchPN (e) {
+        $.each($('.panel'),function(id,item){
+            var ke = id+1;
+            if(ke==e)
+                $('#panel'+ke).removeAttr('style');
+            else
+                $('#panel'+ke).attr('style','display:none;');
+        });
+    }
+//end of  switch panel
+
+// combo departemen ---
+    function cmblokasi(){
+        $.ajax({
+            url:dir2,
+            data:'aksi=cmblokasi',
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.lokasi, function(id,item){
+                        out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
+                    });
+                    //panggil fungsi viewTB() ==> tampilkan tabel 
+                    viewTB(dt.lokasi[0].replid); 
+                }$('#lokasiS').html(out);
+            }
+        });
+    }
+//end of combo departemen ---
 
 //save process ---
     function simpan(){
@@ -100,33 +149,31 @@ var contentFR ='';
                     viewTB($('#lokasiS').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
-                }
-                notif(cont,clr);
+                }notif(cont,clr);
             }
         });
     }
 //end of save process ---
 
 // view table ---
-    function viewTB(kode){
+    function viewTB(lok){ //edit by epiii 
         var aksi ='aksi=tampil';
-        // edit by epiii
-        var cari = '&kodeS='+$('#kodeS').val()
-                    +'&namaS='+$('#namaS').val()
-                    +'&alamatS='+$('#alamatS').val()
-                    +'&kontakS='+$('#kontakS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        var cari ='&lokasiS='+lok
+                +'&g_kodeS='+$('#g_kodeS').val()
+                +'&g_namaS='+$('#g_namaS').val()
+                +'&g_utotalS='+$('#g_utotalS').val()
+                +'&g_utersediaS='+$('#g_utersediaS').val()
+                +'&g_udipinjamS='+$('#g_utersediaS').val()
+                +'&g_keteranganS='+$('#g_keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',
-            // data: aksi,
-            data: aksi+cari, //edit by epiii
+            data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
-                    // $('#tbody').delay(4000).fadeIn().html(data);
                 },1000);
             }
         });
@@ -146,16 +193,15 @@ var contentFR ='';
                 if(id==''){  //add mode
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                     $.ajax({
-                        url:dir,
-                        data:'aksi=replid',
+                        url:dir2,
+                        data:'aksi=cmblokasi&replid='+$('#lokasiS').val(),
                         type:'post',
                         dataType:'json',
                         success:function(dt){
+                            $('#lokasiTB').val(dt.lokasi[0].nama);
                             $('#lokasiH').val($('#lokasiS').val());
-                            $('#lokasiTB').val(dt.lokasi[0].kode);
                         }
                     });
-
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({
@@ -165,16 +211,13 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#lokasiH').val($('#lokasiS').val());
+                            $('#lokasiH').val($('#lokasiS').val()); // edit by epii
                             $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
-                            $('#alamatTB').val(dt.alamat);
-                            // $('#alamatTB').val(dt.aolamat);
-                            $('#kontakTB').val(dt.kontak);
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+' '+mnu);
+                }$.Dialog.title(titlex+' '+mnu); // edit by epiii
                 $.Dialog.content(contentFR);
             }
         });
@@ -182,19 +225,21 @@ var contentFR ='';
 // end of form ---
 
 //paging ---
-    function pagination(page,aksix,menux){
+    function pagination(page,aksix,menux){ 
         var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari = '&kodeS='+$('#kodeS').val()
-                    +'&namaS='+$('#namaS').val()
-                    +'&alamatS='+$('#alamatS').val()
-                    +'&kontakS='+$('#kontakS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        var cari ='&lokasiS='+lok
+                +'&g_kodeS='+$('#g_kodeS').val()
+                +'&g_namaS='+$('#g_namaS').val()
+                +'&g_utotalS='+$('#g_utotalS').val()
+                +'&g_utersediaS='+$('#g_utersediaS').val()
+                +'&g_udipinjamS='+$('#g_utersediaS').val()
+                +'&g_keteranganS='+$('#g_keteranganS').val();
         $.ajax({
             url:dir,
             type:"post",
             data: datax+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -221,35 +266,35 @@ var contentFR ='';
                     viewTB($('#lokasiS').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
-                }
-                notif(cont,clr);
+                }notif(cont,clr);
             }
         });
     }
 //end of del process ---
     
 // notifikasi
-function notif(cont,clr) {
-    var not = $.Notify({
-        caption : "<b>Notifikasi</b>",
-        content : cont,
-        timeout : 3000,
-        style :{
-            background: clr,
-            color:'white'
-        },
-    });
-}
+    function notif(cont,clr) {
+        var not = $.Notify({
+            caption : "<b>Notifikasi</b>",
+            content : cont,
+            timeout : 3000,
+            style :{
+                background: clr,
+                color:'white'
+            },
+        });
+    }
 // end of notifikasi
 
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#kodeTB').val('');
-        $('#namaTB').val('');
-        $('#alamatTB').val('');
-        $('#kontakTB').val('');
-        $('#keteranganTB').val('');
+        $('#g_kodeTB').val('');
+        $('#g_namaTB').val('');
+        $('#g_utotalTB').val('');
+        $('#g_utersediaTB').val('');
+        $('#g_udipinjamTB').val('');
+        $('#g_keteranganTB').val('');
     }
 //end of reset form ---
 

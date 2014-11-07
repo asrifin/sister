@@ -134,7 +134,9 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'tingkat'    =>$r['tingkat'],
+							'kelas'      =>$r['kelas'],
+							'wali'       =>$r['wali'],
+							'kapasitas'  =>$r['kapasitas'],
 							'keterangan' =>$r['keterangan'],
 						));
 			break;

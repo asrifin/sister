@@ -147,9 +147,17 @@
                     case 'vguru':
                         require $d.'v_guru.php';
                     break;
-
                     case 'vpelajaran':
                         require $d.'v_pelajaran.php';
+                    break;
+                    case 'vjadwal':
+                        require $d.'v_jadwal.php';
+                    break;
+                    case 'vabsenguru':
+                        require $d.'v_absenguru.php';
+                    break;
+                    case 'vkegiatan':
+                        require $d.'v_kegiatan.php';
                     break;
 
                     default:
