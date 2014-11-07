@@ -1,6 +1,6 @@
-<!--[if lt IE 10]> <!DOCTYPE html> <meta http-equiv="X-UA-Compatible" content="chrome=1"> <![endif]--> 
 <?php
-	//tambah keterangan pad script  
+	//test :: edit script line 2  
+	//test :: edit script line 3  
 	session_start();// ini script PHP untuk memulai sesi di browser client 
 	if(isset($_SESSION['loginS']) and !empty($_SESSION['loginS']) ){
 		require_once 'indexs.php';
