@@ -34,13 +34,12 @@ var contentFR ='';
                         +'</div>'
                         +'<label>Aktivitas</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="aktivitasTB" id="aktivitasTB">'
+                            +'<input placeholder="aktivitas" required type="text" name="aktivitasTB" id="aktivitasTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Keterangan</label>'
-                        +'<div class="input-control text">'
-                            +'<input required type="text" name="keteranganTB" id="keteranganTB">'
-                            +'<button class="btn-clear"></button>'
+                        +'<div class="input-control textarea">'
+                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
@@ -134,7 +133,8 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#aktivitasS').val());
+                    // viewTB($('#aktivitasS').val());
+                    viewTB($('#'+mnu2+'S').val()); //value : combo box LOKASI 
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }notif(cont,clr);
@@ -248,7 +248,8 @@ var contentFR ='';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#tempatS').val());
+                    // viewTB($('#tempatS').val());
+                    viewTB($('#'+mnu2+'S').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }

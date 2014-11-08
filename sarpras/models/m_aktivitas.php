@@ -75,7 +75,9 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	tanggal1 	= "'.filter($_POST['tanggal1TB']).'",
+				//kurang field lokasi (FK)
+				$s 		= $tb.' set 	lokasi 		= "'.filter($_POST['lokasiH']).'",
+										tanggal1 	= "'.filter($_POST['tanggal1TB']).'",
 										tanggal2 	= "'.filter($_POST['tanggal2TB']).'",
 										aktivitas 	= "'.filter($_POST['aktivitasTB']).'",
 										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
