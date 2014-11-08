@@ -56,7 +56,7 @@
 						$out.= '<tr>
 									<td>'.tgl_indo($res['tanggal1']).', '.tgl_indo($res['tanggal2']).'</td>
 									<td>'.$res['aktivitas'].'</td>
-									<td>'.$res['keterangan'].'</td>
+									<td><pre>'.$res['keterangan'].'</pre></td>
 									'.$btn.'
 								</tr>';
 						$nox++;

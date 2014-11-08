@@ -124,7 +124,7 @@
 
                     // inventaris
                     case 'vinventaris':
-                        require $d.'v_grupbarang.php';
+                        require $d.'v_grup.php';
                     break;
                     case 'vaktivitas':
                         require $d.'v_aktivitas.php';

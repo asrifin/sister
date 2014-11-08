@@ -1,4 +1,4 @@
-var mnu       ='grupbarang'; 
+var mnu       ='grup'; 
 var mnu2      ='lokasi'; 
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
@@ -42,7 +42,7 @@ var contentFR ='';
         cmblokasi();
         
         //load table // edit by epiii
-        // viewTB();
+        // vwGrup();
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -51,19 +51,19 @@ var contentFR ='';
 
         //search action // edit by epiii
         $('#lokasiS').on('change',function (e){ // change : combo box
-                viewTB($('#lokasiS').val());
+                vwGrup($('#lokasiS').val());
         });
         $('#g_kodeS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB($('#lokasiS').val());
+                vwGrup($('#lokasiS').val());
         });
         $('#g_namaS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB($('#lokasiS').val());
+                vwGrup($('#lokasiS').val());
         });
         $('#g_keteranganS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB($('#lokasiS').val());
+                vwGrup($('#lokasiS').val());
         });
 
         // search button
@@ -85,9 +85,119 @@ var contentFR ='';
     }); 
 // end of main function ---
 
+
+// view table ---
+    function vwGrup(lok){ //edit by epiii 
+        var aksi ='aksi=tampil&subaksi=grup';
+        var cari ='&lokasiS='+lok
+                +'&g_kodeS='+$('#g_kodeS').val()
+                +'&g_namaS='+$('#g_namaS').val()
+                +'&g_utotalS='+$('#g_utotalS').val()
+                +'&g_utersediaS='+$('#g_utersediaS').val()
+                +'&g_udipinjamS='+$('#g_utersediaS').val()
+                +'&g_keteranganS='+$('#g_keteranganS').val();
+        $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi+cari,
+            beforeSend:function(){
+                $('#g_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                setTimeout(function(){
+                    $('#g_tbody').html(dt).fadeIn();
+                },1000);
+            }
+        });
+    }
+// end of view table ---
+
+//paging ---
+    // function pagination(page,aksix,menux){ 
+    function pagination(page,aksix,subaksi){ 
+        // var aksi ='aksi=tampil&subaksi=grup';
+        var aksi ='aksi=tampil&subaksi='+subaksi;
+        if(typeOf(subaksi)==undefined){
+            subaksi='grup';
+        }
+
+        // var datax = 'starting='+page+'&aksi='+aksix+'&subaksi=grup';
+        var datax   = 'starting='+page+'&aksi='+aksix+'&subaksi='+subaksi;
+        var cari    ='&lokasiS='+lok
+                    +'&g_kodeS='+$('#g_kodeS').val()
+                    +'&g_namaS='+$('#g_namaS').val()
+                    +'&g_utotalS='+$('#g_utotalS').val()
+                    +'&g_utersediaS='+$('#g_utersediaS').val()
+                    +'&g_udipinjamS='+$('#g_utersediaS').val()
+                    +'&g_keteranganS='+$('#g_keteranganS').val();
+        $.ajax({
+            // url:dir,
+            url:'m_'+subaksi+'.php',
+            type:"post",
+            data: datax+cari,
+            beforeSend:function(){
+                $('#tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                setTimeout(function(){
+                    $('#tbody').html(dt).fadeIn();
+                },1000);
+            }
+        });
+    }   
+//end of paging ---
+
+// view barang
+    function vwBarang(id) {
+        var aksi ='aksi=tampil&subaksi=katalog&grup='+id;
+        // alert(aksi);return false;
+        // var cari ='&lokasiS='+lok
+        //         +'&k_kodeS='+$('#k_kodeS').val()
+        //         +'&k_namaS='+$('#k_namaS').val()
+        //         +'&k_jenisS='+$('#k_jenisS').val()
+        //         +'&k_S='+$('#k_S').val()
+        //         +'&k_udipinjamS='+$('#k_utersediaS').val()
+        //         +'&k_keteranganS='+$('#k_keteranganS').val();
+        $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi,
+            // data: aksi+cari,
+            beforeSend:function(){
+                $('#k_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                switchPN(2);
+                setTimeout(function(){
+                    $('#k_tbody').html(dt).fadeIn();
+                },1000);
+            }
+        });
+    }   
+//end of view barang
+
 // view katalog barang
     function vwKatalog(id) {
-        switchPN(2);
+        var aksi ='aksi=tampil&subaksi=katalog&grup='+id;
+        // alert(aksi);return false;
+        // var cari ='&lokasiS='+lok
+        //         +'&k_kodeS='+$('#k_kodeS').val()
+        //         +'&k_namaS='+$('#k_namaS').val()
+        //         +'&k_jenisS='+$('#k_jenisS').val()
+        //         +'&k_S='+$('#k_S').val()
+        //         +'&k_udipinjamS='+$('#k_utersediaS').val()
+        //         +'&k_keteranganS='+$('#k_keteranganS').val();
+        $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi,
+            // data: aksi+cari,
+            beforeSend:function(){
+                $('#k_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                switchPN(2);
+                setTimeout(function(){
+                    $('#k_tbody').html(dt).fadeIn();
+                },1000);
+            }
+        });
     }   
 //end of view katalog barang
 
@@ -118,8 +228,8 @@ var contentFR ='';
                     $.each(dt.lokasi, function(id,item){
                         out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                     });
-                    //panggil fungsi viewTB() ==> tampilkan tabel 
-                    viewTB(dt.lokasi[0].replid); 
+                    //panggil fungsi vwGrup() ==> tampilkan tabel 
+                    vwGrup(dt.lokasi[0].replid); 
                 }$('#lokasiS').html(out);
             }
         });
@@ -146,7 +256,7 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#lokasiS').val());
+                    vwGrup($('#lokasiS').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }notif(cont,clr);
@@ -154,31 +264,6 @@ var contentFR ='';
         });
     }
 //end of save process ---
-
-// view table ---
-    function viewTB(lok){ //edit by epiii 
-        var aksi ='aksi=tampil';
-        var cari ='&lokasiS='+lok
-                +'&g_kodeS='+$('#g_kodeS').val()
-                +'&g_namaS='+$('#g_namaS').val()
-                +'&g_utotalS='+$('#g_utotalS').val()
-                +'&g_utersediaS='+$('#g_utersediaS').val()
-                +'&g_udipinjamS='+$('#g_utersediaS').val()
-                +'&g_keteranganS='+$('#g_keteranganS').val();
-        $.ajax({
-            url : dir,
-            type: 'post',
-            data: aksi+cari,
-            beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }
-// end of view table ---
 
 // form ---
     function viewFR(id){
@@ -224,31 +309,6 @@ var contentFR ='';
     }
 // end of form ---
 
-//paging ---
-    function pagination(page,aksix,menux){ 
-        var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari ='&lokasiS='+lok
-                +'&g_kodeS='+$('#g_kodeS').val()
-                +'&g_namaS='+$('#g_namaS').val()
-                +'&g_utotalS='+$('#g_utotalS').val()
-                +'&g_utersediaS='+$('#g_utersediaS').val()
-                +'&g_udipinjamS='+$('#g_utersediaS').val()
-                +'&g_keteranganS='+$('#g_keteranganS').val();
-        $.ajax({
-            url:dir,
-            type:"post",
-            data: datax+cari,
-            beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }   
-//end of paging ---
-    
 //del process ---
     function del(id){
         if(confirm('melanjutkan untuk menghapus data?'))
@@ -263,7 +323,7 @@ var contentFR ='';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#lokasiS').val());
+                    vwGrup($('#lokasiS').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }notif(cont,clr);
@@ -297,6 +357,7 @@ var contentFR ='';
         $('#g_keteranganTB').val('');
     }
 //end of reset form ---
+
 
     // ---------------------- //
     // -- created by rovi  -- //
