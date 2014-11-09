@@ -4,10 +4,16 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
+
 	$mnu  = 'grup';
 	$mnu2 = 'lokasi';
+	$mnu3 = 'katalog';
+	$mnu4 = 'barang';
+
 	$tb   = 'sar_'.$mnu;
 	$tb2  = 'sar_'.$mnu2;
+	$tb3  = 'sar_'.$mnu3;
+	$tb4  = 'sar_'.$mnu4;
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -23,9 +29,6 @@
 						$lokasi       = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
 						$g_kode       = trim($_POST['g_kodeS'])?filter($_POST['g_kodeS']):'';
 						$g_nama       = trim($_POST['g_namaS'])?filter($_POST['g_namaS']):'';
-						$g_utotal     = trim($_POST['g_utotalS'])?filter($_POST['g_utotalS']):'';
-						$g_utersedia  = trim($_POST['g_utersediaS'])?filter($_POST['g_utersediaS']):'';
-						$g_udipinjam  = trim($_POST['g_udipinjamS'])?filter($_POST['g_udipinjamS']):'';
 						$g_keterangan = trim($_POST['g_keteranganS'])?filter($_POST['g_keteranganS']):'';
 						
 						$sql = 'SELECT
@@ -79,7 +82,7 @@
 									g.lokasi = '.$lokasi.' and
 									g.kode like "%'.$g_kode.'%" and
 									g.nama like "%'.$g_nama.'%" and
-									g.keterangan like "%'.$g_keterangan.'%"
+									g.keterangan like "%'.$g_keterangan.'%" 
 								ORDER BY
 									g.kode asc';
 						// print_r($sql);exit(); 	
@@ -103,10 +106,10 @@
 											<button data-hint="detail"  class="button" onclick="vwKatalog('.$res['replid'].');">
 												<i class="icon-zoom-in"></i>
 											</button>
-											<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
+											<button data-hint="ubah"  class="button" onclick="grupFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
-											<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 										 </td>';
 								$out.= '<tr>
@@ -136,15 +139,11 @@
 
 					// katalog
 					case 'katalog':
-						$grup       = trim($_POST['grup'])?filter($_POST['grup']):'';
-						// $lokasi       = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
-						// $g_kode       = trim($_POST['g_kodeS'])?filter($_POST['g_kodeS']):'';
-						// $g_nama       = trim($_POST['g_namaS'])?filter($_POST['g_namaS']):'';
-						// $g_utotal     = trim($_POST['g_utotalS'])?filter($_POST['g_utotalS']):'';
-						// $g_utersedia  = trim($_POST['g_utersediaS'])?filter($_POST['g_utersediaS']):'';
-						// $g_udipinjam  = trim($_POST['g_udipinjamS'])?filter($_POST['g_udipinjamS']):'';
-						// $g_keterangan = trim($_POST['g_keteranganS'])?filter($_POST['g_keteranganS']):'';
-						
+						$k_grup       = isset($_POST['grup'])?filter(trim($_POST['grup'])):'';
+						$k_kode       = isset($_POST['k_kodeS'])?filter(trim($_POST['k_kodeS'])):'';
+						$k_nama       = isset($_POST['k_namaS'])?filter(trim($_POST['k_namaS'])):'';
+						$k_keterangan = isset($_POST['k_keteranganS'])?filter(trim($_POST['k_keteranganS'])):'';
+						// var_dump($k_grup);exit();
 						$sql = 'SELECT
 									k.replid,
 									k.kode,
@@ -159,7 +158,10 @@
 									LEFT JOIN sar_jenis  j on j.replid = k.jenis
 									LEFT JOIN sar_barang b on b.katalog = k.replid
 								WHERE
-									k.grup = '.$grup.'
+									k.grup = "'.$k_grup.'" and
+									k.kode like "%'.$k_kode.'%" and
+									k.nama like "%'.$k_nama.'%" and
+									k.keterangan like "%'.$k_keterangan.'%"
 								GROUP BY 
 									k.replid
 								ORDER BY
@@ -188,7 +190,7 @@
 											<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
-											<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 										 </td>';
 								$out.= '<tr>
@@ -299,55 +301,108 @@
 					// barang
 				}
 			break; 
-			// tampil -----------------------------------------------------------------
+			// tampil ---------------------------------------------------------------------
+
+			// head info ------------------------------------------------------------------
+			case 'headinfo':
+				switch ($_POST['subaksi']) {
+					case 'katalog':
+						$s = 'SELECT 
+								g.nama as grup,
+								l.nama as lokasi,
+								sum(b.harga)as totaset
+							  FROM 
+							  	'.$tb4.' b,
+							  	'.$tb3.' k,
+							  	'.$tb2.' l,
+							  	'.$tb.' g
+							  WHERE 
+								g.replid ='.$_POST['grup'].' and 
+								b.katalog = k.replid and
+							  	g.lokasi = l.replid and
+							  	g.replid=k.grup';
+						$q 	= mysql_query($s);
+						$stat = ($q)?'sukses':'gagal';
+						$r = mysql_fetch_assoc($q);
+						$out = json_encode(array(
+								'status'=>$stat,
+								'grup'=>$r['grup'],
+								'lokasi'=>$r['lokasi'],
+								'totaset'=>number_format($r['totaset'])
+							));
+					break;
+				}
+			break;
+			// head info ------------------------------------------------------------------
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	lokasi 		= "'.filter($_POST['lokasiH']).'",
-										tanggal1 	= "'.filter($_POST['tanggal1TB']).'",
-										tanggal2 	= "'.filter($_POST['tanggal2TB']).'",
-										aktivitas 	= "'.filter($_POST['aktivitasTB']).'",
-										keterangan 	= "'.$_POST['keteranganTB'].'"';
-				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e 		= mysql_query($s2);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array('status'=>$stat));
+				switch ($_POST['subaksi']) {
+					case 'grup':
+						$s 		= $tb.' set 	lokasi 		= "'.filter($_POST['g_lokasiH']).'",
+												kode 		= "'.filter($_POST['g_kodeTB']).'",
+												nama 		= "'.filter($_POST['g_namaTB']).'",
+												keterangan 	= "'.filter($_POST['g_keteranganTB']).'"';
+						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						$e 		= mysql_query($s2);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array('status'=>$stat));
+					break;
+
+					case 'katalog':
+						$s 		= $tb.' set 	lokasi 		= "'.filter($_POST['g_lokasiH']).'",
+												kode 		= "'.filter($_POST['g_kodeTB']).'",
+												nama 		= "'.filter($_POST['g_namaTB']).'",
+												keterangan 	= "'.filter($_POST['g_keteranganTB']).'"';
+						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						$e 		= mysql_query($s2);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array('status'=>$stat));
+					break;
+				}
 			break;
 			// add / edit -----------------------------------------------------------------
 			
 			// delete -----------------------------------------------------------------
 			case 'hapus':
-				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
-				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
-				$e    = mysql_query($s);
-				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['aktivitas']));
+				switch ($_POST['subaksi']) {
+					case 'grup':
+						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
+						$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
+						$e    = mysql_query($s);
+						$stat = ($e)?'sukses':'gagal';
+						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+					break;
+
+					case 'katalog':
+						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb3.' where replid='.$_POST['replid']));
+						$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
+						$e    = mysql_query($s);
+						$stat = ($e)?'sukses':'gagal';
+						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+					break;
+				}
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT 
-								t.tanggal1,
-								t.tanggal2,
-								t.aktivitas,
-								t.keterangan,
-								l.nama as lokasi
-							from '.$tb.' t, sar_lokasi l 
-							WHERE 
-								t.lokasi= l.replid and
-								t.replid='.$_POST['replid'];
-				// var_dump($s);exit();
-				$e 		= mysql_query($s);
-				$r 		= mysql_fetch_assoc($e);
-				// $stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array(
-							'lokasi'     =>$r['lokasi'],
-							'tanggal1'  =>$r['tanggal1'],
-							'tanggal2'  =>$r['tanggal2'],
-							'aktivitas'  =>$r['aktivitas'],
-							'keterangan' =>$r['keterangan']
-						));
+				switch ($_POST['subaksi']) {
+					case 'grup';
+						$s = 'SELECT * FROM '.$tb.'  WHERE replid='.$_POST['replid'];
+						// var_dump($s);exit();
+						$e 		= mysql_query($s);
+						$r 		= mysql_fetch_assoc($e);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array(
+									'kode' =>$r['kode'],
+									'nama' =>$r['nama'],
+									'lokasi' =>$r['lokasi'],
+									'keterangan' =>$r['keterangan']
+								));					
+						break;
+				}
+
 			break;
 			// ambiledit -----------------------------------------------------------------
 		}
