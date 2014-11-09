@@ -1,4 +1,5 @@
 <?php
+	// tes komen m grup atas
 	session_start();
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
@@ -402,12 +403,10 @@
 								));					
 						break;
 				}
-
 			break;
 			// ambiledit -----------------------------------------------------------------
 		}
-	}//awal letak echo disini
-	echo $out;
+	}echo $out;
 
     // ---------------------- //
     // -- created by rovi  -- //
