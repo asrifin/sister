@@ -63,7 +63,7 @@
                     </div>
                     <div class="tile-content email">
                         <div class="email-data-text">Keterangan :</div>
-                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disisni ... </div>
+                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disini ... </div>
                     </div>
                     <div class="brand">
                         <div class="label">
@@ -85,7 +85,7 @@
                     </div>
                     <div class="tile-content email">
                         <div class="email-data-text">Keterangan :</div>
-                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disisni ... </div>
+                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan penerimaan siswa baru ada disini.... </div>
                     </div>
                     <div class="brand">
                         <div class="label">
@@ -138,7 +138,7 @@
                                 <img src="images/perpus.png">
                             </center>
                             <h2 class="fg-white no-margin">Perpustakaan</h2><br>
-                            <p class="tertiary-text fg-white">Segala tentang kepegawaian ada disini deh bro silahkan diklik gan.....</p>
+                            <p class="tertiary-text fg-white">Segala tentang Koleksi buku ada disini.....</p>
                         </div>
                     </div>
                 </a>
