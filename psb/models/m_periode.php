@@ -17,12 +17,16 @@
 				$kodeawal = trim($_POST['kode_awalanS'])?filter($_POST['kode_awalanS']):'';
 				// $angkatan = trim($_POST['angkatanS'])?filter($_POST['angkatanS']):'';
 				$keterangan = trim($_POST['keteranganS'])?$_POST['keteranganS']:'';
-				$sql = 'SELECT *
-						FROM psb_proses
+				$sql = 'SELECT p.proses,p.kodeawalan,a.angkatan,p.kapasitas, p.keterangan
+							FROM psb_proses p
+							JOIN aka_angkatan a
+							ON p.replid = a.replid
 						WHERE 
 							proses like "%'.$proses.'%" and 
-							kodeawalan like "%'.$kodeawal.'%" 
+							kodeawalan like "%'.$kodeawal.'%" and
+							p.replid
 						ORDER BY proses asc';
+						
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -42,16 +46,18 @@
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
 						$btn ='<td>
-									<button class="button" onclick="viewFR('.$res['replid'].');">
+									<button class="button" onclick="viewFR('.isset($res['replid']).');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button class="button" onclick="del('.$res['replid'].');">
+									<button class="button" onclick="del('.isset($res['replid']).');">
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
 						$out.= '<tr>
 									<td>'.$res['proses'].'</td>
 									<td>'.$res['kodeawalan'].'</td>
+									<td>'.$res['angkatan'].'</td>
+									<td>'.$res['kapasitas'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -73,7 +79,8 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	proses 		= "'.filter($_POST['periodeTB']).'",
+				$s 		= $tb.' set 	departemen 	= "'.filter($_POST['departemenH']).'",
+										proses 		= "'.filter($_POST['periodeTB']).'",
 										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
@@ -93,13 +100,25 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= 'SELECT * from '.$tb.' WHERE replid='.$_POST['replid'];
+				$s 		= 'SELECT 
+								p.proses,
+								p.kodeawalan,
+								a.angkatan,p.kapasitas, p.keterangan,
+								d.nama
+								 from '.$tb.' p, aka_angkatan a, departemen d
+								 WHERE 
+								 	p.departemen = d.replid and
+								 	p.replid='.$_POST['replid'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'=>$stat,
-							'nilai'=>$r['nilai'],
+							'nama'=>$r['nama'],
+							'proses'=>$r['proses'],
+							'kodeawalan'=>$r['kodeawalan'],
+							'angkatan'=>$r['angkatan'],
+							'kapasitas'=>$r['kapasitas'],
 							'keterangan'=>$r['keterangan']
 						));
 			break;

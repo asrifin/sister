@@ -104,6 +104,7 @@
 </div>
 <!-- end of panel 2 -->
 
+
 <!-- panel 3 -->
 <div title="Unit Barang" class="panelx" id="panel3" style="display:none;">
     <button data-hint="kembali" id="b_inventoryBC"><span class=" icon-arrow-left-2"></span> </button>
@@ -148,15 +149,15 @@
                 <th class="text-left"></th>
             </tr>
         </thead>
-
         <tbody id="b_tbody">
         </tbody>
         <tfoot>
+            <!-- tempat footer table -->
         </tfoot>
     </table>
 </div>
+<!-- tes lagi ah  -->
 <!-- end of panel 3 -->
-
 <!-- 
     // ---------------------- //
     // -- created by rovi  -- //

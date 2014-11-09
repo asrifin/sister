@@ -22,7 +22,7 @@
 
         </tr>
         
-        <tr class="selected">
+        <tr style="display:none;" class="selected" id="cariTR">
             <th class="text-left"><input placeholder="periode" id="periodeS" name="periodeS"></th>
             <th class="text-left"><input placeholder="kode_awalan" id="kode_awalanS" name="kode_awalanS"></th>
             <th class="text-left"><input placeholder="angkatan" id="angkatanS" name="angkatanS"></th>

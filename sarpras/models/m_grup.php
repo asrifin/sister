@@ -406,7 +406,8 @@
 			break;
 			// ambiledit -----------------------------------------------------------------
 		}
-	}echo $out;
+	}//awal letak echo disini
+	echo $out;
 
     // ---------------------- //
     // -- created by rovi  -- //
