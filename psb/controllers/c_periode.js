@@ -6,7 +6,7 @@ var contentFR='';
     $(document).ready(function(){
         contentFR += '<form onsubmit="simpan();return false;" id="periodeFR">' 
                         +'<label>Departemen</label>'
-                        +'<div class="input-control text">'
+                        +'<div class="input-control text size3">'
                             +'<input  type="hidden" name="departemenH" id="departemenH" class="span2">'
                             +'<input disabled="disabled" name="departemenTB" id="departemenTB" class="span2">'
                             +'<button class="btn-clear"></button>'
@@ -18,18 +18,17 @@ var contentFR='';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Kode Awalan</label>'
-                        +'<div class="input-control text">'
+                        +'<div class="input-control text size2">'
                             +'<input required type="text" name="kode_awalanTB" id="kode_awalanTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Angkatan</label>' 
-                        +'<div class="input-control select">'
+                        +'<div class="input-control select size2">'
                             +'<select id="angkatanTB" name="angkatanTB">'
                               +'</select>'
-                            +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Kapasitas</label>' 
-                        +'<div class="input-control text">'
+                        +'<div class="input-control text size1">'
                             +'<input required type="text" name="kapasitasTB" id="kapasitasTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
@@ -97,7 +96,7 @@ var contentFR='';
                     });
                     //panggil fungsi viewTB() ==> tampilkan tabel 
                     viewTB(dt.departemen[0].replid); 
-                    $('#departemenTB').val('ok');
+                    // $('#departemenTB').val('ok');
                 }$('#departemenS').html(out);
             }
         });
@@ -192,10 +191,11 @@ var contentFR='';
                             $('#departemenH').val($('#departemenS').val());
                             $('#departemenTB').val(dt.nama);
                             $('#periodeTB').val(dt.proses);
+                            $('#kode_awalanTB').val(dt.kodeawalan);
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+"Periode Penerimaan");
+                }$.Dialog.title(titlex+" Periode Penerimaan");
                 $.Dialog.content(contentFR);
             }
         });
