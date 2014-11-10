@@ -10,11 +10,13 @@
 	$mnu2 = 'lokasi';
 	$mnu3 = 'katalog';
 	$mnu4 = 'barang';
-
+	$mnu5 = 'jenis';
+	
 	$tb   = 'sar_'.$mnu;
 	$tb2  = 'sar_'.$mnu2;
 	$tb3  = 'sar_'.$mnu3;
 	$tb4  = 'sar_'.$mnu4;
+	$tb5  = 'sar_'.$mnu5;
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -188,7 +190,7 @@
 											<button data-hint="detail"  class="button" onclick="vwBarang('.$res['replid'].');">
 												<i class="icon-zoom-in"></i>
 											</button>
-											<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
+											<button data-hint="ubah"  class="button" onclick="katalogFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
 											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
@@ -351,11 +353,15 @@
 					break;
 
 					case 'katalog':
-						$s 		= $tb.' set 	lokasi 		= "'.filter($_POST['g_lokasiH']).'",
-												kode 		= "'.filter($_POST['g_kodeTB']).'",
-												nama 		= "'.filter($_POST['g_namaTB']).'",
-												keterangan 	= "'.filter($_POST['g_keteranganTB']).'"';
+						$s 		= $tb3.' set 	grup 		= "'.$_POST['k_grupH2'].'",
+												kode 		= "'.filter($_POST['k_kodeTB']).'",
+												nama 		= "'.filter($_POST['k_namaTB']).'",
+												jenis 		= "'.$_POST['k_jenisTB'].'",
+												susut 		= "'.filter($_POST['k_susutTB']).'",
+												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"';
+												// photo 		= "'.filter($_POST['k_photoTB']).'",
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						// print_r($s2);exit();
 						$e 		= mysql_query($s2);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array('status'=>$stat));
@@ -396,12 +402,40 @@
 						$r 		= mysql_fetch_assoc($e);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array(
-									'kode' =>$r['kode'],
-									'nama' =>$r['nama'],
-									'lokasi' =>$r['lokasi'],
+									'kode'       =>$r['kode'],
+									'nama'       =>$r['nama'],
+									'lokasi'     =>$r['lokasi'],
 									'keterangan' =>$r['keterangan']
 								));					
-						break;
+					break;
+
+					case 'katalog';
+						$s = '	SELECT
+									k.kode,
+									k.nama,
+									k.jenis,
+									l.nama as lokasi, 
+									g.nama as grup
+								FROM 
+									'.$tb3.' k,
+									 '.$tb2.' l,
+									 '.$tb.' g
+								WHERE 
+									g.replid = k.grup and 
+									l.replid = k.lokasi and 
+									k.replid ='.$_POST['replid'];
+						$e 		= mysql_query($s);
+						$r 		= mysql_fetch_assoc($e);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array(
+									'kode'       =>$r['kode'],
+									'nama'       =>$r['nama'],
+									'lokasi'     =>$r['lokasi'],
+									'grup'       =>$r['grup'],
+									'jenis'      =>$r['grup'],
+									'keterangan' =>$r['keterangan']
+								));					
+					break;
 				}
 			break;
 			// ambiledit -----------------------------------------------------------------
