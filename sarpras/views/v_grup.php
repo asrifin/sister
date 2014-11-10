@@ -5,10 +5,6 @@
 <h4 style="color:white;">Inventaris</h4>
 <div id="loadarea"></div>
 
-<!-- <button class="cl" id="1">1</button> -->
-<!-- <button class="cl" id="2">2</button> -->
-<!-- <button class="cl" id="3">3</button> -->
-
 <!-- panel 1 -->
 <div title="Grup Barang" class="panelx" id="panel1" style="display:none;">
     <div class="input-control select span3">
@@ -16,6 +12,7 @@
     </div>
     <button data-hint="Tambah Data" id="g_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="g_cariBC"><span class="icon-search"></span> </button>
+    <button data-hint="Cetak" id="g_cetakBC"><span class="icon-printer"></span> </button>
 
     <table class="table hovered bordered striped">
         <thead>
@@ -57,17 +54,17 @@
     <button data-hint="Cetak " id="k_cetakBC"><span class="icon-printer"></span> </button>
     
     <div class="grid" style="color:white;">
-        <input type="hidden" id="k_grupH">
+        <input type="hidden" id="k_grupH1" name="k_grupH1" >
         <div class="row">
-            <div class="span2">Grup Barang </div>
+            <div class="span2">Grup Barang : </div>
             <div id="k_grupDV" class="span2"></div>
         </div>
         <div class="row">
-            <div class="span2">Lokasi</div>
+            <div class="span2">Lokasi :</div>
             <div id="k_lokasiDV" class="span2"></div>
         </div>
         <div class="row">
-            <div class="span2">Total Aset</div>
+            <div class="span2">Total Aset :</div>
             <div id="k_totasetDV" class="span2"></div>
         </div>
     </div>

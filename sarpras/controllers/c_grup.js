@@ -50,61 +50,36 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         +'</form>';
             //katalog
             k_contentFR +=' <div class="grid">'
-                                +'<form class="span10" autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+                                +'<form class="span12" autocomplete="off" onsubmit="katalogSV(); return false;" id="'+mnu+'FR">' 
                                     +'<input id="idformH" type="hidden">' 
-
+                                    // lokasi , keterangan
                                     +'<div class="row">'
                                         +'<div class="span5"> '
                                             +'<label>Lokasi</label>'
                                             +'<div class="input-control text">'
-                                                +'<input  type="hidden" name="lokasiH" id="lokasiH" >'
-                                                +'<input disabled="disabled" name="k_lokasiTB" id="k_lokasiTB" class="span5">'
+                                                +'<input disabled="disabled" name="k_lokasiTB" id="k_lokasiTB">'
                                                 +'<button class="btn-clear"></button>'
-                                            +'</div>'
-                                        +'</div>'
-                                        +'<div class="span5">'
-                                            +'<label>Grup</label>'
-                                            +'<div class="input-control text">'
-                                                +'<input disabled placeholder="kode" name="k_grupTB" id="k_grupTB">'
-                                                +'<button class="btn-clear"></button>'
-                                            +'</div>'
-                                        +'</div>'
-                                    +'</div>'
-                                    
-                                    +'<div class="row">'
-                                        +'<div class="span5"> '
-                                            +'<label>Nama</label>'
-                                            +'<div class="input-control text">'
-                                                +'<input  placeholder="nama"  required type="text" name="k_namaTB" id="k_namaTB">'
-                                                +'<button class="btn-clear"></button>'
-                                            +'</div>'
-                                        +'</div>'
-                                        +'<div class="span5">'
-                                            +'<label>Jenis</label>'
-                                            +'<div class="input-control text">'
-                                                +'<input  placeholder="jenis"  required type="text" name="k_jenisTB" id="k_jenisTB">'
-                                                +'<button class="btn-clear"></button>'
-                                            +'</div>'
-                                        +'</div>'
-                                    +'</div>'
-
-                                    +'<div class="row">'
-                                        +'<div class="span5"> '
-                                            +'<label>Penyusutan</label>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="span1" placeholder="susut"  required type="text" name="k_susutTB" id="k_susutTB">'
-                                                +'<button class="btn-clear"></button> % per tahun'
                                             +'</div>'
                                         +'</div>'
                                         +'<div class="span5">'
                                             +'<label>Keterangan</label>'
-                                            +'<div class="input-control textarea">'
-                                                +'<textarea placeholder="keterangan" name="g_keteranganTB" id="g_keteranganTB"></textarea>'
+                                            +'<div class="input-control text">'
+                                                +'<input placeholder="keterangan" name="k_keteranganTB" id="k_keteranganTB">'
+                                                // +'<textarea placeholder="keterangan" name="g_keteranganTB" id="g_keteranganTB"></textarea>'
                                             +'</div>'
                                         +'</div>'
                                     +'</div>'
-
+                                    
+                                    // grup , gambar
                                     +'<div class="row">'
+                                        +'<div class="span5">'
+                                            +'<label>Grup Barang</label>'
+                                            +'<div class="input-control text">'
+                                                +'<input type="hidden" name="k_grupH2" id="k_grupH2">'
+                                                +'<input disabled placeholder="Grup Barang" name="k_grupTB" id="k_grupTB">'
+                                                +'<button class="btn-clear"></button>'
+                                            +'</div>'
+                                        +'</div>'
                                         +'<div class="span5"> '
                                             +'<label>Gambar Barang</label>'
                                             +'<div class="input-control file info-state" data-role="input-control">'
@@ -112,13 +87,77 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                                 +'<button class="btn-file"></button>'
                                             +'</div>'
                                         +'</div>'
+                                    +'</div>'
+
+                                    // +'<div class="tile">'
+                                    //     +'<div class="tile-content image">'
+                                    //         +'<img src="images/author.jpg">'
+                                    //     +'</div>'
+                                    //     +'<div class="brand">'
+                                    //         +'<span class="label fg-white">Images</span>'
+                                    //         +'<span class="badge bg-orange">12</span>'
+                                    //     +'</div>'
+                                    // +'</div>'
+
+                                    // kode
+                                    +'<div class="row">'
                                         +'<div class="span5">'
-                                            +'<label>Gambar Barang</label>'
-                                            +'<div class="input-control file info-state" data-role="input-control">'
-                                                +'<input id="k_photoTB" name="k_photoTB" type="file">'
-                                                +'<button class="btn-file"></button>'
+                                            +'<label>Kode Katalog</label>'
+                                            +'<div class="input-control text">'
+                                                +'<input maxlength="3" class="span1" placeholder="kode"  required type="text" name="k_kodeTB" id="k_kodeTB">'
+                                                +'<button class="btn-clear"></button>'
                                             +'</div>'
                                         +'</div>'
+                                        +'<div class="span5"> '
+                                        +'</div>'
+                                    +'</div>'
+
+                                    // Nama
+                                    +'<div class="row">'
+                                        +'<div class="span5">'
+                                            +'<label>Nama</label>'
+                                            +'<div class="input-control text">'
+                                                +'<input placeholder="nama"  required type="text" name="k_namaTB" id="k_namaTB">'
+                                                +'<button class="btn-clear"></button>'
+                                            +'</div>'
+                                        +'</div>'
+                                        +'<div class="span5"> '
+                                        +'</div>'
+                                    +'</div>'
+
+                                    // Jenis
+                                    +'<div class="row">'
+                                        +'<div class="span5">'
+                                            +'<label>Jenis</label>'
+                                            +'<div class="input-control select">'
+                                                +'<select required name="k_jenisTB" id="k_jenisTB"><option value="">Pilih Jenis Barang</option></select>'
+                                            +'</div>'
+                                        +'</div>'
+                                        // +'<div class="span5"> '
+                                        //     +'<label>Penyusutan</label>'
+                                        //     +'<div class="input-control text">'
+                                        //         +'<input class="span1" placeholder="susut"  required type="text" name="k_susutTB" id="k_susutTB">'
+                                        //         +'<button class="btn-clear"></button> % per tahun'
+                                        //     +'</div>'
+                                        // +'</div>'
+                                    +'</div>'
+
+                                    // Penyusutan
+                                    +'<div class="row">'
+                                        +'<div class="span5">'
+                                            +'<label>Penyusutan</label>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="span1" placeholder="susut"  required type="text" name="k_susutTB" id="k_susutTB">'
+                                                +'<button class="btn-clear"></button>&nbsp;&nbsp;% per tahun'
+                                            +'</div>'
+                                        +'</div>'
+                                        // +'<div class="span5"> '
+                                        //     +'<label>Penyusutan</label>'
+                                        //     +'<div class="input-control text">'
+                                        //         +'<input class="span1" placeholder="susut"  required type="text" name="k_susutTB" id="k_susutTB">'
+                                        //         +'<button class="btn-clear"></button> % per tahun'
+                                        //     +'</div>'
+                                        // +'</div>'
                                     +'</div>'
 
                                     +'<div class="row">'
@@ -129,7 +168,6 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                             +'</div>'
                                         +'</div>'
                                     +'</div>'
-
                                 +'</form>'
                         +'</div>';
             // barang
@@ -293,7 +331,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 //end of paging ---
 
 // view table ---
-    function vwGrup(lok){ //edit by epiii 
+    function vwGrup(lok){  
         var aksi ='aksi=tampil&subaksi=grup';
         var cari ='&lokasiS='+lok
                 +'&g_kodeS='+$('#g_kodeS').val()
@@ -313,6 +351,32 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         });
     }
 // end of view table ---
+
+
+// view katalog barang
+    function vwKatalog(id) {
+        var aksi ='aksi=tampil&subaksi=katalog&grup='+id;
+        var cari ='&k_kodeS='+$('#k_kodeS').val()
+                +'&k_namaS='+$('#k_namaS').val()
+                +'&k_keteranganS='+$('#k_keteranganS').val();
+        $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi+cari,
+            beforeSend:function(){
+                $('#k_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                // alert(id);return false;
+                $('#k_grupH1').val(id);
+                switchPN(2);
+                vwHeadKatalog(id);
+                setTimeout(function(){
+                    $('#k_tbody').html(dt).fadeIn();
+                },1000);
+            }
+        });
+    }   
+//end of view katalog barang
 
 // view barang
     function vwBarang(id) {
@@ -339,31 +403,6 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     }   
 //end of view barang
 
-// view katalog barang
-    function vwKatalog(id) {
-        var aksi ='aksi=tampil&subaksi=katalog&grup='+id;
-        // alert(aksi);return false;
-        var cari ='&k_kodeS='+$('#k_kodeS').val()
-                +'&k_namaS='+$('#k_namaS').val()
-                +'&k_keteranganS='+$('#k_keteranganS').val();
-        $.ajax({
-            url : dir,
-            type: 'post',
-            data: aksi+cari,
-            beforeSend:function(){
-                $('#k_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                $('#k_grupH').val(id);
-                switchPN(2);
-                vwHeadKatalog(id);
-                setTimeout(function(){
-                    $('#k_tbody').html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }   
-//end of view katalog barang
-
 // headinfo katalog
     function vwHeadKatalog (id) {
         $.ajax({
@@ -375,9 +414,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 if (dt.status!='sukses') {
                     alert(dt.status+' memuat data header');
                 }else{
-                    $('#k_grupDV').html(': '+dt.grup);
-                    $('#k_lokasiDV').html(': '+dt.lokasi);
-                    $('#k_totasetDV').html(': Rp. '+dt.totaset+',-');
+                    $('#k_grupDV').html(dt.grup);
+                    $('#k_lokasiDV').html(dt.lokasi);
+                    $('#k_totasetDV').html('Rp. '+dt.totaset+',-');
                 }
             },
         });
@@ -422,6 +461,35 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         });
     }
 //end of combo departemen ---
+
+//save process ---
+    function katalogSV(){
+        var urlx ='&aksi=simpan&subaksi=katalog';
+        // edit mode
+        if($('#idformH').val()!=''){
+            urlx += '&replid='+$('#idformH').val();
+        }
+        $.ajax({
+            url:dir,
+            cache:false,
+            type:'post',
+            dataType:'json',
+            data:$('form').serialize()+urlx,
+            success:function(dt){
+                if(dt.status!='sukses'){
+                    cont = 'Gagal menyimpan data';
+                    clr  = 'red';
+                }else{
+                    $.Dialog.close();
+                    gkosongkan();
+                    vwKatalog($('#k_grupH1').val());
+                    cont = 'Berhasil menyimpan data';
+                    clr  = 'green';
+                }notif(cont,clr);
+            }
+        });
+    }
+//end of save process ---
 
 //save process ---
     function grupSV(){
@@ -520,16 +588,22 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 var titlex;
                 if(id==''){  //add mode
                     titlex='<span class="icon-plus-2"></span> Tambah ';
+                    // form :: jenis  ----------------------------------------
                     $.ajax({
-                        url:dir2,
-                        data:'aksi=cmblokasi&replid='+$('#g_lokasiS').val(),
+                        url:dir4,
+                        data:'aksi=cmbjenis',
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#lokasiTB').val(dt.lokasi[0].nama);
-                            $('#lokasiH').val($('#g_lokasiS').val());
+                            var opt='';
+                            $.each(dt.jenis,function(id,item){
+                                opt+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                            });$('#k_jenisTB').html('<option value="">Pilih Jenis</option>'+opt);
+                            $('#k_grupH2').val($('#k_grupH1').val());
+                            $('#k_grupTB').val($('#k_grupDV').html());
+                            $('#k_lokasiTB').val($('#k_lokasiDV').html());
                         }
-                    });
+                    });// end of form :: lokasi (disabled)
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({
@@ -545,7 +619,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+' '+mnu); // edit by epiii
+                }$.Dialog.title(titlex+' '+mnu3); // edit by epiii
                 $.Dialog.content(k_contentFR);
             }
         });

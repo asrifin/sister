@@ -3,7 +3,8 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$tb = 'departemen';
+	$mnu = 'jenis';
+	$tb  = 'sar_'.$mnu;
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -110,8 +111,8 @@
 			break;
 			// ambiledit ------			
 
-			// cmbdepartemen -----------------------------------------------------------------
-			case 'cmbdepartemen':
+			// cmbjenis -----------------------------------------------------------------
+			case 'cmbjenis':
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
@@ -134,10 +135,40 @@
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
 						}
-						$ar = array('status'=>'sukses','departemen'=>$dt);
+						$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;
+			// cmbjenis -----------------------------------------------------------------
+
+			// cmbdepartemen -----------------------------------------------------------------
+			// case 'cmbdepartemen':
+			// 	$s	= ' SELECT *
+			// 			from '.$tb.'
+			// 			'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
+			// 			ORDER  BY nama asc';
+			// 	$e  = mysql_query($s);
+			// 	// var_dump($s);
+			// 	$n  = mysql_num_rows($e);
+			// 	$ar =$dt=array();
+
+			// 	if(!$e){ //error
+			// 		$ar = array('status'=>'error');
+			// 	}else{
+			// 		if($n=0){ // kosong 
+			// 			$ar = array('status'=>'kosong');
+			// 		}else{ // ada data
+			// 			if(!isset($_POST['replid'])){
+			// 				while ($r=mysql_fetch_assoc($e)) {
+			// 					$dt[]=$r;
+			// 				}
+			// 			}else{
+			// 				$dt[]=mysql_fetch_assoc($e);
+			// 			}
+			// 			$ar = array('status'=>'sukses','departemen'=>$dt);
+			// 		}
+			// 	}$out=json_encode($ar);
+			// break;
 			// cmbdepartemen -----------------------------------------------------------------
 		}
 	}echo $out;
