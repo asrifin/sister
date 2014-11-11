@@ -30,7 +30,7 @@
         <tr style="display:none;" id="cariTR" class="selected">
             <!-- <th class="text-left"></th> -->
             <th class="text-left"><input placeholder="kelompok" id="kelompokS" name="kelompokS"></th>
-            <th class="text-left"><input placeholder="tglpendaftaran" id="tglpendaftaranS" name="tglpendaftaranS"></th>
+            <!-- <th class="text-left"><input placeholder="tglpendaftaran" id="tglpendaftaranS" name="tglpendaftaranS"></th> -->
             <th class="text-left"></th>
         </tr>
     </thead>

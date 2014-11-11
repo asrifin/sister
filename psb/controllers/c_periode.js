@@ -192,6 +192,8 @@ var contentFR='';
                             $('#departemenTB').val(dt.nama);
                             $('#periodeTB').val(dt.proses);
                             $('#kode_awalanTB').val(dt.kodeawalan);
+                            $('#angkatanTB').val(dt.angkatan);
+                            $('#Kapasitas').val(dt.Kapasitas);                            
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
