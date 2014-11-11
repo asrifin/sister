@@ -11,7 +11,13 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	#refrensi
 	RewriteRule   ^lokasi/?$   									index.php?page=vlokasi
 	RewriteRule   ^klasifikasi/?$   							index.php?page=vklasifikasi
-	RewriteRule   ^jenis/?$   									index.php?page=vjenis
+	RewriteRule   ^bahasa/?$   									index.php?page=vbahasa
+	RewriteRule   ^penerbit/?$   								index.php?page=vpenerbit
+	RewriteRule   ^perangkat/?$   								index.php?page=vperangkat
+	RewriteRule   ^pengarang/?$   								index.php?page=vpengarang
+	RewriteRule   ^satuan/?$   									index.php?page=vsatuan
+	RewriteRule   ^tingkatbuku/?$   							index.php?page=vtingkatbuku
+	RewriteRule   ^jenisbuku/?$   								index.php?page=vjenisbuku
 
 	#inventaris
 	RewriteRule   ^inventaris/?$   								index.php?page=vinventaris

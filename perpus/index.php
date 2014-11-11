@@ -76,13 +76,13 @@
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="lokasi">Lokasi Perpustakaan</a></li>
                     <li><a href="perangkat">Perangkat</a></li>
-                    <li><a href="jkoleksi">Jenis Koleksi</a></li>
+                    <li><a href="jenisbuku">Jenis Koleksi</a></li>
                     <li><a href="penerbit">Daftar Penerbit</a></li>
                     <li><a href="klasifikasi">Klasifikasi</a></li>
                     <li><a href="bahasa">Daftar Bahasa</a></li>
-                    <li><a href="tkoleksi">Tingkat Koleksi</a></li>
+                    <li><a href="tingkatbuku">Tingkat Koleksi</a></li>
                     <li><a href="pengarang">Daftar Pengarang</a></li>
-                    <li><a href="uang">Satuan Mata Uang</a></li>
+                    <li><a href="satuan">Satuan Mata Uang</a></li>
                 </ul>
             </div>
                          
@@ -124,8 +124,26 @@
                     case 'vlokasi':
                         require $d.'v_lokasi.php';
                     break;
-                    case 'vjenis':
-                        require $d.'v_jenis.php';
+                    case 'vbahasa':
+                        require $d.'v_bahasa.php';
+                    break;
+                    case 'vpenerbit':
+                        require $d.'v_penerbit.php';
+                    break;
+                    case 'vpengarang':
+                        require $d.'v_pengarang.php';
+                    break;
+                    case 'vperangkat':
+                        require $d.'v_perangkat.php';
+                    break;
+                    case 'vsatuan':
+                        require $d.'v_satuan.php';
+                    break;
+                    case 'vtingkatbuku':
+                        require $d.'v_tingkatbuku.php';
+                    break;
+                    case 'vjenisbuku':
+                        require $d.'v_jenisbuku.php';
                     break;
 
                     // inventaris

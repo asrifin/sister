@@ -1,25 +1,25 @@
-// var dir       ='models/m_angkatan.php';
-var dir       ='models/m_jenis.php';
+var mnu       ='satuan';
+var dir       ='models/m_'+mnu+'.php';
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="angkatanFR">' 
+        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-                        +'<label>Departemen</label>'
+                        +'<label>Kode</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="namaTB" id="namaTB">'
+                            +'<input placeholder="kode" required type="text" name="kodeTB" id="kodeTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>Alamat</label>'
+                        +'<label>Nama Satuan</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="alamatTB" id="alamatTB">'
+                            +'<input  placeholder="Satuan" required type="text" name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>Telepon</label>'
-                        +'<div class="input-control text">'
-                            +'<input required type="text" name="teleponTB" id="teleponTB">'
-                            +'<button class="btn-clear"></button>'
+                    
+                        +'<label>Keterangan</label>'
+                        +'<div class="input-control textarea">'
+                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
@@ -27,6 +27,9 @@ var contentFR ='';
                         +'</div>'
                     +'</form>';
 
+        //combo departemen
+        // cmbdepartemen();
+        
         //load table
         viewTB();
 
@@ -36,23 +39,24 @@ var contentFR ='';
         });
 
         //search action
-        $('#namaS').keydown(function (e){
+        $('#kodeS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
-        });$('#alamatS').keydown(function (e){
+        });$('#namaS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
-        });$('#teleponS').keydown(function (e){
-            viewTB();
-        })
+        });$('#keteranganS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });
 
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
+            $('#kodeS').val('');
             $('#namaS').val('');
             $('#keteranganS').val('');
         });
-
     }); 
 // end of main function ---
 
@@ -76,7 +80,7 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#departemenS').val());
+                    viewTB($('').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }
@@ -87,21 +91,23 @@ var contentFR ='';
 //end of save process ---
 
 // view table ---
-    // function viewTB(dep){
-    function viewTB(){
+    function viewTB(kode){
         var aksi ='aksi=tampil';
-        var cari = '&namaS='+$('#namaS').val()
-                    +'&alamatS='+$('#alamatS').val()
-                    +'&teleponS='+$('#teleponS').val();
+        // edit by epiii
+        var cari = '&kodeS='+$('#kodeS').val()
+                    +'&namaS='+$('#namaS').val()
+                    +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',
-            data: aksi+cari,
+            // data: aksi,
+            data: aksi+cari, //edit by epiii
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
+                    // $('#tbody').delay(4000).fadeIn().html(data);
                 },1000);
             }
         });
@@ -122,12 +128,12 @@ var contentFR ='';
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                     $.ajax({
                         url:dir,
-                        data:'aksi=cmbdepartemen&replid='+$('#departemenS').val(),
+                        data:'aksi=replid',
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#departemenH').val($('#departemenS').val());
-                            $('#departemenTB').val(dt.departemen[0].nama);
+                            // $('#lokasiH').val($('#lokasiS').val());
+                            $('#lokasiTB').val(dt.lokasi[0].kode);
                         }
                     });
 
@@ -140,12 +146,13 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
+                            // $('#lokasiH').val($('#lokasiS').val());
+                            $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
-                            $('#alamatTB').val(dt.alamat);
-                            $('#teleponTB').val(dt.telepon);
+                            $('#keteranganTB').val(dt.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+" Kriteria");
+                }$.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
             }
         });
@@ -155,9 +162,9 @@ var contentFR ='';
 //paging ---
     function pagination(page,aksix,menux){
         var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari =  '&namaS='+$('#namaS').val()
-                    +'&alamatS='+$('#alamatS').val()
-                    +'&teleponS='+$('#teleponS').val();
+        var cari = '&kodeS='+$('#kodeS').val()
+                    +'&namaS='+$('#namaS').val()
+                    +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url:dir,
             type:"post",
@@ -187,7 +194,7 @@ var contentFR ='';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#departemenS').val());
+                    viewTB($('').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }
@@ -214,7 +221,12 @@ function notif(cont,clr) {
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#angkatanTB').val('');
+        $('#kodeTB').val('');
+        $('#namaTB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---
+
+    // ---------------------- //
+    // -- created by rovi  -- //
+    // ---------------------- // 

@@ -1,4 +1,4 @@
-var mnu       ='lokasi';
+var mnu       ='jenisbuku';
 var dir       ='models/m_'+mnu+'.php';
 var contentFR ='';
 
@@ -11,16 +11,12 @@ var contentFR ='';
                             +'<input placeholder="kode" required type="text" name="kodeTB" id="kodeTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>Nama Lokasi</label>'
+                        +'<label>Tingkat Buku</label>'
                         +'<div class="input-control text">'
-                            +'<input  placeholder="lokasi" required type="text" name="namaTB" id="namaTB">'
+                            +'<input  placeholder="Tingkat Buku" required type="text" name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>Alamat</label>'
-                        +'<div class="input-control text">'
-                            +'<input  placeholder="alamat" required type="text" name="alamatTB" id="alamatTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
+                        
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
@@ -49,9 +45,6 @@ var contentFR ='';
         });$('#namaS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
-        });$('#alamatS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB();
         });$('#keteranganS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
@@ -62,7 +55,6 @@ var contentFR ='';
             $('#cariTR').toggle('slow');
             $('#kodeS').val('');
             $('#namaS').val('');
-            $('#alamatS').val('');
             $('#keteranganS').val('');
         });
     }); 
@@ -88,7 +80,7 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#lokasiS').val());
+                    viewTB($('').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }
@@ -101,10 +93,8 @@ var contentFR ='';
 // view table ---
     function viewTB(kode){
         var aksi ='aksi=tampil';
-        // edit by epiii
         var cari = '&kodeS='+$('#kodeS').val()
                     +'&namaS='+$('#namaS').val()
-                    +'&alamatS='+$('#alamatS').val()
                     +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
@@ -141,7 +131,7 @@ var contentFR ='';
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#lokasiH').val($('#lokasiS').val());
+                            // $('#lokasiH').val($('#lokasiS').val());
                             $('#lokasiTB').val(dt.lokasi[0].kode);
                         }
                     });
@@ -155,10 +145,9 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#lokasiH').val($('#lokasiS').val());
+                            // $('#lokasiH').val($('#lokasiS').val());
                             $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
-                            $('#alamatTB').val(dt.alamat);
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
@@ -174,7 +163,6 @@ var contentFR ='';
         var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
         var cari = '&kodeS='+$('#kodeS').val()
                     +'&namaS='+$('#namaS').val()
-                    +'&alamatS='+$('#alamatS').val()
                     +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url:dir,
@@ -205,7 +193,7 @@ var contentFR ='';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#lokasiS').val());
+                    viewTB($('').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }
@@ -234,7 +222,6 @@ function notif(cont,clr) {
         $('#idformTB').val('');
         $('#kodeTB').val('');
         $('#namaTB').val('');
-        $('#alamatTB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---

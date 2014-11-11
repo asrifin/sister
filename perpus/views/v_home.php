@@ -1,10 +1,10 @@
 
 <div class="tile-group double">
-    <div class="tile-group-title">Referensi</div>
+    <div class="tile-group-title">Master</div>
 
-    <!-- pendataan siswa -->
+    <!-- lokasi -->
 
-    <a href="lokasi" class="tile double bg-yellow" data-click="transform">
+    <a href="lokasi" class="tile  bg-yellow" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>
@@ -12,20 +12,53 @@
             <div class="label">Lokasi</div>
         </div>
     </a>
-    <!--end of  pendataan siswa -->
-    <!-- pendataan siswa -->
+    <!--end of  lokasi-->
+    <!-- tingkatbuku -->
 
-    <a href="jenis" class="tile double bg-green" data-click="transform">
+    <a href="jenisbuku" class="tile  bg-pink" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">Jenis Barang</div>
+            <div class="label">jenis Buku</div>
         </div>
     </a>
-    <!--end of  pendataan siswa -->
-    <!-- pendataan siswa -->
-    <a href="klasifikasi" class="tile double bg-pink" data-click="transform">
+    <!--end of  jenisbuku-->
+    <!-- perangkat -->
+
+    <a href="perangkat" class="tile  bg-green" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-address-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Perangkat</div>
+        </div>
+    </a>
+    <!--end of  perangkat -->
+    <!-- penerbit -->
+
+    <a href="penerbit" class="tile  bg-green" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-address-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Daftar Penerbit</div>
+        </div>
+    </a>
+    <!--end of  penerbit -->
+    <!-- pengarang -->
+
+    <a href="pengarang" class="tile  bg-green" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-address-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Daftar Pengarang</div>
+        </div>
+    </a>
+    <!--end of  pengarang -->
+    <!-- klasifikasi -->
+    <a href="klasifikasi" class="tile  bg-pink" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>
@@ -33,7 +66,38 @@
             <div class="label">Klasifikasi</div>
         </div>
     </a>
-    <!--end of  pendataan siswa -->
+    <!--end of  klasifikasi -->
+    <!-- bahasa -->
+    <a href="bahasa" class="tile  bg-brown" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-address-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Daftar Bahasa</div>
+        </div>
+    </a>
+    <!--end of  bahasa -->
+    <!-- tingkatbuku -->
+
+    <a href="tingkatbuku" class="tile  bg-yellow" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-address-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Tingkat Buku</div>
+        </div>
+    </a>
+    <!--end of  tingkatbuku-->
+    <!-- satuan -->
+    <a href="satuan" class="tile  bg-brown" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-address-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Satuan Mata Uang</div>
+        </div>
+    </a>
+    <!--end of  satuan -->
 
     
 </div> <!-- End group -->

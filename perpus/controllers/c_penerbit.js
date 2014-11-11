@@ -1,4 +1,4 @@
-var mnu       ='lokasi';
+var mnu       ='penerbit';
 var dir       ='models/m_'+mnu+'.php';
 var contentFR ='';
 
@@ -6,21 +6,13 @@ var contentFR ='';
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-                        +'<label>Kode</label>'
+                        
+                        +'<label>Nama Penerbit</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="kode" required type="text" name="kodeTB" id="kodeTB">'
+                            +'<input  placeholder="Penerbit" required type="text" name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>Nama Lokasi</label>'
-                        +'<div class="input-control text">'
-                            +'<input  placeholder="lokasi" required type="text" name="namaTB" id="namaTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        +'<label>Alamat</label>'
-                        +'<div class="input-control text">'
-                            +'<input  placeholder="alamat" required type="text" name="alamatTB" id="alamatTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
+                        
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
@@ -43,13 +35,8 @@ var contentFR ='';
         });
 
         //search action
-        $('#kodeS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB();
-        });$('#namaS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB();
-        });$('#alamatS').keydown(function (e){
+        
+        $('#namaS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
         });$('#keteranganS').keydown(function (e){
@@ -60,9 +47,7 @@ var contentFR ='';
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
-            $('#kodeS').val('');
             $('#namaS').val('');
-            $('#alamatS').val('');
             $('#keteranganS').val('');
         });
     }); 
@@ -88,7 +73,7 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#lokasiS').val());
+                    viewTB($('').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }
@@ -101,16 +86,12 @@ var contentFR ='';
 // view table ---
     function viewTB(kode){
         var aksi ='aksi=tampil';
-        // edit by epiii
-        var cari = '&kodeS='+$('#kodeS').val()
-                    +'&namaS='+$('#namaS').val()
-                    +'&alamatS='+$('#alamatS').val()
+        var cari = '&namaS='+$('#namaS').val()
                     +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',
-            // data: aksi,
-            data: aksi+cari, //edit by epiii
+            data: aksi+cari,
             beforeSend:function(){
                 $('#tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
@@ -141,7 +122,7 @@ var contentFR ='';
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#lokasiH').val($('#lokasiS').val());
+                            // $('#lokasiH').val($('#lokasiS').val());
                             $('#lokasiTB').val(dt.lokasi[0].kode);
                         }
                     });
@@ -155,10 +136,10 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#lokasiH').val($('#lokasiS').val());
-                            $('#kodeTB').val(dt.kode);
+                            // $('#lokasiH').val($('#lokasiS').val());
+                            // $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
-                            $('#alamatTB').val(dt.alamat);
+                            // $('#alamatTB').val(dt.alamat);
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
@@ -172,9 +153,7 @@ var contentFR ='';
 //paging ---
     function pagination(page,aksix,menux){
         var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari = '&kodeS='+$('#kodeS').val()
-                    +'&namaS='+$('#namaS').val()
-                    +'&alamatS='+$('#alamatS').val()
+        var cari = '&namaS='+$('#namaS').val()
                     +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url:dir,
@@ -205,7 +184,7 @@ var contentFR ='';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#lokasiS').val());
+                    viewTB($('').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }
@@ -232,9 +211,7 @@ function notif(cont,clr) {
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#kodeTB').val('');
         $('#namaTB').val('');
-        $('#alamatTB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---
