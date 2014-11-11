@@ -11,7 +11,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	#refrensi
 	RewriteRule   ^lokasi/?$   									index.php?page=vlokasi
 	RewriteRule   ^tempat/?$   									index.php?page=vtempat
-	RewriteRule   ^jenis-barang/?$   							index.php?page=vjenisbarang
+	RewriteRule   ^jenis/?$   									index.php?page=vjenis
 
 	#inventaris
 	RewriteRule   ^inventaris/?$   								index.php?page=vinventaris

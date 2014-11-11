@@ -97,7 +97,7 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#lokasiS').val());
+                    // viewTB($('#lokasiS').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }
@@ -151,7 +151,7 @@ var contentFR ='';
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#lokasiH').val($('#lokasiS').val());
+                            // $('#lokasiH').val($('#lokasiS').val());
                             $('#lokasiTB').val(dt.lokasi[0].kode);
                         }
                     });
@@ -165,7 +165,7 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#lokasiH').val($('#lokasiS').val());
+                            // $('#lokasiH').val($('#lokasiS').val());
                             $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
                             $('#alamatTB').val(dt.alamat);
@@ -218,7 +218,7 @@ var contentFR ='';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#lokasiS').val());
+                    // viewTB($('#lokasiS').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }

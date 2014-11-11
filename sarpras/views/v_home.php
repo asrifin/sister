@@ -14,7 +14,7 @@
     </a>
     <!--end of  pendataan siswa -->
     <!-- pendataan siswa -->
-    <a href="jenis-barang" class="tile double bg-green" data-click="transform">
+    <a href="jenis" class="tile double bg-green" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>

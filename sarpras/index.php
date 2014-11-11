@@ -76,7 +76,7 @@
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="lokasi">Lokasi</a></li>
                     <li><a href="tempat">Tempat</a></li>
-                    <li><a href="jenis-barang">Jenis Barang</a></li>
+                    <li><a href="jenis">Jenis Barang</a></li>
                 </ul>
             </div>
                          
@@ -118,8 +118,8 @@
                     case 'vlokasi':
                         require $d.'v_lokasi.php';
                     break;
-                    case 'vjenisbarang':
-                        require $d.'v_jenisbarang.php';
+                    case 'vjenis':
+                        require $d.'v_jenis.php';
                     break;
 
                     // inventaris
