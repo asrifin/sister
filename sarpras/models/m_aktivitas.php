@@ -3,7 +3,8 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu  = 'tempat';
+	require_once '../../lib/tglindo.php';
+	$mnu  = 'aktivitas';
 	$mnu2 = 'lokasi';
 	$tb   = 'sar_'.$mnu;
 	$tb2  = 'sar_'.$mnu2;
@@ -17,17 +18,17 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$lokasi     = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
-				$tempat     = trim($_POST['tempatS'])?filter($_POST['tempatS']):'';
-				$keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				// $tempat     = trim($_POST['tempatS'])?filter($_POST['tempatS']):'';
+				// $keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT t.*
 						FROM '.$tb.' t, '.$tb2.' l
 						WHERE 
 							l.replid = t.lokasi and
-							t.lokasi ='.$lokasi.' and
-							t.nama LIKE "%'.$tempat.'%" and
-							t.keterangan LIKE "%'.$keterangan.'%" 
-						ORDER BY t.nama asc';
+							t.lokasi ='.$lokasi.'
+						ORDER BY t.tanggal1 asc';
 				// print_r($sql);exit(); 	
+							// t.nama LIKE "%'.$tempat.'%" and
+							// t.keterangan LIKE "%'.$keterangan.'%" 
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -53,13 +54,13 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
-									<td>'.$res['kode'].'</td>
-									<td>'.$res['nama'].'</td>
-									<td>'.$res['keterangan'].'</td>
+									<td>'.tgl_indo($res['tanggal1']).', '.tgl_indo($res['tanggal2']).'</td>
+									<td>'.$res['aktivitas'].'</td>
+									<td><pre>'.$res['keterangan'].'</pre></td>
 									'.$btn.'
 								</tr>';
 						$nox++;
+									// <td>'.$res['replid'].'</td>
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -74,12 +75,13 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	lokasi 	= "'.filter($_POST['lokasiH']).'",
-										kode 	= "'.filter($_POST['kodeTB']).'",
-										nama 	= "'.filter($_POST['namaTB']).'",
+				//kurang field lokasi (FK)
+				$s 		= $tb.' set 	lokasi 		= "'.filter($_POST['lokasiH']).'",
+										tanggal1 	= "'.filter($_POST['tanggal1TB']).'",
+										tanggal2 	= "'.filter($_POST['tanggal2TB']).'",
+										aktivitas 	= "'.filter($_POST['aktivitasTB']).'",
 										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// var_dump($s2);exit();
 				$e 		= mysql_query($s2);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array('status'=>$stat));
@@ -92,15 +94,16 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['aktivitas']));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT 
-								t.kode,
-								t.nama,
+								t.tanggal1,
+								t.tanggal2,
+								t.aktivitas,
 								t.keterangan,
 								l.nama as lokasi
 							from '.$tb.' t, sar_lokasi l 
@@ -112,9 +115,10 @@
 				$r 		= mysql_fetch_assoc($e);
 				// $stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'kode'       =>$r['kode'],
 							'lokasi'     =>$r['lokasi'],
-							'nama'       =>$r['nama'],
+							'tanggal1'  =>$r['tanggal1'],
+							'tanggal2'  =>$r['tanggal2'],
+							'aktivitas'  =>$r['aktivitas'],
 							'keterangan' =>$r['keterangan']
 						));
 			break;

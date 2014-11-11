@@ -7,12 +7,16 @@ RewriteEngine On
 ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 
 	RewriteRule   ^home/?$   									index.php?page=vhome
+	
+	#refrensi
 	RewriteRule   ^lokasi/?$   									index.php?page=vlokasi
 	RewriteRule   ^tempat/?$   									index.php?page=vtempat
 	RewriteRule   ^jenis-barang/?$   							index.php?page=vjenisbarang
 
-	#guru dan pelajaran
-	RewriteRule   ^guru/?$   									index.php?page=vguru
+	#inventaris
+	RewriteRule   ^inventaris/?$   								index.php?page=vinventaris
+	RewriteRule   ^aktivitas/?$   								index.php?page=vaktivitas
+
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 
 # Send all blocked request to homepage with 403 Forbidden error!

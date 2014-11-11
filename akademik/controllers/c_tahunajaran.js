@@ -111,9 +111,7 @@ var contentFR = '';
 //end of save process ---
 
 // view table ---
-    // function viewTB(dep){
     function viewTB(dep){
-        //alert('dep '+dep);
         var aksi ='aksi=tampil';
         var cari = '&departemenS='+dep
                     +'&tahunajaranS='+$('#tahunajaranS').val();
@@ -172,7 +170,7 @@ var contentFR = '';
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+" Kriteria");
+                }$.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
             }
         });
@@ -224,17 +222,17 @@ var contentFR = '';
 //end of del process ---
     
 // notifikasi
-function notif(cont,clr) {
-    var not = $.Notify({
-        caption : "<b>Notifikasi</b>",
-        content : cont,
-        timeout : 3000,
-        style :{
-            background: clr,
-            color:'white'
-        },
-    });
-}
+    function notif(cont,clr) {
+        var not = $.Notify({
+            caption : "<b>Notifikasi</b>",
+            content : cont,
+            timeout : 3000,
+            style :{
+                background: clr,
+                color:'white'
+            },
+        });
+    }
 // end of notifikasi
 
 //reset form ---
@@ -273,8 +271,7 @@ function notif(cont,clr) {
     function aktifkan(id){
     	var th  = $('#'+mnu+'TD_'+id).html();
     	var dep = $('#'+mnu2+'S').val();
-    	//alert('d '+dep);
-    	//return false;
+
         if(confirm(' mengaktifkan "'+th+'"" ?'))
         $.ajax({
             url:dir,

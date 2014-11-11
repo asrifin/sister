@@ -1,4 +1,4 @@
-<script src="controllers/c_guru.js"></script>
+<script src="controllers/c_jenis.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
 <!-- <script src="js/metro/metro-calendar.js"></script>

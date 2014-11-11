@@ -4443,8 +4443,8 @@ a {
 .metro .tile-area-dark {
   min-width: 100%;
   height: 100%;
-  background-image: url('../images/bg.png');
-  /*background-color: teal;*/
+  /*background-image: url('../images/bg.png');*/
+  background-color: teal;
   /*background-color: #1d1d1d !important;*/
 }
 .metro .tile-area-dark .tile {

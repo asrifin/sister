@@ -6,6 +6,7 @@
 <div id="loadarea"></div>
 
 <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
 <table class="table hovered bordered striped">
     <thead>
@@ -16,6 +17,14 @@
             <th class="text-left">Kontak</th>
             <th class="text-left">Keterangan</th>
             <th class="text-left">Aksi</th>
+        </tr>
+        <tr style="display:none;" id="cariTR" class="selected">
+            <th class="text-left"><input placeholder="kode" id="kodeS" name="kodeS"></th>
+            <th class="text-left"><input placeholder="nama" id="namaS"name="namaS"></th>
+            <th class="text-left"><input placeholder="kontak" id="kontakS"name="kontakS"></th>
+            <th class="text-left"><input placeholder="alamat" id="alamatS"name="alamatS"></th>
+            <th class="text-left"><input placeholder="keterangan" id="keteranganS"name="keteranganS"></th>
+            <th class="text-left"></th>
         </tr>
     </thead>
 

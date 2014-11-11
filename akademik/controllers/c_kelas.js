@@ -34,21 +34,22 @@ var contentFR = '';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
-                        +'<label>Nama Kelas</label>'
-                        +'<div class="input-control text">'
-                            +'<input placeholder="kapasitas" required type="text" name="kelasTB" id="kelasTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-
-                        +'<label>kapasitas</label>'
+                        +'<label>Kapasitas</label>'
                         +'<div class="input-control text">'
                             +'<input class="span1" placeholder="kapasitas" required type="text" name="kapasitasTB" id="kapasitasTB">'
                             +'<button class="btn-clear"></button> siswa'
                         +'</div>'
 
+                        +'<label>Kelas</label>'
+                        +'<div class="input-control text">'
+                            +'<input class="span2" placeholder="kelas" required type="text" name="kelasTB" id="kelasTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+
                         +'<label>Wali Kelas</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="wali" required type="text" name="waliTB" id="waliTB">'
+                            +'<input disabled class="span2" placeholder="NIP" required name="nipTB" id="nipTB">'
+                            +' <input class="span4" placeholder="wali kelas" required type="text" name="waliTB" id="waliTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -94,6 +95,20 @@ var contentFR = '';
             $('#kelasS').val('');
             $('#waliS').val('');
         });
+
+        // combogrid
+        // $("#txtJasa").on('keyup', function(e){
+        //     var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+        //     var keyCode = $.ui.keyCode;
+        //     if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.DOWN) {
+        //         $('#txtKodeJasa').val('');
+        //         $('#txtKodeBBaku').val('');
+        //         $('#txtNamaBBaku').val('');
+        //     }
+        // });
+
+        // $( "#txtJasa" ).combogrid({
+
     }); 
 // end of save process ---
 
@@ -227,6 +242,7 @@ var contentFR = '';
 
 // form ---
     function viewFR(id){
+        // $.Dialog({
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -294,6 +310,9 @@ var contentFR = '';
                                                     dataType:'json',
                                                     success:function(dt3){
                                                         $('#idformH').val(id);
+                                                        $('#kelasTB').val(dt3.kelas);
+                                                        $('#kapasitasTB').val(dt3.kapasitas);
+                                                        $('#waliTB').val(dt3.wali);
                                                         $('#keteranganTB').val(dt3.keterangan);
                                                     }
                                                 });

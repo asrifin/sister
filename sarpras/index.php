@@ -65,9 +65,10 @@
             <div class="element">
                 <a class="dropdown-toggle" href="#">inventaris</a>
                 <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="presensi-siswa">Presensi Siswa</a></li>
-                    <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
-                    <li><a href="pendataan-mutasi-siswa">Pendataan Mutasi Siswa</a></li>
+                    <li><a href="inventaris">Inventaris</a></li>
+                    <li><a href="aktivitas">Aktivitas</a></li>
+                    <li><a href="peminjaman">Peminjaman</a></li>
+                    <li><a href="pengembalian">Pengembalian</a></li>
                 </ul>
             </div>
             <div class="element">
@@ -76,7 +77,6 @@
                     <li><a href="lokasi">Lokasi</a></li>
                     <li><a href="tempat">Tempat</a></li>
                     <li><a href="jenis-barang">Jenis Barang</a></li>
-                    <li><a href="presensi-guru">Presensi Guru</a></li>
                 </ul>
             </div>
                          
@@ -122,9 +122,18 @@
                         require $d.'v_jenisbarang.php';
                     break;
 
-                    // guru
-                    case 'vguru':
-                        require $d.'v_guru.php';
+                    // inventaris
+                    case 'vinventaris':
+                        require $d.'v_grup.php';
+                    break;
+                    case 'vaktivitas':
+                        require $d.'v_aktivitas.php';
+                    break;
+                    case 'vpeminjam':
+                        require $d.'v_peminjam.php';
+                    break;
+                    case 'vkembali':
+                        require $d.'v_kembali.php';
                     break;
 
                     default:

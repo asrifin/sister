@@ -1,6 +1,6 @@
-<!--[if lt IE 10]> <!DOCTYPE html> <meta http-equiv="X-UA-Compatible" content="chrome=1"> <![endif]--> 
 <?php
-	//tambah keterangan pad script  
+	//test :: edit script line 2  
+	//test :: edit script line 3  
 	session_start();// ini script PHP untuk memulai sesi di browser client 
 	if(isset($_SESSION['loginS']) and !empty($_SESSION['loginS']) ){
 		require_once 'indexs.php';
@@ -24,7 +24,7 @@
 			<img src="img/avatar.png" /> 
 			<h2 class="loginMessage"></h2> 
 			<div class="fields"> 
-				<form id="frmLogin" /> 
+				<form autocomplete="off" id="frmLogin" /> 
 					<input type="hidden" id="pass2TB" name="pass2TB" /> <p /> 
 					<input type="text" id="userTB" name="userTB" placeholder="Username" /> <p /> 
 					<input type="password" id="passTB" xname="passTB" placeholder="Password" /> 

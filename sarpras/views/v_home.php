@@ -1,6 +1,6 @@
 
 <div class="tile-group double">
-    <div class="tile-group-title">Data Master</div>
+    <div class="tile-group-title">Referensi</div>
 
     <!-- pendataan siswa -->
 
@@ -38,31 +38,38 @@
 </div> <!-- End group -->
 
 <div class="tile-group double">
-    <div class="tile-group-title">Calon Karyawan</div>
-    <a href="departemen" class="tile bg-red" data-click="transform">
+    <div class="tile-group-title">Inventaris</div>
+    <a href="inventaris" class="tile bg-red" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">Data Calon Karyawan</div>
+            <div class="label">Inventaris</div>
         </div>
     </a>
-    
-</div> <!-- End group -->
-
-<div class="tile-group double">
-    <div class="tile-group-title">Karyawan Resign</div>
-
-    <!-- Karyawan Resign -->
-    <a href="departemen" class="tile bg-violet" data-click="transform">
+    <a href="aktivitas" class="tile bg-brown" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">Data Karyawan Resign</div>
+            <div class="label">Aktivitas</div>
         </div>
     </a>
-    <!--end of  departemen -->
-
+    <a href="peminjaman" class="tile bg-blue" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-address-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Peminjaman</div>
+        </div>
+    </a>
+    <a href="pengembalian" class="tile bg-violet" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-address-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Pengembalian</div>
+        </div>
+    </a>
     
 </div> <!-- End group -->

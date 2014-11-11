@@ -8,28 +8,27 @@ var contentFR ='';
                         +'<input id="idformH" type="hidden">' 
                         +'<label>Kode</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="kodeTB" id="kodeTB">'
+                            +'<input placeholder="kode" required type="text" name="kodeTB" id="kodeTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Nama Lokasi</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="namaTB" id="namaTB">'
+                            +'<input  placeholder="lokasi" required type="text" name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Alamat</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="alamatTB" id="alamatTB">'
+                            +'<input  placeholder="alamat" required type="text" name="alamatTB" id="alamatTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Kontak</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="kontakTB" id="kontakTB">'
+                            +'<input  placeholder="kontak / no telp" required type="text" name="kontakTB" id="kontakTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Keterangan</label>'
-                        +'<div class="input-control text">'
-                            +'<input required type="text" name="keteranganTB" id="keteranganTB">'
-                            +'<button class="btn-clear"></button>'
+                        +'<div class="input-control textarea">'
+                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
@@ -48,49 +47,35 @@ var contentFR ='';
             viewFR('');
         });
 
-        // //search action
-        // $('#angkatanS').keydown(function (e){
-        //     if(e.keyCode == 13)
-        //         viewTB($('#departemenS').val());
-        // });$('#keteranganS').keydown(function (e){
-        //     if(e.keyCode == 13)
-        //         viewTB($('#departemenS').val());
-        // });$('#departemenS').on('change',function(){
-        //     viewTB($(this).val());
-        // })
+        //search action
+        $('#kodeS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });$('#namaS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });$('#alamatS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });$('#kontakS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });$('#keteranganS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });
 
-        // // search button
-        // $('#cariBC').on('click',function(){
-        //     $('#cariTR').toggle('slow');
-        //     $('#angkatanS').val('');
-        //     $('#keteranganS').val('');
-        // });
-
+        // search button
+        $('#cariBC').on('click',function(){
+            $('#cariTR').toggle('slow');
+            $('#kodeS').val('');
+            $('#namaS').val('');
+            $('#alamatS').val('');
+            $('#kontakS').val('');
+            $('#keteranganS').val('');
+        });
     }); 
 // end of main function ---
-
-// // combo departemen ---
-//     function cmbdepartemen(){
-//         $.ajax({
-//             url:dir2,
-//             data:'aksi=cmbdepartemen',
-//             dataType:'json',
-//             type:'post',
-//             success:function(dt){
-//                 var out='';
-//                 if(dt.status!='sukses'){
-//                     out+='<option value="">'+dt.status+'</option>';
-//                 }else{
-//                     $.each(dt.departemen, function(id,item){
-//                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-//                     });
-//                     //panggil fungsi viewTB() ==> tampilkan tabel 
-//                     viewTB(dt.departemen[0].replid); 
-//                 }$('#departemenS').html(out);
-//             }
-//         });
-//     }
-//end of combo departemen ---
 
 //save process ---
     function simpan(){
@@ -125,13 +110,17 @@ var contentFR ='';
 // view table ---
     function viewTB(kode){
         var aksi ='aksi=tampil';
-        // var cari = '&departemenS='+dep
-        //             +'&angkatanS='+$('#angkatanS').val()
-        //             +'&keteranganS='+$('#keteranganS').val();
+        // edit by epiii
+        var cari = '&kodeS='+$('#kodeS').val()
+                    +'&namaS='+$('#namaS').val()
+                    +'&alamatS='+$('#alamatS').val()
+                    +'&kontakS='+$('#kontakS').val()
+                    +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',
-            data: aksi,
+            // data: aksi,
+            data: aksi+cari, //edit by epiii
             beforeSend:function(){
                 $('#tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
@@ -195,9 +184,11 @@ var contentFR ='';
 //paging ---
     function pagination(page,aksix,menux){
         var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        // var cari =  '&departemenS='+$('#departemenS').val()
-        //             +'&angkatanS='+$('#angkatanS').val()
-        //             +'&keteranganS='+$('#keteranganS').val();
+        var cari = '&kodeS='+$('#kodeS').val()
+                    +'&namaS='+$('#namaS').val()
+                    +'&alamatS='+$('#alamatS').val()
+                    +'&kontakS='+$('#kontakS').val()
+                    +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url:dir,
             type:"post",
