@@ -193,7 +193,7 @@
 											<button data-hint="ubah"  class="button" onclick="katalogFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
-											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
+											<button data-hint="hapus"  class="button" onclick="katalogDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 										 </td>';
 								$out.= '<tr>
@@ -263,7 +263,7 @@
 						$result =$obj->result;
 
 						#ada data
-						$jum	= mysql_num_rows($result);
+						$jum = mysql_num_rows($result);
 						$out ='';$totaset=0;
 						if($jum!=0){	
 							$nox 	= $starting+1;
@@ -347,6 +347,7 @@
 												nama 		= "'.filter($_POST['g_namaTB']).'",
 												keterangan 	= "'.filter($_POST['g_keteranganTB']).'"';
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						// var_dump($s2);exit();
 						$e 		= mysql_query($s2);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array('status'=>$stat));
@@ -383,7 +384,8 @@
 
 					case 'katalog':
 						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb3.' where replid='.$_POST['replid']));
-						$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
+						$s    = 'DELETE from '.$tb3.' WHERE replid='.$_POST['replid'];
+						// var_dump($s);exit();
 						$e    = mysql_query($s);
 						$stat = ($e)?'sukses':'gagal';
 						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
@@ -414,6 +416,8 @@
 									k.kode,
 									k.nama,
 									k.jenis,
+									k.susut,
+									k.keterangan,
 									l.nama as lokasi, 
 									g.nama as grup
 								FROM 
@@ -422,18 +426,27 @@
 									 '.$tb.' g
 								WHERE 
 									g.replid = k.grup and 
-									l.replid = k.lokasi and 
+									l.replid = g.lokasi and 
 									k.replid ='.$_POST['replid'];
 						$e 		= mysql_query($s);
 						$r 		= mysql_fetch_assoc($e);
 						$stat 	= ($e)?'sukses':'gagal';
-						$out 	= json_encode(array(
-									'kode'       =>$r['kode'],
-									'nama'       =>$r['nama'],
-									'lokasi'     =>$r['lokasi'],
-									'grup'       =>$r['grup'],
-									'jenis'      =>$r['grup'],
-									'keterangan' =>$r['keterangan']
+						if(!$e){
+							$stat ='gagal';
+						}else{
+							$stat ='sukses';
+							$dt   =array(
+										'kode'       =>$r['kode'],
+										'nama'       =>$r['nama'],
+										'susut'      =>$r['susut'],
+										'lokasi'     =>$r['lokasi'],
+										'grup'       =>$r['grup'],
+										'jenis'      =>$r['jenis'],
+										'keterangan' =>$r['keterangan']
+									);						
+						}$out 	= json_encode(array(
+									'status' =>$stat,
+									'data'   =>$dt,
 								));					
 					break;
 				}

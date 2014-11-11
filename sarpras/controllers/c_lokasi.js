@@ -97,7 +97,8 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#lokasiS').val());
+                    // viewTB($('#lokasiS').val());
+                    viewTB($('').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }
