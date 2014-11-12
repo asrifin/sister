@@ -131,7 +131,7 @@
             <!-- group 2 -->
             <div class="tile-group four">
                 <!-- PERPUS -->
-                <a class="tile double double-vertical bg-steel" data-click="transform">
+                <a href="perpus" class="tile double double-vertical bg-steel" data-click="transform">
                     <div class="tile-content bg-brown">
                         <div class="padding10">
                             <center>

@@ -1,5 +1,5 @@
 // var dir       ='models/m_angkatan.php';
-var dir       ='models/m_departemen.php';
+var dir       ='models/m_jenis.php';
 var contentFR ='';
 
 // main function ---

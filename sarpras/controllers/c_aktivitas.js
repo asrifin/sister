@@ -89,6 +89,8 @@ var contentFR ='';
     }); 
 // end of main function ---
 
+// ghjg
+// ghjg
 // combo departemen ---
     // function cmblokasi(lok){ edited by epiii
     function cmblokasi(){
@@ -272,7 +274,7 @@ function notif(cont,clr) {
     });
 }
 // end of notifikasi
-
+// hjkagj
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');

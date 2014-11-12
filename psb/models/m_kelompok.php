@@ -17,12 +17,11 @@
 			case 'tampil':
 				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
-				$keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
+				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.' 
 						WHERE 
-							kelompok like "%'.$kelompok.'%" and
-							keterangan like "%'.$keterangan.'%"
+							kelompok like "%'.$kelompok.'%"							
 						ORDER 
 							BY kelompok asc';
 				// print_r($sql);exit();

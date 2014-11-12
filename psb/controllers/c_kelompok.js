@@ -83,16 +83,17 @@ var contentFR = '';
         });$('#kelompokS').keydown(function(e){
             if(e.keyCode==13)
                 viewTB();
-        });$('#tglpendaftaranS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
         });
+        // $('#tglpendaftaranS').keydown(function(e){
+        //     if(e.keyCode==13)
+        //         viewTB();
+        // });
 
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
             $('#kelompokS').val('');
-            $('#tglpendaftaranS').val('');
+            // $('#tglpendaftaranS').val('');
         });
     }); 
 // end of save process ---
@@ -183,7 +184,7 @@ var contentFR = '';
         var aksi ='aksi=tampil';
         var cari = '&tahunajaranS='+$('#tahunajaranS').val()
                     +'&kelompokS='+$('#kelompokS').val()
-                    +'&tglpendaftaranS='+$('#tglpendaftaranS').val();
+                    // +'&tglpendaftaranS='+$('#tglpendaftaranS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -279,7 +280,7 @@ var contentFR = '';
         var datax = 'starting='+page+'&aksi='+aksix;
         var cari = '&kelompokS='+$('#kelompokS').val()
                     // +'&tingkatS='+$('#tingkatS').val()
-                    +'&tglpendaftaranS='+$('#tglpendaftaranS').val();
+                    // +'&tglpendaftaranS='+$('#tglpendaftaranS').val();
 
         $.ajax({
             url:dir,
