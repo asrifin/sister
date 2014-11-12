@@ -223,14 +223,13 @@
 
 					// barang
 					case 'barang':
-						// $grup       = trim($_POST['grup'])?filter($_POST['grup']):'';
-						// $lokasi       = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
-						// $g_kode       = trim($_POST['g_kodeS'])?filter($_POST['g_kodeS']):'';
-						// $g_nama       = trim($_POST['g_namaS'])?filter($_POST['g_namaS']):'';
-						// $g_utotal     = trim($_POST['g_utotalS'])?filter($_POST['g_utotalS']):'';
-						// $g_utersedia  = trim($_POST['g_utersediaS'])?filter($_POST['g_utersediaS']):'';
-						// $g_udipinjam  = trim($_POST['g_udipinjamS'])?filter($_POST['g_udipinjamS']):'';
-						// $g_keterangan = trim($_POST['g_keteranganS'])?filter($_POST['g_keteranganS']):'';
+						$b_katalog    = isset($_POST['katalog'])?filter(trim($_POST['katalog'])):'';
+						$b_kode       = isset($_POST['b_kodeS'])?filter(trim($_POST['b_kodeS'])):'';
+						$b_barkode    = isset($_POST['b_barkodeS'])?filter(trim($_POST['b_barkodeS'])):'';
+						$b_harga      = isset($_POST['b_hargaS'])?filter(trim($_POST['b_hargaS'])):'';
+						$b_kondisi    = isset($_POST['b_kondisiS'])?filter(trim($_POST['b_kondisiS'])):'';
+						$b_status     = isset($_POST['b_statusS'])?filter(trim($_POST['b_statusS'])):'';
+						$b_keterangan = isset($_POST['b_keteranganS'])?filter(trim($_POST['b_keteranganS'])):'';
 						
 						$sql = 'SELECT
 									b.replid,
@@ -242,7 +241,15 @@
 									b.kondisi,
 									b.keterangan
 								FROM
-									sar_barang b';
+									sar_barang b
+								WHERE
+									b.katalog = '.$b_katalog.' and
+									b.kode LIKE "%'.$b_kode.'%" and
+									b.barkode LIKE "%'.$b_barkode.'%" and
+									b.harga LIKE "%'.$b_harga.'%" and
+									b.kondisi LIKE "%'.$b_kondisi.'%" and
+									b.status LIKE "%'.$b_status.'%" and
+									b.keterangan LIKE "%'.$b_keterangan.'%"';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -261,9 +268,6 @@
 							// $nox 	= $starting+1;
 							while($res = mysql_fetch_array($result)){	
 								$btn ='<td>
-											<button data-hint="detail"  class="button" onclick="vwBarang('.$res['replid'].');">
-												<i class="icon-zoom-in"></i>
-											</button>
 											<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
@@ -301,6 +305,32 @@
 			case 'headinfo':
 				switch ($_POST['subaksi']) {
 					case 'katalog':
+						$s = 'SELECT 
+								g.nama as grup,
+								l.nama as lokasi,
+								sum(b.harga)as totaset
+							  FROM 
+							  	'.$tb4.' b,
+							  	'.$tb3.' k,
+							  	'.$tb2.' l,
+							  	'.$tb.' g
+							  WHERE 
+								g.replid ='.$_POST['grup'].' and 
+								b.katalog = k.replid and
+							  	g.lokasi = l.replid and
+							  	g.replid=k.grup';
+						$q 	= mysql_query($s);
+						$stat = ($q)?'sukses':'gagal';
+						$r = mysql_fetch_assoc($q);
+						$out = json_encode(array(
+								'status'=>$stat,
+								'grup'=>$r['grup'],
+								'lokasi'=>$r['lokasi'],
+								'totaset'=>number_format($r['totaset'])
+							));
+					break;
+
+					case 'barang':
 						$s = 'SELECT 
 								g.nama as grup,
 								l.nama as lokasi,
@@ -437,7 +467,7 @@
 									);						
 						}$out 	= json_encode(array(
 									'status' =>$stat,
-									'data'   =>$dt,
+									'data'   =>$dt
 								));					
 					break;
 				}

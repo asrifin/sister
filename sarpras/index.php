@@ -53,10 +53,10 @@
                 axis: 'x',
                 height: 355
             });
-            $("#panel2").scrollbar({
+            // $("#panel2").scrollbar({
                 // height: 355
-                height: 768
-            });
+                // height: 768
+            // });
         });
     </script>
     <title>.:SISTER:.</title>

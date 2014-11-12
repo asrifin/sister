@@ -47,8 +47,8 @@
 <!-- end of panel 1 -->
 
 <!-- panel 2 -->
-<div  data-role="scrollbox1" data-scroll="both" xstyle="width: 500px"
-title="Katalog Barang" class="panelx" id="panel2" style="display:none;">
+<!-- <div  data-role="scrollbox1" data-scroll="both" xstyle="width: 500px" title="Katalog Barang" class="panelx" id="panel2" style="display:none;"> -->
+<div title="Katalog Barang" class="panelx" id="panel2" style="display:none;">
     <button data-hint="kembali" id="k_grupBC"><span class=" icon-arrow-left-2"></span> </button>
     <button data-hint="Tambah Data" id="k_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="k_cariBC"><span class="icon-search"></span> </button>
@@ -103,25 +103,35 @@ title="Katalog Barang" class="panelx" id="panel2" style="display:none;">
 <!-- end of panel 2 -->
 
 <!-- panel 3 -->
-<div title="Unit Barang" class="panelx" id="panel3" xstyle="display:none;">
-<!--     <button data-hint="kembali" id="b_inventoryBC"><span class=" icon-arrow-left-2"></span> </button>
+<!-- <div id="panel3" class="panelx" style="display:none;">iki panel 3</div> -->
+<div title="Unit Barang" class="panelx" id="panel3" style="display:none;">
+    <button data-hint="kembali ke Katalog" id="b_katalogBC"><span class=" icon-arrow-left-2"></span> </button>
     <button data-hint="Tambah Data" id="b_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="b_cariBC"><span class="icon-search"></span> </button>
- -->    
+
+    <input type="hidden" id="b_katalogH1" name="b_katalogH1" >
     <div class="grid"  style="color:white;">
-<!--         <div class="row">
-            <div class="span2">Grup Barang </div>
-            <div id="k_grupDV" class="span2"></div>
+        <div class="row">
+            <div class="span2">Nama Barang </div>
+            <div id="b_katalogDV" class="span2"></div>
+        </div>
+        <div class="row">
+            <div class="span2">Grup Barang</div>
+            <div id="b_grupDV" class="span2"></div>
         </div>
         <div class="row">
             <div class="span2">Lokasi</div>
-            <div id="k_lokasiDV" class="span2"></div>
-        </div>
+            <div id="b_lokasiDV" class="span2"></div>
+        </div>    
         <div class="row">
-            <div class="span2">Total Aset</div>
-            <div id="k_totasetDV" class="span2"></div>
-        </div>
- -->    </div>
+            <div class="span2">Jumlah Unit</div>
+            <div id="b_totbarangDV" class="span2"></div>
+        </div>    
+        <div class="row">
+            <div class="span2">Penyusutan per th </div>
+            <div id="b_susutDV" class="span2"></div>
+        </div>    
+    </div>
 
     <table class="table hovered bordered striped">
         <thead>
@@ -136,12 +146,15 @@ title="Katalog Barang" class="panelx" id="panel2" style="display:none;">
                 <th class="text-left">Aksi</th>
             </tr>
             <tr style="display:none;" id="b_cariTR" class="selected">
-                <th class="text-left"><input placeholder="kode" id="k_kodeS" name="k_kodeS" class="span1"></th>
+                <th class="text-left"><input placeholder="kode" id="b_kodeS" name="b_kodeS"></th>
                 <th class="text-left"><input placeholder="barkode" id="b_barkodeS" name="b_barkodeS"></th>
                 <th class="text-left"><input placeholder="sumber" id="b_sumberS" name="b_sumberS" class="span1"></th>
                 <th class="text-left"><input placeholder="harga" id="b_hargaS" name="b_hargaS" class="span1"></th>
-                <th class="text-left"><input placeholder="kondisi" id="b_kondisi" name="b_kondisi"  class="span1"></th>
-                <th class="text-left"><input placeholder="status" id="b_status" name="b_status"  class="span1"></th>
+                <th class="text-left">
+                    <select name="b_kondisiS" id="b_kondisiS"></select>
+                    <!-- <input placeholder="kondisi" id="b_kondisiS" name="b_kondisiS"  class="span1"> -->
+                </th>
+                <th class="text-left"><input placeholder="status" id="b_statusS" name="b_statusS"  class="span1"></th>
                 <th class="text-left"><input placeholder="keterangan" id="b_keteranganS" name="b_keteranganS"></th>
                 <th class="text-left"></th>
             </tr>
@@ -149,7 +162,6 @@ title="Katalog Barang" class="panelx" id="panel2" style="display:none;">
         <tbody id="b_tbody">
         </tbody>
         <tfoot>
-            <!-- tempat footer table -->
         </tfoot>
     </table>
 </div>

@@ -3,12 +3,14 @@ var mnu2      ='lokasi';
 var mnu3      ='katalog'; 
 var mnu4      ='jenis'; 
 var mnu5      ='barang'; 
+var mnu6      ='Kondisi'; 
 
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
 var dir3      ='models/m_'+mnu3+'.php';
 var dir4      ='models/m_'+mnu4+'.php';
 var dir5      ='models/m_'+mnu5+'.php';
+var dir6      ='models/m_'+mnu6+'.php';
 
 var g_contentFR = k_contentFR = b_contentFR ='';
 
@@ -172,42 +174,54 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         +'</div>';
             // barang
             b_contentFR += '<form autocomplete="off" onsubmit="barangSV();return false;" id="'+mnu5+'FR">' 
-                            +'<input id="idformH" type="hidden">' 
+                            +'<input id="b_idformH" type="hidden">' 
 
                             +'<label>Lokasi</label>'
                             +'<div class="input-control text">'
-                                +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span5">'
-                                +'<input disabled="disabled" name="k_lokasiTB" id="k_lokasiTB" class="span2">'
+                                +'<input  type="hidden" name="b_katalogH" id="b_katalogH">'
+                                +'<input disabled="disabled" name="b_katalogTB" id="b_katalogTB" class="span2">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
                             
-                            +'<label>Grup</label>'
+                            +'<label>Jumlah Unit Baru</label>'
                             +'<div class="input-control text">'
-                                +'<input placeholder="kode" name="k_grupTB" id="k_grupTB" class="span2">'
+                                +'<input placeholder="jumlah" name="b_jumbarangTB" id="b_jumbarangTB" class="span2">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
                             
-                            +'<label>Nama</label>'
+                            +'<label>Kode</label>'
                             +'<div class="input-control text">'
-                                +'<input  placeholder="nama"  required type="text" name="k_namaTB" id="k_namaTB">'
+                                +'<input  placeholder="kode"  required type="text" name="b_kodeTB" id="b_kodeTB">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
 
-                            +'<label>Jenis</label>'
+                            +'<label>Barcode</label>'
                             +'<div class="input-control text">'
-                                +'<input  placeholder="jenis"  required type="text" name="k_jenisTB" id="k_jenisTB">'
+                                +'<input required type="text" name="b_barkodeTB" id="b_barkodeTB">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
 
-                            +'<label>Susut</label>'
+                            +'<label>Sumber</label>'
                             +'<div class="input-control text">'
-                                +'<input  placeholder="jenis"  required type="text" name="k_susutTB" id="k_susutTB">'
+                                +'<input required type="radio" name="sumberTB" id="sumberTB1">'
+                                +'<input required type="radio" name="sumberTB" id="sumberTB2">'
+                                +'<input required type="radio" name="sumberTB" id="sumberTB3">'
+                            +'</div>'
+
+                            +'<label>Harga</label>'
+                            +'<div class="input-control text">'
+                                +'<input required type="text" name="b_hargaTB" id="b_hargaTB">'
                                 +'<button class="btn-clear"></button>'
+                            +'</div>'
+
+                            +'<label>Kondisi</label>'
+                            +'<div class="input-control select">'
+                                +'<select required name="b_kondisiTB" id="b_kondisiTB"></select>'
                             +'</div>'
 
                             +'<label>Keterangan</label>'
                             +'<div class="input-control textarea">'
-                                +'<textarea placeholder="keterangan" name="g_keteranganTB" id="g_keteranganTB"></textarea>'
+                                +'<textarea placeholder="keterangan" name="b_keteranganTB" id="b_keteranganTB"></textarea>'
                             +'</div>'
 
                             +'<div class="input-control file info-state" data-role="input-control">'
@@ -272,6 +286,33 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                     vwKatalog($('#g_lokasiS').val());
             });
 
+            // unit barang
+            $('#b_kodeS').on('keydown',function (e){ // kode grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_namaS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_barkodeS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_sumberS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_hargaS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_kondisiS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_statusS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_keteranganS').on('keydown',function (e){ // keterangan
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });
+
         // search button
             //grup
             $('#g_cariBC').on('click',function(){
@@ -290,12 +331,24 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 $('#k_namaS').val('');
                 $('#k_keteranganS').val('');
             });
+            // barang
+            $('#b_cariBC').on('click',function(){
+                $('#b_cariTR').toggle('slow');
+                $('#b_kodeS').val('');
+                $('#b_barkodeS').val('');
+                $('#b_namaS').val('');
+                $('#b_keteranganS').val('');
+            });
 
         // switch panel
             switchPN(1);
-            $('#k_grupBC').on('click',function(){
+            // back button
+            $('#k_grupBC').on('click',function(){ // << grup
                 cmblokasi();
                 switchPN(1);
+            });$('#b_katalogBC').on('click',function(){ // << katalog
+                vwKatalog($('#g_lokasiS').val());
+                switchPN(2);
             });
     }); 
 // end of main function ---
@@ -395,19 +448,23 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 
     // barang
         function vwBarang(id) {
+            switchPN(3);
             var aksi ='aksi=tampil&subaksi=barang&katalog='+id;
-            // var cari ='&lokasiS='+lok
-            //         +'&k_kodeS='+$('#k_kodeS').val()
-            //         +'&k_namaS='+$('#k_namaS').val()
-            //         +'&k_keteranganS='+$('#k_keteranganS').val();
+            var cari ='&b_kodeS='+$('#b_kodeS').val()
+                    +'&b_barkodeS='+$('#b_barkodeS').val()
+                    +'&b_hargaS='+$('#b_hargaS').val()
+                    +'&b_kondisiS='+$('#b_kondisiS').val()
+                    +'&b_statusS='+$('#b_statusS').val()
+                    +'&b_keteranganS='+$('#b_keteranganS').val();
             $.ajax({
                 url : dir,
                 type: 'post',
-                data: aksi,
-                // data: aksi+cari,
+                data: aksi+cari,
                 beforeSend:function(){
                     $('#b_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
                 },success:function(dt){
+                    $('#b_katalogH1').val(id);
+                    vwHeadBarang(id);
                     switchPN(3);
                     setTimeout(function(){
                         $('#b_tbody').html(dt).fadeIn();
@@ -474,7 +531,36 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 }
             });
         }
-    //end ofkatalog ---
+    //end of katalog ---
+
+    //Barang ---
+        function barangSV(){
+            var urlx ='&aksi=simpan&subaksi=barang';
+            // edit mode
+            if($('#b_idformH').val()!=''){
+                urlx += '&replid='+$('#b_idformH').val();
+            }
+            $.ajax({
+                url:dir,
+                cache:false,
+                type:'post',
+                dataType:'json',
+                data:$('form').serialize()+urlx,
+                success:function(dt){
+                    if(dt.status!='sukses'){
+                        cont = 'Gagal menyimpan data';
+                        clr  = 'red';
+                    }else{
+                        $.Dialog.close();
+                        kkosongkan();
+                        vwBarang($('#b_katalogH1').val());
+                        cont = 'Berhasil menyimpan data';
+                        clr  = 'green';
+                    }notif(cont,clr);
+                }
+            });
+        }
+    //end of Barang ---
 
 /*delete*/
     //grup  ---
@@ -690,14 +776,15 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 url:dir,
                 type:'post',
                 dataType:'json',
-                data:'aksi=headinfo&subaksi=katalog&grup='+id,
+                data:'aksi=headinfo&subaksi=barang&katalog='+id,
                 success:function (dt) {
                     if (dt.status!='sukses') {
                         alert(dt.status+' memuat data header');
                     }else{
-                        $('#k_grupDV').html(dt.grup);
-                        $('#k_lokasiDV').html(dt.lokasi);
-                        $('#k_totasetDV').html('Rp. '+dt.totaset+',-');
+                        alert('sukses load headinfo');
+                        // $('#k_grupDV').html(dt.grup);
+                        // $('#k_lokasiDV').html(dt.lokasi);
+                        // $('#k_totasetDV').html('Rp. '+dt.totaset+',-');
                     }
                 },
             });
@@ -758,6 +845,29 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         }
     //end of departemen ---
 
+    // Kondisi
+        function cmbkondisi (katalog) {
+            $.ajax({
+                url:dir6,
+                type:'post',
+                dataType:'json',
+                data:'aksi=cmb'+mnu6,
+                success:function(dt){
+                    var opt='';
+                    if (dt.status!='sukses') {
+                        notif(dt.status,'red');
+                        opt+='<option value="">'+dt.status+'</option>'
+                    }else{
+                        $.each(dt.kondisi,function(id,item){
+                            opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
+                        });$('#b_kondisiS').html('<option value="">-Semua-</option>'+opt);
+                        // vwBarang(katalog,dt.jenis[0].nama);
+                        vwBarang(katalog);
+                    }
+                },
+            });
+        }
+    // end of Kondisi
 // notifikasi
     function notif(cont,clr) {
         var not = $.Notify({
