@@ -47,7 +47,8 @@
 <!-- end of panel 1 -->
 
 <!-- panel 2 -->
-<div title="Katalog Barang" class="panelx" id="panel2" style="display:none;">
+<div  data-role="scrollbox1" data-scroll="both" xstyle="width: 500px"
+title="Katalog Barang" class="panelx" id="panel2" style="display:none;">
     <button data-hint="kembali" id="k_grupBC"><span class=" icon-arrow-left-2"></span> </button>
     <button data-hint="Tambah Data" id="k_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="k_cariBC"><span class="icon-search"></span> </button>
@@ -101,15 +102,14 @@
 </div>
 <!-- end of panel 2 -->
 
-
 <!-- panel 3 -->
-<div title="Unit Barang" class="panelx" id="panel3" style="display:none;">
-    <button data-hint="kembali" id="b_inventoryBC"><span class=" icon-arrow-left-2"></span> </button>
+<div title="Unit Barang" class="panelx" id="panel3" xstyle="display:none;">
+<!--     <button data-hint="kembali" id="b_inventoryBC"><span class=" icon-arrow-left-2"></span> </button>
     <button data-hint="Tambah Data" id="b_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="b_cariBC"><span class="icon-search"></span> </button>
-    
+ -->    
     <div class="grid"  style="color:white;">
-        <div class="row">
+<!--         <div class="row">
             <div class="span2">Grup Barang </div>
             <div id="k_grupDV" class="span2"></div>
         </div>
@@ -121,28 +121,28 @@
             <div class="span2">Total Aset</div>
             <div id="k_totasetDV" class="span2"></div>
         </div>
-    </div>
+ -->    </div>
 
     <table class="table hovered bordered striped">
         <thead>
             <tr style="color:white;"class="info">
                 <th class="text-center">Kode </th>
-                <th class="text-center">Nama Barang</th>
-                <th class="text-left">Jenis</th>
-                <th class="text-left">Jumlah Unit</th>
-                <th class="text-left">Asset</th>
-                <th class="text-left">Penyusutan per th</th>
+                <th class="text-center">Barcode</th>
+                <th class="text-left">Sumber</th>
+                <th class="text-left">Harga</th>
+                <th class="text-left">Kondisi</th>
+                <th class="text-left">Status</th>
                 <th class="text-left">Keterangan</th>
                 <th class="text-left">Aksi</th>
             </tr>
             <tr style="display:none;" id="b_cariTR" class="selected">
                 <th class="text-left"><input placeholder="kode" id="k_kodeS" name="k_kodeS" class="span1"></th>
-                <th class="text-left"><input placeholder="nama" id="k_namaS" name="k_namaS"></th>
-                <th class="text-left"><input placeholder="jenis" id="k_jenisS" name="k_jenisS" class="span1"></th>
-                <th class="text-left"><input placeholder="jumlah unit" id="k_jumunitS" name="k_jumunitS" class="span1"></th>
-                <th class="text-left"><input placeholder="aset" id="k_hargaS" name="k_hargaS"  class="span1"></th>
-                <th class="text-left"><input placeholder="penyusutan" id="k_susutS" name="k_susutS"  class="span1"></th>
-                <th class="text-left"><input placeholder="keterangan" id="k_keteranganS" name="k_keteranganS"></th>
+                <th class="text-left"><input placeholder="barkode" id="b_barkodeS" name="b_barkodeS"></th>
+                <th class="text-left"><input placeholder="sumber" id="b_sumberS" name="b_sumberS" class="span1"></th>
+                <th class="text-left"><input placeholder="harga" id="b_hargaS" name="b_hargaS" class="span1"></th>
+                <th class="text-left"><input placeholder="kondisi" id="b_kondisi" name="b_kondisi"  class="span1"></th>
+                <th class="text-left"><input placeholder="status" id="b_status" name="b_status"  class="span1"></th>
+                <th class="text-left"><input placeholder="keterangan" id="b_keteranganS" name="b_keteranganS"></th>
                 <th class="text-left"></th>
             </tr>
         </thead>

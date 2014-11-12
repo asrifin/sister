@@ -223,7 +223,7 @@
 
 					// barang
 					case 'barang':
-						$grup       = trim($_POST['grup'])?filter($_POST['grup']):'';
+						// $grup       = trim($_POST['grup'])?filter($_POST['grup']):'';
 						// $lokasi       = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
 						// $g_kode       = trim($_POST['g_kodeS'])?filter($_POST['g_kodeS']):'';
 						// $g_nama       = trim($_POST['g_namaS'])?filter($_POST['g_namaS']):'';
@@ -233,24 +233,16 @@
 						// $g_keterangan = trim($_POST['g_keteranganS'])?filter($_POST['g_keteranganS']):'';
 						
 						$sql = 'SELECT
-									k.replid,
-									k.kode,
-									k.nama,
-									j.nama jenis,
-									COUNT(*) jum_unit,
-									SUM(b.harga) aset,
-									k.susut,
-									k.keterangan
-								FROM	
-									sar_katalog k
-									LEFT JOIN sar_jenis  j on j.replid = k.jenis
-									LEFT JOIN sar_barang b on b.katalog = k.replid
-								WHERE
-									k.grup = '.$grup.'
-								GROUP BY 
-									k.replid
-								ORDER BY
-									k.kode asc';
+									b.replid,
+									b.kode,
+									b.barkode,
+									b.sumber,
+									b.harga,
+									b.status,
+									b.kondisi,
+									b.keterangan
+								FROM
+									sar_barang b';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -266,7 +258,7 @@
 						$jum = mysql_num_rows($result);
 						$out ='';$totaset=0;
 						if($jum!=0){	
-							$nox 	= $starting+1;
+							// $nox 	= $starting+1;
 							while($res = mysql_fetch_array($result)){	
 								$btn ='<td>
 											<button data-hint="detail"  class="button" onclick="vwBarang('.$res['replid'].');">
@@ -280,16 +272,15 @@
 										 </td>';
 								$out.= '<tr>
 											<td>'.$res['kode'].'</td>
-											<td>'.$res['nama'].'</td>
-											<td>'.$res['jenis'].'</td>
-											<td>'.$res['jum_unit'].'</td>
-											<td class="text-right">Rp. '.number_format($res['aset']).',-</td>
-											<td class="text-right">'.$res['susut'].'%</td>
+											<td>'.$res['barkode'].'</td>
+											<td>'.$res['sumber'].'</td>
+											<td class="text-right">Rp. '.number_format($res['harga']).',-</td>
+											<td>'.$res['kondisi'].'</td>
+											<td>'.$res['status'].'</td>
 											<td>'.$res['keterangan'].'</td>
 											'.$btn.'
 										</tr>';
-								$totaset+=$res['aset'];
-								$nox++;
+								// $nox++;
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
