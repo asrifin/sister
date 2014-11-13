@@ -3,7 +3,7 @@ var mnu2      ='lokasi';
 var mnu3      ='katalog'; 
 var mnu4      ='jenis'; 
 var mnu5      ='barang'; 
-var mnu6      ='Kondisi'; 
+var mnu6      ='kondisi'; 
 
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
@@ -235,8 +235,12 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                             +'</div>'
                         +'</form>';
 
-        //combo lokasi
+        //combo
+            //grup : lokasi
             cmblokasi();
+
+            //barang : kondisi
+            cmbkondisi();
 
         //add form
             $("#g_tambahBC").on('click', function(){ // grup form 
@@ -287,6 +291,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             });
 
             // unit barang
+            $('#b_kondisiS').on('change',function(){
+                vwBarang($('#b_katalogH1').val());
+            });
             $('#b_kodeS').on('keydown',function (e){ // kode grup
                 if(e.keyCode == 13)
                     vwBarang($('#b_katalogH1').val());
@@ -779,12 +786,15 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 data:'aksi=headinfo&subaksi=barang&katalog='+id,
                 success:function (dt) {
                     if (dt.status!='sukses') {
-                        alert(dt.status+' memuat data header');
+                        notif(dt.status,'red');
+                        // alert(dt.status+' memuat data header');
                     }else{
-                        alert('sukses load headinfo');
-                        // $('#k_grupDV').html(dt.grup);
-                        // $('#k_lokasiDV').html(dt.lokasi);
-                        // $('#k_totasetDV').html('Rp. '+dt.totaset+',-');
+                        $('#b_katalogDV').html(dt.data.katalog);
+                        $('#b_grupDV').html(dt.data.grup);
+                        $('#b_lokasiDV').html(dt.data.lokasi);
+                        $('#b_totbarangDV').html(dt.data.totbarang+' unit');
+                        $('#b_totasetDV').html('Rp. '+dt.data.totaset+',-');
+                        $('#b_susutDV').html(dt.data.susut+' %');
                     }
                 },
             });
@@ -846,7 +856,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     //end of departemen ---
 
     // Kondisi
-        function cmbkondisi (katalog) {
+        function cmbkondisi () {
             $.ajax({
                 url:dir6,
                 type:'post',

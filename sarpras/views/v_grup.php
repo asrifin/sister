@@ -107,8 +107,10 @@
 <!-- <div id="panel3" class="panelx" style="display:none;">iki panel 3</div> -->
 <div title="Unit Barang" class="panelx" id="panel3" style="display:none;">
     <button data-hint="kembali ke Katalog" id="b_katalogBC"><span class=" icon-arrow-left-2"></span> </button>
+    <button data-hint="Ubah Data" id="b_ubahBC"><span class="icon-pencil"></span> </button>
     <button data-hint="Tambah Data" id="b_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="b_cariBC"><span class="icon-search"></span> </button>
+    <button data-hint="Cetak" id="b_cetakBC"><span class="icon-printer"></span> </button>
 
     <input type="hidden" id="b_katalogH1" name="b_katalogH1" >
     <div class="grid"  style="color:white;">
@@ -127,6 +129,10 @@
         <div class="row">
             <div class="span2">Jumlah Unit</div>
             <div id="b_totbarangDV" class="span2"></div>
+        </div>    
+        <div class="row">
+            <div class="span2">Total Aset</div>
+            <div id="b_totasetDV" class="span2"></div>
         </div>    
         <div class="row">
             <div class="span2">Penyusutan per th </div>

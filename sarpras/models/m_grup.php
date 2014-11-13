@@ -238,11 +238,12 @@
 									b.sumber,
 									b.harga,
 									b.status,
-									b.kondisi,
+									k.nama as kondisi,
 									b.keterangan
 								FROM
-									sar_barang b
+									sar_barang b, sar_kondisi k
 								WHERE
+									b.kondisi=k.replid and
 									b.katalog = '.$b_katalog.' and
 									b.kode LIKE "%'.$b_kode.'%" and
 									b.barkode LIKE "%'.$b_barkode.'%" and
@@ -331,29 +332,56 @@
 					break;
 
 					case 'barang':
-						$s = 'SELECT 
-								g.nama as grup,
-								l.nama as lokasi,
-								sum(b.harga)as totaset
-							  FROM 
-							  	'.$tb4.' b,
-							  	'.$tb3.' k,
-							  	'.$tb2.' l,
-							  	'.$tb.' g
-							  WHERE 
-								g.replid ='.$_POST['grup'].' and 
-								b.katalog = k.replid and
-							  	g.lokasi = l.replid and
-							  	g.replid=k.grup';
-						$q 	= mysql_query($s);
-						$stat = ($q)?'sukses':'gagal';
-						$r = mysql_fetch_assoc($q);
-						$out = json_encode(array(
-								'status'=>$stat,
-								'grup'=>$r['grup'],
-								'lokasi'=>$r['lokasi'],
-								'totaset'=>number_format($r['totaset'])
-							));
+						$s = '	SELECT
+									g.replid,
+									g.nama as grup,(
+										SELECT nama
+										from sar_lokasi 
+										where replid = g.lokasi
+									)as lokasi,
+									IFNULL(tbjum.totbarang,0)totbarang,
+									tbjum.susut,
+									tbjum.nama as katalog,
+									tbjum.totaset
+								from 
+									sar_grup g
+									LEFT JOIN (
+										SELECT 
+											k.replid,
+											k.grup,
+											k.susut,
+											k.nama,
+											count(*)totbarang,
+											sum(b.harga)totaset
+										from 
+											sar_katalog k,
+											sar_barang b
+										WHERE
+											k.replid = b.katalog AND
+											k.replid = '.$_POST['katalog'].'
+									)tbjum on tbjum.grup = g.replid
+								where 
+									tbjum.replid= '.$_POST['katalog'];
+						// var_dump($s);exit();
+						$e = mysql_query($s);
+						$r = mysql_fetch_assoc($e);
+						if(!$e){
+							$stat='gagal';
+						}else{
+							$stat ='sukses';
+							$dt   = array(
+										'katalog'   =>$r['katalog'],
+										'grup'      =>$r['grup'],
+										'lokasi'    =>$r['lokasi'],
+										'susut'     =>$r['susut'],
+										'totbarang' =>$r['totbarang'],
+										'totaset'   =>number_format($r['totaset'])
+									);
+						}
+						$out  = json_encode(array(
+									'status' =>$stat,
+									'data'   =>$dt
+								));
 					break;
 				}
 			break;
