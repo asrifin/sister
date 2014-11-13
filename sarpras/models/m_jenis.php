@@ -14,17 +14,17 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
+				$kode  = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
 				$nama    = trim($_POST['namaS'])?filter($_POST['namaS']):'';
-				$alamat  = trim($_POST['alamatS'])?filter($_POST['alamatS']):'';
-				$telepon = trim($_POST['teleponS'])?filter($_POST['teleponS']):'';
+				$keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
 							nama like "%'.$nama.'%" and 
-							alamat like "%'.$alamat.'%" and 
-							telepon like "%'.$telepon.'%" 
+							kode like "%'.$kode.'%" and 
+							keterangan like "%'.$keterangan.'%" 
 						ORDER 
-							BY urut asc';
+							BY kode asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -51,10 +51,9 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
+									<td>'.$res['kode'].'</td>
 									<td>'.$res['nama'].'</td>
-									<td>'.$res['alamat'].'</td>
-									<td>'.$res['telepon'].'</td>
+									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -72,9 +71,9 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	nama 	= "'.filter($_POST['namaTB']).'",
-										alamat 	= "'.filter($_POST['alamatTB']).'",
-										telepon	= "'.filter($_POST['teleponTB']).'"';
+				$s 		= $tb.' set 	kode 	= "'.filter($_POST['kodeTB']).'",
+										nama 	= "'.filter($_POST['namaTB']).'",
+										keterangan	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
 				$stat 	= ($e)?'sukses':'gagal';
@@ -104,9 +103,9 @@
 				// var_dump($s);
 				$out 	= json_encode(array(
 							'status'  =>$stat,
+							'kode'  =>$r['kode'],
 							'nama'    =>$r['nama'],
-							'alamat'  =>$r['alamat'],
-							'telepon' =>$r['telepon']
+							'keterangan' =>$r['keterangan']
 						));
 			break;
 			// ambiledit ------			
@@ -116,7 +115,7 @@
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
-						ORDER  BY nama asc';
+						ORDER  BY kode asc';
 				$e  = mysql_query($s);
 				// var_dump($s);
 				$n  = mysql_num_rows($e);

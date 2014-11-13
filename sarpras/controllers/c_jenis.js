@@ -1,24 +1,25 @@
-// var dir       ='models/m_angkatan.php';
+var mnu       ='jenis';
 var dir       ='models/m_jenis.php';
+
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="angkatanFR">' 
                         +'<input id="idformH" type="hidden">' 
-                        +'<label>Departemen</label>'
+                        +'<label>Kode</label>'
+                        +'<div class="input-control text">'
+                            +'<input required type="text" name="kodeTB" id="kodeTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<label>Jenis Barang</label>'
                         +'<div class="input-control text">'
                             +'<input required type="text" name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>Alamat</label>'
+                        +'<label>Keterangan</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="alamatTB" id="alamatTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        +'<label>Telepon</label>'
-                        +'<div class="input-control text">'
-                            +'<input required type="text" name="teleponTB" id="teleponTB">'
+                            +'<input required type="text" name="keteranganTB" id="keteranganTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<div class="form-actions">' 
@@ -33,22 +34,21 @@ var contentFR ='';
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
-        });
 
-        //search action
-        $('#namaS').keydown(function (e){
+        });$('#kodeS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
-        });$('#alamatS').keydown(function (e){
+        });$('#namaS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
-        });$('#teleponS').keydown(function (e){
+        });$('#keteranganS').keydown(function (e){
             viewTB();
-        })
+        });
 
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
+            $('#kodeS').val('');
             $('#namaS').val('');
             $('#keteranganS').val('');
         });
@@ -76,7 +76,7 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#departemenS').val());
+                    viewTB($('').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }
@@ -90,9 +90,9 @@ var contentFR ='';
     // function viewTB(dep){
     function viewTB(){
         var aksi ='aksi=tampil';
-        var cari = '&namaS='+$('#namaS').val()
-                    +'&alamatS='+$('#alamatS').val()
-                    +'&teleponS='+$('#teleponS').val();
+        var cari = '&kodeS='+$('#kodeS').val()
+                    +'&namaS='+$('#namaS').val()
+                    +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -122,12 +122,12 @@ var contentFR ='';
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                     $.ajax({
                         url:dir,
-                        data:'aksi=cmbdepartemen&replid='+$('#departemenS').val(),
+                        data:'aksi=cmbjenis&replid='+$('').val(),
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#departemenH').val($('#departemenS').val());
-                            $('#departemenTB').val(dt.departemen[0].nama);
+                          $('#lokasiTB').val(dt.lokasi[0].nama);
+                            $('#lokasiH').val($('#lokasiS').val());
                         }
                     });
 
@@ -140,12 +140,12 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
+                            $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
-                            $('#alamatTB').val(dt.alamat);
-                            $('#teleponTB').val(dt.telepon);
+                            $('#keteranganTB').val(dt.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+" Kriteria");
+                }$.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
             }
         });
@@ -155,9 +155,9 @@ var contentFR ='';
 //paging ---
     function pagination(page,aksix,menux){
         var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari =  '&namaS='+$('#namaS').val()
-                    +'&alamatS='+$('#alamatS').val()
-                    +'&teleponS='+$('#teleponS').val();
+        var cari =  '&kodeS='+$('#kodeS').val()
+                    +'&namaS='+$('#namaS').val()
+                    +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url:dir,
             type:"post",
@@ -187,7 +187,7 @@ var contentFR ='';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#departemenS').val());
+                    viewTB($('').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }
@@ -214,7 +214,8 @@ function notif(cont,clr) {
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#angkatanTB').val('');
+        $('#kodeTB').val('');
+        $('#namaTB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---
