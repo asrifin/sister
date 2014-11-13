@@ -98,6 +98,10 @@ var contentFR ='';
                     $.Dialog.close();
                     kosongkan();
                     // viewTB($('#lokasiS').val());
+<<<<<<< HEAD
+                    viewTB($('').val());
+=======
+>>>>>>> 096b46918f2badc569fb80d74de3e194fd2b6309
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }

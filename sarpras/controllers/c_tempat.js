@@ -19,7 +19,7 @@ var contentFR ='';
                         
                         +'<label>Kode Tempat</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="tempat" maxlength="3" class="span1" required type="text" name="kodeTB" id="kodeTB">'
+                            +'<input placeholder="kode tampat"  class="span2" required type="text" name="kodeTB" id="kodeTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 

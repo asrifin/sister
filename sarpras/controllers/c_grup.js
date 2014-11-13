@@ -3,12 +3,14 @@ var mnu2      ='lokasi';
 var mnu3      ='katalog'; 
 var mnu4      ='jenis'; 
 var mnu5      ='barang'; 
+var mnu6      ='Kondisi'; 
 
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
 var dir3      ='models/m_'+mnu3+'.php';
 var dir4      ='models/m_'+mnu4+'.php';
 var dir5      ='models/m_'+mnu5+'.php';
+var dir6      ='models/m_'+mnu6+'.php';
 
 var g_contentFR = k_contentFR = b_contentFR ='';
 
@@ -17,7 +19,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         //form content
             // grup
             g_contentFR += '<form autocomplete="off" onsubmit="grupSV(); return false;" id="'+mnu+'FR">' 
-                            +'<input id="idformH" type="hidden">' 
+                            +'<input id="g_idformH" type="hidden">' 
                             
                             +'<label>Lokasi</label>'
                             +'<div class="input-control text">'
@@ -51,7 +53,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             //katalog
             k_contentFR +=' <div class="grid">'
                                 +'<form class="span12" autocomplete="off" onsubmit="katalogSV(); return false;" id="'+mnu+'FR">' 
-                                    +'<input id="idformH" type="hidden">' 
+                                    +'<input id="k_idformH" type="hidden">' 
                                     // lokasi , keterangan
                                     +'<div class="row">'
                                         +'<div class="span5"> '
@@ -171,43 +173,55 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                 +'</form>'
                         +'</div>';
             // barang
-            b_contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
-                            +'<input id="idformH" type="hidden">' 
+            b_contentFR += '<form autocomplete="off" onsubmit="barangSV();return false;" id="'+mnu5+'FR">' 
+                            +'<input id="b_idformH" type="hidden">' 
 
                             +'<label>Lokasi</label>'
                             +'<div class="input-control text">'
-                                +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span5">'
-                                +'<input disabled="disabled" name="k_lokasiTB" id="k_lokasiTB" class="span2">'
+                                +'<input  type="hidden" name="b_katalogH" id="b_katalogH">'
+                                +'<input disabled="disabled" name="b_katalogTB" id="b_katalogTB" class="span2">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
                             
-                            +'<label>Grup</label>'
+                            +'<label>Jumlah Unit Baru</label>'
                             +'<div class="input-control text">'
-                                +'<input placeholder="kode" name="k_grupTB" id="k_grupTB" class="span2">'
+                                +'<input placeholder="jumlah" name="b_jumbarangTB" id="b_jumbarangTB" class="span2">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
                             
-                            +'<label>Nama</label>'
+                            +'<label>Kode</label>'
                             +'<div class="input-control text">'
-                                +'<input  placeholder="nama"  required type="text" name="k_namaTB" id="k_namaTB">'
+                                +'<input  placeholder="kode"  required type="text" name="b_kodeTB" id="b_kodeTB">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
 
-                            +'<label>Jenis</label>'
+                            +'<label>Barcode</label>'
                             +'<div class="input-control text">'
-                                +'<input  placeholder="jenis"  required type="text" name="k_jenisTB" id="k_jenisTB">'
+                                +'<input required type="text" name="b_barkodeTB" id="b_barkodeTB">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
 
-                            +'<label>Susut</label>'
+                            +'<label>Sumber</label>'
                             +'<div class="input-control text">'
-                                +'<input  placeholder="jenis"  required type="text" name="k_susutTB" id="k_susutTB">'
+                                +'<input required type="radio" name="sumberTB" id="sumberTB1">'
+                                +'<input required type="radio" name="sumberTB" id="sumberTB2">'
+                                +'<input required type="radio" name="sumberTB" id="sumberTB3">'
+                            +'</div>'
+
+                            +'<label>Harga</label>'
+                            +'<div class="input-control text">'
+                                +'<input required type="text" name="b_hargaTB" id="b_hargaTB">'
                                 +'<button class="btn-clear"></button>'
+                            +'</div>'
+
+                            +'<label>Kondisi</label>'
+                            +'<div class="input-control select">'
+                                +'<select required name="b_kondisiTB" id="b_kondisiTB"></select>'
                             +'</div>'
 
                             +'<label>Keterangan</label>'
                             +'<div class="input-control textarea">'
-                                +'<textarea placeholder="keterangan" name="g_keteranganTB" id="g_keteranganTB"></textarea>'
+                                +'<textarea placeholder="keterangan" name="b_keteranganTB" id="b_keteranganTB"></textarea>'
                             +'</div>'
 
                             +'<div class="input-control file info-state" data-role="input-control">'
@@ -272,6 +286,33 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                     vwKatalog($('#g_lokasiS').val());
             });
 
+            // unit barang
+            $('#b_kodeS').on('keydown',function (e){ // kode grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_namaS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_barkodeS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_sumberS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_hargaS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_kondisiS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_statusS').on('keydown',function (e){ // nama grup
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });$('#b_keteranganS').on('keydown',function (e){ // keterangan
+                if(e.keyCode == 13)
+                    vwBarang($('#b_katalogH1').val());
+            });
+
         // search button
             //grup
             $('#g_cariBC').on('click',function(){
@@ -290,12 +331,24 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 $('#k_namaS').val('');
                 $('#k_keteranganS').val('');
             });
+            // barang
+            $('#b_cariBC').on('click',function(){
+                $('#b_cariTR').toggle('slow');
+                $('#b_kodeS').val('');
+                $('#b_barkodeS').val('');
+                $('#b_namaS').val('');
+                $('#b_keteranganS').val('');
+            });
 
         // switch panel
             switchPN(1);
-            $('#k_grupBC').on('click',function(){
+            // back button
+            $('#k_grupBC').on('click',function(){ // << grup
                 cmblokasi();
                 switchPN(1);
+            });$('#b_katalogBC').on('click',function(){ // << katalog
+                vwKatalog($('#g_lokasiS').val());
+                switchPN(2);
             });
     }); 
 // end of main function ---
@@ -330,101 +383,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     }
 //end of paging ---
 
-// view table ---
-    function vwGrup(lok){  
-        var aksi ='aksi=tampil&subaksi=grup';
-        var cari ='&lokasiS='+lok
-                +'&g_kodeS='+$('#g_kodeS').val()
-                +'&g_namaS='+$('#g_namaS').val()
-                +'&g_keteranganS='+$('#g_keteranganS').val();
-        $.ajax({
-            url : dir,
-            type: 'post',
-            data: aksi+cari,
-            beforeSend:function(){
-                $('#g_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                setTimeout(function(){
-                    $('#g_tbody').html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }
-// end of view table ---
-
-
-// view katalog barang
-    function vwKatalog(id) {
-        var aksi ='aksi=tampil&subaksi=katalog&grup='+id;
-        var cari ='&k_kodeS='+$('#k_kodeS').val()
-                +'&k_namaS='+$('#k_namaS').val()
-                +'&k_keteranganS='+$('#k_keteranganS').val();
-        $.ajax({
-            url : dir,
-            type: 'post',
-            data: aksi+cari,
-            beforeSend:function(){
-                $('#k_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                // alert(id);return false;
-                $('#k_grupH1').val(id);
-                switchPN(2);
-                vwHeadKatalog(id);
-                setTimeout(function(){
-                    $('#k_tbody').html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }   
-//end of view katalog barang
-
-// view barang
-    function vwBarang(id) {
-        var aksi ='aksi=tampil&subaksi=katalog&grup='+id;
-        // alert(aksi);return false;
-        var cari ='&lokasiS='+lok
-                +'&k_kodeS='+$('#k_kodeS').val()
-                +'&k_namaS='+$('#k_namaS').val()
-                +'&k_keteranganS='+$('#k_keteranganS').val();
-        $.ajax({
-            url : dir,
-            type: 'post',
-            // data: aksi,
-            data: aksi+cari,
-            beforeSend:function(){
-                $('#k_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                switchPN(2);
-                setTimeout(function(){
-                    $('#k_tbody').html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }   
-//end of view barang
-
-// headinfo katalog
-    function vwHeadKatalog (id) {
-        $.ajax({
-            url:dir,
-            type:'post',
-            dataType:'json',
-            data:'aksi=headinfo&subaksi=katalog&grup='+id,
-            success:function (dt) {
-                if (dt.status!='sukses') {
-                    alert(dt.status+' memuat data header');
-                }else{
-                    $('#k_grupDV').html(dt.grup);
-                    $('#k_lokasiDV').html(dt.lokasi);
-                    $('#k_totasetDV').html('Rp. '+dt.totaset+',-');
-                }
-            },
-        });
-    }
-//end of  headinfo katalog
-
 // switch panel
     function switchPN (e) {
+        // alert(e);return false;
         $.each($('.panelx'),function(id,item){
             var ke = id+1;
             if(ke==e){
@@ -437,218 +398,476 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     }
 //end of  switch panel
 
-// combo departemen ---
-    function cmblokasi(){
-        $.ajax({
-            url:dir2,
-            data:'aksi=cmblokasi',
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.lokasi, function(id,item){
-                        out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
-                    });
-                    //panggil fungsi vwGrup() ==> tampilkan tabel 
-                    vwGrup(dt.lokasi[0].replid); 
+/*view*/
+    // grup ---
+        function vwGrup(lok){  
+            var aksi ='aksi=tampil&subaksi=grup';
+            var cari ='&lokasiS='+lok
+                    +'&g_kodeS='+$('#g_kodeS').val()
+                    +'&g_namaS='+$('#g_namaS').val()
+                    +'&g_keteranganS='+$('#g_keteranganS').val();
+            $.ajax({
+                url : dir,
+                type: 'post',
+                data: aksi+cari,
+                beforeSend:function(){
+                    $('#g_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                },success:function(dt){
+                    setTimeout(function(){
+                        $('#g_tbody').html(dt).fadeIn();
+                    },1000);
                 }
-                // alert(out);
-                $('#g_lokasiS').html(out);
-            }
-        });
-    }
-//end of combo departemen ---
-
-//save process ---
-    function katalogSV(){
-        var urlx ='&aksi=simpan&subaksi=katalog';
-        // edit mode
-        if($('#idformH').val()!=''){
-            urlx += '&replid='+$('#idformH').val();
+            });
         }
-        $.ajax({
-            url:dir,
-            cache:false,
-            type:'post',
-            dataType:'json',
-            data:$('form').serialize()+urlx,
-            success:function(dt){
-                if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
-                    clr  = 'red';
-                }else{
-                    $.Dialog.close();
-                    gkosongkan();
-                    vwKatalog($('#k_grupH1').val());
-                    cont = 'Berhasil menyimpan data';
-                    clr  = 'green';
-                }notif(cont,clr);
-            }
-        });
-    }
-//end of save process ---
+    // end of grup  ---
 
-//save process ---
-    function grupSV(){
-        var urlx ='&aksi=simpan&subaksi=grup';
-        // edit mode
-        if($('#idformH').val()!=''){
-            urlx += '&replid='+$('#idformH').val();
+    // katalog barang
+        function vwKatalog(id) {
+            var aksi ='aksi=tampil&subaksi=katalog&grup='+id;
+            var cari ='&k_kodeS='+$('#k_kodeS').val()
+                    +'&k_namaS='+$('#k_namaS').val()
+                    +'&k_keteranganS='+$('#k_keteranganS').val();
+            $.ajax({
+                url : dir,
+                type: 'post',
+                data: aksi+cari,
+                beforeSend:function(){
+                    $('#k_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                },success:function(dt){
+                    // alert(id);return false;
+                    $('#k_grupH1').val(id);
+                    switchPN(2);
+                    vwHeadKatalog(id);
+                    setTimeout(function(){
+                        $('#k_tbody').html(dt).fadeIn();
+                    },1000);
+                }
+            });
+        }   
+    //end of  katalog barang
+
+    // barang
+        function vwBarang(id) {
+            switchPN(3);
+            var aksi ='aksi=tampil&subaksi=barang&katalog='+id;
+            var cari ='&b_kodeS='+$('#b_kodeS').val()
+                    +'&b_barkodeS='+$('#b_barkodeS').val()
+                    +'&b_hargaS='+$('#b_hargaS').val()
+                    +'&b_kondisiS='+$('#b_kondisiS').val()
+                    +'&b_statusS='+$('#b_statusS').val()
+                    +'&b_keteranganS='+$('#b_keteranganS').val();
+            $.ajax({
+                url : dir,
+                type: 'post',
+                data: aksi+cari,
+                beforeSend:function(){
+                    $('#b_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                },success:function(dt){
+                    $('#b_katalogH1').val(id);
+                    vwHeadBarang(id);
+                    switchPN(3);
+                    setTimeout(function(){
+                        $('#b_tbody').html(dt).fadeIn();
+                    },1000);
+                }
+            });
+        }   
+    //end of barang
+
+/*save (insert & update)*/
+    //grup ---
+        function grupSV(){
+            var urlx ='&aksi=simpan&subaksi=grup';
+            // edit mode
+            if($('#g_idformH').val()!=''){
+                urlx += '&replid='+$('#g_idformH').val();
+            }
+            $.ajax({
+                url:dir,
+                cache:false,
+                type:'post',
+                dataType:'json',
+                data:$('form').serialize()+urlx,
+                success:function(dt){
+                    if(dt.status!='sukses'){
+                        cont = 'Gagal menyimpan data';
+                        clr  = 'red';
+                    }else{
+                        $.Dialog.close();
+                        gkosongkan();
+                        vwGrup($('#g_lokasiS').val());
+                        cont = 'Berhasil menyimpan data';
+                        clr  = 'green';
+                    }notif(cont,clr);
+                }
+            });
         }
-        $.ajax({
-            url:dir,
-            cache:false,
-            type:'post',
-            dataType:'json',
-            data:$('form').serialize()+urlx,
-            success:function(dt){
-                if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
-                    clr  = 'red';
-                }else{
-                    $.Dialog.close();
-                    gkosongkan();
-                    vwGrup($('#g_lokasiS').val());
-                    cont = 'Berhasil menyimpan data';
-                    clr  = 'green';
-                }notif(cont,clr);
-            }
-        });
-    }
-//end of save process ---
+    //end grup  ---
 
-// form grup ---
-    function grupFR(id){
-        $.Dialog({
-            shadow: true,
-            overlay: true,
-            draggable: true,
-            width: 500,
-            padding: 10,
-            onShow: function(){
-                var titlex;
-                if(id==''){  //add mode
-                    titlex='<span class="icon-plus-2"></span> Tambah ';
-                    // cmb jenis -------------------------------------
-                    $.ajax({
-                        url:dir2,
-                        dataType:'json',
-                        type:'post',
-                        data:'aksi=cmblokasi&replid='+$('#g_lokasiS').val(),
-                        success:function(dt){
-                            $('#g_lokasiTB').val('['+dt.lokasi[0].kode+'] '+dt.lokasi[0].nama);
-                            $('#g_lokasiH').val($('#g_lokasiS').val());
-                        }
-                    });
-                }else{ // edit mode
-                    titlex='<span class="icon-pencil"></span> Ubah';
-                    // cmb jenis -------------------------------------
-                    $.ajax({
-                        url:dir2,
-                        dataType:'json',
-                        type:'post',
-                        data:'aksi=cmblokasi&replid='+$('#g_lokasiS').val(),
-                        success:function(dt){
-                            // data grup---------------------------------
-                            $.ajax({
-                                url:dir,
-                                data:'aksi=ambiledit&subaksi=grup&replid='+id,
-                                type:'post',
-                                dataType:'json',
-                                success:function(dt2){
-                                    $('#idformH').val(id);
-                                    $('#g_lokasiH').val($('#g_lokasiS').val()); 
-                                    $('#g_lokasiTB').val('['+dt.lokasi[0].kode+'] '+dt.lokasi[0].nama); 
-                                    $('#g_kodeTB').val(dt2.kode);
-                                    $('#g_namaTB').val(dt2.nama);
-                                    $('#g_keteranganTB').val(dt2.keterangan);
-                                }
-                            });//end of  data grup--------------------------
-                        }
-                    });//end of cmb jenis ----------------------------------
-                }$.Dialog.title(titlex+' '+mnu); // edit by epiii
-                $.Dialog.content(g_contentFR);
+    //katalog ---
+        function katalogSV(){
+            var urlx ='&aksi=simpan&subaksi=katalog';
+            // edit mode
+            if($('#k_idformH').val()!=''){
+                urlx += '&replid='+$('#k_idformH').val();
             }
-        });
-    }
-// end of form grup ---
+            $.ajax({
+                url:dir,
+                cache:false,
+                type:'post',
+                dataType:'json',
+                data:$('form').serialize()+urlx,
+                success:function(dt){
+                    if(dt.status!='sukses'){
+                        cont = 'Gagal menyimpan data';
+                        clr  = 'red';
+                    }else{
+                        $.Dialog.close();
+                        kkosongkan();
+                        vwKatalog($('#k_grupH1').val());
+                        cont = 'Berhasil menyimpan data';
+                        clr  = 'green';
+                    }notif(cont,clr);
+                }
+            });
+        }
+    //end of katalog ---
 
-// form katalog---
-    function katalogFR(id){
-        $.Dialog({
-            shadow: true,
-            overlay: true,
-            draggable: true,
-            width: 500,
-            padding: 10,
-            onShow: function(){
-                var titlex;
-                if(id==''){  //add mode
-                    titlex='<span class="icon-plus-2"></span> Tambah ';
-                    // form :: jenis  ----------------------------------------
-                    $.ajax({
-                        url:dir4,
-                        data:'aksi=cmbjenis',
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            var opt='';
-                            $.each(dt.jenis,function(id,item){
-                                opt+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                            });$('#k_jenisTB').html('<option value="">Pilih Jenis</option>'+opt);
-                            $('#k_grupH2').val($('#k_grupH1').val());
-                            $('#k_grupTB').val($('#k_grupDV').html());
-                            $('#k_lokasiTB').val($('#k_lokasiDV').html());
-                        }
-                    });// end of form :: lokasi (disabled)
-                }else{ // edit mode
-                    titlex='<span class="icon-pencil"></span> Ubah';
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=ambiledit&replid='+id,
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#idformH').val(id);
-                            $('#lokasiH').val($('#g_lokasiS').val()); // edit by epii
-                            $('#kodeTB').val(dt.kode);
-                            $('#namaTB').val(dt.nama);
-                            $('#keteranganTB').val(dt.keterangan);
-                        }
-                    });
-                }$.Dialog.title(titlex+' '+mnu3); // edit by epiii
-                $.Dialog.content(k_contentFR);
+    //Barang ---
+        function barangSV(){
+            var urlx ='&aksi=simpan&subaksi=barang';
+            // edit mode
+            if($('#b_idformH').val()!=''){
+                urlx += '&replid='+$('#b_idformH').val();
             }
-        });
-    }
-// end of form katalog---
+            $.ajax({
+                url:dir,
+                cache:false,
+                type:'post',
+                dataType:'json',
+                data:$('form').serialize()+urlx,
+                success:function(dt){
+                    if(dt.status!='sukses'){
+                        cont = 'Gagal menyimpan data';
+                        clr  = 'red';
+                    }else{
+                        $.Dialog.close();
+                        kkosongkan();
+                        vwBarang($('#b_katalogH1').val());
+                        cont = 'Berhasil menyimpan data';
+                        clr  = 'green';
+                    }notif(cont,clr);
+                }
+            });
+        }
+    //end of Barang ---
 
-//del process ---
-    function grupDel(id){
-        if(confirm('melanjutkan untuk menghapus data?'))
-        $.ajax({
-            url:dir,
-            type:'post',
-            data:'aksi=hapus&subaksi=grup&replid='+id,
-            dataType:'json',
-            success:function(dt){
-                var cont,clr;
-                if(dt.status!='sukses'){
-                    cont = '..Gagal Menghapus '+dt.terhapus+' ..';
-                    clr  ='red';
-                }else{
-                    vwGrup($('#g_lokasiS').val());
-                    cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
-                    clr  ='green';
-                }notif(cont,clr);
-            }
-        });
-    }
-//end of del process ---
+/*delete*/
+    //grup  ---
+        function grupDel(id){
+            if(confirm('melanjutkan untuk menghapus data?'))
+            $.ajax({
+                url:dir,
+                type:'post',
+                data:'aksi=hapus&subaksi=grup&replid='+id,
+                dataType:'json',
+                success:function(dt){
+                    var cont,clr;
+                    if(dt.status!='sukses'){
+                        cont = '..Gagal Menghapus '+dt.terhapus+' ..';
+                        clr  ='red';
+                    }else{
+                        vwGrup($('#g_lokasiS').val());
+                        cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
+                        clr  ='green';
+                    }notif(cont,clr);
+                }
+            });
+        }
+    //end of grup ---
     
+    //katalog ---
+        function katalogDel(id){
+            if(confirm('melanjutkan untuk menghapus data?'))
+            $.ajax({
+                url:dir,
+                type:'post',
+                data:'aksi=hapus&subaksi=katalog&replid='+id,
+                dataType:'json',
+                success:function(dt){
+                    var cont,clr;
+                    if(dt.status!='sukses'){
+                        cont = '..Gagal Menghapus '+dt.terhapus+' ..';
+                        clr  ='red';
+                    }else{
+                        vwKatalog($('#g_lokasiS').val());
+                        cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
+                        clr  ='green';
+                    }notif(cont,clr);
+                }
+            });
+        }
+    //end of katalog ---
+
+/*form (insert & update)*/
+    // form grup ---
+        function grupFR(id){
+            gkosongkan();
+            $.Dialog({
+                shadow: true,
+                overlay: true,
+                draggable: true,
+                width: 500,
+                padding: 10,
+                onShow: function(){
+                    var titlex;
+                    if(id==''){  //add mode
+                        titlex='<span class="icon-plus-2"></span> Tambah ';
+                        // cmb jenis -------------------------------------
+                        $.ajax({
+                            url:dir2,
+                            dataType:'json',
+                            type:'post',
+                            data:'aksi=cmblokasi&replid='+$('#g_lokasiS').val(),
+                            success:function(dt){
+                                $('#g_lokasiTB').val('['+dt.lokasi[0].kode+'] '+dt.lokasi[0].nama);
+                                $('#g_lokasiH').val($('#g_lokasiS').val());
+                            }
+                        });
+                    }else{ // edit mode
+                        titlex='<span class="icon-pencil"></span> Ubah';
+                        // cmb jenis -------------------------------------
+                        $.ajax({
+                            url:dir2,
+                            dataType:'json',
+                            type:'post',
+                            data:'aksi=cmblokasi&replid='+$('#g_lokasiS').val(),
+                            success:function(dt){
+                                // data grup---------------------------------
+                                $.ajax({
+                                    url:dir,
+                                    data:'aksi=ambiledit&subaksi=grup&replid='+id,
+                                    type:'post',
+                                    dataType:'json',
+                                    success:function(dt2){
+                                        $('#g_idformH').val(id);
+                                        $('#g_lokasiH').val($('#g_lokasiS').val()); 
+                                        $('#g_lokasiTB').val('['+dt.lokasi[0].kode+'] '+dt.lokasi[0].nama); 
+                                        $('#g_kodeTB').val(dt2.kode);
+                                        $('#g_namaTB').val(dt2.nama);
+                                        $('#g_keteranganTB').val(dt2.keterangan);
+                                    }
+                                });//end of  data grup--------------------------
+                            }
+                        });//end of cmb jenis ----------------------------------
+                    }$.Dialog.title(titlex+' '+mnu); // edit by epiii
+                    $.Dialog.content(g_contentFR);
+                }
+            });
+        }
+    // end of form grup ---
+
+    // form katalog---
+        function katalogFR(id){
+            kkosongkan();
+            $.Dialog({
+                shadow: true,
+                overlay: true,
+                draggable: true,
+                width: 500,
+                padding: 10,
+                onShow: function(){
+                    var titlex;
+                    if(id==''){  //add mode
+                        titlex='<span class="icon-plus-2"></span> Tambah ';
+                        // form :: jenis  ----------------------------------------
+                        $.ajax({
+                            url:dir4,
+                            data:'aksi=cmbjenis',
+                            type:'post',
+                            dataType:'json',
+                            success:function(dt){
+                                var opt='';
+                                $.each(dt.jenis,function(id,item){
+                                    opt+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                                });
+                                $('#k_jenisTB').html('<option value="">Pilih Jenis</option>'+opt);
+                                $('#k_lokasiTB').val($('#k_lokasiDV').html());
+                                $('#k_grupH2').val($('#k_grupH1').val());
+                                $('#k_grupTB').val($('#k_grupDV').html());
+                            }
+                        });// end of form :: lokasi (disabled)
+                    }else{ // edit mode
+                        titlex='<span class="icon-pencil"></span> Ubah';
+                        // fetch katalog's data ------------------ 
+                        $.ajax({
+                            url:dir,
+                            data:'aksi=ambiledit&subaksi=katalog&replid='+id,
+                            type:'post',
+                            dataType:'json',
+                            success:function(dt){
+                                if(dt.status!='sukses'){
+                                    notif(dt.status,'red');
+                                }else{
+                                    $('#k_idformH').val(id);
+                                    $('#k_grupH2').val($('#k_grupH1').val());
+                                    $('#k_lokasiTB').val($('#k_lokasiDV').html());
+                                    $('#k_grupTB').val($('#k_grupDV').html());
+                                    $('#k_kodeTB').val(dt.data.kode);
+                                    $('#k_namaTB').val(dt.data.nama);
+                                    $('#k_susutTB').val(dt.data.susut);
+                                    $('#k_keteranganTB').val(dt.data.keterangan);
+                                    
+                                    // combo jenis -----------------------
+                                    $.ajax({
+                                        url:dir4,
+                                        type:'post',
+                                        dataType:'json',
+                                        data:'aksi=cmbjenis',
+                                        success:function(dt2){
+                                            if(dt2.status!='sukses'){
+                                                notif(dt2.status, 'red');
+                                            }else{
+                                                var opt='';
+                                                $.each(dt2.jenis,function(id,item){
+                                                    if(dt.data.jenis==item.replid)
+                                                        opt+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
+                                                    else
+                                                        opt+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                                                });$('#k_jenisTB').html(opt);
+                                            }
+                                        }
+                                    });// end of combo jenis -----------------------
+                                }
+
+                            }
+                        });// end of fetch katalog's data ------------------ 
+                    }$.Dialog.title(titlex+' '+mnu3); // edit by epiii
+                    $.Dialog.content(k_contentFR);
+                }
+            });
+        }
+    // end of form katalog---
+
+/*headinfo*/
+    // katalog
+        function vwHeadKatalog (id) {
+            $.ajax({
+                url:dir,
+                type:'post',
+                dataType:'json',
+                data:'aksi=headinfo&subaksi=katalog&grup='+id,
+                success:function (dt) {
+                    if (dt.status!='sukses') {
+                        alert(dt.status+' memuat data header');
+                    }else{
+                        $('#k_grupDV').html(dt.grup);
+                        $('#k_lokasiDV').html(dt.lokasi);
+                        $('#k_totasetDV').html('Rp. '+dt.totaset+',-');
+                    }
+                },
+            });
+        }
+    //end of katalog
+
+    // unit barang
+        function vwHeadBarang (id) {
+            $.ajax({
+                url:dir,
+                type:'post',
+                dataType:'json',
+                data:'aksi=headinfo&subaksi=barang&katalog='+id,
+                success:function (dt) {
+                    if (dt.status!='sukses') {
+                        alert(dt.status+' memuat data header');
+                    }else{
+                        alert('sukses load headinfo');
+                        // $('#k_grupDV').html(dt.grup);
+                        // $('#k_lokasiDV').html(dt.lokasi);
+                        // $('#k_totasetDV').html('Rp. '+dt.totaset+',-');
+                    }
+                },
+            });
+        }
+    //end of unit barang
+
+
+/*reset form*/
+    //grup  ---
+        function gkosongkan(){
+            $('#idformTB').val('');
+            $('#g_kodeTB').val('');
+            $('#g_namaTB').val('');
+            $('#g_utotalTB').val('');
+            $('#g_utersediaTB').val('');
+            $('#g_udipinjamTB').val('');
+            $('#g_keteranganTB').val('');
+        }
+    //end of grup ---
+
+    //katalog  ---
+        function kkosongkan(){
+            $('#k_idformTB').val('');
+            $('#k_lokasiTB').val('');
+            $('#k_grupTB').val('');
+            $('#k_kodeTB').val('');
+            $('#k_namaTB').val('');
+            $('#k_jenisTB').val('');
+            $('#k_susutTB').val('');
+            $('#k_photoTB').val('');
+        }
+    //end of katalog ---
+
+
+/*combo box*/
+    // departemen ---
+        function cmblokasi(){
+            $.ajax({
+                url:dir2,
+                data:'aksi=cmblokasi',
+                dataType:'json',
+                type:'post',
+                success:function(dt){
+                    var out='';
+                    if(dt.status!='sukses'){
+                        out+='<option value="">'+dt.status+'</option>';
+                    }else{
+                        $.each(dt.lokasi, function(id,item){
+                            out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
+                        });
+                        //panggil fungsi vwGrup() ==> tampilkan tabel 
+                        vwGrup(dt.lokasi[0].replid); 
+                    }
+                    // alert(out);
+                    $('#g_lokasiS').html(out);
+                }
+            });
+        }
+    //end of departemen ---
+
+    // Kondisi
+        function cmbkondisi (katalog) {
+            $.ajax({
+                url:dir6,
+                type:'post',
+                dataType:'json',
+                data:'aksi=cmb'+mnu6,
+                success:function(dt){
+                    var opt='';
+                    if (dt.status!='sukses') {
+                        notif(dt.status,'red');
+                        opt+='<option value="">'+dt.status+'</option>'
+                    }else{
+                        $.each(dt.kondisi,function(id,item){
+                            opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
+                        });$('#b_kondisiS').html('<option value="">-Semua-</option>'+opt);
+                        // vwBarang(katalog,dt.jenis[0].nama);
+                        vwBarang(katalog);
+                    }
+                },
+            });
+        }
+    // end of Kondisi
 // notifikasi
     function notif(cont,clr) {
         var not = $.Notify({
@@ -662,19 +881,6 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         });
     }
 // end of notifikasi
-
-//reset form ---
-    function gkosongkan(){
-        $('#idformTB').val('');
-        $('#g_kodeTB').val('');
-        $('#g_namaTB').val('');
-        $('#g_utotalTB').val('');
-        $('#g_utersediaTB').val('');
-        $('#g_udipinjamTB').val('');
-        $('#g_keteranganTB').val('');
-    }
-//end of reset form ---
-
 
     // ---------------------- //
     // -- created by rovi  -- //
