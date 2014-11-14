@@ -24,7 +24,7 @@
 		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
-			// tampil -----------------------------------------------------------------
+			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					// grup barang
@@ -228,12 +228,24 @@
 						$b_barkode    = isset($_POST['b_barkodeS'])?filter(trim($_POST['b_barkodeS'])):'';
 						$b_harga      = isset($_POST['b_hargaS'])?filter(trim($_POST['b_hargaS'])):'';
 						$b_kondisi    = isset($_POST['b_kondisiS'])?filter(trim($_POST['b_kondisiS'])):'';
+						$b_sumber     = isset($_POST['b_sumberS'])?filter(trim($_POST['b_sumberS'])):'';
 						$b_status     = isset($_POST['b_statusS'])?filter(trim($_POST['b_statusS'])):'';
 						$b_keterangan = isset($_POST['b_keteranganS'])?filter(trim($_POST['b_keteranganS'])):'';
 						
-						$sql = 'SELECT
+						$sql = 'SELECT (
+									SELECT CONCAT(ll.kode,"/",gg.kode,"/",tt.kode,"/",kk.kode,"/",b.barkode)
+										from 
+											sar_katalog kk,
+											sar_grup gg,
+											sar_tempat tt,
+											sar_lokasi ll
+										where 
+											kk.replid = b.katalog AND
+											kk.grup = gg.replid AND
+											b.tempat= tt.replid AND
+											tt.lokasi= ll.replid
+									)as kode,
 									b.replid,
-									b.kode,
 									b.barkode,(
 										case b.sumber
 											when 0 then "Beli"
@@ -241,12 +253,8 @@
 											when 2 then "Membuat Sendiri" 
 										end
 									)as sumber,
-									b.harga,(
-										case b.status
-											when 1 then "Tersedia"
-											else "Dipinjam"
-										end
-									)as status,
+									b.harga,
+									IF(b. STATUS=1,"Tersedia","Dipinjam")AS status,
 									k.nama as kondisi,
 									b.keterangan
 								FROM
@@ -257,6 +265,7 @@
 									b.kode LIKE "%'.$b_kode.'%" and
 									b.barkode LIKE "%'.$b_barkode.'%" and
 									b.harga LIKE "%'.$b_harga.'%" and
+									b.sumber LIKE "%'.$b_sumber.'%" and
 									b.kondisi LIKE "%'.$b_kondisi.'%" and
 									b.status LIKE "%'.$b_status.'%" and
 									b.keterangan LIKE "%'.$b_keterangan.'%"';
@@ -429,7 +438,7 @@
 			break;
 			// add / edit -----------------------------------------------------------------
 			
-			// delete -----------------------------------------------------------------
+			// delete ---------------------------------------------------------------------
 			case 'hapus':
 				switch ($_POST['subaksi']) {
 					case 'grup':
@@ -450,9 +459,9 @@
 					break;
 				}
 			break;
-			// delete -----------------------------------------------------------------
+			// delete ---------------------------------------------------------------------
 
-			// ambiledit -----------------------------------------------------------------
+			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
 					case 'grup';
@@ -509,7 +518,17 @@
 					break;
 				}
 			break;
-			// ambiledit -----------------------------------------------------------------
+			// ambiledit ------------------------------------------------------------------
+
+			// generate barcode -----------------------------------------------------------
+			case 'barkode':
+				$s    = 'SELECT LPAD((max(barkode)+1),5,0)as barkode from sar_barang';
+				$e    = mysql_query($s);
+				$r    = mysql_fetch_assoc($e);
+				$stat = !$e?'gagal':'sukses';
+				$out  = json_encode(array('status'=>$stat,'barkode'=>$r['barkode']));
+			break;
+			// generate barcode -----------------------------------------------------------
 		}
 	}echo $out;
 

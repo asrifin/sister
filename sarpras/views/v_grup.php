@@ -119,7 +119,7 @@
          <div class="row">
             <div class="span5">
                 <label>Keterangan </label>
-               <div class="row">
+                <div class="row">
                     <div class="span2">Nama Barang :</div>
                     <div id="b_katalogDV" class="span2"></div>
                 </div>
@@ -145,14 +145,10 @@
                 </div>    
             </div>  
             <div class="span5 xoffset1">
-                <!-- <div class="row"> -->
-                    <div class="span5">
-                        <!-- <div class="row"> -->
-                            <label for="">Gambar :</label>
-                            <img src="images/5.jpg" width="200" class="shadow">
-                        <!-- </div> -->
-                    </div>
-                <!-- </div> -->
+                <div class="span5">
+                    <label for="">Gambar :</label>
+                    <img src="images/5.jpg" width="200" class="shadow">
+                </div>
             </div>  
             <div class="span5">
                 <div class="span5">
