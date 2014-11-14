@@ -140,6 +140,59 @@
         </div>    
     </div>
 
+
+    <div class="grid show-grid">
+        <!-- <div class="span1">span1</div> -->
+        <!-- <div class="span1">span1</div> -->
+        
+         <div class="row">
+            <div class="span5">
+                <div class="row">
+                    <div class="span2">Nama Barang </div>
+                    <div id="b_katalogDV" class="span2"></div>
+                </div>
+                <div class="row">
+                    <div class="span2">Nama Barang </div>
+                    <div id="b_katalogDV" class="span2"></div>
+                </div>
+            </div>
+            <div class="span5 offset1">
+                <table>
+                    <tr>
+                        <td>kokoko</td>
+                        <td>kokoko</td>
+                        <td>kokoko</td>
+                        <td>kokoko</td>
+                    </tr>
+                    <tr>
+                        <td>kokoko</td>
+                        <td>kokoko</td>
+                        <td>kokoko</td>
+                        <td>kokoko</td>
+                    </tr>
+                    <tr>
+                        <td>kokoko</td>
+                        <td>kokoko</td>
+                        <td>kokoko</td>
+                        <td>kokoko</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+<!-- 
+        <div class="row">
+            <div class="span4">4</div>
+            <div class="span3 offset2">3 offset 2</div>
+        </div>
+        <div class="row">
+            <div class="span3 offset1">3 offset 1</div>
+            <div class="span3 offset2">3 offset 2</div>
+        </div>
+        <div class="row">
+            <div class="span6 offset3">6 offset 3</div>
+        </div> -->
+    </div>
+
     <table class="table hovered bordered striped">
         <thead>
             <tr style="color:white;"class="info">
@@ -155,8 +208,8 @@
             <tr style="display:none;" id="b_cariTR" class="selected">
                 <th class="text-left"><input placeholder="kode" id="b_kodeS" name="b_kodeS"></th>
                 <th class="text-left"><input placeholder="barkode" id="b_barkodeS" name="b_barkodeS"></th>
-                <th class="text-left"><input placeholder="sumber" id="b_sumberS" name="b_sumberS" class="span1"></th>
-                <th class="text-left"><input placeholder="harga" id="b_hargaS" name="b_hargaS" class="span1"></th>
+                <th class="text-left"><input placeholder="sumber" id="b_sumberS" name="b_sumberS"></th>
+                <th class="text-left"><input placeholder="harga" id="b_hargaS" name="b_hargaS"></th>
                 <th class="text-left">
                     <select name="b_kondisiS" id="b_kondisiS"></select>
                     <!-- <input placeholder="kondisi" id="b_kondisiS" name="b_kondisiS"  class="span1"> -->

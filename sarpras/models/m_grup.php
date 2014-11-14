@@ -234,10 +234,19 @@
 						$sql = 'SELECT
 									b.replid,
 									b.kode,
-									b.barkode,
-									b.sumber,
-									b.harga,
-									b.status,
+									b.barkode,(
+										case b.sumber
+											when 0 then "Beli"
+											when 1 then "Pemberian" 
+											when 2 then "Membuat Sendiri" 
+										end
+									)as sumber,
+									b.harga,(
+										case b.status
+											when 1 then "Tersedia"
+											else "Dipinjam"
+										end
+									)as status,
 									k.nama as kondisi,
 									b.keterangan
 								FROM
