@@ -4,7 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'kelompok';
+	$mnu = 'proses';
 	$tb  = 'psb_'.$mnu;
 	// $out=array();
 
@@ -15,16 +15,36 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
+				$departemen  = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
 				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
-				$keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
-				$sql = 'SELECT *
-						FROM '.$tb.' 
-						WHERE 
-							kelompok like "%'.$kelompok.'%" and
-							keterangan like "%'.$keterangan.'%"
-						ORDER 
-							BY kelompok asc';
+				// $kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
+				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
+				$sql = 'SELECT
+							p.replid,
+							p.kodeawalan,
+							p.proses,
+							a.angkatan,
+							p.kapasitas,(
+								SELECT count(*)
+								from psb_calonsiswa
+								where proses = p.replid and `status`=0
+							)calonsiswa,(
+								SELECT count(*)
+								from psb_calonsiswa
+								where proses = p.replid and `status`!=0
+							)siswaditerima,if(
+								p.aktif=1,"Dibuka","Ditutup"
+							)status,
+							p.keterangan
+							
+						FROM
+							psb_proses p,
+							aka_angkatan a,
+							departemen d
+						WHERE	
+							a.departemen = '.$departemen.' and
+							p.angkatan = a.replid and
+							a.departemen = d.replid';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -54,25 +74,23 @@
 							$hint = 'Aktifkan';
 							$func = 'onclick="aktifkan('.$res['replid'].');"';
 						}
-						$q = mysql_query("SELECT replid FROM psb_calonsiswa WHERE proses = '".$res['replid']."'");
-						$calon_siswa = mysql_num_rows($q);
-						$q = mysql_query("SELECT replid FROM psb_calonsiswa WHERE proses = '".$res['replid']."' AND status<>0");
-						$siswa_diterima = mysql_num_rows($q);
+						
 						$btn ='<td>
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+									<button data-hint="ubah"  onclick="viewFR('.isset($res['replid']).');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button data-hint="hapus" onclick="del('.isset($res['replid']).');">
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelompok'].'</td>
-									
-									<td>'.tgl_indo($res['tglmulai']).' s/d '.tgl_indo($res['tglselesai']).'</td>
-									<td>'.$res['biaya'].'</td>
-									<td>'.$calon_siswa.'</td>
-									<td>'.$siswa_diterima.'</td>
+									<td id="'.$mnu.'TD_'.isset($res['replid']).'">'.$res['proses'].'</td>	
+									<td>'.$res['kodeawalan'].'</td>
+									<td>'.$res['angkatan'].'</td>
+									<td>'.$res['kapasitas'].'</td>
+									<td>'.$res['calonsiswa'].'</td>
+									<td>'.$res['siswaditerima'].'</td>
+									<td>'.($res['aktif']=='1'?'<span style="color:#00A000"><b>Dibuka</b></span>':'Ditutup').'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -91,11 +109,10 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	proses 		= "'.filter($_POST['tahunajaranH']).'",
-								kelompok  	= "'.filter($_POST['kelompokTB']).'",
-								tglmulai  	= "'.filter($_POST['tglmulaiTB']).'",
-								tglselesai  = "'.filter($_POST['tglakhirTB']).'",
-								biaya  		= "'.filter($_POST['biaya_pendaftaranTB']).'",
+				$s = $tb.' set 	proses 		= "'.filter($_POST['periodeTB']).'",
+								kodeawalan 	= "'.filter($_POST['kode_awalanTB']).'",
+								angkatan  	= "'.filter($_POST['angkatanTB']).'",
+								kapasitas   = "'.filter($_POST['kapasitasTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
@@ -129,10 +146,9 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'kelompok'    =>$r['kelompok'],
-							'tglmulai'    =>$r['tglmulai'],
-							'tglselesai'  =>$r['tglselesai'],
-							'biaya'    	  =>$r['biaya'],
+							'proses'     =>$r['proses'],
+							'kodeawalan' =>$r['kodeawalan'],
+							'angkatan'   =>$r['angkatan'],
 							'keterangan' =>$r['keterangan'],
 						));
 			break;

@@ -5,14 +5,15 @@ var contentFR='';
 // main function ---
     $(document).ready(function(){
         contentFR += '<form onsubmit="simpan();return false;" id="periodeFR">' 
+                        +'<input  id="idformH" type="hidden">'
+
                         +'<label>Departemen</label>'
                         +'<div class="input-control text size3">'
                             +'<input  type="hidden" name="departemenH" id="departemenH" class="span2">'
                             +'<input disabled="disabled" name="departemenTB" id="departemenTB" class="span2">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>Nama Periode</label>'
-                        +'<input  id="idformH" type="hidden">' 
+                        +'<label>Nama Periode</label>' 
                         +'<div class="input-control text">'
                             +'<input required type="text" name="periodeTB" id="periodeTB">'
                             +'<button class="btn-clear"></button>'
@@ -193,7 +194,7 @@ var contentFR='';
                             $('#periodeTB').val(dt.proses);
                             $('#kode_awalanTB').val(dt.kodeawalan);
                             $('#angkatanTB').val(dt.angkatan);
-                            $('#Kapasitas').val(dt.Kapasitas);                            
+                            $('#kapasitasTB').val(dt.kapasitas);                            
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
