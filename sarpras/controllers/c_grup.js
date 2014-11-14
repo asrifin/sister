@@ -242,7 +242,8 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             //barang : kondisi
             cmbkondisi();
 
-        //add form
+        // button action
+            //add
             $("#g_tambahBC").on('click', function(){ // grup form 
                 grupFR('');
             });$("#k_tambahBC").on('click', function(){ // katalog
@@ -250,6 +251,38 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             });$("#b_tambahBC").on('click', function(){ // barang
                 barangFR('');
             });
+            //edit 
+            $('#b_ubahBC').on('click',function(){
+                katalogFR($('#b_katalogH1').val());
+            });
+
+            // search
+            //grup
+            $('#g_cariBC').on('click',function(){
+                $('#g_cariTR').toggle('slow');
+                $('#g_kodeS').val('');
+                $('#g_namaS').val('');
+                $('#g_utotalS').val('');
+                $('#g_utersediaS').val('');
+                $('#g_udipinjamS').val('');
+                $('#g_keteranganS').val('');
+            });
+            //katalog
+            $('#k_cariBC').on('click',function(){
+                $('#k_cariTR').toggle('slow');
+                $('#k_kodeS').val('');
+                $('#k_namaS').val('');
+                $('#k_keteranganS').val('');
+            });
+            // barang
+            $('#b_cariBC').on('click',function(){
+                $('#b_cariTR').toggle('slow');
+                $('#b_kodeS').val('');
+                $('#b_barkodeS').val('');
+                $('#b_namaS').val('');
+                $('#b_keteranganS').val('');
+            });
+
 
         //search action 
             // grup barang
@@ -303,48 +336,18 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             });$('#b_barkodeS').on('keydown',function (e){ // nama grup
                 if(e.keyCode == 13)
                     vwBarang($('#b_katalogH1').val());
-            });$('#b_sumberS').on('keydown',function (e){ // nama grup
-                if(e.keyCode == 13)
-                    vwBarang($('#b_katalogH1').val());
+            });$('#b_sumberS').on('change',function (){ // nama grup
+                vwBarang($('#b_katalogH1').val());
             });$('#b_hargaS').on('keydown',function (e){ // nama grup
                 if(e.keyCode == 13)
                     vwBarang($('#b_katalogH1').val());
-            });$('#b_kondisiS').on('keydown',function (e){ // nama grup
-                if(e.keyCode == 13)
-                    vwBarang($('#b_katalogH1').val());
-            });$('#b_statusS').on('keydown',function (e){ // nama grup
-                if(e.keyCode == 13)
-                    vwBarang($('#b_katalogH1').val());
+            });$('#b_kondisiS').on('change',function (){ // nama grup
+                vwBarang($('#b_katalogH1').val());
+            });$('#b_statusS').on('change',function (){ // nama grup
+                vwBarang($('#b_katalogH1').val());
             });$('#b_keteranganS').on('keydown',function (e){ // keterangan
                 if(e.keyCode == 13)
                     vwBarang($('#b_katalogH1').val());
-            });
-
-        // search button
-            //grup
-            $('#g_cariBC').on('click',function(){
-                $('#g_cariTR').toggle('slow');
-                $('#g_kodeS').val('');
-                $('#g_namaS').val('');
-                $('#g_utotalS').val('');
-                $('#g_utersediaS').val('');
-                $('#g_udipinjamS').val('');
-                $('#g_keteranganS').val('');
-            });
-            //katalog
-            $('#k_cariBC').on('click',function(){
-                $('#k_cariTR').toggle('slow');
-                $('#k_kodeS').val('');
-                $('#k_namaS').val('');
-                $('#k_keteranganS').val('');
-            });
-            // barang
-            $('#b_cariBC').on('click',function(){
-                $('#b_cariTR').toggle('slow');
-                $('#b_kodeS').val('');
-                $('#b_barkodeS').val('');
-                $('#b_namaS').val('');
-                $('#b_keteranganS').val('');
             });
 
         // switch panel
@@ -371,6 +374,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         // var datax = 'starting='+page+'&aksi='+aksix+'&subaksi=grup';
         var datax   = 'starting='+page+'&aksi='+aksix+'&subaksi='+subaksi;
         var cari    ='&lokasiS='+lok
+                    +'&b_sumberS='+$('#b_sumberS').val()
                     +'&g_kodeS='+$('#g_kodeS').val()
                     +'&g_namaS='+$('#g_namaS').val()
                     +'&g_keteranganS='+$('#g_keteranganS').val();
@@ -460,6 +464,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             var cari ='&b_kodeS='+$('#b_kodeS').val()
                     +'&b_barkodeS='+$('#b_barkodeS').val()
                     +'&b_hargaS='+$('#b_hargaS').val()
+                    +'&b_sumberS='+$('#b_sumberS').val()
                     +'&b_kondisiS='+$('#b_kondisiS').val()
                     +'&b_statusS='+$('#b_statusS').val()
                     +'&b_keteranganS='+$('#b_keteranganS').val();
