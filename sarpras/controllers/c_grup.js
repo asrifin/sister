@@ -200,7 +200,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                         +'</div>'
                                         // barkode
                                         +'<label>Barkode</label>'
-                                        +'<div class="input-control text">'
+                                        +'<div class="input-control text size1">'
                                             +'<input disabled type="text" name="b_barkodeTB" id="b_barkodeTB">'
                                         +'</div>'
                                         // harga
@@ -817,7 +817,6 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     opt+='<option value="'+item.replid+'">'+item.nama+'</option>';
                                 });$('#b_kondisiTB').html('<option value="">Pilih '+mnu6+'</option>'+opt);
                                 $('#b_namaTB').val($('#b_katalogDV').html());
-                                // $('#b_grupH2').val($('#b_grupH1').val());
                                 // $('#b_grupTB').val($('#b_grupDV').html());
                                 // form :: generate barcode & kode ----------------- 
                                 $.ajax({
@@ -828,6 +827,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     success:function(dt2){
                                         // alert(dt2.barkode);
                                         $('#b_barkodeTB').val(dt2.barkode);
+                                        $('#b_kodeTB').val($('#b_grupH1').val());
                                     },
                                 });
                                 // end of form :: generate barcode & kode ----------------- 
