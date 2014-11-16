@@ -198,7 +198,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                         // jumlah
                                         +'<label>Jumlah Unit Baru</label>'
                                         +'<div class="input-control text size1">'
-                                            +'<input type="number" min="1" max="100" maxlength="3" value="1" placeholder="jumlah"  required type="text" name="b_jumbarangTB" id="b_jumbarangTB">'
+                                            +'<input onkeyup="kodegenerate(this);" type="number" min="1" max="100" maxlength="3" value="1" placeholder="jumlah"  required type="text" name="b_jumbarangTB" id="b_jumbarangTB">'
                                         +'</div>'
                                         // barkode
                                         +'<label>Barkode (Auto)</label>'
@@ -384,6 +384,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                     vwBarang($('#b_katalogH1').val());
             });
 
+
         // switch panel
             switchPN(1);
             // back button
@@ -405,11 +406,11 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         }
 
         var datax   ='starting='+page+'&aksi='+aksix+'&subaksi='+subaksi;
-        var cari    ='&lokasiS        ='+lok
-                    +'&b_sumberS     ='+$('#b_sumberS').val()
-                    +'&g_kodeS       ='+$('#g_kodeS').val()
-                    +'&g_namaS       ='+$('#g_namaS').val()
-                    +'&g_keteranganS ='+$('#g_keteranganS').val();
+        var cari    ='&lokasiS='+lok
+                    +'&b_sumberS='+$('#b_sumberS').val()
+                    +'&g_kodeS='+$('#g_kodeS').val()
+                    +'&g_namaS='+$('#g_namaS').val()
+                    +'&g_keteranganS='+$('#g_keteranganS').val();
         $.ajax({
             url:'m_'+subaksi+'.php',
             type:"post",
@@ -1049,7 +1050,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 // form :: generate barcode & kode ----------------- 
     // function kodegenerate (tempat) {
     function kodegenerate (e) {
-        // alert($(e).val());return false;
+        alert($('#b_jumbarangTB').val());return false;
         $.ajax({
             url:dir,
             type:'post',
@@ -1057,9 +1058,16 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             // data:'aksi=kodegenerate&tempat='+tempat,
             data:'aksi=kodegenerate&tempat='+$(e).val(),
             success:function(dt){
-                alert('ini :'+dt.data.barkode);
-                $('#b_barkodeTB').val(dt.data.barkode);
-                $('#b_kodeTB').val(dt.data.lokasi+'/'+dt.data.grup+'/'+dt.data.tempat+'/'+dt.data.katalog+'/'+dt.data.barkode);
+                // alert('ini :'+dt.data.barkode);
+                var kode;
+                if($('#b_jumbarangTB').val()>1){
+                    kode = '[auto]';
+                }else{
+                    kode = dt.data.barkode;
+                }
+
+                $('#b_barkodeTB').val(kode);
+                $('#b_kodeTB').val(dt.data.lokasi+'/'+dt.data.grup+'/'+dt.data.tempat+'/'+dt.data.katalog+'/'+kode);
 
                 // alert(dt2.barkode);
                 // $('#b_kodeTB').val($('#b_grupH1').val());
