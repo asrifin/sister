@@ -44,7 +44,7 @@ var contentFR ='';
         $('#namaS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
-        });$('#nama2').keydown(function (e){
+        });$('#nama2S').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
         });$('#keteranganS').keydown(function (e){

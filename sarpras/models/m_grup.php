@@ -24,15 +24,15 @@
 		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
-			// tampil -----------------------------------------------------------------
+			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					// grup barang
 					case 'grup':
-						$lokasi       = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
-						$g_kode       = trim($_POST['g_kodeS'])?filter($_POST['g_kodeS']):'';
-						$g_nama       = trim($_POST['g_namaS'])?filter($_POST['g_namaS']):'';
-						$g_keterangan = trim($_POST['g_keteranganS'])?filter($_POST['g_keteranganS']):'';
+						$lokasi       = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
+						$g_kode       = isset($_POST['g_kodeS'])?filter(trim($_POST['g_kodeS'])):'';
+						$g_nama       = isset($_POST['g_namaS'])?filter(trim($_POST['g_namaS'])):'';
+						$g_keterangan = isset($_POST['g_keteranganS'])?filter(trim($_POST['g_keteranganS'])):'';
 						
 						$sql = 'SELECT
 									g.replid,
@@ -228,16 +228,34 @@
 						$b_barkode    = isset($_POST['b_barkodeS'])?filter(trim($_POST['b_barkodeS'])):'';
 						$b_harga      = isset($_POST['b_hargaS'])?filter(trim($_POST['b_hargaS'])):'';
 						$b_kondisi    = isset($_POST['b_kondisiS'])?filter(trim($_POST['b_kondisiS'])):'';
+						$b_sumber     = isset($_POST['b_sumberS'])?filter(trim($_POST['b_sumberS'])):'';
 						$b_status     = isset($_POST['b_statusS'])?filter(trim($_POST['b_statusS'])):'';
 						$b_keterangan = isset($_POST['b_keteranganS'])?filter(trim($_POST['b_keteranganS'])):'';
 						
-						$sql = 'SELECT
+						$sql = 'SELECT (
+										SELECT 
+											CONCAT(ll.kode,"/",gg.kode,"/",tt.kode,"/",kk.kode,"/",LPAD(b.urut,5,0))
+										from 
+											sar_katalog kk,
+											sar_grup gg,
+											sar_tempat tt,
+											sar_lokasi ll
+										where 
+											kk.replid = b.katalog AND
+											kk.grup   = gg.replid AND
+											b.tempat  = tt.replid AND
+											tt.lokasi = ll.replid
+									)as kode,
 									b.replid,
-									b.kode,
-									b.barkode,
-									b.sumber,
+									LPAD(b.urut,5,0) as barkode,(
+										case b.sumber
+											when 0 then "Beli"
+											when 1 then "Pemberian" 
+											when 2 then "Membuat Sendiri" 
+										end
+									)as sumber,
 									b.harga,
-									b.status,
+									IF(b. STATUS=1,"Tersedia","Dipinjam")AS status,
 									k.nama as kondisi,
 									b.keterangan
 								FROM
@@ -248,6 +266,7 @@
 									b.kode LIKE "%'.$b_kode.'%" and
 									b.barkode LIKE "%'.$b_barkode.'%" and
 									b.harga LIKE "%'.$b_harga.'%" and
+									b.sumber LIKE "%'.$b_sumber.'%" and
 									b.kondisi LIKE "%'.$b_kondisi.'%" and
 									b.status LIKE "%'.$b_status.'%" and
 									b.keterangan LIKE "%'.$b_keterangan.'%"';
@@ -420,7 +439,7 @@
 			break;
 			// add / edit -----------------------------------------------------------------
 			
-			// delete -----------------------------------------------------------------
+			// delete ---------------------------------------------------------------------
 			case 'hapus':
 				switch ($_POST['subaksi']) {
 					case 'grup':
@@ -441,9 +460,9 @@
 					break;
 				}
 			break;
-			// delete -----------------------------------------------------------------
+			// delete ---------------------------------------------------------------------
 
-			// ambiledit -----------------------------------------------------------------
+			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
 					case 'grup';
@@ -500,7 +519,47 @@
 					break;
 				}
 			break;
-			// ambiledit -----------------------------------------------------------------
+			// ambiledit ------------------------------------------------------------------
+
+			// generate barcode -----------------------------------------------------------
+			case 'kodegenerate':
+				$s    = 'SELECT 
+							l.kode as lokasi,
+							g.kode as grup,
+							tbt.kode as tempat,
+							k.kode as katalog,
+							bb.barkode as barkode
+						FROM 
+							sar_barang b
+							JOIN(
+								SELECT 
+									replid as barang,
+									lpad(max(urut),5,0)barkode
+								from
+									sar_barang
+							)bb on bb.barang= b.replid
+							join sar_katalog k on k.replid = b.katalog
+							join sar_grup g on g.replid = k.grup
+							join (
+								SELECT *
+								from sar_tempat t
+								where t.replid = '.$_POST['tempat'].'
+							)tbt on tbt.replid = b.tempat
+							join sar_lokasi l on l.replid = tbt.lokasi';
+				$e    = mysql_query($s);
+				$r    = mysql_fetch_assoc($e);
+				$stat = !$e?'gagal':'sukses';
+				$out  = json_encode(array(
+							'status' =>$stat,
+							'data'   =>array(
+										'lokasi'  =>$r['lokasi'],
+										'grup'    =>$r['grup'],
+										'tempat'  =>$r['tempat'],
+										'katalog' =>$r['katalog'],
+										'barkode' =>$r['barkode']
+						)));
+			break;
+			// generate barcode -----------------------------------------------------------
 		}
 	}echo $out;
 

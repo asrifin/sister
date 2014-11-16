@@ -113,31 +113,50 @@
     <button data-hint="Cetak" id="b_cetakBC"><span class="icon-printer"></span> </button>
 
     <input type="hidden" id="b_katalogH1" name="b_katalogH1" >
-    <div class="grid"  style="color:white;">
-        <div class="row">
-            <div class="span2">Nama Barang </div>
-            <div id="b_katalogDV" class="span2"></div>
+
+    <!-- <div class="grid show-grid"> -->
+    <div class="grid" style="color:white;">
+         <div class="row">
+            <div class="span5">
+                <label>Keterangan </label>
+                <div class="row">
+                    <div class="span2">Nama Barang :</div>
+                    <div id="b_katalogDV" class="span2"></div>
+                </div>
+                <div class="row">
+                    <div class="span2">Grup Barang :</div>
+                    <div id="b_grupDV" class="span2"></div>
+                </div>
+                <div class="row">
+                    <div class="span2">Lokasi :</div>
+                    <div id="b_lokasiDV" class="span2"></div>
+                </div>    
+                <div class="row">
+                    <div class="span2">Jumlah Unit :</div>
+                    <div id="b_totbarangDV" class="span2"></div>
+                </div>    
+                <div class="row">
+                    <div class="span2">Total Aset :</div>
+                    <div id="b_totasetDV" class="span2"></div>
+                </div>    
+                <div class="row">
+                    <div class="span2">Penyusutan per th :</div>
+                    <div id="b_susutDV" class="span2"></div>
+                </div>    
+            </div>  
+            <div class="span5 xoffset1">
+                <div class="span5">
+                    <label for="">Gambar :</label>
+                    <img src="images/5.jpg" width="200" class="shadow">
+                </div>
+            </div>  
+            <div class="span5">
+                <div class="span5">
+                    <label for="">Presentase Kondisi :</label>
+                    <img src="images/5.jpg" width="200" class="shadow">
+                </div>
+            </div>
         </div>
-        <div class="row">
-            <div class="span2">Grup Barang</div>
-            <div id="b_grupDV" class="span2"></div>
-        </div>
-        <div class="row">
-            <div class="span2">Lokasi</div>
-            <div id="b_lokasiDV" class="span2"></div>
-        </div>    
-        <div class="row">
-            <div class="span2">Jumlah Unit</div>
-            <div id="b_totbarangDV" class="span2"></div>
-        </div>    
-        <div class="row">
-            <div class="span2">Total Aset</div>
-            <div id="b_totasetDV" class="span2"></div>
-        </div>    
-        <div class="row">
-            <div class="span2">Penyusutan per th </div>
-            <div id="b_susutDV" class="span2"></div>
-        </div>    
     </div>
 
     <table class="table hovered bordered striped">
@@ -155,13 +174,25 @@
             <tr style="display:none;" id="b_cariTR" class="selected">
                 <th class="text-left"><input placeholder="kode" id="b_kodeS" name="b_kodeS"></th>
                 <th class="text-left"><input placeholder="barkode" id="b_barkodeS" name="b_barkodeS"></th>
-                <th class="text-left"><input placeholder="sumber" id="b_sumberS" name="b_sumberS" class="span1"></th>
-                <th class="text-left"><input placeholder="harga" id="b_hargaS" name="b_hargaS" class="span1"></th>
+                <th class="text-left">
+                    <select name="b_sumberS"id="b_sumberS">
+                        <option value="">-Semua-</option>
+                        <option value="0">Beli</option>
+                        <option value="1">Pemberian</option>
+                        <option value="2">Membuat Sendiri</option>
+                    </select> 
+                </th>
+                <th class="text-left"><input placeholder="harga" id="b_hargaS" name="b_hargaS"></th>
                 <th class="text-left">
                     <select name="b_kondisiS" id="b_kondisiS"></select>
-                    <!-- <input placeholder="kondisi" id="b_kondisiS" name="b_kondisiS"  class="span1"> -->
                 </th>
-                <th class="text-left"><input placeholder="status" id="b_statusS" name="b_statusS"  class="span1"></th>
+                <th class="text-left">
+                    <select id="b_statusS" name="b_statusS">
+                        <option value="">-Semua-</option>
+                        <option value="1">Tersedia</option>
+                        <option value="2">Dipinjam</option>
+                    </select>
+                </th>
                 <th class="text-left"><input placeholder="keterangan" id="b_keteranganS" name="b_keteranganS"></th>
                 <th class="text-left"></th>
             </tr>
