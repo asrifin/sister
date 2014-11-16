@@ -119,6 +119,47 @@
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
+
+			// cmbtempat ---------------------------------------------------------
+			case 'cmb'.$mnu:
+				$w='';
+				if(isset($_POST['replid'])){
+					$w.='where replid ='.$_POST['replid'];
+				}else{
+					if(isset($_POST[$mnu])){
+						$w.='where '.$mnu.'='.$_POST[$mnu];
+					}elseif(isset($_POST[$mnu2])){
+						$w.='where '.$mnu2.' ='.$_POST[$mnu2];
+					}
+				}
+				
+				$s	= ' SELECT *
+						from '.$tb.'
+						'.$w.'		
+						ORDER  BY nama desc';
+				// var_dump($s);exit();
+				$e 	= mysql_query($s);
+				$n 	= mysql_num_rows($e);
+				$ar=$dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error');
+				}else{
+					if($n=0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}$ar = array('status'=>'sukses',$mnu=>$dt);
+					}
+				}$out=json_encode($ar);
+			break;
+			// end of cmblokasi ---------------------------------------------------------
+
 		}
 	}echo $out;
 

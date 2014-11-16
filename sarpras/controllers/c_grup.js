@@ -4,6 +4,7 @@ var mnu3      ='katalog';
 var mnu4      ='jenis'; 
 var mnu5      ='barang'; 
 var mnu6      ='kondisi'; 
+var mnu7      ='tempat'; 
 
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
@@ -11,6 +12,7 @@ var dir3      ='models/m_'+mnu3+'.php';
 var dir4      ='models/m_'+mnu4+'.php';
 var dir5      ='models/m_'+mnu5+'.php';
 var dir6      ='models/m_'+mnu6+'.php';
+var dir7      ='models/m_'+mnu7+'.php';
 
 var g_contentFR = k_contentFR = b_contentFR ='';
 
@@ -188,20 +190,25 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                         +'<div class="input-control text">'
                                             +'<input disabled type="text" id="b_namaTB">'
                                         +'</div>'
+                                        // tempat
+                                        +'<label>Tempat</label>'
+                                        +'<div class="input-control select">'
+                                            +'<select onchange="kodegenerate(this);" required name="b_tempatTB" id="b_tempatTB"></select>'
+                                        +'</div>'
                                         // jumlah
                                         +'<label>Jumlah Unit Baru</label>'
                                         +'<div class="input-control text size1">'
                                             +'<input type="number" min="1" max="100" maxlength="3" value="1" placeholder="jumlah"  required type="text" name="b_jumbarangTB" id="b_jumbarangTB">'
                                         +'</div>'
-                                        // kode
-                                        +'<label>Kode</label>'
-                                        +'<div class="input-control text">'
-                                            +'<input disabled type="text" name="b_kodeTB" id="b_kodeTB">'
-                                        +'</div>'
                                         // barkode
-                                        +'<label>Barkode</label>'
+                                        +'<label>Barkode (Auto)</label>'
                                         +'<div class="input-control text size1">'
                                             +'<input disabled type="text" name="b_barkodeTB" id="b_barkodeTB">'
+                                        +'</div>'
+                                        // kode
+                                        +'<label>Kode (Auto)</label>'
+                                        +'<div class="input-control text">'
+                                            +'<input disabled type="text" name="b_kodeTB" id="b_kodeTB">'
                                         +'</div>'
                                         // harga
                                         +'<label>Harga</label>'
@@ -209,13 +216,8 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                             +'<input  placeholder="Harga" type="text" name="b_hargaTB" id="b_hargaTB">'
                                             +'<button class="btn-clear"></button>'
                                         +'</div>'
-                                        // tempat
-                                        +'<label>Tempat</label>'
-                                        +'<div class="input-control select">'
-                                            +'<select required name="b_tempatTB" id="b_tempatTB"></select>'
-                                        +'</div>'
                                         // kondisi
-                                        +'<label>Kondisi</label>'
+                                        +'<label>Kondisi Barang</label>'
                                         +'<div class="input-control select">'
                                             +'<select required name="b_kondisiTB" id="b_kondisiTB"></select>'
                                         +'</div>'
@@ -266,8 +268,6 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                 +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                             +'</div>'
                         +'</form>';
-
-
         //combo
             //grup : lokasi
             cmblokasi();
@@ -276,7 +276,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             cmbkondisi();
 
         // button action
-            //add
+            //add---------
             $("#g_tambahBC").on('click', function(){ // grup form 
                 grupFR('');
             });$("#k_tambahBC").on('click', function(){ // katalog
@@ -284,13 +284,13 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             });$("#b_tambahBC").on('click', function(){ // barang
                 barangFR('');
             });
-            //edit 
+            //edit------- 
             $('#b_ubahBC').on('click',function(){
                 katalogFR($('#b_katalogH1').val());
             });
 
-            // search
-            //grup
+            // search 
+            //grup----
             $('#g_cariBC').on('click',function(){
                 $('#g_cariTR').toggle('slow');
                 $('#g_kodeS').val('');
@@ -300,14 +300,14 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 $('#g_udipinjamS').val('');
                 $('#g_keteranganS').val('');
             });
-            //katalog
+            //katalog----
             $('#k_cariBC').on('click',function(){
                 $('#k_cariTR').toggle('slow');
                 $('#k_kodeS').val('');
                 $('#k_namaS').val('');
                 $('#k_keteranganS').val('');
             });
-            // barang
+            // barang----
             $('#b_cariBC').on('click',function(){
                 $('#b_cariTR').toggle('slow').addClass('info').setTimeout(function(){
                     $('#b_cariTR').removeClass('info');
@@ -404,12 +404,12 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             subaksi='grup';
         }
 
-        var datax   = 'starting='+page+'&aksi='+aksix+'&subaksi='+subaksi;
-        var cari    ='&lokasiS='+lok
-                    +'&b_sumberS='+$('#b_sumberS').val()
-                    +'&g_kodeS='+$('#g_kodeS').val()
-                    +'&g_namaS='+$('#g_namaS').val()
-                    +'&g_keteranganS='+$('#g_keteranganS').val();
+        var datax   ='starting='+page+'&aksi='+aksix+'&subaksi='+subaksi;
+        var cari    ='&lokasiS        ='+lok
+                    +'&b_sumberS     ='+$('#b_sumberS').val()
+                    +'&g_kodeS       ='+$('#g_kodeS').val()
+                    +'&g_namaS       ='+$('#g_namaS').val()
+                    +'&g_keteranganS ='+$('#g_keteranganS').val();
         $.ajax({
             url:'m_'+subaksi+'.php',
             type:"post",
@@ -447,7 +447,8 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             var cari ='&lokasiS='+lok
                     +'&g_kodeS='+$('#g_kodeS').val()
                     +'&g_namaS='+$('#g_namaS').val()
-                    +'&g_keteranganS='+$('#g_keteranganS').val();
+                    +'&g_keteranganS ='+$('#g_keteranganS').val();
+            // alert(cari);return false;
             $.ajax({
                 url : dir,
                 type: 'post',
@@ -733,8 +734,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                 var opt='';
                                 $.each(dt.jenis,function(id,item){
                                     opt+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                                });
-                                $('#k_jenisTB').html('<option value="">Pilih Jenis</option>'+opt);
+                                });$('#k_jenisTB').html('<option value="">Pilih Jenis</option>'+opt);
                                 $('#k_lokasiTB').val($('#k_lokasiDV').html());
                                 $('#k_grupH2').val($('#k_grupH1').val());
                                 $('#k_grupTB').val($('#k_grupDV').html());
@@ -815,22 +815,23 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                 var opt='';
                                 $.each(dt.kondisi,function(id,item){
                                     opt+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                                });$('#b_kondisiTB').html('<option value="">Pilih '+mnu6+'</option>'+opt);
+                                });$('#b_kondisiTB').html('<option value="">Pilih '+mnu6+' ..</option>'+opt);
                                 $('#b_namaTB').val($('#b_katalogDV').html());
-                                // $('#b_grupTB').val($('#b_grupDV').html());
-                                // form :: generate barcode & kode ----------------- 
-                                $.ajax({
-                                    url:dir,
-                                    type:'post',
-                                    dataType:'json',
-                                    data:'aksi=barkode',
-                                    success:function(dt2){
-                                        // alert(dt2.barkode);
-                                        $('#b_barkodeTB').val(dt2.barkode);
-                                        $('#b_kodeTB').val($('#b_grupH1').val());
-                                    },
-                                });
-                                // end of form :: generate barcode & kode ----------------- 
+                                cmbtempat($('#g_lokasiS').val());
+
+                                // // form :: generate barcode & kode ----------------- 
+                                // $.ajax({
+                                //     url:dir,
+                                //     type:'post',
+                                //     dataType:'json',
+                                //     data:'aksi=barkode',
+                                //     success:function(dt2){
+                                //         // alert(dt2.barkode);
+                                //         $('#b_barkodeTB').val(dt2.barkode);
+                                //         $('#b_kodeTB').val($('#b_grupH1').val());
+                                //     },
+                                // });
+                                // // end of form :: generate barcode & kode ----------------- 
                             }
                         });// end of form :: lokasi (disabled)
                     }else{ // edit mode
@@ -956,6 +957,19 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         }
     //end of katalog ---
 
+    //barang  ---
+        // function bkosongkan(){
+        //     $('#k_idformTB').val('');
+        //     $('#k_lokasiTB').val('');
+        //     $('#k_grupTB').val('');
+        //     $('#k_kodeTB').val('');
+        //     $('#k_namaTB').val('');
+        //     $('#k_jenisTB').val('');
+        //     $('#k_susutTB').val('');
+        //     $('#k_photoTB').val('');
+        // }
+    //end of barang ---
+
 
 /*combo box*/
     // departemen ---
@@ -974,6 +988,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                             out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                         });
                         //panggil fungsi vwGrup() ==> tampilkan tabel 
+                        // alert(dt.lokasi[0].replid);return false;
                         vwGrup(dt.lokasi[0].replid); 
                     }
                     // alert(out);
@@ -999,13 +1014,60 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         $.each(dt.kondisi,function(id,item){
                             opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
                         });$('#b_kondisiS').html('<option value="">-Semua-</option>'+opt);
-                        // vwBarang(katalog,dt.jenis[0].nama);
-                        vwBarang(katalog);
+                        // vwBarang(katalog);
                     }
                 },
             });
         }
     // end of Kondisi
+    
+    // tempat
+        function cmbtempat (id) {
+            $.ajax({
+                url:dir7,
+                type:'post',
+                dataType:'json',
+                data:'aksi=cmb'+mnu7+'&lokasi='+id,
+                success:function(dt){
+                    var opt='';
+                    if (dt.status!='sukses') {
+                        notif(dt.status,'red');
+                        opt+='<option value="">'+dt.status+'</option>'
+                    }else{
+                        $.each(dt.tempat,function(id,item){
+                            if(id==item.replid)
+                                opt+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>'
+                            else
+                                opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
+                        });$('#b_tempatTB').html('<option value="">Pilih Tempat ..</option>'+opt);
+                    }
+                },
+            });
+        }
+    // end of Kondisi
+
+// form :: generate barcode & kode ----------------- 
+    // function kodegenerate (tempat) {
+    function kodegenerate (e) {
+        // alert($(e).val());return false;
+        $.ajax({
+            url:dir,
+            type:'post',
+            dataType:'json',
+            // data:'aksi=kodegenerate&tempat='+tempat,
+            data:'aksi=kodegenerate&tempat='+$(e).val(),
+            success:function(dt){
+                alert('ini :'+dt.data.barkode);
+                $('#b_barkodeTB').val(dt.data.barkode);
+                $('#b_kodeTB').val(dt.data.lokasi+'/'+dt.data.grup+'/'+dt.data.tempat+'/'+dt.data.katalog+'/'+dt.data.barkode);
+
+                // alert(dt2.barkode);
+                // $('#b_kodeTB').val($('#b_grupH1').val());
+            },
+        });
+    }
+// end of form :: generate barcode & kode ----------------- 
+
 // notifikasi
     function notif(cont,clr) {
         var not = $.Notify({
@@ -1021,5 +1083,5 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 // end of notifikasi
 
     // ---------------------- //
-    // -- created by rovi  -- //
+    // -- created by epiii -- //
     // ---------------------- // 
