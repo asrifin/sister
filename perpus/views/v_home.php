@@ -103,13 +103,13 @@
 </div> <!-- End group -->
 
 <div class="tile-group double">
-    <div class="tile-group-title">Inventaris</div>
-    <a href="inventaris" class="tile bg-red" data-click="transform">
+    <div class="tile-group-title">Daftar Koleksi</div>
+    <a href="koleksi" class="tile bg-red" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">Inventaris</div>
+            <div class="label">Daftar Koleksi</div>
         </div>
     </a>
     <a href="aktivitas" class="tile bg-brown" data-click="transform">

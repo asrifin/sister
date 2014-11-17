@@ -65,7 +65,7 @@
             <div class="element">
                 <a class="dropdown-toggle" href="#">inventaris</a>
                 <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="inventaris">Inventaris</a></li>
+                    <li><a href="koleksi">Daftar Koleksi</a></li>
                     <li><a href="aktivitas">Aktivitas</a></li>
                     <li><a href="peminjaman">Peminjaman</a></li>
                     <li><a href="pengembalian">Pengembalian</a></li>
@@ -147,8 +147,8 @@
                     break;
 
                     // inventaris
-                    case 'vinventaris':
-                        require $d.'v_grup.php';
+                    case 'vkoleksi':
+                        require $d.'v_koleksi.php';
                     break;
                     case 'vaktivitas':
                         require $d.'v_aktivitas.php';
