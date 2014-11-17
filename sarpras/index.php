@@ -30,6 +30,10 @@
     <script src="js/jquery/jquery.mousewheel.js"></script>
     <script src="js/prettify/prettify.js"></script>
 
+    <!-- currency  plugin -->
+    <!--<script src="../js/maskedinput/jquery.min.js" type="text/javascript"></script>-->
+    <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
+
     <!-- Metro UI CSS JavaScript plugins -->
     <script src="js/load-metro.js"></script>
 
