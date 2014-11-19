@@ -138,9 +138,9 @@ var contentFR='';
     function viewTB(dep){
         var aksi ='aksi=tampil';
         var cari = '&departemenS='+dep
-                    +'&periodeS='+$('#periodeS').val()
-                    +'&kode_awalanS='+$('#kode_awalanS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+                    // +'&periodeS='+$('#periodeS').val()
+                    // +'&kode_awalanS='+$('#kode_awalanS').val()
+                    // +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',

@@ -150,8 +150,8 @@
 					}else{
 						$stat='sukses';
 					}
-				}$out  = json_encode(array('status'=>$stat));
 				//var_dump($stat);exit();
+				}$out  = json_encode(array('status'=>$stat));
 			break;
 			// aktifkan -----------------------------------------------------------------
 

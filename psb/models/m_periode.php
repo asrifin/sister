@@ -151,6 +151,8 @@
 							'angkatan'   =>$r['angkatan'],
 							'keterangan' =>$r['keterangan'],
 						));
+						var_dump($s);exit(); $e=mysql_query();
+								// var_dump($stat);exit();
 			break;
 			// ambiledit -----------------------------------------------------------------
 
@@ -168,7 +170,7 @@
 						$stat='sukses';
 					}
 				}$out  = json_encode(array('status'=>$stat));
-				//var_dump($stat);exit();
+				// var_dump($stat);exit();
 			break;
 			// aktifkan -----------------------------------------------------------------
 

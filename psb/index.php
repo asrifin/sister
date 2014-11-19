@@ -86,10 +86,10 @@
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="periode">Periode Penerimaan</a></li>
                     <li><a href="kelompok">Kelompok Pendaftaran</a></li>
-                    <li><a href="#">Pendataan Calon Siswa</a></li>
-                    <li><a href="#">Penerimaan Siswa Baru</a></li>
+                    <li><a href="pendataan">Pendataan Calon Siswa</a></li>
+                    <li><a href="penerimaan">Penerimaan Siswa Baru</a></li>
                     <!-- <li><a href="#">Cari Calon Siswa Baru</a></li> -->
-                    <li><a href="#">Statistik Penerimaan</a></li>
+                    <!-- <li><a href="#">Statistik Penerimaan</a></li> -->
                     <!-- <li class="divider"></li> -->
                 </ul>
             </div>
@@ -155,6 +155,12 @@
                     break;
                     case 'vkelompok':
                         require $d.'v_kelompok.php';
+                    break;
+                    case 'vpendataan':
+                        require $d.'v_pendataan.php';
+                    break;
+                    case 'vpenerimaan':
+                        require $d.'v_penerimaan.php';
                     break;
                     default:
                         require $d.'v_home.php';
