@@ -9,7 +9,7 @@
 <!-- panel 1 -->
 <div title="Grup Barang" class="panelx" id="panel1" style="display:none;">
     <div class="input-control select span3">
-        <select data-hint="lokasi" name="g_lokasiS" id="g_lokasiS"></select>
+        <select name="g_lokasiS" id="g_lokasiS" data-hint="lokasi" ></select>
     </div>
     <button data-hint="Tambah Data" id="g_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="g_cariBC"><span class="icon-search"></span> </button>

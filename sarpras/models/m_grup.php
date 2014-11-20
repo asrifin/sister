@@ -112,7 +112,7 @@
 											<button data-hint="ubah"  class="button" onclick="grupFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
-											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
+											<button data-hint=""  class="button" onclick="grupDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 										 </td>';
 								$out.= '<tr>
@@ -288,10 +288,10 @@
 							// $nox 	= $starting+1;
 							while($res = mysql_fetch_array($result)){	
 								$btn ='<td>
-											<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
+											<button data-hint="ubah"  class="button" onclick="barangFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
-											<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+											<button data-hint="hapus"  class="button" onclick="barangDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 										 </td>';
 								$out.= '<tr>
@@ -435,6 +435,21 @@
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array('status'=>$stat));
 					break;
+
+					case 'barang':
+						$s 		= $tb4.' set 	katalog    = "'.$_POST['b_katalogH2'].'",
+												tempat     = "'.$_POST['b_tempatTB'].'",
+												urut       = "'.$_POST['b_urutH'].'",
+												sumber     = "'.$_POST['b_sumberTB'].'",
+												harga      = "'.getuang($_POST['b_hargaTB']).'",
+												kondisi    = "'.$_POST['b_kondisiTB'].'",
+												keterangan = "'.filter($_POST['b_keteranganTB']).'"';
+						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						// print_r($s2);exit();
+						$e 		= mysql_query($s2);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array('status'=>$stat));
+					break;
 				}
 			break;
 			// add / edit -----------------------------------------------------------------
@@ -457,6 +472,15 @@
 						$e    = mysql_query($s);
 						$stat = ($e)?'sukses':'gagal';
 						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+					break;
+
+					case 'barang':
+						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb4.' where replid='.$_POST['replid']));
+						$s    = 'DELETE from '.$tb4.' WHERE replid='.$_POST['replid'];
+						// var_dump($s);exit();
+						$e    = mysql_query($s);
+						$stat = ($e)?'sukses':'gagal';
+						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['kode']));
 					break;
 				}
 			break;
@@ -517,6 +541,57 @@
 									'data'   =>$dt
 								));					
 					break;
+
+					case 'barang';
+						$s ='SELECT
+								b.tempat,
+								LPAD(b.urut,5,0) as barkode,(
+									SELECT 
+										CONCAT(ll.kode,"/",gg.kode,"/",tt.kode,"/",kk.kode,"/",LPAD(b.urut,5,0))
+									from 
+										sar_katalog kk,
+										sar_grup gg,
+										sar_tempat tt,
+										sar_lokasi ll
+									where 
+										kk.replid = b.katalog AND
+										kk.grup   = gg.replid AND
+										b.tempat  = tt.replid AND
+										tt.lokasi = ll.replid
+								)as kode,
+								b.harga,
+								b.urut,
+								b.kondisi,
+								b.sumber,
+								b.keterangan
+							FROM
+								sar_barang b, sar_kondisi k
+							WHERE
+								b.kondisi = k.replid and
+								b.replid  = '.$_POST['replid'];
+						// print_r($s);exit();
+						$e 		= mysql_query($s);
+						$r 		= mysql_fetch_assoc($e);
+						$stat 	= ($e)?'sukses':'gagal';
+						if(!$e){
+							$stat ='gagal';
+						}else{
+							$stat ='sukses';
+							$dt   =array(
+										'tempat'     =>$r['tempat'],
+										'barkode'    =>$r['barkode'],
+										'urut'       =>$r['urut'],
+										'kode'       =>$r['kode'],
+										'harga'      =>$r['harga'],
+										'kondisi'    =>$r['kondisi'],
+										'sumber'     =>$r['sumber'],
+										'keterangan' =>$r['keterangan']
+									);						
+						}$out 	= json_encode(array(
+									'status' =>$stat,
+									'data'   =>$dt
+								));					
+					break;
 				}
 			break;
 			// ambiledit ------------------------------------------------------------------
@@ -528,13 +603,14 @@
 							g.kode as grup,
 							tbt.kode as tempat,
 							k.kode as katalog,
-							bb.barkode as barkode
+							bb.urut,
+							lpad(max(bb.urut),5,0)barkode
 						FROM 
 							sar_barang b
 							JOIN(
 								SELECT 
 									replid as barang,
-									lpad(max(urut),5,0)barkode
+									(max(urut)+1) as urut
 								from
 									sar_barang
 							)bb on bb.barang= b.replid
@@ -546,6 +622,7 @@
 								where t.replid = '.$_POST['tempat'].'
 							)tbt on tbt.replid = b.tempat
 							join sar_lokasi l on l.replid = tbt.lokasi';
+				// print_r($s);exit();
 				$e    = mysql_query($s);
 				$r    = mysql_fetch_assoc($e);
 				$stat = !$e?'gagal':'sukses';
@@ -556,6 +633,7 @@
 										'grup'    =>$r['grup'],
 										'tempat'  =>$r['tempat'],
 										'katalog' =>$r['katalog'],
+										'urut'    =>$r['urut'],
 										'barkode' =>$r['barkode']
 						)));
 			break;
