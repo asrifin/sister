@@ -2,7 +2,8 @@
 
 <h4>Golongan Calon Siswa</h4>
 <div id="loadarea"></div>
-<button class="button" id="tambahBC">Tambah </button>
+<button data-hint="Tambah Data" class="button" id="tambahBC"><i class="icon-plus-2 on-left"></i>Tambah </button>
+
 <table class="table hovered bordered striped">
     <thead>
         <tr class="selected">

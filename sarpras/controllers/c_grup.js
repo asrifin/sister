@@ -95,7 +95,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 
                                     // +'<div class="tile">'
                                     //     +'<div class="tile-content image">'
-                                    //         +'<img src="images/author.jpg">'
+                                    //         +'<img src="../images/author.jpg">'
                                     //     +'</div>'
                                     //     +'<div class="brand">'
                                     //         +'<span class="label fg-white">Images</span>'

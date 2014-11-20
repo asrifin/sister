@@ -15,34 +15,15 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-					$departemen  = trim(isset($_POST['departemenS']))?filter($_POST['departemenS']):'';
 				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
-				$sql = 'SELECT
-							p.replid,
-							p.kelompok,
-							p.tglmulai,
-                            p.tglselesai,
-                            p.biaya,(
-								SELECT count(*)
-								from psb_calonsiswa
-								where proses = p.replid and `status`=0
-							)calonsiswa,(
-								SELECT count(*)
-								from psb_calonsiswa
-								where proses = p.replid and `status`!=0
-							)siswaditerima,
-							p.keterangan
-							
-						FROM
-							psb_kelompok p,
-                            psb_proses pk,
-							departemen d
-						WHERE	
-							
-							p.proses = pk.replid and
-                            pk.departemen = d.replid';
+				$sql = 'SELECT *
+						FROM '.$tb.' 
+						WHERE 
+							kelompok like "%'.$kelompok.'%"							
+						ORDER 
+							BY kelompok asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -72,7 +53,10 @@
 							$hint = 'Aktifkan';
 							$func = 'onclick="aktifkan('.$res['replid'].');"';
 						}
-						
+						$q = mysql_query("SELECT replid FROM psb_calonsiswa WHERE proses = '".$res['replid']."'");
+						$calon_siswa = mysql_num_rows($q);
+						$q = mysql_query("SELECT replid FROM psb_calonsiswa WHERE proses = '".$res['replid']."' AND status<>0");
+						$siswa_diterima = mysql_num_rows($q);
 						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -86,8 +70,8 @@
 									
 									<td>'.tgl_indo($res['tglmulai']).' s/d '.tgl_indo($res['tglselesai']).'</td>
 									<td>'.$res['biaya'].'</td>
-									<td>'.isset($res['calonsiswa']).'</td>
-									<td>'.isset($res['siswaditerima']).'</td>
+									<td>'.$calon_siswa.'</td>
+									<td>'.$siswa_diterima.'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';

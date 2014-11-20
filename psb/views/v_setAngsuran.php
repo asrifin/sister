@@ -2,7 +2,7 @@
 
 <h4>Set Angsuran</h4>
 <div id="loadarea"></div>
-<button class="button" id="tambahBC"><i class="icon-plus-2 on-left"></i>Tambah </button>
+<button data-hint="Tambah Data" class="button" id="tambahBC"><i class="icon-plus-2 on-left"></i>Tambah </button>
 
 <table class="table hovered bordered striped">
     <thead>

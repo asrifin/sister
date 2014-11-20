@@ -71,7 +71,7 @@
 </head>
 
 <body class="metro">
-    <nav class="navigation-bar light fixed-top">
+    <nav class="navigation-bar fixed-top">
         <nav class="navigation-bar-content">
             <a class="element brand" href="../">
                 <span class="icon-home"></span>  
@@ -99,7 +99,7 @@
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="kriteria-calon-siswa">Kriteria Calon Siswa</a></li>
                     <li><a href="golongan-calon-siswa">Golongan Calon Siswa</a></li>
-                    <li><a href="#">Set Biaya Calon Siswa</a></li>
+                    <li><a href="set-biaya-calon-siswa">Set Biaya Calon Siswa</a></li>
                     <li><a href="set-angsuran">Set Angsuran </a></li>
                     <li><a href="set-diskon">Set Diskon </a></li>
 
@@ -146,6 +146,9 @@
                     break;
                     case 'vsetAngsuran':
                         require $d.'v_setAngsuran.php';
+                    break;
+                     case 'vsetBiayaCalonSiswa':
+                        require $d.'v_setBiayaCalonSiswa.php';
                     break;
                     case 'vsetDiskon':
                         require $d.'v_setDiskon.php';

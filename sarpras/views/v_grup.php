@@ -147,13 +147,13 @@
             <div class="span5 xoffset1">
                 <div class="span5">
                     <label for="">Gambar :</label>
-                    <img src="images/5.jpg" width="200" class="shadow">
+                    <img src="../images/5.jpg" width="200" class="shadow">
                 </div>
             </div>  
             <div class="span5">
                 <div class="span5">
                     <label for="">Presentase Kondisi :</label>
-                    <img src="images/5.jpg" width="200" class="shadow">
+                    <img src="../images/5.jpg" width="200" class="shadow">
                 </div>
             </div>
         </div>

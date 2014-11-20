@@ -72,7 +72,7 @@ var contentFR = '';
 
         //add form
         $("#tambahBC").on('click', function(){
-            viewFR('');
+             $('#tambah').toggle('slow');
         });
 
         //search action
@@ -184,7 +184,7 @@ var contentFR = '';
         var aksi ='aksi=tampil';
         var cari = '&tahunajaranS='+$('#tahunajaranS').val()
                     +'&kelompokS='+$('#kelompokS').val()
-                     +'&departemenS='+$('#departemenS').val();
+                    // +'&tglpendaftaranS='+$('#tglpendaftaranS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -279,7 +279,7 @@ var contentFR = '';
     function pagination(page,aksix){
         var datax = 'starting='+page+'&aksi='+aksix;
         var cari = '&kelompokS='+$('#kelompokS').val()
-                    +'&departemenS='+$('#departemenS').val()
+                    // +'&tingkatS='+$('#tingkatS').val()
                     // +'&tglpendaftaranS='+$('#tglpendaftaranS').val();
 
         $.ajax({

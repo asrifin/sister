@@ -4,8 +4,8 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'kelompok';
-	$tb  = 'psb_'.$mnu;
+	$mnu = 'kelas';
+	$tb  = 'aka_'.$mnu;
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -15,43 +15,36 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-					$departemen  = trim(isset($_POST['departemenS']))?filter($_POST['departemenS']):'';
-				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
-				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
-				$sql = 'SELECT
-							p.replid,
-							p.kelompok,
-							p.tglmulai,
-                            p.tglselesai,
-                            p.biaya,(
-								SELECT count(*)
-								from psb_calonsiswa
-								where proses = p.replid and `status`=0
-							)calonsiswa,(
-								SELECT count(*)
-								from psb_calonsiswa
-								where proses = p.replid and `status`!=0
-							)siswaditerima,
-							p.keterangan
-							
-						FROM
-							psb_kelompok p,
-                            psb_proses pk,
-							departemen d
-						WHERE	
-							
-							p.proses = pk.replid and
-                            pk.departemen = d.replid';
+				$tingkat     = trim($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
+				$kelas       = trim($_POST['kelasS'])?filter($_POST['kelasS']):'';
+				$wali        = trim($_POST['waliS'])?filter($_POST['waliS']):'';
+
+				$sql ='SELECT 
+							k.replid,
+							k.kelas,
+							p.nama as wali,
+							k.kapasitas,
+							k.keterangan
+						FROM 
+							aka_kelas k,
+							aka_guru g,
+							hrd_pegawai p
+						WHERE
+							k.tingkat LIKE "%'.$tingkat.'%"
+							AND k.kelas LIKE "%'.$kelas.'%"
+							AND p.nama LIKE "%'.$wali.'%"
+							and k.wali    = g.replid
+							and g.pegawai = p.replid
+						ORDER BY
+							k.kelas ASC';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
+
 				$recpage= 5;//jumlah data per halaman
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
 				$obj 	= new pagination_class($sql,$starting,$recpage);
 				$result =$obj->result;
 
@@ -72,7 +65,7 @@
 							$hint = 'Aktifkan';
 							$func = 'onclick="aktifkan('.$res['replid'].');"';
 						}
-						
+
 						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -82,15 +75,15 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelompok'].'</td>
-									
-									<td>'.tgl_indo($res['tglmulai']).' s/d '.tgl_indo($res['tglselesai']).'</td>
-									<td>'.$res['biaya'].'</td>
-									<td>'.isset($res['calonsiswa']).'</td>
-									<td>'.isset($res['siswaditerima']).'</td>
+									<td>'.$nox.'</td>
+									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelas'].'</td>
+									<td>'.$res['wali'].'</td>
+									<td>'.$res['kapasitas'].'</td>
+									<td>-</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
+								// <td>'.$res['terisi'].'</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -106,11 +99,8 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	proses 		= "'.filter($_POST['tahunajaranH']).'",
-								kelompok  	= "'.filter($_POST['kelompokTB']).'",
-								tglmulai  	= "'.filter($_POST['tglmulaiTB']).'",
-								tglselesai  = "'.filter($_POST['tglakhirTB']).'",
-								biaya  		= "'.filter($_POST['biaya_pendaftaranTB']).'",
+				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
+								tingkat    	= "'.filter($_POST['tingkatTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
@@ -144,10 +134,9 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'kelompok'    =>$r['kelompok'],
-							'tglmulai'    =>$r['tglmulai'],
-							'tglselesai'  =>$r['tglselesai'],
-							'biaya'    	  =>$r['biaya'],
+							'kelas'      =>$r['kelas'],
+							'wali'       =>$r['wali'],
+							'kapasitas'  =>$r['kapasitas'],
 							'keterangan' =>$r['keterangan'],
 						));
 			break;
@@ -166,57 +155,13 @@
 					}else{
 						$stat='sukses';
 					}
-				//var_dump($stat);exit();
 				}$out  = json_encode(array('status'=>$stat));
+				//var_dump($stat);exit();
 			break;
 			// aktifkan -----------------------------------------------------------------
 
-			// cmbkelompok -----------------------------------------------------------------
-			case 'cmb'.$mnu:
-				$w='';
-				if(isset($_POST['replid'])){
-					$w='where replid ='.$_POST['replid'];
-				}else{
-					if(isset($_POST[$mnu])){
-						$w='where'.$mnu.'='.$_POST[$mnu];
-					}elseif (isset($_POST['tahunajaran'])) {
-						$w='where tahunajaran='.$_POST['tahunajaran'];
-					}
-				}
-				
-				$s	= ' SELECT *
-						from '.$tb.'
-						'.$w.'		
-						ORDER  BY '.$mnu.' asc';
-				// var_dump($s);exit();
-				$e  = mysql_query($s);
-				$n  = mysql_num_rows($e);
-				$ar = $dt=array();
-
-				if(!$e){ //error
-					$ar = array('status'=>'error');
-				}else{
-					if($n==0){ // kosong 
-						var_dump($n);exit();
-						$ar = array('status'=>'kosong');
-					}else{ // ada data
-						if(!isset($_POST['replid'])){
-							while ($r=mysql_fetch_assoc($e)) {
-								$dt[]=$r;
-							}
-						}else{
-							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','kelompok'=>$dt);
-					}
-				}
-				// print_r($n);exit();
-				$out=json_encode($ar);
-			break;
-			// cmbtingkat -----------------------------------------------------------------
-
 		}
-	}
-	echo $out;
+	}echo $out;
 
 	// ---------------------- //
 	// -- created by epiii -- //

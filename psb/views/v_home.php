@@ -13,7 +13,7 @@
     </a>
     <!--end of  kriteria calon siswa -->
 
-    <!-- golongan calon siswa -->
+    <!-- Kelompok Pendaftaran -->
     <a href="kelompok" class="tile double bg-lightRed" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-user"></span>
@@ -22,9 +22,9 @@
             <div class="label">Kelompok Pendaftaran</div>
         </div>
     </a>
-    <!--end of  golongan calon siswa -->
+    <!--end of  Kelompok Pendaftaran -->
 
-    <!-- golongan calon siswa -->
+    <!-- Pendataan Calon Siswa -->
     <a href="pendataan" class="tile double bg-green" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-pencil"></span>
@@ -33,7 +33,7 @@
             <div class="label">Pendataan Calon Siswa</div>
         </div>
     </a>
-    <!--end of  golongan calon siswa -->
+    <!--end of  Pendataan Calon Siswa -->
 
     <!-- golongan calon siswa -->
     <a href="penerimaan" class="tile double bg-lightOrange" data-click="transform">
