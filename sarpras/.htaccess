@@ -16,6 +16,8 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	#inventaris
 	RewriteRule   ^inventaris/?$   								index.php?page=vinventaris
 	RewriteRule   ^aktivitas/?$   								index.php?page=vaktivitas
+   	RewriteRule   ^pinjam/?$									index.php?page=vpinjam
+   	RewriteRule   ^kembali/?$									index.php?page=vkembali
 
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 

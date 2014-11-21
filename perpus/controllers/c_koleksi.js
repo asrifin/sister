@@ -5,6 +5,8 @@ var dir3  = 'models/m_katalog.php';
 var dir4  = 'models/m_penerbit.php';
 var dir5  = 'models/m_pengarang.php';
 var dir6  = 'models/m_koleksi.php';
+var dir7  = 'models/m_jenisbuku.php';
+var dir8  = 'models/m_tingkatbuku.php';
 
 var contentFR ='';
 
@@ -52,6 +54,7 @@ var contentFR ='';
 
         //combo lokasi
         cmblokasi();
+        // cmbjenisbuku();
         
         //load table // edit by epiii
         // viewTB();
@@ -62,27 +65,41 @@ var contentFR ='';
         // });
 
         //search action // edit by epiii
-        $('#lokasiS').on('change',function (e){ // change : combo box
-                viewTB($('#lokasiS').val());
-        });
-        $('#barkodeS').on('keydown',function (e){ // keydown : textbox
+        // $('#lokasiS').on('change',function (e){ // change : combo box
+        //         viewTB($('#lokasiS').val());
+        // });$('#jenisbukuS').on('change',function (e){ // change : combo box
+        //         viewTB($('').val());
+        // });$('#tingkatbukuS').on('change',function (e){ // change : combo box
+        //         viewTB($('#').val());
+        // });
+        $('#lokasiS').on('change',function(){
+            cmbjenisbuku($(this).val());
+        });$('#jenisbukuS').on('change',function (){
+            viewTB();
+        });$('#tingkatbukuS').on('change',function (){
+            viewTB();
+        });$('#barkodeS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
                 viewTB($('#lokasiS').val());
         });$('#idbukuS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB($('#lokasiS').val());
+                viewTB();
+                // viewTB($('#lokasiS').val());
         });$('#judulS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB($('#lokasiS').val());
+                viewTB();
         });$('#callnumberS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB($('#lokasiS').val());
+                viewTB();
+        });$('#klasifikasiS').on('keydown',function (e){ // keydown : textbox
+            if(e.keyCode == 13)
+                viewTB();
         });$('#pengarangS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB($('#lokasiS').val());
+                viewTB();
         });$('#penerbitS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB($('#lokasiS').val());
+                viewTB();
         });
 
         // search button
@@ -93,14 +110,35 @@ var contentFR ='';
             $('#idbukuS').val('');
             $('#judulS').val('');
             $('#callnumberS').val('');
+            $('#klasifikasiS').val('');
             $('#penerbitS').val('');
             $('#pengarangS').val('');
         });
     }); 
 // end of main function ---
 
-// combo departemen ---
-    function cmblokasi(){
+// combo lokasi ---
+    // function cmblokasi(lok){
+    //     $.ajax({
+    //         url:dir,
+    //         data:'aksi=cmblokasi',
+    //         dataType:'json',
+    //         type:'post',
+    //         success:function(dt){
+    //             var out='';
+    //             if(dt.status!='sukses'){
+    //                 out+='<option value="">'+dt.status+'</option>';
+    //             }else{
+    //                 $.each(dt.lokasi, function(id,item){
+    //                     out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
+    //                 });
+    //                 //panggil fungsi viewTB() ==> tampilkan tabel 
+    //                 viewTB(dt.lokasi[0].replid); 
+    //             }$('#lokasiS').html(out);
+    //         }
+    //     });
+    // }
+    function cmblokasi(lok){
         $.ajax({
             url:dir,
             data:'aksi=cmblokasi',
@@ -112,16 +150,72 @@ var contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.lokasi, function(id,item){
-                        out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
+                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
-                    //panggil fungsi viewTB() ==> tampilkan tabel 
-                    viewTB(dt.lokasi[0].replid); 
-                }$('#lokasiS').html(out);
+                }
+                $('#lokasiS').html(out);
+                cmbjenisbuku(dt.lokasi[0].replid);
             }
         });
     }
-//end of combo departemen ---
+//end of combo lokasi ---
+// combo jenisbuku ---
+    
+    function cmbjenisbuku(lok){
+        $.ajax({
+            url:dir7,
+            data:'aksi=cmbjenisbuku&lokasi='+lok,
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    // $.each(dt.jenisbuku, function(id,item){
+                    $.each(dt.nama, function(id,item){
+                        if(item.aktif=='1'){
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
+                            // out+='<option selected="selected" value="'+item.replid+'">'+item.jenisbuku+' (aktif)</option>';
+                        }else{
+                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                            // out+='<option value="'+item.replid+'">'+item.jenisbuku+'</option>';
+                        }
+                    });
+                }$('#jenisbukuS').html(out);
+                cmbtingkatbuku(dt.nama[0].replid);
+            }
+        });
+    }
+//end of combo jenisbuku ---
 
+
+function cmbtingkatbuku(tgt){
+        $.ajax({
+            url:dir8,
+            data:'aksi=cmbtingkatbuku&jenisbuku='+tgt,
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                // alert(dt.status);return false;
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.nama, function(id,item){
+                        if(item.aktif=='1'){
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama       +' (aktif)</option>';
+                        }else{
+                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                        }
+                    });
+                }$('#tingkatbukuS').html(out);
+                // cmbtingkatbuku(dt.tingkatbuku[0].replid);
+                viewTB(); 
+ 
+            }
+        });
+    }
 //save process ---
     // function simpan(){
     //     var urlx ='&aksi=simpan';
@@ -152,13 +246,16 @@ var contentFR ='';
 //end of save process ---
 
 // view table ---
-    function viewTB(lok){ //edit by epiii 
+    // function viewTB(lok){ //edit by epiii 
+    function viewTB(){ //edit by epiii 
         var aksi ='aksi=tampil';
-        var cari ='&lokasiS='+lok
+        // var cari ='&lokasiS='+lok
+        var cari ='&lokasiS='+$('#lokasiS').val()
                     +'&barkodeS='+$('#barkodeS').val()
                     +'&idbukuS='+$('#idbukuS').val()
                     +'&judulS='+$('#judulS').val()
                     +'&callnumberS='+$('#callnumberS').val()
+                    +'&klasifikasiS='+$('#klasifikasiS').val()
                     +'&pengarangS='+$('#pengarangS').val()
                     +'&penerbitS='+$('#penerbitS').val();
         $.ajax({
@@ -230,6 +327,7 @@ var contentFR ='';
                     +'&idbukuS='+$('#idbukuS').val()
                     +'&judulS='+$('#judulS').val()
                     +'&callnumberS='+$('#callnumberS').val()
+                    +'&klasifikasiS='+$('#klasifikasiS').val()
                     +'&pengarangS='+$('#pengarangS').val()
                     +'&penerbitS='+$('#penerbitS').val();
         $.ajax({
