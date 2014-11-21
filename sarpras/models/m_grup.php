@@ -112,7 +112,7 @@
 											<button data-hint="ubah"  class="button" onclick="grupFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
-											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
+											<button data-hint=""  class="button" onclick="grupDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 										 </td>';
 								$out.= '<tr>
@@ -291,7 +291,7 @@
 											<button data-hint="ubah"  class="button" onclick="barangFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
-											<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+											<button data-hint="hapus"  class="button" onclick="barangDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 										 </td>';
 								$out.= '<tr>
@@ -472,6 +472,15 @@
 						$e    = mysql_query($s);
 						$stat = ($e)?'sukses':'gagal';
 						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+					break;
+
+					case 'barang':
+						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb4.' where replid='.$_POST['replid']));
+						$s    = 'DELETE from '.$tb4.' WHERE replid='.$_POST['replid'];
+						// var_dump($s);exit();
+						$e    = mysql_query($s);
+						$stat = ($e)?'sukses':'gagal';
+						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['kode']));
 					break;
 				}
 			break;
