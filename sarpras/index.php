@@ -149,8 +149,8 @@
                     case 'vaktivitas':
                         require $d.'v_aktivitas.php';
                     break;
-                    case 'vpeminjaman':
-                        require $d.'v_peminjaman.php';
+                    case 'vpeminjam':
+                        require $d.'v_peminjam.php';
                     break;
                     case 'vkembali':
                         require $d.'v_kembali.php';
