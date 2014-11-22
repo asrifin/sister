@@ -4,7 +4,7 @@
 <script src="js/metro/metro-calendar.js"></script>
 <script src="js/metro/metro-datepicker.js"></script>
  -->
-<h4 style="color:white;">Kelompok Pendaftaran</h4>
+<h4 style="color:white;">Pendataan Calon Siswa</h4>
 <div id="loadarea"></div>
 
 <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
@@ -18,19 +18,76 @@
 
 <table class="table hovered bordered striped">
     <thead>
-        <tr style="color:white;"class="info">
-            <th class="text-center">Kelompok</th>
-            <th class="text-left">Tanggal Pendaftaran </th>
-            <th class="text-left">Biaya Pendaftaran</th>
-            <th class="text-left">Calon Siswa</th>
-            <th class="text-left">Siswa Diterima</th>
-            <th class="text-left">Keterangan</th>
-            <th class="text-left">Aksi</th>
+        <tr style="color:white;" class="info">
+            <th class="text-left" rowspan="2">Nomor Pendaftaran</th>
+            <th class="text-left" rowspan="2">Nama</th>
+            <th class="text-left" rowspan="2">Uang Pangkal</th>
+            <th class="text-center" colspan="3">Discount</th>
+            <th class="text-right" rowspan="2">Denda</th>
+            <th class="text-left" rowspan="2">Uang Pangkal Net</th>
+            <th class="text-left">Angsuran</th>
+            <th class="text-left" rowspan="2">Aksi</th>
+        </tr>
+        <tr style="color:white;" class="info">
+            <th class="text-right">Subsidi</th>
+            <th class="text-right">Saudara</th>
+            <th class="text-right">Tunai</th>
+            <th>x bulan</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <!-- <th class="text-left"></th> -->
-            <th class="text-left"><input placeholder="kelompok" id="kelompokS" name="kelompokS"></th>
+            <th class="text-left"><input placeholder="no pendaftaran" id="nopendaftaranS" name="nopendaftaranS"></th>
             <!-- <th class="text-left"><input placeholder="tglpendaftaran" id="tglpendaftaranS" name="tglpendaftaranS"></th> -->
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+        </tr>
+    </thead>
+
+    <tbody id="tbody">
+        <!-- row table -->
+    </tbody>
+    <tfoot>
+        
+    </tfoot>
+</table>
+
+<table style="display:none;" class="table hovered bordered striped">
+    <thead>
+        <tr style="color:white;" class="info">
+            <th class="text-left" rowspan="2">Nomor Pendaftaran</th>
+            <th class="text-left" rowspan="2">Nama</th>
+            <th class="text-left" rowspan="2">Uang Pangkal</th>
+            <th class="text-center" colspan="3">Discount</th>
+            <th class="text-right" rowspan="2">Denda</th>
+            <th class="text-left" rowspan="2">Uang Pangkal Net</th>
+            <th class="text-left">Angsuran</th>
+            <th class="text-left" rowspan="2">Aksi</th>
+        </tr>
+        <tr style="color:white;" class="info">
+            <th class="text-right">Subsidi</th>
+            <th class="text-right">Saudara</th>
+            <th class="text-right">Tunai</th>
+            <th>x bulan</th>
+        </tr>
+        <tr id="cariTR" class="selected">
+            <!-- <th class="text-left"></th> -->
+            <th class="text-left"><input placeholder="no pendaftaran" id="nopendaftaranS" name="nopendaftaranS"></th>
+            <!-- <th class="text-left"><input placeholder="tglpendaftaran" id="tglpendaftaranS" name="tglpendaftaranS"></th> -->
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
             <th class="text-left"></th>
         </tr>
     </thead>

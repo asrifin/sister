@@ -27,11 +27,11 @@
                             p.biaya,(
 								SELECT count(*)
 								from psb_calonsiswa
-								where proses = p.replid and `status`=0
+								where kelompok = p.replid and `status`=0
 							)calonsiswa,(
 								SELECT count(*)
 								from psb_calonsiswa
-								where proses = p.replid and `status`!=0
+								where kelompok = p.replid and `status`!=0
 							)siswaditerima,
 							p.keterangan
 							
@@ -42,7 +42,8 @@
 						WHERE	
 							
 							p.proses = pk.replid and
-                            pk.departemen = d.replid';
+                            pk.departemen = d.replid and
+                            p.proses = 4';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -99,8 +100,8 @@
 							... data tidak ditemukan...</span></td></tr>';
 				}
 				#link paging
-				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+				$out.= '<tr class="info"><td colspan=10>'.$obj->anchors.'</td></tr>';
+				$out.='<tr class="info"><td colspan=10>'.$obj->total.'</td></tr>';
 			break; 
 			// view -----------------------------------------------------------------
 

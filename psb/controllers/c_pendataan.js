@@ -1,4 +1,4 @@
-var mnu       = 'kelompok';
+var mnu       = 'pendataan';
 var mnu2      = 'departemen';
 var mnu3      = 'tahunajaran';
 var dir       = 'models/m_'+mnu+'.php';

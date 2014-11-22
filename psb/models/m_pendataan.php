@@ -4,7 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'kelompok';
+	$mnu = 'calonsiswa';
 	$tb  = 'psb_'.$mnu;
 	// $out=array();
 
@@ -16,14 +16,12 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
+				// $nopendaftaran    = trim($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
 				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
 				$sql = 'SELECT *
-						FROM '.$tb.' 
-						WHERE 
-							kelompok like "%'.$kelompok.'%"							
+						FROM '.$tb.' 							
 						ORDER 
-							BY kelompok asc';
+							BY nopendaftaran asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -53,10 +51,7 @@
 							$hint = 'Aktifkan';
 							$func = 'onclick="aktifkan('.$res['replid'].');"';
 						}
-						$q = mysql_query("SELECT replid FROM psb_calonsiswa WHERE proses = '".$res['replid']."'");
-						$calon_siswa = mysql_num_rows($q);
-						$q = mysql_query("SELECT replid FROM psb_calonsiswa WHERE proses = '".$res['replid']."' AND status<>0");
-						$siswa_diterima = mysql_num_rows($q);
+						
 						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -66,25 +61,28 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelompok'].'</td>
+									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nopendaftaran'].'</td>
 									
-									<td>'.tgl_indo($res['tglmulai']).' s/d '.tgl_indo($res['tglselesai']).'</td>
-									<td>'.$res['biaya'].'</td>
-									<td>'.$calon_siswa.'</td>
-									<td>'.$siswa_diterima.'</td>
-									<td>'.$res['keterangan'].'</td>
+									<td>'.$res['nama'].'</td>
+									<td>'.getuang($res['sumpokok']).'</td>
+									<td>'.getuang($res['disctb']).'</td>
+									<td>'.getuang($res['discsaudara']).'</td>
+									<td>'.getuang($res['disctunai']).'</td>
+									<td>'.getuang($res['denda']).'</td>
+									<td>'.getuang($res['sumnet']).'</td>
+									<td>'.getuang($res['angsuran']).'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
-							<td  colspan=9 ><span style="color:red;text-align:center;">
+							<td  colspan=10 ><span style="color:red;text-align:center;">
 							... data tidak ditemukan...</span></td></tr>';
 				}
 				#link paging
-				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+				$out.= '<tr class="info"><td colspan=10>'.$obj->anchors.'</td></tr>';
+				$out.='<tr class="info"><td colspan=10>'.$obj->total.'</td></tr>';
 			break; 
 			// view -----------------------------------------------------------------
 
@@ -202,7 +200,4 @@
 	}
 	echo $out;
 
-	// ---------------------- //
-	// -- created by epiii -- //
-	// ---------------------- //
 ?>
