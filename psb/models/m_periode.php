@@ -4,7 +4,8 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'kelompok';
+	// $mnu = 'kelompok';
+	$mnu = 'proses';
 	$tb  = 'psb_'.$mnu;
 	// $out=array();
 
@@ -16,15 +17,17 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
-				$keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
+				$departemen = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
+				$periode    = trim($_POST['periodeS'])?filter($_POST['periodeS']):'';
+				// $keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.' 
 						WHERE 
-							kelompok like "%'.$kelompok.'%" and
-							keterangan like "%'.$keterangan.'%"
+							proses like "%'.$periode.'%"
 						ORDER 
-							BY kelompok asc';
+							BY proses asc';
+							// keterangan like "%'.$keterangan.'%"
+					// 	kelompok like "%'.$kelompok.'%" and
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -66,11 +69,13 @@
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
+									// <td><input type="checkbox"></td>	
 						$out.= '<tr>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelompok'].'</td>
+									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['proses'].'</td>
 									
+									<td>'.$res['kodeawalan'].'</td>
 									<td>'.tgl_indo($res['tglmulai']).' s/d '.tgl_indo($res['tglselesai']).'</td>
-									<td>'.$res['biaya'].'</td>
+									<td>'.$res['kapasitas'].'</td>
 									<td>'.$calon_siswa.'</td>
 									<td>'.$siswa_diterima.'</td>
 									<td>'.$res['keterangan'].'</td>
@@ -121,18 +126,24 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT *
-							from '.$tb.'
+							from '.$tb.' p, departemen d
 							WHERE 
-								replid='.$_POST['replid'];
+								p.replid='.$_POST['replid'].' AND
+								d.replid= p.departemen' ;
+				// print_r($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'kelompok'    =>$r['kelompok'],
-							'tglmulai'    =>$r['tglmulai'],
-							'tglselesai'  =>$r['tglselesai'],
-							'biaya'    	  =>$r['biaya'],
+							'status'      =>$stat,
+							// 'kelompok' =>$r['kelompok'],
+							'departemen' =>$r['nama'],
+							'kelompok'   =>$r['proses'],
+							'tglmulai'   =>$r['tglmulai'],
+							'tglselesai' =>$r['tglselesai'],
+							'kodeawalan' =>$r['kodeawalan'],
+							'kapasitas'  =>$r['kapasitas'],
+							'keterangan' =>$r['keterangan'],
 							'keterangan' =>$r['keterangan'],
 						));
 			break;
