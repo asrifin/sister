@@ -174,12 +174,12 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     +'</div>'
                                 +'</form>'
                         +'</div>';
-            // barang
 
+            // barang
             b_contentFR +=''
-                        +'<form autocomplete="off" onsubmit="barangSV();return false;" id="'+mnu5+'FR">' 
+                        +'<form enctype="multipart/form-data" autocomplete="off" onsubmit="barangSV();return false;" id="'+mnu5+'FR">' 
                             +'<input id="b_idformH" type="hidden">' 
-                            +'<input id="b_katalogH2" type="text" name="b_katalogH2">' 
+                            +'<input id="b_katalogH2" type="hidden" name="b_katalogH2">' 
                             
                             // +'<div class="grid show-grid span10">'
                             +'<div class="grid span10">'
@@ -189,7 +189,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                         // Nama
                                         +'<label>Nama Barang</label>'
                                         +'<div class="input-control text">'
-                                            +'<input type="text" id="b_katalogTB" name="b_katalogTB">'
+                                            +'<input disabled type="text" id="b_katalogTB" name="b_katalogTB">'
                                         +'</div>'
                                         // tempat
                                         +'<label>Tempat</label>'
@@ -832,14 +832,24 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                     var titlex;
                     // alert(id);return false;
                     if(id==''){  //add mode
-                        $('#b_katalogTB').val($('#b_katalogDV').html());
+                        // $.ajax({
+                        //     url:dir,
+                        //     type:'post',
+                        //     dataType:'json',
+                        //     data:'aksi=headinfo&subaksi=barang&katalog',
+                        //     success:function(dt){
+
+                        //     }
+                        // });
+                        // $('#b_katalogTB').val($('#b_katalogDV').html());
                         titlex='<span class="icon-plus-2"></span> Tambah ';
-                        $('#b_jumbarangTB').val('222');
-                        $('#b_namaTB').val($('#b_katalogDV').html());
-                        $('#b_katalogH2').val($('#b_katalogH1').val());
-                        $('#b_keteranganTB').val('wasem');
+                        // $('#b_jumbarangTB').val('222');
+                        // $('#b_namaTB').val($('#b_katalogDV').html());
+                        // $('#b_katalogH2').val($('#b_katalogH1').val());
+                        // $('#b_keteranganTB').val('wasem');
                         cmbkondisi('form','');
                         cmbtempat('');
+                        vwHeadBarang($('#b_katalogH1').val());
                     }else{ // edit mode
                         bkosongkan();
                         titlex='<span class="icon-pencil"></span> Ubah';
@@ -917,6 +927,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         $('#b_totasetDV').html('Rp. '+dt.data.totaset+',-');
                         $('#b_susutDV').html(dt.data.susut+' %');
                         $('#b_namaTB').html(dt.data.katalog);
+
+                        $('#b_katalogH2').val(dt.data.idkatalog);
+                        $('#b_katalogTB').val(dt.data.katalog);
                     }
                 },
             });
@@ -1120,6 +1133,12 @@ function jumupdate (e) {
         });
     }
 // end of notifikasi
+
+// upload image
+    function uploadimg(e){
+        // 
+    }
+//end of  upload image
 
     // ---------------------- //
     // -- created by epiii -- //

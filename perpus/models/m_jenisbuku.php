@@ -118,8 +118,9 @@
 						from '.$tb.'
 						'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
 						ORDER  BY kode asc';
-				$e  = mysql_query($s);
+
 				// var_dump($s);
+				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
 

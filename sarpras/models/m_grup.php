@@ -389,6 +389,7 @@
 						}else{
 							$stat ='sukses';
 							$dt   = array(
+										'idkatalog' =>$r['replid'],
 										'katalog'   =>$r['katalog'],
 										'grup'      =>$r['grup'],
 										'lokasi'    =>$r['lokasi'],

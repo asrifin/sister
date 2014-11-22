@@ -80,7 +80,7 @@ var contentFR = '';
         });$('#tahunajaranS').on('change',function (){
             viewTB();
         });$('#tingkatS').on('change',function (){
-            viewTB();
+            viewTB(); 
         });$('#kelasS').keydown(function(e){
             if(e.keyCode==13)
                 viewTB();

@@ -19,31 +19,39 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$lokasi 	= isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
-				$barkode	= isset($_POST['barkodeS'])?filter(trim($_POST['barkodeS'])):'';
-				$idbuku		= isset($_POST['idbukuS'])?filter(trim($_POST['idbukuS'])):'';
+				$jenisbuku	= isset($_POST['jenisbukuS'])?filter(trim($_POST['jenisbukuS'])):'';
+				$tingkatbuku= isset($_POST['tingkatbukuS'])?filter(trim($_POST['tingkatbukuS'])):'';
 				$judul 		= isset($_POST['judulS'])?filter(trim($_POST['judulS'])):'';
 				$callnumber = isset($_POST['callnumberS'])?filter(trim($_POST['callnumberS'])):'';
 				$pengarang  = isset($_POST['pengarangS'])?filter(trim($_POST['pengarangS'])):'';
 				$penerbit   = isset($_POST['penerbitS'])?filter(trim($_POST['penerbitS'])):'';
 				
-				$sql = 'SELECT b.barkode,
-							   b.idbuku,
-							   p.nama,
-							   g.nama2,
-							   k.replid, p.replid, l.replid, b.lokasi, k.judul, k.callnumber
-						FROM pus_lokasi l, pus_buku b,pus_katalog k,pus_penerbit p,pus_pengarang g
-						WHERE b.katalog = k.replid and
-							  k.penerbit = p.replid and
-							  k.pengarang = g.replid and
-							  l.replid= b.lokasi and
-							  l.replid = '.$lokasi.' and
-							  b.barkode like "%'.$barkode.'%" and							
-							  b.idbuku like "%'.$idbuku.'%" and							
-							  k.judul like "%'.$judul.'%" and							
-							  k.callnumber like "%'.$callnumber.'%" and							
-							  p.nama like "%'.$penerbit.'%" and							
-							  g.nama2 like "%'.$pengarang.'%"							
-						ORDER BY b.barkode asc';
+				$sql = 'SELECT  	
+							b.replid
+							,b.barkode
+							,LPAD(b.idbuku,18,0)as kode
+							,k.judul
+							,k.callnumber
+							,CONCAT("[",f.kode,"] ",f.nama) klasifikasi
+							,r.nama2 as pengarang
+							,t.nama as penerbit
+							,if(b.status=1,"Tersedia","Dipinjam") as status
+						from 
+							pus_buku b,
+							pus_katalog k,
+							pus_klasifikasi f,
+							pus_penerbit t,
+							pus_pengarang r
+						WHERE	
+							b.katalog = k.replid 
+							AND k.klasifikasi = f.replid 
+							AND k.penerbit = t.replid 
+							AND k.pengarang = r.replid
+							/*search*/
+							AND b.lokasi like "%'.$lokasi.'%"
+							AND k.jenisbuku like "%'.$jenisbuku.'%"
+							AND b.tingkatbuku like "%'.$tingkatbuku.'%"
+						';
 						// l.replid and
 							  // b.lokasi like "%'.$lokasi.'%" and
 						// 	  l.replid=
@@ -75,11 +83,13 @@
 						$out.= '<tr>
 									
 									<td>'.$res['barkode'].'</td>
-									<td>'.$res['idbuku'].'</td>
+									<td>'.$res['kode'].'</td>
 									<td>'.$res['judul'].'</td>
 									<td>'.$res['callnumber'].'</td>
-									<td>'.$res['nama'].'</td>
-									<td>'.$res['nama2'].'</td>
+									<td>'.$res['klasifikasi'].'</td>
+									<td>'.$res['pengarang'].'</td>
+									<td>'.$res['penerbit'].'</td>
+									<td>'.$res['status'].'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
