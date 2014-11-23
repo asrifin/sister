@@ -3,7 +3,7 @@
 <h4>Periode Penerimaan</h4>
 <div id="loadarea"></div>
 <button data-hint="Tambah Data" class="button" id="tambahBC"><i class="icon-plus-2 on-left"></i>Tambah </button>
-<button data-hint="Field Pencarian" class="button" id="cariBC"><span class="icon-search"></span> </button>
+<!-- <button data-hint="Field Pencarian" class="button" id="cariBC"><span class="icon-search"></span> </button> -->
 <div class="input-control select span3">
     <select data-hint="Departemen" name="departemenTB" id="departemenS"></select>
 </div>

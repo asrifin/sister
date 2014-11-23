@@ -188,7 +188,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','kelompok'=>$dt);
+						}$ar = array('status'=>'sukses','pendataan'=>$dt);
 					}
 				}
 				// print_r($n);exit();

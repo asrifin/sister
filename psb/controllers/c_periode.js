@@ -209,8 +209,8 @@ var contentFR='';
     function pagination(page,aksix,menux){
         var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
         var cari =  '&departemenS='+$('#departemenS').val()
-                    +'&periodeS='+$('#periodeS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+                    // +'&periodeS='+$('#periodeS').val()
+                    // +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url:dir,
             type:"post",

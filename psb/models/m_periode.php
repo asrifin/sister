@@ -149,9 +149,10 @@
 							'proses'     =>$r['proses'],
 							'kodeawalan' =>$r['kodeawalan'],
 							'angkatan'   =>$r['angkatan'],
+							'kapasitas'   =>$r['kapasitas'],
 							'keterangan' =>$r['keterangan'],
 						));
-						var_dump($s);exit(); $e=mysql_query();
+						// var_dump($s);exit(); $e=mysql_query();
 								// var_dump($stat);exit();
 			break;
 			// ambiledit -----------------------------------------------------------------
@@ -183,7 +184,7 @@
 					if(isset($_POST[$mnu])){
 						$w='where'.$mnu.'='.$_POST[$mnu];
 					}elseif (isset($_POST['tahunajaran'])) {
-						$w='where tahunajaran='.$_POST['tahunajaran'];
+						$w='where proses='.$_POST['tahunajaran'];
 					}
 				}
 				
@@ -209,7 +210,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','kelompok'=>$dt);
+						}$ar = array('status'=>'sukses','periode'=>$dt);
 					}
 				}
 				// print_r($n);exit();
