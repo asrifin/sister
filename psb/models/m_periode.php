@@ -4,10 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-<<<<<<< HEAD
-=======
 	// $mnu = 'kelompok';
->>>>>>> 5e763dc7da1da4a0c012a150dd0f4e990f58d772
 	$mnu = 'proses';
 	$tb  = 'psb_'.$mnu;
 	// $out=array();
@@ -21,7 +18,6 @@
 			case 'tampil':
 				$departemen  = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
 				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-<<<<<<< HEAD
 				// $kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
 				$sql = 'SELECT
@@ -50,9 +46,8 @@
 							a.departemen = '.$departemen.' and
 							p.angkatan = a.replid and
 							a.departemen = d.replid';
-=======
 				$departemen = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
-				$periode    = trim($_POST['periodeS'])?filter($_POST['periodeS']):'';
+				// $periode    = trim($_POST['periodeS'])?filter($_POST['periodeS']):'';
 				// $keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.' 
@@ -62,7 +57,6 @@
 							BY proses asc';
 							// keterangan like "%'.$keterangan.'%"
 					// 	kelompok like "%'.$kelompok.'%" and
->>>>>>> 5e763dc7da1da4a0c012a150dd0f4e990f58d772
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -103,7 +97,6 @@
 								 </td>';
 									// <td><input type="checkbox"></td>	
 						$out.= '<tr>
-<<<<<<< HEAD
 									<td id="'.$mnu.'TD_'.isset($res['replid']).'">'.$res['proses'].'</td>	
 									<td>'.$res['kodeawalan'].'</td>
 									<td>'.$res['angkatan'].'</td>
@@ -111,7 +104,6 @@
 									<td>'.$res['calonsiswa'].'</td>
 									<td>'.$res['siswaditerima'].'</td>
 									<td>'.($res['aktif']=='1'?'<span style="color:#00A000"><b>Dibuka</b></span>':'Ditutup').'</td>
-=======
 									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['proses'].'</td>
 									
 									<td>'.$res['kodeawalan'].'</td>
@@ -119,7 +111,6 @@
 									<td>'.$res['kapasitas'].'</td>
 									<td>'.$calon_siswa.'</td>
 									<td>'.$siswa_diterima.'</td>
->>>>>>> 5e763dc7da1da4a0c012a150dd0f4e990f58d772
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -176,41 +167,11 @@
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-<<<<<<< HEAD
 							'status'     =>$stat,
 							'proses'     =>$r['proses'],
 							'kodeawalan' =>$r['kodeawalan'],
 							'angkatan'   =>$r['angkatan'],
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 							'kapasitas'   =>$r['kapasitas'],
-=======
-							'status'      =>$stat,
-							// 'kelompok' =>$r['kelompok'],
-							'departemen' =>$r['nama'],
-							'kelompok'   =>$r['proses'],
-							'tglmulai'   =>$r['tglmulai'],
-							'tglselesai' =>$r['tglselesai'],
-							'kodeawalan' =>$r['kodeawalan'],
-							'kapasitas'  =>$r['kapasitas'],
-							'keterangan' =>$r['keterangan'],
->>>>>>> 5e763dc7da1da4a0c012a150dd0f4e990f58d772
-=======
->>>>>>> parent of eb0a301... PSB V 1.1
-=======
->>>>>>> parent of eb0a301... PSB V 1.1
-=======
->>>>>>> parent of eb0a301... PSB V 1.1
-=======
->>>>>>> parent of eb0a301... PSB V 1.1
-=======
->>>>>>> parent of eb0a301... PSB V 1.1
-=======
->>>>>>> parent of eb0a301... PSB V 1.1
 							'keterangan' =>$r['keterangan'],
 						));
 						var_dump($s);exit(); $e=mysql_query();
@@ -271,7 +232,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','kelompok'=>$dt);
+						}$ar = array('status'=>'sukses','periode'=>$dt);
 					}
 				}
 				// print_r($n);exit();
