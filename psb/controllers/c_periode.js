@@ -8,9 +8,9 @@ var contentFR='';
                         +'<input  id="idformH" type="hidden">'
 
                         +'<label>Departemen</label>'
-                        +'<div class="input-control text size3">'
-                            +'<input  type="hidden" name="departemenH" id="departemenH" class="span2">'
-                            +'<input disabled="disabled" name="departemenTB" id="departemenTB" class="span2">'
+                        +'<div class="input-control text size4">'
+                            +'<input  type="hidden" name="departemenH" id="departemenH" >'
+                            +'<input disabled="disabled" name="departemenTB" id="departemenTB" xclass="span2">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Nama Periode</label>' 
@@ -35,8 +35,30 @@ var contentFR='';
                         +'</div>'
                         +'<label>Keterangan</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="keteranganTB" id="keteranganTB">'
-                            +'<button class="btn-clear"></button>'
+                        <table class="table hovered bordered striped">
+                            <thead>
+                                <tr style="color:white;"class="info">
+                                    <th class="text-center">Kode</th>
+                                    <th class="text-left">Nama Satuan</th>
+                                    <th class="text-left">Keterangan</th>
+                                    <th class="text-left">Aksi</th>
+                                </tr>
+                                <tr style="display:none;" id="cariTR" class="selected">
+                                    <th class="text-left"><input placeholder="kode" id="kodeS" name="kodeS"></th>
+                                    <th class="text-left"><input placeholder="Satuan" id="namaS"name="namaS"></th>
+                                    <th class="text-left"><input placeholder="keterangan" id="keteranganS"name="keteranganS"></th>
+                                    <th class="text-left"></th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tbody">
+                                <!-- row table -->
+                            </tbody>
+                        </table>
+
+
+                            // +'<input required type="text" name="keteranganTB" id="keteranganTB">'
+                            // +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
@@ -138,9 +160,16 @@ var contentFR='';
     function viewTB(dep){
         var aksi ='aksi=tampil';
         var cari = '&departemenS='+dep
+<<<<<<< HEAD
                     // +'&periodeS='+$('#periodeS').val()
                     // +'&kode_awalanS='+$('#kode_awalanS').val()
                     // +'&keteranganS='+$('#keteranganS').val();
+=======
+                    +'&periodeS='+$('#periodeS').val()
+                    +'&kode_awalanS='+$('#kode_awalanS').val();
+                    // +'&keteranganS='+$('#keteranganS').val();
+                    // +'&kode_awalanS='+$('#kode_awalanS').val()
+>>>>>>> 5e763dc7da1da4a0c012a150dd0f4e990f58d772
         $.ajax({
             url : dir,
             type: 'post',
@@ -190,11 +219,18 @@ var contentFR='';
                         success:function(dt){
                             $('#idformH').val(id);
                             $('#departemenH').val($('#departemenS').val());
-                            $('#departemenTB').val(dt.nama);
+                            // cmbdepartemen()
+                            $('#departemenTB').val(dt.departemen);
+                            // $('#departemenTB').val(dt.nama);
                             $('#periodeTB').val(dt.proses);
                             $('#kode_awalanTB').val(dt.kodeawalan);
+<<<<<<< HEAD
                             $('#angkatanTB').val(dt.angkatan);
                             $('#kapasitasTB').val(dt.kapasitas);                            
+=======
+                            $('<div id="angk"></div>atanTB').val(dt.angkatan);
+                            $('#Kapasitas').val(dt.Kapasitas);                            
+>>>>>>> 5e763dc7da1da4a0c012a150dd0f4e990f58d772
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
