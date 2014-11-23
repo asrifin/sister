@@ -181,6 +181,7 @@
 							'proses'     =>$r['proses'],
 							'kodeawalan' =>$r['kodeawalan'],
 							'angkatan'   =>$r['angkatan'],
+<<<<<<< HEAD
 							'kapasitas'   =>$r['kapasitas'],
 =======
 							'status'      =>$stat,
@@ -193,9 +194,11 @@
 							'kapasitas'  =>$r['kapasitas'],
 							'keterangan' =>$r['keterangan'],
 >>>>>>> 5e763dc7da1da4a0c012a150dd0f4e990f58d772
+=======
+>>>>>>> parent of eb0a301... PSB V 1.1
 							'keterangan' =>$r['keterangan'],
 						));
-						// var_dump($s);exit(); $e=mysql_query();
+						var_dump($s);exit(); $e=mysql_query();
 								// var_dump($stat);exit();
 			break;
 			// ambiledit -----------------------------------------------------------------
@@ -227,7 +230,7 @@
 					if(isset($_POST[$mnu])){
 						$w='where'.$mnu.'='.$_POST[$mnu];
 					}elseif (isset($_POST['tahunajaran'])) {
-						$w='where proses='.$_POST['tahunajaran'];
+						$w='where tahunajaran='.$_POST['tahunajaran'];
 					}
 				}
 				
@@ -253,7 +256,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','periode'=>$dt);
+						}$ar = array('status'=>'sukses','kelompok'=>$dt);
 					}
 				}
 				// print_r($n);exit();
