@@ -257,13 +257,11 @@
 									b.harga,
 									IF(b. STATUS=1,"Tersedia","Dipinjam")AS status,
 									k.nama as kondisi,
-									t.nama as tempat,
 									b.keterangan
 								FROM
-									sar_barang b, sar_kondisi k,sar_tempat t
+									sar_barang b, sar_kondisi k
 								WHERE
-									b.kondisi =k.replid and
-									b.tempat = t.replid and
+									b.kondisi=k.replid and
 									b.katalog = '.$b_katalog.' and
 									b.kode LIKE "%'.$b_kode.'%" and
 									b.barkode LIKE "%'.$b_barkode.'%" and
@@ -299,7 +297,6 @@
 								$out.= '<tr>
 											<td>'.$res['kode'].'</td>
 											<td>'.$res['barkode'].'</td>
-											<td>'.$res['tempat'].'</td>
 											<td>'.$res['sumber'].'</td>
 											<td class="text-right">Rp. '.number_format($res['harga']).',-</td>
 											<td>'.$res['kondisi'].'</td>
@@ -443,28 +440,16 @@
 					case 'barang':
 						$s 		= $tb4.' set 	katalog    = "'.$_POST['b_katalogH2'].'",
 												tempat     = "'.$_POST['b_tempatTB'].'",
+												urut       = "'.$_POST['b_urutH'].'",
 												sumber     = "'.$_POST['b_sumberTB'].'",
 												harga      = "'.getuang($_POST['b_hargaTB']).'",
 												kondisi    = "'.$_POST['b_kondisiTB'].'",
 												keterangan = "'.filter($_POST['b_keteranganTB']).'"';
-
-						$stat = true;
-						if(!isset($_POST['replid'])){ //add
-							if(isset($_POST['b_jumbarangTB']) and $_POST['b_jumbarangTB']>1){ //  lebih dr 1 unit barang
-								for($i=0; $i<($_POST['b_jumbarangTB']); $i++) { // iterasi sbnyak jum barang 
-									$e    = mysql_query('INSERT INTO '.$s.', urut='.($_POST['b_urutH']+$i));
-									if(!$e)$stat=false;  
-								}
-							}else{ // 1 unit barang
-								$e=mysql_query('INSERT INTO '.$s.', urut='.$_POST['b_urutH']);
-								if(!$e)$stat=false;  
-							}
-						}else{ //edit
-							$s2 = 'UPDATE '.$s.', urut='.$_POST['b_urutH'].' WHERE replid='.$_POST['replid'];
-							$e  = mysql_query($s2);
-							// var_dump($s2);exit();
-							if(!$e)$stat=false;  
-						}$out 	= json_encode(array('status'=>($stat?'sukses':'gagal')));
+						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						// print_r($s2);exit();
+						$e 		= mysql_query($s2);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array('status'=>$stat));
 					break;
 				}
 			break;

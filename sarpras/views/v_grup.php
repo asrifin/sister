@@ -147,13 +147,13 @@
             <div class="span5 xoffset1">
                 <div class="span5">
                     <label for="">Gambar :</label>
-                    <img src="../images/5.jpg" width="200" class="shadow">
+                    <img src="images/5.jpg" width="200" class="shadow">
                 </div>
             </div>  
             <div class="span5">
                 <div class="span5">
                     <label for="">Presentase Kondisi :</label>
-                    <img src="../images/5.jpg" width="200" class="shadow">
+                    <img src="images/5.jpg" width="200" class="shadow">
                 </div>
             </div>
         </div>
@@ -164,7 +164,6 @@
             <tr style="color:white;"class="info">
                 <th class="text-center">Kode </th>
                 <th class="text-center">Barcode</th>
-                <th class="text-left">Tempat</th>
                 <th class="text-left">Sumber</th>
                 <th class="text-left">Harga</th>
                 <th class="text-left">Kondisi</th>
@@ -175,7 +174,6 @@
             <tr style="display:none;" id="b_cariTR" class="selected">
                 <th class="text-left"><input placeholder="kode" id="b_kodeS" name="b_kodeS"></th>
                 <th class="text-left"><input placeholder="barkode" id="b_barkodeS" name="b_barkodeS"></th>
-                <th class="text-left"></th>
                 <th class="text-left">
                     <select name="b_sumberS"id="b_sumberS">
                         <option value="">-Semua-</option>
