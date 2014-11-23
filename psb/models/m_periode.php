@@ -182,6 +182,7 @@
 							'kodeawalan' =>$r['kodeawalan'],
 							'angkatan'   =>$r['angkatan'],
 <<<<<<< HEAD
+<<<<<<< HEAD
 							'kapasitas'   =>$r['kapasitas'],
 =======
 							'status'      =>$stat,
@@ -194,6 +195,8 @@
 							'kapasitas'  =>$r['kapasitas'],
 							'keterangan' =>$r['keterangan'],
 >>>>>>> 5e763dc7da1da4a0c012a150dd0f4e990f58d772
+=======
+>>>>>>> parent of eb0a301... PSB V 1.1
 =======
 >>>>>>> parent of eb0a301... PSB V 1.1
 							'keterangan' =>$r['keterangan'],
