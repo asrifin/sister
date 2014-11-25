@@ -95,7 +95,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 
                                     // +'<div class="tile">'
                                     //     +'<div class="tile-content image">'
-                                    //         +'<img src="images/author.jpg">'
+                                    //         +'<img src="../images/author.jpg">'
                                     //     +'</div>'
                                     //     +'<div class="brand">'
                                     //         +'<span class="label fg-white">Images</span>'
@@ -867,6 +867,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     $('#b_katalogTB').val($('#b_katalogDV').html());
                                     $('.jumbarang').attr('style','display:none;');
                                     $('#b_idformH').val(id);
+                                    $('#b_urutH').val(dt.data.urut);
                                     $('#b_katalogH2').val($('#b_katalogH1').val());
                                     $('#b_barkodeTB').val(dt.data.barkode);
                                     $('#b_kodeTB').val(dt.data.kode);
