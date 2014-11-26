@@ -8,7 +8,6 @@
 	$mnu = 'proses';
 	$tb  = 'psb_'.$mnu;
 	// $out=array();
-
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
 		// $out=['status'=>'invalid_no_post'];		
@@ -16,7 +15,7 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen  = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
+				$departemen  = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
 				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				// $kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
@@ -46,18 +45,12 @@
 							a.departemen = '.$departemen.' and
 							p.angkatan = a.replid and
 							a.departemen = d.replid';
-				$departemen = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
+				// $departemen = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
 				// $periode    = trim($_POST['periodeS'])?filter($_POST['periodeS']):'';
 				// $keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
-				$sql = 'SELECT *
-						FROM '.$tb.' 
-						WHERE 
-							proses like "%'.$periode.'%"
-						ORDER 
-							BY proses asc';
+					// var_dump($sql);
 							// keterangan like "%'.$keterangan.'%"
 					// 	kelompok like "%'.$kelompok.'%" and
-				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -75,6 +68,7 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
+				// print_r($res);exit();
 						if($res['aktif']=1){
 							$dis  = 'disabled';
 							$ico  = 'checkmark';
@@ -88,10 +82,10 @@
 						}
 						
 						$btn ='<td>
-									<button data-hint="ubah"  onclick="viewFR('.isset($res['replid']).');">
+									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.isset($res['replid']).');">
+									<button data-hint="hapus" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
@@ -104,13 +98,6 @@
 									<td>'.$res['calonsiswa'].'</td>
 									<td>'.$res['siswaditerima'].'</td>
 									<td>'.($res['aktif']=='1'?'<span style="color:#00A000"><b>Dibuka</b></span>':'Ditutup').'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['proses'].'</td>
-									
-									<td>'.$res['kodeawalan'].'</td>
-									<td>'.tgl_indo($res['tglmulai']).' s/d '.tgl_indo($res['tglselesai']).'</td>
-									<td>'.$res['kapasitas'].'</td>
-									<td>'.$calon_siswa.'</td>
-									<td>'.$siswa_diterima.'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -168,13 +155,14 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
+							'nama'     =>$r['nama'],
 							'proses'     =>$r['proses'],
 							'kodeawalan' =>$r['kodeawalan'],
 							'angkatan'   =>$r['angkatan'],
 							'kapasitas'   =>$r['kapasitas'],
 							'keterangan' =>$r['keterangan'],
 						));
-						var_dump($s);exit(); $e=mysql_query();
+						// var_dump($s);exit(); $e=mysql_query();
 								// var_dump($stat);exit();
 			break;
 			// ambiledit -----------------------------------------------------------------

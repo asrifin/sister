@@ -8,6 +8,18 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
+
+        // function switchPN (e) {
+        // $.each($('.panelx'),function(id,item){
+        //     var ke = id+1;
+        //     if(ke==e){
+        //         $('#panel'+ke).removeAttr('style');
+        //         $('h4').html($(this).attr('title'));
+        //     }else{
+        //         $('#panel'+ke).attr('style','display:none;');
+        //     }
+        // });
+    // }
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
@@ -72,7 +84,11 @@ var contentFR = '';
 
         //add form
         $("#tambahBC").on('click', function(){
-             $('#tambah').toggle('slow');
+                   // $('#pendataanFR').toggle();
+             // $('#tambah').toggle('slow');
+            $('#pendataanFR').removeAttr('style');
+            $('#panel1').attr('style','display:none;');
+
         });
 
         //search action
@@ -170,6 +186,8 @@ var contentFR = '';
                     $.Dialog.close();
                     kosongkan();
                     viewTB($('#departemenS').val());
+                     $('#panel1').removeAttr('style');
+                     $('#pendataanFR').attr('style','display:none;');
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }

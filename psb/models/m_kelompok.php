@@ -87,8 +87,8 @@
 									
 									<td>'.tgl_indo($res['tglmulai']).' s/d '.tgl_indo($res['tglselesai']).'</td>
 									<td>'.$res['biaya'].'</td>
-									<td>'.isset($res['calonsiswa']).'</td>
-									<td>'.isset($res['siswaditerima']).'</td>
+									<td>'.$res['calonsiswa'].'</td>
+									<td>'.$res['siswaditerima'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
