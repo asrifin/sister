@@ -5511,7 +5511,6 @@ a {
   clear: both;
 }
 .metro .pagination > ul li {
-  background-color: grey;
   display: block;
   float: left;
   margin-right: 1px;
@@ -5622,8 +5621,7 @@ a {
 }
 .metro .pagination > ul li.disabled a,
 .metro .pagination > ul li.spaces a {
-    background-color: grey;
-  /*background-color: #f2f2f2;*/
+  background-color: #f2f2f2;
   color: #1e1e1e;
   cursor: not-allowed;
 }
