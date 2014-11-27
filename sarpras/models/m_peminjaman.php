@@ -165,7 +165,7 @@
 					while($res = mysql_fetch_array($result)){	
 						$btn ='<td>
 									
-									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+									<button data-hint="hapus"  class="button" onclick="delpinjam('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
@@ -202,11 +202,25 @@
 			
 			// delete -----------------------------------------------------------------
 			case 'hapus':
-				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
-				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
+				// $d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
+				$d    = mysql_fetch_assoc(mysql_query('SELECT * from sar_dftp  where replid='.$_POST['replid']));
+				// $s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
+				$s    = 'DELETE from sar_dftp WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['barang']));
+			break;
+			// delete -----------------------------------------------------------------
+
+			// delete -----------------------------------------------------------------
+			case 'hapusdftp':
+				// $d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
+				$d    = mysql_fetch_assoc(mysql_query('SELECT * from sar_dftp  where replid='.$_POST['replid']));
+				// $s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
+				$s    = 'DELETE from sar_dftp WHERE replid='.$_POST['replid'];
+				$e    = mysql_query($s);
+				$stat = ($e)?'sukses':'gagal';
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['barang']));
 			break;
 			// delete -----------------------------------------------------------------
 

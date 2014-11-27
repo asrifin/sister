@@ -17,6 +17,8 @@
     <meta name="description" content="Simple responsive css framework">
     <meta name="author" content="Sergey S. Pimenov, Ukraine, Kiev">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link href="css/metro-bootstrap.css" rel="stylesheet">
     <link href="css/metro-bootstrap-responsive.css" rel="stylesheet">
     <link href="css/iconFont.css" rel="stylesheet">

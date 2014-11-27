@@ -8,7 +8,8 @@ var contentFR ='';
 // main function ---
     $(document).ready(function(){
         contentFR 
-                += '<form autocomplete="off" Xclass="span4" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+                += '<form data-role="scrollbox" data-scroll="both" autocomplete="off" Xclass="span4" onsubmit="simpan();return false;" id="scrollbox1">' 
+                // += '<form data-role="scrollbox" data-scroll="both" autocomplete="off" Xclass="span4" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                     +'<div class="grid span10">'
                         +'<div class="row">'
                             +'<div class="span4">'
@@ -345,12 +346,12 @@ var contentFR ='';
 //end of paging ---
     
 //del process ---
-    function delpinjam(id){
+    function deldftp(id){
         if(confirm('melanjutkan untuk menghapus data?'))
         $.ajax({
             url:dir,
             type:'post',
-            data:'aksi=hapus&replid='+id,
+            data:'aksi=hapusdftp&replid='+id,
             dataType:'json',
             success:function(dt){
                 var cont,clr;
