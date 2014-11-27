@@ -233,35 +233,16 @@
 						$b_status     = isset($_POST['b_statusS'])?filter(trim($_POST['b_statusS'])):'';
 						$b_keterangan = isset($_POST['b_keteranganS'])?filter(trim($_POST['b_keteranganS'])):'';
 						
-						$sql = 'SELECT (
-										SELECT 
-											CONCAT(ll.kode,"/",gg.kode,"/",tt.kode,"/",kk.kode,"/",LPAD(b.urut,5,0))
-										from 
-											sar_katalog kk,
-											sar_grup gg,
-											sar_tempat tt,
-											sar_lokasi ll
-										where 
-											kk.replid = b.katalog AND
-											kk.grup   = gg.replid AND
-											b.tempat  = tt.replid AND
-											tt.lokasi = ll.replid
-									)as kode,
-									b.replid,
-									LPAD(b.urut,5,0) as barkode,(
-										case b.sumber
-											when 0 then "Beli"
-											when 1 then "Pemberian" 
-											when 2 then "Membuat Sendiri" 
-										end
-									)as sumber,
-									b.harga,
-									IF(b. STATUS=1,"Tersedia","Dipinjam")AS status,
-									k.nama as kondisi,
-									t.nama as tempat,
-									b.keterangan
-								FROM
-									sar_barang b, sar_kondisi k,sar_tempat t
+						$sql = 'SELECT ( 
+									SELECT CONCAT( 
+								ll.kode, "/", gg.kode, "/", tt.kode, "/", kk.kode, "/", LPAD(b.urut, 5, 0) ) 
+									FROM 
+									sar_katalog kk, sar_grup gg, sar_tempat tt, sar_lokasi ll 
+									WHERE kk.replid = b.katalog AND kk.grup = gg.replid AND b.tempat = tt.replid AND tt.lokasi = ll.replid ) AS kode, b.replid, LPAD(b.urut, 5, 0) AS barkode, ( CASE b.sumber WHEN 0 THEN "Beli" WHEN 1 THEN "Pemberian" WHEN 2 THEN "Membuat Sendiri" END ) AS sumber, b.harga,
+
+IF ( b. STATUS = 1, "Tersedia", "Dipinjam" ) AS status, k.nama AS kondisi, t.nama AS tempat, b.keterangan FROM 
+								sar_barang b JOIN sar_kondisi k on k.replid = b.kondisi JOIN sar_tempat t on t.replid = b.tempat
+
 								WHERE
 									b.kondisi =k.replid and
 									b.tempat = t.replid and
