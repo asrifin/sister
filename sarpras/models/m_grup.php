@@ -273,7 +273,7 @@
 									b.kondisi LIKE "%'.$b_kondisi.'%" and
 									b.status LIKE "%'.$b_status.'%" and
 									b.keterangan LIKE "%'.$b_keterangan.'%"';
-						print_r($sql);exit(); 	
+						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
