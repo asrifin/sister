@@ -30,6 +30,7 @@
     <!-- Metro UI CSS JavaScript plugins -->
     <script src="../js/load-metro.js"></script>
      <script src="../js/metro.min.js"></script>
+     <!-- // <script src="../js/metro-scroll.js"></script> -->
 
     <!-- Local JavaScript -->
     <script src="../js/docs.js"></script>
