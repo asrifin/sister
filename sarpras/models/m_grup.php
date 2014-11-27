@@ -261,10 +261,10 @@
 									t.nama as tempat,
 									b.keterangan
 								FROM
-									sar_barang b, sar_kondisi k,sar_tempat t
+									sar_barang b 
+									LEFT JOIN sar_kondisi k on k.replid = b.kondisi
+									LEFT JOIN sar_tempat t on t.replid = b.tempat
 								WHERE
-									b.kondisi =k.replid and
-									b.tempat = t.replid and
 									b.katalog = '.$b_katalog.' and
 									b.kode LIKE "%'.$b_kode.'%" and
 									b.barkode LIKE "%'.$b_barkode.'%" and
