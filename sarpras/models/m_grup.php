@@ -6,6 +6,7 @@
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 
+	// var_dump($_SESSION);exit();
 	$mnu  = 'grup';
 	$mnu2 = 'lokasi';
 	$mnu3 = 'katalog';
@@ -272,7 +273,7 @@
 									b.kondisi LIKE "%'.$b_kondisi.'%" and
 									b.status LIKE "%'.$b_status.'%" and
 									b.keterangan LIKE "%'.$b_keterangan.'%"';
-						// print_r($sql);exit(); 	
+						print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
@@ -426,18 +427,39 @@
 					break;
 
 					case 'katalog':
-						$s 		= $tb3.' set 	grup 		= "'.$_POST['k_grupH2'].'",
-												kode 		= "'.filter($_POST['k_kodeTB']).'",
-												nama 		= "'.filter($_POST['k_namaTB']).'",
-												jenis 		= "'.$_POST['k_jenisTB'].'",
-												susut 		= "'.filter($_POST['k_susutTB']).'",
-												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"';
-												// photo 		= "'.filter($_POST['k_photoTB']).'",
-						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						// print_r($s2);exit();
-						$e 		= mysql_query($s2);
-						$stat 	= ($e)?'sukses':'gagal';
-						$out 	= json_encode(array('status'=>$stat));
+						switch ('subaksi2') {
+							case 'upload':
+								$error=false;
+								$files=array();
+								foreach($_FILES as $file){
+									$tipex		= substr($file['type'],6);
+									$namaAwal 	= $file['name'];
+									$namaSkrg	= $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
+									$src		= $file['tmp_name'];
+									$destix		= '../../img/upload/'.basename($namaSkrg);
+
+									if(move_uploaded_file($src, $destix))
+										$files[] = $namaSkrg;
+									else
+										$error = true;
+								}$stat=$error?'gagal_upload':'sukses';
+								$out=json_encode(array('status'=>$stat));
+							break;
+
+							case 'db':
+								$s 		= $tb3.' set 	grup 		= "'.$_POST['k_grupH2'].'",
+														kode 		= "'.filter($_POST['k_kodeTB']).'",
+														nama 		= "'.filter($_POST['k_namaTB']).'",
+														jenis 		= "'.$_POST['k_jenisTB'].'",
+														'.($_POST['fileadd'][0]!=''?'photo= "'.$_POST['fileadd'][0].'"':'').',
+														susut 		= "'.filter($_POST['k_susutTB']).'",
+														keterangan 	= "'.filter($_POST['k_keteranganTB']).'"';
+								$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+								$e 		= mysql_query($s2);
+								$stat 	= ($e)?'sukses':'gagal_simpan_db';
+								$out 	= json_encode(array('status'=>$stat));
+							break;
+						}
 					break;
 
 					case 'barang':
@@ -654,7 +676,7 @@
 						)));
 			break;
 			// generate barcode -----------------------------------------------------------
-		}
+			}
 	}echo $out;
 
     // ---------------------- //
