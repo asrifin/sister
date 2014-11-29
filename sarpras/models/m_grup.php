@@ -659,7 +659,7 @@
 								where t.replid = '.$_POST['tempat'].'
 							)tbt on tbt.replid = b.tempat
 							join sar_lokasi l on l.replid = tbt.lokasi';
-				// print_r($s);exit();
+				print_r($s);exit();
 				$e    = mysql_query($s);
 				$r    = mysql_fetch_assoc($e);
 				$stat = !$e?'gagal':'sukses';
