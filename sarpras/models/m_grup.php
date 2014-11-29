@@ -635,7 +635,36 @@
 
 			// generate barcode -----------------------------------------------------------
 			case 'kodegenerate':
-				$s    = 'SELECT 
+				$s    = 'SELECT
+							l.kode AS lokasi,
+							g.kode AS grup,
+							tbt.kode AS tempat,
+							k.kode AS katalog,
+							bb.urut,
+							lpad(max(bb.urut), 5, 0) barkode
+						FROM
+							sar_barang b
+							LEFT JOIN (
+								SELECT
+									replid AS barang,
+									(max(urut) + 1) AS urut
+								FROM
+									sar_barang
+							) bb ON bb.barang = b.replid
+							LEFT JOIN sar_katalog k ON k.replid = b.katalog
+							LEFT JOIN sar_grup g ON g.replid = k.grup
+							LEFT JOIN (
+								SELECT
+									0 as replid, Kode, lokasi,nama, keterangan
+								FROM
+									sar_tempat t
+								WHERE
+									t.replid = '.$_POST['tempat'].'
+							) tbt ON tbt.replid = b.tempat
+							LEFT JOIN sar_lokasi l ON l.replid = tbt.lokasi
+							WHERE
+								barang IS NOT NULL';
+				/*$s    = 'SELECT 
 							l.kode as lokasi,
 							g.kode as grup,
 							tbt.kode as tempat,
@@ -658,8 +687,8 @@
 								from sar_tempat t
 								where t.replid = '.$_POST['tempat'].'
 							)tbt on tbt.replid = b.tempat
-							join sar_lokasi l on l.replid = tbt.lokasi';
-				print_r($s);exit();
+							join sar_lokasi l on l.replid = tbt.lokasi';*/
+				// print_r($s);exit();
 				$e    = mysql_query($s);
 				$r    = mysql_fetch_assoc($e);
 				$stat = !$e?'gagal':'sukses';
