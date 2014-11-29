@@ -377,7 +377,8 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 cmblokasi();
                 switchPN(1);
             });$('#b_katalogBC').on('click',function(){ // << katalog
-                vwKatalog($('#g_lokasiS').val());
+                // vwKatalog($('#g_lokasiS').val());
+                vwKatalog($('#k_grupH1').val());
                 switchPN(2);
             });
     }); 
@@ -451,6 +452,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 
     // katalog barang
         function vwKatalog(id) {
+            // alert(id);
             var aksi ='aksi=tampil&subaksi=katalog&grup='+id;
             var cari ='&k_kodeS='+$('#k_kodeS').val()
                     +'&k_namaS='+$('#k_namaS').val()
