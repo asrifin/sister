@@ -452,7 +452,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 
     // katalog barang
         function vwKatalog(id) {
-            alert(id);
+            // alert(id);
             var aksi ='aksi=tampil&subaksi=katalog&grup='+id;
             var cari ='&k_kodeS='+$('#k_kodeS').val()
                     +'&k_namaS='+$('#k_namaS').val()
