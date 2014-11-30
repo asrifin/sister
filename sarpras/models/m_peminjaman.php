@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	// error_reporting(0);
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
@@ -27,6 +28,7 @@
 						LEFT JOIN sar_katalog k ON k.replid=b.katalog 
 						WHERE
 						p.lokasi ='.$lokasi.' and					
+						p.status=1 and
 						p.peminjam LIKE "%'.$peminjam.'%"
 						ORDER BY p.replid asc';
 						// , sar_barang b, sar_katalog k
@@ -83,11 +85,11 @@
 				$nama     = trim($_POST['namaS'])?filter($_POST['namaS']):'';
 				// $peminjam     = trim($_POST['peminjamS'])?filter($_POST['peminjamS']):'';
 				
-				$sql = 'SELECT b.replid, b.kode, k.nama
+				$sql = 'SELECT b.replid, b.kode, k.nama, b.status
 						FROM sar_barang b 
 						LEFT JOIN sar_katalog k ON k.replid=b.katalog 
 						WHERE
-										
+						b.status = 1 and				
 						k.nama LIKE "%'.$nama.'%"
 						ORDER BY b.replid asc';
 						// , sar_barang b, sar_katalog k
@@ -165,7 +167,7 @@
 					while($res = mysql_fetch_array($result)){	
 						$btn ='<td>
 									
-									<button data-hint="hapus"  class="button" onclick="delpinjam('.$res['replid'].');">
+									<button data-hint="hapus"  class="button" onclick="deldftp('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
@@ -189,7 +191,7 @@
 			// view -----------------------------------------------------------------
 
 			// add / edit -----------------------------------------------------------------
-			case 'simpan':
+			case 'simpandftp':
 				$s 		= 'INSERT INTO sar_dftp'.' set 	
 										barang 	= "'.filter($_POST['kode']).'"';
 				// $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
@@ -197,6 +199,49 @@
 				$e 		= mysql_query($s);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array('status'=>$stat));
+			break;
+			// add / edit -----------------------------------------------------------------
+
+			// add / edit -----------------------------------------------------------------
+			case 'simpanall':
+				$s = 'SELECT * from sar_dftp';
+						$e = mysql_query($s);
+						$ar=array();
+						while($r = mysql_fetch_assoc($e)){
+							$ar[]=array('barang'=>$r['barang']);
+						}
+						$err = true;
+						foreach($ar as $i => $v){
+							$s2 = 'INSERT INTO sar_peminjaman set peminjam = "'.$_POST['peminjamTB'].'",
+    									 tanggal1 = "'.$_POST['tanggal1TB'].'",
+    									 tanggal2 = "'.$_POST['tanggal2TB'].'",
+    									 status = 1, 
+    									barang ='.$v['barang'] ;
+    									/*jika terpinjam =1, tersedia=0*/
+						// var_dump($s2);exit();
+						  	$e2 = mysql_query($s2);
+						  	if(!$e2)
+						      $err=false;
+						}
+						$stat=(!$err)?'gagal':'sukses';
+						$out = json_encode(array('status'=>$stat));
+
+
+				// $lokasi     = isset($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
+				// $s 		= 'INSERT INTO '.$tb.' set 	
+				// 						barang 	= "'.filter($_POST['kode']).'",
+				// 						peminjam 	= "'.filter($_POST['peminjamTB']).'",
+				// 						tanggal1 	= "'.filter($_POST['tanggal1TB']).'",
+				// 						tanggal2 	= "'.filter($_POST['tanggal2TB']).'",
+				// 						tempat 	= "'.filter($_POST['tempatTB']).'",
+				// 						keterangan 	= "'.filter($_POST['keteranganTB']).'",
+				// 						lokasi 	= '.$lokasi.',
+				// 						status 	= 1';
+				// // $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				// // var_dump($s2);exit();
+				// $e 		= mysql_query($s);
+				// $stat 	= ($e)?'sukses':'gagal';
+				// $out 	= json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -225,27 +270,27 @@
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
-			case 'ambiledit':
-				$s 		= ' SELECT 
-								t.kode,
-								t.nama,
-								t.keterangan,
-								l.nama as lokasi
-							from '.$tb.' t, sar_lokasi l 
-							WHERE 
-								t.lokasi= l.replid and
-								t.replid='.$_POST['replid'];
-				// var_dump($s);exit();
-				$e 		= mysql_query($s);
-				$r 		= mysql_fetch_assoc($e);
-				// $stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array(
-							'kode'       =>$r['kode'],
-							'lokasi'     =>$r['lokasi'],
-							'nama'       =>$r['nama'],
-							'keterangan' =>$r['keterangan']
-						));
-			break;
+			// case 'ambiledit':
+			// 	$s 		= ' SELECT 
+			// 					t.kode,
+			// 					t.nama,
+			// 					t.keterangan,
+			// 					l.nama as lokasi
+			// 				from '.$tb.' t, sar_lokasi l 
+			// 				WHERE 
+			// 					t.lokasi= l.replid and
+			// 					t.replid='.$_POST['replid'];
+			// 	// var_dump($s);exit();
+			// 	$e 		= mysql_query($s);
+			// 	$r 		= mysql_fetch_assoc($e);
+			// 	// $stat 	= ($e)?'sukses':'gagal';
+			// 	$out 	= json_encode(array(
+			// 				'kode'       =>$r['kode'],
+			// 				'lokasi'     =>$r['lokasi'],
+			// 				'nama'       =>$r['nama'],
+			// 				'keterangan' =>$r['keterangan']
+			// 			));
+			// break;
 			// ambiledit -----------------------------------------------------------------
 
 			// cmbtempat ---------------------------------------------------------

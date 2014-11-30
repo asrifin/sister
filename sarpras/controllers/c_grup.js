@@ -272,7 +272,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             });
             //edit------- 
             $('#b_ubahBC').on('click',function(){
-                katalogFR($('#b_katalogH1').val());
+                katalogFR($('#b_katalogS').val());
             });
 
             // search 
@@ -345,29 +345,29 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 
             // unit barang
             $('#b_kondisiS').on('change',function(){
-                vwBarang($('#b_katalogH1').val());
+                vwBarang($('#b_katalogS').val());
             });
             $('#b_kodeS').on('keydown',function (e){ // kode grup
                 if(e.keyCode == 13)
-                    vwBarang($('#b_katalogH1').val());
+                    vwBarang($('#b_katalogS').val());
             });$('#b_namaS').on('keydown',function (e){ // nama grup
                 if(e.keyCode == 13)
-                    vwBarang($('#b_katalogH1').val());
+                    vwBarang($('#b_katalogS').val());
             });$('#b_barkodeS').on('keydown',function (e){ // nama grup
                 if(e.keyCode == 13)
-                    vwBarang($('#b_katalogH1').val());
+                    vwBarang($('#b_katalogS').val());
             });$('#b_sumberS').on('change',function (){ // nama grup
-                vwBarang($('#b_katalogH1').val());
+                vwBarang($('#b_katalogS').val());
             });$('#b_hargaS').on('keydown',function (e){ // nama grup
                 if(e.keyCode == 13)
-                    vwBarang($('#b_katalogH1').val());
+                    vwBarang($('#b_katalogS').val());
             });$('#b_kondisiS').on('change',function (){ // nama grup
-                vwBarang($('#b_katalogH1').val());
+                vwBarang($('#b_katalogS').val());
             });$('#b_statusS').on('change',function (){ // nama grup
-                vwBarang($('#b_katalogH1').val());
+                vwBarang($('#b_katalogS').val());
             });$('#b_keteranganS').on('keydown',function (e){ // keterangan
                 if(e.keyCode == 13)
-                    vwBarang($('#b_katalogH1').val());
+                    vwBarang($('#b_katalogS').val());
             });
 
         // switch panel
@@ -378,7 +378,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 switchPN(1);
             });$('#b_katalogBC').on('click',function(){ // << katalog
                 // vwKatalog($('#g_lokasiS').val());
-                vwKatalog($('#k_grupH1').val());
+                vwKatalog($('#k_grupS').val());
                 switchPN(2);
             });
     }); 
@@ -386,26 +386,22 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     
 //paging ---
     function pagination(page,aksix,subaksi){ 
-        var aksi ='aksi=tampil&subaksi='+subaksi;
-        if(typeOf(subaksi)==undefined){
-            subaksi='grup';
-        }
-
-        var datax   ='starting='+page+'&aksi='+aksix+'&subaksi='+subaksi;
-        var cari    ='&lokasiS='+lok
-                    +'&b_sumberS='+$('#b_sumberS').val()
-                    +'&g_kodeS='+$('#g_kodeS').val()
-                    +'&g_namaS='+$('#g_namaS').val()
-                    +'&g_keteranganS='+$('#g_keteranganS').val();
+        var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
+        var cari ='';
+        $('.'+subaksi+'_cari').each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
         $.ajax({
-            url:'m_'+subaksi+'.php',
+            url:dir,
             type:"post",
-            data: datax+cari,
+            data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#'+subaksi+'_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $('#'+subaksi+'_tbody').html(dt).fadeIn();
                 },1000);
             }
         });
@@ -430,7 +426,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     // grup ---
         function vwGrup(lok){  
             var aksi ='aksi=tampil&subaksi=grup';
-            var cari ='&lokasiS='+lok
+            var cari ='&g_lokasiS='+lok
                     +'&g_kodeS='+$('#g_kodeS').val()
                     +'&g_namaS='+$('#g_namaS').val()
                     +'&g_keteranganS ='+$('#g_keteranganS').val();
@@ -440,10 +436,10 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 type: 'post',
                 data: aksi+cari,
                 beforeSend:function(){
-                    $('#g_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                    $('#grup_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
                 },success:function(dt){
                     setTimeout(function(){
-                        $('#g_tbody').html(dt).fadeIn();
+                        $('#grup_tbody').html(dt).fadeIn();
                     },1000);
                 }
             });
@@ -462,13 +458,13 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 type: 'post',
                 data: aksi+cari,
                 beforeSend:function(){
-                    $('#k_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                    $('#katalog_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
                 },success:function(dt){
-                    $('#k_grupH1').val(id);
+                    $('#k_grupS').val(id);
                     switchPN(2);
                     vwHeadKatalog(id);
                     setTimeout(function(){
-                        $('#k_tbody').html(dt).fadeIn();
+                        $('#katalog_tbody').html(dt).fadeIn();
                     },1000);
                 }
             });
@@ -478,7 +474,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     // barang
         function vwBarang(id) {
             switchPN(3);
-            var aksi ='aksi=tampil&subaksi=barang&katalog='+id;
+            var aksi ='aksi=tampil&subaksi=barang&b_katalogS='+id;
             var cari ='&b_kodeS='+$('#b_kodeS').val()
                     +'&b_barkodeS='+$('#b_barkodeS').val()
                     +'&b_hargaS='+$('#b_hargaS').val()
@@ -491,13 +487,13 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 type: 'post',
                 data: aksi+cari,
                 beforeSend:function(){
-                    $('#b_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                    $('#barang_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
                 },success:function(dt){
-                    $('#b_katalogH1').val(id);
+                    $('#b_katalogS').val(id);
                     vwHeadBarang(id);
                     switchPN(3);
                     setTimeout(function(){
-                        $('#b_tbody').html(dt).fadeIn();
+                        $('#barang_tbody').html(dt).fadeIn();
                     },1000);
                 }
             });
@@ -554,7 +550,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                     }else{
                         $.Dialog.close();
                         kkosongkan();
-                        vwBarang($('#b_katalogH1').val());
+                        vwBarang($('#b_katalogS').val());
                         cont = 'Berhasil menyimpan data';
                         clr  = 'green';
                     }notif(cont,clr);
@@ -759,7 +755,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                         clr  ='red';
                     }else{
-                        vwBarang($('#b_katalogH1').val());
+                        vwBarang($('#b_katalogS').val());
                         cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                         clr  ='green';
                     }notif(cont,clr);
@@ -851,7 +847,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     opt+='<option value="'+item.replid+'">'+item.nama+'</option>';
                                 });$('#k_jenisTB').html('<option value="">Pilih Jenis</option>'+opt);
                                 $('#k_lokasiTB').val($('#k_lokasiDV').html());
-                                $('#k_grupH2').val($('#k_grupH1').val());
+                                $('#k_grupH2').val($('#k_grupS').val());
                                 $('#k_grupTB').val($('#k_grupDV').html());
                             }
                         });// end of form :: lokasi (disabled)
@@ -868,7 +864,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     notif(dt.status,'red');
                                 }else{
                                     $('#k_idformH').val(id);
-                                    $('#k_grupH2').val($('#k_grupH1').val());
+                                    $('#k_grupH2').val($('#k_grupS').val());
                                     $('#k_lokasiTB').val($('#k_lokasiDV').html());
                                     $('#k_grupTB').val($('#k_grupDV').html());
                                     $('#k_kodeTB').val(dt.data.kode);
@@ -918,26 +914,11 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 padding: 10,
                 onShow: function(){
                     var titlex;
-                    // alert(id);return false;
                     if(id==''){  //add mode
-                        // $.ajax({
-                        //     url:dir,
-                        //     type:'post',
-                        //     dataType:'json',
-                        //     data:'aksi=headinfo&subaksi=barang&katalog',
-                        //     success:function(dt){
-
-                        //     }
-                        // });
-                        // $('#b_katalogTB').val($('#b_katalogDV').html());
                         titlex='<span class="icon-plus-2"></span> Tambah ';
-                        // $('#b_jumbarangTB').val('222');
-                        // $('#b_namaTB').val($('#b_katalogDV').html());
-                        // $('#b_katalogH2').val($('#b_katalogH1').val());
-                        // $('#b_keteranganTB').val('wasem');
                         cmbkondisi('form','');
                         cmbtempat('');
-                        vwHeadBarang($('#b_katalogH1').val());
+                        vwHeadBarang($('#b_katalogS').val());
                     }else{ // edit mode
                         bkosongkan();
                         titlex='<span class="icon-pencil"></span> Ubah';
@@ -956,7 +937,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     $('.jumbarang').attr('style','display:none;');
                                     $('#b_idformH').val(id);
                                     $('#b_urutH').val(dt.data.urut);
-                                    $('#b_katalogH2').val($('#b_katalogH1').val());
+                                    $('#b_katalogH2').val($('#b_katalogS').val());
                                     $('#b_barkodeTB').val(dt.data.barkode);
                                     $('#b_kodeTB').val(dt.data.kode);
                                     $('#b_hargaTB').val(dt.data.harga);
@@ -1017,7 +998,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         $('#b_susutDV').html(dt.data.susut+' %');
                         $('#b_namaTB').html(dt.data.katalog);
 
-                        $('#b_katalogH2').val(dt.data.idkatalog);
+                        // alert(dt.data.idkatalog);
+                        $('#b_katalogH2').val(id);
+                        // $('#b_katalogH2').val(dt.data.idkatalog);
                         $('#b_katalogTB').val(dt.data.katalog);
                     }
                 },
@@ -1151,30 +1134,37 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 
 function tempatupdate (e) {
     $('#b_tempatTB').val($(e).val());
-    kodegenerate();
+    if($('#b_idformH').val()!='') //edit
+        kodegenerate($('#b_idformH').val());
+    else //add
+        kodegenerate('');
 }
 
 function jumupdate (e) {
     $('#b_jumbarangTB').val($(e).val());
-    kodegenerate();
+    if($('#b_idformH').val()!='') //edit
+        kodegenerate($('#b_idformH').val());
+    else //add
+        kodegenerate('');
 }
 
 // form :: generate barcode & kode ----------------- 
-    function kodegenerate () {
-        var tempat = $('#b_tempatTB').val();
-        var jum    = $('#b_jumbarangTB').val();
-        // alert('tempat:'+tempat+',jum:'+jum);return false;
+    function kodegenerate (idform) {
+        var tempat  = $('#b_tempatTB').val();
+        var jum     = $('#b_jumbarangTB').val();
+        var katalog = $('#b_katalogH2').val();
+
         $.ajax({
             url:dir,
             type:'post',
             dataType:'json',
-            data:'aksi=kodegenerate&tempat='+tempat,
+            data:'aksi=kodegenerate&tempat='+tempat+'&katalog='+katalog+'&replid='+idform,
             success:function(dt){
                 var kode;
                 if(jum>1){
                     kode = '[auto]';
                 }else{
-                    kode = dt.data.barkode;
+                    kode = parseInt(dt.data.barkode);
                 }$('#b_urutH').val(dt.data.urut);
                 $('#b_barkodeTB').val(kode);
                 $('#b_kodeTB').val(dt.data.lokasi+'/'+dt.data.grup+'/'+dt.data.tempat+'/'+dt.data.katalog+'/'+kode);
@@ -1195,8 +1185,6 @@ function jumupdate (e) {
             // decimal:',', 
             affixesStay: true
         });
-        // alert($(e).val());
-        // $('#b_hargaH').val($(e).val());
     }
 // end of input uang --------------------------
 

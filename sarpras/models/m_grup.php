@@ -1,4 +1,5 @@
 <?php
+	// error_reporting(0);
 	session_start();
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
@@ -29,7 +30,7 @@
 				switch ($_POST['subaksi']) {
 					// grup barang
 					case 'grup':
-						$lokasi       = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
+						$lokasi       = isset($_POST['g_lokasiS'])?filter(trim($_POST['g_lokasiS'])):'';
 						$g_kode       = isset($_POST['g_kodeS'])?filter(trim($_POST['g_kodeS'])):'';
 						$g_nama       = isset($_POST['g_namaS'])?filter(trim($_POST['g_namaS'])):'';
 						$g_keterangan = isset($_POST['g_keteranganS'])?filter(trim($_POST['g_keteranganS'])):'';
@@ -96,8 +97,13 @@
 						}
 
 						$recpage= 5;//jumlah data per halaman
-						$obj 	= new pagination_class($sql,$starting,$recpage);
+						$aksi    ='tampil';
+						$subaksi ='grup';
+						// $obj 	= new pagination_class($sql,$starting,$recpage);
+						$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						// var_dump($obj);exit();
 						$result =$obj->result;
+						// print_r($result);exit(); 	
 
 						#ada data
 						$jum	= mysql_num_rows($result);
@@ -177,7 +183,10 @@
 						}
 
 						$recpage= 5;//jumlah data per halaman
-						$obj 	= new pagination_class($sql,$starting,$recpage);
+						$aksi    ='tampil';
+						$subaksi ='katalog';
+						// $obj 	= new pagination_class($sql,$starting,$recpage);
+						$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 						$result =$obj->result;
 
 						#ada data
@@ -223,7 +232,7 @@
 
 					// barang
 					case 'barang':
-						$b_katalog    = isset($_POST['katalog'])?filter(trim($_POST['katalog'])):'';
+						$b_katalog    = isset($_POST['b_katalogS'])?filter(trim($_POST['b_katalogS'])):'';
 						$b_kode       = isset($_POST['b_kodeS'])?filter(trim($_POST['b_kodeS'])):'';
 						$b_barkode    = isset($_POST['b_barkodeS'])?filter(trim($_POST['b_barkodeS'])):'';
 						$b_harga      = isset($_POST['b_hargaS'])?filter(trim($_POST['b_hargaS'])):'';
@@ -280,7 +289,10 @@
 						}
 
 						$recpage= 5;//jumlah data per halaman
-						$obj 	= new pagination_class($sql,$starting,$recpage);
+						$aksi    ='tampil';
+						$subaksi ='barang';
+					 // $obj 	= new pagination_class($sql,$starting,$recpage);  // lawas
+						$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);  //baru
 						$result =$obj->result;
 
 						#ada data
@@ -426,7 +438,7 @@
 					break;
 
 					case 'katalog':
-						switch ('subaksi2') {
+						switch ($_POST['subaksi2']) {
 							case 'upload':
 								$error=false;
 								$files=array();
@@ -483,8 +495,8 @@
 							}
 						}else{ //edit
 							$s2 = 'UPDATE '.$s.', urut='.$_POST['b_urutH'].' WHERE replid='.$_POST['replid'];
+							var_dump($s2);exit();
 							$e  = mysql_query($s2);
-							// var_dump($s2);exit();
 							if(!$e)$stat=false;  
 						}$out 	= json_encode(array('status'=>($stat?'sukses':'gagal')));
 					break;
@@ -636,59 +648,36 @@
 
 			// generate barcode -----------------------------------------------------------
 			case 'kodegenerate':
-				$s    = 'SELECT
-							l.kode AS lokasi,
-							g.kode AS grup,
-							tbt.kode AS tempat,
-							k.kode AS katalog,
-							bb.urut,
-							lpad(max(bb.urut), 5, 0) barkode
+				// concat(tb1.lokasi,"/",tb1.grup,"/",tb1.tempat,"/",tb1.katalog,"/",tb2.barang)kode,
+				$s='SELECT
+						tb1.lokasi,
+						tb1.grup,
+						tb1.tempat,
+						tb1.katalog,
+						tb2.barang,
+						LPAD(tb2.barang,5,0)barkode	
+					FROM (
+						SELECT
+							l.kode lokasi,
+							g.kode grup,
+							t.kode tempat,
+							k.kode katalog
 						FROM
-							sar_barang b
-							LEFT JOIN (
-								SELECT
-									replid AS barang,
-									(max(urut) + 1) AS urut
-								FROM
-									sar_barang
-							) bb ON bb.barang = b.replid
-							LEFT JOIN sar_katalog k ON k.replid = b.katalog
-							LEFT JOIN sar_grup g ON g.replid = k.grup
-							LEFT JOIN (
-								SELECT
-									0 as replid, Kode, lokasi,nama, keterangan
-								FROM
-									sar_tempat t
-								WHERE
-									t.replid = '.$_POST['tempat'].'
-							) tbt ON tbt.replid = b.tempat
-							LEFT JOIN sar_lokasi l ON l.replid = tbt.lokasi
-							WHERE
-								barang IS NOT NULL';
-				/*$s    = 'SELECT 
-							l.kode as lokasi,
-							g.kode as grup,
-							tbt.kode as tempat,
-							k.kode as katalog,
-							bb.urut,
-							lpad(max(bb.urut),5,0)barkode
-						FROM 
-							sar_barang b
-							JOIN(
-								SELECT 
-									replid as barang,
-									(max(urut)+1) as urut
-								from
-									sar_barang
-							)bb on bb.barang= b.replid
-							join sar_katalog k on k.replid = b.katalog
-							join sar_grup g on g.replid = k.grup
-							join (
-								SELECT *
-								from sar_tempat t
-								where t.replid = '.$_POST['tempat'].'
-							)tbt on tbt.replid = b.tempat
-							join sar_lokasi l on l.replid = tbt.lokasi';*/
+							sar_lokasi l 
+							JOIN sar_grup g on g.lokasi = l.replid
+							JOIN sar_katalog k on k.grup= g.replid
+							JOIN sar_tempat t on t.lokasi = l.replid
+						WHERE	
+							t.replid = '.$_POST['tempat'].' 
+							and k.replid = '.$_POST['katalog'].'
+						)tb1,';
+
+				if($_POST['replid']!=''){//edit
+					$s.= '(SELECT LPAD(urut,5,0) AS barang FROM sar_barang WHERE replid='.$_POST['replid'].')tb2';
+				}else{ //add 
+					$s.= '(SELECT (MAX(urut) + 1) AS barang FROM sar_barang )tb2';
+				}
+
 				// print_r($s);exit();
 				$e    = mysql_query($s);
 				$r    = mysql_fetch_assoc($e);
@@ -700,7 +689,7 @@
 										'grup'    =>$r['grup'],
 										'tempat'  =>$r['tempat'],
 										'katalog' =>$r['katalog'],
-										'urut'    =>$r['urut'],
+										'barang'  =>$r['barang'],
 										'barkode' =>$r['barkode']
 						)));
 			break;
