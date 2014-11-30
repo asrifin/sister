@@ -386,7 +386,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     
 //paging ---
     function pagination(page,aksix,subaksi){ 
-        var aksi ='aksi=tampil&subaksi='+subaksi+'&starting='+page;
+        var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
         var cari ='';
         $('.'+subaksi+'_cari').each(function(){
             var p = $(this).attr('id');

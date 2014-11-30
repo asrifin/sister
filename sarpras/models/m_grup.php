@@ -291,8 +291,8 @@
 						$recpage= 5;//jumlah data per halaman
 						$aksi    ='tampil';
 						$subaksi ='barang';
-						// $obj 	= new pagination_class($sql,$starting,$recpage);
-						$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+					 // $obj 	= new pagination_class($sql,$starting,$recpage);  // lawas
+						$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);  //baru
 						$result =$obj->result;
 
 						#ada data
