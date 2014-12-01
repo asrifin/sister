@@ -487,7 +487,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 type: 'post',
                 data: aksi+cari,
                 beforeSend:function(){
-                    $('#barang_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                    $('#barang_tbody').html('<tr><td align="center" colspan="9"><img src="img/w8loader.gif"></td></tr></center>');
                 },success:function(dt){
                     $('#b_katalogS').val(id);
                     vwHeadBarang(id);
@@ -1164,8 +1164,10 @@ function jumupdate (e) {
                 if(jum>1){
                     kode = '[auto]';
                 }else{
-                    kode = parseInt(dt.data.barkode);
-                }$('#b_urutH').val(dt.data.urut);
+                    // kode = parseInt(dt.data.barkode);
+                    kode = dt.data.barkode;
+                }
+                $('#b_urutH').val(dt.data.urut);
                 $('#b_barkodeTB').val(kode);
                 $('#b_kodeTB').val(dt.data.lokasi+'/'+dt.data.grup+'/'+dt.data.tempat+'/'+dt.data.katalog+'/'+kode);
             },
@@ -1213,10 +1215,15 @@ function jumupdate (e) {
 
 // upload image
     function uploadimg(e){
-        // 
+        //  
     }
 //end of  upload image
 
+// print pdf
+    function printPDF(){
+        alert('ok');
+    }
+// end of print pdf
     // ---------------------- //
     // -- created by epiii -- //
     // ---------------------- // 
