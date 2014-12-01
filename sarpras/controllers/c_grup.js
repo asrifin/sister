@@ -185,7 +185,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                         // barkode
                                         +'<label>Barkode (Auto)</label>'
                                         +'<div class="input-control text size1">'
-                                            +'<input type="hidden" name="b_urutH" id="b_urutH">'
+                                            +'<input type="text" name="b_urutH" id="b_urutH">'
                                             +'<input disabled type="text" name="b_barkodeTB" id="b_barkodeTB">'
                                         +'</div>'
                                         // kode
@@ -1164,10 +1164,8 @@ function jumupdate (e) {
                 if(jum>1){
                     kode = '[auto]';
                 }else{
-                    // kode = parseInt(dt.data.barkode);
                     kode = dt.data.barkode;
-                }
-                $('#b_urutH').val(dt.data.urut);
+                }$('#b_urutH').val(dt.data.urut);
                 $('#b_barkodeTB').val(kode);
                 $('#b_kodeTB').val(dt.data.lokasi+'/'+dt.data.grup+'/'+dt.data.tempat+'/'+dt.data.katalog+'/'+kode);
             },

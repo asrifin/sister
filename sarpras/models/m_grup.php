@@ -480,24 +480,28 @@
 												harga      = "'.getuang($_POST['b_hargaTB']).'",
 												kondisi    = "'.$_POST['b_kondisiTB'].'",
 												keterangan = "'.filter($_POST['b_keteranganTB']).'"';
-
 						$stat = true;
 						if(!isset($_POST['replid'])){ //add
 							if(isset($_POST['b_jumbarangTB']) and $_POST['b_jumbarangTB']>1){ //  lebih dr 1 unit barang
 								for($i=0; $i<($_POST['b_jumbarangTB']); $i++) { // iterasi sbnyak jum barang 
-									$e    = mysql_query('INSERT INTO '.$s.', urut='.($_POST['b_urutH']+$i));
-									if(!$e)$stat=false;  
+									$s2 ='INSERT INTO '.$s.', urut='.($_POST['b_urutH']+$i);
+									// var_dump($s2);exit();
+									$e  = mysql_query($s2);
+									if(!$e)$stat=false;
 								}
 							}else{ // 1 unit barang
-								$e=mysql_query('INSERT INTO '.$s.', urut='.$_POST['b_urutH']);
+								$s2='INSERT INTO '.$s.', urut='.$_POST['b_urutH'];
+								// var_dump($s2);exit();
+								$e=mysql_query($s2);
 								if(!$e)$stat=false;  
 							}
 						}else{ //edit
 							$s2 = 'UPDATE '.$s.', urut='.$_POST['b_urutH'].' WHERE replid='.$_POST['replid'];
-							var_dump($s2);exit();
+							// var_dump($s2);exit();
 							$e  = mysql_query($s2);
 							if(!$e)$stat=false;  
-						}$out 	= json_encode(array('status'=>($stat?'sukses':'gagal')));
+						}
+						$out 	= json_encode(array('status'=>($stat?'sukses':'gagal')));
 					break;
 				}
 			break;
@@ -672,7 +676,7 @@
 						)tb1,';
 
 				if($_POST['replid']!=''){//edit
-					$s.= '(SELECT LPAD(urut,5,0) AS barang FROM sar_barang WHERE replid='.$_POST['replid'].')tb2';
+					$s.= '(SELECT urut AS barang FROM sar_barang WHERE replid='.$_POST['replid'].')tb2';
 				}else{ //add 
 					$s.= '(SELECT (MAX(urut) + 1) AS barang FROM sar_barang )tb2';
 				}
@@ -684,6 +688,7 @@
 				$out  = json_encode(array(
 							'status' =>$stat,
 							'data'   =>array(
+										'urut'    =>$r['barang'],
 										'lokasi'  =>$r['lokasi'],
 										'grup'    =>$r['grup'],
 										'tempat'  =>$r['tempat'],
