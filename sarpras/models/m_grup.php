@@ -495,7 +495,7 @@
 							}
 						}else{ //edit
 							$s2 = 'UPDATE '.$s.', urut='.$_POST['b_urutH'].' WHERE replid='.$_POST['replid'];
-							var_dump($s2);exit();
+							// var_dump($s2);exit();
 							$e  = mysql_query($s2);
 							if(!$e)$stat=false;  
 						}$out 	= json_encode(array('status'=>($stat?'sukses':'gagal')));
