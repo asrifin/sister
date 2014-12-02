@@ -384,6 +384,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     }); 
 // end of main function ---
     
+    
 //paging ---
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi=tampil&subaksi='+subaksi;

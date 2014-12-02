@@ -99,9 +99,11 @@
 					$starting=0;
 				}
 				// $menu='tampil';	
-				$recpage= 1;//jumlah data per halaman
+				$recpage= 3;//jumlah data per halaman
+				$aksi="tampil2";
+				$subaksi="barang";
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result =$obj->result;
 
 				#ada data
