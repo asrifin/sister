@@ -450,6 +450,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             var cari ='&k_kodeS='+$('#k_kodeS').val()
                     +'&k_namaS='+$('#k_namaS').val()
                     +'&k_keteranganS='+$('#k_keteranganS').val();
+                    alert(aksi+cari);
             $.ajax({
                 url : dir,
                 type: 'post',
