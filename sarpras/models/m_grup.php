@@ -21,8 +21,22 @@
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
-		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
+		if(isset($_GET['upload'])){
+			$tipex		= substr($_FILES[0]['type'],6);
+			$namaAwal 	= $_FILES[0]['name'];
+			$namaSkrg	= $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
+			$src		= $_FILES[0]['tmp_name'];
+			$destix		= '../../img/upload/'.basename($namaSkrg);
+
+			if(move_uploaded_file($src, $destix))
+				$o=array('status'=>'sukses','file'=>$namaSkrg);
+			else
+				$o=array('status'=>'gagal');
+
+			$out=json_encode($o);
+		}else{
+			$out=json_encode(array('status'=>'invalid_no_post'));		
+		}
 	}else{
 		switch ($_POST['aksi']) {
 			// tampil ---------------------------------------------------------------------
@@ -118,7 +132,7 @@
 											<button data-hint="ubah"  class="button" onclick="grupFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
-											<button data-hint=""  class="button" onclick="grupDel('.$res['replid'].');">
+											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 										 </td>';
 								$out.= '<tr>
@@ -182,16 +196,16 @@
 							$starting=0;
 						}
 
-						$recpage= 5;//jumlah data per halaman
+						$recpage = 5;//jumlah data per halaman
 						$aksi    ='tampil';
 						$subaksi ='katalog';
-						// $obj 	= new pagination_class($sql,$starting,$recpage);
-						$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result =$obj->result;
-
+						// $obj  = new pagination_class($sql,$starting,$recpage);
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+						
 						#ada data
-						$jum	= mysql_num_rows($result);
-						$out ='';$totaset=0;
+						$jum     = mysql_num_rows($result);
+						$out     ='';$totaset=0;
 						if($jum!=0){	
 							$nox 	= $starting+1;
 							while($res = mysql_fetch_array($result)){	
@@ -220,7 +234,7 @@
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
-									<td  colspan=9 ><span style="color:red;text-align:center;">
+									<td  colspan="9"><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
 						}
 						// $out.= '<tr class="info"><td colspan="10">'..'</td></tr>';
@@ -438,39 +452,17 @@
 					break;
 
 					case 'katalog':
-						switch ($_POST['subaksi2']) {
-							case 'upload':
-								$error=false;
-								$files=array();
-								foreach($_FILES as $file){
-									$tipex		= substr($file['type'],6);
-									$namaAwal 	= $file['name'];
-									$namaSkrg	= $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
-									$src		= $file['tmp_name'];
-									$destix		= '../../img/upload/'.basename($namaSkrg);
-
-									if(move_uploaded_file($src, $destix))
-										$files[] = $namaSkrg;
-									else
-										$error = true;
-								}$stat=$error?'gagal_upload':'sukses';
-								$out=json_encode(array('status'=>$stat));
-							break;
-
-							case 'db':
-								$s 		= $tb3.' set 	grup 		= "'.$_POST['k_grupH2'].'",
-														kode 		= "'.filter($_POST['k_kodeTB']).'",
-														nama 		= "'.filter($_POST['k_namaTB']).'",
-														jenis 		= "'.$_POST['k_jenisTB'].'",
-														'.($_POST['fileadd'][0]!=''?'photo= "'.$_POST['fileadd'][0].'"':'').',
-														susut 		= "'.filter($_POST['k_susutTB']).'",
-														keterangan 	= "'.filter($_POST['k_keteranganTB']).'"';
-								$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-								$e 		= mysql_query($s2);
-								$stat 	= ($e)?'sukses':'gagal_simpan_db';
-								$out 	= json_encode(array('status'=>$stat));
-							break;
-						}
+						$s 		= $tb3.' set 	grup 		= "'.$_POST['k_grupH2'].'",
+												kode 		= "'.filter($_POST['k_kodeTB']).'",
+												nama 		= "'.filter($_POST['k_namaTB']).'",
+												jenis 		= "'.$_POST['k_jenisTB'].'",
+												'.($_POST['file']!=''?'photo2= "'.$_POST['file'].'"':'').',
+												susut 		= "'.filter($_POST['k_susutTB']).'",
+												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"';
+						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						$e 		= mysql_query($s2);
+						$stat 	= ($e)?'sukses':'gagal_simpan_db';
+						$out 	= json_encode(array('status'=>$stat));
 					break;
 
 					case 'barang':
@@ -480,16 +472,19 @@
 												harga      = "'.getuang($_POST['b_hargaTB']).'",
 												kondisi    = "'.$_POST['b_kondisiTB'].'",
 												keterangan = "'.filter($_POST['b_keteranganTB']).'"';
-
 						$stat = true;
 						if(!isset($_POST['replid'])){ //add
 							if(isset($_POST['b_jumbarangTB']) and $_POST['b_jumbarangTB']>1){ //  lebih dr 1 unit barang
 								for($i=0; $i<($_POST['b_jumbarangTB']); $i++) { // iterasi sbnyak jum barang 
-									$e    = mysql_query('INSERT INTO '.$s.', urut='.($_POST['b_urutH']+$i));
-									if(!$e)$stat=false;  
+									$s2 ='INSERT INTO '.$s.', urut='.($_POST['b_urutH']+$i);
+									// var_dump($s2);exit();
+									$e  = mysql_query($s2);
+									if(!$e)$stat=false;
 								}
 							}else{ // 1 unit barang
-								$e=mysql_query('INSERT INTO '.$s.', urut='.$_POST['b_urutH']);
+								$s2='INSERT INTO '.$s.', urut='.$_POST['b_urutH'];
+								// var_dump($s2);exit();
+								$e=mysql_query($s2);
 								if(!$e)$stat=false;  
 							// var_dump($e);exit();
 							}
@@ -498,7 +493,8 @@
 							// var_dump($s2);exit();
 							$e  = mysql_query($s2);
 							if(!$e)$stat=false;  
-						}$out 	= json_encode(array('status'=>($stat?'sukses':'gagal')));
+						}
+						$out 	= json_encode(array('status'=>($stat?'sukses':'gagal')));
 					break;
 				}
 			break;
@@ -558,6 +554,7 @@
 									k.kode,
 									k.nama,
 									k.jenis,
+									k.photo2,
 									k.susut,
 									k.keterangan,
 									l.nama as lokasi, 
@@ -583,6 +580,7 @@
 										'susut'      =>$r['susut'],
 										'lokasi'     =>$r['lokasi'],
 										'grup'       =>$r['grup'],
+										'photo2'     =>$r['photo2'],
 										'jenis'      =>$r['jenis'],
 										'keterangan' =>$r['keterangan']
 									);						
@@ -673,7 +671,7 @@
 						)tb1,';
 
 				if($_POST['replid']!=''){//edit
-					$s.= '(SELECT LPAD(urut,5,0) AS barang FROM sar_barang WHERE replid='.$_POST['replid'].')tb2';
+					$s.= '(SELECT urut AS barang FROM sar_barang WHERE replid='.$_POST['replid'].')tb2';
 				}else{ //add 
 					$s.= '(SELECT (MAX(urut) + 1) AS barang FROM sar_barang )tb2';
 				}
@@ -685,6 +683,7 @@
 				$out  = json_encode(array(
 							'status' =>$stat,
 							'data'   =>array(
+										'urut'    =>$r['barang'],
 										'lokasi'  =>$r['lokasi'],
 										'grup'    =>$r['grup'],
 										'tempat'  =>$r['tempat'],
