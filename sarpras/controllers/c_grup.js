@@ -54,9 +54,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         +'</form>';
             //katalog
             k_contentFR +=' <div class="grid">'
-                                // +'<form class="span12" autocomplete="off" onsubmit="katalogSV(this); return false;" id="'+mnu3+'FR">' 
                                 +'<form enctype="multipart/form-data" class="span12" autocomplete="off" onsubmit="katalogSV(); return false;" id="'+mnu3+'FR">' 
-                                // +'<form class="span12" onsubmit="katalogSV(); return false;" id="'+mnu3+'FR">' 
                                     +'<input id="k_idformH" type="hidden">' 
                                     // lokasi , keterangan
                                     +'<div class="row">'
@@ -185,7 +183,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                         // barkode
                                         +'<label>Barkode (Auto)</label>'
                                         +'<div class="input-control text size1">'
-                                            +'<input type="text" name="b_urutH" id="b_urutH">'
+                                            +'<input type="hidden" name="b_urutH" id="b_urutH">'
                                             +'<input disabled type="text" name="b_barkodeTB" id="b_barkodeTB">'
                                         +'</div>'
                                         // kode
@@ -448,7 +446,6 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 
     // katalog barang
         function vwKatalog(id) {
-            // alert(id);
             var aksi ='aksi=tampil&subaksi=katalog&grup='+id;
             var cari ='&k_kodeS='+$('#k_kodeS').val()
                     +'&k_namaS='+$('#k_namaS').val()
@@ -562,7 +559,6 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     //katalog  ---
         //preview image sebelum upload -------
             function PreviewImage(e){
-                // alert(e);return false;
                 var typex   = e.files[0].type;
                 var sizex   = e.files[0].size;
                 var namex   = e.files[0].name;
@@ -593,66 +589,42 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             };
         //end of preview image sebelum upload -------
 
-        //simpan / submit form katalog ------  
-            // function katalogSV(event){
-            function katalogSV(){
-                // event.stopPropagation();
-                // event.preventDefault();
-
+            function katalogSV () {
                 //add image
                 var files =new Array();
-                // $("input:file").each(function() {
-                $("#k_photoTB").each(function() {
+                $("input:file").each(function() {
                     files.push($(this).get(0).files[0]); 
-                // var x = $('#k_photoTB').get(0).files[0]; 
                 });
                  
                 // Create a formdata object and add the files
                 var filesAdd = new FormData();
                 $.each(files, function(key, value){
                     filesAdd.append(key, value);
-                    filesAdd.append(x);
                 });
-                console.log(x);
-                // alert(filesAdd);return false;
 
-
-                // alert($('#k_photoTB').val());
-                // return false;
-                if($('#k_photoTB').val()==''){ //gk upload
+                if($('#k_photoTB').val()=='')//upload
                     katalogDb('');
-                    // alert('tidak ada');
-                }else{ // upload
+                else// ga upload
                     katalogUp(filesAdd);
-                    // alert('tidak ada');
-                }
-                return false;
             }
-        //end of simpan / submit form katalog ------  
 
         // upload image
             function katalogUp(dataAdd){
-                // $('#loadarea').html('<img src="../img/loader.gif"> ').fadeIn();
                 $.ajax({
-                    url: dir,
+                    url: dir+'?upload',
                     type: 'POST',
-                    data: 'aksi=simpan&subaksi=katalog&subaksi2=upload&'+dataAdd,
+                    data: dataAdd,
                     cache: false,
                     dataType: 'json',
                     processData: false,// Don't process the files
                     contentType: false,//Set content type to false as jq 'll tell the server its a query string request
                     success: function(data, textStatus, jqXHR){
-                        // if(typeof data.error === 'undefined'){ //gak error
                         if(data.status == 'sukses'){ //gak error
                             katalogDb(data);
-                            // console.log('sukses upload');
-                            notif(data.status,'green');
                         }else{ //error
-                            // console.log('ERRORS upload : ' + data.error);
                             notif(data.status,'red');
                         }
                     },error: function(jqXHR, textStatus, errorThrown){
-                        // console.log('ERRORS upload2: ' + textStatus);
                         notif('error'+textStatus,'red');// $('#loadarea').html('<img src="../img/loader.gif"> ').fadeOut();
                     }
                 });
@@ -660,32 +632,26 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         //end of upload image
 
         // simpan ke database
-            function katalogDb(add){
-                alert(add);return false;
+            function katalogDb(filex){
                 var formData = $('#katalogFR').serialize();
-                if(add!=''){ // ada upload file nya
-                    $.each(add.files, function(key, value){
-                        formData +='&fileadd=' + value ;
-                    });
-                }else{ // tanpa upload file nya
-                    formData  += formData;
-                }
+                if(filex.file!='') // ada upload file nya
+                    formData +='&file='+filex.file ;
 
                 $.ajax({
-                    // url: dir+'?aksi=simpan&subaksi=katalog&subaksi2=db',
                     url: dir,
                     type:'POST',
-                    data:formData+'&aksi=simpan&subaksi=katalog&subaksi2=db',
+                    data:formData+'&aksi=simpan&subaksi=katalog',
                     cache:false,
                     dataType: 'json',
                     success: function(data, textStatus, jqXHR){
                         if(data.status != 'sukses')
-                           notif(data.status,'red'); 
+                           notif(data.status,'red');
                         else
                            notif(data.status,'green'); 
                     },error: function(jqXHR, textStatus, errorThrown){
                         console.log('ERRORS savedata2: ' + textStatus);
                     },complete: function(){
+                        $.Dialog.close(); 
                         vwKatalog($('#g_lokasiS').val());
                         kkosongkan();
                     }
@@ -871,7 +837,8 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     $('#k_namaTB').val(dt.data.nama);
                                     $('#k_susutTB').val(dt.data.susut);
                                     $('#k_keteranganTB').val(dt.data.keterangan);
-                                    
+                                    $('#previmg').attr('src','../img/upload/'+dt.data.photo2);
+
                                     // combo jenis -----------------------
                                     $.ajax({
                                         url:dir4,
