@@ -162,7 +162,7 @@
 
 					// katalog
 					case 'katalog':
-						$k_grup       = isset($_POST['grup'])?filter(trim($_POST['grup'])):'';
+						$k_grup       = isset($_POST['k_grupS'])?filter(trim($_POST['k_grupS'])):'';
 						$k_kode       = isset($_POST['k_kodeS'])?filter(trim($_POST['k_kodeS'])):'';
 						$k_nama       = isset($_POST['k_namaS'])?filter(trim($_POST['k_namaS'])):'';
 						$k_keterangan = isset($_POST['k_keteranganS'])?filter(trim($_POST['k_keteranganS'])):'';
@@ -181,7 +181,7 @@
 									LEFT JOIN sar_jenis  j on j.replid = k.jenis
 									LEFT JOIN sar_barang b on b.katalog = k.replid
 								WHERE
-									k.grup = "'.$k_grup.'" and
+									k.grup = '.$k_grup.' and
 									k.kode like "%'.$k_kode.'%" and
 									k.nama like "%'.$k_nama.'%" and
 									k.keterangan like "%'.$k_keterangan.'%"
@@ -448,7 +448,7 @@
 												nama 		= "'.filter($_POST['g_namaTB']).'",
 												keterangan 	= "'.filter($_POST['g_keteranganTB']).'"';
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						var_dump($s2);exit();
+						// var_dump($s2);exit();
 						$e 		= mysql_query($s2);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array('status'=>$stat));
@@ -463,6 +463,7 @@
 												susut 		= "'.filter($_POST['k_susutTB']).'",
 												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"';
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						// var_dump($s2);exit();
 						$e 		= mysql_query($s2);
 						$stat 	= ($e)?'sukses':'gagal_simpan_db';
 						$out 	= json_encode(array('status'=>$stat));
