@@ -41,7 +41,7 @@
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
 				#ada data
@@ -102,7 +102,7 @@
 				// $menu='tampil';	
 				$recpage= 1;//jumlah data per halaman
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil2','');
 				$result =$obj->result;
 
 				#ada data
