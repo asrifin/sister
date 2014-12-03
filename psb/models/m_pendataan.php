@@ -30,8 +30,13 @@
 				}
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
+				$aksi    ='';
+				$subaksi ='periode';
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+
+				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
+				// $obj 	= new pagination_class($sql,$starting,$recpage);
 				$result =$obj->result;
 
 				#ada data
@@ -64,13 +69,13 @@
 									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nopendaftaran'].'</td>
 									
 									<td>'.$res['nama'].'</td>
-									<td>'.getuang($res['sumpokok']).'</td>
-									<td>'.getuang($res['disctb']).'</td>
-									<td>'.getuang($res['discsaudara']).'</td>
-									<td>'.getuang($res['disctunai']).'</td>
-									<td>'.getuang($res['denda']).'</td>
-									<td>'.getuang($res['sumnet']).'</td>
-									<td>'.getuang($res['angsuran']).'</td>
+									<td>'.number_format($res['sumpokok']).'</td>
+									<td>'.number_format($res['disctb']).'</td>
+									<td>'.number_format($res['discsaudara']).'</td>
+									<td>'.number_format($res['disctunai']).'</td>
+									<td>'.number_format($res['denda']).'</td>
+									<td>'.number_format($res['sumnet']).'</td>
+									<td>'.number_format($res['angsuran']).'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;

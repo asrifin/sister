@@ -12,7 +12,7 @@
 				lg.id_level = lv.id_level 
 				and lg.username = "'.$user.'" 
 				and lg.password ="'.$pass.'"';
-	$e1   = mysql_query($s1);
+	$e1   = mysql_query($s1) or die(mysql_error());
 	$n    = mysql_num_rows($e1);
 	// var_dump($n);exit();	
 

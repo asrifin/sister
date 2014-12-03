@@ -29,7 +29,7 @@
         <script src="js/start-screen.js"></script>
 
         <!-- <title>Metro UI CSS : Metro Bootstrap CSS Library</title> -->
-        <title>SiSTeR</title>
+        <title>SISTER</title>
     </head>
     
     <body class="metro">
@@ -114,7 +114,7 @@
                 <!--END OF  HRD -->
 
                 <!-- KEU -->
-                <a class="tile double double-vertical bg-steel" data-click="transform">
+                <a href="keuangan" class="tile double double-vertical bg-steel" data-click="transform">
                     <div class="tile-content bg-grey">
                         <div class="padding10">
                             <center>

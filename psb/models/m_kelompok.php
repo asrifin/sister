@@ -52,8 +52,11 @@
 				}
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
+				$aksi    ='';
+				$subaksi ='periode';
+
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result =$obj->result;
 
 				#ada data
@@ -87,8 +90,8 @@
 									
 									<td>'.tgl_indo($res['tglmulai']).' s/d '.tgl_indo($res['tglselesai']).'</td>
 									<td>'.$res['biaya'].'</td>
-									<td>'.isset($res['calonsiswa']).'</td>
-									<td>'.isset($res['siswaditerima']).'</td>
+									<td>'.$res['calonsiswa'].'</td>
+									<td>'.$res['siswaditerima'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
