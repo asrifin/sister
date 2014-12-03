@@ -335,7 +335,8 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                     vwKatalog($('#g_lokasiS').val());
             });$('#k_namaS').on('keydown',function (e){ // nama grup
                 if(e.keyCode == 13)
-                    vwKatalog($('#g_lokasiS').val());
+                    alert($('#g_lokasiS').val());
+                    // vwKatalog($('#g_lokasiS').val());
             });$('#k_keteranganS').on('keydown',function (e){ // keterangan
                 if(e.keyCode == 13)
                     vwKatalog($('#g_lokasiS').val());
@@ -386,6 +387,12 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
         var cari ='';
+        // if(subaksi!=''){
+            
+        // }else{
+
+        // }
+        
         $('.'+subaksi+'_cari').each(function(){
             var p = $(this).attr('id');
             var v = $(this).val();
@@ -450,7 +457,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             var cari ='&k_kodeS='+$('#k_kodeS').val()
                     +'&k_namaS='+$('#k_namaS').val()
                     +'&k_keteranganS='+$('#k_keteranganS').val();
-                    alert(aksi+cari);
+                    // alert(aksi+cari);
             $.ajax({
                 url : dir,
                 type: 'post',
@@ -956,7 +963,6 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 success:function (dt) {
                     if (dt.status!='sukses') {
                         notif(dt.status,'red');
-                        // alert(dt.status+' memuat data header');
                     }else{
                         $('#b_katalogDV').html(dt.data.katalog);
                         $('#b_grupDV').html(dt.data.grup);
@@ -965,10 +971,16 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         $('#b_totasetDV').html('Rp. '+dt.data.totaset+',-');
                         $('#b_susutDV').html(dt.data.susut+' %');
                         $('#b_namaTB').html(dt.data.katalog);
+                        var img;
+                        if(dt.data.photo2!=''){
+                            img='../img/upload/'+dt.data.photo2;
+                        }else{
+                            img='../img/no_image.jpg';
+                        }
+                        
+                        $('#b_photoIMG').attr('src',img);
 
-                        // alert(dt.data.idkatalog);
                         $('#b_katalogH2').val(id);
-                        // $('#b_katalogH2').val(dt.data.idkatalog);
                         $('#b_katalogTB').val(dt.data.katalog);
                     }
                 },

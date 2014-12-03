@@ -364,19 +364,19 @@
 							  	'.$tb2.' l,
 							  	'.$tb.' g
 							  WHERE 
-								g.replid ='.$_POST['grup'].' and 
+								g.replid  = '.$_POST['grup'].' and 
 								b.katalog = k.replid and
-							  	g.lokasi = l.replid and
-							  	g.replid=k.grup';
-						$q 	= mysql_query($s);
+								g.lokasi  = l.replid and
+								g.replid  = k.grup';
+						$q    = mysql_query($s);
 						$stat = ($q)?'sukses':'gagal';
-						$r = mysql_fetch_assoc($q);
-						$out = json_encode(array(
-								'status'=>$stat,
-								'grup'=>$r['grup'],
-								'lokasi'=>$r['lokasi'],
-								'totaset'=>number_format($r['totaset'])
-							));
+						$r    = mysql_fetch_assoc($q);
+						$out  = json_encode(array(
+									'status'  =>$stat,
+									'grup'    =>$r['grup'],
+									'lokasi'  =>$r['lokasi'],
+									'totaset' =>number_format($r['totaset'])
+								));
 					break;
 
 					case 'barang':
@@ -390,7 +390,8 @@
 									IFNULL(tbjum.totbarang,0)totbarang,
 									tbjum.susut,
 									tbjum.nama as katalog,
-									tbjum.totaset
+									tbjum.totaset,
+									tbjum.photo2
 								from 
 									sar_grup g
 									LEFT JOIN (
@@ -399,6 +400,7 @@
 											k.grup,
 											k.susut,
 											k.nama,
+											k.photo2,
 											count(*)totbarang,
 											sum(b.harga)totaset
 										from 
@@ -421,6 +423,7 @@
 										'idkatalog' =>$r['replid'],
 										'katalog'   =>$r['katalog'],
 										'grup'      =>$r['grup'],
+										'photo2'    =>$r['photo2'],
 										'lokasi'    =>$r['lokasi'],
 										'susut'     =>$r['susut'],
 										'totbarang' =>$r['totbarang'],
@@ -645,7 +648,6 @@
 
 			// generate barcode -----------------------------------------------------------
 			case 'kodegenerate':
-				// concat(tb1.lokasi,"/",tb1.grup,"/",tb1.tempat,"/",tb1.katalog,"/",tb2.barang)kode,
 				$s='SELECT
 						tb1.lokasi,
 						tb1.grup,
