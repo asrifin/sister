@@ -32,7 +32,7 @@
         </tr>
     </thead>
 
-    <tbody id="tbody">
+    <tbody id="peminjamantbody">
         <!-- row table -->
     </tbody>
     <tfoot>

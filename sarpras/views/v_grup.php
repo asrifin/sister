@@ -9,7 +9,7 @@
 <!-- panel 1 -->
 <div title="Grup Barang" class="panelx" id="panel1" style="display:none;">
     <div class="input-control select span3">
-        <select name="g_lokasiS" id="g_lokasiS" data-hint="lokasi" ></select>
+        <select class="grup_cari" name="g_lokasiS" id="g_lokasiS" data-hint="lokasi" ></select>
     </div>
     <button data-hint="Tambah Data" id="g_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="g_cariBC"><span class="icon-search"></span> </button>
@@ -28,18 +28,18 @@
                 <th class="text-left">Aksi</th>
             </tr>
             <tr style="display:none;" id="g_cariTR" class="selected">
-                <th class="text-left"><input placeholder="kode" id="g_kodeS" name="g_kodeS" class="span1"></th>
-                <th class="text-left"><input placeholder="nama" id="g_namaS" name="g_namaS"></th>
+                <th class="text-left"><input placeholder="kode" id="g_kodeS" class="grup_cari" class="span1"></th>
+                <th class="text-left"><input placeholder="nama" id="g_namaS" class="grup_cari"></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
-                <th class="text-left"><input placeholder="keterangan" id="g_keteranganS" name="g_keteranganS"></th>
+                <th class="text-left"><input placeholder="keterangan" id="g_keteranganS" class="grup_cari"></th>
                 <th class="text-left"></th>
             </tr>
         </thead>
 
-        <tbody id="g_tbody">
+        <tbody id="grup_tbody">
         </tbody>
         <tfoot>
         </tfoot>
@@ -56,7 +56,8 @@
     <button data-hint="Cetak " id="k_cetakBC"><span class="icon-printer"></span> </button>
     
     <div class="grid" style="color:white;">
-        <input type="hidden" id="k_grupH1" name="k_grupH1" >
+        <!-- <input type="hidden" id="k_grupH1" name="k_grupH1" > -->
+        <input type="hidden" id="k_grupS" class="katalog_cari" >
         <div class="row">
             <div class="span2">Grup Barang : </div>
             <div id="k_grupDV" class="span2"></div>
@@ -84,18 +85,18 @@
                 <th class="text-left">Aksi</th>
             </tr>
             <tr style="display:none;" id="k_cariTR" class="selected">
-                <th class="text-left"><input placeholder="kode" id="k_kodeS" name="k_kodeS" class="span1"></th>
-                <th class="text-left"><input placeholder="nama" id="k_namaS" name="k_namaS"></th>
+                <th class="text-left"><input placeholder="kode" id="k_kodeS"  class="katalog_cari" class="span1"></th>
+                <th class="text-left"><input placeholder="nama" id="k_namaS" class="katalog_cari"></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
-                <th class="text-left"><input placeholder="keterangan" id="k_keteranganS" name="k_keteranganS"></th>
+                <th class="text-left"><input placeholder="keterangan" id="k_keteranganS"class="katalog_cari"></th>
                 <th class="text-left"></th>
             </tr>
         </thead>
 
-        <tbody id="k_tbody">
+        <tbody id="katalog_tbody">
         </tbody>
         <tfoot>
         </tfoot>
@@ -112,7 +113,8 @@
     <button data-hint="Field Pencarian" id="b_cariBC"><span class="icon-search"></span> </button>
     <button data-hint="Cetak" id="b_cetakBC"><span class="icon-printer"></span> </button>
 
-    <input type="hidden" id="b_katalogH1" name="b_katalogH1" >
+    <input type="hidden"  class="barang_cari" id="b_katalogS">
+    <!-- <input type="hidden" id="b_katalogH1" name="b_katalogH1" > -->
 
     <!-- <div class="grid show-grid"> -->
     <div class="grid" style="color:white;">
@@ -173,33 +175,33 @@
                 <th class="text-left">Aksi</th>
             </tr>
             <tr style="display:none;" id="b_cariTR" class="selected">
-                <th class="text-left"><input placeholder="kode" id="b_kodeS" name="b_kodeS"></th>
-                <th class="text-left"><input placeholder="barkode" id="b_barkodeS" name="b_barkodeS"></th>
+                <th class="text-left"><input placeholder="kode" id="b_kodeS"class="barang_cari"></th>
+                <th class="text-left"><input placeholder="barkode" id="b_barkodeS" class="barang_cari"></th>
                 <th class="text-left"></th>
                 <th class="text-left">
-                    <select name="b_sumberS"id="b_sumberS">
+                    <select class="barang_cari" id="b_sumberS">
                         <option value="">-Semua-</option>
                         <option value="0">Beli</option>
                         <option value="1">Pemberian</option>
                         <option value="2">Membuat Sendiri</option>
                     </select> 
                 </th>
-                <th class="text-left"><input placeholder="harga" id="b_hargaS" name="b_hargaS"></th>
+                <th class="text-left"><input  class="barang_cari" placeholder="harga" id="b_hargaS"></th>
                 <th class="text-left">
-                    <select name="b_kondisiS" id="b_kondisiS"></select>
+                    <select  class="barang_cari"id="b_kondisiS"></select>
                 </th>
                 <th class="text-left">
-                    <select id="b_statusS" name="b_statusS">
+                    <select id="b_statusS" class="barang_cari">
                         <option value="">-Semua-</option>
                         <option value="1">Tersedia</option>
                         <option value="2">Dipinjam</option>
                     </select>
                 </th>
-                <th class="text-left"><input placeholder="keterangan" id="b_keteranganS" name="b_keteranganS"></th>
+                <th class="text-left"><input placeholder="keterangan" id="b_keteranganS" class="barang_cari"></th>
                 <th class="text-left"></th>
             </tr>
         </thead>
-        <tbody id="b_tbody">
+        <tbody id="barang_tbody">
         </tbody>
         <tfoot>
         </tfoot>

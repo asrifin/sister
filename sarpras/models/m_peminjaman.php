@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	// error_reporting(0);
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
@@ -39,8 +40,10 @@
 				}
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
+				$aksi="tampil";
+				$subaksi="peminjaman";
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result =$obj->result;
 
 				#ada data
@@ -156,8 +159,10 @@
 				}
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
+				$aksi="tampil3";
+				$subaksi="dftp";
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result =$obj->result;
 
 				#ada data
@@ -216,20 +221,49 @@
 							$s2 = 'INSERT INTO sar_peminjaman set peminjam = "'.$_POST['peminjamTB'].'",
     									 tanggal1 = "'.$_POST['tanggal1TB'].'",
     									 tanggal2 = "'.$_POST['tanggal2TB'].'",
+
     									 status = 1,
 										lokasi 	= '.$_POST['lokasiH'].',
     									barang ='.$v['barang'] ;
     									/*status =jika terpinjam =1, tersedia=0*/
+
+    									//  status = 1, 
+    									// barang ='.$v['barang'] ;
+    									/*jika terpinjam =1, tersedia=0*/
+						// var_dump($s2);exit();
+
 						  	$e2 = mysql_query($s2);
 						  	if(!$e2)
 						      $err=false;
 						}
+
 						$sql    = 'DELETE from sar_dftp ';
 						$e3    = mysql_query($sql);
 						// var_dump($sql);exit();
 						$stat=(!$err&$e3)?'gagal':'sukses';
 						$out = json_encode(array('status'=>$stat));
 						
+
+						$stat=(!$err)?'gagal':'sukses';
+						$out = json_encode(array('status'=>$stat));
+
+
+				// $lokasi     = isset($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
+				// $s 		= 'INSERT INTO '.$tb.' set 	
+				// 						barang 	= "'.filter($_POST['kode']).'",
+				// 						peminjam 	= "'.filter($_POST['peminjamTB']).'",
+				// 						tanggal1 	= "'.filter($_POST['tanggal1TB']).'",
+				// 						tanggal2 	= "'.filter($_POST['tanggal2TB']).'",
+				// 						tempat 	= "'.filter($_POST['tempatTB']).'",
+				// 						keterangan 	= "'.filter($_POST['keteranganTB']).'",
+				// 						lokasi 	= '.$lokasi.',
+				// 						status 	= 1';
+				// // $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				// // var_dump($s2);exit();
+				// $e 		= mysql_query($s);
+				// $stat 	= ($e)?'sukses':'gagal';
+				// $out 	= json_encode(array('status'=>$stat));
+
 			break;
 			// add / edit -----------------------------------------------------------------
 			
