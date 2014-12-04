@@ -445,7 +445,7 @@
 												nama 		= "'.filter($_POST['g_namaTB']).'",
 												keterangan 	= "'.filter($_POST['g_keteranganTB']).'"';
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						var_dump($s2);exit();
+						// var_dump($s2);exit();
 						$e 		= mysql_query($s2);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array('status'=>$stat));

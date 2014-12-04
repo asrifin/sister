@@ -31,7 +31,7 @@
 
     <!-- Metro UI CSS JavaScript plugins -->
     <script src="../js/load-metro.js"></script>
-     <script src="../js/metro.min.js"></script>
+     <script src="js/metro.min.js"></script>
      <!-- // <script src="../js/metro-scroll.js"></script> -->
 
     <!-- Local JavaScript -->
@@ -119,7 +119,7 @@
                         require $d.'v_tahunbuku.php';
                     break;
                     case 'rekening':
-                        require $d.'rekening.php';
+                        require $d.'v_rekening.php';
                     break;
                     case 'tahun_anggaran':
                         require $d.'v_tahun_anggaran.php';
