@@ -55,7 +55,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             //katalog
             k_contentFR +=' <div class="grid">'
                                 +'<form enctype="multipart/form-data" class="span12" autocomplete="off" onsubmit="katalogSV(); return false;" id="'+mnu3+'FR">' 
-                                    +'<input id="k_idformH" type="hidden">' 
+                                    +'<input id="k_idformH" type="text">' 
                                     // lokasi , keterangan
                                     +'<div class="row">'
                                         +'<div class="span5"> '
@@ -538,9 +538,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         function barangSV(){
             var urlx ='&aksi=simpan&subaksi=barang';
             // edit mode
-            if($('#b_idformH').val()!=''){
+            if($('#b_idformH').val()!='')
                 urlx += '&replid='+$('#b_idformH').val();
-            }
+
             $.ajax({
                 url:dir,
                 cache:false,
@@ -596,6 +596,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             };
         //end of preview image sebelum upload -------
 
+        // submit katalog ---------------------------
             function katalogSV () {
                 //add image
                 var files =new Array();
@@ -614,6 +615,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 else// ga upload
                     katalogUp(filesAdd);
             }
+        //end of submit katalog ---------------------------
 
         // upload image
             function katalogUp(dataAdd){
@@ -641,9 +643,16 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         // simpan ke database
             function katalogDb(filex){
                 var formData = $('#katalogFR').serialize();
-                if(filex!='')// ada upload file nya
+                if($('#k_idformH').val()!=''){
+                    formData +='&replid='+$('#k_idformH').val();
+                }
+
+                if(filex!=''){// ada upload file nya
                     formData +='&file='+filex.file ;
-                // alert(formData);return false;
+                    if($('#previmg').attr('src')!='../img/no_image.jpg'){ // ada gambar
+                        formData+='&photo2='+$('#previmg').attr('src');
+                    }
+                }
 
                 $.ajax({
                     url: dir,

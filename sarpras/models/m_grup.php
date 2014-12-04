@@ -22,11 +22,11 @@
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['upload'])){
-			$tipex		= substr($_FILES[0]['type'],6);
-			$namaAwal 	= $_FILES[0]['name'];
-			$namaSkrg	= $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
-			$src		= $_FILES[0]['tmp_name'];
-			$destix		= '../../img/upload/'.basename($namaSkrg);
+			$tipex    = substr($_FILES[0]['type'],6);
+			$namaAwal = $_FILES[0]['name'];
+			$namaSkrg = $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
+			$src      = $_FILES[0]['tmp_name'];
+			$destix   = '../../img/upload/'.basename($namaSkrg);
 
 			if(move_uploaded_file($src, $destix))
 				$o=array('status'=>'sukses','file'=>$namaSkrg);
@@ -459,14 +459,30 @@
 												kode 		= "'.filter($_POST['k_kodeTB']).'",
 												nama 		= "'.filter($_POST['k_namaTB']).'",
 												jenis 		= "'.$_POST['k_jenisTB'].'",
-												'.($_POST['file']!=''?'photo2= "'.$_POST['file'].'"':'').',
 												susut 		= "'.filter($_POST['k_susutTB']).'",
-												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"';
-						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"
+												'.(isset($_POST['file'])?', photo2= "'.$_POST['file'].'"':'');
+						$stat2=true;
+						if(!isset($_POST['replid'])){ //add
+							$s2 = 'INSERT INTO '.$s;
+						}else{ //edit
+							$s2  = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
+							if(isset($_POST['photo2'])){ //change image
+								$img = $_POST['photo2'];
+								if(file_exists($img)){ //checking image is exist
+									$delimg = unlink($img);
+									$stat2  = !$delimg?false:true;
+								}
+							}
+						}
 						// var_dump($s2);exit();
-						$e 		= mysql_query($s2);
-						$stat 	= ($e)?'sukses':'gagal_simpan_db';
-						$out 	= json_encode(array('status'=>$stat));
+						if(!$stat2){// gagal hapus
+							$stat='gagal_hapus_file';
+						}else{ //sukses hapus file
+							// var_dump($s2);exit();
+							$e    = mysql_query($s2);
+							$stat = $e?'sukses':'gagal_simpan_db';
+						}$out  = json_encode(array('status'=>$stat));
 					break;
 
 					case 'barang':
