@@ -19,9 +19,9 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$lokasi     = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
-				$peminjam     = trim($_POST['peminjamS'])?filter($_POST['peminjamS']):'';
-				
+				$lokasi = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
+				// $peminjam     = trim($_POST['peminjamS'])?filter($_POST['peminjamS']):'';
+				$peminjam = isset($_POST['peminjamS'])?filter(trim($_POST['peminjamS'])):'';
 				$sql = 'SELECT p.*,b.kode,b.katalog,k.nama 
 						FROM sar_peminjaman p
 						LEFT JOIN sar_barang b ON b.replid=p.barang 
@@ -84,7 +84,7 @@
 			// view -----------------------------------------------------------------
 
 			case 'tampil2':
-				$nama     = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$nama = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
 				// $peminjam     = trim($_POST['peminjamS'])?filter($_POST['peminjamS']):'';
 				
 				$sql = 'SELECT b.replid, b.kode, k.nama, b.status
@@ -200,8 +200,7 @@
 			case 'simpandftp':
 				$s 		= 'INSERT INTO sar_dftp'.' set 	
 										barang 	= "'.filter($_POST['kode']).'"';
-				// $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// var_dump($s2);exit();
+				// var_dump($r);exit();
 				$e 		= mysql_query($s);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array('status'=>$stat));
