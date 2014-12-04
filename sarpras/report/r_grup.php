@@ -1,26 +1,42 @@
 <?php
   session_start();
+  require_once '../../lib/dbcon.php';
   require_once '../../lib/mpdf/mpdf.php';
   require_once '../../lib/tglindo.php';
+  require_once '../../lib/func.php';
+  require_once '../../lib/func.php';
   // echo '<pre>';
   //   print_r($_SESSION);
   // // exit();
   // echo '</pre>';
-  $token = base64_encode(md5('grup'.$_SESSION['id_loginS'].$_SESSION['levelS']));
-  // print_r($token);exit();
+  // $x=$_SESSION['id_loginS'];
+  // $x= 'grup'.$_SESSION['id_loginS'];
+  $x     = $_SESSION['id_loginS'].$_GET['g_lokasiS'].$_GET['g_kodeS'].$_GET['g_namaS'].$_GET['g_keteranganS'];
+  $token = base64_encode($x);
+  // $token = base64_encode('112e');
+  // $token = base64_encode($_SESSION['id_loginS'].$_GET['g_lokasiS'].$_GET['g_kodeS'].$_GET['g_namaS'].$_GET['g_keteranganS']);
+  // g_lokasiSg_kodeSg_namaSg_keteranganS
+  // print_r($token);
+  // exit();
+  // echo '<br>';
+  // print_r($_GET['token']);exit();
+  // print_r($_GET['token']);exit();
   if(!isset($_SESSION)){ // login 
     echo 'user has been logout';
   }else{ // logout
     if(!isset($_GET['token']) and $token!==$_GET['token']){
       echo 'maaf token - url tidak valid';
     }else{
+        $ss = 'SELECT *  from sar_lokasi where replid='.$_GET['g_lokasiS'];
+        $ee = mysql_query($ss);
+        $rr = mysql_fetch_assoc($ee);
         // echo 'token udah bener n tampil';
           ob_start(); // digunakan untuk convert php ke html
           $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
             <html xmlns="http://www.w3.org/1999/xhtml">
               <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                <title>SIADU::Sar - inventaris</title>
+                <title>SISTER::Sar - inventaris</title>
               </head>
 
               <body>
@@ -29,7 +45,8 @@
                     Grup Barang<br>
                   </b>
                 </p>
-
+                <p align="justify">lokasi : '.$rr['nama'].' ['.$rr['kode'].']</p>
+  
                 <table class="isi" width="100%">
                     <tr class="head">
                       <td align="center">Kode</td>
@@ -40,6 +57,10 @@
                       <td align="center">Total Aset</td>
                       <td align="center">Keterangan</td>
                     </tr>';
+                    $lokasi       = isset($_GET['g_lokasiS'])?filter(trim($_GET['g_lokasiS'])):'';
+                    $g_kode       = isset($_GET['g_kodeS'])?filter(trim($_GET['g_kodeS'])):'';
+                    $g_nama       = isset($_GET['g_namaS'])?filter(trim($_GET['g_namaS'])):'';
+                    $g_keterangan = isset($_GET['g_keteranganS'])?filter(trim($_GET['g_keteranganS'])):'';
 
                     $s = 'SELECT
                             g.replid,
@@ -77,7 +98,6 @@
                               GROUP BY  
                                 k.grup
                             )tbpjm on tbpjm.grup = g.replid
-
                             LEFT JOIN(
                               SELECT
                                 k.grup,
@@ -89,10 +109,13 @@
                                 k.grup
                             )tbaset on tbaset.grup = g.replid
                           WHERE
-                            g.lokasi = '.$_GET['lokasi'].' 
+                            g.lokasi = '.$lokasi.' and
+                            g.kode like "%'.$g_kode.'%" and
+                            g.nama like "%'.$g_nama.'%" and
+                            g.keterangan like "%'.$g_keterangan.'%" 
                           ORDER BY
                             g.kode asc';
-                            // var_dump($s);exit();
+                    // print_r($s);exit();
                     $e = mysql_query($s);
                     $n = mysql_num_rows($e);
                     $nox = 1;
@@ -111,10 +134,10 @@
                         $out.='<tr>
                                   <td>'.$r['kode'].'</td>
                                   <td>'.$r['nama'].'</td>
-                                  <td>'.$r['u_total'].'</td>
-                                  <td>'.$r['u_dipinjam'].'</td>
-                                  <td>'.$r['u_tersedia'].'</td>
-                                  <td>'.fRp($r['aset']).'</td>
+                                  <td align="right">'.$r['u_total'].'</td>
+                                  <td align="right">'.$r['u_dipinjam'].'</td>
+                                  <td align="right">'.$r['u_tersedia'].'</td>
+                                  <td align="right">Rp. '.number_format($r['aset']).',-</td>
                                   <td>'.$r['keterangan'].'</td>
                             </tr>';
                         $nox++;
@@ -128,9 +151,10 @@
           ob_end_clean(); 
           $mpdf=new mPDF('c','A4','');   
           $mpdf->SetDisplayMode('fullpage');   
-          $stylesheet = file_get_contents('../../shared/libraries/mpdf/r_cetak.css');
+          $stylesheet = file_get_contents('../../lib/mpdf/r_cetak.css');
           $mpdf->WriteHTML($stylesheet,1);  // The parameter 1 tells that this is css/style only and no body/html/text
           $mpdf->WriteHTML($out);
           $mpdf->Output();
     }
 }
+?>

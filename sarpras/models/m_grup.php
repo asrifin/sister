@@ -110,14 +110,11 @@
 							$starting=0;
 						}
 
-						$recpage= 5;//jumlah data per halaman
+						$recpage = 5;//jumlah data per halaman
 						$aksi    ='tampil';
 						$subaksi ='grup';
-						// $obj 	= new pagination_class($sql,$starting,$recpage);
-						$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						// var_dump($obj);exit();
-						$result =$obj->result;
-						// print_r($result);exit(); 	
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
 
 						#ada data
 						$jum	= mysql_num_rows($result);
@@ -466,20 +463,18 @@
 						if(!isset($_POST['replid'])){ //add
 							$s2 = 'INSERT INTO '.$s;
 						}else{ //edit
-							$s2  = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
-							if(isset($_POST['photo2'])){ //change image
-								$img = $_POST['photo2'];
+							$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
+							if(isset($_POST['photo_asal'])){ //change image
+								$img='../../img/upload/'.$_POST['photo_asal'];
 								if(file_exists($img)){ //checking image is exist
 									$delimg = unlink($img);
 									$stat2  = !$delimg?false:true;
 								}
 							}
 						}
-						// var_dump($s2);exit();
 						if(!$stat2){// gagal hapus
 							$stat='gagal_hapus_file';
 						}else{ //sukses hapus file
-							// var_dump($s2);exit();
 							$e    = mysql_query($s2);
 							$stat = $e?'sukses':'gagal_simpan_db';
 						}$out  = json_encode(array('status'=>$stat));

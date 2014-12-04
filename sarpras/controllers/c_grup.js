@@ -15,6 +15,26 @@ var dir6      ='models/m_'+mnu6+'.php';
 var dir7      ='models/m_'+mnu7+'.php';
 
 var g_contentFR = k_contentFR = b_contentFR ='';
+    
+    function printPDF(mn){
+        var par='',tok='',p,v;
+        $('.'+mn+'_cari').each(function(){
+            p=$(this).attr('id');
+            v=$(this).val();
+            par+='&'+p+'='+v;
+            tok+=v;
+        });
+        var x  = $('#id_loginS').val();//+tok;
+        var token = encode64(x+tok);
+        // var token = encode64($('id_loginS').val());
+        // token = encode64(mn+$('id_loginS').val());
+        // token = encode64($('id_loginS').val()+tok);
+        // token = encode64('ok');
+        // alert(token);return false;
+        // alert(token);return false;
+        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+        // window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+    }
 
 // main function ---
     $(document).ready(function(){
@@ -87,6 +107,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                         +'<div class="span5"> '
                                             +'<label>Gambar Barang</label>'
                                             // +'<div class="input-control file info-state" data-role="input-control">'
+                                                +'<input type="hidden" id="k_photoH"/>'
                                             +'<div id="k_photoDV" class="input-control file" data-role="input-control">'
                                                 +'<input onchange="PreviewImage(this);" id="k_photoTB" name="k_photoTB" type="file">'
                                                 +'<button class="btn-file"></button>'
@@ -271,6 +292,10 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             //edit------- 
             $('#b_ubahBC').on('click',function(){
                 katalogFR($('#b_katalogS').val());
+            });
+            //print----
+            $('#g_cetakBC').on('click',function(){
+                printPDF('grup');
             });
 
             // search 
@@ -649,12 +674,12 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 }
 
                 if(filex!=''){// ada upload file nya
-                    formData +='&file='+filex.file ;
-                    if($('#previmg').attr('src')!='../img/no_image.jpg'){ // ada gambar
-                        formData+='&photo2='+$('#previmg').attr('src');
+                    formData +='&file='+filex.file ;	
+                    if($('#k_photoH').val()!=''){
+                    	formData+='&photo_asal='+$('#k_photoH').val();
                     }
                 }
-
+                // alert(formData);return false;
                 $.ajax({
                     url: dir,
                     type:'POST',
@@ -862,7 +887,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                         img='../img/no_image.jpg';
                                     }
                                     $('#previmg').attr('src',img);
-
+                                    $('#k_photoH').val(dt.data.photo2);
                                     // combo jenis -----------------------
                                     $.ajax({
                                         url:dir4,
@@ -1213,11 +1238,6 @@ function jumupdate (e) {
     }
 //end of  upload image
 
-// print pdf
-    function printPDF(){
-        alert('ok');
-    }
-// end of print pdf
     // ---------------------- //
     // -- created by epiii -- //
     // ---------------------- // 

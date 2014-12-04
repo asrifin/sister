@@ -1,11 +1,11 @@
-<!-- .. -->
 <script src="controllers/c_grup.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
+<script src="../js/base64.js"></script>
 
 <h4 style="color:white;">Inventaris</h4>
 <div id="loadarea"></div>
-
+<input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
 <!-- panel 1 -->
 <div title="Grup Barang" class="panelx" id="panel1" style="display:none;">
     <div class="input-control select span3">
