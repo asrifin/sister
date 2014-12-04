@@ -200,7 +200,8 @@
 			case 'simpandftp':
 				$s 		= 'INSERT INTO sar_dftp'.' set 	
 										barang 	= "'.filter($_POST['kode']).'"';
-				// var_dump($r);exit();
+				// $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				// var_dump($s2);exit();
 				$e 		= mysql_query($s);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array('status'=>$stat));
