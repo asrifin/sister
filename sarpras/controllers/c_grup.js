@@ -55,7 +55,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             //katalog
             k_contentFR +=' <div class="grid">'
                                 +'<form enctype="multipart/form-data" class="span12" autocomplete="off" onsubmit="katalogSV(); return false;" id="'+mnu3+'FR">' 
-                                    +'<input id="k_idformH" type="hidden">' 
+                                    +'<input id="k_idformH" type="text">' 
                                     // lokasi , keterangan
                                     +'<div class="row">'
                                         +'<div class="span5"> '
@@ -332,13 +332,13 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             // katalog barang
             $('#k_kodeS').on('keydown',function (e){ // kode grup
                 if(e.keyCode == 13)
-                    vwKatalog($('#g_lokasiS').val());
+                    vwKatalog($('#k_grupS').val());
             });$('#k_namaS').on('keydown',function (e){ // nama grup
                 if(e.keyCode == 13)
-                    vwKatalog($('#g_lokasiS').val());
+                    vwKatalog($('#k_grupS').val());
             });$('#k_keteranganS').on('keydown',function (e){ // keterangan
                 if(e.keyCode == 13)
-                    vwKatalog($('#g_lokasiS').val());
+                    vwKatalog($('#k_grupS').val());
             });
 
             // unit barang
@@ -387,6 +387,12 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
         var cari ='';
+        // if(subaksi!=''){
+
+        // }else{
+
+        // }
+
         $('.'+subaksi+'_cari').each(function(){
             var p = $(this).attr('id');
             var v = $(this).val();
@@ -447,10 +453,11 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 
     // katalog barang
         function vwKatalog(id) {
-            var aksi ='aksi=tampil&subaksi=katalog&grup='+id;
+            var aksi ='aksi=tampil&subaksi=katalog&k_grupS='+id;
             var cari ='&k_kodeS='+$('#k_kodeS').val()
                     +'&k_namaS='+$('#k_namaS').val()
                     +'&k_keteranganS='+$('#k_keteranganS').val();
+                    // alert(aksi+cari);
             $.ajax({
                 url : dir,
                 type: 'post',
@@ -532,9 +539,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         function barangSV(){
             var urlx ='&aksi=simpan&subaksi=barang';
             // edit mode
-            if($('#b_idformH').val()!=''){
+            if($('#b_idformH').val()!='')
                 urlx += '&replid='+$('#b_idformH').val();
-            }
+
             $.ajax({
                 url:dir,
                 cache:false,
@@ -590,6 +597,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             };
         //end of preview image sebelum upload -------
 
+        // submit katalog ---------------------------
             function katalogSV () {
                 //add image
                 var files =new Array();
@@ -608,6 +616,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 else// ga upload
                     katalogUp(filesAdd);
             }
+        //end of submit katalog ---------------------------
 
         // upload image
             function katalogUp(dataAdd){
@@ -635,8 +644,16 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         // simpan ke database
             function katalogDb(filex){
                 var formData = $('#katalogFR').serialize();
-                if(filex.file!='') // ada upload file nya
+                if($('#k_idformH').val()!=''){
+                    formData +='&replid='+$('#k_idformH').val();
+                }
+
+                if(filex!=''){// ada upload file nya
                     formData +='&file='+filex.file ;
+                    if($('#previmg').attr('src')!='../img/no_image.jpg'){ // ada gambar
+                        formData+='&photo2='+$('#previmg').attr('src');
+                    }
+                }
 
                 $.ajax({
                     url: dir,
@@ -653,7 +670,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         console.log('ERRORS savedata2: ' + textStatus);
                     },complete: function(){
                         $.Dialog.close(); 
-                        vwKatalog($('#g_lokasiS').val());
+                        vwKatalog($('#k_grupS').val());
                         kkosongkan();
                     }
                 });
@@ -699,7 +716,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                         clr  ='red';
                     }else{
-                        vwKatalog($('#g_lokasiS').val());
+                        vwKatalog($('#k_grupS').val());
                         cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                         clr  ='green';
                     }notif(cont,clr);
@@ -838,7 +855,13 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     $('#k_namaTB').val(dt.data.nama);
                                     $('#k_susutTB').val(dt.data.susut);
                                     $('#k_keteranganTB').val(dt.data.keterangan);
-                                    $('#previmg').attr('src','../img/upload/'+dt.data.photo2);
+                                    var img;
+                                    if(dt.data.photo2!=''){//ada gambar
+                                        img='../img/upload/'+dt.data.photo2;
+                                    }else{
+                                        img='../img/no_image.jpg';
+                                    }
+                                    $('#previmg').attr('src',img);
 
                                     // combo jenis -----------------------
                                     $.ajax({
@@ -956,7 +979,6 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 success:function (dt) {
                     if (dt.status!='sukses') {
                         notif(dt.status,'red');
-                        // alert(dt.status+' memuat data header');
                     }else{
                         $('#b_katalogDV').html(dt.data.katalog);
                         $('#b_grupDV').html(dt.data.grup);
@@ -965,10 +987,16 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         $('#b_totasetDV').html('Rp. '+dt.data.totaset+',-');
                         $('#b_susutDV').html(dt.data.susut+' %');
                         $('#b_namaTB').html(dt.data.katalog);
+                        var img;
+                        if(dt.data.photo2!=''){
+                            img='../img/upload/'+dt.data.photo2;
+                        }else{
+                            img='../img/no_image.jpg';
+                        }
+                        
+                        $('#b_photoIMG').attr('src',img);
 
-                        // alert(dt.data.idkatalog);
                         $('#b_katalogH2').val(id);
-                        // $('#b_katalogH2').val(dt.data.idkatalog);
                         $('#b_katalogTB').val(dt.data.katalog);
                     }
                 },

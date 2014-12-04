@@ -243,8 +243,12 @@ var contentFR ='';
                 $('#dftptbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
+<<<<<<< HEAD
                     $('#baratbody').html(dt).fadeIn();
                     viewTB2();
+=======
+                    $('#dftptbody').html(dt).fadeIn();
+>>>>>>> c0d3ec21f3f3489a238a3ed89f7b4d259d813fbb
                 },1000);
             }
         });
@@ -321,7 +325,29 @@ function pagination(page,aksix,subaksi){
             }
         });
     }
+<<<<<<< HEAD
     
+=======
+    // function pagination(page,aksix,menux){ // edit by epiii
+    //     var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
+    //     var cari ='&lokasiS='+$('#lokasiS').val()
+    //                 // +'&kodeS='+$('#kodeS').val()
+    //                 +'&peminjamS='+$('#peminjamS').val();
+    //                 // +'&keteranganS='+$('#keteranganS').val();
+    //     $.ajax({
+    //         url:dir,
+    //         type:"post",
+    //         data: datax+cari,
+    //         beforeSend:function(){
+    //             $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+    //         },success:function(dt){
+    //             setTimeout(function(){
+    //                 $('#tbody').html(dt).fadeIn();
+    //             },1000);
+    //         }
+    //     });
+    // }   
+>>>>>>> c0d3ec21f3f3489a238a3ed89f7b4d259d813fbb
 //end of paging ---
     
 //del process ---

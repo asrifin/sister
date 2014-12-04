@@ -32,8 +32,12 @@
 				}
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
+				$aksi    ='';
+				$subaksi ='tampil';
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				// $obj 	= new pagination_class($sql,$starting,$recpage);
 				$result =$obj->result;
 
 				#ada data
