@@ -10,7 +10,7 @@
 
 <div class="input-control select span3">
     <!-- (name & id) usahakan sama  -->
-    <select data-hint="lokasi" name="lokasiTB" id="lokasiS"></select>
+    <select  class="peminjaman_cari" data-hint="lokasi" name="lokasiTB" id="lokasiS"></select>
     <!-- <select data-hint="Peminjam" name="peminjamS" id="peminjamS"></select> -->
 </div>
 
@@ -22,17 +22,17 @@
             <th class="text-center">Tanggal Peminjaman</th>
             <th class="text-left">Tanggal Pengembalian</th>
             <th class="text-left">Tempat Peminjaman</th>
-            <th class="text-left">Keterangann</th>
+            <th class="text-left">Keterangan</th>
             <!-- <th class="text-left">Aksi</th> -->
             <!-- <th class="text-left">Status</th> -->
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             
-            <th class="text-left"><input placeholder="peminjam" id="peminjamS" name="peminjamS"></th>
+            <th class="text-left"><input class="peminjaman_cari" placeholder="peminjam" id="peminjamS" name="peminjamS"></th>
         </tr>
     </thead>
 
-    <tbody id="tbody">
+    <tbody id="peminjamantbody">
         <!-- row table -->
     </tbody>
     <tfoot>

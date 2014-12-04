@@ -22,11 +22,11 @@
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['upload'])){
-			$tipex		= substr($_FILES[0]['type'],6);
-			$namaAwal 	= $_FILES[0]['name'];
-			$namaSkrg	= $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
-			$src		= $_FILES[0]['tmp_name'];
-			$destix		= '../../img/upload/'.basename($namaSkrg);
+			$tipex    = substr($_FILES[0]['type'],6);
+			$namaAwal = $_FILES[0]['name'];
+			$namaSkrg = $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
+			$src      = $_FILES[0]['tmp_name'];
+			$destix   = '../../img/upload/'.basename($namaSkrg);
 
 			if(move_uploaded_file($src, $destix))
 				$o=array('status'=>'sukses','file'=>$namaSkrg);
@@ -162,7 +162,7 @@
 
 					// katalog
 					case 'katalog':
-						$k_grup       = isset($_POST['grup'])?filter(trim($_POST['grup'])):'';
+						$k_grup       = isset($_POST['k_grupS'])?filter(trim($_POST['k_grupS'])):'';
 						$k_kode       = isset($_POST['k_kodeS'])?filter(trim($_POST['k_kodeS'])):'';
 						$k_nama       = isset($_POST['k_namaS'])?filter(trim($_POST['k_namaS'])):'';
 						$k_keterangan = isset($_POST['k_keteranganS'])?filter(trim($_POST['k_keteranganS'])):'';
@@ -181,7 +181,7 @@
 									LEFT JOIN sar_jenis  j on j.replid = k.jenis
 									LEFT JOIN sar_barang b on b.katalog = k.replid
 								WHERE
-									k.grup = "'.$k_grup.'" and
+									k.grup = '.$k_grup.' and
 									k.kode like "%'.$k_kode.'%" and
 									k.nama like "%'.$k_nama.'%" and
 									k.keterangan like "%'.$k_keterangan.'%"
@@ -364,19 +364,19 @@
 							  	'.$tb2.' l,
 							  	'.$tb.' g
 							  WHERE 
-								g.replid ='.$_POST['grup'].' and 
+								g.replid  = '.$_POST['grup'].' and 
 								b.katalog = k.replid and
-							  	g.lokasi = l.replid and
-							  	g.replid=k.grup';
-						$q 	= mysql_query($s);
+								g.lokasi  = l.replid and
+								g.replid  = k.grup';
+						$q    = mysql_query($s);
 						$stat = ($q)?'sukses':'gagal';
-						$r = mysql_fetch_assoc($q);
-						$out = json_encode(array(
-								'status'=>$stat,
-								'grup'=>$r['grup'],
-								'lokasi'=>$r['lokasi'],
-								'totaset'=>number_format($r['totaset'])
-							));
+						$r    = mysql_fetch_assoc($q);
+						$out  = json_encode(array(
+									'status'  =>$stat,
+									'grup'    =>$r['grup'],
+									'lokasi'  =>$r['lokasi'],
+									'totaset' =>number_format($r['totaset'])
+								));
 					break;
 
 					case 'barang':
@@ -390,7 +390,8 @@
 									IFNULL(tbjum.totbarang,0)totbarang,
 									tbjum.susut,
 									tbjum.nama as katalog,
-									tbjum.totaset
+									tbjum.totaset,
+									tbjum.photo2
 								from 
 									sar_grup g
 									LEFT JOIN (
@@ -399,6 +400,7 @@
 											k.grup,
 											k.susut,
 											k.nama,
+											k.photo2,
 											count(*)totbarang,
 											sum(b.harga)totaset
 										from 
@@ -421,6 +423,7 @@
 										'idkatalog' =>$r['replid'],
 										'katalog'   =>$r['katalog'],
 										'grup'      =>$r['grup'],
+										'photo2'    =>$r['photo2'],
 										'lokasi'    =>$r['lokasi'],
 										'susut'     =>$r['susut'],
 										'totbarang' =>$r['totbarang'],
@@ -456,13 +459,30 @@
 												kode 		= "'.filter($_POST['k_kodeTB']).'",
 												nama 		= "'.filter($_POST['k_namaTB']).'",
 												jenis 		= "'.$_POST['k_jenisTB'].'",
-												'.($_POST['file']!=''?'photo2= "'.$_POST['file'].'"':'').',
 												susut 		= "'.filter($_POST['k_susutTB']).'",
-												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"';
-						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						$e 		= mysql_query($s2);
-						$stat 	= ($e)?'sukses':'gagal_simpan_db';
-						$out 	= json_encode(array('status'=>$stat));
+												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"
+												'.(isset($_POST['file'])?', photo2= "'.$_POST['file'].'"':'');
+						$stat2=true;
+						if(!isset($_POST['replid'])){ //add
+							$s2 = 'INSERT INTO '.$s;
+						}else{ //edit
+							$s2  = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
+							if(isset($_POST['photo2'])){ //change image
+								$img = $_POST['photo2'];
+								if(file_exists($img)){ //checking image is exist
+									$delimg = unlink($img);
+									$stat2  = !$delimg?false:true;
+								}
+							}
+						}
+						// var_dump($s2);exit();
+						if(!$stat2){// gagal hapus
+							$stat='gagal_hapus_file';
+						}else{ //sukses hapus file
+							// var_dump($s2);exit();
+							$e    = mysql_query($s2);
+							$stat = $e?'sukses':'gagal_simpan_db';
+						}$out  = json_encode(array('status'=>$stat));
 					break;
 
 					case 'barang':
@@ -646,7 +666,6 @@
 
 			// generate barcode -----------------------------------------------------------
 			case 'kodegenerate':
-				// concat(tb1.lokasi,"/",tb1.grup,"/",tb1.tempat,"/",tb1.katalog,"/",tb2.barang)kode,
 				$s='SELECT
 						tb1.lokasi,
 						tb1.grup,

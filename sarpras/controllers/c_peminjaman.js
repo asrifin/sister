@@ -7,9 +7,7 @@ var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR 
-                += '<form data-role="scrollbox" data-scroll="both" onsubmit="simpan();return false;" autocomplete="off" Xclass="span4">' 
-                // += '<form data-role="scrollbox" data-scroll="both" autocomplete="off" Xclass="span4" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+        contentFR += '<form data-role="scrollbox" data-scroll="both" onsubmit="simpan();return false;" autocomplete="off" Xclass="span4">' 
                     +'<div class="grid span10">'
                         +'<div class="row">'
                             +'<div class="span4">'
@@ -28,7 +26,7 @@ var contentFR ='';
                                             +'</tr>'
                                         +'</thead>'
 
-                                        +'<tbody id="tbody2">'
+                                        +'<tbody id="barangtbody">'
                                            
                                         +'</tbody>'
                                         +'<tfoot>'
@@ -49,7 +47,7 @@ var contentFR ='';
                                                 +'<th class="text-center">Aksi</th>'
                                             +'</tr>'
                                         +'</thead>'
-                                        +'<tbody id="tbody3">'
+                                        +'<tbody id="dftptbody">'
                                         +'</tbody>'
                                         +'<tfoot>'
                                         +'</tfoot>'
@@ -158,12 +156,7 @@ var contentFR ='';
             $('#peminjamS').val('');
             // $('#keteranganS').val('');
         });
-        // $('#input2').on('click',function(){
-        //     $('#cariTR').toggle('slow');
-        //     // $('#lokasiS').val('');
-        //     $('#peminjamS').val('');
-        //     // $('#keteranganS').val('');
-        // });
+        
     }); 
 // end of main function ---
 
@@ -256,10 +249,10 @@ function simpan(){
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#peminjamantbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $('#peminjamantbody').html(dt).fadeIn();
                 },1000);
             }
         });
@@ -276,10 +269,10 @@ function simpan(){
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody2').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#barangtbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody2').html(dt).fadeIn();
+                    $('#barangtbody').html(dt).fadeIn();
                 },1000);
             }
         });
@@ -295,10 +288,10 @@ function simpan(){
             type: 'post',
             data: aksi,
             beforeSend:function(){
-                $('#tbody3').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#dftptbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody3').html(dt).fadeIn();
+                    $('#dftptbody').html(dt).fadeIn();
                 },1000);
             }
         });
@@ -354,25 +347,28 @@ function simpan(){
 // end of form ---
 
 //paging ---
-    function pagination(page,aksix,menux){ // edit by epiii
-        var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari ='&lokasiS='+$('#lokasiS').val()
-                    // +'&kodeS='+$('#kodeS').val()
-                    +'&peminjamS='+$('#peminjamS').val();
-                    // +'&keteranganS='+$('#keteranganS').val();
+function pagination(page,aksix,subaksi){ 
+        var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
+        var cari ='';
+        $('.'+subaksi+'_cari').each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
         $.ajax({
             url:dir,
             type:"post",
-            data: datax+cari,
+            data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#'+subaksi+'tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $('#'+subaksi+'tbody').html(dt).fadeIn();
                 },1000);
             }
         });
-    }   
+    }
+    
 //end of paging ---
     
 //del process ---

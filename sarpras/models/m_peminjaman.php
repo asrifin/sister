@@ -19,9 +19,9 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$lokasi     = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
-				$peminjam     = trim($_POST['peminjamS'])?filter($_POST['peminjamS']):'';
-				
+				$lokasi = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
+				// $peminjam     = trim($_POST['peminjamS'])?filter($_POST['peminjamS']):'';
+				$peminjam = isset($_POST['peminjamS'])?filter(trim($_POST['peminjamS'])):'';
 				$sql = 'SELECT p.*,b.kode,b.katalog,k.nama 
 						FROM sar_peminjaman p
 						LEFT JOIN sar_barang b ON b.replid=p.barang 
@@ -40,8 +40,10 @@
 				}
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
+				$aksi="tampil";
+				$subaksi="peminjaman";
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result =$obj->result;
 
 				#ada data
@@ -82,7 +84,7 @@
 			// view -----------------------------------------------------------------
 
 			case 'tampil2':
-				$nama     = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$nama = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
 				// $peminjam     = trim($_POST['peminjamS'])?filter($_POST['peminjamS']):'';
 				
 				$sql = 'SELECT b.replid, b.kode, k.nama, b.status
@@ -100,9 +102,11 @@
 					$starting=0;
 				}
 				// $menu='tampil';	
-				$recpage= 1;//jumlah data per halaman
+				$recpage= 3;//jumlah data per halaman
+				$aksi="tampil2";
+				$subaksi="barang";
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result =$obj->result;
 
 				#ada data
@@ -155,8 +159,10 @@
 				}
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
+				$aksi="tampil3";
+				$subaksi="dftp";
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result =$obj->result;
 
 				#ada data
@@ -215,14 +221,29 @@
 							$s2 = 'INSERT INTO sar_peminjaman set peminjam = "'.$_POST['peminjamTB'].'",
     									 tanggal1 = "'.$_POST['tanggal1TB'].'",
     									 tanggal2 = "'.$_POST['tanggal2TB'].'",
-    									 status = 1, 
+
+    									 status = 1,
+										lokasi 	= '.$_POST['lokasiH'].',
     									barang ='.$v['barang'] ;
+    									/*status =jika terpinjam =1, tersedia=0*/
+
+    									//  status = 1, 
+    									// barang ='.$v['barang'] ;
     									/*jika terpinjam =1, tersedia=0*/
 						// var_dump($s2);exit();
+
 						  	$e2 = mysql_query($s2);
 						  	if(!$e2)
 						      $err=false;
 						}
+
+						$sql    = 'DELETE from sar_dftp ';
+						$e3    = mysql_query($sql);
+						// var_dump($sql);exit();
+						$stat=(!$err&$e3)?'gagal':'sukses';
+						$out = json_encode(array('status'=>$stat));
+						
+
 						$stat=(!$err)?'gagal':'sukses';
 						$out = json_encode(array('status'=>$stat));
 
@@ -242,6 +263,7 @@
 				// $e 		= mysql_query($s);
 				// $stat 	= ($e)?'sukses':'gagal';
 				// $out 	= json_encode(array('status'=>$stat));
+
 			break;
 			// add / edit -----------------------------------------------------------------
 			

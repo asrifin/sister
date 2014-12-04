@@ -27,7 +27,7 @@
                 <th class="text-left">Keterangan</th>
                 <th class="text-left">Aksi</th>
             </tr>
-            <tr style="display:none;" id="g_cariTR" class="selected">
+            <tr style="display:none;" id="g_cariTR" class="info">
                 <th class="text-left"><input placeholder="kode" id="g_kodeS" class="grup_cari" class="span1"></th>
                 <th class="text-left"><input placeholder="nama" id="g_namaS" class="grup_cari"></th>
                 <th class="text-left"></th>
@@ -84,7 +84,7 @@
                 <th class="text-left">Keterangan</th>
                 <th class="text-left">Aksi</th>
             </tr>
-            <tr style="display:none;" id="k_cariTR" class="selected">
+            <tr style="display:none;" id="k_cariTR" class="info">
                 <th class="text-left"><input placeholder="kode" id="k_kodeS"  class="katalog_cari" class="span1"></th>
                 <th class="text-left"><input placeholder="nama" id="k_namaS" class="katalog_cari"></th>
                 <th class="text-left"></th>
@@ -149,7 +149,7 @@
             <div class="span5 xoffset1">
                 <div class="span5">
                     <label for="">Gambar :</label>
-                    <img src="../images/5.jpg" width="200" class="shadow">
+                    <img id="b_photoIMG" src="../img/no_image.jpg" width="200" class="shadow">
                 </div>
             </div>  
             <div class="span5">
