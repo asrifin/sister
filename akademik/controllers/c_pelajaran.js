@@ -217,29 +217,40 @@ var contentFR = '';
 // end of form ---
 
 //paging ---
-    function pagination(page,aksix){
-        var datax = 'starting='+page+'&aksi='+aksix;
-        var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&pelajaranS='+$('#pelajaranS').val()
-                    +'&singkatanS='+$('#singkatanS').val()
-                    +'&skmS='+$('#skmS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+    function pagination(page,aksix,subaksi){ 
+        var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
+        var cari ='';
+        var el,el2;
+
+        if(subaksi!=''){ // multi paging 
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
 
         $.ajax({
             url:dir,
             type:"post",
-            data: datax+cari,
+            data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
-    }   
+    }
 //end of paging ---
-    
+
 //del process ---
     function del(id){
         if(confirm('melanjutkan untuk menghapus data?'))

@@ -1,5 +1,5 @@
 var mnu       ='tempat'; // edit by epiii
-var mnu2      ='lokasi'; // edit by epiii
+var mnu2      ='lokasi'; // edit by epii
 var dir       ='models/m_'+mnu+'.php'; //edit by epiii
 var dir2      ='models/m_'+mnu2+'.php'; //edit by epiii
 var contentFR ='';
