@@ -30,16 +30,14 @@
 							keterangan like "%'.$keterangan.'%"
 						ORDER 
 							BY nama asc';
-				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
+
 				$recpage= 5;//jumlah data per halaman
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
 				#ada data
@@ -184,9 +182,7 @@
 			// cmbtingkat -----------------------------------------------------------------
 
 		}
-	}
-	echo $out;
-
+	}	echo $out;
 	// ---------------------- //
 	// -- created by epiii -- //
 	// ---------------------- //
