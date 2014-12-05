@@ -9,9 +9,7 @@
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
 <div class="input-control select span3">
-    <!-- (name & id) usahakan sama  -->
-    <!-- <select data-hint="lokasi" name="lokasiTB" id="lokasiS"></select> -->
-    <select data-hint="lokasi" name="lokasiS" id="lokasiS"></select>
+    <select data-hint="lokasi" class="cari" id="lokasiS"></select>
 </div>
 
 <table class="table hovered bordered striped">
@@ -25,9 +23,9 @@
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-left"></th>
-            <th class="text-left"><input placeholder="kode" id="kodeS" name="kodeS"></th>
-            <th class="text-left"><input placeholder="tempat" id="tempatS" name="tempatS"></th>
-            <th class="text-left"><input placeholder="keterangan" id="keteranganS" name="keteranganS"></th>
+            <th class="text-left"><input placeholder="kode" id="kodeS"  class="cari"></th>
+            <th class="text-left"><input placeholder="tempat" id="tempatS"  class="cari"></th>
+            <th class="text-left"><input placeholder="keterangan" id="keteranganS"  class="cari"></th>
         </tr>
     </thead>
 

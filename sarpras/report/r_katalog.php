@@ -31,7 +31,7 @@
           // print_r($ss);exit();
         $ee = mysql_query($ss);
         $rr = mysql_fetch_assoc($ee);
-
+        sleep(1);
         ob_start(); // digunakan untuk convert php ke html
         $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
           <html xmlns="http://www.w3.org/1999/xhtml">
@@ -60,7 +60,7 @@
                 <tr>
                   <td>Total Aset</td>
                   <td>:</td>
-                  <td>'.$rr['totaset'].'</td>
+                  <td>Rp. '.number_format($rr['totaset']).',-</td>
                 </tr>
               </table><br>
   
@@ -145,4 +145,8 @@
           $mpdf->Output();
     }
 }
+  // ---------------------- //
+  // -- created by epiii -- //
+  // ---------------------- // 
+
 ?>
