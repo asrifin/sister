@@ -16,26 +16,6 @@ var dir7      ='models/m_'+mnu7+'.php';
 
 var g_contentFR = k_contentFR = b_contentFR ='';
     
-    function printPDF(mn){
-        var par='',tok='',p,v;
-        $('.'+mn+'_cari').each(function(){
-            p=$(this).attr('id');
-            v=$(this).val();
-            par+='&'+p+'='+v;
-            tok+=v;
-        });
-        var x  = $('#id_loginS').val();//+tok;
-        var token = encode64(x+tok);
-        // var token = encode64($('id_loginS').val());
-        // token = encode64(mn+$('id_loginS').val());
-        // token = encode64($('id_loginS').val()+tok);
-        // token = encode64('ok');
-        // alert(token);return false;
-        // alert(token);return false;
-        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
-        // window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
-    }
-
 // main function ---
     $(document).ready(function(){
         //form content
@@ -296,6 +276,10 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             //print----
             $('#g_cetakBC').on('click',function(){
                 printPDF('grup');
+            });$('#k_cetakBC').on('click',function(){
+                printPDF('katalog');
+            });$('#b_cetakBC').on('click',function(){
+                printPDF('barang');
             });
 
             // search 
@@ -1232,11 +1216,19 @@ function jumupdate (e) {
     }
 // end of notifikasi
 
-// upload image
-    function uploadimg(e){
-        //  
+//end of  print to PDF -------
+    function printPDF(mn){
+        var par='',tok='',p,v;
+        $('.'+mn+'_cari').each(function(){
+            p=$(this).attr('id');
+            v=$(this).val();
+            par+='&'+p+'='+v;
+            tok+=v;
+        });var x  = $('#id_loginS').val();
+        var token = encode64(x+tok);
+        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
-//end of  upload image
+//end of  print to PDF -------
 
     // ---------------------- //
     // -- created by epiii -- //

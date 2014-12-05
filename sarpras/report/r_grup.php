@@ -4,22 +4,9 @@
   require_once '../../lib/mpdf/mpdf.php';
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
-  require_once '../../lib/func.php';
-  // echo '<pre>';
-  //   print_r($_SESSION);
-  // // exit();
-  // echo '</pre>';
-  // $x=$_SESSION['id_loginS'];
-  // $x= 'grup'.$_SESSION['id_loginS'];
+
   $x     = $_SESSION['id_loginS'].$_GET['g_lokasiS'].$_GET['g_kodeS'].$_GET['g_namaS'].$_GET['g_keteranganS'];
   $token = base64_encode($x);
-  // $token = base64_encode('112e');
-  // $token = base64_encode($_SESSION['id_loginS'].$_GET['g_lokasiS'].$_GET['g_kodeS'].$_GET['g_namaS'].$_GET['g_keteranganS']);
-  // g_lokasiSg_kodeSg_namaSg_keteranganS
-  // print_r($token);
-  // exit();
-  // echo '<br>';
-  // print_r($_GET['token']);exit();
   // print_r($_GET['token']);exit();
   if(!isset($_SESSION)){ // login 
     echo 'user has been logout';
@@ -30,7 +17,6 @@
         $ss = 'SELECT *  from sar_lokasi where replid='.$_GET['g_lokasiS'];
         $ee = mysql_query($ss);
         $rr = mysql_fetch_assoc($ee);
-        // echo 'token udah bener n tampil';
           ob_start(); // digunakan untuk convert php ke html
           $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
             <html xmlns="http://www.w3.org/1999/xhtml">
@@ -45,7 +31,7 @@
                     Grup Barang<br>
                   </b>
                 </p>
-                <p align="justify">lokasi : '.$rr['nama'].' ['.$rr['kode'].']</p>
+                <p align="justify">Lokasi : '.$rr['nama'].' ['.$rr['kode'].']</p>
   
                 <table class="isi" width="100%">
                     <tr class="head">
@@ -143,7 +129,8 @@
                         $nox++;
                       }
                     }
-            $out.='</table><br>';
+            $out.='</table>';
+            $out.='<p>Total : '.$n.'</p>';
           echo $out;
   
         #generate html -> PDF ------------
