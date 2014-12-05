@@ -7,7 +7,7 @@
 
   $x     = $_SESSION['id_loginS'].$_GET['g_lokasiS'].$_GET['g_kodeS'].$_GET['g_namaS'].$_GET['g_keteranganS'];
   $token = base64_encode($x);
-  // print_r($_GET['token']);exit();
+
   if(!isset($_SESSION)){ // login 
     echo 'user has been logout';
   }else{ // logout
@@ -17,6 +17,7 @@
         $ss = 'SELECT *  from sar_lokasi where replid='.$_GET['g_lokasiS'];
         $ee = mysql_query($ss);
         $rr = mysql_fetch_assoc($ee);
+          sleep(1);
           ob_start(); // digunakan untuk convert php ke html
           $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
             <html xmlns="http://www.w3.org/1999/xhtml">
@@ -144,4 +145,8 @@
           $mpdf->Output();
     }
 }
+  // ---------------------- //
+  // -- created by epiii -- //
+  // ---------------------- // 
+
 ?>

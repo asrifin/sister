@@ -63,11 +63,13 @@
                   Unit Barang<br>
                 </b>
               </p>
-              <table>
-                <tr>
+              <table width="100%">
+                <tr >
                   <td>Nama Barang</td>
                   <td>:</td>
                   <td>'.$rr['katalog'].'</td>
+                  <td rowspan="5"><img width="120" src="../../img/'.($rr['photo2']==''? 'no_image.jpg':'upload/'.$rr['photo2']).'" alt="" /></td>
+                  <td rowspan="5"><img width="120" src="../../img/no_image.jpg"></td>
                 </tr>
                 <tr>
                   <td>Grup Barang</td>
@@ -201,4 +203,8 @@
           $mpdf->Output();
     }
 }
+  // ---------------------- //
+  // -- created by epiii -- //
+  // ---------------------- // 
+
 ?>
