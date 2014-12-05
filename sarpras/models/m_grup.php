@@ -388,7 +388,7 @@
 									tbjum.susut,
 									tbjum.nama as katalog,
 									tbjum.totaset,
-									tbjum.photo2
+									tbjum.photo
 								from 
 									sar_grup g
 									LEFT JOIN (
@@ -397,7 +397,7 @@
 											k.grup,
 											k.susut,
 											k.nama,
-											k.photo2,
+											k.photo,
 											count(*)totbarang,
 											sum(b.harga)totaset
 										from 
@@ -410,7 +410,7 @@
 								where 
 									tbjum.replid= '.$_POST['katalog'];
 						// var_dump($s);exit();
-						$e = mysql_query($s);
+						$e = mysql_query($s) or die(mysql_error());
 						$r = mysql_fetch_assoc($e);
 						if(!$e){
 							$stat='gagal';
@@ -420,7 +420,7 @@
 										'idkatalog' =>$r['replid'],
 										'katalog'   =>$r['katalog'],
 										'grup'      =>$r['grup'],
-										'photo2'    =>$r['photo2'],
+										'photo'    =>$r['photo'],
 										'lokasi'    =>$r['lokasi'],
 										'susut'     =>$r['susut'],
 										'totbarang' =>$r['totbarang'],
@@ -458,7 +458,7 @@
 												jenis 		= "'.$_POST['k_jenisTB'].'",
 												susut 		= "'.filter($_POST['k_susutTB']).'",
 												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"
-												'.(isset($_POST['file'])?', photo2= "'.$_POST['file'].'"':'');
+												'.(isset($_POST['file'])?', photo= "'.$_POST['file'].'"':'');
 						$stat2=true;
 						if(!isset($_POST['replid'])){ //add
 							$s2 = 'INSERT INTO '.$s;
@@ -569,7 +569,7 @@
 									k.kode,
 									k.nama,
 									k.jenis,
-									k.photo2,
+									k.photo,
 									k.susut,
 									k.keterangan,
 									l.nama as lokasi, 
@@ -595,7 +595,7 @@
 										'susut'      =>$r['susut'],
 										'lokasi'     =>$r['lokasi'],
 										'grup'       =>$r['grup'],
-										'photo2'     =>$r['photo2'],
+										'photo'     =>$r['photo'],
 										'jenis'      =>$r['jenis'],
 										'keterangan' =>$r['keterangan']
 									);						
