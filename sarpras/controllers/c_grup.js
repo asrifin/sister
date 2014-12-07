@@ -92,7 +92,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                                 +'<input onchange="PreviewImage(this);" id="k_photoTB" name="k_photoTB" type="file">'
                                                 +'<button class="btn-file"></button>'
                                             +'</div>'
-                                            +'<img width="150" id="previmg" src="../img/no_image.jpg" >'
+                                            +'<img width="150" id="previmg" src="../../img/no_image.jpg" >'
                                         +'</div>'
                                     +'</div>'
 
@@ -871,9 +871,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     $('#k_keteranganTB').val(dt.data.keterangan);
                                     var img;
                                     if(dt.data.photo2!=''){//ada gambar
-                                        img='../img/upload/'+dt.data.photo2;
+                                        img='../../img/upload/'+dt.data.photo2;
                                     }else{
-                                        img='../img/no_image.jpg';
+                                        img='../../img/no_image.jpg';
                                     }
                                     $('#previmg').attr('src',img);
                                     $('#k_photoH').val(dt.data.photo2);
@@ -1003,9 +1003,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         $('#b_namaTB').html(dt.data.katalog);
                         var img;
                         if(dt.data.photo2!=''){
-                            img='../img/upload/'+dt.data.photo2;
+                            img='../../img/upload/'+dt.data.photo2;
                         }else{
-                            img='../img/no_image.jpg';
+                            img='../../img/no_image.jpg';
                         }
                         
                         $('#b_photoIMG').attr('src',img);

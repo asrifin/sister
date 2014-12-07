@@ -24,7 +24,7 @@
                 tbjum.susut,
                 tbjum.nama as katalog,
                 tbjum.totaset,
-                tbjum.photo2
+                tbjum.photo
               from 
                 sar_grup g
                 LEFT JOIN (
@@ -33,7 +33,7 @@
                     k.grup,
                     k.susut,
                     k.nama,
-                    k.photo2,
+                    k.photo,
                     count(*)totbarang,
                     sum(b.harga)totaset
                   from 
@@ -45,7 +45,7 @@
                 )tbjum on tbjum.grup = g.replid
               where 
                 tbjum.replid= '.$_GET['b_katalogS'];
-        $ee = mysql_query($ss);
+        $ee = mysql_query($ss) or die(mysql_error());
         $rr = mysql_fetch_assoc($ee);
           // var_dump($rr);exit();
         sleep(1);
