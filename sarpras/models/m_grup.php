@@ -26,7 +26,7 @@
 			$namaAwal = $_FILES[0]['name'];
 			$namaSkrg = $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
 			$src      = $_FILES[0]['tmp_name'];
-			$destix   = '../../img/upload/'.basename($namaSkrg);
+			$destix   = '../img/upload/'.basename($namaSkrg);
 
 			if(move_uploaded_file($src, $destix))
 				$o=array('status'=>'sukses','file'=>$namaSkrg);
@@ -388,7 +388,7 @@
 									tbjum.susut,
 									tbjum.nama as katalog,
 									tbjum.totaset,
-									tbjum.photo
+									tbjum.photo2
 								from 
 									sar_grup g
 									LEFT JOIN (
@@ -397,7 +397,7 @@
 											k.grup,
 											k.susut,
 											k.nama,
-											k.photo,
+											k.photo2,
 											count(*)totbarang,
 											sum(b.harga)totaset
 										from 
@@ -420,7 +420,7 @@
 										'idkatalog' =>$r['replid'],
 										'katalog'   =>$r['katalog'],
 										'grup'      =>$r['grup'],
-										'photo'    =>$r['photo'],
+										'photo2'    =>$r['photo2'],
 										'lokasi'    =>$r['lokasi'],
 										'susut'     =>$r['susut'],
 										'totbarang' =>$r['totbarang'],
@@ -458,14 +458,14 @@
 												jenis 		= "'.$_POST['k_jenisTB'].'",
 												susut 		= "'.filter($_POST['k_susutTB']).'",
 												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"
-												'.(isset($_POST['file'])?', photo= "'.$_POST['file'].'"':'');
+												'.(isset($_POST['file'])?', photo2= "'.$_POST['file'].'"':'');
 						$stat2=true;
 						if(!isset($_POST['replid'])){ //add
 							$s2 = 'INSERT INTO '.$s;
 						}else{ //edit
 							$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
 							if(isset($_POST['photo_asal'])){ //change image
-								$img='../../img/upload/'.$_POST['photo_asal'];
+								$img='../img/upload/'.$_POST['photo_asal'];
 								if(file_exists($img)){ //checking image is exist
 									$delimg = unlink($img);
 									$stat2  = !$delimg?false:true;
@@ -569,7 +569,7 @@
 									k.kode,
 									k.nama,
 									k.jenis,
-									k.photo,
+									k.photo2,
 									k.susut,
 									k.keterangan,
 									l.nama as lokasi, 
@@ -595,7 +595,7 @@
 										'susut'      =>$r['susut'],
 										'lokasi'     =>$r['lokasi'],
 										'grup'       =>$r['grup'],
-										'photo'     =>$r['photo'],
+										'photo2'     =>$r['photo2'],
 										'jenis'      =>$r['jenis'],
 										'keterangan' =>$r['keterangan']
 									);						
