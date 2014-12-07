@@ -110,14 +110,11 @@
 							$starting=0;
 						}
 
-						$recpage= 5;//jumlah data per halaman
+						$recpage = 5;//jumlah data per halaman
 						$aksi    ='tampil';
 						$subaksi ='grup';
-						// $obj 	= new pagination_class($sql,$starting,$recpage);
-						$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						// var_dump($obj);exit();
-						$result =$obj->result;
-						// print_r($result);exit(); 	
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
 
 						#ada data
 						$jum	= mysql_num_rows($result);
@@ -391,7 +388,7 @@
 									tbjum.susut,
 									tbjum.nama as katalog,
 									tbjum.totaset,
-									tbjum.photo2
+									tbjum.photo
 								from 
 									sar_grup g
 									LEFT JOIN (
@@ -400,7 +397,7 @@
 											k.grup,
 											k.susut,
 											k.nama,
-											k.photo2,
+											k.photo,
 											count(*)totbarang,
 											sum(b.harga)totaset
 										from 
@@ -413,7 +410,7 @@
 								where 
 									tbjum.replid= '.$_POST['katalog'];
 						// var_dump($s);exit();
-						$e = mysql_query($s);
+						$e = mysql_query($s) or die(mysql_error());
 						$r = mysql_fetch_assoc($e);
 						if(!$e){
 							$stat='gagal';
@@ -423,7 +420,7 @@
 										'idkatalog' =>$r['replid'],
 										'katalog'   =>$r['katalog'],
 										'grup'      =>$r['grup'],
-										'photo2'    =>$r['photo2'],
+										'photo'    =>$r['photo'],
 										'lokasi'    =>$r['lokasi'],
 										'susut'     =>$r['susut'],
 										'totbarang' =>$r['totbarang'],
@@ -461,25 +458,23 @@
 												jenis 		= "'.$_POST['k_jenisTB'].'",
 												susut 		= "'.filter($_POST['k_susutTB']).'",
 												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"
-												'.(isset($_POST['file'])?', photo2= "'.$_POST['file'].'"':'');
+												'.(isset($_POST['file'])?', photo= "'.$_POST['file'].'"':'');
 						$stat2=true;
 						if(!isset($_POST['replid'])){ //add
 							$s2 = 'INSERT INTO '.$s;
 						}else{ //edit
-							$s2  = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
-							if(isset($_POST['photo2'])){ //change image
-								$img = $_POST['photo2'];
+							$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
+							if(isset($_POST['photo_asal'])){ //change image
+								$img='../../img/upload/'.$_POST['photo_asal'];
 								if(file_exists($img)){ //checking image is exist
 									$delimg = unlink($img);
 									$stat2  = !$delimg?false:true;
 								}
 							}
 						}
-						// var_dump($s2);exit();
 						if(!$stat2){// gagal hapus
 							$stat='gagal_hapus_file';
 						}else{ //sukses hapus file
-							// var_dump($s2);exit();
 							$e    = mysql_query($s2);
 							$stat = $e?'sukses':'gagal_simpan_db';
 						}$out  = json_encode(array('status'=>$stat));
@@ -574,7 +569,7 @@
 									k.kode,
 									k.nama,
 									k.jenis,
-									k.photo2,
+									k.photo,
 									k.susut,
 									k.keterangan,
 									l.nama as lokasi, 
@@ -600,7 +595,7 @@
 										'susut'      =>$r['susut'],
 										'lokasi'     =>$r['lokasi'],
 										'grup'       =>$r['grup'],
-										'photo2'     =>$r['photo2'],
+										'photo'     =>$r['photo'],
 										'jenis'      =>$r['jenis'],
 										'keterangan' =>$r['keterangan']
 									);						

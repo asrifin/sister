@@ -3,10 +3,11 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu  = 'tempat';
-	$mnu2 = 'lokasi';
-	$tb   = 'sar_'.$mnu;
-	$tb2  = 'sar_'.$mnu2;
+	require_once '../../lib/tglindo.php';
+	$mnu  = 'rekening';
+	// $mnu2 = 'lokasi';
+	$tb   = 'keu_'.$mnu;
+	// $tb2  = 'sar_'.$mnu2;
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -16,18 +17,17 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$lokasi     = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
-				$tempat     = trim($_POST['tempatS'])?filter($_POST['tempatS']):'';
-				$keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
-				$sql = 'SELECT t.*
-						FROM '.$tb.' t, '.$tb2.' l
+				$kategori     = trim($_POST['kategoriS'])?filter($_POST['kategoriS']):'';
+				// $tempat     = trim($_POST['tempatS'])?filter($_POST['tempatS']):'';
+				// $keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$sql = 'SELECT *
+						FROM '.$tb.'
 						WHERE 
-							l.replid = t.lokasi and
-							t.lokasi ='.$lokasi.' and
-							t.nama LIKE "%'.$tempat.'%" and
-							t.keterangan LIKE "%'.$keterangan.'%" 
-						ORDER BY t.nama asc';
+							kategorirek ='.$kategori.'
+						ORDER BY t.tanggal1 asc';
 				// print_r($sql);exit(); 	
+							// t.nama LIKE "%'.$tempat.'%" and
+							// t.keterangan LIKE "%'.$keterangan.'%" 
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -38,6 +38,7 @@
 				$aksi    ='';
 				$subaksi ='tampil';
 				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
 				// $obj 	= new pagination_class($sql,$starting,$recpage);
 				$result =$obj->result;
@@ -56,13 +57,13 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
 									<td>'.$res['kode'].'</td>
 									<td>'.$res['nama'].'</td>
-									<td>'.$res['keterangan'].'</td>
+									<td><pre>'.$res['keterangan'].'</pre></td>
 									'.$btn.'
 								</tr>';
 						$nox++;
+									// <td>'.$res['replid'].'</td>
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -77,12 +78,13 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	lokasi 	= "'.filter($_POST['lokasiH']).'",
-										kode 	= "'.filter($_POST['kodeTB']).'",
-										nama 	= "'.filter($_POST['namaTB']).'",
+				//kurang field lokasi (FK)
+				$s 		= $tb.' set 	lokasi 		= "'.filter($_POST['lokasiH']).'",
+										tanggal1 	= "'.filter($_POST['tanggal1TB']).'",
+										tanggal2 	= "'.filter($_POST['tanggal2TB']).'",
+										aktivitas 	= "'.filter($_POST['aktivitasTB']).'",
 										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// var_dump($s2);exit();
 				$e 		= mysql_query($s2);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array('status'=>$stat));
@@ -95,15 +97,16 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['aktivitas']));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT 
-								t.kode,
-								t.nama,
+								t.tanggal1,
+								t.tanggal2,
+								t.aktivitas,
 								t.keterangan,
 								l.nama as lokasi
 							from '.$tb.' t, sar_lokasi l 
@@ -115,54 +118,14 @@
 				$r 		= mysql_fetch_assoc($e);
 				// $stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'kode'       =>$r['kode'],
 							'lokasi'     =>$r['lokasi'],
-							'nama'       =>$r['nama'],
+							'tanggal1'  =>$r['tanggal1'],
+							'tanggal2'  =>$r['tanggal2'],
+							'aktivitas'  =>$r['aktivitas'],
 							'keterangan' =>$r['keterangan']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
-
-			// cmbtempat ---------------------------------------------------------
-			case 'cmb'.$mnu:
-				$w='';
-				if(isset($_POST['replid'])){
-					$w.='where replid ='.$_POST['replid'];
-				}else{
-					if(isset($_POST[$mnu])){
-						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST[$mnu2])){
-						$w.='where '.$mnu2.' ='.$_POST[$mnu2];
-					}
-				}
-				
-				$s	= ' SELECT *
-						from '.$tb.'
-						'.$w.'		
-						ORDER  BY nama desc';
-				// var_dump($s);exit();
-				$e 	= mysql_query($s);
-				$n 	= mysql_num_rows($e);
-				$ar=$dt=array();
-
-				if(!$e){ //error
-					$ar = array('status'=>'error');
-				}else{
-					if($n=0){ // kosong 
-						$ar = array('status'=>'kosong');
-					}else{ // ada data
-						if(!isset($_POST['replid'])){
-							while ($r=mysql_fetch_assoc($e)) {
-								$dt[]=$r;
-							}
-						}else{
-							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses',$mnu=>$dt);
-					}
-				}$out=json_encode($ar);
-			break;
-			// end of cmblokasi ---------------------------------------------------------
-
 		}
 	}echo $out;
 

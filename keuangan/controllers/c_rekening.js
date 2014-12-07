@@ -1,39 +1,48 @@
-var mnu       ='tempat'; // edit by epiii
-var mnu2      ='lokasi'; // edit by epii
-var dir       ='models/m_'+mnu+'.php'; //edit by epiii
-var dir2      ='models/m_'+mnu2+'.php'; //edit by epiii
+var mnu       ='rekening'; 
+// var mnu2      ='lokasi'; 
+var dir       ='models/m_'+mnu+'.php';
+// var dir2      ='models/m_'+mnu2+'.php';
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-                        +'<label>Lokasi</label>'
+                        // +'<label>Kategori Rekening</label>'
+                        // +'<div class="input-control text">'
+                        //     +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span2">'
+                        //     // +'<input enabled="enabled" name="kategoriTB" id="kategoriTB" class="span2">'
+                        //     +'<input name="kategoriTB" id="kategoriTB" class="span2">'
+                        //     +'<button class="btn-clear"></button>'
+                        // +'</div>'
+// Jenis
+                                    +'<div class="row">'
+                                        +'<div class="span5">'
+                                            +'<label>Kategori Rekening</label>'
+                                            +'<div class="input-control select">'
+                                            +'<select required name="kategoriTB" id="kategoriTB"><option value="">Pilih Kategori Rekening</option></select>'
+                                            +'</div>'
+                                        +'</div>'
+                                    +'</div>'
 
-                        +'<div class="input-control text">'
-                            +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span2">'
-                            // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" class="span2">'
-                            +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" class="span2">'
-                            +'<button class="btn-clear"></button>'
+                        +'<label>Kode</label>'
+                        // +'<label>Saldo Awal</label>'
+                        '<div class="span3 size-2">'
+                            +'<div class="input-control text" >'
+                                +'<input required maxlength="9" placeholder="Kode Rekening" name="kodeTB" id="kodeTB" type="text">'
+                            +'</div>'
+                        +'</div>'                        
+                        +'<label>Rekening</label>'
+                        // ++'<label>Saldo Awal</label>'
+                        '<div class="span3 size-2">'
+                            +'<div class="input-control text" >'
+                                +'<input required maxlength="9" placeholder="Rekening" name="rekeningTB" id="rekeningTB" type="text">'
+                            +'</div>'
                         +'</div>'
-                        
-                        +'<label>Kode Tempat</label>'
-                        +'<div class="input-control text">'
-                            +'<input placeholder="kode tampat"  class="span2" required type="text" name="kodeTB" id="kodeTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-
-                        +'<label>Nama Tempat</label>'
-                        +'<div class="input-control text">'
-                            +'<input  placeholder="kode" required type="text" name="namaTB" id="namaTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
-                        
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -42,12 +51,12 @@ var contentFR ='';
 
         /*
         load pertama kali (pilihn salah satu) :
-        cmblokasi : bila ada combo box
+        cmbkategori : bila ada combo box
         viewTB : jika tanpa combo box
         */
 
         //combo lokasi
-        cmblokasi();
+        cmbkategori();
         
         //load table // edit by epiii
         // viewTB();
@@ -58,34 +67,21 @@ var contentFR ='';
         });
 
         //search action // edit by epiii
-        $('#lokasiS').on('change',function (e){ // change : combo box
-                viewTB($('#lokasiS').val());
+        $('#kategoriS').on('change',function (e){ // change : combo box
+                viewTB($('#kategoriS').val());
         });
-        $('#tempatS').on('keydown',function (e){ // keydown : textbox
-            if(e.keyCode == 13)
-                viewTB($('#lokasiS').val());
-        });
-        $('#keteranganS').on('keydown',function (e){ // keydown : textbox
-            if(e.keyCode == 13)
-                // viewTB($('#keteranganS').val());
-                viewTB($('#lokasiS').val());
-        });
-
-        // search button
-        $('#cariBC').on('click',function(){
-            $('#cariTR').toggle('slow');
-            // $('#lokasiS').val('');
-            $('#tempatS').val('');
-            $('#keteranganS').val('');
-        });
+       
     }); 
 // end of main function ---
 
+// ghjg
+// ghjg
 // combo departemen ---
-    function cmblokasi(){
+    // function cmbkategori(lok){ 
+    function cmbkategori(){
         $.ajax({
-            url:dir2,
-            data:'aksi=cmblokasi',
+            url:dir,
+            data:'aksi=cmbkategori',
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -93,12 +89,12 @@ var contentFR ='';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    $.each(dt.lokasi, function(id,item){
+                    $.each(dt.kategori, function(id,item){
                         out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                     });
                     //panggil fungsi viewTB() ==> tampilkan tabel 
-                    viewTB(dt.lokasi[0].replid); 
-                }$('#lokasiS').html(out);
+                    viewTB(dt.kategori[0].replid); 
+                }$('#kategoriS').html(out);
             }
         });
     }
@@ -124,7 +120,8 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#lokasiS').val());
+                    // viewTB($('#aktivitasS').val());
+                    //viewTB($('#'+mnu2+'S').val()); //value : combo box LOKASI 
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }notif(cont,clr);
@@ -134,18 +131,18 @@ var contentFR ='';
 //end of save process ---
 
 // view table ---
+    // function viewTB(nama){          
     function viewTB(lok){ //edit by epiii 
         var aksi ='aksi=tampil';
-        var cari ='&lokasiS='+lok
-                    +'&kodeS='+$('#kodeS').val()
-                    +'&tempatS='+$('#tempatS').val()
+        var cari ='&kategoriS='+lok
+                    // +'&aktivitasS='+$('#aktivitasS').val()
                     +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -170,12 +167,12 @@ var contentFR ='';
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                     $.ajax({
                         url:dir2,
-                        data:'aksi=cmblokasi&replid='+$('#lokasiS').val(),
+                        data:'aksi=cmbkategori&replid='+$('#kategoriS').val(),
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#lokasiTB').val(dt.lokasi[0].nama);
-                            $('#lokasiH').val($('#lokasiS').val());
+                            $('#kategoriTB').val(dt.kategori[0].nama);
+                            // $('#lokasiH').val($('#kategoriS').val());
                         }
                     });
                 }else{ // edit mode
@@ -187,10 +184,12 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#lokasiH').val($('#lokasiS').val()); // edit by epii
-                            $('#lokasiTB').val(dt.lokasi);
+                            // $('#tempatH').val($('#tempatS').val());
+                            // $('#lokasiH').val($('#kategoriS').val()); // edit by epii
+                            $('#kategoriTB').val(dt.kategori);
                             $('#kodeTB').val(dt.kode);
-                            $('#namaTB').val(dt.nama);
+                            $('#rekeningTB').val(dt.rekening);
+                            // $('#aktivitasTB').val(dt.aktivitas);
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
@@ -202,42 +201,26 @@ var contentFR ='';
 // end of form ---
 
 //paging ---
-
-//paging ---
-    function pagination(page,aksix,subaksi){ 
-        var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
-        var cari ='';
-        var el,el2;
-
-        if(subaksi!=''){ // multi paging 
-            el  = '.'+subaksi+'_cari';
-            el2 = '#'+subaksi+'_tbody';
-        }else{ // single paging
-            el  = '.cari';
-            el2 = '#tbody';
-        }
-
-        $(el).each(function(){
-            var p = $(this).attr('id');
-            var v = $(this).val();
-            cari+='&'+p+'='+v;
-        });
-
+    function pagination(page,aksix,menux){ 
+        var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
+        var cari  = '&kategoriS='+$('#kategoriS').val();
+                    // +'&tempatS='+$('#tempatS').val()
+                    // +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url:dir,
             type:"post",
-            data: aksi+cari,
+            data: datax+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $(el2).html(dt).fadeIn();
+                    $('#tbody').html(dt).fadeIn();
                 },1000);
             }
         });
-    }
+    }   
 //end of paging ---
-
+    
 //del process ---
     function del(id){
         if(confirm('melanjutkan untuk menghapus data?'))
@@ -252,7 +235,8 @@ var contentFR ='';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#lokasiS').val());
+                    // viewTB($('#tempatS').val());
+                    viewTB($('#'+mnu2+'S').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }
@@ -261,7 +245,7 @@ var contentFR ='';
         });
     }
 //end of del process ---
-
+    
 // notifikasi
 function notif(cont,clr) {
     var not = $.Notify({
@@ -275,11 +259,13 @@ function notif(cont,clr) {
     });
 }
 // end of notifikasi
-
+// hjkagj
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#namaTB').val('');
+        $('#kodeTB').val('');
+        $('#rekeningTB').val('');
+        // $('#aktivitasTB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---

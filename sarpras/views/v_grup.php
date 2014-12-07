@@ -1,10 +1,11 @@
-<!-- .. -->
 <script src="controllers/c_grup.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
+<script src="../js/base64.js"></script>
 
 <h4 style="color:white;">Inventaris</h4>
 <div id="loadarea"></div>
+<input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
 
 <!-- panel 1 -->
 <div title="Grup Barang" class="panelx" id="panel1" style="display:none;">
@@ -48,7 +49,6 @@
 <!-- end of panel 1 -->
 
 <!-- panel 2 -->
-<!-- <div  data-role="scrollbox1" data-scroll="both" xstyle="width: 500px" title="Katalog Barang" class="panelx" id="panel2" style="display:none;"> -->
 <div title="Katalog Barang" class="panelx" id="panel2" style="display:none;">
     <button data-hint="kembali" id="k_grupBC"><span class=" icon-arrow-left-2"></span> </button>
     <button data-hint="Tambah Data" id="k_tambahBC"><span class="icon-plus-2"></span> </button>
@@ -105,7 +105,6 @@
 <!-- end of panel 2 -->
 
 <!-- panel 3 -->
-<!-- <div id="panel3" class="panelx" style="display:none;">iki panel 3</div> -->
 <div title="Unit Barang" class="panelx" id="panel3" style="display:none;">
     <button data-hint="kembali ke Katalog" id="b_katalogBC"><span class=" icon-arrow-left-2"></span> </button>
     <button data-hint="Ubah Data" id="b_ubahBC"><span class="icon-pencil"></span> </button>
@@ -114,9 +113,6 @@
     <button data-hint="Cetak" id="b_cetakBC"><span class="icon-printer"></span> </button>
 
     <input type="hidden"  class="barang_cari" id="b_katalogS">
-    <!-- <input type="hidden" id="b_katalogH1" name="b_katalogH1" > -->
-
-    <!-- <div class="grid show-grid"> -->
     <div class="grid" style="color:white;">
          <div class="row">
             <div class="span5">

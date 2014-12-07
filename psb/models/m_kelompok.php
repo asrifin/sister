@@ -16,34 +16,42 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 					$departemen  = trim(isset($_POST['departemenS']))?filter($_POST['departemenS']):'';
-				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
+				$tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
 				$sql = 'SELECT
-							p.replid,
-							p.kelompok,
-							p.tglmulai,
-                            p.tglselesai,
-                            p.biaya,(
-								SELECT count(*)
-								from psb_calonsiswa
-								where kelompok = p.replid and `status`=0
-							)calonsiswa,(
-								SELECT count(*)
-								from psb_calonsiswa
-								where kelompok = p.replid and `status`!=0
-							)siswaditerima,
-							p.keterangan
-							
+							k.replid,
+							k.kelompok,
+							k.tglmulai,
+							k.tglselesai,
+							k.biaya,
+							(
+								SELECT
+									count(*)
+								FROM
+									psb_calonsiswa
+								WHERE
+									kelompok = k.replid
+								AND `status` = 0
+							) calonsiswa,
+							(
+								SELECT
+									count(*)
+								FROM
+									psb_calonsiswa
+								WHERE
+									kelompok = k.replid
+								AND `status` != 0
+							) siswaditerima,
+							k.keterangan
 						FROM
-							psb_kelompok p,
-                            psb_proses pk,
-							departemen d
-						WHERE	
-							
-							p.proses = pk.replid and
-                            pk.departemen = d.replid and
-                            p.proses = 4';
+							psb_kelompok k,
+							psb_proses p,
+							aka_tahunajaran t
+						WHERE
+							k.proses = p.replid AND
+							p.tahunajaran = t.replid AND
+							t.replid = '.$tahunajaran;
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];

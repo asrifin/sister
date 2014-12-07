@@ -15,7 +15,7 @@ var dir6      ='models/m_'+mnu6+'.php';
 var dir7      ='models/m_'+mnu7+'.php';
 
 var g_contentFR = k_contentFR = b_contentFR ='';
-
+    
 // main function ---
     $(document).ready(function(){
         //form content
@@ -87,11 +87,12 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                         +'<div class="span5"> '
                                             +'<label>Gambar Barang</label>'
                                             // +'<div class="input-control file info-state" data-role="input-control">'
+                                                +'<input type="hidden" id="k_photoH"/>'
                                             +'<div id="k_photoDV" class="input-control file" data-role="input-control">'
                                                 +'<input onchange="PreviewImage(this);" id="k_photoTB" name="k_photoTB" type="file">'
                                                 +'<button class="btn-file"></button>'
                                             +'</div>'
-                                            +'<img width="150" id="previmg" src="../img/no_image.jpg" >'
+                                            +'<img width="150" id="previmg" src="../../img/no_image.jpg" >'
                                         +'</div>'
                                     +'</div>'
 
@@ -272,6 +273,14 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             $('#b_ubahBC').on('click',function(){
                 katalogFR($('#b_katalogS').val());
             });
+            //print----
+            $('#g_cetakBC').on('click',function(){
+                printPDF('grup');
+            });$('#k_cetakBC').on('click',function(){
+                printPDF('katalog');
+            });$('#b_cetakBC').on('click',function(){
+                printPDF('barang');
+            });
 
             // search 
             //grup----
@@ -387,26 +396,31 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
         var cari ='';
-        // if(subaksi!=''){
+        var el,el2;
 
-        // }else{
+        if(subaksi!=''){ // multi paging 
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
 
-        // }
-
-        $('.'+subaksi+'_cari').each(function(){
+        $(el).each(function(){
             var p = $(this).attr('id');
             var v = $(this).val();
             cari+='&'+p+'='+v;
         });
+
         $.ajax({
             url:dir,
             type:"post",
             data: aksi+cari,
             beforeSend:function(){
-                $('#'+subaksi+'_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#'+subaksi+'_tbody').html(dt).fadeIn();
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
@@ -649,12 +663,12 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 }
 
                 if(filex!=''){// ada upload file nya
-                    formData +='&file='+filex.file ;
-                    if($('#previmg').attr('src')!='../img/no_image.jpg'){ // ada gambar
-                        formData+='&photo2='+$('#previmg').attr('src');
+                    formData +='&file='+filex.file ;	
+                    if($('#k_photoH').val()!=''){
+                    	formData+='&photo_asal='+$('#k_photoH').val();
                     }
                 }
-
+                // alert(formData);return false;
                 $.ajax({
                     url: dir,
                     type:'POST',
@@ -857,12 +871,12 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     $('#k_keteranganTB').val(dt.data.keterangan);
                                     var img;
                                     if(dt.data.photo2!=''){//ada gambar
-                                        img='../img/upload/'+dt.data.photo2;
+                                        img='../../img/upload/'+dt.data.photo2;
                                     }else{
-                                        img='../img/no_image.jpg';
+                                        img='../../img/no_image.jpg';
                                     }
                                     $('#previmg').attr('src',img);
-
+                                    $('#k_photoH').val(dt.data.photo2);
                                     // combo jenis -----------------------
                                     $.ajax({
                                         url:dir4,
@@ -989,9 +1003,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         $('#b_namaTB').html(dt.data.katalog);
                         var img;
                         if(dt.data.photo2!=''){
-                            img='../img/upload/'+dt.data.photo2;
+                            img='../../img/upload/'+dt.data.photo2;
                         }else{
-                            img='../img/no_image.jpg';
+                            img='../../img/no_image.jpg';
                         }
                         
                         $('#b_photoIMG').attr('src',img);
@@ -1207,17 +1221,20 @@ function jumupdate (e) {
     }
 // end of notifikasi
 
-// upload image
-    function uploadimg(e){
-        //  
+//end of  print to PDF -------
+    function printPDF(mn){
+        var par='',tok='',p,v;
+        $('.'+mn+'_cari').each(function(){
+            p=$(this).attr('id');
+            v=$(this).val();
+            par+='&'+p+'='+v;
+            tok+=v;
+        });var x  = $('#id_loginS').val();
+        var token = encode64(x+tok);
+        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
-//end of  upload image
+//end of  print to PDF -------
 
-// print pdf
-    function printPDF(){
-        alert('ok');
-    }
-// end of print pdf
     // ---------------------- //
     // -- created by epiii -- //
     // ---------------------- // 
