@@ -12,6 +12,7 @@
 	$tb2  = 'sar_'.$mnu2;
 	// $out=array();
 
+
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
 		// $out=['status'=>'invalid_no_post'];		
@@ -28,7 +29,7 @@
 						LEFT JOIN sar_katalog k ON k.replid=b.katalog 
 						WHERE
 						p.lokasi ='.$lokasi.' and					
-						p.status=1 and
+						p.status=0 and
 						p.peminjam LIKE "%'.$peminjam.'%"
 						ORDER BY p.replid asc';
 						// , sar_barang b, sar_katalog k
@@ -91,7 +92,8 @@
 						FROM sar_barang b 
 						LEFT JOIN sar_katalog k ON k.replid=b.katalog 
 						WHERE
-						b.status = 1 and				
+						b.status = 1 and 
+						b.replid NOT IN (SELECT barang FROM sar_dftp) and			
 						k.nama LIKE "%'.$nama.'%"
 						ORDER BY b.replid asc';
 						// , sar_barang b, sar_katalog k
@@ -222,7 +224,7 @@
     									 tanggal1 = "'.$_POST['tanggal1TB'].'",
     									 tanggal2 = "'.$_POST['tanggal2TB'].'",
 
-    									 status = 1,
+    									 status = 0,
 										lokasi 	= '.$_POST['lokasiH'].',
     									barang ='.$v['barang'] ;
     									/*status =jika terpinjam =1, tersedia=0*/
