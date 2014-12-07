@@ -4,51 +4,44 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-		require_once '../../lib/tglindo.php';
+	require_once '../../lib/tglindo.php';
 
 	$mnu  = 'peminjaman';
 	$mnu2 = 'lokasi';
 	$tb   = 'sar_'.$mnu;
 	$tb2  = 'sar_'.$mnu2;
-	// $out=array();
-
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$lokasi = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
-				// $peminjam     = trim($_POST['peminjamS'])?filter($_POST['peminjamS']):'';
+				$lokasi   = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
 				$peminjam = isset($_POST['peminjamS'])?filter(trim($_POST['peminjamS'])):'';
 				$sql = 'SELECT p.*,b.kode,b.katalog,k.nama 
 						FROM sar_peminjaman p
-						LEFT JOIN sar_barang b ON b.replid=p.barang 
-						LEFT JOIN sar_katalog k ON k.replid=b.katalog 
+							LEFT JOIN sar_barang b ON b.replid=p.barang 
+							LEFT JOIN sar_katalog k ON k.replid=b.katalog 
 						WHERE
-						p.lokasi ='.$lokasi.' and					
-						p.status=0 and
-						p.peminjam LIKE "%'.$peminjam.'%"
-						ORDER BY p.replid asc';
-						// , sar_barang b, sar_katalog k
+							p.lokasi ='.$lokasi.' and					
+							p.status=0 and
+							p.peminjam LIKE "%'.$peminjam.'%"
+							ORDER BY p.replid asc';
 				// print_r($sql);exit(); 	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
-				$aksi="tampil";
-				$subaksi="peminjaman";
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-				$result =$obj->result;
-
+				$recpage = 5;//jumlah data per halaman
+				$aksi    ="tampil";
+				$subaksi ="peminjaman";
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$result  = $obj->result;
+				
 				#ada data
-				$jum	= mysql_num_rows($result);
+				$jum    = mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
@@ -61,7 +54,6 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									
 									<td>'.$res['peminjam'].'</td>
 									<td>'.$res['nama'].'</br>'.$res['kode'].'</td>
 									<td>'.tgl_indo($res['tanggal1']).'</td>
@@ -70,8 +62,6 @@
 									<td>'.$res['keterangan'].'</td>
 								</tr>';
 						$nox++;
-									// '.$btn.'
-									// <td>'.$res['status'].'</td>
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -86,7 +76,6 @@
 
 			case 'tampil2':
 				$nama = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
-				// $peminjam     = trim($_POST['peminjamS'])?filter($_POST['peminjamS']):'';
 				
 				$sql = 'SELECT b.replid, b.kode, k.nama, b.status
 						FROM sar_barang b 
