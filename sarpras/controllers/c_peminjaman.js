@@ -17,7 +17,7 @@ var contentFR ='';
                                         +'<thead>'
                                            
                                             +'<tr id="cariTR" class="selected">'
-                                                +'<th class="text-left"><input keyup="viewTB2();return false;" placeholder="Nama Barang" id="namaS" name="namaS"></th>'
+                                                +'<th class="text-left"><input keyup="viewTB2();" placeholder="Nama Barang" id="namaS" name="namaS"></th>'
                                             +'</tr>'
                                             +'<tr style="color:white;"class="info">'
                                                 +'<th class="text-center">Kode Barang</th>'

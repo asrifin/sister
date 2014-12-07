@@ -29,7 +29,7 @@
 						LEFT JOIN sar_katalog k ON k.replid=b.katalog 
 						WHERE
 						p.lokasi ='.$lokasi.' and					
-						p.status=1 and
+						p.status=0 and
 						p.peminjam LIKE "%'.$peminjam.'%"
 						ORDER BY p.replid asc';
 						// , sar_barang b, sar_katalog k
@@ -224,7 +224,7 @@
     									 tanggal1 = "'.$_POST['tanggal1TB'].'",
     									 tanggal2 = "'.$_POST['tanggal2TB'].'",
 
-    									 status = 1,
+    									 status = 0,
 										lokasi 	= '.$_POST['lokasiH'].',
     									barang ='.$v['barang'] ;
     									/*status =jika terpinjam =1, tersedia=0*/
