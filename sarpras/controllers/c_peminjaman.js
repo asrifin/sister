@@ -4,7 +4,7 @@ var dir       ='models/m_'+mnu+'.php'; //edit by epiii
 var dir2      ='models/m_'+mnu2+'.php'; //edit by epiii
 var contentFR ='';
 
-
+ 
 // main function ---
     $(document).ready(function(){
         contentFR += '<form data-role="scrollbox" data-scroll="both" onsubmit="simpan();return false;" autocomplete="off" Xclass="span4">' 
@@ -17,7 +17,7 @@ var contentFR ='';
                                         +'<thead>'
                                            
                                             +'<tr id="cariTR" class="selected">'
-                                                +'<th class="text-left"><input keydown="viewTB2();return false;" placeholder="Nama Barang" id="namaS" name="namaS"></th>'
+                                                +'<th class="text-left"><input keyup="viewTB2();return false;" placeholder="Nama Barang" id="namaS" name="namaS"></th>'
                                             +'</tr>'
                                             +'<tr style="color:white;"class="info">'
                                                 +'<th class="text-center">Kode Barang</th>'

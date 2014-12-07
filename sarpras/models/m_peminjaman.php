@@ -12,6 +12,7 @@
 	$tb2  = 'sar_'.$mnu2;
 	// $out=array();
 
+
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
 		// $out=['status'=>'invalid_no_post'];		
@@ -91,7 +92,8 @@
 						FROM sar_barang b 
 						LEFT JOIN sar_katalog k ON k.replid=b.katalog 
 						WHERE
-						b.status = 1 and				
+						b.status = 1 and 
+						b.replid NOT IN (SELECT barang FROM sar_dftp) and			
 						k.nama LIKE "%'.$nama.'%"
 						ORDER BY b.replid asc';
 						// , sar_barang b, sar_katalog k
