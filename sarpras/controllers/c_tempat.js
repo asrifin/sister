@@ -284,6 +284,9 @@ function notif(cont,clr) {
     }
 //end of reset form ---
 
+	function xx () {
+		alert(arguments[0]); // baca argument tanpa harus tulis d fungsi
+	}
     // ---------------------- //
     // -- created by rovi  -- //
     // ---------------------- // 

@@ -55,7 +55,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             //katalog
             k_contentFR +=' <div class="grid">'
                                 +'<form enctype="multipart/form-data" class="span12" autocomplete="off" onsubmit="katalogSV(); return false;" id="'+mnu3+'FR">' 
-                                    +'<input id="k_idformH" type="text">' 
+                                    +'<input id="k_idformH" type="hidden">' 
                                     // lokasi , keterangan
                                     +'<div class="row">'
                                         +'<div class="span5"> '
