@@ -70,13 +70,13 @@
     <link rel="stylesheet" type="text/css" href="css/shCore.css">-->
  	<script>
         $(function(){
-            $("#scrollbox1").scrollbar({
-                height: 355,
+            $(".form").scrollbar({
+                // height: 355,
                 axis: 'y'
             });
             $("#scrollbox2").scrollbar({
                 axis: 'x',
-                height: 355
+                // height: 355
             });
             // $("#panel2").scrollbar({
                 // height: 355
