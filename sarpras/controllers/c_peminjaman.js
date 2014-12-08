@@ -6,126 +6,118 @@ var contentFR ='';
 
  
 // main function ---
+    // contentFR+='<div class="grid show-grid">'
+    //                 +'<div class="row">'
+    //                     +'<div class="span12">'
+    //                         +'level 1 column'
+    //                         +'<div class="row">'
+    //                         +'<div class="span6" >level 1.1 </div>'
+    //                         +'<div class="span3" >level 1.2 </div>'
+    //                         +'<div class="span4" >level 1.3 </div>'
+    //                     +'</div>'
+    //                 +'</div>'
+    //             +'</div>';
+                
     $(document).ready(function(){
-        contentFR += '<form data-role="scrollbox" data-scroll="both" onsubmit="simpan();return false;" autocomplete="off" Xclass="span4">' 
-                    +'<div class="grid span10">'
-                        +'<div class="row">'
-                            +'<div class="span4">'
-                                +'<div>'
-                                    +'<legend>Pilih Barang</legend>'
-                                    +'<table class="table hovered bordered striped">'
-                                        +'<thead>'
-                                           
-                                            +'<tr id="cariTR" class="selected">'
-                                                +'<th class="text-left"><input keyup="viewTB2();" placeholder="Nama Barang" id="namaS" name="namaS"></th>'
-                                            +'</tr>'
-                                            +'<tr style="color:white;"class="info">'
-                                                +'<th class="text-center">Kode Barang</th>'
-                                                +'<th class="text-center">Nama Barang</th>'
-                                                +'<th class="text-center">Aksi</th>'
-                                            +'</tr>'
-                                        +'</thead>'
-
-                                        +'<tbody id="barangtbody">'
-                                           
-                                        +'</tbody>'
-                                        +'<tfoot>'
-                                            
-                                        +'</tfoot>'
-                                    +'</table>'
-                                +'</div>'
-                                +'<div>'
-                                    +'<legend>Barang Yang Akan Dipinjam</legend>'
-                                    +'<table class="table hovered bordered striped">'
-                                        +'<thead>'
-                                            +'<tr id="cariTR" class="selected">'
-                                                +'<th style="display:none" class="text-left"><input placeholder="Nama Barang" ><button onclick="return viewTB2();" class="btn-date">Cari</button></th>'
-                                            +'</tr>'
-                                            +'<tr style="color:white;"class="info">'
-                                                +'<th class="text-center">Kode Barang</th>'
-                                                +'<th class="text-center">Nama Barang</th>'
-                                                +'<th class="text-center">Aksi</th>'
-                                            +'</tr>'
-                                        +'</thead>'
-                                        +'<tbody id="dftptbody">'
-                                        +'</tbody>'
-                                        +'<tfoot>'
-                                        +'</tfoot>'
-                                            
-                                    +'</table>'
-                                +'</div>'
-                                    
-                            +'</div>'
-                        
-                            +'<div  class="span4">'
-                            +'<legend>Informasi Peminjam</legend>'
-                                    +'<input id="idformH" type="hidden">' 
-                                    +'<label>Lokasi</label>'
-
-                                    +'<div class="input-control text">'
-                                        +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span4">'
-                                        // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" class="span4">'
-                                        +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" class="span4">'
-                                        +'<button class="btn-clear"></button>'
-                                    +'</div>'
-                                    
-                                    +'<label>Peminjam</label>'
-                                    +'<div class="input-control text">'
-                                        +'<input placeholder="Nama Peminjam"  class="span4" required type="text" name="peminjamTB" id="peminjamTB">'
-                                        +'<button class="btn-clear"></button>'
-                                    +'</div>'
-
-                                    // +'<label>Tempat</label>'
-                                    // +'<div class="input-control text">'
-                                    //     +'<input class="span4"  placeholder="Tempat" required type="text" name="tempatTB" id="tempatTB">'
-                                    //     +'<button class="btn-clear"></button>'
-                                    // +'</div>'
-
-                                    +'<label>Tanggal Peminjaman</label>'
-                                    +'<div class="input-control text" data-role="datepicker"'
-                                        +'data-date="2014-10-23"'
-                                        +'data-format="yyyy-mm-dd"'
-                                        +'data-effect="slide">'
-                                        +'<input class="span4" id="tanggal1TB" name="tanggal1TB" type="text">'
-                                        +'<button class="btn-date"></button>'
-                                    +'</div>'
-
-                                    +'<label>Tanggal Pengembalian</label>'
-                                    +'<div class="input-control text" data-role="datepicker"'
-                                        +'data-date="2014-10-23"'
-                                        +'data-format="yyyy-mm-dd"'
-                                        +'data-effect="slide">'
-                                        +'<input class="span4   " id="tanggal2TB" name="tanggal2TB" type="text">'
-                                        +'<button class="btn-date"></button>'
-                                    +'</div>'
-
-                                    +'<label>Keterangan</label>'
-                                    +'<div class="input-control textarea">'
-                                        +'<textarea class="span4" placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
-                                    +'</div>'
-                            +'</div>'
-                        
+        // contentFR+='<div class="form grid show-grid" xstyle="overflow-y:auto;height:300px;">'
+        contentFR+='<div style="overflow:scroll;height:500px;"  class="">'
+                   +'<legend>Data Barang</legend>'
+                        +'<div class="input-control text">'
+                            // +'<input placeholder="kode/nama barang" xkeydown="nosubmit(this);"  type="text" id="barangTB">'
+                            +'<button class="btn-clear"></button>'
                         +'</div>'
-                    +'</div>'
-                    +'<div class="form-actions">' 
-                        +'<button class="button primary">simpan</button>&nbsp;'
-                        +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-                    +'</div>'
-                +'</form>';
-                        
+                        +'<table class="table hovered bordered striped">'
+                            +'<thead>'
+                                +'<tr style="color:white;"class="info">'
+                                    +'<th class="text-center">Kode</th>'
+                                    +'<th class="text-center">Barang</th>'
+                                    +'<th class="text-center">Aksi</th>'
+                                +'</tr>'
+                            +'</thead>'
+                            +'<tbody id="barangTBL">'
+                            +'</tbody>'
+                            +'<tfoot>'
+                            +'</tfoot>'
+                        +'</table>'
 
-        /*
-        load pertama kali (pilihn salah satu) :
-        cmblokasi : bila ada combo box
-        viewTB : jika tanpa combo box
-        */
+                    +'<legend>Data Peminjaman</legend>'
+                    +'<form onsubmit="simpan();return false;" autocomplete="off"><input id="idformH" type="hidden">' 
+                        +'<label>Lokasi</label>'
+                        +'<div class="input-control text">'
+                            +'<input  type="hidden" name="lokasiH" id="lokasiH" >'
+                            // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" '
+                            +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" >'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+
+                        +'<label>Peminjam</label>'
+                        +'<div class="input-control text">'
+                            +'<input placeholder="Nama Peminjam"  required type="text" name="peminjamTB" id="peminjamTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+
+                        +'<label>Tanggal Peminjaman</label>'
+                        +'<div class="input-control text" data-role="datepicker"'
+                            +'data-date="2014-10-23"'
+                            +'data-format="yyyy-mm-dd"'
+                            +'data-effect="slide">'
+                            +'<input id="tanggal1TB" name="tanggal1TB" type="text">'
+                            +'<button class="btn-date"></button>'
+                        +'</div>'
+
+                        +'<label>Tanggal Pengembalian</label>'
+                        +'<div class="input-control text" data-role="datepicker"'
+                            +'data-date="2014-10-23"'
+                            +'data-format="yyyy-mm-dd"'
+                            +'data-effect="slide">'
+                            +'<input id="tanggal2TB" name="tanggal2TB" type="text">'
+                            +'<button class="btn-date"></button>'
+                        +'</div>'
+
+                        +'<label>Keterangan</label>'
+                        +'<div class="input-control textarea">'
+                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
+                        +'</div>'
+
+
+
+                        +'<div class="form-actions">' 
+                            +'<button class="button primary">simpan</button>&nbsp;'
+                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                        +'</div>'
+
+                    +'</form>'
+
+                +'</div>'                
+                ;
+
+        $( "#barangTB" ).combogrid({
+            debug:true,
+            colModel: [{
+                    'columnName':'kode',
+                    'hide':true,
+                    'width':'8',
+                    'label':'kode'
+                }, {
+                    'columnName':'nama',
+                    'width':'48',
+                    'label':'Barang'
+                }],
+            // url: 'pAjax.php?aksi=autoCom&menu=transJasa',
+            url: dir+'?aksi=autocomp',
+            select: function( event, ui ) {
+                alert(ui.item.kode+' '+ui.item.nama);
+                // $( "#txtKodeJasa" ).val( ui.item.kd_jasa);
+                // $( "#txtJasa" ).val( ui.item.nama_jasa);
+                // $( "#txtKodeBBaku" ).val( ui.item.kd_bahan);
+                // $( "#txtNamaBBaku" ).val( ui.item.nm_bahan);
+                return false;
+            }
+        });
 
         //combo lokasi
         cmblokasi();
         
-        //load table // edit by epiii
-        // viewTB();
-
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
@@ -143,11 +135,6 @@ var contentFR ='';
             if(e.keyCode == 13)
                 viewTB2($('').val());
         });
-        // $('#keteranganS').on('keydown',function (e){ // keydown : textbox
-        //     if(e.keyCode == 13)
-        //         // viewTB($('#keteranganS').val());
-        //         viewTB($('#lokasiS').val());
-        // });
 
         // search button
         $('#cariBC').on('click',function(){
@@ -300,12 +287,18 @@ function simpan(){
 
 // form ---
     function viewFR(id){
+        // $.Dialog.autoResize;
+
         $.Dialog({
             shadow: true,
             overlay: true,
             draggable: true,
-            width: 500,
-            padding: 10,
+            // width: 'auto',
+            height: 'auto',
+            width: '30%',
+            // width: 500,
+            padding: 20,
+            // padding: 10,
             onShow: function(){
                 var titlex;
                 if(id==''){  //add mode

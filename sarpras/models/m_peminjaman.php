@@ -12,7 +12,114 @@
 	$tb2  = 'sar_'.$mnu2;
 
 	if(!isset($_POST['aksi'])){
-		$out=json_encode(array('status'=>'invalid_no_post'));		
+		if($_GET['aksi']=='autocomp'){
+			$page       = $_GET['page']; // get the requested page
+			$limit      = $_GET['rows']; // get how many rows we want to have into the grid
+			$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
+			$sord       = $_GET['sord']; // get the direction
+			$searchTerm = $_GET['searchTerm'];
+
+			if(!$sidx) $sidx =1;
+			if ($searchTerm=="") {
+				$searchTerm="%";
+			} else {
+				$searchTerm = "%" . $searchTerm . "%";
+			}
+
+			 // $ss     = "SELECT COUNT(*) AS count FROM sar_barang WHERE nam like '$searchTerm'";
+			$ss     = 'SELECT 
+							tb.replid,
+							tb.nama,
+							(CONCAT(tb.lokasi,"/",tb.grup,"/",tb.tempat,"/",tb.katalog,"/",LPAD(tb.urut,5,0)))kode
+						from(
+								SELECT
+									b.replid,
+									b.urut,
+									k.nama,
+									l.kode lokasi,
+									g.kode grup,
+									t.kode tempat,
+									k.kode katalog,
+									b.status
+								FROM
+									sar_barang b  
+									left JOIN sar_tempat t on t.lokasi = b.tempat
+									left JOIN sar_katalog k on k.replid = b.katalog 
+									left JOIN sar_grup g on g.replid = k.grup
+									left JOIN sar_lokasi l on  l.replid = g.lokasi
+							)tb 
+							LEFT JOIN sar_dpeminjaman dp on  dp.barang = tb.replid
+							LEFT JOIN sar_peminjaman2 p on  p.replid= dp.peminjaman
+						WHERE
+							tb.status=0 
+							and tb.nama like "%'.$searchTerm.'%"';
+			$result = mysql_query($ss);
+			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
+			// $count  = $row['count'];
+			$count  = mysql_num_rows($result);
+
+			if( $count >0 ) {
+				$total_pages = ceil($count/$limit);
+			} else {
+				$total_pages = 0;
+			}
+			if ($page > $total_pages) $page=$total_pages;
+			$start 	= $limit*$page - $limit; // do not put $limit*($page - 1)
+			if($total_pages!=0) {
+				//$SQL = "SELECT * FROM barang WHERE nm_barang like '$searchTerm'  ORDER BY $sidx $sord LIMIT $start , $limit";
+				$SQL = "SELECT
+							*
+						FROM
+							jasa j,
+							bahanbaku b
+						WHERE
+							j.kd_bahan = b.kd_bahan
+						AND j.nama_jasa LIKE '$searchTerm'
+						ORDER BY
+							'$sidx' '$sord'
+						LIMIT $start,$limit";
+				$ss.='ORDER BY
+							'$sidx' '$sord'
+						LIMIT $start,$limit'
+			}else {
+				//$SQL = "SELECT * FROM barang WHERE nm_barang like '$searchTerm'  ORDER BY $sidx $sord";
+				$SQL = "SELECT
+							*
+						FROM
+							jasa j,
+							bahanbaku b
+						WHERE
+							j.kd_bahan = b.kd_bahan
+						AND j.nama_jasa LIKE '$searchTerm'
+						ORDER BY
+							'$sidx' '$sord'";
+			}
+			$result = mysql_query( $SQL ) or die("Couldn t execute query.".mysql_error());
+			while($row = mysql_fetch_assoc($result)) {
+				$rows[]= array(
+					'kd_jasa'     =>$row['kd_jasa'],
+					'nama_jasa'   =>$row['nama_jasa'],
+					'kd_bahan'    =>$row['kd_bahan'],
+					'nm_bahan'    =>$row['nm_bahan'],
+					'harga_jasa'  =>format_angka($row['harga_jasa']),
+					'harga_bahan' =>$row['harga_bahan'],
+					'diskon'      =>$row['diskon'],
+					'ppn'         =>$row['ppn'],
+					'diskon'      =>$row['diskon']
+				);
+			}     
+			$response=array(
+				'page'    =>$page,
+				'total'   =>$total_pages,
+				'records' =>$count,
+				'rows'    =>$rows
+			);
+			echo json_encode($response);
+
+		}else{
+			$out=json_encode(array('status'=>'invalid_no_post'));	
+		}
+	
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
