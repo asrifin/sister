@@ -34,11 +34,21 @@
 					$starting=0;
 				}
 
+				// $menu='tampil';	
+				$recpage= 5;//jumlah data per halaman
+				$aksi    ='tampil';
+				$subaksi ='';
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
+				// $obj 	= new pagination_class($sql,$starting,$recpage);
+				$result =$obj->result;
+
 				$recpage = 5;
 				$aksi    ='tampil';
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result  = $obj->result;
+>>>>>>> abf0990bd612ea31265fe818f2f2b312ec77b3ff
 
 				#ada data
 				$jum	= mysql_num_rows($result);
