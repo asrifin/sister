@@ -3,8 +3,8 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$tb = 'aka_tahunajaran';
-	// $out=array();
+	$tb = 'aka_guru';
+	$out=array();
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
@@ -13,15 +13,22 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen  = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
-				$tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$sql = 'SELECT *
-						FROM '.$tb.'
+				$departemen  = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
+				$pelajaran = isset($_POST['pelajaranS'])?filter(trim($_POST['pelajaranS'])):'';
+				$sql = 'SELECT g.*,t.tahunajaran, j.nama AS pelajaran, p.nip, p.keterangan, p.nama
+						FROM aka_guru g
+						LEFT JOIN hrd_pegawai p ON p.replid=g.pegawai
+						LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
+						LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
+						LEFT JOIN departemen d ON d.replid=t.departemen
 						WHERE 
 							departemen like "%'.$departemen.'%" and 
-							tahunajaran like "%'.$tahunajaran.'%" 
+							pelajaran like "%'.$pelajaran.'%" 
 						ORDER 
-							BY tahunajaran asc';
+							BY g.replid asc';
+													// var_dump($sql);exit();
+
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -31,7 +38,7 @@
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
 				#ada data
@@ -48,10 +55,9 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
-									<td>'.$res['tahunajaran'].'</td>
-									<td>'.$res['tglmulai'].'</td>
-									<td>'.$res['tglakhir'].'</td>
+									<td>'.$res['pelajaran'].'</td>
+									<td>'.$res['nama'].'</td>
+									<td>'.$res['nip'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
