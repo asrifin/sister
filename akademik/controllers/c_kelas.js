@@ -81,20 +81,14 @@ var contentFR = '';
             viewTB();
         });$('#tingkatS').on('change',function (){
             viewTB(); 
-        });$('#kelasS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
-        });$('#waliS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
-        });
+        })
 
         // search button
-        $('#cariBC').on('click',function(){
-            $('#cariTR').toggle('slow');
-            $('#kelasS').val('');
-            $('#waliS').val('');
-        });
+        // $('#cariBC').on('click',function(){
+        //     $('#cariTR').toggle('slow');
+        //     $('#kelasS').val('');
+        //     $('#waliS').val('');
+        // });
 
         // combogrid
         // $("#txtJasa").on('keyup', function(e){
@@ -222,9 +216,9 @@ var contentFR = '';
 // view table ---
     function viewTB(){
         var aksi ='aksi=tampil';
-        var cari =  '&tingkatS='+$('#tingkatS').val()
-                    +'&kelasS='+$('#kelasS').val()
-                    +'&waliS='+$('#waliS').val();
+        var cari =  '&departemenS='+$('#departemenS').val()
+                    +'&tahunajaranS='+$('#tahunajaranS').val()
+                    +'&tingkatS='+$('#tingkatS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -345,8 +339,8 @@ var contentFR = '';
     function pagination(page,aksix){
         var datax = 'starting='+page+'&aksi='+aksix;
         var cari =  '&tingkatS='+$('#tingkatS').val()
-                    +'&kelasS='+$('#kelasS').val()
-                    +'&waliS='+$('#waliS').val();
+                    +'&tahunajaranS='+$('#tahunajaranS').val()
+                    +'&departemenS='+$('#departemenS').val();
         $.ajax({
             url:dir,
             type:"post",

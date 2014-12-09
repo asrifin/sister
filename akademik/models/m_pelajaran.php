@@ -15,11 +15,11 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$pelajaran   = trim($_POST['pelajaranS'])?filter($_POST['pelajaranS']):'';
-				$singkatan   = trim($_POST['singkatanS'])?filter($_POST['singkatanS']):'';
-				$skm         = trim($_POST['skmS'])?filter($_POST['skmS']):'';
-				$keterangan  = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
+				$pelajaran   = isset($_POST['pelajaranS'])?filter(trim($_POST['pelajaranS'])):'';
+				$singkatan   = isset($_POST['singkatanS'])?filter(trim($_POST['singkatanS'])):'';
+				$skm         = isset($_POST['skmS'])?filter(trim($_POST['skmS'])):'';
+				$keterangan  = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
 				$sql = 'SELECT *
 						FROM '.$tb.' 
 						WHERE 
@@ -138,7 +138,7 @@
 			break;
 			// aktifkan -----------------------------------------------------------------
 
-			// cmbtingkat -----------------------------------------------------------------
+			// cmbpelajaran-----------------------------------------------------------------
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
@@ -154,17 +154,18 @@
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY '.$mnu.' asc';
+						ORDER  BY nama asc';
 				// var_dump($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
+						// var_dump($n);exit();
+				// print_r($n);exit();
 				$ar = $dt=array();
 
 				if(!$e){ //error
 					$ar = array('status'=>'error');
 				}else{
 					if($n==0){ // kosong 
-						var_dump($n);exit();
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
 						if(!isset($_POST['replid'])){
@@ -173,13 +174,12 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','tingkat'=>$dt);
+						}$ar = array('status'=>'sukses','pelajaran'=>$dt);
 					}
 				}
-				// print_r($n);exit();
 				$out=json_encode($ar);
 			break;
-			// cmbtingkat -----------------------------------------------------------------
+			// cmbpelajaran -----------------------------------------------------------------
 
 		}
 	}	echo $out;

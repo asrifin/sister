@@ -182,7 +182,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','nama'=>$dt);
+						}$ar = array('status'=>'sukses','tingkat'=>$dt);
 					}
 				}
 				// print_r($n);exit();
