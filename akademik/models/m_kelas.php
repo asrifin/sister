@@ -22,23 +22,21 @@
 				$sql ='SELECT 
 							k.replid,
 							k.kelas,
-							p.nama as wali,
+							p.nama AS wali,
 							k.kapasitas,
 							k.keterangan
-						FROM 
-							aka_kelas k,
-							aka_guru g,
-							hrd_pegawai p,
-							LEFT JOIN departemen d,
-							LEFT JOIN aka_tahunajaran t
-						WHERE
-							k.tingkat LIKE "%'.$tingkat.'%"
-							AND k.tahunajaran LIKE "%'.$tahunajaran.'%"
-							and k.wali    = g.replid
-							and g.pegawai = p.replid
+						FROM aka_kelas k
+							LEFT JOIN hrd_pegawai p ON p.replid = k.wali
+							LEFT JOIN aka_tahunajaran t ON t.replid=k.tahunajaran
+							LEFT JOIN departemen d ON d.replid=t.departemen
+							LEFT JOIN aka_tingkat g ON g.replid=k.tingkat
+						WHERE 
+							t.departemen like "%'.$departemen.'%" and 
+							k.tingkat like "%'.$tingkat.'%" and 
+							k.tahunajaran like "%'.$tahunajaran.'%"
 						ORDER BY
 							k.kelas ASC';
-				print_r($sql);exit();
+				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
