@@ -48,7 +48,6 @@
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result  = $obj->result;
->>>>>>> abf0990bd612ea31265fe818f2f2b312ec77b3ff
 
 				#ada data
 				$jum	= mysql_num_rows($result);

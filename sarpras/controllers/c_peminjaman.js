@@ -1,29 +1,15 @@
-var mnu       ='peminjaman'; // edit by epiii
-var mnu2      ='lokasi'; // edit by epiii
-var dir       ='models/m_'+mnu+'.php'; //edit by epiii
-var dir2      ='models/m_'+mnu2+'.php'; //edit by epiii
+var mnu       ='peminjaman'; 
+var mnu2      ='lokasi'; 
+var dir       ='models/m_'+mnu+'.php'; 
+var dir2      ='models/m_'+mnu2+'.php'; 
 var contentFR ='';
 
- 
 // main function ---
-    // contentFR+='<div class="grid show-grid">'
-    //                 +'<div class="row">'
-    //                     +'<div class="span12">'
-    //                         +'level 1 column'
-    //                         +'<div class="row">'
-    //                         +'<div class="span6" >level 1.1 </div>'
-    //                         +'<div class="span3" >level 1.2 </div>'
-    //                         +'<div class="span4" >level 1.3 </div>'
-    //                     +'</div>'
-    //                 +'</div>'
-    //             +'</div>';
-                
     $(document).ready(function(){
-        // contentFR+='<div class="form grid show-grid" xstyle="overflow-y:auto;height:300px;">'
         contentFR+='<div style="overflow:scroll;height:500px;"  class="">'
                    +'<legend>Data Barang</legend>'
                         +'<div class="input-control text">'
-                            // +'<input placeholder="kode/nama barang" xkeydown="nosubmit(this);"  type="text" id="barangTB">'
+                            +'<input placeholder="kode/nama barang" id="barangTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<table class="table hovered bordered striped">'
@@ -36,6 +22,7 @@ var contentFR ='';
                             +'</thead>'
                             +'<tbody id="barangTBL">'
                             +'</tbody>'
+                                // +'<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih barang.. </td></tr>'
                             +'<tfoot>'
                             +'</tfoot>'
                         +'</table>'
@@ -58,19 +45,19 @@ var contentFR ='';
 
                         +'<label>Tanggal Peminjaman</label>'
                         +'<div class="input-control text" data-role="datepicker"'
-                            +'data-date="2014-10-23"'
+                            // +'data-date="2014-10-23"'
                             +'data-format="yyyy-mm-dd"'
                             +'data-effect="slide">'
-                            +'<input id="tanggal1TB" name="tanggal1TB" type="text">'
+                            +'<input required="required"  id="tgl_pinjamTB" name="tgl_pinjamTB" type="text">'
                             +'<button class="btn-date"></button>'
                         +'</div>'
 
                         +'<label>Tanggal Pengembalian</label>'
                         +'<div class="input-control text" data-role="datepicker"'
-                            +'data-date="2014-10-23"'
+                            // +'data-date="2014-10-23"'
                             +'data-format="yyyy-mm-dd"'
                             +'data-effect="slide">'
-                            +'<input id="tanggal2TB" name="tanggal2TB" type="text">'
+                            +'<input required="required" id="tgl_kembaliTB" name="tgl_kembaliTB" type="text">'
                             +'<button class="btn-date"></button>'
                         +'</div>'
 
@@ -79,45 +66,17 @@ var contentFR ='';
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
 
-
-
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
 
                     +'</form>'
-
-                +'</div>'                
-                ;
-
-        $( "#barangTB" ).combogrid({
-            debug:true,
-            colModel: [{
-                    'columnName':'kode',
-                    'hide':true,
-                    'width':'8',
-                    'label':'kode'
-                }, {
-                    'columnName':'nama',
-                    'width':'48',
-                    'label':'Barang'
-                }],
-            // url: 'pAjax.php?aksi=autoCom&menu=transJasa',
-            url: dir+'?aksi=autocomp',
-            select: function( event, ui ) {
-                alert(ui.item.kode+' '+ui.item.nama);
-                // $( "#txtKodeJasa" ).val( ui.item.kd_jasa);
-                // $( "#txtJasa" ).val( ui.item.nama_jasa);
-                // $( "#txtKodeBBaku" ).val( ui.item.kd_bahan);
-                // $( "#txtNamaBBaku" ).val( ui.item.nm_bahan);
-                return false;
-            }
-        });
+                +'</div>';
 
         //combo lokasi
         cmblokasi();
-        
+
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
@@ -125,7 +84,8 @@ var contentFR ='';
 
         //search action // edit by epiii
         $('#lokasiS').on('change',function (e){ // change : combo box
-                viewTB($('#lokasiS').val());
+            viewTB($('#lokasiS').val());
+            // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$(this).val() );
         });
         $('#peminjamS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
@@ -143,7 +103,6 @@ var contentFR ='';
             $('#peminjamS').val('');
             // $('#keteranganS').val('');
         });
-        
     }); 
 // end of main function ---
 
@@ -161,68 +120,48 @@ var contentFR ='';
                 }else{
                     $.each(dt.lokasi, function(id,item){
                         out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
-                    });
-                    //panggil fungsi viewTB() ==> tampilkan tabel 
-                    viewTB(dt.lokasi[0].replid); 
+                    });viewTB(dt.lokasi[0].replid);
+                    // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+dt.lokasi[0].replid);
                 }$('#lokasiS').html(out);
             }
         });
     }
 //end of combo departemen ---
 
-function simpan(){
-        var urlx ='&aksi=simpanall';
-        // edit mode
-        if($('#idformH').val()!=''){
-            urlx += '&replid='+$('#idformH').val();
-        }
-        $.ajax({
-            url:dir,
-            cache:false,
-            type:'post',
-            dataType:'json',
-            data:$('form').serialize()+urlx,
-            success:function(dt){
-                if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
-                    clr  = 'red';
-                }else{
-                    $.Dialog.close();
-                    kosongkan();
-                    viewTB($('#lokasiS').val());
-                    cont = 'Berhasil menyimpan data';
-                    clr  = 'green';
-                }notif(cont,clr);
-            }
-        });
-    }
-//save process ---
-    function pilih(kode){
-        var urlx ='&aksi=simpandftp';
-        // edit mode
-        
-        $.ajax({
-            url:dir,
-            cache:false,
-            type:'post',
-            dataType:'json',
-            data:urlx+'&kode='+kode,
-            success:function(dt){
-                if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
-                    clr  = 'red';
-                }else{
-                    // $.Dialog.close();
-                    kosongkan();
-                    viewTB3($('').val());
-                    cont = 'Berhasil menyimpan data';
-                    clr  = 'green';
+//submit form  -----------
+    function simpan(){
+        if(barangArr().length<=0){
+            $('#barangTB').focus();
+            return false;
+        }else{
+            var data ='&aksi=simpan';
+            $.each(barangArr(),function(id,item){
+                data+='&barang[]='+item;  
+            });
+            // console.log(JSON.stringify(xx));
+            // console.log(JSON.stringify(x()));
+            $.ajax({
+                url:dir,
+                data:$('form').serialize()+data,
+                cache:false,
+                type:'post',
+                dataType:'json',
+                success:function(dt){
+                    if(dt.status!='sukses'){
+                        cont = 'Gagal menyimpan data';
+                        clr  = 'red';
+                    }else{
+                        $.Dialog.close();
+                        kosongkan();
+                        viewTB($('#lokasiS').val());
+                        cont = 'Berhasil menyimpan data';
+                        clr  = 'green';
+                    }notif(cont,clr);
                 }
-                // notif(cont,clr);
-            }
-        });
+            });
+        }
     }
-//end of save process ---
+//end of submit form ---
 
 // view table ---
     function viewTB(lok){ //edit by epiii 
@@ -245,102 +184,111 @@ function simpan(){
         });
     }
 // end of view table ---
-// view table 2 ---
-    function viewTB2(){ //edit by epiii 
-        // alert('salah');
-        var aksi ='aksi=tampil2';
-        var cari ='&namaS='+$('#namaS').val();
-                    // +'&keteranganS='+$('#keteranganS').val()
-        $.ajax({
-            url : dir,
-            type: 'post',
-            data: aksi+cari,
-            beforeSend:function(){
-                $('#barangtbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                setTimeout(function(){
-                    $('#barangtbody').html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }
-// end of view table 2 ---
-// view table 3 ---
-    function viewTB3(){ //edit by epiii 
-        var aksi ='aksi=tampil3';
-        // var cari ='&namaS='+$('#namaS').val();
-                    // +'&keteranganS='+$('#keteranganS').val()
-        $.ajax({
-            url : dir,
-            type: 'post',
-            data: aksi,
-            beforeSend:function(){
-                $('#dftptbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                setTimeout(function(){
-                    $('#dftptbody').html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }
-// end of view table 3 ---
 
 // form ---
     function viewFR(id){
         // $.Dialog.autoResize;
-
+        var lok = $('#lokasiS').val();
         $.Dialog({
             shadow: true,
             overlay: true,
             draggable: true,
             // width: 'auto',
             height: 'auto',
-            width: '30%',
+            width: '35%',
             // width: 500,
             padding: 20,
             // padding: 10,
             onShow: function(){
                 var titlex;
-                if(id==''){  //add mode
-                    // alert('halooo');
-                    titlex='<span class="icon-plus-2"></span> Tambah ';
-                    $.ajax({
-                        url:dir2,
-                        data:'aksi=cmblokasi&replid='+$('#lokasiS').val(),
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#lokasiTB').val(dt.lokasi[0].nama);
-                            $('#lokasiH').val($('#lokasiS').val());
-                        }
-                    });
-                }else{ // edit mode
-                    titlex='<span class="icon-pencil"></span> Ubah';
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=ambiledit&replid='+id,
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#idformH').val(id);
-                            $('#lokasiH').val($('#lokasiS').val()); // edit by epii
-                            $('#lokasiTB').val(dt.lokasi);
-                            $('#peminjamTB').val(dt.peminjam);
-                            $('#tanggal1TB').val(dt.tanggal1);
-                            $('#tanggal2TB').val(dt.tanggal2);
-                            $('#keteranganTB').val(dt.keterangan);
-                            // $('#statusTB').val(dt.status);
-                        }
-                    });
-                }$.Dialog.title(titlex+' '+mnu); // edit by epiii
+                titlex='<span class="icon-plus-2"></span> Tambah ';
+                $.ajax({
+                    url:dir2,
+                    data:'aksi=cmblokasi&replid='+$('#lokasiS').val(),
+                    type:'post',
+                    dataType:'json',
+                    success:function(dt){
+                        $('#lokasiTB').val(dt.lokasi[0].nama);
+                        $('#lokasiH').val($('#lokasiS').val());
+                    }
+                });
+                $.Dialog.title(titlex+' '+mnu); // edit by epiii
                 $.Dialog.content(contentFR);
+                // barangExist();
+            }
+        });
+
+        $("#barangTB").combogrid({
+            debug:true,
+            width:'400px',
+            colModel: [{
+                    'align':'left',
+                    'columnName':'kode',
+                    'hide':true,
+                    'width':'55',
+                    // 'width':'8',
+                    'label':'kode'
+                },{   
+                    'columnName':'nama',
+                    'width':'40',
+                    'label':'Barang'
+                }],
+            url: dir+'?aksi=autocomp&lokasi='+lok,
+            // url: dir+'?aksi=autocomp&lokasi='+lok+'&barang='+barangArr(),
+            // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
+            select: function( event, ui ) {
+                barangAdd(ui.item.replid,ui.item.kode,ui.item.nama);
+                $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
+                return false;
             }
         });
     }
-// end of form ---
+
+// hapus barang terpilih
+    function barangDel(id){
+        $('#barangTR_'+id).fadeOut('slow',function(){
+            $('#barangTR_'+id).remove();
+            // barangExist();
+        });
+    }
+//barang record kosong --
+    function barangExist(){
+        // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
+        alert('jumlah tr: '+$('#barangTBL','.barangTR').length);return false;
+        var tr ='<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih barang ..</td></tr>';
+        if($('#barangTBL').html()=='')
+            $('#barangTBL').html(tr);
+        else
+            $('#barangTBL').html('');
+    }
+//end of barang record kosong --
+
+// pilih barang yg akan dipinjam ---
+    function barangAdd (id,kode,nama) {
+        var tr ='<tr val="'+id+'" class="barangTR" id="barangTR_'+id+'">'
+                    +'<td>'+kode+'</td>'
+                    +'<td>'+nama+'</td>'
+                    +'<td><button onclick="barangDel('+id+');"><i class="icon-remove"></button></i></td>'
+                +'</tr>';
+        $('#barangTBL').append(tr);
+        barangArr();
+        // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
+
+        // barangExist();
+    }
+    
+//himpun array barang terpilih
+    function barangArr(){
+        var y=[];
+        $('.barangTR').each(function(id,item){
+            y.push($(this).attr('val'));
+        });
+        console.log(y);
+        return y;
+    }
 
 //paging ---
-function pagination(page,aksix,subaksi){ 
+    function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
         var cari ='';
         $('.'+subaksi+'_cari').each(function(){
@@ -361,7 +309,6 @@ function pagination(page,aksix,subaksi){
             }
         });
     }
-    
 //end of paging ---
     
 //del process ---
@@ -406,14 +353,12 @@ function notif(cont,clr) {
     function kosongkan(){
         $('#idformTB').val('');
         $('#peminjamTB').val('');
-        $('#tempatTB').val('');
-        $('#tanggal1TB').val('');
-        $('#tanggal2TB').val('');
-        // $('#statusTB').val('');
+        $('#tgl_pinjamTB').val('');
+        $('#tgl_kembaliTB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---
 
-    // ---------------------- //
-    // -- created by rovi  -- //
-    // ---------------------- // 
+    // ------------------------ //
+    // - created by rovi/epiii- //
+    // ------------------------ // 
