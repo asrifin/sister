@@ -3,9 +3,13 @@
 <!-- <script src="js/metro/metro-hint.js"></script> -->
 
 <!-- D:\xampp\htdocs\sister\js\combogrid -->
-<!-- <script type="text/javascript" src="../js/combogrid/jquery-1.9.1.min.js"></script> -->
-<script type="text/javascript" src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
-<script type="text/javascript" src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>
+<!-- <script src="../js/combogrid/jquery-1.9.1.min.js"></script> -->
+<script src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
+<script src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery-ui-1.10.1.custom.css"/>
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery.ui.combogrid.css"/>
+
 
 <h4 style="color:white;">Peminjaman</h4>
 <div id="loadarea"></div>
@@ -16,7 +20,8 @@
 <div class="input-control select span3">
     <select  class="peminjaman_cari" data-hint="lokasi" name="lokasiTB" id="lokasiS"></select>
 </div>
-<input type="text" id="barangTB">
+<!-- <input type="text" id="barangTB"> -->
+<!-- <input type="text" id="xbarangTB" onkeyup="autocomp(this);"> -->
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">

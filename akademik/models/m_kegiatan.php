@@ -3,8 +3,9 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu  = 'tempat';
-	$mnu2 = 'lokasi';
+	require_once '../../lib/tglindo.php';
+	$mnu  = 'kegiatan';
+	$mnu2 = 'tahunajaran';
 	$tb   = 'sar_'.$mnu;
 	$tb2  = 'sar_'.$mnu2;
 	// $out=array();
@@ -16,17 +17,15 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$lokasi     = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
-				$tempat     = trim($_POST['tempatS'])?filter($_POST['tempatS']):'';
-				$keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
-				$sql = 'SELECT t.*
-						FROM '.$tb.' t, '.$tb2.' l
+				$departemen     	= isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
+				$tahunajaran        = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
+				$sql = 'SELECT k.*
+						FROM aka_kegiatan k
+						LEFT JOIN aka_tahunajaran t ON t.tahunajaran = k.tahunajaran
+						LEFT JOIN departemen d ON d.replid = t.departemen
 						WHERE 
-							l.replid = t.lokasi and
-							t.lokasi ='.$lokasi.' and
-							t.nama LIKE "%'.$tempat.'%" and
-							t.keterangan LIKE "%'.$keterangan.'%" 
-						ORDER BY t.nama asc';
+							k.tahunajaran like "%'.$tahunajaran.'%"
+						ORDER BY k.replid asc';
 				// print_r($sql);exit(); 	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -36,19 +35,29 @@
 
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
-				$aksi    ='tampil';
-				$subaksi ='';
+				$aksi    ='';
+				$subaksi ='tampil';
 				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
 				$result =$obj->result;
 
+				
 				#ada data
 				$jum	= mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
+						if($res['aktif']=1){
+							$dis  = 'disabled';
+							$ico  = 'checkmark';
+							$hint = 'telah Aktif';
+							$func = '';
+						}else{
+							$dis  = '';
+							$ico  = 'blocked';
+							$hint = 'Aktifkan';
+							$func = 'onclick="aktifkan('.$res['replid'].');"';
+						}
 						$btn ='<td>
 									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -57,9 +66,7 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
-									<td>'.$res['kode'].'</td>
-									<td>'.$res['nama'].'</td>
+									<td>'.tgl_indo($res['tanggal1']).'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';

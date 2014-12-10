@@ -78,6 +78,7 @@
                     <li><a href="guru">guru</a></li>
                     <li><a href="jadwal-pelajaran">Jadwal Pelajaran</a></li>
                     <li><a href="presensi-guru">Presensi Guru</a></li>
+                    <li><a href="kegiatan-akademik">Kegiatan Akademik</a></li>
                 </ul>
             </div>
             <div class="element">

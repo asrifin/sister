@@ -20,39 +20,28 @@
 			$searchTerm = $_GET['searchTerm'];
 
 			if(!$sidx) $sidx =1;
-			if ($searchTerm=="") {
-				$searchTerm="%";
-			} else {
-				$searchTerm = "%" . $searchTerm . "%";
-			}
-
-			 // $ss     = "SELECT COUNT(*) AS count FROM sar_barang WHERE nam like '$searchTerm'";
-			$ss     = 'SELECT 
-							tb.replid,
-							tb.nama,
-							(CONCAT(tb.lokasi,"/",tb.grup,"/",tb.tempat,"/",tb.katalog,"/",LPAD(tb.urut,5,0)))kode
-						from(
-								SELECT
-									b.replid,
-									b.urut,
-									k.nama,
-									l.kode lokasi,
-									g.kode grup,
-									t.kode tempat,
-									k.kode katalog,
-									b.status
-								FROM
-									sar_barang b  
-									left JOIN sar_tempat t on t.lokasi = b.tempat
-									left JOIN sar_katalog k on k.replid = b.katalog 
-									left JOIN sar_grup g on g.replid = k.grup
-									left JOIN sar_lokasi l on  l.replid = g.lokasi
-							)tb 
-							LEFT JOIN sar_dpeminjaman dp on  dp.barang = tb.replid
-							LEFT JOIN sar_peminjaman2 p on  p.replid= dp.peminjaman
-						WHERE
-							tb.status=0 
-							and tb.nama like "%'.$searchTerm.'%"';
+			$ss     = 'SELECT * 
+						FROM(
+							SELECT
+								b.replid,
+								k.nama,
+								CONCAT(l.kode,"/",g.kode,"/",t.kode,"/",k.kode,"/",LPAD(b.urut,5,0)) kode
+							FROM
+								sar_barang b
+								JOIN sar_tempat t on t.replid = b.tempat
+								JOIN sar_lokasi l on l.replid = t.lokasi
+								JOIN sar_katalog k on k.replid = b.katalog
+								JOIN sar_grup g on g.replid = k.grup
+							where 
+								`status` = 1 
+								'.(isset($_POST['barang']) and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
+								and  l.replid = '.$_GET['lokasi'].' 
+							)tb
+						WHERE	
+							tb.nama LIKE "%'.$searchTerm.'%"
+							OR tb.kode LIKE "%'.$searchTerm.'%"';
+							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
+			// print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			// $count  = $row['count'];
@@ -66,56 +55,26 @@
 			if ($page > $total_pages) $page=$total_pages;
 			$start 	= $limit*$page - $limit; // do not put $limit*($page - 1)
 			if($total_pages!=0) {
-				//$SQL = "SELECT * FROM barang WHERE nm_barang like '$searchTerm'  ORDER BY $sidx $sord LIMIT $start , $limit";
-				$SQL = "SELECT
-							*
-						FROM
-							jasa j,
-							bahanbaku b
-						WHERE
-							j.kd_bahan = b.kd_bahan
-						AND j.nama_jasa LIKE '$searchTerm'
-						ORDER BY
-							'$sidx' '$sord'
-						LIMIT $start,$limit";
-				$ss.='ORDER BY
-							'$sidx' '$sord'
-						LIMIT $start,$limit'
+				$ss.='ORDER BY '.$sidx.' '.$sord.' LIMIT '.$start.','.$limit;
 			}else {
-				//$SQL = "SELECT * FROM barang WHERE nm_barang like '$searchTerm'  ORDER BY $sidx $sord";
-				$SQL = "SELECT
-							*
-						FROM
-							jasa j,
-							bahanbaku b
-						WHERE
-							j.kd_bahan = b.kd_bahan
-						AND j.nama_jasa LIKE '$searchTerm'
-						ORDER BY
-							'$sidx' '$sord'";
+				$ss.='ORDER BY '.$sidx.' '.$sord;
 			}
-			$result = mysql_query( $SQL ) or die("Couldn t execute query.".mysql_error());
+			// print_r($ss);exit();
+			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
+			$rows=array();
 			while($row = mysql_fetch_assoc($result)) {
 				$rows[]= array(
-					'kd_jasa'     =>$row['kd_jasa'],
-					'nama_jasa'   =>$row['nama_jasa'],
-					'kd_bahan'    =>$row['kd_bahan'],
-					'nm_bahan'    =>$row['nm_bahan'],
-					'harga_jasa'  =>format_angka($row['harga_jasa']),
-					'harga_bahan' =>$row['harga_bahan'],
-					'diskon'      =>$row['diskon'],
-					'ppn'         =>$row['ppn'],
-					'diskon'      =>$row['diskon']
+					'replid' =>$row['replid'],
+					'nama'   =>$row['nama'],
+					'kode'   =>$row['kode']
 				);
-			}     
+			}
 			$response=array(
 				'page'    =>$page,
 				'total'   =>$total_pages,
 				'records' =>$count,
-				'rows'    =>$rows
-			);
-			echo json_encode($response);
-
+				'rows'    =>$rows,
+			);$out=json_encode($response);
 		}else{
 			$out=json_encode(array('status'=>'invalid_no_post'));	
 		}
@@ -126,16 +85,17 @@
 			case 'tampil':
 				$lokasi   = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
 				$peminjam = isset($_POST['peminjamS'])?filter(trim($_POST['peminjamS'])):'';
-				$sql = 'SELECT p.*,b.kode,b.katalog,k.nama 
-						FROM sar_peminjaman p
-							LEFT JOIN sar_barang b ON b.replid=p.barang 
-							LEFT JOIN sar_katalog k ON k.replid=b.katalog 
-						WHERE
-							p.lokasi ='.$lokasi.' and					
-							p.status=0 and
-							p.peminjam LIKE "%'.$peminjam.'%"
+				$s        = 'SELECT 
+								p.*,b.kode,b.katalog,k.nama 
+							FROM sar_peminjaman2 p
+								LEFT JOIN sar_barang b ON b.replid=p.barang 
+								LEFT JOIN sar_katalog k ON k.replid=b.katalog 
+							WHERE
+								p.lokasi ='.$lokasi.' and					
+								p.status=0 and
+								p.peminjam LIKE "%'.$peminjam.'%"
 							ORDER BY p.replid asc';
-				// print_r($sql);exit(); 	
+				// print_r($s);exit(); 	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -144,7 +104,7 @@
 				$recpage = 5;//jumlah data per halaman
 				$aksi    ="tampil";
 				$subaksi ="peminjaman";
-				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$obj     = new pagination_class($s,$starting,$recpage,$aksi,$subaksi);
 				$result  = $obj->result;
 				
 				#ada data
@@ -295,73 +255,66 @@
 			// view -----------------------------------------------------------------
 
 			// add / edit -----------------------------------------------------------------
-			case 'simpandftp':
-				$s 		= 'INSERT INTO sar_dftp'.' set 	
-										barang 	= "'.filter($_POST['kode']).'"';
-				// $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// var_dump($s2);exit();
-				$e 		= mysql_query($s);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array('status'=>$stat));
+			// case 'simpandftp':
+			// 	$s 		= 'INSERT INTO sar_dftp'.' set 	
+			// 							barang 	= "'.filter($_POST['kode']).'"';
+			// 	// $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+			// 	// var_dump($s2);exit();
+			// 	$e 		= mysql_query($s);
+			// 	$stat 	= ($e)?'sukses':'gagal';
+			// 	$out 	= json_encode(array('status'=>$stat));
+			// break;
+			// add / edit -----------------------------------------------------------------
+
+			// add / edit -----------------------------------------------------------------
+			case 'simpan':
+				$s='INSERT INTO sar_peminjaman2 set peminjam	="'.filter($_POST['peminjamTB']).'",
+													tgl_pinjam	="'.filter($_POST['tgl_pinjamTB']).'",
+													tgl_kembali	="'.filter($_POST['tgl_kembaliTB']).'",
+													keterangan	="'.filter($_POST['keteranganTB']).'"';
+				$e  =mysql_query($s);
+				$id =mysql_insert_id();
+				if(!$e){ //gagal simpan peminjaman 
+					$stat = 'gagal_simpan_peminjaman';
+				}else{ //sukses simpan peminjaman
+					$stat2=true;
+					if(isset($_POST['barang'])){
+						foreach ($_POST['barang'] as $i=> $v) {
+							$s2='INSERT INTO sar_dpeminjaman set 	peminjaman 	= '.$id.',
+																	barang 		= "'.$v.'"';
+							$e2    =mysql_query($s2);
+							$stat2 =$e2?true:false;
+						}
+					}$stat=$stat2?'sukses':'gagal_simpan_barang';
+				}$out=json_encode(array('status'=>$stat));
 			break;
-			// add / edit -----------------------------------------------------------------
 
-			// add / edit -----------------------------------------------------------------
-			case 'simpanall':
+			case 'simpanx':
 				$s = 'SELECT * from sar_dftp';
-						$e = mysql_query($s);
-						$ar=array();
-						while($r = mysql_fetch_assoc($e)){
-							$ar[]=array('barang'=>$r['barang']);
-						}
-						$err = true;
-						foreach($ar as $i => $v){
-							$s2 = 'INSERT INTO sar_peminjaman set peminjam = "'.$_POST['peminjamTB'].'",
-    									 tanggal1 = "'.$_POST['tanggal1TB'].'",
-    									 tanggal2 = "'.$_POST['tanggal2TB'].'",
+				$e = mysql_query($s);
+				$ar=array();
+				while($r = mysql_fetch_assoc($e)){
+					$ar[]=array('barang'=>$r['barang']);
+				}
+				$err = true;
+				foreach($ar as $i => $v){
+					$s2 = 'INSERT INTO sar_peminjaman set peminjam = "'.$_POST['peminjamTB'].'",
+								 tanggal1 = "'.$_POST['tanggal1TB'].'",
+								 tanggal2 = "'.$_POST['tanggal2TB'].'",
 
-    									 status = 0,
-										lokasi 	= '.$_POST['lokasiH'].',
-    									barang ='.$v['barang'] ;
-    									/*status =jika terpinjam =1, tersedia=0*/
+								 status = 0,
+								lokasi 	= '.$_POST['lokasiH'].',
+								barang ='.$v['barang'] ;
+				  	$e2 = mysql_query($s2);
+				  	if(!$e2)
+				      $err=false;
+				}
 
-    									//  status = 1, 
-    									// barang ='.$v['barang'] ;
-    									/*jika terpinjam =1, tersedia=0*/
-						// var_dump($s2);exit();
-
-						  	$e2 = mysql_query($s2);
-						  	if(!$e2)
-						      $err=false;
-						}
-
-						$sql    = 'DELETE from sar_dftp ';
-						$e3    = mysql_query($sql);
-						// var_dump($sql);exit();
-						$stat=(!$err&$e3)?'gagal':'sukses';
-						$out = json_encode(array('status'=>$stat));
-						
-
-						$stat=(!$err)?'gagal':'sukses';
-						$out = json_encode(array('status'=>$stat));
-
-
-				// $lokasi     = isset($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
-				// $s 		= 'INSERT INTO '.$tb.' set 	
-				// 						barang 	= "'.filter($_POST['kode']).'",
-				// 						peminjam 	= "'.filter($_POST['peminjamTB']).'",
-				// 						tanggal1 	= "'.filter($_POST['tanggal1TB']).'",
-				// 						tanggal2 	= "'.filter($_POST['tanggal2TB']).'",
-				// 						tempat 	= "'.filter($_POST['tempatTB']).'",
-				// 						keterangan 	= "'.filter($_POST['keteranganTB']).'",
-				// 						lokasi 	= '.$lokasi.',
-				// 						status 	= 1';
-				// // $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// // var_dump($s2);exit();
-				// $e 		= mysql_query($s);
-				// $stat 	= ($e)?'sukses':'gagal';
-				// $out 	= json_encode(array('status'=>$stat));
-
+				$sql  = 'DELETE from sar_dftp ';
+				$e3   = mysql_query($sql);
+				$stat =(!$err&$e3)?'gagal':'sukses';
+				$stat =(!$err)?'gagal':'sukses';
+				$out  = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			

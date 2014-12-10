@@ -38,7 +38,7 @@
             <th class="text-left">Keterangan</th>
             <th class="text-left">Aksi</th>
         </tr>
-        <tr style="display:none;" id="cariTR" class="selected">
+        <!-- <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-left"></th>
             <th class="text-left"><input placeholder="kelas" id="kelasS" name="kelasS"></th>
             <th class="text-left"><input placeholder="wali" id="waliS" name="waliS"></th>
@@ -46,7 +46,7 @@
             <th class="text-left"></th>
             <th class="text-left"></th>
             <th class="text-left"></th>
-        </tr>
+        </tr> -->
     </thead>
 
     <tbody id="tbody">
