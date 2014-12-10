@@ -9,6 +9,7 @@
 	$tb   = 'sar_'.$mnu;
 	$tb2  = 'sar_'.$mnu2;
 	// $out=array();
+	
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
