@@ -870,7 +870,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     $('#k_susutTB').val(dt.data.susut);
                                     $('#k_keteranganTB').val(dt.data.keterangan);
                                     var img;
-                                    if(dt.data.photo2!=''){//ada gambar
+                                    if(dt.data.photo2!='' && dt.data.photo2!=null){//ada gambar
                                         img='../img/upload/'+dt.data.photo2;
                                     }else{
                                         img='../img/no_image.jpg';

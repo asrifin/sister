@@ -26,7 +26,7 @@
 			$namaAwal = $_FILES[0]['name'];
 			$namaSkrg = $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
 			$src      = $_FILES[0]['tmp_name'];
-			$destix   = '../img/upload/'.basename($namaSkrg);
+			$destix   = '../../img/upload/'.basename($namaSkrg);
 
 			if(move_uploaded_file($src, $destix))
 				$o=array('status'=>'sukses','file'=>$namaSkrg);
@@ -465,7 +465,7 @@
 						}else{ //edit
 							$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
 							if(isset($_POST['photo_asal'])){ //change image
-								$img='../img/upload/'.$_POST['photo_asal'];
+								$img='../../img/upload/'.$_POST['photo_asal'];
 								if(file_exists($img)){ //checking image is exist
 									$delimg = unlink($img);
 									$stat2  = !$delimg?false:true;
