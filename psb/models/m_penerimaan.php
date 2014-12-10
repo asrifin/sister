@@ -4,8 +4,10 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'semester';
-	$tb  = 'aka_'.$mnu;
+	$mnu = 'calonsiswa';
+	$mnu2 = 'siswa';
+	$tb  = 'psb_'.$mnu;
+	$tb2  = 'aka_'.$mnu2;
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -15,17 +17,16 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$semester    = trim($_POST[$mnu.'S'])?filter($_POST[$mnu.'S']):'';
-				$keterangan  = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$nopendaftaran = trim($_POST['no_pendaftaranS'])?filter($_POST['no_pendaftaranS']):'';
+				// $semester    = trim($_POST[$mnu.'S'])?filter($_POST[$mnu.'S']):'';
+				$nama  = trim($_POST['namaS'])?filter($_POST['namaS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
-							tahunajaran like "%'.$tahunajaran.'%" and
-							nama like "%'.$semester.'%" and
-							keterangan like "%'.$keterangan.'%"
+							nopendaftaran like "%'.$nopendaftaran.'%" and
+							nama like "%'.$nama.'%"
 						ORDER 
-							BY urut asc';
+							BY nopendaftaran asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -48,6 +49,13 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
+						// 						if($res['idsiswa']!=0){
+						// 	$ts=mysql_query("SELECT nis,nisn FROM aka_siswa WHERE replid='".$res['idsiswa']."'");
+						// 	$rs=mysql_fetch_array($ts);
+						// 	$res['nis']=$rs['nis'];
+						// 	$res['nisn']=$rs['nisn'];
+						// }
+
 						if($res['aktif']=1){
 							$dis  = 'disabled';
 							$ico  = 'checkmark';
@@ -59,6 +67,7 @@
 							$hint = 'Aktifkan';
 							$func = 'onclick="aktifkan('.$res['replid'].');"';
 						}
+
 						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -67,10 +76,26 @@
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
+							//Tombol Status								 
+						if($res['status']==1){
+						$btn_terima ='<td>
+									<button data-hint="Klik untuk membatalkan penerimaan"  class="bg-darkGreen fg-white" onclick="viewFR('.$res['replid'].');">
+										Diterima
+									</button>
+								 </td>';
+						}else
+						$btn_terima ='<td>
+									<button data-hint="Klik untuk melakukan penerimaan"  onclick="viewFR('.$res['replid'].');">
+										Blm diterima
+									</button>
+								 </td>';						
+
 						$out.= '<tr>
-									<td>'.$nox.'</td>
+									<td>'.$res['nopendaftaran'].'</td>
 									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
-									<td>'.$res['keterangan'].'</td>
+									<td>-</td>
+									<td>-</td>
+									'.$btn_terima.'
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -93,7 +118,7 @@
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e2 = mysql_query($s2);
+				$e2 = mysql_query($s2) or die(mysql_error());
 				if(!$e2){
 					$stat = 'gagal menyimpan';
 				}else{
@@ -123,15 +148,13 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'semester'   =>$r['nama'],
-							'keterangan' =>$r['keterangan'],
+							'nama'   =>$r['nama'],
+							'nopendaftaran' =>$r['nopendaftaran'],
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 		}
 	}echo $out;
 
-	// ---------------------- //
-	// -- created by epiii -- //
-	// ---------------------- //
+	
 ?>

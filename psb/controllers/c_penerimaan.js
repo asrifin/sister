@@ -1,40 +1,54 @@
-var mnu       = 'semester';
+var mnu       = 'penerimaan';
 var mnu2      = 'departemen';
 var mnu3      = 'tahunajaran';
+var mnu4      = 'kelompok';
 var dir       = 'models/m_'+mnu+'.php';
-var dir2      = 'models/m_'+mnu2+'.php';
-var dir3      = 'models/m_'+mnu3+'.php';
+var dir2      = '../akademik/models/m_'+mnu2+'.php';
+var dir3      = '../akademik/models/m_'+mnu3+'.php';
+var dir4       = 'models/m_'+mnu4+'.php';
 var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
+
+                        +'<label>Nama</label>'
+                        +'<div class="input-control text">'
+                            +'<input disabled type="text" name="namaTB" id="namaTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
                         
+                        +'<label>No Pendaftaran</label>'
+                        +'<div class="input-control text">'
+                            +'<input disabled type="text" name="nopendaftaranTB" id="nopendaftaranTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<label>sebagai siswa aktif pada</label>'
+
                         +'<label>Departemen</label>'
                         +'<div class="input-control text">'
                             +'<input type="hidden" name="departemenH" id="departemenH">'
                             +'<input disabled type="text" name="departemenTB" id="departemenTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        
-                        +'<label>Tahun Ajaran</label>'
+                                                                        
+                        +'<label>Angkatan</label>'
                         +'<div class="input-control text">'
-                            +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
-                            +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
+                            +'<input disabled type="text" name="angkatanTB" id="angkatanTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        
-                        +'<label>'+mnu+'</label>'
+
+                        +'<label>No Induk</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="'+mnu+'" required type="text" name="'+mnu+'TB" id="'+mnu+'TB">'
+                            +'<input required type="text" name="no_indukTB" id="no_indukTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                            // +'<input placeholder="'+mnu+'" oninvalid="this.setCustomValidity(\'isi dulu gan\');" required type="text" name="'+mnu+'TB" id="'+mnu+'TB">'
-                        
-                        +'<label>Keterangan</label>'
-                        +'<div class="input-control textarea">'
-                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
+
+                        +'<label>NISN</label>'
+                        +'<div class="input-control text">'
+                            +'<input required type="text" name="nisnTB" id="nisnTB">'
+                            +'<button class="btn-clear"></button>'
                         +'</div>'
                         
                         +'<div class="form-actions">' 
@@ -48,28 +62,29 @@ var contentFR = '';
         // cmbdepartemen(false,'');
 
         //add form
-        $("#tambahBC").on('click', function(){
-            viewFR('');
-        });
+        // $("#tambahBC").on('click', function(){
+        //     viewFR('');
+        // });
 
         //search action
         $('#tahunajaranS').on('change',function (){
             viewTB();
         });$('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
-        });$('#tingkatS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
-        });$('#keteranganS').keydown(function(e){
+        });$('#kelompokS').keydown(function(e){
             if(e.keyCode==13)
                 viewTB();
         });
+        // $('#keteranganS').keydown(function(e){
+        //     if(e.keyCode==13)
+        //         viewTB();
+        // });
 
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
-            $('#tingkatS').val('');
-            $('#keteraganS').val('');
+            $('#kelompokS').val('');
+            // $('#keteraganS').val('');
         });
     }); 
 // end of save process ---
@@ -124,6 +139,34 @@ var contentFR = '';
     }
 //end of combo tahunajaran ---
 
+// combo kelompok ---
+    function cmbkelompok(thn){
+        $.ajax({
+            url:dir4,
+            data:'aksi=cmbkelompok&tahunajaran='+thn,
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                // alert(dt.status);return false;
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.kelompok, function(id,item){
+                        if(item.aktif=='1'){
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.kelompok+' (aktif)</option>';
+                        }else{
+                            out+='<option value="'+item.replid+'">'+item.kelompok+'</option>';
+                        }
+                    });
+                }$('#kelompokS').html(out);
+                viewTB(); 
+            }
+        });
+    }
+//end of combo tingkat ---
+
+
 //save process ---
     function simpan(){
         var urlx ='&aksi=simpan';
@@ -157,15 +200,15 @@ var contentFR = '';
 // view table ---
     function viewTB(){
         var aksi ='aksi=tampil';
-        var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&semesterS='+$('#semesterS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        var cari = '&no_pendaftaranS='+$('#no_pendaftaranS').val()
+                    +'&namaS='+$('#namaS').val()
+                    // +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="7"><img src="../img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -193,7 +236,7 @@ var contentFR = '';
                         dataType:'json',
                         success:function(dt){
                             $('#departemenH').val($('#departemenS').val());
-                            $('#tahunajaranH').val($('#tahunajaranS').val());
+                            // $('#namaH').val($('#tahunajaranS').val());
                             var out;
                             if(dt.status!='sukses'){
                                 out=dt.status;
@@ -257,7 +300,7 @@ var contentFR = '';
             type:"post",
             data: datax+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="7"><img src="../img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -340,6 +383,3 @@ function notif(cont,clr) {
     }
 //end of aktifkan process ---
 
-    // ---------------------- //
-    // -- created by epiii -- //
-    // ---------------------- //

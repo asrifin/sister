@@ -7,7 +7,7 @@
 <h4 style="color:white;">Penerimaan Siswa Baru</h4>
 <div id="loadarea"></div>
 
-<button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<!-- <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button> -->
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 <div class="input-control select span3">
     <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
@@ -30,7 +30,7 @@
             <th class="text-left">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-left"><input placeholder="No Pendaftaran" id="no_pendaftanS" name="no_pendaftanS"></th>
+            <th class="text-left"><input placeholder="No Pendaftaran" id="no_pendaftaranS" name="no_pendaftaranS"></th>
             <th class="text-left"><input placeholder="nama" id="namaS" name="namaS"></th>
             <th class="text-left"></th>
             <th class="text-left"></th>
