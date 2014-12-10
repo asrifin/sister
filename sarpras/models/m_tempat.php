@@ -43,7 +43,16 @@
 				// $obj 	= new pagination_class($sql,$starting,$recpage);
 				$result =$obj->result;
 
+<<<<<<< HEAD
+				$recpage = 5;
+				$aksi    ='tampil';
+				$subaksi ='';
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$result  = $obj->result;
+
+=======
 				
+>>>>>>> 0ae5dce3735ed283bd5a3cf3a20162f4e226d92d
 				#ada data
 				$jum	= mysql_num_rows($result);
 				$out ='';
