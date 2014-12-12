@@ -117,16 +117,15 @@
 								t.tahunajaran as tahun
 							from '.$tb.' k, aka_tahunajaran t 
 							WHERE 
-								t.lokasi= l.replid and
-								t.replid='.$_POST['replid'];
+								k.tahunajaran= t.replid and
+								k.replid='.$_POST['replid'];
 				// var_dump($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				// $stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'kode'       =>$r['kode'],
-							'lokasi'     =>$r['lokasi'],
-							'nama'       =>$r['nama'],
+							'tanggal1'     =>$r['tanggal1'],
+							'tanggal2'       =>$r['tanggal2'],
 							'keterangan' =>$r['keterangan']
 						));
 			break;
