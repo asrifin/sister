@@ -2,11 +2,49 @@ var mnu       ='peminjaman';
 var mnu2      ='lokasi'; 
 var dir       ='models/m_'+mnu+'.php'; 
 var dir2      ='models/m_'+mnu2+'.php'; 
-var contentFR ='';
+var contentAdd=contentDetail='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR+='<div style="overflow:scroll;height:500px;"  class="">'
+        contentDetail+=''
+                +'<div style="overflow:scroll;height:500px;"  class="">'
+                    //keterangan peminjaman 
+                    +'<legend>Data Peminjaman</legend>'
+                    +'<table>'
+                        +'<tr>'
+                            +'<td><b>Peminjam</b></td>'
+                            +'<td id="peminjamTD"></td>'
+                        +'</tr>'
+                        +'<tr>'
+                            +'<td><b>Tanggal Pinjam</b></td>'
+                            +'<td id="tanggal_pinjamTD"></td>'
+                        +'</tr>'
+                        +'<tr>'
+                            +'<td><b>Tanggal Wajib Kembali</b></td>'
+                            +'<td  id="tanggal_kembaliTD"></td>'
+                            +'<td>'
+                        +'</tr>'
+                        +'<tr>'
+                            +'<td><b>Keterangan</b></td>'
+                            +'<td  id="keteranganTD"></td>'
+                            +'<td>'
+                        +'</tr>'
+                    +'</table>'
+                    //detail barang
+                    +'<legend>Detail Barang</legend>'
+                    +'<table class="table hovered bordered striped">'
+                        +'<thead>'
+                            +'<tr style="color:white;"class="info">'
+                                +'<th class="text-center">Kode</th>'
+                                +'<th class="text-center">Barang</th>'
+                                +'<th class="text-center">Tgl Kembali</th>'
+                                +'<th class="text-center">Aksi</th>'
+                            +'</tr>'
+                        +'</thead>'
+                        +'<tbody id="barangTBL2"></tbody>'
+                    +'</table>'
+                +'</div>';
+        contentAdd+='<div style="overflow:scroll;height:500px;"  class="">'
                    +'<legend>Data Barang</legend>'
                         +'<div class="input-control text">'
                             +'<input placeholder="kode/nama barang" id="barangTB">'
@@ -73,7 +111,6 @@ var contentFR ='';
 
                     +'</form>'
                 +'</div>';
-
         //combo lokasi
         cmblokasi();
 
@@ -167,9 +204,8 @@ var contentFR ='';
     function viewTB(lok){ //edit by epiii 
         var aksi ='aksi=tampil';
         var cari ='&lokasiS='+lok
-                    // +'&kodeS='+$('#kodeS').val()
-                    +'&peminjamS='+$('#peminjamS').val();
-                    // +'&keteranganS='+$('#keteranganS').val()
+                 +'&peminjamS='+$('#peminjamS').val()
+                 +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -187,32 +223,70 @@ var contentFR ='';
 
 // form ---
     function viewFR(id){
-        // $.Dialog.autoResize;
         var lok = $('#lokasiS').val();
         $.Dialog({
-            shadow: true,
-            overlay: true,
-            draggable: true,
-            // width: 'auto',
-            height: 'auto',
-            width: '35%',
-            // width: 500,
-            padding: 20,
-            // padding: 10,
+            shadow:true,
+            overlay:true,
+            draggable:true,
+            height:'auto',
+            width:'35%',
+            padding:20,
             onShow: function(){
                 var titlex;
-                titlex='<span class="icon-plus-2"></span> Tambah ';
-                $.ajax({
-                    url:dir2,
-                    data:'aksi=cmblokasi&replid='+$('#lokasiS').val(),
-                    type:'post',
-                    dataType:'json',
-                    success:function(dt){
-                        $('#lokasiTB').val(dt.lokasi[0].nama);
-                        $('#lokasiH').val($('#lokasiS').val());
-                    }
-                });
-                $.Dialog.title(titlex+' '+mnu); // edit by epiii
+                var contentFR;
+                if(id==''){ // add form
+                    titlex='<span class="icon-plus-2"></span> Tambah ';
+                    $.ajax({
+                        url:dir2,
+                        data:'aksi=cmblokasi&replid='+$('#lokasiS').val(),
+                        type:'post',
+                        dataType:'json',
+                        success:function(dt){
+                            $('#lokasiTB').val(dt.lokasi[0].nama);
+                            $('#lokasiH').val($('#lokasiS').val());
+                        }
+                    });contentFR=contentAdd;
+                }else{ //detail view
+                    titlex='<span class="icon-search"></span> Detail barang ';
+                    $.ajax({
+                        url:dir,
+                        data:'aksi=detail&peminjaman='+id,
+                        type:'post',
+                        dataType:'json',
+                        success:function(dt){
+                            // console.log(dt);
+                            if(dt.status!='sukses'){
+                                notif(dt.status,'red');
+                            }else{
+                                // data peminjaman
+                                $('#peminjamTD').html(': '+dt.data.peminjam);
+                                $('#tanggal_pinjamTD').html(': '+dt.data.tgl_pinjam);
+                                $('#tanggal_kembaliTD').html(': '+dt.data.tgl_kembali);
+                                $('#keteranganTD').html(': '+dt.data.keterangan);
+                                // data detail barang
+                                var tbl='';
+                                $.each(dt.data.barangArr,function(id,item){
+                                    var btn;
+                                    if(item.status!='1'){ //belum dikembalikan
+                                        if(item.tgl_kembali2>dt.data.tgl_kembali){
+                                            btn=''
+                                        }else{
+
+                                        }
+                                    }else{ // 1 = dikembalikan
+
+                                    }
+                                    tbl+='<tr>'
+                                        +'<td>'+item.kode+'</td>'
+                                        +'<td>'+item.barang+'</td>'
+                                        +'<td>'+item.tgl_kembali2+'</td>'
+                                        +'<td><button data-hint="kembalikan"  class="'+(item.status==1?'disabled':'')+'"><i class="icon-cycle"></i></button></td>'
+                                    +'</tr>';
+                                });$('#barangTBL2').html(tbl);
+                            }
+                        }
+                    });contentFR=contentDetail;
+                }$.Dialog.title(titlex+' '+mnu); // edit by epiii
                 $.Dialog.content(contentFR);
                 // barangExist();
             }
@@ -242,7 +316,7 @@ var contentFR ='';
                 return false;
             }
         });
-    }
+    }   
 
 // hapus barang terpilih
     function barangDel(id){
@@ -311,30 +385,6 @@ var contentFR ='';
     }
 //end of paging ---
     
-//del process ---
-    function deldftp(id){
-        if(confirm('melanjutkan untuk menghapus data?'))
-        $.ajax({
-            url:dir,
-            type:'post',
-            data:'aksi=hapusdftp&replid='+id,
-            dataType:'json',
-            success:function(dt){
-                var cont,clr;
-                if(dt.status!='sukses'){
-                    cont = '..Gagal Menghapus '+dt.terhapus+' ..';
-                    clr  ='red';
-                }else{
-                    viewTB3($('').val());
-                    cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
-                    clr  ='green';
-                }
-                notif(cont,clr);
-            }
-        });
-    }
-//end of del process ---
-
 // notifikasi
 function notif(cont,clr) {
     var not = $.Notify({

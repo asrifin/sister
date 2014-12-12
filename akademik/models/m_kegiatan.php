@@ -6,9 +6,10 @@
 	require_once '../../lib/tglindo.php';
 	$mnu  = 'kegiatan';
 	$mnu2 = 'tahunajaran';
-	$tb   = 'sar_'.$mnu;
-	$tb2  = 'sar_'.$mnu2;
+	$tb   = 'aka_'.$mnu;
+	$tb2  = 'aka_'.$mnu2;
 	// $out=array();
+	
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
@@ -85,12 +86,12 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	lokasi 	= "'.filter($_POST['lokasiH']).'",
-										kode 	= "'.filter($_POST['kodeTB']).'",
-										nama 	= "'.filter($_POST['namaTB']).'",
+				$s 		= $tb.' set 	tahunajaran 	= "'.filter($_POST['tahunajaranH']).'",
+										tanggal1 	= "'.filter($_POST['tanggal1TB']).'",
+										tanggal2 	= "'.filter($_POST['tanggal2TB']).'",
 										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// var_dump($s2);exit();
+				// var_dump($ss2);exit();
 				$e 		= mysql_query($s2);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array('status'=>$stat));
@@ -103,29 +104,28 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['keterangan']));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT 
-								t.kode,
-								t.nama,
-								t.keterangan,
-								l.nama as lokasi
-							from '.$tb.' t, sar_lokasi l 
+								k.tanggal1,
+								k.tanggal2,
+								k.keterangan,
+								t.tahunajaran as tahun
+							from '.$tb.' k, aka_tahunajaran t 
 							WHERE 
-								t.lokasi= l.replid and
-								t.replid='.$_POST['replid'];
+								k.tahunajaran= t.replid and
+								k.replid='.$_POST['replid'];
 				// var_dump($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				// $stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'kode'       =>$r['kode'],
-							'lokasi'     =>$r['lokasi'],
-							'nama'       =>$r['nama'],
+							'tanggal1'     =>$r['tanggal1'],
+							'tanggal2'       =>$r['tanggal2'],
 							'keterangan' =>$r['keterangan']
 						));
 			break;

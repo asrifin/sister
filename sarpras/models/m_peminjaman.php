@@ -1,6 +1,5 @@
 <?php
 	session_start();
-	// error_reporting(0);
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
@@ -12,39 +11,39 @@
 	$tb2  = 'sar_'.$mnu2;
 
 	if(!isset($_POST['aksi'])){
-		if($_GET['aksi']=='autocomp'){
+		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
 			$page       = $_GET['page']; // get the requested page
 			$limit      = $_GET['rows']; // get how many rows we want to have into the grid
 			$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
 			$sord       = $_GET['sord']; // get the direction
 			$searchTerm = $_GET['searchTerm'];
 
-			if(!$sidx) $sidx =1;
-			$ss     = 'SELECT * 
-						FROM(
-							SELECT
-								b.replid,
-								k.nama,
-								CONCAT(l.kode,"/",g.kode,"/",t.kode,"/",k.kode,"/",LPAD(b.urut,5,0)) kode
-							FROM
-								sar_barang b
-								JOIN sar_tempat t on t.replid = b.tempat
-								JOIN sar_lokasi l on l.replid = t.lokasi
-								JOIN sar_katalog k on k.replid = b.katalog
-								JOIN sar_grup g on g.replid = k.grup
-							where 
-								`status` = 1 
-								'.(isset($_POST['barang']) and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
-								and  l.replid = '.$_GET['lokasi'].' 
-							)tb
-						WHERE	
-							tb.nama LIKE "%'.$searchTerm.'%"
-							OR tb.kode LIKE "%'.$searchTerm.'%"';
+			if(!$sidx) 
+				$sidx =1;
+			$ss=	'SELECT * 
+					FROM(
+						SELECT
+							b.replid,
+							k.nama,
+							CONCAT(l.kode,"/",g.kode,"/",t.kode,"/",k.kode,"/",LPAD(b.urut,5,0)) kode
+						FROM
+							sar_barang b
+							JOIN sar_tempat t on t.replid = b.tempat
+							JOIN sar_lokasi l on l.replid = t.lokasi
+							JOIN sar_katalog k on k.replid = b.katalog
+							JOIN sar_grup g on g.replid = k.grup
+						where 
+							`status` = 1 
+							'.(isset($_POST['barang']) and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
+							and  l.replid = '.$_GET['lokasi'].' 
+						)tb
+					WHERE	
+						tb.nama LIKE "%'.$searchTerm.'%"
+						OR tb.kode LIKE "%'.$searchTerm.'%"';
 							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
-			// print_r($ss);exit();
+			//print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
-			// $count  = $row['count'];
 			$count  = mysql_num_rows($result);
 
 			if( $count >0 ) {
@@ -61,15 +60,14 @@
 			}
 			// print_r($ss);exit();
 			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
-			$rows=array();
+			$rows 	= array();
 			while($row = mysql_fetch_assoc($result)) {
 				$rows[]= array(
 					'replid' =>$row['replid'],
 					'nama'   =>$row['nama'],
 					'kode'   =>$row['kode']
 				);
-			}
-			$response=array(
+			}$response=array(
 				'page'    =>$page,
 				'total'   =>$total_pages,
 				'records' =>$count,
@@ -78,23 +76,34 @@
 		}else{
 			$out=json_encode(array('status'=>'invalid_no_post'));	
 		}
-	
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$lokasi   = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
 				$peminjam = isset($_POST['peminjamS'])?filter(trim($_POST['peminjamS'])):'';
+				$keterangan = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
 				$s        = 'SELECT 
-								p.*,b.kode,b.katalog,k.nama 
-							FROM sar_peminjaman2 p
-								LEFT JOIN sar_barang b ON b.replid=p.barang 
-								LEFT JOIN sar_katalog k ON k.replid=b.katalog 
-							WHERE
-								p.lokasi ='.$lokasi.' and					
-								p.status=0 and
-								p.peminjam LIKE "%'.$peminjam.'%"
-							ORDER BY p.replid asc';
+								tb.*,
+								IF(tersedia=allitem,"lunas","hutang")status
+							from(
+								SELECT
+									p.*,(
+										SELECT COUNT(*)
+										from sar_dpeminjaman d,sar_barang b
+										where d.peminjaman = p.replid AND d.`status` = 1
+									)tersedia,(
+										SELECT COUNT(*)
+										from sar_dpeminjaman d
+										where d.peminjaman = p.replid 
+									)allitem
+								FROM
+									sar_peminjaman2 p
+								WHERE 
+									p.lokasi 	 ='.$lokasi.' AND
+									p.peminjam 	 LIKE "%'.$peminjam.'%" AND
+									p.keterangan LIKE "%'.$keterangan.'%"
+							)tb';
 				// print_r($s);exit(); 	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -113,20 +122,16 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
-						$btn ='<td>
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
-										<i class="icon-pencil on-left"></i>
-									</button>
-									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
-										<i class="icon-remove on-left"></i>
-								 </td>';
 						$out.= '<tr>
 									<td>'.$res['peminjam'].'</td>
-									<td>'.$res['nama'].'</br>'.$res['kode'].'</td>
-									<td>'.tgl_indo($res['tanggal1']).'</td>
-									<td>'.tgl_indo($res['tanggal2']).'</td>
-									<td>'.$res['tempat'].'</td>
+									<td>'.tgl_indo($res['tgl_pinjam']).'</td>
+									<td>'.tgl_indo($res['tgl_kembali']).'</td>
 									<td>'.$res['keterangan'].'</td>
+									<td>
+										<button onclick="viewFR('.$res['replid'].');" '.($res['status']=='hutang'?'data-hint="status| '.($res['allitem']-$res['tersedia']).' belum dikembalikan" class="warning"':'class="info" data-hint="Status|Sudah dikembalikan"').' >
+											<i class="icon-search on-left"></i>'.$res['allitem'].' item
+										</button>
+									 </td>
 								</tr>';
 						$nox++;
 					}
@@ -141,134 +146,10 @@
 			break; 
 			// view -----------------------------------------------------------------
 
-			case 'tampil2':
-				$nama = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
-				
-				$sql = 'SELECT b.replid, b.kode, k.nama, b.status
-						FROM sar_barang b 
-						LEFT JOIN sar_katalog k ON k.replid=b.katalog 
-						WHERE
-						b.status = 1 and 
-						b.replid NOT IN (SELECT barang FROM sar_dftp) and			
-						k.nama LIKE "%'.$nama.'%"
-						ORDER BY b.replid asc';
-						// , sar_barang b, sar_katalog k
-				// print_r($sql);exit(); 	
-				if(isset($_POST['starting'])){ //nilai awal halaman
-					$starting=$_POST['starting'];
-				}else{
-					$starting=0;
-				}
-				// $menu='tampil';	
-				$recpage= 3;//jumlah data per halaman
-				$aksi="tampil2";
-				$subaksi="barang";
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-				$result =$obj->result;
-
-				#ada data
-				$jum	= mysql_num_rows($result);
-				$out ='';
-				if($jum!=0){	
-					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
-						$btn ='<td>
-									
-									<button data-hint="hapus"  class="button" onclick="pilih('.$res['replid'].');">
-										<i class="icon-enter"></i>
-								 </td>';
-						$out.= '<tr>
-									
-									<td>'.$res['kode'].'</td>
-									<td>'.$res['nama'].'</td>
-									'.$btn.'
-								</tr>';
-						$nox++;
-									// <td>'.$res['status'].'</td>
-					}
-				}else{ #kosong
-					$out.= '<tr align="center">
-							<td  colspan=9 ><span style="color:red;text-align:center;">
-							... data tidak ditemukan...</span></td></tr>';
-				}
-				#link paging
-				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-			break; 
-			// view -----------------------------------------------------------------
-
-			case 'tampil3':
-				// $nama     = trim($_POST['namaS'])?filter($_POST['namaS']):'';
-				// $peminjam     = trim($_POST['peminjamS'])?filter($_POST['peminjamS']):'';
-				
-				$sql = 'SELECT d.*,b.kode,b.katalog,k.nama 
-						FROM sar_dftp d
-						LEFT JOIN sar_barang b ON b.replid=d.barang 
-						LEFT JOIN sar_katalog k ON k.replid=b.katalog 
-						
-						ORDER BY d.replid asc';
-						// , sar_barang b, sar_katalog k
-				// print_r($sql);exit(); 	
-				if(isset($_POST['starting'])){ //nilai awal halaman
-					$starting=$_POST['starting'];
-				}else{
-					$starting=0;
-				}
-				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
-				$aksi="tampil3";
-				$subaksi="dftp";
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-				$result =$obj->result;
-
-				#ada data
-				$jum	= mysql_num_rows($result);
-				$out ='';
-				if($jum!=0){	
-					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
-						$btn ='<td>
-									
-									<button data-hint="hapus"  class="button" onclick="deldftp('.$res['replid'].');">
-										<i class="icon-remove on-left"></i>
-								 </td>';
-						$out.= '<tr>
-									
-									<td>'.$res['kode'].'</td>
-									<td>'.$res['nama'].'</td>
-									'.$btn.'
-								</tr>';
-						$nox++;
-									// <td>'.$res['status'].'</td>
-					}
-				}else{ #kosong
-					$out.= '<tr align="center">
-							<td  colspan=9 ><span style="color:red;text-align:center;">
-							... data tidak ditemukan...</span></td></tr>';
-				}
-				#link paging
-				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-			break; 
-			// view -----------------------------------------------------------------
-
-			// add / edit -----------------------------------------------------------------
-			// case 'simpandftp':
-			// 	$s 		= 'INSERT INTO sar_dftp'.' set 	
-			// 							barang 	= "'.filter($_POST['kode']).'"';
-			// 	// $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-			// 	// var_dump($s2);exit();
-			// 	$e 		= mysql_query($s);
-			// 	$stat 	= ($e)?'sukses':'gagal';
-			// 	$out 	= json_encode(array('status'=>$stat));
-			// break;
-			// add / edit -----------------------------------------------------------------
-
-			// add / edit -----------------------------------------------------------------
+			// add  -----------------------------------------------------------------
 			case 'simpan':
-				$s='INSERT INTO sar_peminjaman2 set peminjam	="'.filter($_POST['peminjamTB']).'",
+				$s='INSERT INTO sar_peminjaman2 set lokasi		='.$_POST['lokasiH'].',
+													peminjam	="'.filter($_POST['peminjamTB']).'",
 													tgl_pinjam	="'.filter($_POST['tgl_pinjamTB']).'",
 													tgl_kembali	="'.filter($_POST['tgl_kembaliTB']).'",
 													keterangan	="'.filter($_POST['keteranganTB']).'"';
@@ -288,53 +169,11 @@
 					}$stat=$stat2?'sukses':'gagal_simpan_barang';
 				}$out=json_encode(array('status'=>$stat));
 			break;
+			//add --------------------------------------------------------------------
 
-			case 'simpanx':
-				$s = 'SELECT * from sar_dftp';
-				$e = mysql_query($s);
-				$ar=array();
-				while($r = mysql_fetch_assoc($e)){
-					$ar[]=array('barang'=>$r['barang']);
-				}
-				$err = true;
-				foreach($ar as $i => $v){
-					$s2 = 'INSERT INTO sar_peminjaman set peminjam = "'.$_POST['peminjamTB'].'",
-								 tanggal1 = "'.$_POST['tanggal1TB'].'",
-								 tanggal2 = "'.$_POST['tanggal2TB'].'",
-
-								 status = 0,
-								lokasi 	= '.$_POST['lokasiH'].',
-								barang ='.$v['barang'] ;
-				  	$e2 = mysql_query($s2);
-				  	if(!$e2)
-				      $err=false;
-				}
-
-				$sql  = 'DELETE from sar_dftp ';
-				$e3   = mysql_query($sql);
-				$stat =(!$err&$e3)?'gagal':'sukses';
-				$stat =(!$err)?'gagal':'sukses';
-				$out  = json_encode(array('status'=>$stat));
-			break;
-			// add / edit -----------------------------------------------------------------
-			
 			// delete -----------------------------------------------------------------
 			case 'hapus':
-				// $d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from sar_dftp  where replid='.$_POST['replid']));
-				// $s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
-				$s    = 'DELETE from sar_dftp WHERE replid='.$_POST['replid'];
-				$e    = mysql_query($s);
-				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['barang']));
-			break;
-			// delete -----------------------------------------------------------------
-
-			// delete -----------------------------------------------------------------
-			case 'hapusdftp':
-				// $d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
-				$d    = mysql_fetch_assoc(mysql_query('SELECT * from sar_dftp  where replid='.$_POST['replid']));
-				// $s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$s    = 'DELETE from sar_dftp WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
@@ -343,27 +182,63 @@
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
-			// case 'ambiledit':
-			// 	$s 		= ' SELECT 
-			// 					t.kode,
-			// 					t.nama,
-			// 					t.keterangan,
-			// 					l.nama as lokasi
-			// 				from '.$tb.' t, sar_lokasi l 
-			// 				WHERE 
-			// 					t.lokasi= l.replid and
-			// 					t.replid='.$_POST['replid'];
-			// 	// var_dump($s);exit();
-			// 	$e 		= mysql_query($s);
-			// 	$r 		= mysql_fetch_assoc($e);
-			// 	// $stat 	= ($e)?'sukses':'gagal';
-			// 	$out 	= json_encode(array(
-			// 				'kode'       =>$r['kode'],
-			// 				'lokasi'     =>$r['lokasi'],
-			// 				'nama'       =>$r['nama'],
-			// 				'keterangan' =>$r['keterangan']
-			// 			));
-			// break;
+			case 'detail':
+				$s   = ' SELECT * FROM sar_peminjaman2 WHERE replid='.$_POST['peminjaman'];
+				$e   = mysql_query($s);
+				$r   = mysql_fetch_assoc($e);
+				$barangArr=array();
+				if(!$e){ 
+					$stat='gagal_view_peminjaman';
+				}else{
+					$s2 = 'SELECT
+							b.replid,
+							CONCAT(l.kode,"/",g.kode,"/",t.kode,"/",k.kode,"/",LPAD(b.urut,5,0)) kode,
+							k.nama as barang,
+							d.tgl_kembali as tgl_kembali2,
+							b.status 
+						FROM
+							sar_dpeminjaman d 
+							join sar_barang b on b.replid = d.barang
+							JOIN sar_tempat t on t.replid = b.tempat
+							JOIN sar_lokasi l on l.replid = t.lokasi
+							JOIN sar_katalog k on k.replid = b.katalog
+							JOIN sar_grup g on g.replid = k.grup
+						where 
+							d.peminjaman = '.$_POST['peminjaman'];
+					$e2 = mysql_query($s2);
+					if(!$e2){
+						$stat=mysql_error();
+					}else{
+						while ($r2=mysql_fetch_assoc($e2)) {
+							if($r2['tgl_kembali2']>$r['tgl_kembali']){
+								$stats='terlambat';
+							}
+							// else{
+							// 	if(){
+
+							// 	}
+							// }
+							$barangArr[]=array(
+									'replid'       =>$r2['replid'],
+									'kode'         =>$r2['kode'],
+									'barang'       =>$r2['barang'],
+									'tgl_kembali2' =>$r2['tgl_kembali2']!='0000-00-00'?tgl_indo($r2['tgl_kembali2']):'-',
+									'status'       =>$r2['status']
+								);
+						}$stat='sukses';
+					}
+				}
+				$out = json_encode(array(
+							'status' =>$stat,
+							'data'   =>array(
+								'replid'      =>$r['replid'],
+								'peminjam'    =>$r['peminjam'],
+								'tgl_pinjam'  =>tgl_indo($r['tgl_pinjam']),
+								'tgl_kembali' =>tgl_indo($r['tgl_kembali']),
+								'keterangan'  =>$r['keterangan'],
+								'barangArr'   =>$barangArr
+						)));
+			break;
 			// ambiledit -----------------------------------------------------------------
 
 			// cmbtempat ---------------------------------------------------------
