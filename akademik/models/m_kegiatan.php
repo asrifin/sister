@@ -6,8 +6,8 @@
 	require_once '../../lib/tglindo.php';
 	$mnu  = 'kegiatan';
 	$mnu2 = 'tahunajaran';
-	$tb   = 'sar_'.$mnu;
-	$tb2  = 'sar_'.$mnu2;
+	$tb   = 'aka_'.$mnu;
+	$tb2  = 'aka_'.$mnu2;
 	// $out=array();
 	
 
@@ -86,12 +86,12 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	lokasi 	= "'.filter($_POST['lokasiH']).'",
-										kode 	= "'.filter($_POST['kodeTB']).'",
-										nama 	= "'.filter($_POST['namaTB']).'",
+				$s 		= $tb.' set 	tahunajaran 	= "'.filter($_POST['tahunajaranH']).'",
+										tanggal1 	= "'.filter($_POST['tanggal1TB']).'",
+										tanggal2 	= "'.filter($_POST['tanggal2TB']).'",
 										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// var_dump($s2);exit();
+				// var_dump($ss2);exit();
 				$e 		= mysql_query($s2);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array('status'=>$stat));
@@ -104,18 +104,18 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['keterangan']));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT 
-								t.kode,
-								t.nama,
-								t.keterangan,
-								l.nama as lokasi
-							from '.$tb.' t, sar_lokasi l 
+								k.tanggal1,
+								k.tanggal2,
+								k.keterangan,
+								t.tahunajaran as tahun
+							from '.$tb.' k, aka_tahunajaran t 
 							WHERE 
 								t.lokasi= l.replid and
 								t.replid='.$_POST['replid'];
