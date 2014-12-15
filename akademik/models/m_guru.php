@@ -4,11 +4,75 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	$tb = 'aka_guru';
-	$out=array();
+	// $out=array();
+	
 
+	// if(!isset($_POST['aksi'])){
+	// 	$out=json_encode(array('status'=>'invalid_no_post'));		
+	// 	// $out=['status'=>'invalid_no_post'];		
 	if(!isset($_POST['aksi'])){
-		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
+		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
+			$page       = $_GET['page']; // get the requested page
+			$limit      = $_GET['rows']; // get how many rows we want to have into the grid
+			$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
+			$sord       = $_GET['sord']; // get the direction
+			$searchTerm = $_GET['searchTerm'];
+
+
+			if(!$sidx) 
+				$sidx =1;
+			$ss=	'SELECT * 
+					FROM(
+						SELECT p.nama,p.nip
+						FROM aka_guru g
+						LEFT JOIN hrd_pegawai p ON p.replid=g.pegawai
+						LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
+						LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
+						LEFT JOIN departemen d ON d.replid=t.departemen
+						where 
+							`status` = 1 
+							'.(isset($_POST['nama']) and is_array($_POST['nama']) and !is_null($_POST['nama'])?'AND b.replid NOT IN ('.$_POST['nama'].')':'').'
+							and  d.replid = '.$_GET['departemen'].' 
+						)tb
+					WHERE	
+						tb.nama LIKE "%'.$searchTerm.'%"
+						OR tb.kode LIKE "%'.$searchTerm.'%"';
+							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
+			//print_r($ss);exit();
+			$result = mysql_query($ss);
+			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
+			$count  = mysql_num_rows($result);
+
+			if( $count >0 ) {
+				$total_pages = ceil($count/$limit);
+			} else {
+				$total_pages = 0;
+			}
+			if ($page > $total_pages) $page=$total_pages;
+			$start 	= $limit*$page - $limit; // do not put $limit*($page - 1)
+			if($total_pages!=0) {
+				$ss.='ORDER BY '.$sidx.' '.$sord.' LIMIT '.$start.','.$limit;
+			}else {
+				$ss.='ORDER BY '.$sidx.' '.$sord;
+			}
+			// print_r($ss);exit();
+			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
+			$rows 	= array();
+			while($row = mysql_fetch_assoc($result)) {
+				$rows[]= array(
+					'replid' =>$row['replid'],
+					'nama'   =>$row['nama'],
+					'nip'   =>$row['nip']
+				);
+			}$response=array(
+				'page'    =>$page,
+				'total'   =>$total_pages,
+				'records' =>$count,
+				'rows'    =>$rows,
+			);$out=json_encode($response);
+		}else{
+			$out=json_encode(array('status'=>'invalid_no_post'));	
+		}
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
@@ -23,8 +87,9 @@
 						LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
 						LEFT JOIN departemen d ON d.replid=t.departemen
 						WHERE 
-							departemen like "%'.$departemen.'%" and 
-							pelajaran like "%'.$pelajaran.'%" 
+							t.departemen like "%'.$departemen.'%" and 
+							t.tahunajaran like "%'.$tahunajaran.'%" and
+							g.pelajaran like "%'.$pelajaran.'%"  
 						ORDER 
 							BY g.replid asc';
 													// var_dump($sql);exit();

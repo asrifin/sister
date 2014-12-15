@@ -130,6 +130,7 @@ function cmbdepartemen(dep){
                         }
                     });
                 }$('#tahunajaranS').html(out);
+                // }$('#tahunajaranS').html('<option="">--Semua--</option>'+out);
                 viewTB();
             }
         });
