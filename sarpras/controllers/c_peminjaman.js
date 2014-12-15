@@ -266,11 +266,21 @@ var contentAdd=contentDetail='';
                                 // data detail barang
                                 var tbl='';
                                 $.each(dt.data.barangArr,function(id,item){
+                                    var btn;
+                                    if(item.status!='1'){ //belum dikembalikan
+                                        if(item.tgl_kembali2>dt.data.tgl_kembali){
+                                            btn=''
+                                        }else{
+
+                                        }
+                                    }else{ // 1 = dikembalikan
+
+                                    }
                                     tbl+='<tr>'
                                         +'<td>'+item.kode+'</td>'
                                         +'<td>'+item.barang+'</td>'
                                         +'<td>'+item.tgl_kembali2+'</td>'
-                                        +'<td><button class="'+(item.status==1?'disabled':'')+'">Kembalikan</button></td>'
+                                        +'<td><button data-hint="kembalikan"  class="'+(item.status==1?'disabled':'')+'"><i class="icon-cycle"></i></button></td>'
                                     +'</tr>';
                                 });$('#barangTBL2').html(tbl);
                             }
@@ -306,7 +316,7 @@ var contentAdd=contentDetail='';
                 return false;
             }
         });
-    }
+    }   
 
 // hapus barang terpilih
     function barangDel(id){
@@ -375,30 +385,6 @@ var contentAdd=contentDetail='';
     }
 //end of paging ---
     
-//del process ---
-    function deldftp(id){
-        if(confirm('melanjutkan untuk menghapus data?'))
-        $.ajax({
-            url:dir,
-            type:'post',
-            data:'aksi=hapusdftp&replid='+id,
-            dataType:'json',
-            success:function(dt){
-                var cont,clr;
-                if(dt.status!='sukses'){
-                    cont = '..Gagal Menghapus '+dt.terhapus+' ..';
-                    clr  ='red';
-                }else{
-                    viewTB3($('').val());
-                    cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
-                    clr  ='green';
-                }
-                notif(cont,clr);
-            }
-        });
-    }
-//end of del process ---
-
 // notifikasi
 function notif(cont,clr) {
     var not = $.Notify({

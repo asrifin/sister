@@ -91,8 +91,8 @@
 								SELECT
 									p.*,(
 										SELECT COUNT(*)
-										from sar_dpeminjaman d
-										where d.peminjaman = p.replid AND d.`status`=1
+										from sar_dpeminjaman d,sar_barang b
+										where d.peminjaman = p.replid AND d.`status` = 1
 									)tersedia,(
 										SELECT COUNT(*)
 										from sar_dpeminjaman d
@@ -105,7 +105,7 @@
 									p.peminjam 	 LIKE "%'.$peminjam.'%" AND
 									p.keterangan LIKE "%'.$keterangan.'%"
 							)tb';
-				//print_r($s);exit(); 	
+				// print_r($s);exit(); 	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -206,15 +206,26 @@
 							JOIN sar_grup g on g.replid = k.grup
 						where 
 							d.peminjaman = '.$_POST['peminjaman'];
-					// print_r($s2);exit();
-					// $e2 = mysql_query($s2) or die(mysql_error());
 					$e2 = mysql_query($s2);
 					if(!$e2){
 						$stat=mysql_error();
-						// $stat=die(mysql_error());
 					}else{
 						while ($r2=mysql_fetch_assoc($e2)) {
-							$barangArr[]=$r2;
+							if($r2['tgl_kembali2']>$r['tgl_kembali']){
+								$stats='terlambat';
+							}
+							// else{
+							// 	if(){
+
+							// 	}
+							// }
+							$barangArr[]=array(
+									'replid'       =>$r2['replid'],
+									'kode'         =>$r2['kode'],
+									'barang'       =>$r2['barang'],
+									'tgl_kembali2' =>$r2['tgl_kembali2']!='0000-00-00'?tgl_indo($r2['tgl_kembali2']):'-',
+									'status'       =>$r2['status']
+								);
 						}$stat='sukses';
 					}
 				}
@@ -223,8 +234,8 @@
 							'data'   =>array(
 								'replid'      =>$r['replid'],
 								'peminjam'    =>$r['peminjam'],
-								'tgl_pinjam'  =>$r['tgl_pinjam'],
-								'tgl_kembali' =>$r['tgl_kembali'],
+								'tgl_pinjam'  =>tgl_indo($r['tgl_pinjam']),
+								'tgl_kembali' =>tgl_indo($r['tgl_kembali']),
 								'keterangan'  =>$r['keterangan'],
 								'barangArr'   =>$barangArr
 						)));
