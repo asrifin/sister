@@ -18,6 +18,7 @@
 			$sord       = $_GET['sord']; // get the direction
 			$searchTerm = $_GET['searchTerm'];
 
+
 			if(!$sidx) 
 				$sidx =1;
 			$ss=	'SELECT * 

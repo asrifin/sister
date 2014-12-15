@@ -10,44 +10,111 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
-                        +'<input id="idformH" type="hidden">' 
-                        
-                        +'<label>Pelajaran</label>'
-                        +'<div class="input-control select span3">'
-                        +'<select data-hint="Pelajaran" name="pelajaranS" id="pelajaranS"></select>'
-                        +'</div>'
-                        
-                        +'<label>Departemen</label>'
+       contentDetail+=''
+                +'<div style="overflow:scroll;height:500px;"  class="">'
+                    //keterangan peminjaman 
+                    +'<legend>Data Peminjaman</legend>'
+                    +'<table>'
+                        +'<tr>'
+                            +'<td><b>Peminjam</b></td>'
+                            +'<td id="peminjamTD"></td>'
+                        +'</tr>'
+                        +'<tr>'
+                            +'<td><b>Tanggal Pinjam</b></td>'
+                            +'<td id="tanggal_pinjamTD"></td>'
+                        +'</tr>'
+                        +'<tr>'
+                            +'<td><b>Tanggal Wajib Kembali</b></td>'
+                            +'<td  id="tanggal_kembaliTD"></td>'
+                            +'<td>'
+                        +'</tr>'
+                        +'<tr>'
+                            +'<td><b>Keterangan</b></td>'
+                            +'<td  id="keteranganTD"></td>'
+                            +'<td>'
+                        +'</tr>'
+                    +'</table>'
+                    //detail barang
+                    +'<legend>Detail Barang</legend>'
+                    +'<table class="table hovered bordered striped">'
+                        +'<thead>'
+                            +'<tr style="color:white;"class="info">'
+                                +'<th class="text-center">Kode</th>'
+                                +'<th class="text-center">Barang</th>'
+                                +'<th class="text-center">Tgl Kembali</th>'
+                                +'<th class="text-center">Aksi</th>'
+                            +'</tr>'
+                        +'</thead>'
+                        +'<tbody id="barangTBL2"></tbody>'
+                    +'</table>'
+                +'</div>';
+        contentAdd+='<div style="overflow:scroll;height:500px;"  class="">'
+                   +'<legend>Data Barang</legend>'
                         +'<div class="input-control text">'
-                            +'<input type="hidden" name="departemenH" id="departemenH">'
-                            +'<input disabled type="text" name="departemenTB" id="departemenTB">'
+                            +'<input placeholder="kode/nama barang" id="barangTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        
-                        +'<label>Tahun Ajaran</label>'
+                        +'<table class="table hovered bordered striped">'
+                            +'<thead>'
+                                +'<tr style="color:white;"class="info">'
+                                    +'<th class="text-center">Kode</th>'
+                                    +'<th class="text-center">Barang</th>'
+                                    +'<th class="text-center">Aksi</th>'
+                                +'</tr>'
+                            +'</thead>'
+                            +'<tbody id="barangTBL">'
+                            +'</tbody>'
+                                // +'<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih barang.. </td></tr>'
+                            +'<tfoot>'
+                            +'</tfoot>'
+                        +'</table>'
+
+                    +'<legend>Data Peminjaman</legend>'
+                    +'<form onsubmit="simpan();return false;" autocomplete="off"><input id="idformH" type="hidden">' 
+                        +'<label>Lokasi</label>'
                         +'<div class="input-control text">'
-                            +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
-                            +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
+                            +'<input  type="hidden" name="lokasiH" id="lokasiH" >'
+                            // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" '
+                            +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" >'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        
-                        +'<label>Tingkat</label>'
+
+                        +'<label>Peminjam</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="tingkat" oninvalid="this.setCustomValidity(\'isi dulu gan\');" required type="text" name="tingkatTB" id="tingkatTB">'
+                            +'<input placeholder="Nama Peminjam"  required type="text" name="peminjamTB" id="peminjamTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        
+
+                        +'<label>Tanggal Peminjaman</label>'
+                        +'<div class="input-control text" data-role="datepicker"'
+                            // +'data-date="2014-10-23"'
+                            +'data-format="yyyy-mm-dd"'
+                            +'data-effect="slide">'
+                            +'<input required="required"  id="tgl_pinjamTB" name="tgl_pinjamTB" type="text">'
+                            +'<button class="btn-date"></button>'
+                        +'</div>'
+
+                        +'<label>Tanggal Pengembalian</label>'
+                        +'<div class="input-control text" data-role="datepicker"'
+                            // +'data-date="2014-10-23"'
+                            +'data-format="yyyy-mm-dd"'
+                            +'data-effect="slide">'
+                            +'<input required="required" id="tgl_kembaliTB" name="tgl_kembaliTB" type="text">'
+                            +'<button class="btn-date"></button>'
+                        +'</div>'
+
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
-                        
+
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
-                    +'</form>';
+
+                    +'</form>'
+                +'</div>';
 
         // combo departemen
         cmbdepartemen('');
@@ -149,7 +216,8 @@ var contentFR = '';
                             out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                         }
                     });
-                }$('#pelajaranS').html(out);
+                }$('#pelajaranS').html('<option value="">---------- Semua ----------</option>'+out);
+                // alert('d '+out);return false;
                 viewTB();
             }
         });

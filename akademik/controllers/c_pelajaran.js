@@ -9,8 +9,18 @@ var contentFR = '';
 // main function ---
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
-                        +'<input id="idformH" type="text">' 
-                        +'<input type="text" id="tahunajaranH"name="tahunajaranH">'
+                        +'<input id="idformH" type="hidden">' 
+                        +'<label>Departemen</label>'
+                        +'<div class="input-control text">'
+                            +'<input type="hidden" name="departemenH" id="departemenH">'
+                            +'<input disabled type="text" name="departemenTB" id="departemenTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'                        +'<label>Tahun Ajaran</label>'
+                        +'<div class="input-control text">'
+                            +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
+                            +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
                         
                         +'<label>Mata Pelajaran</label>'
                         +'<div class="input-control text">'
@@ -193,23 +203,61 @@ var contentFR = '';
             padding: 10,
             onShow: function(){
                 var titlex;
-                if(id==''){  //add mode
-                    titlex='<span class="icon-plus-2"></span> Tambah ';
-                }else{ // edit mode
-                    titlex='<span class="icon-pencil"></span> Ubah';
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=ambiledit&replid='+id,
+                $.ajax({
+                        url:dir2,
+                        data:'aksi=cmb'+mnu2+'&replid='+$('#departemenS').val(),
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#idformH').val(id);
-                            // $('#namaTB').val (dt.nama);
-                            // $('#alamatTB').val(dt.alamat);
-                            // $('#teleponTB').val(dt.telepon);
+                            $('#departemenH').val($('#departemenS').val());
+                            $('#tahunajaranH').val($('#tahunajaranS').val());
+                            var out;
+                            if(dt.status!='sukses'){
+                                out=dt.status;
+                            }else{
+                                out=dt.departemen[0].nama;
+                            }$('#departemenTB').val(out);
+                        // form :: tahun ajaran (disabled field) --------------
+                            $.ajax({
+                                url:dir3,
+                                data:'aksi=cmbtahunajaran&departemen='+$('#departemenS').val()+'&replid='+$('#tahunajaranS').val(),
+                                dataType:'json',
+                                type:'post',
+                                success:function(dt2){
+                                    var out2;
+                                    if(dt.status!='sukses'){
+                                        out2=dt2.status;
+                                    }else{
+                                        out2=dt2.tahunajaran[0].tahunajaran;
+                                    }$('#tahunajaranTB').val(out2);
+                                    
+                                    if (id!='') { // edit mode
+                                    // form :: edit :: tampilkan data 
+                                        $.ajax({
+                                            url:dir,
+                                            data:'aksi=ambiledit&replid='+id,
+                                            type:'post',
+                                            dataType:'json',
+                                            success:function(dt3){
+                                                $('#idformH').val(id);
+                                                $('#pelajaranTB').val(dt3.nama);
+                                                $('#singkatanTB').val(dt3.kode);
+                                                $('#skmTB').val(dt3.skm);
+                                                $('#keteranganTB').val(dt3.keterangan);
+                                            }
+                                        });
+                                    // end of form :: edit :: tampilkan data 
+                                        titlex='<span class="icon-pencil"></span> Ubah ';
+                                    }else{ //add mode
+                                        titlex='<span class="icon-plus-2"></span> Tambah ';
+                                    }
+                                }
+                            });
+                        //end of  form :: tahun ajaran (disabled field) --------------
                         }
                     });
-                }$.Dialog.title(titlex+' '+mnu);
+                //end of form :: departemen (disabled field) -----------------------------
+                $.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
             }
         });
