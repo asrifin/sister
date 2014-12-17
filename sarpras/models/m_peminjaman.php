@@ -33,15 +33,15 @@
 							JOIN sar_katalog k on k.replid = b.katalog
 							JOIN sar_grup g on g.replid = k.grup
 						where 
-							`status` = 1 
-							'.(isset($_POST['barang']) and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
+							b.status = 1 
 							and  l.replid = '.$_GET['lokasi'].' 
 						)tb
 					WHERE	
 						tb.nama LIKE "%'.$searchTerm.'%"
 						OR tb.kode LIKE "%'.$searchTerm.'%"';
-							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
-			//print_r($ss);exit();
+						// '.(isset($_POST['barang']) and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
+
+			// print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -191,39 +191,76 @@
 					$stat='gagal_view_peminjaman';
 				}else{
 					$s2 = 'SELECT
-							b.replid,
-							CONCAT(l.kode,"/",g.kode,"/",t.kode,"/",k.kode,"/",LPAD(b.urut,5,0)) kode,
-							k.nama as barang,
-							d.tgl_kembali as tgl_kembali2,
-							b.status 
-						FROM
-							sar_dpeminjaman d 
-							join sar_barang b on b.replid = d.barang
-							JOIN sar_tempat t on t.replid = b.tempat
-							JOIN sar_lokasi l on l.replid = t.lokasi
-							JOIN sar_katalog k on k.replid = b.katalog
-							JOIN sar_grup g on g.replid = k.grup
-						where 
-							d.peminjaman = '.$_POST['peminjaman'];
+								b.replid,
+								CONCAT(l.kode,"/",g.kode,"/",t.kode,"/",k.kode,"/",LPAD(b.urut, 5, 0)) kode,
+								k.nama AS barang,
+								d.tgl_kembali AS tgl_kembali2,
+								CASE
+									when d.tgl_kembali="0000-00-00"  and CURDATE()>p.tgl_kembali  then 1
+									when d.tgl_kembali="0000-00-00"  and CURDATE()<=p.tgl_kembali  then 2
+									when d.tgl_kembali!="0000-00-00"  and d.tgl_kembali>p.tgl_kembali  then 3
+									when d.tgl_kembali!="0000-00-00"  and d.tgl_kembali<=p.tgl_kembali  then 4
+								END as status
+								
+							FROM
+								sar_dpeminjaman d
+								JOIN sar_peminjaman2 p ON p.replid = d.peminjaman
+								JOIN sar_barang b ON b.replid = d.barang
+								JOIN sar_tempat t ON t.replid = b.tempat
+								JOIN sar_lokasi l ON l.replid = t.lokasi
+								JOIN sar_katalog k ON k.replid = b.katalog
+								JOIN sar_grup g ON g.replid = k.grup
+							WHERE
+								d.peminjaman = '.$_POST['peminjaman'];
+					// var_dump($s2);exit();
 					$e2 = mysql_query($s2);
 					if(!$e2){
 						$stat=mysql_error();
 					}else{
 						while ($r2=mysql_fetch_assoc($e2)) {
-							if($r2['tgl_kembali2']>$r['tgl_kembali']){
-								$stats='terlambat';
+							switch ($r2['status']) {
+								case 1:
+									$ket ='masih dipinjam';
+									$clr ='blue';		
+								break;
+								case 2:
+									$ket ='terlambat, belum dikembalikan';
+									$clr ='red';		
+								break;
+								case 3:
+									$ket ='sudah mengembalikan';
+									$clr ='green';		
+								break;
+								case 4:
+									$ket ='terlambat, sudah dikembalikan';
+									$clr ='orange';		
+								break;
+								
+								/*case 'borrowed_before':
+									$stat ='masih dipinjam';
+									$clr  ='blue';		
+								break;
+								case 'borrowed_after':
+									$stat ='terlambat, belum dikembalikan';
+									$clr  ='red';		
+								break;
+								case 'returned_before':
+									$stat ='sudah mengembalikan';
+									$clr  ='green';		
+								break;
+								case 'returned_after':
+									$stat ='terlambat, sudah dikembalikan';
+									$clr  ='orange';		
+								break;*/
 							}
-							// else{
-							// 	if(){
-
-							// 	}
-							// }
 							$barangArr[]=array(
 									'replid'       =>$r2['replid'],
 									'kode'         =>$r2['kode'],
 									'barang'       =>$r2['barang'],
 									'tgl_kembali2' =>$r2['tgl_kembali2']!='0000-00-00'?tgl_indo($r2['tgl_kembali2']):'-',
-									'status'       =>$r2['status']
+									'status'       =>$r2['status'],
+									'keterangan'   =>$ket,
+									'color'        =>$clr
 								);
 						}$stat='sukses';
 					}
