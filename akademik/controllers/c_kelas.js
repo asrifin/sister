@@ -11,7 +11,8 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+        contentFR += '<div style="overflow:scroll;height:500px;"  class="">'
+                         + '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
                         +'<label>Departemen</label>'
@@ -30,7 +31,24 @@ var contentFR = '';
                         
                         +'<label>Tingkat</label>'
                         +'<div class="input-control text">'
+                            +'<input type="hidden" name="tingkatH" id="tingkatH">'
                             +'<input disabled placeholder="tingkat" required type="text" name="tingkatTB" id="tingkatTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<div class="input-control text">'
+                            // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" '
+                            +'<input placeholder="kode/nama pegawai" id="guruTB">'
+                            +'<input  type="hidden" name="guruH" id="guruH" >'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<legend>nip</legend>'
+                        +'<div class="input-control text">'
+                            +'<input disabled="disabled" placeholder="kode" id="nipTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<legend>nama</legend>'
+                        +'<div class="input-control text">'
+                            +'<input disabled="disabled" placeholder="nama wali" id="waliTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
@@ -46,13 +64,7 @@ var contentFR = '';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
-                        +'<label>Wali Kelas</label>'
-                        +'<div class="input-control text">'
-                            +'<input disabled class="span2" placeholder="NIP" required name="nipTB" id="nipTB">'
-                            +' <input class="span4" placeholder="wali kelas" required type="text" name="waliTB" id="waliTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-
+                       
                         // oninvalid="this.setCustomValidity(\'isi dulu gan\');"
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
@@ -64,6 +76,7 @@ var contentFR = '';
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
+                    +'</div>'
 
         // combo departemen
         cmbdepartemen('');
@@ -236,16 +249,16 @@ var contentFR = '';
 
 // form ---
     function viewFR(id){
-        // $.Dialog({
+  var tkt = $('#tingkatS').val();
         $.Dialog({
-            shadow: true,
-            overlay: true,
-            draggable: true,
-            width: 500,
-            padding: 10,
+            shadow:true,
+            overlay:true,
+            draggable:true,
+            height:'auto',
+            width:'35%',
+            padding:20,
             onShow: function(){
-                var titlex='';
-
+                var titlex;
                 // form :: departemen (disabled field) -----------------------------
                     $.ajax({
                         url:dir2,
@@ -253,7 +266,7 @@ var contentFR = '';
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            titlex+='';
+                            // titlex+='';
                             $('#departemenH').val($('#departemenS').val());
                             $('#tahunajaranH').val($('#tahunajaranS').val());
                             $('#tingkatH').val($('#tingkatS').val());
@@ -330,6 +343,33 @@ var contentFR = '';
                 //end of form :: departemen (disabled field) -----------------------------
                 $.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
+            }
+        });
+        $("#guruTB").combogrid({
+            debug:true,
+            width:'400px',
+            colModel: [{
+                    'align':'left',
+                    'columnName':'nip',
+                    'hide':true,
+                    'width':'55',
+                    // 'width':'8',
+                    'label':'kode'
+                },{   
+                    'columnName':'wali',
+                    'width':'40',
+                    'label':'Barang'
+                }],
+            url: dir+'?aksi=autocomp&tingkat='+tkt,
+            // url: dir+'?aksi=autocomp&lokasi='+lok+'&barang='+barangArr(),
+            // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
+            select: function( event, ui ) {
+                $('#guruH').val(ui.item.replid);
+                $('#nipTB').val(ui.item.nip);
+                $('#waliTB').val(ui.item.wali);
+                // barangAdd(ui.item.replid,ui.item.kode,ui.item.nama);
+                $('#guruTB').combogrid( "option", "url", dir+'?aksi=autocomp&tingkat='+$('#tingkatS').val() );
+                return false;
             }
         });
     }

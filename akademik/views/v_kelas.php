@@ -1,16 +1,12 @@
-<!-- aautosuggest --> 
-<!-- <script src="js/jquery.js"></script> -->
-<!-- <script type="text/javascript" src="js/combogrid/jquery-1.9.1.min.js"></script> -->
-<!-- <script type="text/javascript" src="js/combogrid/jquery.ui.combogrid-1.6.3.js"></script> -->
-<!-- <script type="text/javascript" src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script> -->
-
-<!-- <link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery-ui-1.10.1.custom.css"/> -->
-<!-- <link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery.ui.combogrid.css"/> -->
-<!--eof aautosuggest -->
-
 <script src="controllers/c_kelas.js"></script>
-<!-- <script src="js/metro/metro-button-set.js"></script> -->
+<script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
+
+<script src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
+<script src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery-ui-1.10.1.custom.css"/>
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery.ui.combogrid.css"/>
 
 <h4 style="color:white;">Kelas</h4>
 <div id="loadarea"></div>
