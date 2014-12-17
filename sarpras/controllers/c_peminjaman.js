@@ -32,14 +32,14 @@ var contentAdd=contentDetail='';
                     +'</table>'
                     //detail barang
                     +'<legend>Detail Barang</legend>'
-                    +'<button id="kembalikanBC" class="info"><i class="icon-undo"></i></button>'
+                    +'<button id="kembalikanBC" onclick="kembalikanFC();" class="info"><i class="icon-undo"></i></button>'
                     +'<table class="table hovered bordered striped">'
                         +'<thead>'
                             +'<tr style="color:white;"class="info">'
                                 +'<th class="text-center">'
-                                    +'<div class="input-control checkbox">'
-                                        +'<input type="checkbox"><span class="check"></span>'
-                                    +'</div>'
+                                    // +'<div class="input-control checkbox">'
+                                        +'<input id="kembalikanCB" type="checkbox"><span class="check"></span>'
+                                    // +'</div>'
                                 +'</th>'
                                 +'<th class="text-center">Kode</th>'
                                 +'<th class="text-center">Barang</th>'
@@ -284,7 +284,7 @@ var contentAdd=contentDetail='';
                                 $.each(dt.data.barangArr,function(id,item){
                                     var btn;
                                     tbl+='<tr>'
-                                        +'<td><input type="checkbox" /></td>'
+                                        +'<td><input type="checkbox" dp="'+item.iddpeminjaman+'" brg="'+item.idbarang+'" /></td>'
                                         +'<td>'+item.kode+'</td>'
                                         +'<td>'+item.barang+'</td>'
                                         +'<td>'+item.tgl_kembali2+'</td>'
@@ -367,9 +367,7 @@ var contentAdd=contentDetail='';
         var y=[];
         $('.barangTR').each(function(id,item){
             y.push($(this).attr('val'));
-        });
-        console.log(y);
-        return y;
+        });return y;
     }
 
 //paging ---
@@ -420,29 +418,39 @@ function notif(cont,clr) {
     }
 //end of reset form ---
 
-function brgTerpilih () {
-    var y=[];
-    $('.barangTR').each(function(id,item){
-        y.push($(this).attr('val'));
-    });
-    console.log(y);
-    return y;
+function barangTerpilih () {
+    var brg=[],dp=[];
+    $('input[type="checkbox"]:checked').each(function(){
+        brg.push($(this).attr('brg'));
+        dp.push($(this).attr('dp'));
+    });var ret={'brg':brg,'dp':dp};
+    return ret;
 }
 
+function brgPilihAll () {
+    barangTerpilih();
+    $('.').each(function  (argument) {
+
+    });
+}
 function kembalikanFC (id) {
-    var replid;
+    var datax,brg;
     if(typeof id=='undefined'){
-        replid='andifained';
+        datax=barangTerpilih();
     }else{
-        replid=id;
+        datax=id;
     }
-    alert(id);
-    return false;
+
+    // alert(datax.dp);
+    // return false;
+    // $.each(par,function(id,item){
+    //     datax+='&'+item;
+    // });
     $.ajax({
         url:dir,
         dataType:'json',
-        data:replid,
-        type:'pots',
+        data:'aksi=kembalikan&dpeminjaman='+datax.dp+'&barang='+datax.brg,
+        type:'post',
         success:function(dt){
             
         },

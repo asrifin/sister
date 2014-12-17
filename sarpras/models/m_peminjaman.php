@@ -172,6 +172,11 @@
 			break;
 			//add --------------------------------------------------------------------
 
+			case 'kembalikan':
+				$s1='UPDATE sar_dpeminjaman set tgl_kembali=NOW() WHERE replid  IN ('.$_POST['dpeminjaman'].')';
+				var_dump($s1);exit();
+			break;
+
 			// delete -----------------------------------------------------------------
 			case 'hapus':
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from sar_dftp  where replid='.$_POST['replid']));
@@ -192,7 +197,8 @@
 					$stat='gagal_view_peminjaman';
 				}else{
 					$s2 = 'SELECT
-								b.replid,
+								b.replid as idbarang,
+								d.replid as iddpeminjaman,
 								CONCAT(l.kode,"/",g.kode,"/",t.kode,"/",k.kode,"/",LPAD(b.urut, 5, 0)) kode,
 								k.nama AS barang,
 								d.tgl_kembali AS tgl_kembali2,
@@ -255,13 +261,14 @@
 								break;*/
 							}
 							$barangArr[]=array(
-									'replid'       =>$r2['replid'],
-									'kode'         =>$r2['kode'],
-									'barang'       =>$r2['barang'],
-									'tgl_kembali2' =>$r2['tgl_kembali2']!='0000-00-00'?tgl_indo($r2['tgl_kembali2']):'-',
-									'status'       =>$r2['status'],
-									'keterangan'   =>$ket,
-									'color'        =>$clr
+									'idbarang'      =>$r2['idbarang'],
+									'iddpeminjaman' =>$r2['iddpeminjaman'],
+									'kode'          =>$r2['kode'],
+									'barang'        =>$r2['barang'],
+									'tgl_kembali2'  =>$r2['tgl_kembali2']!='0000-00-00'?tgl_indo($r2['tgl_kembali2']):'-',
+									'status'        =>$r2['status'],
+									'keterangan'    =>$ket,
+									'color'         =>$clr
 								);
 						}$stat='sukses';
 					}
