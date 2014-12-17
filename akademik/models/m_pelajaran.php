@@ -83,7 +83,7 @@
 								skm  = "'.filter($_POST['skmTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				var_dump($s2);exit();
+				// var_dump($s2);exit();
 				$e2 = mysql_query($s2);
 				if(!$e2){
 					$stat = 'gagal menyimpan';
@@ -113,8 +113,9 @@
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'tingkat'    =>$r['tingkat'],
+							'kode'    =>$r['kode'],
+							'nama'    =>$r['nama'],
+							'skm'    =>$r['skm'],
 							'keterangan' =>$r['keterangan'],
 						));
 			break;
