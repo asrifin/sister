@@ -16,8 +16,8 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				// $nopendaftaran    = trim($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
-				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
+				$nopendaftaran    = trim($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
+				$nama  = trim($_POST['namaS'])?filter($_POST['namaS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.' 							
 						ORDER 
@@ -30,8 +30,8 @@
 				}
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
-				$aksi    ='';
-				$subaksi ='periode';
+				$aksi    ='tampil';
+				$subaksi ='';
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
 				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
 

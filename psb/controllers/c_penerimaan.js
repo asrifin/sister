@@ -7,6 +7,7 @@ var dir2      = '../akademik/models/m_'+mnu2+'.php';
 var dir3      = '../akademik/models/m_'+mnu3+'.php';
 var dir4       = 'models/m_'+mnu4+'.php';
 var contentFR = '';
+var contentFR_terima = contentFR_siswa = '';
 
 // main function ---
     $(document).ready(function(){
@@ -19,8 +20,8 @@ var contentFR = '';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
-                        +'<label>No Pendaftaran</label>'
-                        +'<div class="input-control text">'
+                        +'<label>No Pendaftaran </label>'
+                        +'<div class="input-control text size2">'
                             +'<input disabled type="text" name="nopendaftaranTB" id="nopendaftaranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
@@ -34,23 +35,40 @@ var contentFR = '';
                         +'</div>'
                                                                         
                         +'<label>Angkatan</label>'
-                        +'<div class="input-control text">'
+                        +'<div class="input-control text size2">'
                             +'<input disabled type="text" name="angkatanTB" id="angkatanTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
                         +'<label>No Induk</label>'
-                        +'<div class="input-control text">'
+                        +'<div class="input-control text size2">'
                             +'<input required type="text" name="no_indukTB" id="no_indukTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
                         +'<label>NISN</label>'
-                        +'<div class="input-control text">'
+                        +'<div class="input-control text size3">'
                             +'<input required type="text" name="nisnTB" id="nisnTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
+                        +'<div class="form-actions">' 
+                            +'<button class="button primary">simpan</button>&nbsp;'
+                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                        +'</div>'
+                    +'</form>';
+
+            //form batal terima
+        contentFR_terima += '<form autocomplete="off" onsubmit="terima();return false;" id="'+mnu+'FR">' 
+                        +'<input id="idformH_terima" type="hidden">' 
+
+                        +'<label>Pembatalan penerimaan siswa ini juga menghapus data siswa aktif.</label>'
+                        +'<label>Apakah anda yakin untuk membatalkan penerimaan siswa:</label>'
+                        +'<div class="input-control text">'
+                            +'<input disabled type="text" name="namaTB" id="namaTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                                                
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -83,7 +101,8 @@ var contentFR = '';
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
-            $('#kelompokS').val('');
+            $('#no_pendaftaranS').val('');
+            $('#namaS').val('');
             // $('#keteraganS').val('');
         });
     }); 
@@ -169,10 +188,40 @@ var contentFR = '';
 
 //save process ---
     function simpan(){
-        var urlx ='&aksi=simpan';
+        var urlx ='&aksi=simpan&subaksi=penerimaan';
         // edit mode
         if($('#idformH').val()!=''){
             urlx += '&replid='+$('#idformH').val();
+        }
+        $.ajax({
+            url:dir,
+            cache:false,
+            type:'post',
+            dataType:'json',
+            data:$('form').serialize()+urlx,
+            success:function(dt){
+                if(dt.status!='sukses'){
+                    cont = 'Gagal menyimpan data';
+                    clr  = 'red';
+                }else{
+                    $.Dialog.close();
+                    kosongkan();
+                    viewTB($('#departemenS').val());
+                    cont = 'Berhasil menyimpan data';
+                    clr  = 'green';
+                }
+                notif(cont,clr);
+            }
+        });
+    }
+//end of save process ---
+
+//save process ---
+    function terima(){
+        var urlx ='&aksi=terima&subaksi=tidak_terima';
+        // edit mode
+        if($('#idformH_terima').val()!=''){
+            urlx += '&replid='+$('#idformH_terima').val();
         }
         $.ajax({
             url:dir,
@@ -261,13 +310,13 @@ var contentFR = '';
                                     // form :: edit :: tampilkan data 
                                         $.ajax({
                                             url:dir,
-                                            data:'aksi=ambiledit&replid='+id,
+                                            data:'aksi=ambiledit&subaksi=tidak_terima&replid='+id,
                                             type:'post',
                                             dataType:'json',
                                             success:function(dt3){
                                                 $('#idformH').val(id);
-                                                $('#semesterTB').val(dt3.semester);
-                                                $('#keteranganTB').val(dt3.keterangan);
+                                                $('#namaTB').val(dt3.nama);
+                                                // $('#nopendaftaranTB').val(dt3.nopendaftaran);
                                             }
                                         });
                                     // end of form :: edit :: tampilkan data 
@@ -288,13 +337,61 @@ var contentFR = '';
     }
 // end of form ---
 
+// form ---
+    function viewFR_terima(id){
+        alert(id); return false;
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: 500,
+            padding: 10,
+            onShow: function(){
+                var titlex;
+                if(id==''){  //add mode
+                    titlex='<span class="icon-plus-2"></span> Tambah ';
+                    $.ajax({
+                        url:dir,
+                        data:'aksi=replid',
+                        type:'post',
+                        dataType:'json',
+                        success:function(dt){
+                            // $('#lokasiH').val($('#lokasiS').val());
+                            $('#namaTB').val(dt.nama[0]);
+                        }
+                    });
+
+                }else{ // edit mode
+                    titlex='<span class="icon-pencil"></span> Batalkan';
+                    $.ajax({
+                        url:dir,
+                        data:'aksi=ambiledit&subaksi=penerimaan&replid='+id,
+                        type:'post',
+                        dataType:'json',
+                        success:function(dt){
+                            $('#idformH_terima').val(id);
+                            // $('#lokasiH').val($('#lokasiS').val());
+                            $('#namaTB').val(dt.nama);
+                            $('#nopendaftaranTB').val(dt.nopendaftaran);
+                            // $('#keteranganTB').val(dt.keterangan);
+                        }
+                    });
+                }$.Dialog.title(titlex+' '+mnu);
+                $.Dialog.content(contentFR_terima);
+            }
+        });
+    }
+// end of form ---
+
+
+
 //paging ---
     // function pagination(page,aksix,menux){
     function pagination(page,aksix){
         var datax = 'starting='+page+'&aksi='+aksix;
-        var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&semesterS='+$('#semesterS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        var cari = '&namaS='+$('#namaS').val()
+                    +'&no_pendaftaranS='+$('#no_pendaftaranS').val()
+                    // +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url:dir,
             type:"post",
@@ -352,7 +449,7 @@ function notif(cont,clr) {
     function kosongkan(){
         $('#idformTB').val('');
         $('#'+mnu+'TB').val('');
-        $('#keteranganTB').val('');
+        // $('#keteranganTB').val('');
     }
 //end of reset form ---
 

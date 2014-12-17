@@ -72,14 +72,11 @@
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
-										<i class="icon-remove on-left"></i>
-									</button>
 								 </td>';
 							//Tombol Status								 
 						if($res['status']==1){
 						$btn_terima ='<td>
-									<button data-hint="Klik untuk membatalkan penerimaan"  class="bg-darkGreen fg-white" onclick="viewFR('.$res['replid'].');">
+									<button data-hint="Klik untuk membatalkan penerimaan"  class="bg-darkGreen fg-white" onclick="viewFR_terima('.$res['replid'].');">
 										Diterima
 									</button>
 								 </td>';
@@ -113,18 +110,31 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
-								nama    	= "'.filter($_POST['semesterTB']).'",
-								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
+				switch ($_POST['subaksi']) {
+					case 'tidak_diterima':
+						$s 		= $tb.' set 	nama 		= "'.filter($_POST['namaTB']).'",';
+						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						// var_dump($s2);exit();
+						$e 		= mysql_query($s2);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array('status'=>$stat));
+					break;
 
-				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e2 = mysql_query($s2) or die(mysql_error());
-				if(!$e2){
-					$stat = 'gagal menyimpan';
-				}else{
-					$stat = 'sukses';
-				}$out  = json_encode(array('status'=>$stat));
-			break;
+					case 'penerimaan':
+						$s = $tb.' set 	nama    	= "'.filter($_POST['namaTB']).'",
+									nopendaftaran 	= "'.filter($_POST['nopendaftaranTB']).'"';
+
+						$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						$e2 = mysql_query($s2) or die(mysql_error());
+						if(!$e2){
+							$stat = 'gagal menyimpan';
+						}else{
+							$stat = 'sukses';
+						}$out  = json_encode(array('status'=>$stat));
+					break;
+				}
+			break;		
+					
 			// add / edit -----------------------------------------------------------------
 			
 			// delete -----------------------------------------------------------------
@@ -139,22 +149,42 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT *
+				switch ($_POST['subaksi']) {
+					case 'tidak_diterima';
+						$s = 'SELECT * FROM '.$tb.'  WHERE replid='.$_POST['replid'];
+						// var_dump($s);exit();
+						$e 		= mysql_query($s);
+						$r 		= mysql_fetch_assoc($e);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array(
+									// 'kode'       =>$r['kode'],
+									'nama'       =>$r['nama'],
+									// 'lokasi'     =>$r['lokasi'],
+									// 'keterangan' =>$r['keterangan']
+								));					
+					break;
+
+					case 'penerimaan':
+						$s 		= ' SELECT *
 							from '.$tb.'
 							WHERE 
 								replid='.$_POST['replid'];
-				$e 		= mysql_query($s);
-				$r 		= mysql_fetch_assoc($e);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array(
+						// print_r($s);exit();
+						$e 		= mysql_query($s);
+						$r 		= mysql_fetch_assoc($e);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array(
 							'status'     =>$stat,
-							'nama'   =>$r['nama'],
+							'nama'   	=>$r['nama'],
 							'nopendaftaran' =>$r['nopendaftaran'],
 						));
+					break;
+				}
 			break;
 			// ambiledit -----------------------------------------------------------------
 		}
-	}echo $out;
-
+	}
+	echo $out;
+	var_dump($out);
 	
 ?>
