@@ -9,8 +9,63 @@
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
-		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
+		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
+			$page       = $_GET['page']; // get the requested page
+			$limit      = $_GET['rows']; // get how many rows we want to have into the grid
+			$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
+			$sord       = $_GET['sord']; // get the direction
+			$searchTerm = $_GET['searchTerm'];
+
+
+			if(!$sidx) 
+				$sidx =1;
+			$ss=	'SELECT * 
+					FROM(
+						SELECT p.nama AS wali, p.nip, p.replid
+							
+						FROM hrd_pegawai p
+							LEFT JOIN aka_kelas k ON p.replid = k.wali
+						
+						)tb
+					WHERE	
+						tb.wali LIKE "%'.$searchTerm.'%"
+						OR tb.nip LIKE "%'.$searchTerm.'%"';
+							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
+			//print_r($ss);exit();
+			$result = mysql_query($ss);
+			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
+			$count  = mysql_num_rows($result);
+
+			if( $count >0 ) {
+				$total_pages = ceil($count/$limit);
+			} else {
+				$total_pages = 0;
+			}
+			if ($page > $total_pages) $page=$total_pages;
+			$start 	= $limit*$page - $limit; // do not put $limit*($page - 1)
+			if($total_pages!=0) {
+				$ss.='ORDER BY '.$sidx.' '.$sord.' LIMIT '.$start.','.$limit;
+			}else {
+				$ss.='ORDER BY '.$sidx.' '.$sord;
+			}
+			// print_r($ss);exit();
+			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
+			$rows 	= array();
+			while($row = mysql_fetch_assoc($result)) {
+				$rows[]= array(
+					'replid' =>$row['replid'],
+					'wali'   =>$row['wali'],
+					'nip'   =>$row['nip']
+				);
+			}$response=array(
+				'page'    =>$page,
+				'total'   =>$total_pages,
+				'records' =>$count,
+				'rows'    =>$rows,
+			);$out=json_encode($response);
+		}else{
+			$out=json_encode(array('status'=>'invalid_no_post'));	
+		}		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
@@ -103,11 +158,15 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
-								tingkat    	= "'.filter($_POST['tingkatTB']).'",
+								kelas    	= "'.filter($_POST['kelasTB']).'",
+								kapasitas    	= "'.filter($_POST['kapasitasTB']).'",
+								tingkat    	= "'.filter($_POST['tingkatH']).'",
+								wali    	= "'.filter($_POST['guruH']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2 = mysql_query($s2);
+								// print_r($e2);exit();
 				if(!$e2){
 					$stat = 'gagal menyimpan';
 				}else{
@@ -140,33 +199,34 @@
 							'kelas'      =>$r['kelas'],
 							'wali'       =>$r['wali'],
 							'kapasitas'  =>$r['kapasitas'],
-							'keterangan' =>$r['keterangan'],
+							'tahunajaran' =>$r['tahunajaran'],
+							'keterangan' =>$r['keterangan']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 
 			// aktifkan -----------------------------------------------------------------
-			case 'aktifkan':
-				$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0" where departemen = '.$_POST['departemen']);
-				if(!$e1){
-					$stat='gagal menonaktifkan';
-				}else{
-					$s2 = 'UPDATE  '.$tb.' set aktif="1" where replid = '.$_POST['replid'];
-					$e2 = mysql_query($s2);
-					if(!$e2){
-						$stat='gagal mengaktifkan';
-					}else{
-						$stat='sukses';
-					}
-				}$out  = json_encode(array('status'=>$stat));
-				//var_dump($stat);exit();
-			break;
+			// case 'aktifkan':
+			// 	$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0" where departemen = '.$_POST['departemen']);
+			// 	if(!$e1){
+			// 		$stat='gagal menonaktifkan';
+			// 	}else{
+			// 		$s2 = 'UPDATE  '.$tb.' set aktif="1" where replid = '.$_POST['replid'];
+			// 		$e2 = mysql_query($s2);
+			// 		if(!$e2){
+			// 			$stat='gagal mengaktifkan';
+			// 		}else{
+			// 			$stat='sukses';
+			// 		}
+			// 	}$out  = json_encode(array('status'=>$stat));
+			// 	//var_dump($stat);exit();
+			// break;
 			// aktifkan -----------------------------------------------------------------
 
 		}
 	}echo $out;
 
 	// ---------------------- //
-	// -- created by epiii -- //
+	// -- created by rovi -- //
 	// ---------------------- //
 ?>

@@ -32,9 +32,15 @@ var contentAdd=contentDetail='';
                     +'</table>'
                     //detail barang
                     +'<legend>Detail Barang</legend>'
+                    +'<button id="kembalikanBC" class="info"><i class="icon-undo"></i></button>'
                     +'<table class="table hovered bordered striped">'
                         +'<thead>'
                             +'<tr style="color:white;"class="info">'
+                                +'<th class="text-center">'
+                                    +'<div class="input-control checkbox">'
+                                        +'<input type="checkbox"><span class="check"></span>'
+                                    +'</div>'
+                                +'</th>'
                                 +'<th class="text-center">Kode</th>'
                                 +'<th class="text-center">Barang</th>'
                                 +'<th class="text-center">Tgl Kembali</th>'
@@ -42,6 +48,16 @@ var contentAdd=contentDetail='';
                             +'</tr>'
                         +'</thead>'
                         +'<tbody id="barangTBL2"></tbody>'
+                        +'<tfoot id="legendDet">'
+                            +'<tr class="info">'
+                                +'<th colspan="5" align="left" style="color:white;">'
+                                    +'<button style="background-color:red;"></button> : belum dikembalikan (terlambat)<br>'
+                                    +'<button style="background-color:blue;"></button> : belum dikembalikan<br>'
+                                    +'<button style="background-color:orange;"></button> : sudah dikembalikan (terlambat)<br>'
+                                    +'<button style="background-color:green;"></button> : sudah dikembalikan '
+                                +'</th>'
+                            +'</tr>'
+                        +'</tfoot>'
                     +'</table>'
                 +'</div>';
         contentAdd+='<div style="overflow:scroll;height:500px;"  class="">'
@@ -128,9 +144,9 @@ var contentAdd=contentDetail='';
             if(e.keyCode == 13)
                 viewTB($('#lokasiS').val());
         });
-        $('#namaS').on('keydown',function (e){ // keydown : textbox
+        $('#keteranganS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB2($('').val());
+                viewTB($('#lokasiS').val());
         });
 
         // search button
@@ -267,20 +283,12 @@ var contentAdd=contentDetail='';
                                 var tbl='';
                                 $.each(dt.data.barangArr,function(id,item){
                                     var btn;
-                                    if(item.status!='1'){ //belum dikembalikan
-                                        if(item.tgl_kembali2>dt.data.tgl_kembali){
-                                            btn=''
-                                        }else{
-
-                                        }
-                                    }else{ // 1 = dikembalikan
-
-                                    }
                                     tbl+='<tr>'
+                                        +'<td><input type="checkbox" /></td>'
                                         +'<td>'+item.kode+'</td>'
                                         +'<td>'+item.barang+'</td>'
                                         +'<td>'+item.tgl_kembali2+'</td>'
-                                        +'<td><button data-hint="kembalikan"  class="'+(item.status==1?'disabled':'')+'"><i class="icon-cycle"></i></button></td>'
+                                        +'<td><button style="background-color:'+item.color+'" '+(item.status==3||item.status==4?'onclick="alert(\'sudah dikembalikan\')"':'onclick="kembalikanFC('+item.replid+')"')+'><i style="color:white;" class="icon-undo"></i></button></td>'
                                     +'</tr>';
                                 });$('#barangTBL2').html(tbl);
                             }
@@ -310,7 +318,10 @@ var contentAdd=contentDetail='';
             url: dir+'?aksi=autocomp&lokasi='+lok,
             // url: dir+'?aksi=autocomp&lokasi='+lok+'&barang='+barangArr(),
             // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
-            select: function( event, ui ) {
+            select: function( event, ui ) { // event setelah data terpilih 
+                // $('#gruruH').val(ui.item.replid);
+                
+                // $(this).combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
                 barangAdd(ui.item.replid,ui.item.kode,ui.item.nama);
                 $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
                 return false;
@@ -344,7 +355,7 @@ var contentAdd=contentDetail='';
                     +'<td>'+nama+'</td>'
                     +'<td><button onclick="barangDel('+id+');"><i class="icon-remove"></button></i></td>'
                 +'</tr>';
-        $('#barangTBL').append(tr);
+        $('#barangTBL').append(tr); 
         barangArr();
         // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
 
@@ -409,6 +420,34 @@ function notif(cont,clr) {
     }
 //end of reset form ---
 
+function brgTerpilih () {
+    var y=[];
+    $('.barangTR').each(function(id,item){
+        y.push($(this).attr('val'));
+    });
+    console.log(y);
+    return y;
+}
+
+function kembalikanFC (id) {
+    var replid;
+    if(typeof id=='undefined'){
+        replid='andifained';
+    }else{
+        replid=id;
+    }
+    alert(id);
+    return false;
+    $.ajax({
+        url:dir,
+        dataType:'json',
+        data:replid,
+        type:'pots',
+        success:function(dt){
+            
+        },
+    });
+}
     // ------------------------ //
     // - created by rovi/epiii- //
     // ------------------------ // 

@@ -10,98 +10,66 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-       contentDetail+=''
+       contentFR+=''
                 +'<div style="overflow:scroll;height:500px;"  class="">'
-                    //keterangan peminjaman 
-                    +'<legend>Data Peminjaman</legend>'
-                    +'<table>'
-                        +'<tr>'
-                            +'<td><b>Peminjam</b></td>'
-                            +'<td id="peminjamTD"></td>'
-                        +'</tr>'
-                        +'<tr>'
-                            +'<td><b>Tanggal Pinjam</b></td>'
-                            +'<td id="tanggal_pinjamTD"></td>'
-                        +'</tr>'
-                        +'<tr>'
-                            +'<td><b>Tanggal Wajib Kembali</b></td>'
-                            +'<td  id="tanggal_kembaliTD"></td>'
-                            +'<td>'
-                        +'</tr>'
-                        +'<tr>'
-                            +'<td><b>Keterangan</b></td>'
-                            +'<td  id="keteranganTD"></td>'
-                            +'<td>'
-                        +'</tr>'
-                    +'</table>'
-                    //detail barang
-                    +'<legend>Detail Barang</legend>'
-                    +'<table class="table hovered bordered striped">'
-                        +'<thead>'
-                            +'<tr style="color:white;"class="info">'
-                                +'<th class="text-center">Kode</th>'
-                                +'<th class="text-center">Barang</th>'
-                                +'<th class="text-center">Tgl Kembali</th>'
-                                +'<th class="text-center">Aksi</th>'
-                            +'</tr>'
-                        +'</thead>'
-                        +'<tbody id="barangTBL2"></tbody>'
-                    +'</table>'
-                +'</div>';
-        contentAdd+='<div style="overflow:scroll;height:500px;"  class="">'
-                   +'<legend>Data Barang</legend>'
-                        +'<div class="input-control text">'
-                            +'<input placeholder="kode/nama barang" id="barangTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        +'<table class="table hovered bordered striped">'
-                            +'<thead>'
-                                +'<tr style="color:white;"class="info">'
-                                    +'<th class="text-center">Kode</th>'
-                                    +'<th class="text-center">Barang</th>'
-                                    +'<th class="text-center">Aksi</th>'
-                                +'</tr>'
-                            +'</thead>'
-                            +'<tbody id="barangTBL">'
-                            +'</tbody>'
-                                // +'<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih barang.. </td></tr>'
-                            +'<tfoot>'
-                            +'</tfoot>'
-                        +'</table>'
+                   // +'<legend>Data Barang</legend>'
+                   //      +'<div class="input-control text">'
+                   //          +'<input placeholder="kode/nama barang" id="barangTB">'
+                   //          +'<button class="btn-clear"></button>'
+                   //      +'</div>'
+                        
+                // +'<label>Lokasi</label>'
+                // +'<div class="input-control text">'
+                //     // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" '
+                //     +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" >'
+                //     +'<button class="btn-clear"></button>'
+                // +'</div>'
 
                     +'<legend>Data Peminjaman</legend>'
                     +'<form onsubmit="simpan();return false;" autocomplete="off"><input id="idformH" type="hidden">' 
-                        +'<label>Lokasi</label>'
+
+                        +'<label>Cari Pegawai</label>'
+                        //  +'<div class="input-control text">'
+                        //     +'<button class="btn-clear"></button>'
+                        // +'</div>'  
                         +'<div class="input-control text">'
-                            +'<input  type="hidden" name="lokasiH" id="lokasiH" >'
                             // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" '
-                            +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" >'
+                            +'<input placeholder="kode/nama pegawai" id="guruTB">'
+                            +'<input  type="hidden" name="guruH" id="guruH" >'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-
-                        +'<label>Peminjam</label>'
+                        +'<legend>nip</legend>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="Nama Peminjam"  required type="text" name="peminjamTB" id="peminjamTB">'
+                            +'<input disabled="disabled" placeholder="kode" id="nipTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<legend>nama</legend>'
+                        +'<div class="input-control text">'
+                            +'<input disabled="disabled" placeholder="nama barang" id="namaTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'   
+                        +'<label>Pelajaran</label>'
+                        +'<div class="input-control select span3">'
+                            +'<select data-hint="Pelajaran" name="pelajaranS" id="pelajaranS"></select>'
+                        +'</div>'
+
+                        +'<label>pelajaran</label>'
+                        +'<div class="input-control text">'
+                            +'<input placeholder="Nama pelajaran"  required type="text" name="pelajaranTB" id="pelajaranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
-                        +'<label>Tanggal Peminjaman</label>'
-                        +'<div class="input-control text" data-role="datepicker"'
-                            // +'data-date="2014-10-23"'
-                            +'data-format="yyyy-mm-dd"'
-                            +'data-effect="slide">'
-                            +'<input required="required"  id="tgl_pinjamTB" name="tgl_pinjamTB" type="text">'
-                            +'<button class="btn-date"></button>'
-                        +'</div>'
+                        //  +'<label>nama guru</label>'
+                        // +'<div class="input-control text">'
+                        //     +'<input placeholder="Nama nama"  required type="text" name="namaTB" id="namaTB">'
+                        //     +'<button class="btn-clear"></button>'
+                        // +'</div>'
 
-                        +'<label>Tanggal Pengembalian</label>'
-                        +'<div class="input-control text" data-role="datepicker"'
-                            // +'data-date="2014-10-23"'
-                            +'data-format="yyyy-mm-dd"'
-                            +'data-effect="slide">'
-                            +'<input required="required" id="tgl_kembaliTB" name="tgl_kembaliTB" type="text">'
-                            +'<button class="btn-date"></button>'
-                        +'</div>'
+                        //  +'<label>nip</label>'
+                        // +'<div class="input-control text">'
+                        //     +'<input placeholder="Nama nip"  required type="text" name="nipTB" id="nipTB">'
+                        //     +'<button class="btn-clear"></button>'
+                        // +'</div>'
 
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
@@ -278,12 +246,14 @@ var contentFR = '';
 
 // form ---
     function viewFR(id){
+        var pel = $('#pelajaranS').val();
         $.Dialog({
-            shadow: true,
-            overlay: true,
-            draggable: true,
-            width: 500,
-            padding: 10,
+            shadow:true,
+            overlay:true,
+            draggable:true,
+            height:'auto',
+            width:'35%',
+            padding:20,
             onShow: function(){
                 var titlex;
                 // form :: departemen (disabled field) -----------------------------
@@ -324,7 +294,9 @@ var contentFR = '';
                                             dataType:'json',
                                             success:function(dt3){
                                                 $('#idformH').val(id);
-                                                $('#tingkatTB').val(dt3.tingkat);
+                                                $('#pelajaranTB').val(dt3.pelajaran);
+                                                $('#namaTB').val(dt3.nama);
+                                                $('#nipTB').val(dt3.nip);
                                                 $('#keteranganTB').val(dt3.keterangan);
                                             }
                                         });
@@ -343,9 +315,60 @@ var contentFR = '';
                 $.Dialog.content(contentFR);
             }
         });
+        $("#guruTB").combogrid({
+            debug:true,
+            width:'400px',
+            colModel: [{
+                    'align':'left',
+                    'columnName':'nip',
+                    'hide':true,
+                    'width':'55',
+                    // 'width':'8',
+                    'label':'kode'
+                },{   
+                    'columnName':'nama',
+                    'width':'40',
+                    'label':'Barang'
+                }],
+            url: dir+'?aksi=autocomp&pelajaran='+pel,
+            // url: dir+'?aksi=autocomp&lokasi='+lok+'&barang='+barangArr(),
+            // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
+            select: function( event, ui ) {
+                $('#guruH').val(ui.item.replid);
+                $('#nipTB').val(ui.item.nip);
+                $('#namaTB').val(ui.item.nama);
+                // barangAdd(ui.item.replid,ui.item.kode,ui.item.nama);
+                $('#guruTB').combogrid( "option", "url", dir+'?aksi=autocomp&pelajaran='+$('#pelajaranS').val() );
+                return false;
+            }
+        });
     }
 // end of form ---
+// pilih barang yg akan dipinjam ---
+    // function barangAdd (id,nip,nama) {
+    //     var tr ='<label>nip</label>'
+    //                     +'<div class="input-control text">'
+    //                         +'<input disabled="disabled" placeholder="Nama nip"  required type="text" name="nipTB" id="nipTB">'
+    //                     +'</div>'
+    //                     +'<label>Nama Guru</label>'
+    //                     +'<div class="input-control text">'
+    //                         +'<input disabled="disabled" placeholder="Nama Guru"  required type="text" name="guruTB" id="guruTB">'
+    //                     +'</div>';
+    //     $('#guruTBL').append(tr);
+    //     barangArr();
+    //     // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
 
+    //     // barangExist();
+    // }
+//himpun array barang terpilih
+    // function barangArr(){
+    //     var y=[];
+    //     $('.barangTR').each(function(id,item){
+    //         y.push($(this).attr('val'));
+    //     });
+    //     console.log(y);
+    //     return y;
+    // }
 //paging ---
     // function pagination(page,aksix,menux){
     function pagination(page,aksix){
