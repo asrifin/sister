@@ -4,7 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	$tb = 'aka_guru';
-	// $out=array();
+	$out=array();
 	
 
 	// if(!isset($_POST['aksi'])){
@@ -23,22 +23,17 @@
 				$sidx =1;
 			$ss=	'SELECT * 
 					FROM(
-						SELECT p.nama,p.nip
-						FROM aka_guru g
-						LEFT JOIN hrd_pegawai p ON p.replid=g.pegawai
-						LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
-						LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
-						LEFT JOIN departemen d ON d.replid=t.departemen
+						SELECT p.nama,p.nip,p.replid
+						FROM hrd_pegawai p
+						LEFT JOIN aka_guru G ON p.replid=g.pegawai
 						where 
-							`status` = 1 
-							'.(isset($_POST['nama']) and is_array($_POST['nama']) and !is_null($_POST['nama'])?'AND b.replid NOT IN ('.$_POST['nama'].')':'').'
-							and  d.replid = '.$_GET['departemen'].' 
+							p.replid NOT IN (SELECT pegawai FROM aka_guru) 
 						)tb
 					WHERE	
 						tb.nama LIKE "%'.$searchTerm.'%"
-						OR tb.kode LIKE "%'.$searchTerm.'%"';
+						OR tb.nip LIKE "%'.$searchTerm.'%"';
 							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
-			//print_r($ss);exit();
+			// print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -61,8 +56,8 @@
 			while($row = mysql_fetch_assoc($result)) {
 				$rows[]= array(
 					'replid' =>$row['replid'],
-					'nama'   =>$row['nama'],
-					'nip'   =>$row['nip']
+					'nip'   =>$row['nip'],
+					'nama'   =>$row['nama']
 				);
 			}$response=array(
 				'page'    =>$page,
@@ -141,10 +136,9 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	departemen 	= "'.filter($_POST['departemenH']).'",
-										tahunajaran = "'.filter($_POST['tahunajaranTB']).'",
-										tglmulai    = "'.filter($_POST['tglmulaiTB']).'",
-										tglakhir    = "'.filter($_POST['tglakhirTB']).'",
+				$s 		= $tb.' set 	pegawai 	= "'.filter($_POST['guruH']).'",
+										pelajaran = "'.filter($_POST['pelajaranS']).'",
+										aktif =1,
 										keterangan  = "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
