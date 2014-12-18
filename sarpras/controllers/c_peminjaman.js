@@ -1,3 +1,4 @@
+// ok
 var mnu       ='peminjaman'; 
 var mnu2      ='lokasi'; 
 var dir       ='models/m_'+mnu+'.php'; 
