@@ -185,6 +185,6 @@
 		}
 	}
 	echo $out;
-	var_dump($out);
+	// var_dump($out);
 	
 ?>

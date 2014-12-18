@@ -245,7 +245,7 @@ var contentAdd=contentDetail='';
             overlay:true,
             draggable:true,
             height:'auto',
-            width:'35%',
+            width:'45%',
             padding:20,
             onShow: function(){
                 var titlex;
@@ -284,11 +284,16 @@ var contentAdd=contentDetail='';
                                 $.each(dt.data.barangArr,function(id,item){
                                     var btn;
                                     tbl+='<tr>'
-                                        +'<td><input type="checkbox" dp="'+item.iddpeminjaman+'" brg="'+item.idbarang+'" /></td>'
+                                        +'<td><input '+(item.status==3||item.status==4?'disabled':'')+' type="checkbox" dp="'+item.iddpeminjaman+'" brg="'+item.idbarang+'" /></td>'
                                         +'<td>'+item.kode+'</td>'
                                         +'<td>'+item.barang+'</td>'
                                         +'<td>'+item.tgl_kembali2+'</td>'
-                                        +'<td><button style="background-color:'+item.color+'" '+(item.status==3||item.status==4?'onclick="alert(\'sudah dikembalikan\')"':'onclick="kembalikanFC('+item.replid+')"')+'><i style="color:white;" class="icon-undo"></i></button></td>'
+                                        +'<td>'
+                                            +'<button style="background-color:'+item.color+'" '
+                                                +(item.status==3||item.status==4?'onclick="alert(\'sudah dikembalikan\')"':'onclick="kembalikanFC('+item.iddpeminjaman+','+item.idbarang+')"')+'>'
+                                                +'<i style="color:white;" class="icon-undo"></i>'
+                                            +'</button>'
+                                        +'</td>'
                                     +'</tr>';
                                 });$('#barangTBL2').html(tbl);
                             }
@@ -433,28 +438,35 @@ function brgPilihAll () {
 
     });
 }
-function kembalikanFC (id) {
-    var datax,brg;
-    if(typeof id=='undefined'){
-        datax=barangTerpilih();
-    }else{
-        datax=id;
-    }
 
-    // alert(datax.dp);
-    // return false;
-    // $.each(par,function(id,item){
-    //     datax+='&'+item;
-    // });
-    $.ajax({
-        url:dir,
-        dataType:'json',
-        data:'aksi=kembalikan&dpeminjaman='+datax.dp+'&barang='+datax.brg,
-        type:'post',
-        success:function(dt){
-            
-        },
-    });
+function kembalikanFC (iddp,idbrg) {
+    if (confirm('Mengembalikan barang')){
+        var dp,brg;
+        if(typeof iddp=='undefined'){ // multi update
+            var arr=barangTerpilih();
+                dp  =arr.dp;
+                brg =arr.brg;
+        }else{ // single update
+            dp  =iddp;
+            brg =idbrg;
+        }
+
+        $.ajax({
+            url:dir,
+            dataType:'json',
+            data:'aksi=kembalikan&dpeminjaman='+dp+'&barang='+brg,
+            type:'post',
+            success:function(dt){
+                if(dt.status!='sukses'){
+                    notif(dt.status,'red');
+                }else{
+                    notif(dt.status,'green');
+                    $.Dialog.close();
+                    viewTB($('#lokasiS').val());
+                }
+            }
+        });
+    }
 }
     // ------------------------ //
     // - created by rovi/epiii- //

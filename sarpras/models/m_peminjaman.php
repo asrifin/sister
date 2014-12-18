@@ -86,14 +86,16 @@
 				$keterangan = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
 				$s        = 'SELECT 
 								tb.*,
-								IF(tersedia=allitem,"lunas","hutang")status
+								IF (dikembalikan = allitem,"lunas","hutang") status
 							from(
 								SELECT
 									p.*,(
 										SELECT COUNT(*)
-										from sar_dpeminjaman d,sar_barang b
-										where d.peminjaman = p.replid AND d.`status` = 1
-									)tersedia,(
+										from sar_dpeminjaman d
+										where 
+											d.peminjaman = p.replid AND 
+											d.tgl_kembali!="0000-00-00"
+									)dikembalikan,(
 										SELECT COUNT(*)
 										from sar_dpeminjaman d
 										where d.peminjaman = p.replid 
@@ -129,7 +131,7 @@
 									<td>'.tgl_indo($res['tgl_kembali']).'</td>
 									<td>'.$res['keterangan'].'</td>
 									<td>
-										<button onclick="viewFR('.$res['replid'].');" '.($res['status']=='hutang'?'data-hint="status| '.($res['allitem']-$res['tersedia']).' belum dikembalikan" class="warning"':'class="info" data-hint="Status|Sudah dikembalikan"').' >
+										<button onclick="viewFR('.$res['replid'].');" '.($res['status']=='hutang'?'data-hint="status| '.($res['allitem']-$res['dikembalikan']).' belum dikembalikan" class="warning"':'class="info" data-hint="Status|Sudah dikembalikan"').' >
 											<i class="icon-search on-left"></i>'.$res['allitem'].' item
 										</button>
 									 </td>
@@ -174,7 +176,20 @@
 
 			case 'kembalikan':
 				$s1='UPDATE sar_dpeminjaman set tgl_kembali=NOW() WHERE replid  IN ('.$_POST['dpeminjaman'].')';
-				var_dump($s1);exit();
+				$e1=mysql_query($s1);
+
+				if(!$e1){
+					$stat='gagal_update_peminjaman_('.mysql_error().')';
+				}else{
+					$s2='UPDATE sar_barang set status=1 WHERE replid  IN ('.$_POST['barang'].')';
+					$e2=mysql_query($s2);
+					if(!$e2){
+						$stat='gagal_update_barang_('.mysql_error().')';
+					}else{
+						$stat='sukses';
+					}
+				}$out=json_encode(array('status'=>$stat));
+				// var_dump($s1);exit();
 			break;
 
 			// delete -----------------------------------------------------------------
