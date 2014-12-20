@@ -39,7 +39,7 @@ var contentFR='';
                         +'</div>'
                         +'<label>Keterangan</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="keteranganTB" id="keteranganTB">'
+                            +'<input type="text" name="keteranganTB" id="keteranganTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<div class="form-actions">' 

@@ -15,8 +15,11 @@
 <div class="input-control select span3">
     <select data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
+<div class="input-control select span3">
+    <select data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
+</div>
 
-<table class="table hovered bordered striped panelx" id="panel1">
+<table class="table hovered bordered striped panelx" id="pendataanFR">
     <thead>
         <tr style="color:white;" class="info">
             <th class="text-left" rowspan="2">Nomor Pendaftaran</th>
@@ -44,6 +47,9 @@
             <th class="text-left"></th>
             <th class="text-left"></th>
             <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+            <th class="text-left"></th>
         </tr>
     </thead>
 
@@ -55,145 +61,329 @@
     </tfoot>
 </table>
 
-<div class="panel" style="display:none">
-<div class="panel-header">
-    Panel Header...
-</div>
-<div class="panel-content">
-<form autocomplete="off" onsubmit="simpan();return false;" id="pendataanFR" class="panelx" style="display:none"> 
-Isi
-</form>
+      <div class="table hovered bordered striped panelx" id="panel1" style="display:none;" >
+                <form autocomplete="off" onsubmit="simpan();return false;"> 
+                        <input id="idformH" type="hidden"> 
+                        <!-- Panel -->
+                        <div class="panel">
+                          <div class="panel-header">
+                          Kriteria Calon
+                          </div>
+                          <div class="panel-content">
 
-</div>
-</div>
+                          <div class="grid">     
+                            <div class="row">
+                              <div class="span12">
+                              <!-- <label><b>Kriteria Calon :</b></label> -->
+                              <label>Kriteria calon :</label>
+                              <div class="input-control select size3">
+                                  <select id="kriteriaTB" name="kriteriaTB">
+                                    <option>Value 1</option>
+                                  </select>
+                              </div>
 
+                              <label>Golongan :</label>
+                              <div class="input-control select size3">
+                                  <select id="golonganTB" name="golonganTB">
+                                    <option>Value 1</option>
+                                  </select>
+                              </div>
+                              
+                              <label><b>Sumbangan :</b></label>
+                              <label>Uang Pangkal</label>
+                              <div class="input-control text size3">
+      <!--                             <input type="hidden" name="tahunajaranH" id="tahunajaranH"> -->
+                                  <input type="text" name="uang_pangkalTB" id="uang_pangkalTB">
+                                  <button class="btn-clear"></button>
+                              </div>
+                              
+                              <label>Uang Pangkal net</label>
+                              <div class="input-control text size3">
+                                  <input type="hidden" name="uang_pangkalnetH" id="uang_pangkalnetH">
+                                  <input type="text" name="uang_pangkalnetTB" id="uang_pangkalnetTB">
+                                  <button class="btn-clear"></button>
+                              </div>
 
-   <!--  <div class="window" class="panelx" style="display:none">
-    <div class="caption">
-    <span class="icon icon-windows"></span> //window icon, also you can use img tag
-    <div class="title">Window caption</div> // window title
-    <button class="btn-min"></button> // minimize button
-    <button class="btn-max"></button> // maximize button
-    <button class="btn-close"></button> // close button
-    </div>
-    <div class="content">
-    Window content
-    </div>
-    </div>
- -->
-   <!--  <div class="grid">
-        <div class="row">
-            <div class="span4">...</div>
-            <div class="span8">...</div>
-        </div>
-    </div> -->
+                              <label><b>Angsuran :</b></label>
+                              <label>Lama Angsuran :</label>
+                              <div class="input-control select size3">
+                                  <select id="angsuranTB" name="angsuranTB">
+                                    <option>Value 1</option>
+                                  </select>
+                              </div>
+                              <label>Angusran per Bulan</label>
+                              <div class="input-control text size3">
+                                  <input type="text" name="angsuranbulanTB" id="angsuranbulanTB">
+                                  <button class="btn-clear"></button>
+                              </div>
 
-<!-- <form autocomplete="off" onsubmit="simpan();return false;" id="pendataanFR" class="panelx" style="display:none"> 
-                    <input id="idformH" type="hidden"> 
-                   <div class="grid span10">
-                       <div class="row">
-                           <div class="span4">
-                                   <legend>Informasi Peminjam</legend>
-                                   <input id="idformH" type="hidden"> 
-                                   <label>Lokasi</label>
+                              </div>
+                                <!-- End Span-->
+                              
+                              <div class="span6">
+                                <label><b>Discount:</b></label>
+                                <label>Discount Subsidi :</label>
+                                <div class="input-control text size3">
+                                    <input type="text" name="diskon_subsidiTB" id="diskon_subsidiTB">
+                                    <button class="btn-clear"></button>
+                                </div>                                
 
-                                   <div class="input-control text">
-                                       <input  type="hidden" name="lokasiH" id="lokasiH" class="span4">
-                                        //<input enabled="enabled" name="lokasiTB" id="lokasiTB" class="span4">
-                                       <input disabled="disabled" name="lokasiTB" id="lokasiTB" class="span4">
-                                       <button class="btn-clear"></button>
-                                   </div>
-                                    
-                                   <label>Peminjam</label>
-                                   <div class="input-control text">
-                                       <input placeholder="Nama Peminjam"  class="span4" required type="text" name="peminjamTB" id="peminjamTB">
-                                       <button class="btn-clear"></button>
-                                   </div>
+                                <label>Discount Saudara :</label>
+                                <div class="input-control text size3">
+                                    <input type="text" name="diskon_saudaraTB" id="diskon_saudaraTB">
+                                    <button class="btn-clear"></button>
+                                </div>                                
 
-                                   <label>Tempat</label>
-                                   <div class="input-control text">
-                                       <input class="span4"  placeholder="Tempat" required type="text" name="tempatTB" id="tempatTB">
-                                       <button class="btn-clear"></button>
-                                   </div>
+                                <label>Discount tunai :</label>
+                                <div class="input-control select size2">
+                                  <select id="angsuranTB" name="angsuranTB">
+                                    <option>5%</option>
+                                  </select>
+                              </div>
+                                <div class="input-control text size3">
+                                    <input type="text" name="diskon_tunaiTB" id="diskon_tunaiTB">
+                                    <button class="btn-clear"></button>
+                                </div>                                
 
-                                   <label>Tanggal Peminjaman</label>
-                                   <div class="input-control text" data-role="datepicker"
-                                       data-date="2014-10-23"
-                                       data-format="yyyy-mm-dd"
-                                       data-effect="slide">
-                                       <input class="span4" id="tanggal1TB" name="tanggal1TB" type="text">
-                                       <button class="btn-date"></button>
-                                   </div>
+                                <label>Total Discount :</label>
+                                <div class="input-control text size3">
+                                    <input type="text" name="diskon_totalTB" id="diskon_totalTB">
+                                    <button class="btn-clear"></button>
+                                </div>                                
 
-                                   <label>Tanggal Pengembalian</label>
-                                   <div class="input-control text" data-role="datepicker"
-                                       data-date="2014-10-23"
-                                       data-format="yyyy-mm-dd"
-                                       data-effect="slide">
-                                       <input class="span4   " id="tanggal2TB" name="tanggal2TB" type="text">
-                                       <button class="btn-date"></button>
-                                   </div>
+                              </div>
+                                <!-- End span-->
 
-                                   <label>Keterangan</label>
-                                   <div class="input-control textarea">
-                                       <textarea class="span4" placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>
-                                   </div>
-                           </div>
+                            </div>
+                          </div>
+                                <!-- End Grid-->
+                        </div>
+                    </div>
+                            <!-- End Panel -->
+
+                        <!-- Panel Data Siswa-->
+                        <div class="panel">
+                          <div class="panel-header">
+                          Data Pribadi Siswa
+                          </div>
+                          <div class="panel-content">
+
+                      <div class="grid">     
+                        <div class="row">
+                          <div class="span12">
+
+                        <label>Nomor Pendaftaran</label>
+                        <div class="input-control text3">
+                            <input placeholder="No Pendaftaran" type="text" name="nopendaftaranTB" id="nopendaftaranTB">
+                        </div>
                         
-                           <div class="span4">
-                               <div>
-                                   <legend>Pilih Barang</legend>
-                                   <table class="table hovered bordered striped">
-                                       <thead>
-                                           
-                                           <tr id="cariTR" class="selected">
-                                               <th class="text-left"><input keydown="viewTB2();" placeholder="Nama Barang" id="namaS" name="namaS"></th>
-                                           </tr>
-                                           <tr style="color:white;"class="info">
-                                               <th class="text-center">Kode Barang</th>
-                                               <th class="text-center">Nama Barang</th>
-                                               <th class="text-center">Aksi</th>
-                                           </tr>
-                                       </thead>
+                        <label>Nama Lengkap</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Nama Lengkap" type="text" name="namaTB" id="namaTB">
+                            <button class="btn-clear"></button>
+                        </div>
 
-                                       <tbody id="tbody2">
-                                           
-                                       </tbody>
-                                       <tfoot>
-                                            
-                                       </tfoot>
-                                   </table>
-                               </div>
-                               <div>
-                                   <legend>Pilih Barang</legend>
-                                   <table class="table hovered bordered striped">
-                                       <thead>
-                                           
-                                           <tr id="cariTR" class="selected">
-                                               <th class="text-left"><input placeholder="Nama Barang" id="namaS" name="namaS"><button onclick="return viewTB2();" class="btn-date">Cari</button></th>
-                                           </tr>
-                                           <tr style="color:white;"class="info">
-                                               <th class="text-center">Kode Barang</th>
-                                               <th class="text-center">Nama Barang</th>
-                                               <th class="text-center">Aksi</th>
-                                           </tr>
-                                       </thead>
+                        <label>Jenis Kelamin</label>
+                        <div class="input-control radio">
+                        <label>
+                            <input type="radio" />
+                            <span class="check"></span>
+                            Laki-Laki
+                        </label>
+                        </div>
 
-                                       <tbody id="tbody3">
-                                           
-                                       </tbody>
-                                       <tfoot>
-                                            
-                                       </tfoot>
-                                   </table>
-                               </div>
-                           </div>
+                        <div class="input-control radio">
+                        <label>
+                            <input type="radio" />
+                            <span class="check"></span>
+                            Perempuan
+                        </label>
+                        </div>
+
+                        <label>Tempat Lahir</label>
+                        <div class="input-control text3">
+                            <input placeholder="Tempat Lahir" type="text" name="tempatlahirTB" id="tempatlahirTB">
+                        </div>
+
+                        <label>Tanggal Lahir</label>
+                        <div class="input-control text size2" data-role="datepicker"
+                            // data-date="2014-10-23"
+                            data-format="yyyy-mm-dd"
+                            data-effect="slide">
+                            <input id="tgllahiranakTB" name="tgllahiranakTB" type="text">
+                            <button class="btn-date"></button>
+                        </div>
+
+                        <label>Agama</label>
+                        <div class="input-control select size3">
+                            <select id="agamaTB" name="agamaTB">
+                              <option>Kristen</option>
+                            </select>
+                        </div>
                         
-                       </div>
-                   </div>
-                   <div class="form-actions"> 
-                       <button class="button primary">simpan</button>&nbsp;
-                       <button class="button" type="button" onclick="$.Dialog.close()">Batal</button> 
-                   </div>    
+                        <label>Alamat rumah</label>
+                        <div class="input-control textarea size4">
+                            <textarea id="alamatsiswaTB" name="alamatsiswaTB"></textarea>
+                        </div>
+
+                        <label>Nomor telpon</label>
+                        <div class="input-control text3">
+                            <input placeholder="Nomor telpon" type="text" name="telpsiswaTB" id="telpsiswaTB">
+                        </div>
+
+                        <label>Asal SeKolah</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Asal Sekolah" type="text" name="asalsekolahTB" id="asalsekolahTB">
+                        </div>
+
+                        <!-- Data Ayah -->
+                        <label>Nama Ayah</label>
+                        <div class="input-control text size3">
+                            <input placeholder="Nama Ayah" type="text" name="ayahTB" id="ayahTB">
+                        </div>
                         
-                    </form>; -->
+                        <label>Kebangsaan</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Kebangsaan" type="text" name="kebangsaan_ayahTB" id="kebangsaan_ayahTB">
+                            <button class="btn-clear"></button>
+                        </div>
+
+                        <label>Tempat Lahir</label>
+                        <div class="input-control text size3">
+                            <input placeholder="Tempat Lahir" type="text" name="tempatlahir_ayahTB" id="tempatlahir_ayahTB">
+                        </div>
+
+                        <label>Tanggal Lahir</label>
+                        <div class="input-control text size2" data-role="datepicker"
+                            data-format="yyyy-mm-dd"
+                            data-effect="slide">
+                            <input id="tgllahir_ayahTB" name="tgllahir_ayahTB" type="text">
+                            <button class="btn-date"></button>
+                        </div>
+                      
+                        <label>Pekerjaan :</label>
+                        <div class="input-control textarea size4">
+                            <textarea placeholder="Pekerjaan" id="pekerjaan_ayahTB" name="pekerjaan_ayahTB"></textarea>
+                        </div>
+
+                        <label>Nomor telpon :</label>
+                        <div class="input-control text3">
+                            <input placeholder="Nomor telpon" type="text" name="telpayahTB" id="telpayahTB">
+                        </div>
+
+                        <label>Pin BB :</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Pin BB" type="text" name="pinbb_ayahTB" id="pinbb_ayahTB">
+                        </div>
+
+                        <label>Email :</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Email" type="text" name="email_ayahTB" id="email_ayahTB">
+                        </div>
+
+                        <!-- Data Ibu -->
+                        <label>Nama Ibu</label>
+                        <div class="input-control text size3">
+                            <input placeholder="Nama Ibu" type="text" name="ibuTB" id="ibuTB">
+                        </div>
+                        
+                        <label>Kebangsaan</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Kebangsaan" type="text" name="kebangsaan_ibuTB" id="kebangsaan_ibuTB">
+                            <button class="btn-clear"></button>
+                        </div>
+
+                        <label>Tempat Lahir</label>
+                        <div class="input-control text size3">
+                            <input placeholder="Tempat Lahir" type="text" name="tempatlahir_ibuTB" id="tempatlahir_ibuTB">
+                        </div>
+
+                        <label>Tanggal Lahir</label>
+                        <div class="input-control text size2" data-role="datepicker"
+                            data-format="yyyy-mm-dd"
+                            data-effect="slide">
+                            <input id="tgllahir_ibuTB" name="tgllahir_ibuTB" type="text">
+                            <button class="btn-date"></button>
+                        </div>
+                      
+                        <label>Pekerjaan :</label>
+                        <div class="input-control textarea size4">
+                            <textarea placeholder="Pekerjaan" id="pekerjaan_ibuTB" name="pekerjaan_ibuTB"></textarea>
+                        </div>
+
+                        <label>Nomor telpon :</label>
+                        <div class="input-control text3">
+                            <input placeholder="Nomor telpon" type="text" name="telpibuTB" id="telpibuTB">
+                        </div>
+
+                        <label>Pin BB :</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Pin BB" type="text" name="pinbb_ibuTB" id="pinbb_ibuTB">
+                        </div>
+
+                        <label>Email :</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Email" type="text" name="email_ibuTB" id="email_ibuTB">
+                        </div>
+
+                        </div>
+                        <!-- End span -->
+
+                        <div class="span12">
+                            <label><b>Foto Siswa :</b></label>
+                               <img width="150" id="previmg" src="../img/no_image.jpg" >
+                             <div class="input-control file info-state" data-role="input-control" >
+                               <input type="hidden" id="photoH"/>
+                               <div id="photoDV" class="input-control file" data-role="input-control">
+                               <input onchange="PreviewImage(this);" id="photoTB" name="photoTB" type="file">
+                               <button class="btn-file"></button>
+                            </div>
+                        </div>
+
+                        <label><b>Riwayat Kesehatan Siswa :</b></label>
+                        <label>Golongan Darah :</label>
+                        <div class="input-control select size2">
+                            <select id="goldarahTB" name="goldarahTB">
+                              <option>-</option>
+                            </select>
+                        </div>
+
+                        <label>Penyakit yang pernah diderita :</label>
+                        <div class="input-control textarea size4">
+                            <textarea id="penyakitTB" name="penyakitTB"></textarea>
+                        </div>
+
+                        <label>Catatan kesehatan</label>
+                        <div class="input-control textarea size4">
+                            <textarea id="catatan_kesehatanTB" name="catatan_kesehatanTB"></textarea>
+                        </div>
+
+                        <label><b>Kontak Darurat (selain Orang Tua) :</b></label>
+                        <label>Nama :</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Nama" type="text" name="nama_kontakTB" id="nama_kontakTB">
+                        </div>
+
+                        <label>Hubungan :</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Hubungan" type="text" name="hubunganTB" id="hubunganTB">
+                        </div>
+
+                        <label>Nomor yang dapat dihubungi :</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Nomor" type="text" name="nomorTB" id="nomorTB">
+                        </div>
+                        
+                      </div>
+                    </div>
+                          <!-- End Grid -->
+                     </div>
+                        <!-- End Panel Data Siswa -->
+                 </div>
+
+                        <div class="form-actions"> 
+                            <button class="button primary">simpan</button>&nbsp;
+                            <button class="button" type="button" onclick="$.Dialog.close()">Batal</button> 
+                        </div>
+                    </form>;
+    </div>
