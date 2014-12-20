@@ -92,6 +92,7 @@
 						ORDER BY
 							k.kelas ASC';
 				// print_r($sql);exit();
+				// var_dump($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -112,18 +113,7 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
-						if($res['aktif']=1){
-							$dis  = 'disabled';
-							$ico  = 'checkmark';
-							$hint = 'telah Aktif';
-							$func = '';
-						}else{
-							$dis  = '';
-							$ico  = 'blocked';
-							$hint = 'Aktifkan';
-							$func = 'onclick="aktifkan('.$res['replid'].');"';
-						}
-
+						
 						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -166,7 +156,7 @@
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2 = mysql_query($s2);
-								// print_r($e2);exit();
+								print_r($e2);exit();
 				if(!$e2){
 					$stat = 'gagal menyimpan';
 				}else{
@@ -219,7 +209,6 @@
 			// 			$stat='sukses';
 			// 		}
 			// 	}$out  = json_encode(array('status'=>$stat));
-			// 	//var_dump($stat);exit();
 			// break;
 			// aktifkan -----------------------------------------------------------------
 

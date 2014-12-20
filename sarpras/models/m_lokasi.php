@@ -15,11 +15,11 @@
 		switch ($_POST['aksi']) {
 			// // -----------------------------------------------------------------
 			case 'tampil':
-				$kode       = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
-				$nama       = trim($_POST['namaS'])?filter($_POST['namaS']):'';
-				$alamat     = trim($_POST['alamatS'])?filter($_POST['alamatS']):'';
-				$kontak     = trim($_POST['kontakS'])?filter($_POST['kontakS']):'';
-				$keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$kode       = isset($_POST['kodeS'])?filter(trim($_POST['kodeS'])):'';
+				$nama       = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
+				$alamat     = isset($_POST['alamatS'])?filter(trim($_POST['alamatS'])):'';
+				$kontak     = isset($_POST['kontakS'])?filter(trim($_POST['kontakS'])):'';
+				$keterangan = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
@@ -35,10 +35,11 @@
 				}else{
 					$starting=0;
 				}
-
-				$recpage= 5;//jumlah data per halaman
-				$obj 	= new pagination_class($sql,$starting,$recpage);
-				$result =$obj->result;
+				$recpage = 5;
+				$aksi    ='tampil';
+				$subaksi ='';
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$result  = $obj->result;
 
 				#ada data
 				$jum = mysql_num_rows($result);
@@ -62,6 +63,7 @@
 									'.$btn.'
 								</tr>';
 						$nox++;
+						// var_dump($nox);exit();
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">

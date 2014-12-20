@@ -50,26 +50,8 @@ var contentFR = '';
                         +'</div>'   
                         +'<label>Pelajaran</label>'
                         +'<div class="input-control select span3">'
-                            +'<select data-hint="Pelajaran" name="pelajaranS" id="pelajaranS"></select>'
+                            +'<select data-hint="Pelajaran" name="pelajaranTB" id="pelajaranTB"></select>'
                         +'</div>'
-
-                        +'<label>pelajaran</label>'
-                        +'<div class="input-control text">'
-                            +'<input placeholder="Nama pelajaran"  required type="text" name="pelajaranTB" id="pelajaranTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-
-                        //  +'<label>nama guru</label>'
-                        // +'<div class="input-control text">'
-                        //     +'<input placeholder="Nama nama"  required type="text" name="namaTB" id="namaTB">'
-                        //     +'<button class="btn-clear"></button>'
-                        // +'</div>'
-
-                        //  +'<label>nip</label>'
-                        // +'<div class="input-control text">'
-                        //     +'<input placeholder="Nama nip"  required type="text" name="nipTB" id="nipTB">'
-                        //     +'<button class="btn-clear"></button>'
-                        // +'</div>'
 
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
@@ -226,8 +208,8 @@ var contentFR = '';
 // view table ---
     function viewTB(){
         var aksi ='aksi=tampil';
-        var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&departemenS='+$('#departemenS').val()
+        var cari = '&departemenS='+$('#departemenS').val()
+                    +'&tahunajaranS='+$('#tahunajaranS').val()
                     +'&pelajaranS='+$('#pelajaranS').val();
         $.ajax({
             url : dir,
@@ -373,9 +355,9 @@ var contentFR = '';
     // function pagination(page,aksix,menux){
     function pagination(page,aksix){
         var datax = 'starting='+page+'&aksi='+aksix;
-        var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&pelajaranS='+$('#pelajaranS').val()
-                    +'&departemenS='+$('#departemenS').val();
+         var cari = '&departemenS='+$('#departemenS').val()
+                    +'&tahunajaranS='+$('#tahunajaranS').val()
+                    +'&pelajaranS='+$('#pelajaranS').val();
 
         $.ajax({
             url:dir,
@@ -433,36 +415,38 @@ function notif(cont,clr) {
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#tingkatTB').val('');
+        $('#pelajaranTB').val('');
+        $('#namaTB').val('');
+        $('#nipTB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---
 
 //aktifkan process ---
-    function aktifkan(id){
-        var th  = $('#'+mnu+'TD_'+id).html();
-        var dep = $('#'+mnu2+'S').val();
-        //alert('d '+dep);
-        //return false;
-        if(confirm(' mengaktifkan "'+th+'"" ?'))
-        $.ajax({
-            url:dir,
-            type:'post',
-            data:'aksi=aktifkan&replid='+id+'&departemen='+dep,
-            dataType:'json',
-            success:function(dt){
-                var cont,clr;
-                if(dt.status!='sukses'){
-                    cont = '..Gagal Mengaktifkan '+th+' ..';
-                    clr  ='red';
-                }else{
-                    viewTB($('#departemenS').val());
-                    cont = '..Berhasil Mengaktifkan '+th+' ..';
-                    clr  ='green';
-                }notif(cont,clr);
-            }
-        });
-    }
+    // function aktifkan(id){
+    //     var th  = $('#'+mnu+'TD_'+id).html();
+    //     var dep = $('#'+mnu2+'S').val();
+    //     //alert('d '+dep);
+    //     //return false;
+    //     if(confirm(' mengaktifkan "'+th+'"" ?'))
+    //     $.ajax({
+    //         url:dir,
+    //         type:'post',
+    //         data:'aksi=aktifkan&replid='+id+'&departemen='+dep,
+    //         dataType:'json',
+    //         success:function(dt){
+    //             var cont,clr;
+    //             if(dt.status!='sukses'){
+    //                 cont = '..Gagal Mengaktifkan '+th+' ..';
+    //                 clr  ='red';
+    //             }else{
+    //                 viewTB($('#departemenS').val());
+    //                 cont = '..Berhasil Mengaktifkan '+th+' ..';
+    //                 clr  ='green';
+    //             }notif(cont,clr);
+    //         }
+    //     });
+    // }
 //end of aktifkan process ---
 
     // ---------------------- //

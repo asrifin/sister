@@ -91,9 +91,9 @@ var contentFR = '';
         $('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
         });$('#tahunajaranS').on('change',function (){
-            viewTB();
+            viewTB('');
         });$('#tingkatS').on('change',function (){
-            viewTB(); 
+            viewTB(''); 
         })
 
         // search button
@@ -378,9 +378,10 @@ var contentFR = '';
 //paging ---
     function pagination(page,aksix){
         var datax = 'starting='+page+'&aksi='+aksix;
-        var cari =  '&tingkatS='+$('#tingkatS').val()
+         var cari = '&departemenS='+$('#departemenS').val()
                     +'&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&departemenS='+$('#departemenS').val();
+                    +'&pelajaranS='+$('#pelajaranS').val();
+
         $.ajax({
             url:dir,
             type:"post",
@@ -393,7 +394,7 @@ var contentFR = '';
                 },1000);
             }
         });
-    }   
+    }     
 //end of paging ---
     
 //del process ---
@@ -443,32 +444,32 @@ function notif(cont,clr) {
 //end of reset form ---
 
 //aktifkan process ---
-    function aktifkan(id){
-    	var th  = $('#'+mnu+'TD_'+id).html();
-    	var dep = $('#'+mnu2+'S').val();
-    	//alert('d '+dep);
-    	//return false;
-        if(confirm(' mengaktifkan "'+th+'"" ?'))
-        $.ajax({
-            url:dir,
-            type:'post',
-            data:'aksi=aktifkan&replid='+id+'&departemen='+dep,
-            dataType:'json',
-            success:function(dt){
-                var cont,clr;
-                if(dt.status!='sukses'){
-                    cont = '..Gagal Mengaktifkan '+th+' ..';
-                    clr  ='red';
-                }else{
-                    viewTB($('#departemenS').val());
-                    cont = '..Berhasil Mengaktifkan '+th+' ..';
-                    clr  ='green';
-                }notif(cont,clr);
-            }
-        });
-    }
+    // function aktifkan(id){
+    // 	var th  = $('#'+mnu+'TD_'+id).html();
+    // 	var dep = $('#'+mnu2+'S').val();
+    // 	//alert('d '+dep);
+    // 	//return false;
+    //     if(confirm(' mengaktifkan "'+th+'"" ?'))
+    //     $.ajax({
+    //         url:dir,
+    //         type:'post',
+    //         data:'aksi=aktifkan&replid='+id+'&departemen='+dep,
+    //         dataType:'json',
+    //         success:function(dt){
+    //             var cont,clr;
+    //             if(dt.status!='sukses'){
+    //                 cont = '..Gagal Mengaktifkan '+th+' ..';
+    //                 clr  ='red';
+    //             }else{
+    //                 viewTB($('#departemenS').val());
+    //                 cont = '..Berhasil Mengaktifkan '+th+' ..';
+    //                 clr  ='green';
+    //             }notif(cont,clr);
+    //         }
+    //     });
+    // }
 //end of aktifkan process ---
 
     // ---------------------- //
-    // -- created by epiii -- //
+    // -- created by rovi -- //
     // ---------------------- //

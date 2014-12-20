@@ -4,12 +4,12 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	$tb = 'aka_guru';
-	$out=array();
+	// $out=array();
 	
 
 	// if(!isset($_POST['aksi'])){
-	// 	$out=json_encode(array('status'=>'invalid_no_post'));		
-	// 	// $out=['status'=>'invalid_no_post'];		
+		// $out=json_encode(array('status'=>'invalid_no_post'));		
+		// $out=['status'=>'invalid_no_post'];		
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
 			$page       = $_GET['page']; // get the requested page
@@ -33,7 +33,7 @@
 						tb.nama LIKE "%'.$searchTerm.'%"
 						OR tb.nip LIKE "%'.$searchTerm.'%"';
 							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
-			// print_r($ss);exit();
+			print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -185,6 +185,7 @@
 			break;
 			// ambiledit -----------------------------------------------------------------
 		}
-	}echo $out;
+	}
+	echo $out;
 	// echo json_encode($out);
 ?>
