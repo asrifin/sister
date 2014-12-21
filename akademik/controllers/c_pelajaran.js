@@ -318,6 +318,8 @@ var contentFR = '';
                     clr  ='green';
                 }
                 notif(cont,clr);
+                viewTB();
+
             }
         });
     }

@@ -183,24 +183,7 @@ var contentFR ='';
 // end of form ---
 
 //paging ---
-    function pagination(page,aksix,menux){
-        var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari =  '&departemenS='+$('#departemenS').val()
-                    +'&angkatanS='+$('#angkatanS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
-        $.ajax({
-            url:dir,
-            type:"post",
-            data: datax+cari,
-            beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }   
+ tampil
 //end of paging ---
     
 //del process ---
