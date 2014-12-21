@@ -15,9 +15,9 @@
 		switch ($_POST['aksi']) {
 			// // -----------------------------------------------------------------
 			case 'tampil':
-				$nama       = trim($_POST['namaS'])?filter($_POST['namaS']):'';
-				$nama2     = trim($_POST['nama2S'])?filter($_POST['nama2S']):'';
-				$keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$nama       = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
+				$nama2       = isset($_POST['nama2S'])?filter(trim($_POST['nama2S'])):'';
+				$keterangan = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
@@ -33,8 +33,8 @@
 				}
 
 				$recpage= 5;//jumlah data per halaman
-				$aksi    ='';
-				$subaksi ='tampil';
+				$aksi    ='tampil';
+				$subaksi ='';
 				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
 
 				// $obj 	= new pagination_class($sql,$starting,$recpage);

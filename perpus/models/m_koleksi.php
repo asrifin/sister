@@ -9,7 +9,7 @@
 	// $tb3  = 'pus_katalog';
 	// $tb4  = 'pus_penerbit';
 	// $tb5  = 'pus_pengarang';
-	$out=array();
+	// $out=array();
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
@@ -25,6 +25,7 @@
 				$callnumber = isset($_POST['callnumberS'])?filter(trim($_POST['callnumberS'])):'';
 				$pengarang  = isset($_POST['pengarangS'])?filter(trim($_POST['pengarangS'])):'';
 				$penerbit   = isset($_POST['penerbitS'])?filter(trim($_POST['penerbitS'])):'';
+				$klasifikasi   = isset($_POST['klasifikasiS'])?filter(trim($_POST['klasifikasiS'])):'';
 				
 				$sql = 'SELECT  	
 							b.replid
@@ -44,7 +45,7 @@
 							pus_pengarang r
 						WHERE	
 							b.katalog = k.replid 
-							AND k.klasifikasi = f.replid 
+							AND klasifikasi = f.replid 
 							AND k.penerbit = t.replid 
 							AND k.pengarang = r.replid
 							/*search*/
@@ -60,10 +61,10 @@
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$aksi    ='tampil';
+				$subaksi ='';
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
 				$result =$obj->result;
 
 				#ada data

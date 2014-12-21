@@ -274,75 +274,107 @@ function cmbtingkatbuku(tgt){
 // end of view table ---
 
 // form ---
-    // function viewFR(id){
-    //     $.Dialog({
-    //         shadow: true,
-    //         overlay: true,
-    //         draggable: true,
-    //         width: 500,
-    //         padding: 10,
-    //         onShow: function(){
-    //             var titlex;
-    //             if(id==''){  //add mode
-    //                 // alert('halooo');
-    //                 titlex='<span class="icon-plus-2"></span> Tambah ';
-    //                 $.ajax({
-    //                     url:dir6,
-    //                     data:'aksi=cmblokasi&replid='+$('#lokasiS').val(),
-    //                     type:'post',
-    //                     dataType:'json',
-    //                     success:function(dt){
-    //                         $('#lokasiTB').val(dt.lokasi[0].nama);
-    //                         $('#lokasiH').val($('#lokasiS').val());
-    //                     }
-    //                 });
-    //             }else{ // edit mode
-    //                 titlex='<span class="icon-pencil"></span> Ubah';
-    //                 $.ajax({
-    //                     url:dir6,
-    //                     data:'aksi=ambiledit&replid='+id,
-    //                     type:'post',
-    //                     dataType:'json',
-    //                     success:function(dt){
-    //                         $('#idformH').val(id);
-    //                         $('#lokasiH').val($('#lokasiS').val()); // edit by epii
-    //                         $('#lokasiTB').val(dt.lokasi);
-    //                         $('#kodeTB').val(dt.kode);
-    //                         $('#namaTB').val(dt.nama);
-    //                         $('#keteranganTB').val(dt.keterangan);
-    //                     }
-    //                 });
-    //             }$.Dialog.title(titlex+' '+mnu); // edit by epiii
-    //             $.Dialog.content(contentFR);
-    //         }
-    //     });
-    // }
+    function viewFR(id){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: 500,
+            padding: 10,
+            onShow: function(){
+                var titlex;
+                if(id==''){  //add mode
+                    // alert('halooo');
+                    titlex='<span class="icon-plus-2"></span> Tambah ';
+                    $.ajax({
+                        url:dir6,
+                        data:'aksi=cmblokasi&replid='+$('#lokasiS').val(),
+                        type:'post',
+                        dataType:'json',
+                        success:function(dt){
+                            $('#lokasiTB').val(dt.lokasi[0].nama);
+                            $('#lokasiH').val($('#lokasiS').val());
+                        }
+                    });
+                }else{ // edit mode
+                    titlex='<span class="icon-pencil"></span> Ubah';
+                    $.ajax({
+                        url:dir6,
+                        data:'aksi=ambiledit&replid='+id,
+                        type:'post',
+                        dataType:'json',
+                        success:function(dt){
+                            $('#idformH').val(id);
+                            $('#lokasiH').val($('#lokasiS').val()); // edit by epii
+                            $('#lokasiTB').val(dt.lokasi);
+                            $('#kodeTB').val(dt.kode);
+                            $('#namaTB').val(dt.nama);
+                            $('#keteranganTB').val(dt.keterangan);
+                        }
+                    });
+                }$.Dialog.title(titlex+' '+mnu); // edit by epiii
+                $.Dialog.content(contentFR);
+            }
+        });
+    }
 // end of form ---
 
 //paging ---
-    function pagination(page,aksix,menux){ // edit by epiii
-        var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari ='&lokasiS='+lok
-                    +'&barkodeS='+$('#barkodeS').val()
-                    +'&idbukuS='+$('#idbukuS').val()
-                    +'&judulS='+$('#judulS').val()
-                    +'&callnumberS='+$('#callnumberS').val()
-                    +'&klasifikasiS='+$('#klasifikasiS').val()
-                    +'&pengarangS='+$('#pengarangS').val()
-                    +'&penerbitS='+$('#penerbitS').val();
+function pagination(page,aksix,subaksi){ 
+        var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
+        var cari ='';
+        var el,el2;
+
+        if(subaksi!=''){ // multi paging 
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
         $.ajax({
             url:dir,
             type:"post",
-            data: datax+cari,
+            data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
-    }   
+    }
+    // function pagination(page,aksix,menux){ 
+    //     var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
+    //     var cari ='&lokasiS='+lok
+    //                 +'&barkodeS='+$('#barkodeS').val()
+    //                 +'&idbukuS='+$('#idbukuS').val()
+    //                 +'&judulS='+$('#judulS').val()
+    //                 +'&callnumberS='+$('#callnumberS').val()
+    //                 +'&klasifikasiS='+$('#klasifikasiS').val()
+    //                 +'&pengarangS='+$('#pengarangS').val()
+    //                 +'&penerbitS='+$('#penerbitS').val();
+    //     $.ajax({
+    //         url:dir,
+    //         type:"post",
+    //         data: datax+cari,
+    //         beforeSend:function(){
+    //             $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+    //         },success:function(dt){
+    //             setTimeout(function(){
+    //                 $('#tbody').html(dt).fadeIn();
+    //             },1000);
+    //         }
+    //     });
+    // }   
 //end of paging ---
     
 //del process ---

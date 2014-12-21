@@ -9,13 +9,13 @@
 
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 <div class="input-control select span3">
-    <select data-hint="lokasi" name="lokasiS" id="lokasiS"></select>
+    <select class="_cari" data-hint="lokasi" name="lokasiS" id="lokasiS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Jenis Buku" name="jenisbukuS" id="jenisbukuS"></select>
+    <select class="_cari" data-hint="Jenis Buku" name="jenisbukuS" id="jenisbukuS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Tingkat Buku" name="tingkatbukuS" id="tingkatbukuS"></select>
+    <select class="_cari" data-hint="Tingkat Buku" name="tingkatbukuS" id="tingkatbukuS"></select>
 </div>
            
 
@@ -35,14 +35,14 @@
 
         <tr style="display:none;" id="cariTR" class="selected">
             <!-- <th class="text-left"></th> -->
-            <th class="text-left"><input placeholder="barcode" id="barkodeS" name="barkodeS"></th>
-            <th class="text-left"><input placeholder="idbuku" id="idbukuS" name="idbukuS"></th>
-            <th class="text-left"><input placeholder="judul" id="judulS" name="judulS"></th>
-            <th class="text-left"><input placeholder="call number" id="callnumberS" name="callnumberS"></th>
-            <th class="text-left"><input placeholder="klasifikasi" id="klasifikasi-kodeS" name="klasifikasi-kodeS"></th>
-            <th class="text-left"><input placeholder="pengarang" id="pengarangS" name="pengarangS"></th>
-            <th class="text-left"><input placeholder="penerbit" id="penerbitS" name="penerbitS"></th>
-            <th class="text-left"><input placeholder="status" id="statusS" name="statusS"></th>
+            <th class="text-left"><input class="_cari" placeholder="barcode" id="barkodeS" name="barkodeS"></th>
+            <th class="text-left"><input class="_cari" placeholder="idbuku" id="idbukuS" name="idbukuS"></th>
+            <th class="text-left"><input class="_cari" placeholder="judul" id="judulS" name="judulS"></th>
+            <th class="text-left"><input class="_cari" placeholder="call number" id="callnumberS" name="callnumberS"></th>
+            <th class="text-left"><input class="_cari" placeholder="klasifikasi" id="klasifikasiS" name="klasifikasiS"></th>
+            <th class="text-left"><input class="_cari" placeholder="pengarang" id="pengarangS" name="pengarangS"></th>
+            <th class="text-left"><input class="_cari" placeholder="penerbit" id="penerbitS" name="penerbitS"></th>
+            <th class="text-left"><input class="_cari" placeholder="status" id="statusS" name="statusS"></th>
         </tr>
     </thead>
 
