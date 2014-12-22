@@ -12,28 +12,11 @@ var contentFR = '';
     $(document).ready(function(){
        contentFR+=''
                 +'<div style="overflow:scroll;height:500px;"  class="">'
-                   // +'<legend>Data Barang</legend>'
-                   //      +'<div class="input-control text">'
-                   //          +'<input placeholder="kode/nama barang" id="barangTB">'
-                   //          +'<button class="btn-clear"></button>'
-                   //      +'</div>'
-                        
-                // +'<label>Lokasi</label>'
-                // +'<div class="input-control text">'
-                //     // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" '
-                //     +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" >'
-                //     +'<button class="btn-clear"></button>'
-                // +'</div>'
-
                     +'<legend>Data Peminjaman</legend>'
                     +'<form onsubmit="simpan();return false;" autocomplete="off"><input id="idformH" type="hidden">' 
 
                         +'<label>Cari Pegawai</label>'
-                        //  +'<div class="input-control text">'
-                        //     +'<button class="btn-clear"></button>'
-                        // +'</div>'  
                         +'<div class="input-control text">'
-                            // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" '
                             +'<input placeholder="kode/nama pegawai" id="guruTB">'
                             +'<input  type="hidden" name="guruH" id="guruH" >'
                             +'<button class="btn-clear"></button>'
@@ -146,6 +129,7 @@ var contentFR = '';
         });
     }
 //end of combo tahunajaran ---
+
 // combo pelajaran ---
     function cmbpelajaran(thn){
         $.ajax({
@@ -160,19 +144,38 @@ var contentFR = '';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.pelajaran, function(id,item){
-                        if(item.aktif=='1'){
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
-                        }else{
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                        }
+                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
                 }$('#pelajaranS').html('<option value="">---------- Semua ----------</option>'+out);
-                // alert('d '+out);return false;
                 viewTB();
             }
         });
     }
 //end of combo pelajaran ----
+
+// combo pelajaran2 ---
+    function cmbpelajaran2(pel){
+        $.ajax({
+            url:'m_pelajaran.php',
+            data:'aksi=cmbpelajaran&pelajaran='+pel,
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.pelajaran, function(id,item){
+                        if(item.replid==thn)
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
+                        else
+                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                    });
+                }$('#pelajaranTB').html(out);
+            }
+        });
+    }
+//end of combo pelajaran2 ----
 
 //save process ---
     function simpan(){
@@ -276,10 +279,11 @@ var contentFR = '';
                                             dataType:'json',
                                             success:function(dt3){
                                                 $('#idformH').val(id);
-                                                $('#pelajaranTB').val(dt3.pelajaran);
+                                                // $('#pelajaranTB').val(dt3.pelajaran);
                                                 $('#namaTB').val(dt3.nama);
                                                 $('#nipTB').val(dt3.nip);
                                                 $('#keteranganTB').val(dt3.keterangan);
+                                                cmbpelajaran2(dt3.pelajaran);
                                             }
                                         });
                                     // end of form :: edit :: tampilkan data 
