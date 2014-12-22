@@ -164,7 +164,7 @@ var contentFR = '';
 // combo kelompok ---
     function cmbkelompok(thn){
         $.ajax({
-            url:dir3,
+            url:dir_kel,
             data:'aksi=cmbkelompok&departemen='+thn,
             dataType:'json',
             type:'post',

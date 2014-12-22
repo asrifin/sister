@@ -117,6 +117,13 @@
                                   <button class="btn-clear"></button>
                               </div>
 
+                              <label><b>Uang Sekolah :</b></label>
+                              <label>Uang Sekolah per Bulan</label>
+                              <div class="input-control text size3">
+                                  <input type="text" name="sppTB" id="sppTB">
+                                  <button class="btn-clear"></button>
+                              </div>
+
                               </div>
                                 <!-- End Span-->
                               
@@ -136,7 +143,7 @@
 
                                 <label>Discount tunai :</label>
                                 <div class="input-control select size2">
-                                  <select id="angsuranTB" name="angsuranTB">
+                                  <select id="diskon_tunai" name="diskon_tunai">
                                     <option>5%</option>
                                   </select>
                               </div>
@@ -145,9 +152,16 @@
                                     <button class="btn-clear"></button>
                                 </div>                                
 
-                                <label>Total Discount :</label>
+                                <label><b>Total Discount :</b></label>
                                 <div class="input-control text size3">
                                     <input type="text" name="diskon_totalTB" id="diskon_totalTB">
+                                    <button class="btn-clear"></button>
+                                </div>                                
+
+                                <label><b>Denda :</b></label>
+                                <label>Denda keterlambatan</label>
+                                <div class="input-control text size3">
+                                    <input type="text" name="dendaTB" id="dendaTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
@@ -324,6 +338,17 @@
                         <label>Email :</label>
                         <div class="input-control text size5">
                             <input placeholder="Email" type="text" name="email_ibuTB" id="email_ibuTB">
+                        </div>
+
+                        <label><b>Data Keluarga (Opsional) :</b></label>
+                        <label>Nama Kakek :</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Email" type="text" name="kakekTB" id="kakekTB">
+                        </div>
+
+                        <label>Nama Nenek :</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Email" type="text" name="nenekTB" id="nenekTB">
                         </div>
 
                         </div>
