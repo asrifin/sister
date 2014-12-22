@@ -88,8 +88,8 @@ var contentFR = '';
         $("#tambahBC").on('click', function(){
                    // $('#pendataanFR').toggle();
              // $('#tambah').toggle('slow');
-            $('#pendataanFR').removeAttr('style');
-            $('#panel1').attr('style','display:none;');
+            $('#panel1').removeAttr('style');
+            $('#pendataanFR').attr('style','display:none;');
 
         });
 
@@ -214,8 +214,8 @@ var contentFR = '';
                     $.Dialog.close();
                     kosongkan();
                     viewTB($('#departemenS').val());
-                     $('#panel1').removeAttr('style');
-                     $('#pendataanFR').attr('style','display:none;');
+                     $('#pendataanFR').removeAttr('style');
+                     $('#panel1').attr('style','display:none;');
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }

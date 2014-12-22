@@ -1,0 +1,13 @@
+* Set Biaya Calon Siswa 
+
+* Kelompok Pendaftaran
+- Menampilkan SQL  pas ganti halaman 
+- Combo Tahun Ajaran
+
+* Periode 
+- Edit Data  (Sudah)
+
+* Pendataan 
+- combo kelompok
+- Form Edit
+
