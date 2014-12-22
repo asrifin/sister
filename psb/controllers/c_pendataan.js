@@ -5,7 +5,7 @@ var mnu_kel   = 'kelompok';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
 var dir3      = '../akademik/models/m_'+mnu3+'.php';
-var dir_kel   = '../akademik/models/m_'+mnu_kel+'.php';
+var dir_kel   = 'models/m_'+mnu_kel+'.php';
 var contentFR = '';
 
 // main function ---
@@ -155,7 +155,9 @@ var contentFR = '';
                     // viewTB(dep,dt.tahunajaran[0].replid); 
                 }
                 $('#tahunajaranS').html(out);
-                viewTB(); 
+                cmbkelompok(dt.tahunajaran[0].replid);
+
+                // viewTB(); 
             }
         });
     }
@@ -165,7 +167,7 @@ var contentFR = '';
     function cmbkelompok(thn){
         $.ajax({
             url:dir_kel,
-            data:'aksi=cmbkelompok&departemen='+thn,
+            data:'aksi=cmbkelompok&tahunajaran='+thn,
             dataType:'json',
             type:'post',
             success:function(dt){
