@@ -4,8 +4,6 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	$tb = 'aka_guru';
-	// $out=array();
-	
 
 	// if(!isset($_POST['aksi'])){
 		// $out=json_encode(array('status'=>'invalid_no_post'));		
@@ -18,22 +16,21 @@
 			$sord       = $_GET['sord']; // get the direction
 			$searchTerm = $_GET['searchTerm'];
 
-
 			if(!$sidx) 
 				$sidx =1;
-			$ss=	'SELECT * 
-					FROM(
-						SELECT p.nama,p.nip,p.replid
-						FROM hrd_pegawai p
+			$ss='SELECT * 
+				FROM(
+					SELECT p.nama,p.nip,p.replid
+					FROM hrd_pegawai p
 						LEFT JOIN aka_guru G ON p.replid=g.pegawai
-						where 
-							p.replid NOT IN (SELECT pegawai FROM aka_guru) 
-						)tb
-					WHERE	
-						tb.nama LIKE "%'.$searchTerm.'%"
-						OR tb.nip LIKE "%'.$searchTerm.'%"';
+					where 
+						p.replid NOT IN (SELECT pegawai FROM aka_guru) 
+					)tb
+				WHERE	
+					tb.nama LIKE "%'.$searchTerm.'%"
+					OR tb.nip LIKE "%'.$searchTerm.'%"';
 							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
-			print_r($ss);exit();
+			// print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -74,30 +71,25 @@
 			case 'tampil':
 				$departemen  = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
 				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
-				$pelajaran = isset($_POST['pelajaranS'])?filter(trim($_POST['pelajaranS'])):'';
+				$pelajaran   = (isset($_POST['pelajaranS'])and !empty($_POST['pelajaranS']))?' AND g.pelajaran='.$_POST['pelajaranS']:'';
 				$sql = 'SELECT g.*,t.tahunajaran, j.nama AS pelajaran, p.nip, p.keterangan, p.nama
 						FROM aka_guru g
-						LEFT JOIN hrd_pegawai p ON p.replid=g.pegawai
-						LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
-						LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
-						LEFT JOIN departemen d ON d.replid=t.departemen
+							LEFT JOIN hrd_pegawai p ON p.replid=g.pegawai
+							LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
+							LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
 						WHERE 
-							t.departemen like "%'.$departemen.'%" and 
-							t.tahunajaran like "%'.$tahunajaran.'%" and
-							g.pelajaran like "%'.$pelajaran.'%"  
+							t.departemen ='.$departemen.' and 
+							t.replid ='.$tahunajaran.$pelajaran.'
 						ORDER 
 							BY g.replid asc';
-													// var_dump($sql);exit();
-
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
+
 				$recpage= 5;//jumlah data per halaman
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
 				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
@@ -136,9 +128,10 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	pegawai 	= "'.filter($_POST['guruH']).'",
-										pelajaran = "'.filter($_POST['pelajaranS']).'",
-										aktif =1,
+										// aktif 		= 1,
+				$s 		= $tb.' set 	pegawai 	= "'.$_POST['guruH'].'",
+										tahunajaran	= "'.$_POST['tahunajaran'].'",
+										pelajaran 	= "'.$_POST['pelajaranTB'].'",
 										keterangan  = "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
@@ -159,28 +152,27 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT 
-								t.tahunajaran,
-								t.tglmulai,
-								t.tglakhir,
-								t.keterangan,
-								d.replid as id_departemen,
-								d.nama as departemen
-							from '.$tb.' t, departemen d 
-							WHERE 
-								t.departemen= d.replid and
-								t.replid='.$_POST['replid'];
+				$s 		= ' SELECT
+								h.nip,h.nama,g.pelajaran,g.tahunajaran,g.keterangan
+							FROM
+								aka_guru g,
+								hrd_pegawai h,
+								aka_pelajaran p
+							WHERE
+								g.pelajaran = p.replid
+							AND g.pegawai = h.replid
+							AND g.replid ='.$_POST['replid'];
+				// print_r($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'        =>$stat,
-							'tahunajaran'   =>$r['tahunajaran'],
-							'tglmulai'      =>$r['tglmulai'],
-							'tglakhir'      =>$r['tglakhir'],
-							'keterangan'    =>$r['keterangan'],
-							'id_departemen' =>$r['id_departemen'],
-							'departemen'    =>$r['departemen']
+							'status'      =>$stat,
+							'nip'         =>$r['nip'],
+							'nama'        =>$r['nama'],
+							'pelajaran'   =>$r['pelajaran'],
+							'tahunajaran' =>$r['tahunajaran'],
+							'keterangan'  =>$r['keterangan']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

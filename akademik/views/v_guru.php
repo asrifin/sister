@@ -11,6 +11,11 @@
     
 <script src="js/metro/metro-datepicker.js"></script>
  -->
+
+<h4 style="color:white;">Guru</h4>
+<div id="loadarea"></div>
+
+<button data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <div class="input-control select span3">
     <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
@@ -20,11 +25,6 @@
 <div class="input-control select span3">
     <select data-hint="Pelajaran" name="pelajaranS" id="pelajaranS"></select>
 </div>
-
-<h4 style="color:white;">Guru</h4>
-<div id="loadarea"></div>
-
-<button data-hint="Tambah Data" class="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <!-- <button data-hint="Field Pencarian" class="large" id="cariBC"><span class="icon-search"></span> </button>
  -->
 <table class="table hovered bordered striped">
