@@ -3,13 +3,9 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$tb = 'aka_guru';
+	$tb = 'aka_mutasi';
 	// $out=array();
-	
 
-	// if(!isset($_POST['aksi'])){
-		// $out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
 			$page       = $_GET['page']; // get the requested page
@@ -23,17 +19,17 @@
 				$sidx =1;
 			$ss=	'SELECT * 
 					FROM(
-						SELECT p.nama,p.nip,p.replid
-						FROM hrd_pegawai p
-						LEFT JOIN aka_guru G ON p.replid=g.pegawai
+						SELECT s.nama,s.nisn,s.replid
+						FROM aka_siswa s
+						LEFT JOIN aka_mutasi m ON s.replid=m.siswa
 						where 
-							p.replid NOT IN (SELECT pegawai FROM aka_guru) 
+							s.replid NOT IN (SELECT siswa FROM aka_mutasi) 
 						)tb
 					WHERE	
 						tb.nama LIKE "%'.$searchTerm.'%"
-						OR tb.nip LIKE "%'.$searchTerm.'%"';
+						OR tb.nisn LIKE "%'.$searchTerm.'%"';
 							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
-			// print_r($ss);exit();
+			print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -56,7 +52,7 @@
 			while($row = mysql_fetch_assoc($result)) {
 				$rows[]= array(
 					'replid' =>$row['replid'],
-					'nip'   =>$row['nip'],
+					'nisn'   =>$row['nisn'],
 					'nama'   =>$row['nama']
 				);
 			}$response=array(
@@ -72,23 +68,16 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen  = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
-				$pelajaran = isset($_POST['pelajaranS'])?filter(trim($_POST['pelajaranS'])):'';
-				$sql = 'SELECT g.*,t.tahunajaran, j.nama AS pelajaran, p.nip, p.keterangan, p.nama
-						FROM aka_guru g
-						LEFT JOIN hrd_pegawai p ON p.replid=g.pegawai
-						LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
-						LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
-						LEFT JOIN departemen d ON d.replid=t.departemen
+				$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
+				$sql = 'SELECT m.*, s.nisn,s.nama,j.nama AS jenismutasi
+						FROM aka_mutasi m
+						LEFT JOIN aka_siswa s ON s.replid=m.siswa
+						LEFT JOIN aka_jenismutasi j ON j.replid=m.jenismutasi
+						LEFT JOIN departemen d ON d.replid=m.departemen
 						WHERE 
-							t.departemen like "%'.$departemen.'%" and 
-							t.tahunajaran like "%'.$tahunajaran.'%" and
-							g.pelajaran like "%'.$pelajaran.'%"  
+							departemen like "%'.$departemen.'%"
 						ORDER 
-							BY g.replid asc';
-													// var_dump($sql);exit();
-
+							BY m.tanggal asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -97,10 +86,11 @@
 				}
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$aksi ='tampil';
+				$aksi    ='tampil';
 				$subaksi ='';
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
+				// $obj 	= new pagination_class($sql,$starting,$recpage);
 				$result =$obj->result;
 
 				#ada data
@@ -117,9 +107,10 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$res['pelajaran'].'</td>
+									<td>'.$res['tanggal'].'</td>
+									<td>'.$res['nisn'].'</td>
 									<td>'.$res['nama'].'</td>
-									<td>'.$res['nip'].'</td>
+									<td>'.$res['jenismutasi'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -138,10 +129,9 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	pegawai 	= "'.filter($_POST['guruH']).'",
-										pelajaran = "'.filter($_POST['pelajaranS']).'",
-										aktif =1,
-										keterangan  = "'.filter($_POST['keteranganTB']).'"';
+				$s 		= $tb.' set 	departemen 	= "'.filter($_POST['departemenH']).'",
+										angkatan 	= "'.filter($_POST['angkatanTB']).'",
+										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
 				$stat 	= ($e)?'sukses':'gagal';
@@ -155,39 +145,35 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['tahunajaran']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['replid']));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT 
-								t.tahunajaran,
-								t.tglmulai,
-								t.tglakhir,
-								t.keterangan,
-								d.replid as id_departemen,
-								d.nama as departemen
-							from '.$tb.' t, departemen d 
+								a.angkatan,
+								a.keterangan,
+								d.nama
+							from '.$tb.' a, departemen d 
 							WHERE 
-								t.departemen= d.replid and
-								t.replid='.$_POST['replid'];
+								a.departemen= d.replid and
+								a.replid='.$_POST['replid'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'        =>$stat,
-							'tahunajaran'   =>$r['tahunajaran'],
-							'tglmulai'      =>$r['tglmulai'],
-							'tglakhir'      =>$r['tglakhir'],
-							'keterangan'    =>$r['keterangan'],
-							'id_departemen' =>$r['id_departemen'],
-							'departemen'    =>$r['departemen']
+							'status'     =>$stat,
+							'nama'       =>$r['nama'],
+							'angkatan'   =>$r['angkatan'],
+							'keterangan' =>$r['keterangan']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 		}
-	}
-	echo $out;
-	// echo json_encode($out);
+	}echo $out;
+
+	// ---------------------- //
+	// -- created by rovi -- //
+	// ---------------------- //
 ?>

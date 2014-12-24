@@ -69,6 +69,7 @@ var contentFR = '';
         // combo departemen
         cmbdepartemen('');
         // cmbdepartemen(false,'');
+        cmbpelajaran('search','');
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -147,31 +148,62 @@ var contentFR = '';
     }
 //end of combo tahunajaran ---
 // combo pelajaran ---
-    function cmbpelajaran(thn){
+    function cmbpelajaran(typ,replid){
         $.ajax({
             url:dir4,
-            data:'aksi=cmbpelajaran&tahunajaran='+thn,
+            data:'aksi=cmbpelajaran'+replid,
             dataType:'json',
             type:'post',
             success:function(dt){
-                var out='';
-                // alert(dt.status);return false;
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
+                var opt='';
+                    if (dt.status!='sukses') {
+                        notif(dt.status,'red');
+                        opt+='<option value="">'+dt.status+'</option>'
+                    }else{
                     $.each(dt.pelajaran, function(id,item){
-                        if(item.aktif=='1'){
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
-                        }else{
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                        if(replid==item.replid)
+                                opt+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>'
+                            else
+                                opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
+                        });
+                            if(typ=='search'){// search
+                            $('#pelajaranS').html('<option value="">-Semua-</option>'+opt);
+                        }else{//form
+                            $('#pelajaranTB').html('<option value="">Pilih Kondisi ...</option>'+opt);
                         }
-                    });
-                }$('#pelajaranS').html('<option value="">---------- Semua ----------</option>'+out);
-                // alert('d '+out);return false;
-                viewTB();
-            }
-        });
-    }
+                    }
+                },
+            });
+        }
+
+
+     // function cmbkondisi (typ,replid) {
+     //        $.ajax({
+     //            url:dir6,
+     //            type:'post',
+     //            dataType:'json',
+     //            data:'aksi=cmb'+mnu6,
+     //            success:function(dt){
+     //                var opt='';
+     //                if (dt.status!='sukses') {
+     //                    notif(dt.status,'red');
+     //                    opt+='<option value="">'+dt.status+'</option>'
+     //                }else{
+     //                    $.each(dt.kondisi,function(id,item){
+     //                        if(replid==item.replid)
+     //                            opt+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>'
+     //                        else
+     //                            opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
+     //                    });
+     //                    if(typ=='search'){// search
+     //                        $('#b_kondisiS').html('<option value="">-Semua-</option>'+opt);
+     //                    }else{//form
+     //                        $('#b_kondisiTB').html('<option value="">Pilih Kondisi ...</option>'+opt);
+     //                    }
+     //                }
+     //            },
+     //        });
+     //    }
 //end of combo pelajaran ----
 
 //save process ---
@@ -279,6 +311,7 @@ var contentFR = '';
                                                 $('#pelajaranTB').val(dt3.pelajaran);
                                                 $('#namaTB').val(dt3.nama);
                                                 $('#nipTB').val(dt3.nip);
+                                                cmbkondisi('form',dt.data.kondisi);
                                                 $('#keteranganTB').val(dt3.keterangan);
                                             }
                                         });
@@ -353,25 +386,38 @@ var contentFR = '';
     // }
 //paging ---
     // function pagination(page,aksix,menux){
-    function pagination(page,aksix){
-        var datax = 'starting='+page+'&aksi='+aksix;
-         var cari = '&departemenS='+$('#departemenS').val()
-                    +'&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&pelajaranS='+$('#pelajaranS').val();
+function pagination(page,aksix,subaksi){ 
+        var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
+        var cari ='';
+        var el,el2;
+
+        if(subaksi!=''){ // multi paging 
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
 
         $.ajax({
             url:dir,
             type:"post",
-            data: datax+cari,
+            data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
-    }   
+    }
 //end of paging ---
     
 //del process ---

@@ -1,4 +1,4 @@
-var mnu  ='angkatan';
+var mnu  ='mutasi';
 var mnu2 ='departemen';
 var dir  ='models/m_'+mnu+'.php';
 var dir2 ='models/m_'+mnu2+'.php';
@@ -14,9 +14,20 @@ var contentFR ='';
                             +'<input disabled="disabled" name="departemenTB" id="departemenTB" class="span2">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>angkatan</label>'
+                        +'<label>Cari Siswa</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="angkatanTB" id="angkatanTB">'
+                            +'<input placeholder="kode/nama siswa" id="siswaTB">'
+                            +'<input  type="hidden" name="siswaH" id="siswaH" >'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<legend>NISN</legend>'
+                        +'<div class="input-control text">'
+                            +'<input disabled="disabled" placeholder="kode" id="nisnTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<legend>Nama Siswa</legend>'
+                        +'<div class="input-control text">'
+                            +'<input disabled="disabled" placeholder="nama siswa" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>keterangan</label>'
@@ -118,9 +129,7 @@ var contentFR ='';
 // view table ---
     function viewTB(dep){
         var aksi ='aksi=tampil';
-        var cari = '&departemenS='+dep
-                    +'&angkatanS='+$('#angkatanS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        var cari = '&departemenS='+dep;
         $.ajax({
             url : dir,
             type: 'post',
@@ -215,7 +224,7 @@ function pagination(page,aksix,subaksi){
             }
         });
     }
-    //end of paging ---
+//end of paging ---
     
 //del process ---
     function del(id){
@@ -236,6 +245,7 @@ function pagination(page,aksix,subaksi){
                     clr  ='green';
                 }
                 notif(cont,clr);
+                // viewTB();
             }
         });
     }

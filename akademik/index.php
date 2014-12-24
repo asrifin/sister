@@ -160,6 +160,9 @@
                     case 'vkegiatan':
                         require $d.'v_kegiatan.php';
                     break;
+                    case 'vmutasi':
+                        require $d.'v_mutasi.php';
+                    break;
 
                     default:
                         require $d.'v_home.php';
