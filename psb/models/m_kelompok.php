@@ -16,8 +16,8 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 					$departemen  = trim(isset($_POST['departemenS']))?filter($_POST['departemenS']):'';
-				$tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
+				$tahunajaran = trim(isset($_POST['tahunajaranS']))?filter($_POST['tahunajaranS']):'';
+				$kelompok    = trim(isset($_POST['kelompokS']))?filter($_POST['kelompokS']):'';
 				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
 				$sql = 'SELECT
 							k.replid,
@@ -60,15 +60,15 @@
 				}
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
-				$aksi    ='';
-				$subaksi ='periode';
+				$aksi    ='tampil';
+				$subaksi ='';
 
 				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
 				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result =$obj->result;
 
 				#ada data
-				$jum	= mysql_num_rows($result);
+				$jum	= mysql_num_rows($result) or die(mysql_error());
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
@@ -200,7 +200,7 @@
 						from '.$tb.'
 						'.$w.'		
 						ORDER  BY '.$mnu.' asc';
-				// var_dump($s);exit();
+				var_dump($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar = $dt=array();
@@ -209,7 +209,7 @@
 					$ar = array('status'=>'error');
 				}else{
 					if($n==0){ // kosong 
-						var_dump($n);exit();
+						// var_dump($n);exit();
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
 						if(!isset($_POST['replid'])){

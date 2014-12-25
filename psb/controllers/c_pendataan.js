@@ -5,7 +5,7 @@ var mnu_kel   = 'kelompok';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
 var dir3      = '../akademik/models/m_'+mnu3+'.php';
-var dir_kel   = '../akademik/models/m_'+mnu_kel+'.php';
+var dir_kel   = 'models/m_'+mnu_kel+'.php';
 var contentFR = '';
 
 // main function ---
@@ -88,8 +88,8 @@ var contentFR = '';
         $("#tambahBC").on('click', function(){
                    // $('#pendataanFR').toggle();
              // $('#tambah').toggle('slow');
-            $('#pendataanFR').removeAttr('style');
-            $('#panel1').attr('style','display:none;');
+            $('#panel1').removeAttr('style');
+            $('#pendataanFR').attr('style','display:none;');
 
         });
 
@@ -155,7 +155,9 @@ var contentFR = '';
                     // viewTB(dep,dt.tahunajaran[0].replid); 
                 }
                 $('#tahunajaranS').html(out);
-                viewTB(); 
+                cmbkelompok(dt.tahunajaran[0].replid);
+
+                // viewTB(); 
             }
         });
     }
@@ -164,8 +166,8 @@ var contentFR = '';
 // combo kelompok ---
     function cmbkelompok(thn){
         $.ajax({
-            url:dir3,
-            data:'aksi=cmbkelompok&departemen='+thn,
+            url:dir_kel,
+            data:'aksi=cmbkelompok&tahunajaran='+thn,
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -212,8 +214,8 @@ var contentFR = '';
                     $.Dialog.close();
                     kosongkan();
                     viewTB($('#departemenS').val());
-                     $('#panel1').removeAttr('style');
-                     $('#pendataanFR').attr('style','display:none;');
+                     $('#pendataanFR').removeAttr('style');
+                     $('#panel1').attr('style','display:none;');
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }

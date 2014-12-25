@@ -159,7 +159,6 @@ var contentFR ='';
                             $('#departemenTB').val(dt.departemen[0].nama);
                         }
                     });
-
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({

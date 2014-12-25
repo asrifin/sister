@@ -99,7 +99,7 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
 			break;
 			// delete -----------------------------------------------------------------
 
@@ -142,25 +142,23 @@
 			// cmbpelajaran-----------------------------------------------------------------
 			case 'cmb'.$mnu:
 				$w='';
-				if(isset($_POST['replid'])){
-					$w='where replid ='.$_POST['replid'];
-				}else{
+				// if(isset($_POST['replid'])){
+				// 	$w='where replid ='.$_POST['replid'];
+				// }else{
 					if(isset($_POST[$mnu])){
-						$w='where'.$mnu.'='.$_POST[$mnu];
+						$w='where '.$mnu.'='.$_POST[$mnu];
 					}elseif (isset($_POST['tahunajaran'])) {
 						$w='where tahunajaran='.$_POST['tahunajaran'];
 					}
-				}
+				// }
 				
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
 						ORDER  BY nama asc';
-				// var_dump($s);exit();
+				// print_r($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
-						// var_dump($n);exit();
-				// print_r($n);exit();
 				$ar = $dt=array();
 
 				if(!$e){ //error
