@@ -29,7 +29,7 @@
 						tb.nama LIKE "%'.$searchTerm.'%"
 						OR tb.nisn LIKE "%'.$searchTerm.'%"';
 							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
-			print_r($ss);exit();
+			// print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);

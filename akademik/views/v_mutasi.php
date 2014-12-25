@@ -1,6 +1,11 @@
 <script src="controllers/c_mutasi.js"></script>
 <script src="../../js/metro/metro-button-set.js"></script>
 <script src="../../js/metro/metro-hint.js"></script>
+<script src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
+<script src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery-ui-1.10.1.custom.css"/>
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery.ui.combogrid.css"/>
 
 <h4 style="color:white;">Mutasi</h4>
 <div id="loadarea"></div>
