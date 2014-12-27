@@ -107,7 +107,6 @@
                     <li><a href="inventaris">Inventaris</a></li>
                     <li><a href="aktivitas">Aktivitas</a></li>
                     <li><a href="peminjaman">Peminjaman</a></li>
-                    <li><a href="pengembalian">Pengembalian</a></li>
                 </ul>
             </div>
             <div class="element">
@@ -173,10 +172,6 @@
                     case 'vpeminjaman':
                         require $d.'v_peminjaman.php';
                     break;
-                    case 'vkembali':
-                        require $d.'v_kembali.php';
-                    break;
-
                     default:
                         require $d.'v_home.php';
                     break;
