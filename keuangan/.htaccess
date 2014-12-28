@@ -12,13 +12,8 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^rekening/?$   								index.php?page=rekening
 	RewriteRule   ^tahun-anggaran/?$   							index.php?page=tahun_anggaran
 	
-	#kesiswaan
+	#transaksi keuangan
 	RewriteRule   ^transaksi/?$			   						index.php?page=transaksi
-	RewriteRule   ^modul-pembayaran/?$   						index.php?page=pembayaran
-	RewriteRule   ^pembayaran-pendaftaran/?$					index.php?page=pembayaran_pendaftaran
-	RewriteRule   ^pembayaran-uang-pangkal/?$					index.php?page=uang_pangkal
-	RewriteRule   ^pembayaran-uang-sekolah/?$					index.php?page=uang_sekolah
-	RewriteRule   ^inventory/?$									index.php?page=inventory
 	
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 

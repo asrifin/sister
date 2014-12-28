@@ -47,7 +47,7 @@
     <!--end of  pendatan alumni -->
 
     <!-- pendatan mutasi -->
-    <a href="pendataa-mutasi-siswa" class="tile bg-pink" data-click="transform">
+    <a href="mutasi" class="tile bg-pink" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>

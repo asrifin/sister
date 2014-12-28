@@ -68,7 +68,7 @@
                     <li><a href="pendataan-siswa">Pendataan Siswa</a></li>
                     <li><a href="presensi-siswa">Presensi Siswa</a></li>
                     <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
-                    <li><a href="pendataan-mutasi-siswa">Pendataan Mutasi Siswa</a></li>
+                    <li><a href="mutasi">Pendataan Mutasi Siswa</a></li>
                 </ul>
             </div>
             <div class="element">
@@ -159,6 +159,9 @@
                     break;
                     case 'vkegiatan':
                         require $d.'v_kegiatan.php';
+                    break;
+                    case 'vmutasi':
+                        require $d.'v_mutasi.php';
                     break;
 
                     default:
