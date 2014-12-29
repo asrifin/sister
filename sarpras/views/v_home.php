@@ -63,13 +63,5 @@
             <div class="label">Peminjaman</div>
         </div>
     </a>
-    <a href="pengembalian" class="tile bg-violet" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Pengembalian</div>
-        </div>
-    </a>
     
 </div> <!-- End group -->

@@ -78,12 +78,15 @@ var contentFR = '';
         //search action
         $('#tahunajaranS').on('change',function (){
             viewTB();
+            // cmbtahunajaran($('#departemenS').val());
+            // alert('p');
         });$('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
-        });$('#kelompokS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
         });
+        // $('#kelompokS').keydown(function(e){
+        //     if(e.keyCode==13)
+        //         viewTB();
+        // });
         // $('#tglpendaftaranS').keydown(function(e){
         //     if(e.keyCode==13)
         //         viewTB();
@@ -122,6 +125,7 @@ var contentFR = '';
 
 // combo tahunajaran ---
     function cmbtahunajaran(dep){
+        alert(dep);
         $.ajax({
             url:dir3,
             data:'aksi=cmbtahunajaran&departemen='+dep,
@@ -183,8 +187,9 @@ var contentFR = '';
     function viewTB(){
         var aksi ='aksi=tampil';
         var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&kelompokS='+$('#kelompokS').val()
+                    // +'&kelompokS='+$('#kelompokS').val()
                      +'&departemenS='+$('#departemenS').val();
+        alert(cari);        
         $.ajax({
             url : dir,
             type: 'post',

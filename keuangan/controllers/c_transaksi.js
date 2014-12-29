@@ -1,4 +1,4 @@
-var mnu       ='grup'; 
+var mnu       ='transaksi'; 
 var mnu2      ='lokasi'; 
 var mnu3      ='katalog'; 
 var mnu4      ='jenis'; 
@@ -12,12 +12,23 @@ var dir3      ='models/m_'+mnu3+'.php';
 var dir4      ='models/m_'+mnu4+'.php';
 var dir5      ='models/m_'+mnu5+'.php';
 var dir6      ='models/m_'+mnu6+'.php';
-var dir7      ='models/m_'+mnu7+'.php';
+var dir7      ='models/m_'+mnu7+'.php'; 
 
 var g_contentFR = k_contentFR = b_contentFR ='';
     
 // main function ---
     $(document).ready(function(){
+        juVW();
+        $('#optionBC').on('click',function(){
+            $('#optionPN').toggle('slow');
+        });
+        $('#hari_iniBC').on('click',function(){
+            $('#tgl1TB,#tgl2TB').val(getToday());
+        });
+        $('#bulan_iniBC').on('click',function(){
+            $('#tgl1TB').val(getFirstDate());
+            $('#tgl2TB').val(getLastDate());
+        });
         //form content
             // grup
             g_contentFR += '<form autocomplete="off" onsubmit="grupSV(); return false;" id="'+mnu+'FR">' 
@@ -283,13 +294,10 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             });
 
             // search 
-            //grup----
-            $('#g_cariBC').on('click',function(){
-                $('#g_cariTR').toggle('slow');
+            //ju----
+            $('#juBC').on('click',function(){
+                $('#juTR').toggle('slow');
                 $('#g_kodeS').val('');
-                $('#g_namaS').val('');
-                $('#g_utotalS').val('');
-                $('#g_utersediaS').val('');
                 $('#g_udipinjamS').val('');
                 $('#g_keteranganS').val('');
             });
@@ -378,20 +386,75 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             });
 
         // switch panel
-            switchPN(1);
+            // switchPN(1);
             // back button
-            $('#k_grupBC').on('click',function(){ // << grup
-                cmblokasi();
-                switchPN(1);
-            });$('#b_katalogBC').on('click',function(){ // << katalog
-                // vwKatalog($('#g_lokasiS').val());
-                vwKatalog($('#k_grupS').val());
-                switchPN(2);
-            });
+            // $('#k_grupBC').on('click',function(){ // << grup
+            //     cmblokasi();
+            //     switchPN(1);
+            // });$('#b_katalogBC').on('click',function(){ // << katalog
+            //     // vwKatalog($('#g_lokasiS').val());
+            //     vwKatalog($('#k_grupS').val());
+            //     switchPN(2);
+            // });
+    
+        // set default this month
+            $('#tgl1TB').val(getFirstDate());
+            $('#tgl2TB').val(getLastDate());
     }); 
-// end of main function ---
+// end of main function ---------
     
-    
+// get month format -------------
+    function monthFormat(mon){
+        switch(mon){
+            case 1:return 'Jan';break;
+            case 2:return 'Feb';break;
+            case 3:return 'Mar';break;
+            case 4:return 'Apr';break;
+            case 5:return 'May';break;
+            case 6:return 'Jun';break;
+            case 7:return 'Jul';break;
+            case 8:return 'Aug';break;
+            case 9:return 'Sep';break;
+            case 10:return 'Oct';break;
+            case 11:return 'Nov';break;
+            case 12:return 'Dec';break;
+        }
+    }
+//end of get month format -----
+
+//date format -----------------
+    function dateFormatx(typ,d,m,y){
+        if(typ=='id') // 25 Dec 2014
+            return d+' '+m+' '+y;
+        else // 2014-12-25
+            return y+'-'+m+'-'+d;
+    }
+//end of date format ----------
+
+//global u/ tanggal --------
+    var now  = new Date();
+    var dd   = now.getDate();
+    var mm   = now.getMonth()+1;
+    var yyyy = now.getFullYear();
+
+//tanggal terakhir : dd
+    function lastDate(m,y){
+        return 32 - new Date(y, m, 32).getDate();
+    }
+// tanggal hari ini : dd mm yyyy
+    function getToday() {
+        return dateFormatx('id',dd,monthFormat(mm),yyyy);
+    }
+// tanggal pertama bulan ini : dd mm yyyy 
+    function getFirstDate() {
+        return dateFormatx('id','01',monthFormat(mm),yyyy);
+    }
+// tanggal terakhir bulan ini  : dd mm yyyy
+    function getLastDate() {
+        var dd = lastDate(mm,yyyy);
+        return dateFormatx('id',dd,monthFormat(mm),yyyy);
+    }
+
 //paging ---
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
@@ -428,37 +491,34 @@ var g_contentFR = k_contentFR = b_contentFR ='';
 //end of paging ---
 
 // switch panel
-    function switchPN (e) {
-        $.each($('.panelx'),function(id,item){
-            var ke = id+1;
-            if(ke==e){
-                $('#panel'+ke).removeAttr('style');
-                $('h4').html($(this).attr('title'));
-            }else{
-                $('#panel'+ke).attr('style','display:none;');
-            }
-        });
-    }
+    // function switchPN (e) {
+    //     $.each($('.panelx'),function(id,item){
+    //         var ke = id+1;
+    //         if(ke==e){
+    //             $('#panel'+ke).removeAttr('style');
+    //             $('h4').html($(this).attr('title'));
+    //         }else{
+    //             $('#panel'+ke).attr('style','display:none;');
+    //         }
+    //     });
+    // }
 //end of  switch panel
 
 /*view*/
-    // grup ---
-        function vwGrup(lok){  
-            var aksi ='aksi=tampil&subaksi=grup';
-            var cari ='&g_lokasiS='+lok
-                    +'&g_kodeS='+$('#g_kodeS').val()
-                    +'&g_namaS='+$('#g_namaS').val()
-                    +'&g_keteranganS ='+$('#g_keteranganS').val();
-            // alert(cari);return false;
+    // ju ---
+        function juVW(){  
+            var aksi ='aksi=tampil&subaksi=ju';
+            var cari ='&ju_noS='+$('#ju_noS').val()
+                     +'&ju_uraianS='+$('#ju_uraianS').val();
             $.ajax({
                 url : dir,
                 type: 'post',
                 data: aksi+cari,
                 beforeSend:function(){
-                    $('#grup_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                    $('#ju_tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
                 },success:function(dt){
                     setTimeout(function(){
-                        $('#grup_tbody').html(dt).fadeIn();
+                        $('#ju_tbody').html(dt).fadeIn();
                     },1000);
                 }
             });
