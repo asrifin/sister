@@ -12,7 +12,7 @@ var dir3      ='models/m_'+mnu3+'.php';
 var dir4      ='models/m_'+mnu4+'.php';
 var dir5      ='models/m_'+mnu5+'.php';
 var dir6      ='models/m_'+mnu6+'.php';
-var dir7      ='models/m_'+mnu7+'.php';
+var dir7      ='models/m_'+mnu7+'.php'; 
 
 var g_contentFR = k_contentFR = b_contentFR ='';
     

@@ -75,12 +75,15 @@
 										 </td>';
 								$out.= '<tr>
 											<td>'.$res['tanggal'].'</td>
-											<td>'.$res['nomer'].'</td>
+											<td><pre>
+												'.$res['nomer'].'<br>
+												'.$res[''].'
+												</pre></td>
 											<td>'.$res['uraian'].'</td>
 											'.$btn.'
 										</tr>';
-								$totaset+=$res['aset'];
-								$nox++;
+								// $totaset+=$res['aset'];
+								// $nox++;
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
