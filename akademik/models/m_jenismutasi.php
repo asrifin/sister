@@ -12,79 +12,58 @@
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
-			// case 'tampil':
-			// 	$nama       = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
-			// 	$alamat  = isset($_POST['alamatS'])?filter(trim($_POST['alamatS'])):'';
-			// 	$telepon = isset($_POST['teleponS'])?filter(trim($_POST['teleponS'])):'';
-			// 	$sql = 'SELECT *
-			// 			FROM '.$tb.'
-			// 			WHERE 
-			// 				nama like "%'.$nama.'%" and 
-			// 				alamat like "%'.$alamat.'%" and 
-			// 				telepon like "%'.$telepon.'%" 
-			// 			ORDER 
-			// 				BY urut asc';
-			// 	// print_r($sql);exit();
-			// 	if(isset($_POST['starting'])){ //nilai awal halaman
-			// 		$starting=$_POST['starting'];
-			// 	}else{
-			// 		$starting=0;
-			// 	}
+			case 'tampil':
+				// $nama       = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
+				// $alamat  = isset($_POST['alamatS'])?filter(trim($_POST['alamatS'])):'';
+				// $telepon = isset($_POST['teleponS'])?filter(trim($_POST['teleponS'])):'';
+				$sql = 'SELECT *
+						FROM '.$tb.'
+						 
+						ORDER 
+							BY nama asc';
+				// print_r($sql);exit();
+				if(isset($_POST['starting'])){ //nilai awal halaman
+					$starting=$_POST['starting'];
+				}else{
+					$starting=0;
+				}
 
-			// 	$recpage= 5;//jumlah data per halaman
-			// 	$aksi    ='tampil';
-			// 	$subaksi ='';
-			// 	$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+				$recpage= 5;//jumlah data per halaman
+				$aksi    ='tampil';
+				$subaksi ='';
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
 
-			// 	// $obj 	= new pagination_class($sql,$starting,$recpage);
-			// 	$result =$obj->result;
+				// $obj 	= new pagination_class($sql,$starting,$recpage);
+				$result =$obj->result;
 
-			// 	#ada data
-			// 	$jum	= mysql_num_rows($result);
-			// 	$out ='';
-			// 	if($jum!=0){	
-			// 		// $nox 	= $starting+1;
-			// 		while($res = mysql_fetch_array($result)){	
-			// 			// urutan
-			// 				$nox = '<select replid1="'.$res['replid'].'" urutan1="'.$res['urut'].'" onchange="urutFC(this);" >';
-			// 				for($i=1; $i<=$jum; $i++){
-			// 					if($i==$res['urut'])
-			// 						$nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
-			// 					else
-			// 						$nox.='<option value="'.$i.'">'.$i.'</option>';
-			// 				}$nox.='</select>';
-			// 			// end of urutan
-
-			// 			// action button
-			// 			$btn ='<td>
-			// 						<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
-			// 							<i class="icon-pencil on-left"></i>
-			// 						</button>
-			// 						<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
-			// 							<i class="icon-remove on-left"></i>
-			// 					 </td>';
-			// 			//end of  action button
-
-			// 			// table row
-			// 			$out.= '<tr id="TR_'.$res['replid'].'">
-			// 						<td>'.$nox.'</td>
-			// 						<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
-			// 						<td>'.$res['alamat'].'</td>
-			// 						<td>'.$res['telepon'].'</td>
-			// 						'.$btn.'
-			// 					</tr>';
-			// 			// end of table row
-			// 			$nox++;
-			// 		}
-			// 	}else{ #kosong
-			// 		$out.= '<tr align="center">
-			// 				<td  colspan="9" ><span style="color:red;text-align:center;">
-			// 				... data tidak ditemukan...</span></td></tr>';
-			// 	}
-			// 	#link paging
-			// 	$out.= '<tr class="info"><td colspan="9">'.$obj->anchors.'</td></tr>';
-			// 	$out.='<tr class="info"><td colspan="9">'.$obj->total.'</td></tr>';
-			// break; 
+				#ada data
+				$jum	= mysql_num_rows($result);
+				$out ='';
+				if($jum!=0){	
+					$nox 	= $starting+1;
+					while($res = mysql_fetch_array($result)){	
+						$btn ='<td>
+									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
+										<i class="icon-pencil on-left"></i>
+									</button>
+									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+										<i class="icon-remove on-left"></i>
+								 </td>';
+						$out.= '<tr>
+									<td>'.$res['nama'].'</td>
+									'.$btn.'
+								</tr>';
+						$nox++;
+					}
+				}else{ #kosong
+					$out.= '<tr align="center">
+							<td  colspan="9" ><span style="color:red;text-align:center;">
+							... data tidak ditemukan...</span></td></tr>';
+				}
+				#link paging
+				$out.= '<tr class="info"><td colspan="9">'.$obj->anchors.'</td></tr>';
+				$out.='<tr class="info"><td colspan="9">'.$obj->total.'</td></tr>';
+			break; 
 			// view -----------------------------------------------------------------
 
 			// add / edit -----------------------------------------------------------------
@@ -137,7 +116,7 @@
 				}
 				
 				$s	= ' SELECT *
-						from '.$tb.'
+						from '.$tb.' 
 						'.$w.'		
 						ORDER  BY replid asc';
 
@@ -146,7 +125,7 @@
 				// 		'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
 				// 		ORDER  BY urut asc';
 				$e  = mysql_query($s);
-				// var_dump($s);
+				// var_dump($s);exit();
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
 

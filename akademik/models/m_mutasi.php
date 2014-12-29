@@ -3,6 +3,8 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
+	require_once '../../lib/tglindo.php';
+
 	$tb = 'aka_mutasi';
 	// $out=array();
 
@@ -78,7 +80,6 @@
 							departemen like "%'.$departemen.'%"
 						ORDER 
 							BY m.tanggal asc';
-				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -107,7 +108,7 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$res['tanggal'].'</td>
+									<td>'.tgl_indo($res['tanggal']).'</td>
 									<td>'.$res['nisn'].'</td>
 									<td>'.$res['nama'].'</td>
 									<td>'.$res['jenismutasi'].'</td>
@@ -130,7 +131,9 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$s 		= $tb.' set 	departemen 	= "'.filter($_POST['departemenH']).'",
-										angkatan 	= "'.filter($_POST['angkatanTB']).'",
+										siswa 		= "'.filter($_POST['siswaH']).'",
+										tanggal		= "'.filter($_POST['tanggalTB']).'",
+										jenismutasi = "'.filter($_POST['jenismutasiTB']).'",
 										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
@@ -151,21 +154,24 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT 
-								a.angkatan,
-								a.keterangan,
-								d.nama
-							from '.$tb.' a, departemen d 
-							WHERE 
-								a.departemen= d.replid and
-								a.replid='.$_POST['replid'];
+				$s 		= ' SELECT m.*, s.nisn,s.nama,j.nama AS jenismutasi,d.nama AS departemen
+						FROM aka_mutasi m
+						LEFT JOIN aka_siswa s ON s.replid=m.siswa
+						LEFT JOIN aka_jenismutasi j ON j.replid=m.jenismutasi
+						LEFT JOIN departemen d ON d.replid=m.departemen
+						WHERE
+								m.replid='.$_POST['replid'];
+				// print_r($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
+							'departemen'       =>$r['departemen'],
 							'nama'       =>$r['nama'],
-							'angkatan'   =>$r['angkatan'],
+							'tanggal'   =>$r['tanggal'],
+							'jenismutasi'   =>$r['jenismutasi'],
+							'nisn'   =>$r['nisn'],
 							'keterangan' =>$r['keterangan']
 						));
 			break;

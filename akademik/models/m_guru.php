@@ -72,7 +72,7 @@
 				$departemen  = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
 				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
 				$pelajaran   = (isset($_POST['pelajaranS'])and !empty($_POST['pelajaranS']))?' AND g.pelajaran='.$_POST['pelajaranS']:'';
-				$sql = 'SELECT g.*,t.tahunajaran, j.nama AS pelajaran, p.nip, p.keterangan, p.nama
+				$sql = 'SELECT g.*,t.tahunajaran, j.nama AS pelajaran, p.nip, g.keterangan, p.nama
 						FROM aka_guru g
 							LEFT JOIN hrd_pegawai p ON p.replid=g.pegawai
 							LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
@@ -155,13 +155,11 @@
 				$s 		= ' SELECT
 								h.nip,h.nama,g.pelajaran,g.tahunajaran,g.keterangan
 							FROM
-								aka_guru g,
-								hrd_pegawai h,
-								aka_pelajaran p
+								aka_guru g
+							LEFT JOIN hrd_pegawai h ON g.pegawai = h.replid
+							LEFT JOIN aka_pelajaran p ON g.pelajaran = p.replid
 							WHERE
-								g.pelajaran = p.replid
-							AND g.pegawai = h.replid
-							AND g.replid ='.$_POST['replid'];
+							g.replid ='.$_POST['replid'];
 				// print_r($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);

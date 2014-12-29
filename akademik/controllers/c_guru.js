@@ -263,7 +263,7 @@ var contentFR = '';
                         }
                     });titlex='<span class="icon-pencil"></span> Ubah ';
                 }else{ //add mode
-                    cmbpelajaran($('#tahunajaranS').val(),true,null);
+                    cmbpelajaran($('#pelajaranS').val(),true,null);
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                 }
                 $.Dialog.title(titlex+' '+mnu);
