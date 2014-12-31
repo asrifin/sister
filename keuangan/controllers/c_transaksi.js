@@ -18,16 +18,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     
 // main function ---
     $(document).ready(function(){
-        $('#ju_detiljurnalCB').on('click',function(){
-            // if($(this).is(':checked'))
-                $('.uraianCOL').toggle();
-                // alert('ok');
-            // else
-                // $().toggle();
-                // alert('no');
-
-        });
-        juVW();
+        // $('#ju_noS').on('keyup',function(){
+        //     alert('ok');
+        // });
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });
@@ -275,10 +268,10 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                         +'</form>';
         //combo
             //grup : lokasi
-            cmblokasi();
+            // cmblokasi();
 
             //barang : kondisi
-            cmbkondisi('search','');
+            // cmbkondisi('search','');
 
         // button action
             //add---------
@@ -332,27 +325,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             // grup barang
             $('#g_lokasiS').on('change',function (e){ // lokasi
                 vwGrup($('#g_lokasiS').val());
-            });$('#g_kodeS').on('keydown',function (e){ // kode grup
-                if(e.keyCode == 13)
-                    vwGrup($('#g_lokasiS').val());
-            });$('#g_namaS').on('keydown',function (e){ // nama grup
-                if(e.keyCode == 13)
-                    vwGrup($('#g_lokasiS').val());
-            });$('#g_utotalS').on('keydown',function (e){ // keterangan
-                if(e.keyCode == 13)
-                    vwGrup($('#g_lokasiS').val());
-            });$('#g_utersediaS').on('keydown',function (e){ // keterangan
-                if(e.keyCode == 13)
-                    vwGrup($('#g_lokasiS').val());
-            });$('#g_udipinjamS').on('keydown',function (e){ // keterangan
-                if(e.keyCode == 13)
-                    vwGrup($('#g_lokasiS').val());
-            });$('#g_totasetS').on('keydown',function (e){ // keterangan
-                if(e.keyCode == 13)
-                    vwGrup($('#g_lokasiS').val());
-            });$('#g_keteranganS').on('keydown',function (e){ // keterangan
-                if(e.keyCode == 13)
-                    vwGrup($('#g_lokasiS').val());
+            });
+            $('#ju_noS,#ju_uraianS').on('keydown',function (e){ // kode grup
+                if(e.keyCode == 13) juVW();
             });
 
             // katalog barang
@@ -409,6 +384,12 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         // set default this month
             $('#tgl1TB').val(getFirstDate());
             $('#tgl2TB').val(getLastDate());
+        // jurnal umum :: tampilkan detail jurnal
+            $('#ju_detiljurnalCB').on('click',function(){
+                $('.uraianCOL').toggle();
+            });
+        // default tampilkan jurnal umum 
+            juVW();
     }); 
 // end of main function ---------
     

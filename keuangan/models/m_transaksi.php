@@ -43,7 +43,11 @@
 					case 'ju':
 						$ju_no     = isset($_POST['ju_noS'])?filter(trim($_POST['ju_noS'])):'';
 						$ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
-						$sql       = 'SELECT * from '.$tb;
+						$sql       = 'SELECT * 
+									from '.$tb.' 
+									WHERE 
+										(nomer like "%'.$ju_no.'%" OR nomer like "%'.$ju_no.'%" ) AND
+										uraian like "%'.$ju_uraian.'%"';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -91,8 +95,8 @@
 								}$out.= '<tr>
 											<td>'.tgl_indo($res['tanggal']).'</td>
 											<td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
-											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
 											<td>'.$res['uraian'].'</td>
+											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
 											'.$btn.'
 										</tr>';
 							}
