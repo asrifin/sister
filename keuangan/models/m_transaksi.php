@@ -64,33 +64,43 @@
 							$nox = $starting+1;
 							while($res = mysql_fetch_array($result)){	
 								$btn ='<td>
-											<button data-hint="detail"  class="button" onclick="vwKatalog('.$res['replid'].');">
-												<i class="icon-zoom-in"></i>
-											</button>
 											<button data-hint="ubah"  class="button" onclick="grupFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
 											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 										 </td>';
-								$out.= '<tr>
-											<td>'.$res['tanggal'].'</td>
-											<td><pre>
-												'.$res['nomer'].'<br>
-												'.$res[''].'
-												</pre></td>
+								$s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
+										from keu_jurnal j,keu_rekening r 
+										where 
+											j.transaksi ='.$res['replid'].' AND 
+											j.rek=r.replid
+										ORDER BY kredit  ASC';
+								$e2 = mysql_query($s2);
+								$tb2='';
+								if(mysql_num_rows($e2)!=0){
+	   								$tb2.='<table class="bordered striped lightBlue" width="100%">';
+		   							while($r2=mysql_fetch_assoc($e2)){
+		   								$tb2.='<tr>
+		   										<td>'.$r2['nama'].'</td>
+		   										<td>'.$r2['kode'].'</td>
+		   										<td>'.$r2['debet'].'</td>
+		   										<td>'.$r2['kredit'].'</td>
+		   									</tr>';
+		   							}$tb2.='</table>';
+								}$out.= '<tr>
+											<td>'.tgl_indo($res['tanggal']).'</td>
+											<td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
+											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
 											<td>'.$res['uraian'].'</td>
 											'.$btn.'
 										</tr>';
-								// $totaset+=$res['aset'];
-								// $nox++;
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
 									<td  colspan=9 ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
 						}
-						// $out.= '<tr class="info"><td colspan="10">'..'</td></tr>';
 						#link paging
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';

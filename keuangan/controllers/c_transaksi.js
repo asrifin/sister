@@ -18,6 +18,15 @@ var g_contentFR = k_contentFR = b_contentFR ='';
     
 // main function ---
     $(document).ready(function(){
+        $('#ju_detiljurnalCB').on('click',function(){
+            // if($(this).is(':checked'))
+                $('.uraianCOL').toggle();
+                // alert('ok');
+            // else
+                // $().toggle();
+                // alert('no');
+
+        });
         juVW();
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');

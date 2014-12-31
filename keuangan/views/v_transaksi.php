@@ -121,7 +121,7 @@
                 </button>
                 <div class="span3 place-right input-control checkbox" >
                     <label>
-                        <input type="checkbox" />
+                        <input checked="checke" id="ju_detiljurnalCB" type="checkbox" />
                         <span class="check"></span>
                         Tampilkan Detil Jurnal 
                     </label>
@@ -139,7 +139,7 @@
                         <tr style="display:none;" id="juTR" class="info">
                             <th class="text-left"></th>
                             <th class="text-left"><input placeholder="nomor jurnal" id="ju_noS" class="ju_cari"></th>
-                            <th class="text-left"><input placeholder="uraian" id="ju_uraianS" class="ju_cari"></th>
+                            <th style="display:visible;" class="text-left uraianCOL"><input placeholder="uraian" id="ju_uraianS" class="ju_cari"></th>
                             <th class="text-left"></th>
                             <th class="text-left"></th>
                         </tr>
