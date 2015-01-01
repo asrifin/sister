@@ -1,4 +1,3 @@
-<!-- <script src="js/metro/metro-button-set.js"></script> -->
 <script src="controllers/c_transaksi.js"></script>
 <script src="js/metro/metro-hint.js"></script>
 <script src="../js/base64.js"></script>
@@ -10,84 +9,88 @@
 <button class="bg-green fg-white" style="font-weight:bold;"><i class="icon-download-2"></i> Pemasukkan</button>
 <button class="bg-red fg-white" style="font-weight:bold;"><i class="icon-upload-3"></i> Pengeluaran</button>
 <button class="bg-amber orange fg-white" style="font-weight:bold;"><i class="icon-printer"></i> Cetak</button>
-<button class="bg-gray orange fg-white" style="font-weight:bold;"><i class="icon-new-tab"></i></button>
-    
-    <legend class="span7" style="color:white;">
-        Tampilkan catatan Transaksi
-        <div class="span3 input-control checkbox" >
-            <label>
-                <input type="checkbox" />
-                <span class="check"></span>
-                Semua 
-            </label>
+<button id="optionBC" class="bg-gray orange fg-white" style="font-weight:bold;"><i class="icon-grid"></i></button>
+    <div id="optionPN">
+        <legend class="span7" style="color:white;">
+            Tampilkan catatan Transaksi
+            <div class="span3 input-control checkbox" >
+                <label>
+                    <input type="checkbox" />
+                    <span class="check"></span>
+                    Semua 
+                </label>
+            </div>
+        </legend>
+        <div class="row">
+            <div class="span7" style="color:white;"> 
+                <!-- row 1 -->
+                <div class="row">
+                    <div class="span3 input-control checkbox" >
+                        <label>
+                            <input type="checkbox" />
+                            <span class="check"></span>
+                            Jurnal Umum 
+                        </label>
+                    </div>
+                    <div class="span4 input-control checkbox" >
+                        <label>
+                            <input type="checkbox" />
+                            <span class="check"></span>
+                            Transaksi Pemasukkan dari Siswa
+                        </label>
+                    </div>
+                </div>
+                <!--end of row 1 -->
+                <!-- row 1 -->
+                <div class="row">
+                    <div class="span3 input-control checkbox" >
+                        <label>
+                            <input type="checkbox" />
+                            <span class="check"></span>
+                            Transaksi Pemasukkan 
+                        </label>
+                    </div>
+                    <div class="span4 input-control checkbox" >
+                        <label>
+                            <input type="checkbox" />
+                            <span class="check"></span>
+                            Transaksi Pemasukkan dari calon Siswa
+                        </label>
+                    </div>
+                </div>
+                <!--end of row 1 -->
+                <!-- row 1 -->
+                <div class="row">
+                    <div class="span3 input-control checkbox" >
+                        <label>
+                            <input type="checkbox" />
+                            <span class="check"></span>
+                            Transaksi Pengeluaran 
+                        </label>
+                    </div>
+                    <div class="span4 input-control checkbox" >
+                        <label>
+                            <input type="checkbox" />
+                            <span class="check"></span>
+                            Transaksi Penerimaan Barang
+                        </label>
+                    </div>
+                </div>
+                <!--end of row 1 -->
+            </div>
         </div>
-    </legend>
-    <div class="row">
-        <div class="span7" style="color:white;"> 
-            <!-- row 1 -->
-            <div class="row">
-                <div class="span3 input-control checkbox" >
-                    <label>
-                        <input type="checkbox" />
-                        <span class="check"></span>
-                        Jurnal Umum 
-                    </label>
-                </div>
-                <div class="span4 input-control checkbox" >
-                    <label>
-                        <input type="checkbox" />
-                        <span class="check"></span>
-                        Transaksi Pemasukkan dari Siswa
-                    </label>
-                </div>
-            </div>
-            <!--end of row 1 -->
-            <!-- row 1 -->
-            <div class="row">
-                <div class="span3 input-control checkbox" >
-                    <label>
-                        <input type="checkbox" />
-                        <span class="check"></span>
-                        Transaksi Pemasukkan 
-                    </label>
-                </div>
-                <div class="span4 input-control checkbox" >
-                    <label>
-                        <input type="checkbox" />
-                        <span class="check"></span>
-                        Transaksi Pemasukkan dari calon Siswa
-                    </label>
-                </div>
-            </div>
-            <!--end of row 1 -->
-            <!-- row 1 -->
-            <div class="row">
-                <div class="span3 input-control checkbox" >
-                    <label>
-                        <input type="checkbox" />
-                        <span class="check"></span>
-                        Transaksi Pengeluaran 
-                    </label>
-                </div>
-                <div class="span4 input-control checkbox" >
-                    <label>
-                        <input type="checkbox" />
-                        <span class="check"></span>
-                        Transaksi Penerimaan Barang
-                    </label>
-                </div>
-            </div>
-            <!--end of row 1 -->
-        </div>
+        <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
+            <input type="text" id="tgl1TB">
+            <button class="btn-date"></button>
+        </div> s/d
+        <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
+            <input type="text" id="tgl2TB">
+            <button class="btn-date"></button>
+        </div> 
+        <button id="hari_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Hari ini</button>
+        <button id="bulan_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Bulan ini</button>
     </div>
-    <div class="input-control text span2" data-role="datepicker" data-date="2013-01-01" data-format="yyyy-mm-dd" data-position="top" data-effect="slide">
-        <input type="text">
-        <button class="btn-date"></button>
-    </div> s/d
-    <div class="input-control text span2" data-role="datepicker" data-date="2013-01-01" data-format="yyyy-mm-dd" data-position="top" data-effect="slide">
-        <input type="text">
-        <button class="btn-date"></button>
-    </div> 
+    <div class="divider">&nbsp;</div>
 
 <!-- tab -->
     <!-- keterangan :
@@ -111,7 +114,45 @@
             <li><a href="#btTAB">Buku Tambahan</a></li>
         </ul>
         <div class="frames">
-            <div class="frame" id="juTAB">1</div>
+            <!-- 1st content -->
+            <div class="frame" id="juTAB">    
+                <button id="juBC" data-hint="Pencarian" data-hint-position="top">
+                    <i class="icon-search" ></i>
+                </button>
+                <div class="span3 place-right input-control checkbox" >
+                    <label>
+                        <input checked="checked" id="ju_detiljurnalCB" type="checkbox" />
+                        <span class="check"></span>
+                        Tampilkan Detil Jurnal 
+                    </label>
+                </div>
+
+                <table class="table hovered bordered striped">
+                    <thead>
+                        <tr style="color:white;"class="info">
+                            <th class="text-center">Tanggal </th>
+                            <th class="text-center">No. Jurnal/Jenis Bukti/No.Bukti</th>
+                            <th class="text-center">Uraian</th>
+                            <th style="display:visible;"class="text-center  uraianCOL">Detil Jurnal</th>
+                            <th class="text-center">Aksi</th>
+                        </tr>
+                        <tr style="display:none;" id="juTR" class="info">
+                            <th class="text-left"></th>
+                            <th class="text-left"><input xonchange="alert(9999);"placeholder="nomor jurnal" id="ju_noS" class="ju_cari"></th>
+                            <th class="text-left"><input placeholder="uraian" id="ju_uraianS" class="ju_cari"></th>
+                            <th style="display:visible;"class="text-left uraianCOL"></th>
+                            <th class="text-left"></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="ju_tbody">
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+
+            </div>
+            <!-- end of 1st content -->
             <div class="frame" id="bbTAB">
                 Tampilkan Akun : 
                 <div class="input-control select span3">
@@ -129,9 +170,9 @@
 <!-- end of tab -->
 
 <!-- panel 1 -->
-<div title="Transaksi" class="panelx" id="panel1" style="display:none;">
+<!-- <div title="Transaksi" class="panelx" id="panel1" style="display:none;">
     <div class="input-control select span3">
-        <select class="grup_cari" name="g_lokasiS" id="g_lokasiS" data-hint="lokasi" ></select>
+        <select class="ju_cari" name="g_lokasiS" id="g_lokasiS" data-hint="lokasi" ></select>
     </div>
     <button data-hint="Tambah Data" id="g_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="g_cariBC"><span class="icon-search"></span> </button>
@@ -150,13 +191,13 @@
                 <th class="text-left">Aksi</th>
             </tr>
             <tr style="display:none;" id="g_cariTR" class="info">
-                <th class="text-left"><input placeholder="kode" id="g_kodeS" class="grup_cari" class="span1"></th>
-                <th class="text-left"><input placeholder="nama" id="g_namaS" class="grup_cari"></th>
+                <th class="text-left"><input placeholder="kode" id="g_kodeS" class="ju_cari" class="span1"></th>
+                <th class="text-left"><input placeholder="nama" id="g_namaS" class="ju_cari"></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
-                <th class="text-left"><input placeholder="keterangan" id="g_keteranganS" class="grup_cari"></th>
+                <th class="text-left"><input placeholder="keterangan" id="g_keteranganS" class="ju_cari"></th>
                 <th class="text-left"></th>
             </tr>
         </thead>
@@ -167,17 +208,16 @@
         </tfoot>
     </table>
 </div>
-<!-- end of panel 1 -->
+ --><!-- end of panel 1 -->
 
 <!-- panel 2 -->
-<div title="Katalog Barang" class="panelx" id="panel2" style="display:none;">
+<!-- <div title="Katalog Barang" class="panelx" id="panel2" style="display:none;">
     <button data-hint="kembali" id="k_grupBC"><span class=" icon-arrow-left-2"></span> </button>
     <button data-hint="Tambah Data" id="k_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="k_cariBC"><span class="icon-search"></span> </button>
     <button data-hint="Cetak " id="k_cetakBC"><span class="icon-printer"></span> </button>
     
     <div class="grid" style="color:white;">
-        <!-- <input type="hidden" id="k_grupH1" name="k_grupH1" > -->
         <input type="hidden" id="k_grupS" class="katalog_cari" >
         <div class="row">
             <div class="span2">Grup Barang : </div>
@@ -223,10 +263,10 @@
         </tfoot>
     </table>
 </div>
-<!-- end of panel 2 -->
+ --><!-- end of panel 2 -->
 
 <!-- panel 3 -->
-<div title="Unit Barang" class="panelx" id="panel3" style="display:none;">
+<!-- <div title="Unit Barang" class="panelx" id="panel3" style="display:none;">
     <button data-hint="kembali ke Katalog" id="b_katalogBC"><span class=" icon-arrow-left-2"></span> </button>
     <button data-hint="Ubah Data" id="b_ubahBC"><span class="icon-pencil"></span> </button>
     <button data-hint="Tambah Data" id="b_tambahBC"><span class="icon-plus-2"></span> </button>
@@ -324,7 +364,7 @@
         </tfoot>
     </table>
 </div>
-<!-- tes lagi ah  -->
+ --><!-- tes lagi ah  -->
 <!-- end of panel 3 -->
 <!-- 
     // ---------------------- //

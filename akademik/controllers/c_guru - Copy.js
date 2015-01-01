@@ -11,8 +11,7 @@ var contentFR = '';
 // main function ---
     $(document).ready(function(){
        contentFR+='<div style="overflow:scroll;height:500px;"  class="">'
-                    +'<form onsubmit="simpan();return false;" autocomplete="off">'
-                        +'<input id="idformH" type="hidden">' 
+                    +'<form onsubmit="simpan();return false;" autocomplete="off"><input id="idformH" type="hidden">' 
 
                         +'<label>Cari Pegawai</label>'
                         +'<div class="input-control text">'
@@ -257,7 +256,6 @@ var contentFR = '';
                         dataType:'json',
                         success:function(dt3){
                             $('#idformH').val(id);
-                            $('#guruH').val(dt3.idpegawai); /*epiii*/
                             $('#namaTB').val(dt3.nama);
                             $('#nipTB').val(dt3.nip);
                             $('#keteranganTB').val(dt3.keterangan);
@@ -265,7 +263,7 @@ var contentFR = '';
                         }
                     });titlex='<span class="icon-pencil"></span> Ubah ';
                 }else{ //add mode
-                    cmbpelajaran($('#tahunajaranS').val(),true,null);
+                    cmbpelajaran($('#pelajaranS').val(),true,null);
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                 }
                 $.Dialog.title(titlex+' '+mnu);

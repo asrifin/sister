@@ -1,24 +1,21 @@
 <?php
-	// error_reporting(0);
 	session_start();
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 
-	// var_dump($_SESSION);exit();
-	$mnu  = 'grup';
+	$mnu  = 'transaksi';
 	$mnu2 = 'lokasi';
 	$mnu3 = 'katalog';
 	$mnu4 = 'barang';
 	$mnu5 = 'jenis';
 	
-	$tb   = 'sar_'.$mnu;
-	$tb2  = 'sar_'.$mnu2;
-	$tb3  = 'sar_'.$mnu3;
-	$tb4  = 'sar_'.$mnu4;
-	$tb5  = 'sar_'.$mnu5;
-	// $out=array();
+	$tb   = 'keu_'.$mnu;
+	$tb2  = 'keu_'.$mnu2;
+	$tb3  = 'keu_'.$mnu3;
+	$tb4  = 'keu_'.$mnu4;
+	$tb5  = 'keu_'.$mnu5;
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['upload'])){
@@ -43,66 +40,14 @@
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					// grup barang
-					case 'grup':
-						$lokasi       = isset($_POST['g_lokasiS'])?filter(trim($_POST['g_lokasiS'])):'';
-						$g_kode       = isset($_POST['g_kodeS'])?filter(trim($_POST['g_kodeS'])):'';
-						$g_nama       = isset($_POST['g_namaS'])?filter(trim($_POST['g_namaS'])):'';
-						$g_keterangan = isset($_POST['g_keteranganS'])?filter(trim($_POST['g_keteranganS'])):'';
-						
-						$sql = 'SELECT
-									g.replid,
-									g.kode,
-									g.nama,
-									IFNULL(tbtot.jum,0) u_total,
-									IFNULL(tbpjm.jum,0) u_dipinjam,
-									IFNULL(tbtot.jum,0) - IFNULL(tbpjm.jum,0) u_tersedia,
-									IFNULL(tbaset.aset,0) aset,
-									g.keterangan
-								FROM
-									sar_grup g
-									LEFT JOIN (
-										SELECT 
-											k.grup,
-											count(*) jum 
-										from 
-											sar_katalog k
-											left JOIN sar_barang b on b.katalog = k.replid
-										GROUP BY
-											k.grup
-									)tbtot on tbtot.grup = g.replid
-									
-									LEFT JOIN(
-										SELECT 
-											k.grup,
-											count(*)jum
-										from 
-											sar_peminjaman pj
-											left JOIN sar_pengembalian kb on kb.peminjaman = pj.replid
-											LEFT JOIN sar_barang b on b.replid = pj.barang
-											left JOIN sar_katalog k on k.replid = b.katalog
-										WHERE
-											kb.replid is NULL
-										GROUP BY	
-											k.grup
-									)tbpjm on tbpjm.grup = g.replid
-
-									LEFT JOIN(
-										SELECT
-											k.grup,
-											SUM(b.harga)aset
-										from 
-											sar_barang b
-											join sar_katalog k on k.replid = b.katalog
-										GROUP BY 
-											k.grup
-									)tbaset on tbaset.grup = g.replid
-								WHERE
-									g.lokasi = '.$lokasi.' and
-									g.kode like "%'.$g_kode.'%" and
-									g.nama like "%'.$g_nama.'%" and
-									g.keterangan like "%'.$g_keterangan.'%" 
-								ORDER BY
-									g.kode asc';
+					case 'ju':
+						$ju_no     = isset($_POST['ju_noS'])?filter(trim($_POST['ju_noS'])):'';
+						$ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
+						$sql       = 'SELECT * 
+									from '.$tb.' 
+									WHERE 
+										(nomer like "%'.$ju_no.'%" OR nomer like "%'.$ju_no.'%" ) AND
+										uraian like "%'.$ju_uraian.'%"';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -112,45 +57,54 @@
 
 						$recpage = 5;//jumlah data per halaman
 						$aksi    ='tampil';
-						$subaksi ='grup';
+						$subaksi ='ju';
 						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 						$result  = $obj->result;
 
 						#ada data
-						$jum	= mysql_num_rows($result);
+						$jum = mysql_num_rows($result);
 						$out ='';$totaset=0;
 						if($jum!=0){	
-							$nox 	= $starting+1;
+							$nox = $starting+1;
 							while($res = mysql_fetch_array($result)){	
 								$btn ='<td>
-											<button data-hint="detail"  class="button" onclick="vwKatalog('.$res['replid'].');">
-												<i class="icon-zoom-in"></i>
-											</button>
 											<button data-hint="ubah"  class="button" onclick="grupFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
 											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 										 </td>';
-								$out.= '<tr>
-											<td>'.$res['kode'].'</td>
-											<td>'.$res['nama'].'</td>
-											<td>'.$res['u_total'].'</td>
-											<td>'.$res['u_tersedia'].'</td>
-											<td>'.$res['u_dipinjam'].'</td>
-											<td class="text-right">Rp. '.number_format($res['aset']).',-</td>
-											<td>'.$res['keterangan'].'</td>
+								$s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
+										from keu_jurnal j,keu_rekening r 
+										where 
+											j.transaksi ='.$res['replid'].' AND 
+											j.rek=r.replid
+										ORDER BY kredit  ASC';
+								$e2 = mysql_query($s2);
+								$tb2='';
+								if(mysql_num_rows($e2)!=0){
+	   								$tb2.='<table class="bordered striped lightBlue" width="100%">';
+		   							while($r2=mysql_fetch_assoc($e2)){
+		   								$tb2.='<tr>
+		   										<td>'.$r2['nama'].'</td>
+		   										<td>'.$r2['kode'].'</td>
+		   										<td>'.$r2['debet'].'</td>
+		   										<td>'.$r2['kredit'].'</td>
+		   									</tr>';
+		   							}$tb2.='</table>';
+								}$out.= '<tr>
+											<td>'.tgl_indo($res['tanggal']).'</td>
+											<td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
+											<td>'.$res['uraian'].'</td>
+											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
 											'.$btn.'
 										</tr>';
-								$totaset+=$res['aset'];
-								$nox++;
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
 									<td  colspan=9 ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
 						}
-						// $out.= '<tr class="info"><td colspan="10">'..'</td></tr>';
 						#link paging
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';

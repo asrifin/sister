@@ -34,7 +34,15 @@ var contentFR ='';
                         +'</div>'
                         +'<label>Jenis Mutasi</label>'
                         +'<div class="input-control select span3">'
-                            +'<select data-hint="jenismutasi" name="jenismutasiTB" id="jenismutasiTB"></select>'
+                            +'<select  name="jenismutasiTB" id="jenismutasiTB"></select>'
+                        +'</div>'
+                        +'<label>Tanggal Mutasi</label>'
+                        +'<div class="input-control text" data-role="datepicker"'
+                            +'data-date="2014-10-23"'
+                            +'data-format="yyyy-mm-dd"'
+                            +'data-effect="slide">'
+                            +'<input id="tanggalTB" name="tanggalTB" type="text">'
+                            +'<button class="btn-date"></button>'
                         +'</div>'
                         +'<label>keterangan</label>'
                         +'<div class="input-control text">'
@@ -104,35 +112,29 @@ var contentFR ='';
     }
 //end of combo departemen ---
 // combo jenismutasi ---
-   function cmbjenismutasi(jm,idjm){
-        var select='',tb;
-        if(jm){// form
-            tb='#jenismutasiTB';
-        }else{// search
-            tb='#jenismutasiS';
-            select+='<option value="">---------- Semua ----------</option>';
+  function cmbjenismutasi (nama) {
+            $.ajax({
+                url:dir3,
+                type:'post',
+                dataType:'json',
+                data:'aksi=cmb'+mnu3+'&de='+$('#departemenS').val(),
+                success:function(dt){
+                    var opt='';
+                    if (dt.status!='sukses') {
+                        notif(dt.status,'red');
+                        opt+='<option value="">'+dt.status+'</option>'
+                    }else{
+                        // alert(id);return false;
+                        $.each(dt.nama,function(id,item){
+                            if(nama==item.replid)
+                                opt+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>'
+                            else
+                                opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
+                        });$('#jenismutasiTB').html(opt);
+                    }
+                },
+            });
         }
-        $.ajax({
-            url:dir3,
-            data:'aksi=cmbjenismutasi',
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.jenismutasi, function(id,item){
-                        if(idjm==item.replid)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
-                        else
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                }$(tb).html((dt.jenismutasi==null?'':select)+out);
-                if(!jm) viewTB();
-            }
-        });
-    }
 //end of combo jenismutasi ---
 
 //save process ---
@@ -200,14 +202,14 @@ var contentFR ='';
                 if(id==''){  //add mode
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                     $.ajax({
-                        url:dir2,
+                        url:dir,
                         data:'aksi=cmbdepartemen&replid='+$('#departemenS').val(),
                         type:'post',
                         dataType:'json',
                         success:function(dt){
                             $('#departemenH').val($('#departemenS').val());
                             $('#departemenTB').val(dt.departemen[0].nama);
-                            cmbjenismutasi($('#departemenS').val(),true,null);
+                            cmbjenismutasi('');
                         }
                     });
 
@@ -221,10 +223,12 @@ var contentFR ='';
                         success:function(dt){
                             $('#idformH').val(id);
                             $('#departemenH').val($('#departemenS').val());
-                            $('#departemenTB').val(dt.nama);
+                            $('#departemenTB').val(dt.departemen);
                             $('#namaTB').val(dt.nama);
                             $('#nisnTB').val(dt.nisn);
+                            $('#tanggalTB').val(dt.tanggal);
                             $('#keteranganTB').val(dt.keterangan);
+                            cmbjenismutasi(dt.nama.nama);
                         }
                     });
                 }$.Dialog.title(titlex+' '+mnu);

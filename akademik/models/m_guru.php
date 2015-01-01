@@ -72,7 +72,13 @@
 				$departemen  = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
 				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
 				$pelajaran   = (isset($_POST['pelajaranS'])and !empty($_POST['pelajaranS']))?' AND g.pelajaran='.$_POST['pelajaranS']:'';
-				$sql = 'SELECT g.*,t.tahunajaran, j.nama AS pelajaran, p.nip, p.keterangan, p.nama
+				$sql = 'SELECT 
+							g.*,
+							t.tahunajaran, 
+							j.nama AS pelajaran, 
+							p.nip, 
+							/*p.keterangan,*/ /*guru & pegawai punya field keterangan (ndoble)*/
+							p.nama
 						FROM aka_guru g
 							LEFT JOIN hrd_pegawai p ON p.replid=g.pegawai
 							LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
@@ -128,7 +134,6 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-										// aktif 		= 1,
 				$s 		= $tb.' set 	pegawai 	= "'.$_POST['guruH'].'",
 										tahunajaran	= "'.$_POST['tahunajaran'].'",
 										pelajaran 	= "'.$_POST['pelajaranTB'].'",
@@ -153,6 +158,7 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT
+								g.pegawai as idpegawai,/*epiii*/
 								h.nip,h.nama,g.pelajaran,g.tahunajaran,g.keterangan
 							FROM
 								aka_guru g,
@@ -168,6 +174,7 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'      =>$stat,
+							'idpegawai'   =>$r['idpegawai'], /*epiii*/
 							'nip'         =>$r['nip'],
 							'nama'        =>$r['nama'],
 							'pelajaran'   =>$r['pelajaran'],
