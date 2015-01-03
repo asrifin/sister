@@ -6,7 +6,7 @@
 	require_once '../../lib/tglindo.php';
 
 	$mnu  = 'transaksi';
-	$mnu2 = 'lokasi';
+	$mnu2 = 'rekening';
 	$mnu3 = 'katalog';
 	$mnu4 = 'barang';
 	$mnu5 = 'jenis';
@@ -18,21 +18,54 @@
 	$tb5  = 'keu_'.$mnu5;
 
 	if(!isset($_POST['aksi'])){
-		if(isset($_GET['upload'])){
-			$tipex    = substr($_FILES[0]['type'],6);
-			$namaAwal = $_FILES[0]['name'];
-			$namaSkrg = $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
-			$src      = $_FILES[0]['tmp_name'];
-			$destix   = '../../img/upload/'.basename($namaSkrg);
+		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
+				$page       = $_GET['page']; // get the requested page
+				$limit      = $_GET['rows']; // get how many rows we want to have into the grid
+				$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
+				$sord       = $_GET['sord']; // get the direction
+				$searchTerm = $_GET['searchTerm'];
 
-			if(move_uploaded_file($src, $destix))
-				$o=array('status'=>'sukses','file'=>$namaSkrg);
-			else
-				$o=array('status'=>'gagal');
+				if(!$sidx) 
+					$sidx =1;
+				$ss='SELECT *
+					FROM '.$tb2.' 
+					WHERE	kode  LIKE "%'.$searchTerm.'%"
+							OR nama LIKE "%'.$searchTerm.'%"';
+				// print_r($ss);exit();
+				$result = mysql_query($ss);
+				$row    = mysql_fetch_array($result,MYSQL_ASSOC);
+				$count  = mysql_num_rows($result);
 
-			$out=json_encode($o);
+				if( $count >0 ) {
+					$total_pages = ceil($count/$limit);
+				} else {
+					$total_pages = 0;
+				}
+				if ($page > $total_pages) $page=$total_pages;
+				$start 	= $limit*$page - $limit; // do not put $limit*($page - 1)
+				if($total_pages!=0) {
+					$ss.='ORDER BY '.$sidx.' '.$sord.' LIMIT '.$start.','.$limit;
+				}else {
+					$ss.='ORDER BY '.$sidx.' '.$sord;
+				}
+				// print_r($ss);exit();
+				$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
+				$rows 	= array();
+				while($row = mysql_fetch_assoc($result)) {
+					$rows[]= array(
+						'replid' =>$row['replid'],
+						'kode'   =>$row['kode'],
+						'nama'   =>$row['nama'],
+					);
+				}$response=array(
+					'page'    =>$page,
+					'total'   =>$total_pages,
+					'records' =>$count,
+					'rows'    =>$rows,
+				);
+			$out=json_encode($response);
 		}else{
-			$out=json_encode(array('status'=>'invalid_no_post'));		
+			$out=json_encode(array('status'=>'invalid_no_post'));	
 		}
 	}else{
 		switch ($_POST['aksi']) {
@@ -68,7 +101,7 @@
 							$nox = $starting+1;
 							while($res = mysql_fetch_array($result)){	
 								$btn ='<td>
-											<button data-hint="ubah"  class="button" onclick="grupFR('.$res['replid'].');">
+											<button data-hint="ubah"  class="button" onclick="juFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
 											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
@@ -504,18 +537,19 @@
 			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
-					case 'grup';
+					case 'ju';
 						$s = 'SELECT * FROM '.$tb.'  WHERE replid='.$_POST['replid'];
 						// var_dump($s);exit();
 						$e 		= mysql_query($s);
 						$r 		= mysql_fetch_assoc($e);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array(
-									'kode'       =>$r['kode'],
-									'nama'       =>$r['nama'],
-									'lokasi'     =>$r['lokasi'],
-									'keterangan' =>$r['keterangan']
-								));					
+									'status' =>$stat,
+									'datax'  =>array(
+										'nomer'   =>$r['nomer'],
+										'tanggal' =>$r['tanggal'],
+										'uraian'  =>$r['uraian']
+								)));					
 					break;
 
 					case 'katalog';

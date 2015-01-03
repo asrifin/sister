@@ -46,7 +46,7 @@ $.widget( "cg.combogrid", {
 		i18n: false,
 		draggable:false,
 		rememberDrag: false,
-    replaceNull: false,
+	    replaceNull: false,
 		rowsArray: [10,20,30],
 		showOn:false,
 		width:null

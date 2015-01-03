@@ -2,95 +2,108 @@
 <script src="js/metro/metro-hint.js"></script>
 <script src="../js/base64.js"></script>
 
+<!-- combo grid -->
+<script src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
+<script src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery-ui-1.10.1.custom.css"/>
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery.ui.combogrid.css"/>
+<!--end of combo grid -->
+
 <h4 style="color:white;">Transaksi </h4>
 <div id="loadarea"></div>
 <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
-<button class="bg-blue fg-white" style="font-weight:bold;"><i class="icon-plus-2"></i>  Jurnal Umum</button>
-<button class="bg-green fg-white" style="font-weight:bold;"><i class="icon-download-2"></i> Pemasukkan</button>
-<button class="bg-red fg-white" style="font-weight:bold;"><i class="icon-upload-3"></i> Pengeluaran</button>
-<button class="bg-amber orange fg-white" style="font-weight:bold;"><i class="icon-printer"></i> Cetak</button>
-<button id="optionBC" class="bg-gray orange fg-white" style="font-weight:bold;"><i class="icon-grid"></i></button>
-    <div id="optionPN">
-        <legend class="span7" style="color:white;">
-            Tampilkan catatan Transaksi
-            <div class="span3 input-control checkbox" >
-                <label>
-                    <input type="checkbox" />
-                    <span class="check"></span>
-                    Semua 
-                </label>
-            </div>
-        </legend>
-        <div class="row">
-            <div class="span7" style="color:white;"> 
-                <!-- row 1 -->
-                <div class="row">
-                    <div class="span3 input-control checkbox" >
-                        <label>
-                            <input type="checkbox" />
-                            <span class="check"></span>
-                            Jurnal Umum 
-                        </label>
-                    </div>
-                    <div class="span4 input-control checkbox" >
-                        <label>
-                            <input type="checkbox" />
-                            <span class="check"></span>
-                            Transaksi Pemasukkan dari Siswa
-                        </label>
-                    </div>
-                </div>
-                <!--end of row 1 -->
-                <!-- row 1 -->
-                <div class="row">
-                    <div class="span3 input-control checkbox" >
-                        <label>
-                            <input type="checkbox" />
-                            <span class="check"></span>
-                            Transaksi Pemasukkan 
-                        </label>
-                    </div>
-                    <div class="span4 input-control checkbox" >
-                        <label>
-                            <input type="checkbox" />
-                            <span class="check"></span>
-                            Transaksi Pemasukkan dari calon Siswa
-                        </label>
-                    </div>
-                </div>
-                <!--end of row 1 -->
-                <!-- row 1 -->
-                <div class="row">
-                    <div class="span3 input-control checkbox" >
-                        <label>
-                            <input type="checkbox" />
-                            <span class="check"></span>
-                            Transaksi Pengeluaran 
-                        </label>
-                    </div>
-                    <div class="span4 input-control checkbox" >
-                        <label>
-                            <input type="checkbox" />
-                            <span class="check"></span>
-                            Transaksi Penerimaan Barang
-                        </label>
-                    </div>
-                </div>
-                <!--end of row 1 -->
-            </div>
-        </div>
-        <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-            <input type="text" id="tgl1TB">
-            <button class="btn-date"></button>
-        </div> s/d
-        <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-            <input type="text" id="tgl2TB">
-            <button class="btn-date"></button>
-        </div> 
-        <button id="hari_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Hari ini</button>
-        <button id="bulan_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Bulan ini</button>
+
+<div class="toolbar">
+    <div class="toolbar-group fg-white transparent ">
+        <button id="ju_addBC" class="bg-blue" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></button>
+        <button id="inBC"class="bg-green" data-hint="Pemasukkan"><i class="icon-download-2"></i></button>
+        <button id="out_BC"class="bg-red" data-hint="Pengeluaran"><i class="icon-upload-3"></i></button>
+        <button id="printBC"class="bg-amber" data-hint="Cetak"><i class="icon-printer"></i></button>
+        <button id="optionBC" data-hint="Selengkapnya..." class="bg-gray fg-white"><i class="icon-grid"></i></button>
     </div>
-    <div class="divider">&nbsp;</div>
+</div>
+    
+<div id="optionPN">
+    <legend class="span7" style="color:white;">
+        Tampilkan catatan Transaksi
+        <div class="span3 input-control checkbox" >
+            <label>
+                <input checked="checked" type="checkbox" />
+                <span class="check"></span>
+                Semua 
+            </label>
+        </div>
+    </legend>
+    <div class="row">
+        <div class="span7" style="color:white;"> 
+            <!-- row 1 -->
+            <div class="row">
+                <div class="span3 input-control checkbox" >
+                    <label>
+                        <input checked="checked" type="checkbox" />
+                        <span class="check"></span>
+                        Jurnal Umum 
+                    </label>
+                </div>
+                <div class="span4 input-control checkbox" >
+                    <label>
+                        <input checked="checked" type="checkbox" />
+                        <span class="check"></span>
+                        Transaksi Pemasukkan dari Siswa
+                    </label>
+                </div>
+            </div>
+            <!--end of row 1 -->
+            <!-- row 1 -->
+            <div class="row">
+                <div class="span3 input-control checkbox" >
+                    <label>
+                        <input checked="checked" type="checkbox" />
+                        <span class="check"></span>
+                        Transaksi Pemasukkan 
+                    </label>
+                </div>
+                <div class="span4 input-control checkbox" >
+                    <label>
+                        <input checked="checked" type="checkbox" />
+                        <span class="check"></span>
+                        Transaksi Pemasukkan dari calon Siswa
+                    </label>
+                </div>
+            </div>
+            <!--end of row 1 -->
+            <!-- row 1 -->
+            <div class="row">
+                <div class="span3 input-control checkbox" >
+                    <label>
+                        <input checked="checked" type="checkbox" />
+                        <span class="check"></span>
+                        Transaksi Pengeluaran 
+                    </label>
+                </div>
+                <div class="span4 input-control checkbox" >
+                    <label>
+                        <input checked="checked" type="checkbox" />
+                        <span class="check"></span>
+                        Transaksi Penerimaan Barang
+                    </label>
+                </div>
+            </div>
+            <!--end of row 1 -->
+        </div>
+    </div>
+    <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
+        <input type="text" id="tgl1TB">
+        <button class="btn-date"></button>
+    </div> s/d
+    <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
+        <input type="text" id="tgl2TB">
+        <button class="btn-date"></button>
+    </div> 
+    <button id="hari_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Hari ini</button>
+    <button id="bulan_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Bulan ini</button>
+</div>
+<div class="divider">&nbsp;</div>
 
 <!-- tab -->
     <!-- keterangan :
@@ -138,7 +151,7 @@
                         </tr>
                         <tr style="display:none;" id="juTR" class="info">
                             <th class="text-left"></th>
-                            <th class="text-left"><input xonchange="alert(9999);"placeholder="nomor jurnal" id="ju_noS" class="ju_cari"></th>
+                            <th class="text-left"><input onkeyup="inputuang(this);" placeholder="nomor jurnal" id="ju_noS" class="ju_cari"></th>
                             <th class="text-left"><input placeholder="uraian" id="ju_uraianS" class="ju_cari"></th>
                             <th style="display:visible;"class="text-left uraianCOL"></th>
                             <th class="text-left"></th>
