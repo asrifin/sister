@@ -15,9 +15,9 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
+					$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
 				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				// $kelompok    = trim(isset($_POST['kelompokS']))?filter($_POST['kelompokS']):'';
+				$kelompok    = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
 				$sql = 'SELECT
 							k.replid,

@@ -100,11 +100,7 @@
 				}
 
 				$recpage= 5;//jumlah data per halaman
-				$aksi    ='tampil';
-				$subaksi ='';
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
 				#ada data
@@ -178,10 +174,12 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT k.*, p.nip AS nip, p.nama AS nama
-							from aka_kelas k 
-							LEFT JOIN hrd_pegawai p ON p.replid =k.wali
-							WHERE 
+							from aka_kelas k, 
+							hrd_pegawai p
+							WHERE
+								 p.replid =k.wali AND
 								k.replid='.$_POST['replid'];
+
 												// print_r($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
@@ -189,6 +187,7 @@
 				$out 	= json_encode(array(
 							'status'     =>$stat,
 							'kelas'      =>$r['kelas'],
+							'wali'      =>$r['wali'],
 							'nip'       =>$r['nip'],
 							'nama'       =>$r['nama'],
 							'kapasitas'  =>$r['kapasitas'],
