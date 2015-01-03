@@ -7,8 +7,7 @@ var contentAdd=contentDetail='';
 
 // main function ---
     $(document).ready(function(){
-        contentDetail+=''
-                +'<div style="overflow:scroll;height:500px;"  class="">'
+        contentDetail+='<div style="overflow:scroll;height:500px;">'
                     //keterangan peminjaman 
                     +'<legend>Data Peminjaman</legend>'
                     +'<table>'
