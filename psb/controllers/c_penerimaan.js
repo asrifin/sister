@@ -89,15 +89,11 @@ var contentFR_terima = contentFR_siswa = '';
             viewTB();
         });$('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
-        });$('#kelompokS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
         });
-        // $('#keteranganS').keydown(function(e){
-        //     if(e.keyCode==13)
-        //         viewTB();
-        // });
-
+        $('#kelompokS').on('change',function(){
+            viewTB();
+            // cmbkelompok($('#tahunajaranS').val());
+        });
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
@@ -149,6 +145,7 @@ var contentFR_terima = contentFR_siswa = '';
                             out+='<option value="'+item.replid+'">'+item.tahunajaran+'</option>';
                         }
                     });
+                    cmbkelompok(dt.tahunajaran[0].replid);
                     // viewTB(dep,dt.tahunajaran[0].replid); 
                 }
                 $('#tahunajaranS').html(out);
@@ -250,8 +247,8 @@ var contentFR_terima = contentFR_siswa = '';
     function viewTB(){
         var aksi ='aksi=tampil';
         var cari = '&no_pendaftaranS='+$('#no_pendaftaranS').val()
-                    +'&namaS='+$('#namaS').val()
-                    // +'&keteranganS='+$('#keteranganS').val();
+                    +'&kelompokS='+$('#kelompokS').val()
+                    +'&namaS='+$('#namaS').val();
         $.ajax({
             url : dir,
             type: 'post',

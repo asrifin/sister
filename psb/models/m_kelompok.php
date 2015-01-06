@@ -196,11 +196,19 @@
 					}
 				}
 				
-				$s	= ' SELECT *
-						from '.$tb.'
-						'.$w.'		
-						ORDER  BY '.$mnu.' asc';
-				var_dump($s);exit();
+				$s	= ' SELECT
+							k.replid,k.kelompok
+						FROM
+							psb_kelompok k,
+							psb_proses p,
+							aka_tahunajaran t
+						WHERE
+							k.proses = p.replid
+						AND t.replid = p.tahunajaran
+						AND t.replid = '.$_POST['tahunajaran'].'
+						ORDER BY
+							k.kelompok ASC';
+				// print_r($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar = $dt=array();
