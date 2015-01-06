@@ -21,9 +21,6 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
 
 // main function load first 
     $(document).ready(function(){
-        $('#okBC').on('click',function(){
-            // juNO(1);
-        });
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });
