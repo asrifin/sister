@@ -31,7 +31,11 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         });
     }
 
+// main function load first 
     $(document).ready(function(){
+        $('#okBC').on('click',function(){
+            juNO(1);
+        });
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });
@@ -43,7 +47,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             $('#tgl2TB').val(getLastDate());
         });
         //form content
-            ju_contentFR += '<form style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="juSV(); return false;" id="'+mnu+'FR">' 
+            ju_contentFR += '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="juSV(); return false;" id="'+mnu+'FR">' 
                             +'<input id="g_idformH" type="hidden">' 
                             +'<input  type="hidden" name="g_lokasiH" id="g_lokasiH" class="span2">'
                             
@@ -54,14 +58,14 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                             +'</div>'
                             
                             +'<label>No. Bukti </label>'
-                            +'<div class="input-control text">'
-                                +'<input placeholder="no bukti" name="ju_nobuktiTB" id="ju_nobuktiTB" class="span4">'
+                            +'<div class="input-control size4 text">'
+                                +'<input required placeholder="no bukti" name="ju_nobuktiTB" id="ju_nobuktiTB">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
                             
                             +'<label>Tanggal</label>'
                             +'<div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">'
-                                +'<input type="text" id="ju_tanggalTB">'
+                                +'<input required type="text" id="ju_tanggalTB">'
                                 +'<button class="btn-date"></button>'
                             +'</div>'
 
@@ -88,23 +92,35 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                                     +'</tr>'
                                 +'</thead>'
                                 +'<tbody id="ju_rekTBL">'
-                                    +'<tr>'
-                                        +'<td ><input id="ju_rek1H" type="hidden" /><input id="ju_rek1TB" placeholder="rekening" type="text" /></td>'
+                                    +'<tr data-hint="wasem" xdata-position="left">'
+                                        +'<td>'
+                                            +'<input id="ju_rek1H" type="hidden" />'
+                                            +'<span class="input-control text"><input id="ju_rek1TB" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                                        +'</td>'
                                         +'<td><input value="Rp. 0" onfocus="inputuang(this);" type="text" placeholder="nominal debet"/></td>'
                                         +'<td><input value="Rp. 0" onfocus="inputuang(this);" type="text"  placeholder="nominal kredit"/></td>'
                                     +'</tr>'
                                     +'<tr>'
-                                        +'<td><input id="ju_rek2H" type="hidden" /><input id="ju_rek2TB" placeholder="rekening" type="text" /></td>'
+                                        +'<td>'
+                                            +'<input id="ju_rek2H" type="hidden" />'
+                                            +'<span class="input-control text"><input id="ju_rek2TB" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                                        +'</td>'
                                         +'<td><input value="Rp. 0" onfocus="inputuang(this);" type="text" placeholder="nominal debet"/></td>'
                                         +'<td><input value="Rp. 0" onfocus="inputuang(this);" type="text"  placeholder="nominal kredit"/></td>'
                                     +'</tr>'
                                     +'<tr>'
-                                        +'<td><input id="ju_rek3H" type="hidden" /><input id="ju_rek3TB" placeholder="rekening" type="text" /></td>'
+                                        +'<td>'
+                                            +'<input id="ju_rek3H" type="hidden" />'
+                                            +'<span class="input-control text"><input id="ju_rek3TB" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                                        +'</td>'
                                         +'<td><input value="Rp. 0" onfocus="inputuang(this);" type="text" placeholder="nominal debet"/></td>'
                                         +'<td><input value="Rp. 0" onfocus="inputuang(this);" type="text"  placeholder="nominal kredit"/></td>'
                                     +'</tr>'
                                     +'<tr>'
-                                        +'<td><input id="ju_rek4H" type="hidden" /><input id="ju_rek4TB" placeholder="rekening" type="text" /></td>'
+                                        +'<td>'
+                                            +'<input id="ju_rek4H" type="hidden" />'
+                                            +'<span class="input-control text"><input id="ju_rek4TB" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                                        +'</td>'
                                         +'<td><input value="Rp. 0" onfocus="inputuang(this);" type="text" placeholder="nominal debet"/></td>'
                                         +'<td><input value="Rp. 0" onfocus="inputuang(this);" type="text"  placeholder="nominal kredit"/></td>'
                                     +'</tr>'
@@ -121,7 +137,9 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
 
         // button action
             //add---------
-            $("#ju_addBC").on('click', function(){ juFR('');});
+            $("#ju_addBC").on('click', function(){ 
+                juFR('');
+            });
 
             //print----
             $('#g_cetakBC').on('click',function(){
@@ -180,7 +198,6 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             case 12:return 'Dec';break;
         }
     }
-//end of get month format -----
 
 //date format -----------------
     function dateFormatx(typ,d,m,y){
@@ -189,7 +206,19 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         else // 2014-12-25
             return y+'-'+m+'-'+d;
     }
-//end of date format ----------
+
+// generate nomor jurnal 
+    function juNO(){
+        $.ajax({
+            url:dir,
+            dataType:'json',
+            type:'post',
+            data:'aksi=keygen&subaksi=ju',
+            success:function(dt){
+                alert(dt);
+            }
+        });
+    }
 
 //global u/ tanggal --------
     var now  = new Date();
@@ -269,42 +298,42 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                 }
             });
         }
-    // end of grup  ---
 
 /*save (insert & update)*/
-    //grup ---
-        function grupSV(){
-            return false;
+    //jurnal umum  ---
+        function juSV(){
+            alert(9999);
             var urlx ='&aksi=simpan&subaksi=grup';
             // edit mode
             if($('#g_idformH').val()!=''){
                 urlx += '&replid='+$('#g_idformH').val();
             }
-            $.ajax({
-                url:dir,
-                cache:false,
-                type:'post',
-                dataType:'json',
-                data:$('form').serialize()+urlx,
-                success:function(dt){
-                    if(dt.status!='sukses'){
-                        cont = 'Gagal menyimpan data';
-                        clr  = 'red';
-                    }else{
-                        $.Dialog.close();
-                        gkosongkan();
-                        vwGrup($('#g_lokasiS').val());
-                        cont = 'Berhasil menyimpan data';
-                        clr  = 'green';
-                    }notif(cont,clr);
-                }
-            });
+            // $.ajax({
+            //     url:dir,
+            //     cache:false,
+            //     type:'post',
+            //     dataType:'json',
+            //     data:$('form').serialize()+urlx,
+            //     success:function(dt){
+            //         if(dt.status!='sukses'){
+            //             cont = 'Gagal menyimpan data';
+            //             clr  = 'red';
+            //         }else{
+            //             $.Dialog.close();
+            //             gkosongkan();
+            //             vwGrup($('#g_lokasiS').val());
+            //             cont = 'Berhasil menyimpan data';
+            //             clr  = 'green';
+            //         }notif(cont,clr);
+            //     }
+            // });
+            // return false;
         }
     //end grup  ---
 
 /*delete*/
-    //grup  ---
-        function grupDel(id){
+    //jurnal umum   ---
+        function juDel(id){
             if(confirm('melanjutkan untuk menghapus data?'))
             $.ajax({
                 url:dir,
@@ -324,97 +353,8 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                 }
             });
         }
-    //end of grup ---
     
-    
-    
-    // function ajaxFC(u,t,dt,d){
-    //     var ret=$.ajax({
-    //         url:u,
-    //         type:t,
-    //         dataType:dt,
-    //         data:d,
-    //         success:function(res){
-    //             return res;
-    //         }
-    //     });
-    //     // return ret;
-    //     // alert(ret);
-    //     console.log(ret.responseJSON);
-    // }
-
-    // function juFR (id) {
-    //     var data='aksi=ambiledit&subaksi=ju&replid='+id;
-    //     var out = ajaxFC('models/m_transaksi.php','post','json',data);
-    //     // console.log(out.datax.tanggal);
-    //     // output seharusnya : 2014-03-06
-    // }
-
-    //     var nomerTB='',nobuktiTB='',tanggalTB='okok',uraianTB='';
-    //     var cont = '<form style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="juSV(); return false;" id="'+mnu+'FR">'
-    //     if(id!=''){ //edit
-    //     }else{ //add
-
-    //     }
-    //             cont+='<input value="'+tanggalTB+'" id="ju_idformH" type="text">' 
-    //             +'<label>No. Jurnal</label>'
-    //             +'<div class="input-control text">'
-    //                 +'<input disabled="disabled" name="ju_nomerTB" id="ju_nomerTB" class="span2">'
-    //                 +'<button class="btn-clear"></button>'
-    //             +'</div>'
-                
-    //             +'<label>No. Bukti </label>'
-    //             +'<div class="input-control text">'
-    //                 +'<input placeholder="no bukti" name="ju_nobuktiTB" id="ju_nobuktiTB" class="span1">'
-    //                 +'<button class="btn-clear"></button>'
-    //             +'</div>'
-                
-    //             +'<label>Tanggal</label>'
-    //             +'<div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">'
-    //                 +'<input type="text" value="'+tanggalTB+'" id="ju_tanggalTB">'
-    //                 +'<button class="btn-date"></button>'
-    //             +'</div>'
-
-    //             +'<label>Uraian</label>'
-    //             +'<div class="input-control textarea">'
-    //                 +'<textarea placeholder="uraian" name="ju_uraianTB" id="ju_uraianTB"></textarea>'
-    //             +'</div>'
-
-    //             //rek. perkiraan 
-    //             +'<legend>Rekening :</legend>'
-    //             +'<table class="table hovered bordered striped">'
-    //                 +'<thead>'
-    //                     +'<tr style="color:white;"class="info">'
-    //                         +'<th class="text-center">Rek Perkiraan</th>'
-    //                         +'<th class="text-center">Debet</th>'
-    //                         +'<th class="text-center">Kredit</th>'
-    //                     +'</tr>'
-    //                 +'</thead>'
-    //                 +'<tbody id="ju_rekTBL">'
-    //                     +ju_contentFR
-    //                 +'</tbody>'
-    //                 +'<tfoot id="legendDet">'
-    //                 +'</tfoot>'
-    //             +'</table>'
-
-    //             +'<div class="form-actions">' 
-    //                 +'<button class="button primary">simpan</button>&nbsp;'
-    //                 +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-    //             +'</div>'
-    //         +'</form>';
-    //     // $('#ju_rek3TB').val('okokokokok');
-    //     // var titlex;
-    //     // if(id==''){ 
-    //     //     titl='<span class="icon-plus-2"></span> Tambah ';
-    //     // }else{
-    //     //     titl='<span class="icon-pencil"></span> Ubah';
-    //     //     $('#ju_nobuktiTB').val('999');
-    //     // }           
-    //     // autosuggest('ju_rek1TB');
-    //     // alert($('#ju_rek3TB').val());
-    //     loadDialog(' Jurnal Umum',cont);
-    // }
-
+    // form jurnal umum (add & edit)
         function juFR(id){
             if(id!=''){ // edit mode
                 
@@ -424,6 +364,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             }
         }
 
+    // load form (all)
         function loadFR(titl,cont,combog,elm){
             $.Dialog({
                 shadow: true,
@@ -437,6 +378,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                     if(combog){
                         setTimeout(function(){
                             autosuggest(elm);
+                            // $('#ju_rek1TD').attr('data-hint','kgosjlkjskl f890809809');
                             // $.each(elm,function(id,item){
                             //     $("#"+item+'TB').on('keyup', function(e){
                             //         var key     = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
@@ -453,7 +395,9 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                 }
             });
         }
+    // end of load form (all)
 
+    // autosuggest (all)
         function autosuggest(el){
             $.each(el,function(index,val){
                 $('#'+val+'TB').combogrid({
@@ -474,85 +418,31 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                     url: dir+'?aksi=autocomp',
                     select: function( event, ui ) { // event setelah data terpilih 
                         $('#'+val+'H').val(ui.item.replid);
-                        $('#'+val+'TB').val(ui.item.nama+' ('+ui.item.kode+')');
+                        $('#'+val+'TB').val(ui.item.nama+' ('+ui.item.kode+')      ');
 
-                        $("#"+val+'TB').on('keyup', function(e){
-                            var key     = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-                            var keyCode = $.ui.keyCode;
-                            if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.DOWN) {
-                                // alert('terhapus');
-                                $('#'+val+'H').val('');
-                                $('#'+val+'TB').val('');
-                            }
-                        });
-
+                        // $("#"+val+'TB').on('keyup', function(e){
+                        //     var key     = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+                        //     var keyCode = $.ui.keyCode;
+                        //     if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.DOWN) {
+                        //         // alert('terhapus');
+                        //         $('#'+val+'H').val('');
+                        //         $('#'+val+'TB').val('');
+                        //     }
+                        // });
                         return false;
                     }
                 });
             });
         }
-
-/*headinfo*/
-    // katalog
-        function vwHeadKatalog (id) {
-            $.ajax({
-                url:dir,
-                type:'post',
-                dataType:'json',
-                data:'aksi=headinfo&subaksi=katalog&grup='+id,
-                success:function (dt) {
-                    if (dt.status!='sukses') {
-                        alert(dt.status+' memuat data header');
-                    }else{
-                        $('#k_grupDV').html(dt.grup);
-                        $('#k_lokasiDV').html(dt.lokasi);
-                        $('#k_totasetDV').html('Rp. '+dt.totaset+',-');
-                    }
-                },
-            });
-        }
-    //end of katalog
-
+    //end of autosuggest (all)
 
 /*reset form*/
-    //grup  ---
-        function gkosongkan(){
+    //jurnal umm   ---
+        function ju_resetFR(){
             $('#idformTB').val('');
             $('#g_kodeTB').val('');
-            $('#g_namaTB').val('');
-            $('#g_utotalTB').val('');
-            $('#g_utersediaTB').val('');
-            $('#g_udipinjamTB').val('');
-            $('#g_keteranganTB').val('');
         }
     //end of grup ---
-
-    //katalog  ---
-        function kkosongkan(){
-            $('#k_idformTB').val('');
-            $('#k_lokasiTB').val('');
-            $('#k_grupTB').val('');
-            $('#k_kodeTB').val('');
-            $('#k_namaTB').val('');
-            $('#k_jenisTB').val('');
-            $('#k_susutTB').val('');
-            $('#k_photoTB').val('');
-        }
-    //end of katalog ---
-
-    //barang  ---
-        function bkosongkan(){
-            $('#k_idformTB').val('');
-            $('#b_tempatB').val('');
-            $('#b_barkodeTB').val('');
-            $('#b_kodeTB').val('');
-            $('#b_hargaTB').val('');
-            $('#b_kondisiTB').val('');
-            $('input[name="b_sumberTB"]').val('');
-            $('#b_keteranganTB').val('');
-        }
-    //end of barang ---
-
 
 /*combo box*/
     // departemen ---

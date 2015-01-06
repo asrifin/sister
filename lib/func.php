@@ -12,33 +12,61 @@
 
 /*keuangan*/
 	// transaksi
-	function jenisbukti($a){
-		if($a==3) return 'BKM';
-		else if($a==4) return 'BKK';
-		else if($a==5) return 'BBM';
-		else if($a==6) return 'BBK';
-		else return '';
-	}function ju_nomor($no,$jenis,$bukti){
-		// D:\xampp\htdocs\siadu(epiii)\shared\libraries\modules\apps\keu.php:
-		
-		// define('JT_UMUM',0);
-		// define('JT_SISWA',1);
-		// define('JT_CALONSISWA',2);
-		// define('JT_INCOME',3);
-		// define('JT_OUTCOME',4);
-		// define('JT_INBANK',5);
-		// define('JT_OUTBANK',6);
-		// define('JT_INBRG',7);
+	function jtrans($i1,$i2,$i3){
+		$jArr=array(
+				array(
+					'kode'  =>'',
+					'nama'  =>'jurnal umum',
+					'warna' =>'fg-blue',
+					'sub'   =>array(
+						array('kode'=>1,'nama'=>''),
+						array('kode'=>2,'nama'=>'')
+					)
+				),array(
+					'kode'  =>'in',
+					'nama'  =>'pemasukkan',
+					'warna' =>'fg-lightGreen',
+					'sub'   =>array(
+						array('kode'=>3,'nama'=>'BKM'),
+						array('kode'=>5,'nama'=>'BBM')
+					)
+				),array(
+					'kode'  =>'out',
+					'nama'  =>'pengeluaran',
+					'warna' =>'fg-lightRed',
+					'sub'   =>array(
+						array('kode'=>4,'nama'=>'BKK'),
+						array('kode'=>6,'nama'=>'BBK')
+					)
+				),
+			);
+		// if()
+		// $ret=$jArr[$i1];
+		// // print_r($ok);
+		// return f
+	}
 
-		if($jenis==0) $cl='fg-blue'; #umum
-		else if($jenis==1) $cl='fg-lightGreen'; #siswa
-		else if($jenis==2) $cl='fg-lightGreen'; #calon siswa
-		else if($jenis==3) $cl='fg-lightGreen'; #income
-		else if($jenis==4) $cl='fg-lightRed'; #outcome
-		else if($jenis==5) $cl='fg-lightGreen'; #inbank
-		else if($jenis==6) $cl='fg-lightRed'; #outbank
-		else if($jenis==7) $cl='fg-lightRed'; #Winbrg
-		else $cl='';
+	function jenisbukti($a){
+		if($a==3) return 'BKM'; //masuk
+		else if($a==5) return 'BBM'; //masuk	
+		else if($a==4) return 'BKK'; //keluar
+		else if($a==6) return 'BBK'; //keluar
+		else return ''; //lainnya
+	}function ju_nomor($no,$jenis,$bukti){
+		#jurnal umum 
+		if($jenis==0) $cl='fg-blue'; #umum / JT_UMUM
+		#pemasukkan
+		else if($jenis==1) $cl='fg-lightGreen'; #siswa /JT_SISWA
+		else if($jenis==2) $cl='fg-lightGreen'; #calon siswa /JT_CALONSISWA
+		else if($jenis==3) $cl='fg-lightGreen'; #income /JT_INCOME
+		else if($jenis==5) $cl='fg-lightGreen'; #inbank /JT_INBANK
+		#pengeluaran
+		else if($jenis==4) $cl='fg-lightRed'; #outcome /JT_OUTCOME
+		else if($jenis==6) $cl='fg-lightRed'; #outbank /JT_OUTBANK
+		else if($jenis==7) $cl='fg-lightRed'; #Winbrg /JT_INBRG
+		#lainnya
+		else $cl=''; # /OTHERS
+
 		$ret='<span style="font-weight:bold;" class="'.$cl.'">'.$no.'</span><br>
 			'.jenisbukti($jenis).'<br>
 			'.($bukti!=''?$bukti:'');

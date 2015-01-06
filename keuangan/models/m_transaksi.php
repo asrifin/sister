@@ -334,6 +334,34 @@
 			break; 
 			// tampil ---------------------------------------------------------------------
 
+			// generate kode
+			case 'keygen':
+				switch ($_POST['subaksi']) {
+					case 'ju':
+						jtrans(1);
+						// $s ='SELECT * from keu_transaksi';
+						// $e =mysql_query($s);
+						// $r =mysql_fetch_assoc($e);
+
+					// function transaksi_newnomer($jt=JT_UMUM){
+					// $kode =transaksi_kodejt($jt); //output : [JT_UMUM=>'MMJ',JT_INCOME=>'BKM',JT_OUTCOME=>'BKK']
+					// $tb   =tahunbuku_getaktif(); //output :  ex: 1
+					// $ct   =transaksi_lastct()+1; // output : ex : 8+1 = 9
+					// $res  =array();
+					// //$res['nomer']=$tb['kode'].sprintf("%05d",$ct);
+
+					// $res['nomer'] =$kode.'-'.sprintf("%04d",$ct).'/'.date("m").'/'.date("Y");
+					// $res['ct']    =$ct;
+					// return $res;
+					// }
+
+
+
+					break;
+				}
+			break;
+			// generate kode
+
 			// head info ------------------------------------------------------------------
 			case 'headinfo':
 				switch ($_POST['subaksi']) {
