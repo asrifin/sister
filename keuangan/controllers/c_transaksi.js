@@ -39,9 +39,8 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                             +'<input id="ju_idformH" type="hidden">' 
 
                             +'<label>No. Jurnal</label>'
-                            +'<div class="input-control text">'
-                                +'<input readonly name="ju_nomerTB" id="ju_nomerTB" class="span4">'
-                                +'<button class="btn-clear"></button>'
+                            +'<div class="input-control size4 text">'
+                                +'<input readonly name="ju_nomerTB" id="ju_nomerTB" >'
                             +'</div>'
                             
                             +'<label>No. Bukti </label>'
@@ -219,7 +218,8 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
     }
 // tanggal hari ini : dd mm yyyy
     function getToday() {
-        return dateFormatx('id',dd,monthFormat(mm),yyyy);
+        // function addLeadingZeros (n, length){
+        return dateFormatx('id',lpadZero(dd,2),monthFormat(mm),yyyy);
     }
 // tanggal pertama bulan ini : dd mm yyyy 
     function getFirstDate() {
@@ -365,7 +365,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             }else{ // add  mode
                 var cgArr  =['ju_rek1','ju_rek2','ju_rek3','ju_rek4'];
                 var inpArr ={"ju_tanggalTB":getToday(),"ju_nomerTB":kodeTrans('ju')};
-                loadFR('judul form',ju_contentFR,cgArr,inpArr);
+                loadFR('<i class="icon-plus-2"></i> Tambah ',ju_contentFR,cgArr,inpArr);
             }
         }
 
@@ -582,6 +582,16 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             // decimal:',', 
             affixesStay: true
         });
+    }
+
+// left pad (replace with 0)
+    function lpadZero (n, length){
+        var str = (n > 0 ? n : -n) + "";
+        var zeros = "";
+        for (var i = length - str.length; i > 0; i--)
+            zeros += "0";
+        zeros += str;
+        return n >= 0 ? zeros : "-" + zeros;
     }
 
     function validUang () {

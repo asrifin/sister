@@ -4,6 +4,10 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
+	// note :
+	// ju : jurnal umum
+	// in : pemasukkan
+	// out : pengeluaran
 
 	$mnu  = 'transaksi';
 	$mnu2 = 'rekening';
@@ -72,7 +76,6 @@
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
-					// grup barang
 					case 'ju':
 						$ju_no     = isset($_POST['ju_noS'])?filter(trim($_POST['ju_noS'])):'';
 						$ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
@@ -121,8 +124,8 @@
 		   								$tb2.='<tr>
 		   										<td>'.$r2['nama'].'</td>
 		   										<td>'.$r2['kode'].'</td>
-		   										<td>'.$r2['debet'].'</td>
-		   										<td>'.$r2['kredit'].'</td>
+		   										<td>Rp. '.number_format($r2['debet']).',-</td>
+		   										<td>Rp. '.number_format($r2['kredit']).',-</td>
 		   									</tr>';
 		   							}$tb2.='</table>';
 								}$out.= '<tr>
@@ -274,40 +277,22 @@
 												nobukti = "'.filter($_POST['ju_nobuktiTB']).'",
 												uraian  = "'.filter($_POST['ju_uraianTB']).'",
 												tanggal = "'.tgl_indo6($_POST['ju_tanggalTB']).'"';
-						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						var_dump($s2);exit();
-						// $e 		= mysql_query($s2);
+						$s  = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						var_dump($s);exit();
+						$e  = mysql_query($s);
+						$id =mysql_insert_id();
+						if(!$e){
+							$stat='gagal_'.mysql_error();
+						}else{
+							// if(isset($_POST['']))
+							$s2	= 'keu_jurnal set 	transaksi = '.$id.',
+													rek       = '.$_POST['ju_rekTB'].',
+													debet     = '.$_POST['ju_debetTB'].',
+													kredit    = '.$_POST['ju_kreditTB'];
+							$s2 = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						}
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array('status'=>$stat));
-					break;
-
-					case 'katalog':
-						$s 		= $tb3.' set 	grup 		= "'.$_POST['k_grupH2'].'",
-												kode 		= "'.filter($_POST['k_kodeTB']).'",
-												nama 		= "'.filter($_POST['k_namaTB']).'",
-												jenis 		= "'.$_POST['k_jenisTB'].'",
-												susut 		= "'.filter($_POST['k_susutTB']).'",
-												keterangan 	= "'.filter($_POST['k_keteranganTB']).'"
-												'.(isset($_POST['file'])?', photo2= "'.$_POST['file'].'"':'');
-						$stat2=true;
-						if(!isset($_POST['replid'])){ //add
-							$s2 = 'INSERT INTO '.$s;
-						}else{ //edit
-							$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
-							if(isset($_POST['photo_asal'])){ //change image
-								$img='../../img/upload/'.$_POST['photo_asal'];
-								if(file_exists($img)){ //checking image is exist
-									$delimg = unlink($img);
-									$stat2  = !$delimg?false:true;
-								}
-							}
-						}
-						if(!$stat2){// gagal hapus
-							$stat='gagal_hapus_file';
-						}else{ //sukses hapus file
-							$e    = mysql_query($s2);
-							$stat = $e?'sukses':'gagal_simpan_db';
-						}$out  = json_encode(array('status'=>$stat));
 					break;
 
 					case 'barang':
