@@ -151,7 +151,7 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
-					case 'tidak_diterima';
+					case 'tidak_terima';
 						$s = 'SELECT * FROM '.$tb.'  WHERE replid='.$_POST['replid'];
 						// var_dump($s);exit();
 						$e 		= mysql_query($s);
@@ -186,6 +186,4 @@
 		}
 	}
 	echo $out;
-	// var_dump($out);
-	
 ?>
