@@ -12,7 +12,10 @@
 
 /*keuangan*/
 	// transaksi
-	function jtrans($i1,$i2,$i3){
+	function transKode($jt=0){
+		$kode=array(0=>'MMJ',3=>'BKM',4=>'BKK');
+		return $kode[$jt];
+	}function jtrans($i1,$i2,$i3){
 		$jArr=array(
 				array(
 					'kode'  =>'',
