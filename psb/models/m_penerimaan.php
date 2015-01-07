@@ -18,13 +18,14 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$nopendaftaran = trim($_POST['no_pendaftaranS'])?filter($_POST['no_pendaftaranS']):'';
-				// $semester    = trim($_POST[$mnu.'S'])?filter($_POST[$mnu.'S']):'';
-				$nama  = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$kelompok      = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
+				$nama          = trim($_POST['namaS'])?filter($_POST['namaS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
 							nopendaftaran like "%'.$nopendaftaran.'%" and
-							nama like "%'.$nama.'%"
+							nama like "%'.$nama.'%" and
+							kelompok = '.$kelompok.'
 						ORDER 
 							BY nopendaftaran asc';
 				// print_r($sql);exit();
@@ -150,7 +151,7 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
-					case 'tidak_diterima';
+					case 'tidak_terima';
 						$s = 'SELECT * FROM '.$tb.'  WHERE replid='.$_POST['replid'];
 						// var_dump($s);exit();
 						$e 		= mysql_query($s);
@@ -185,6 +186,4 @@
 		}
 	}
 	echo $out;
-	// var_dump($out);
-	
 ?>
