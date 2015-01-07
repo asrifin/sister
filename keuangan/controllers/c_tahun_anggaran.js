@@ -191,7 +191,7 @@ var contentFR ='';
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
-                }$.Dialog.title(titlex+' '+mnu); // edit by epiii
+                }$.Dialog.title(titlex+' '+mnu); 
                 $.Dialog.content(contentFR);
             }
         });
