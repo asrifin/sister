@@ -6,11 +6,12 @@ var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
 var dir3      = '../akademik/models/m_'+mnu3+'.php';
 var dir4       = 'models/m_'+mnu4+'.php';
-var contentFR = '';
+var contentFR = ''; 
 var contentFR_terima = contentFR_siswa = '';
 
 // main function ---
     $(document).ready(function(){
+        //form terima
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
 
@@ -89,15 +90,11 @@ var contentFR_terima = contentFR_siswa = '';
             viewTB();
         });$('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
-        });$('#kelompokS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
         });
-        // $('#keteranganS').keydown(function(e){
-        //     if(e.keyCode==13)
-        //         viewTB();
-        // });
-
+        $('#kelompokS').on('change',function(){
+            viewTB();
+            // cmbkelompok($('#tahunajaranS').val());
+        });
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
@@ -149,6 +146,7 @@ var contentFR_terima = contentFR_siswa = '';
                             out+='<option value="'+item.replid+'">'+item.tahunajaran+'</option>';
                         }
                     });
+                    cmbkelompok(dt.tahunajaran[0].replid);
                     // viewTB(dep,dt.tahunajaran[0].replid); 
                 }
                 $('#tahunajaranS').html(out);
@@ -184,10 +182,10 @@ var contentFR_terima = contentFR_siswa = '';
         });
     }
 //end of combo tingkat ---
-
+79167e76
 
 //save process ---
-    function simpan(){
+    function simpan(){ //Tombol Tidak Terima
         var urlx ='&aksi=simpan&subaksi=penerimaan';
         // edit mode
         if($('#idformH').val()!=''){
@@ -217,7 +215,7 @@ var contentFR_terima = contentFR_siswa = '';
 //end of save process ---
 
 //save process ---
-    function terima(){
+    function terima(){ //Tombol Terima
         var urlx ='&aksi=terima&subaksi=tidak_terima';
         // edit mode
         if($('#idformH_terima').val()!=''){
@@ -250,8 +248,8 @@ var contentFR_terima = contentFR_siswa = '';
     function viewTB(){
         var aksi ='aksi=tampil';
         var cari = '&no_pendaftaranS='+$('#no_pendaftaranS').val()
-                    +'&namaS='+$('#namaS').val()
-                    // +'&keteranganS='+$('#keteranganS').val();
+                    +'&kelompokS='+$('#kelompokS').val()
+                    +'&namaS='+$('#namaS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -316,7 +314,7 @@ var contentFR_terima = contentFR_siswa = '';
                                             success:function(dt3){
                                                 $('#idformH').val(id);
                                                 $('#namaTB').val(dt3.nama);
-                                                // $('#nopendaftaranTB').val(dt3.nopendaftaran);
+                                                $('#nopendaftaranTB').val(dt3.nopendaftaran);
                                             }
                                         });
                                     // end of form :: edit :: tampilkan data 

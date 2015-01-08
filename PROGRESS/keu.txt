@@ -1,0 +1,32 @@
+ _________________
+| NOTE  	  |	
+|  + : solved 	  |
+|  - : error/bug  |
+|  C : completed  |
+|  P : progress	  |
+|_________________|  
+|  * : menu	  |
+|_________________|
+____________________________________________________
+
+* transaksi (P)
+	+ submenu : jurnal_umum 
+	- lainnya (^_^)V
+* modul pembayaran(P)
+* pembayaran pendaftaran(P)
+* pembayaran uang pangkal(P)
+* pembayaran uang sekolah(P)
+* inventory(P)
+
+____________________________________________________
+
+* tahun buku (C)
+* kode rekening (P)
+	- view : tidak tampil 
+	- filtering : combo rekening tidak tampil
+	- dll 
+* tahun anggaran (P)
+	- view : tidak tampil 
+	- filtering : combo rekening tidak tampil
+	- dll
+_____________________________________________________

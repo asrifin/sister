@@ -11,75 +11,7 @@ var contentFR = '';
 // main function ---
     $(document).ready(function(){
 
-        // function switchPN (e) {
-        // $.each($('.panelx'),function(id,item){
-        //     var ke = id+1;
-        //     if(ke==e){
-        //         $('#panel'+ke).removeAttr('style');
-        //         $('h4').html($(this).attr('title'));
-        //     }else{
-        //         $('#panel'+ke).attr('style','display:none;');
-        //     }
-        // });
-    // }
-        // contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
-        //                 +'<input id="idformH" type="hidden">' 
-                        
-        //                 +'<label>Departemen</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input type="hidden" name="departemenH" id="departemenH">'
-        //                     +'<input disabled type="text" name="departemenTB" id="departemenTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
-                        
-        //                 +'<label>Tahun Ajaran</label>'
-        //                 +'<div class="input-control text size2">'
-        //                     +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
-        //                     +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
-                        
-        //                 +'<label>Kelompok</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input placeholder="Kelompok" oninvalid="this.setCustomValidity(\'isi dulu gan\');" required type="text" name="kelompokTB" id="kelompokTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
-                        
-        //                 +'<label>Tanggal Mulai</label>'
-        //                 +'<div class="input-control text size2" data-role="datepicker"'
-        //                     // +'data-date="2014-10-23"'
-        //                     +'data-format="yyyy-mm-dd"'
-        //                     +'data-effect="slide">'
-        //                     +'<input id="tglmulaiTB" name="tglmulaiTB" type="text">'
-        //                     +'<button class="btn-date"></button>'
-        //                 +'</div>'
-
-        //                 +'<label>Tanggal Akhir</label>'
-        //                 +'<div class="input-control text size2" data-role="datepicker"'
-        //                     // +'data-date="2014-10-23"'
-        //                     +'data-format="yyyy-mm-dd"'
-        //                     +'data-effect="slide">'
-        //                     +'<input id="tglakhirTB" name="tglakhirTB" type="text">'
-        //                     +'<button class="btn-date"></button>'
-        //                 +'</div>'
-
-        //                 +'<label>Biaya Pendaftaran</label>'
-        //                 +'<div class="input-control text size2">'
-        //                     +'<input placeholder="Biaya Pendaftaran" oninvalid="this.setCustomValidity(\'isi dulu gan\');" required type="text" name="biaya_pendaftaranTB" id="biaya_pendaftaranTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
-
-        //                 +'<label>Keterangan</label>'
-        //                 +'<div class="input-control textarea">'
-        //                     +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
-        //                 +'</div>'
-                        
-        //                 +'<div class="form-actions">' 
-        //                     +'<button class="button primary">simpan</button>&nbsp;'
-        //                     +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-        //                 +'</div>'
-        //             +'</form>';
-
+        
         // combo departemen
         cmbdepartemen('');
         // cmbdepartemen(false,'');
