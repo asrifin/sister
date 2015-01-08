@@ -278,21 +278,24 @@
 												uraian  = "'.filter($_POST['ju_uraianTB']).'",
 												tanggal = "'.tgl_indo6($_POST['ju_tanggalTB']).'"';
 						$s  = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						var_dump($s);exit();
-						$e  = mysql_query($s);
-						$id =mysql_insert_id();
-						if(!$e){
-							$stat='gagal_'.mysql_error();
-						}else{
-							// if(isset($_POST['']))
-							$s2	= 'keu_jurnal set 	transaksi = '.$id.',
-													rek       = '.$_POST['ju_rekTB'].',
-													debet     = '.$_POST['ju_debetTB'].',
-													kredit    = '.$_POST['ju_kreditTB'];
-							$s2 = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						}
-						$stat 	= ($e)?'sukses':'gagal';
-						$out 	= json_encode(array('status'=>$stat));
+						// var_dump($s);exit();
+						// $e  = mysql_query($s);
+						// $id =mysql_insert_id();
+						// if(!$e){
+						// 	$stat='gagal_'.mysql_error();
+						// }else{
+							if(isset($_POST['ju_rekTB'])){
+								// var_dump(count($_POST['ju_rekTB']));
+								var_dump($_POST['ju_rekTB']);
+								// $s2	= 'keu_jurnal set 	transaksi = '.$id.',
+								// 						rek       = '.$_POST['ju_rekTB'].',
+								// 						debet     = '.$_POST['ju_debetTB'].',
+								// 						kredit    = '.$_POST['ju_kreditTB'];
+								// $s2 = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+							}
+						// }
+						// $stat 	= ($e)?'sukses':'gagal';
+						// $out 	= json_encode(array('status'=>$stat));
 					break;
 
 					case 'barang':
