@@ -91,7 +91,7 @@ var contentFR = '';
         $('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
         });$('#tahunajaranS').on('change',function (){
-            viewTB('');
+            cmbtingkat($(this).val());
         });$('#tingkatS').on('change',function (){
             viewTB(''); 
         })
@@ -378,38 +378,24 @@ var contentFR = '';
 // end of form ---
 
 //paging ---
-     function pagination(page,aksix,subaksi){ 
-        var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
-        var cari ='';
-        var el,el2;
-
-        if(subaksi!=''){ // multi paging 
-            el  = '.'+subaksi+'_cari';
-            el2 = '#'+subaksi+'_tbody';
-        }else{ // single paging
-            el  = '.cari';
-            el2 = '#tbody';
-        }
-
-        $(el).each(function(){
-            var p = $(this).attr('id');
-            var v = $(this).val();
-            cari+='&'+p+'='+v;
-        });
-
+     function pagination(page,aksix){
+        var datax = 'starting='+page+'&aksi='+aksix;
+         var cari = '&departemenS='+$('#departemenS').val()
+                    +'&tahunajaranS='+$('#tahunajaranS').val()
+                    +'&tingkatS='+$('#tingkatS').val();
         $.ajax({
             url:dir,
             type:"post",
-            data: aksi+cari,
+            data: datax+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $(el2).html(dt).fadeIn();
+                    $('#tbody').html(dt).fadeIn();
                 },1000);
             }
         });
-    }  
+    }   
 //end of paging ---
     
 //del process ---
