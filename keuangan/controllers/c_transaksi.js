@@ -21,6 +21,11 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
 
 // main function load first 
     $(document).ready(function(){
+        $('#testBC').on('click',function(){
+            // console.log(
+            // kodeTrans('ju');
+            // console.log(kodeTrans('ju'));
+        });
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });
@@ -65,48 +70,50 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                             +'</div>'
 
                             //rek. perkiraan 
-                            +'<legend >Rekening :</legend>'
+                            +'<legend >Rekening : <a onclick="addRekTR(\'ju_rekTBL\');return false;" href="#" class="button" ><i class="icon-plus"></i></a></legend>'
+                            // +'<legend >Rekening : <a href="javascript:rekTR(1);" class="button" ><i class="icon-plus"></i></a></legend>'
                             +'<table class="table hovered bordered striped">'
                                 +'<thead>'
                                     +'<tr style="color:white;"class="info">'
                                         +'<th class="text-center">Rek Perkiraan</th>'
                                         +'<th class="text-center">Debet</th>'
                                         +'<th class="text-center">Kredit</th>'
+                                        +'<th class="text-center"></th>'
                                     +'</tr>'
                                 +'</thead>'
                                 +'<tbody id="ju_rekTBL">'
-                                    +'<tr data-hint="wasem" xdata-position="left">'
-                                        +'<td>'
-                                            +'<input id="ju_rek1H" name="ju_rekH[]" type="hidden" />'
-                                            +'<span class="input-control text"><input id="ju_rek1TB" name="ju_rekTB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
-                                        +'</td>'
-                                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debetTB[]" type="text" placeholder="nominal debet"/></td>'
-                                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kreditTB[]" type="text"  placeholder="nominal kredit"/></td>'
-                                    +'</tr>'
-                                    +'<tr>'
-                                        +'<td>'
-                                            +'<input id="ju_rek2H" type="hidden" />'
-                                            +'<span class="input-control text"><input id="ju_rek2TB" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
-                                        +'</td>'
-                                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debetTB[]" type="text" placeholder="nominal debet"/></td>'
-                                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kreditTB[]" type="text"  placeholder="nominal kredit"/></td>'
-                                    +'</tr>'
-                                    +'<tr>'
-                                        +'<td>'
-                                            +'<input id="ju_rek3H" type="hidden" />'
-                                            +'<span class="input-control text"><input id="ju_rek3TB" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
-                                        +'</td>'
-                                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debetTB[]" type="text" placeholder="nominal debet"/></td>'
-                                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kreditTB[]" type="text"  placeholder="nominal kredit"/></td>'
-                                    +'</tr>'
-                                    +'<tr>'
-                                        +'<td>'
-                                            +'<input id="ju_rek4H" type="hidden" />'
-                                            +'<span class="input-control text"><input id="ju_rek4TB" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
-                                        +'</td>'
-                                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debetTB[]" type="text" placeholder="nominal debet"/></td>'
-                                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kreditTB[]" type="text"  placeholder="nominal kredit"/></td>'
-                                    +'</tr>'
+                                    // +'<tr data-hint="wasem" xdata-position="left">'
+                                    //     +'<td>'
+                                    //         +'<input id="ju_rek1H" name="ju_rekH[]" type="hidden" />'
+                                    //         +'<span class="input-control text"><input id="ju_rek1TB" name="ju_rekTB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                                    //     +'</td>'
+                                    //     +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debetTB[]" type="text" placeholder="nominal debet"/></td>'
+                                    //     +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kreditTB[]" type="text"  placeholder="nominal kredit"/></td>'
+                                    // +'</tr>'
+                                    // +'<tr>'
+                                    //     +'<td>'
+                                    //         +'<input id="ju_rek2H" type="hidden" />'
+                                    //         +'<span class="input-control text"><input id="ju_rek1TB" name="ju_rekTB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                                    //     +'</td>'
+                                    //     +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debetTB[]" type="text" placeholder="nominal debet"/></td>'
+                                    //     +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kreditTB[]" type="text"  placeholder="nominal kredit"/></td>'
+                                    // +'</tr>'
+                                    // +'<tr>'
+                                    //     +'<td>'
+                                    //         +'<input id="ju_rek3H" type="hidden" />'
+                                    //         +'<span class="input-control text"><input id="ju_rek3TB" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                                    //     +'</td>'
+                                    //     +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debetTB[]" type="text" placeholder="nominal debet"/></td>'
+                                    //     +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kreditTB[]" type="text"  placeholder="nominal kredit"/></td>'
+                                    // +'</tr>'
+                                    // +'<tr>'
+                                    //     +'<td>'
+                                    //         +'<input id="ju_rek4H" type="hidden" />'
+                                    //         +'<span class="input-control text"><input id="ju_rek4TB" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                                    //     +'</td>'
+                                    //     +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debetTB[]" type="text" placeholder="nominal debet"/></td>'
+                                    //     +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kreditTB[]" type="text"  placeholder="nominal kredit"/></td>'
+                                    // +'</tr>'
                                 +'</tbody>'
                                 +'<tfoot id="legendDet">'
                                 +'</tfoot>'
@@ -164,6 +171,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
     }); 
 // end of main function ---------
     
+   
 // get month format -------------
     function monthFormat(mon){
         switch(mon){
@@ -188,19 +196,6 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             return d+' '+m+' '+y;
         else // 2014-12-25
             return y+'-'+m+'-'+d;
-    }
-
-// generate kode transaksi ------- 
-    function kodeTrans(typ){
-        var ret;
-        $.ajax({
-            url:dir,
-            async:false,
-            dataType:'json',
-            type:'post',
-            data:'aksi=codeGen&subaksi=transNo&tipe='+typ,
-            success:function(dt){ret=dt.kode;}
-        });return ret;
     }
 
 //global u/ tanggal --------
@@ -283,21 +278,33 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             });
         }
 
-        function ajaxFC (u,t,dt,d) {
-            var ret;
-            $.ajax({
-                url:u,
-                type:t,
-                dataType:dt,
-                data:d,
-                async:false,
-                success:function(res){
-                    ret=res;
-                },error: function(jqXHR, textStatus, errorThrown){
-                    ret=textStatus;
-                }
-            });return ret;
-        }
+// fungsi AJAX asyncronous
+    function ajaxFC (u,d) {
+        return $.ajax({
+            url:u,
+            type:'post',
+            dataType:'json',
+            data:d
+        });
+    }
+
+// generate kode transaksi form (jurnak umum/income/outcome) : syncronous
+    function kodeTrans(typ){
+        var ret;
+        $.ajax({
+            url:dir,
+            type:'post',
+            async:false,
+            dataType:'json',
+            data :'aksi=codeGen&subaksi=transNo&tipe='+typ,
+            success:function(dt){
+                if(dt.status!='sukses')
+                    ret=dt.status;
+                else
+                    ret=dt.kode;
+            }
+        });return ret;
+    }
 
 /*save (insert & update)*/
     //jurnal umum  ---
@@ -307,7 +314,15 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             // edit mode
             if($('#ju_idformH').val()!='')
                 url += '&replid='+$('#ju_idformH').val();
-            alert(ajaxFC(url,'post','json',data));
+            // alert(ajaxFC(url,'post','json',data));
+            var exec = ajaxFC(url,'post','json',data);
+            alert();
+            // if(exec){
+            //     res=exec.status;
+            // }else{
+            //     notif()
+            // }            
+
             
             // $.ajax({
             //     url:dir,
@@ -355,81 +370,114 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             });
         }
     
-    // form jurnal umum (add & edit)
-        function juFR(id){
-            if(id!=''){ // edit mode
-                
-            }else{ // add  mode
-                var cgArr  =['ju_rek1','ju_rek2','ju_rek3','ju_rek4'];
-                var inpArr ={"ju_tanggalTB":getToday(),"ju_nomerTB":kodeTrans('ju')};
-                loadFR('<i class="icon-plus-2"></i> Tambah ',ju_contentFR,cgArr,inpArr);
-            }
+// form jurnal umum (add & edit)
+    function juFR(id){
+        if(id!=''){ // edit mode
+            
+        }else{ // add  mode
+            var cgArr  =['ju_rek1','ju_rek2','ju_rek3','ju_rek4'];
+            var inpArr ={"ju_tanggalTB":getToday(),"ju_nomerTB":kodeTrans('ju')};
+            loadFR('<i class="icon-plus-2"></i> Tambah ',ju_contentFR,cgArr,inpArr,2);
         }
+    }
 
-    // load form (all)
-        function loadFR(titl,cont,cgArr,inpArr){
-            $.Dialog({
-                shadow: true,
-                overlay: true,
-                draggable: true,
-                width: 500,
-                padding: 10,
-                onShow: function(){
-                    $.Dialog.title(titl+' '+mnu); 
-                    $.Dialog.content(cont);
-                    if(cgArr!=null){
-                        setTimeout(function(){
-                            autosuggest(cgArr);
-                            if(inpArr!=null){
-                                $.each(inpArr,function (id,item) {
-                                   $('#'+id).val(item);
-                                });
-                            }
-                        },1000);
-                    }
+// remove TR rekening
+    function delRekTR (e) {
+        $('#'+e).fadeOut('slow').remove();
+    }
+
+//add TR rekening into an element 
+    function addRekTR(e){
+        $('#'+e).append(rekTR(1));
+    }
+
+//create TR rekening by number
+    function rekTR(n){
+        var ret='';
+        if (n!=0) {
+            for(var id=1; id<=n; id++){
+                ret+='<tr >'
+                        +'<td>'
+                            // +'<input id="rek_'+id+'" name="rek_'+id+'[]" type="hidden" />'
+                            +'<input id="ju_rek'+id+'H" name="ju_rek'+id+'H[]" type="hidden" />'
+                            +'<span class="input-control text"><input id="ju_rek'+id+'TB" name="ju_rek'+id+'TB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                        +'</td>'
+                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debet'+id+'TB[]" type="text" placeholder="nominal debet"/></td>'
+                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kredit'+id+'TB[]" type="text"  placeholder="nominal kredit"/></td>'
+                        +'<td><a href="#" class="button"><i class="icon-cancel-2"></i></a></td>'
+                    +'</tr>';
+            }
+        }return ret;
+    }
+
+
+// load form (all)
+    function loadFR(titl,cont,cgArr,inpArr,rekN){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: 500,
+            padding: 10,
+            onShow: function(){
+                $.Dialog.title(titl+' '+mnu); 
+                $.Dialog.content(cont);
+                // main form  
+                if(inpArr!=null){ //set value fields 
+                    $.each(inpArr,function (id,item) {
+                       $('#'+id).val(item);
+                    });
+                }
+                // detail form  
+                if(cgArr!=null){
+                    setTimeout(function(){
+                        $('#ju_rekTBL').append(rekTR(rekN));
+                        // $('#ju_rekTBL').html(rekTR(rekN));
+                        // kodeTrans('ju');
+                        autosuggest(cgArr);
+                    },500);
+                }
+            }
+        });
+    }
+
+// autosuggest (all)
+    function autosuggest(el){
+        $.each(el,function(index,val){
+            $('#'+val+'TB').combogrid({
+                debug:true,
+                width:'400px',
+                colModel: [{
+                        'align':'left',
+                        'columnName':'kode',
+                        'hide':true,
+                        'width':'20',
+                        'label':'Kode'
+                    },{   
+                        'align':'left',
+                        'columnName':'nama',
+                        'width':'60',
+                        'label':'Rekening'
+                    }],
+                url: dir+'?aksi=autocomp',
+                select: function( event, ui ) { // event setelah data terpilih 
+                    $('#'+val+'H').val(ui.item.replid);
+                    $('#'+val+'TB').val(ui.item.nama+' ('+ui.item.kode+')      ');
+
+                    // $("#"+val+'TB').on('keyup', function(e){
+                    //     var key     = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+                    //     var keyCode = $.ui.keyCode;
+                    //     if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.DOWN) {
+                    //         // alert('terhapus');
+                    //         $('#'+val+'H').val('');
+                    //         $('#'+val+'TB').val('');
+                    //     }
+                    // });
+                    return false;
                 }
             });
-        }
-    // end of load form (all)
-
-    // autosuggest (all)
-        function autosuggest(el){
-            $.each(el,function(index,val){
-                $('#'+val+'TB').combogrid({
-                    debug:true,
-                    width:'400px',
-                    colModel: [{
-                            'align':'left',
-                            'columnName':'kode',
-                            'hide':true,
-                            'width':'20',
-                            'label':'Kode'
-                        },{   
-                            'align':'left',
-                            'columnName':'nama',
-                            'width':'60',
-                            'label':'Rekening'
-                        }],
-                    url: dir+'?aksi=autocomp',
-                    select: function( event, ui ) { // event setelah data terpilih 
-                        $('#'+val+'H').val(ui.item.replid);
-                        $('#'+val+'TB').val(ui.item.nama+' ('+ui.item.kode+')      ');
-
-                        // $("#"+val+'TB').on('keyup', function(e){
-                        //     var key     = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-                        //     var keyCode = $.ui.keyCode;
-                        //     if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.DOWN) {
-                        //         // alert('terhapus');
-                        //         $('#'+val+'H').val('');
-                        //         $('#'+val+'TB').val('');
-                        //     }
-                        // });
-                        return false;
-                    }
-                });
-            });
-        }
-    //end of autosuggest (all)
+        });
+    }
 
 /*reset form*/
     //jurnal umm   ---
@@ -438,87 +486,6 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             $('#g_kodeTB').val('');
         }
     //end of grup ---
-
-/*combo box*/
-    // departemen ---
-        function cmblokasi(){
-            $.ajax({
-                url:dir2,
-                data:'aksi=cmblokasi',
-                dataType:'json',
-                type:'post',
-                success:function(dt){
-                    var out='';
-                    if(dt.status!='sukses'){
-                        out+='<option value="">'+dt.status+'</option>';
-                    }else{
-                        $.each(dt.lokasi, function(id,item){
-                            out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
-                        });
-                        //panggil fungsi vwGrup() ==> tampilkan tabel 
-                        // alert(dt.lokasi[0].replid);return false;
-                        vwGrup(dt.lokasi[0].replid); 
-                    }
-                    // alert(out);
-                    $('#g_lokasiS').html(out);
-                }
-            });
-        }
-    //end of departemen ---
-    
-    // tempat
-        // function cmbtempat (id) {
-        function cmbtempat (tempat) {
-            $.ajax({
-                url:dir7,   
-                type:'post',
-                dataType:'json',
-                data:'aksi=cmb'+mnu7+'&lokasi='+$('#g_lokasiS').val(),
-                success:function(dt){
-                    var opt='';
-                    if (dt.status!='sukses') {
-                        notif(dt.status,'red');
-                        opt+='<option value="">'+dt.status+'</option>'
-                    }else{
-                        // alert(id);return false;
-                        $.each(dt.tempat,function(id,item){
-                            if(tempat==item.replid)
-                                opt+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>'
-                            else
-                                opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
-                        });$('#b_tempatTB').html('<option value="">Pilih Tempat ..</option>'+opt);
-                    }
-                },
-            });
-        }
-    // end of Kondisi
-
-// form :: generate barcode & kode ----------------- 
-    function kodegenerate (idform) {
-        var tempat  = $('#b_tempatTB').val();
-        var jum     = $('#b_jumbarangTB').val();
-        var katalog = $('#b_katalogH2').val();
-
-        $.ajax({
-            url:dir,
-            type:'post',
-            dataType:'json',
-            data:'aksi=kodegenerate&tempat='+tempat+'&katalog='+katalog+'&replid='+idform,
-            success:function(dt){
-                var kode;
-                if(jum>1){
-                    kode = '[auto]';
-                }else{
-                    kode = dt.data.barkode;
-                }$('#b_urutH').val(dt.data.urut);
-                $('#b_barkodeTB').val(kode);
-                $('#b_kodeTB').val(dt.data.lokasi+'/'+dt.data.grup+'/'+dt.data.tempat+'/'+dt.data.katalog+'/'+kode);
-            },
-        });
-    }
-// end of form :: generate barcode & kode ----------------- 
-
-
 
 // input uang --------------------------
     function inputuang(e) {
@@ -592,9 +559,16 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
     }
 
     function validUang () {
-
+        //TODO
     }
-    
+
+        
+// function kodeTrans(typ){
+    //     var data ='aksi=codeGen&subaksi=transNo&tipe='+typ;
+    //     ajaxFC(dir,data).done(function(res){
+    //         $('#'+typ+'_nomerTB').val(res.kode);
+    //     });
+    // }    
     // ---------------------- //
     // -- created by epiii -- //
     // ---------------------- // 

@@ -15,6 +15,7 @@
 
 <div class="toolbar">
     <div class="toolbar-group fg-white transparent ">
+        <button id="testBC" class="bg-black" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></button>
         <button id="ju_addBC" class="bg-blue" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></button>
         <button id="inBC"class="bg-green" data-hint="Pemasukkan"><i class="icon-download-2"></i></button>
         <button id="out_BC"class="bg-red" data-hint="Pengeluaran"><i class="icon-upload-3"></i></button>
