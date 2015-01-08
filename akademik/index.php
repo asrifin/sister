@@ -90,6 +90,8 @@
                     <li><a href="tingkat">Tingkat </a></li>
                     <li><a href="kelas">Kelas </a></li>
                     <li><a href="semester">Semester </a></li>
+                    <li><a href="jenis-mutasi">Jenis Mutasi</a></li>
+                    <li><a href="tahun-lulus">Tahun Lulus</a></li>
                 </ul>
             </div>
              
@@ -142,6 +144,12 @@
                     break;
                     case 'vkelas':
                         require $d.'v_kelas.php';
+                    break;
+                    case 'vjenismutasi':
+                        require $d.'v_jenismutasi.php';
+                    break;
+                    case 'vtahunlulus':
+                        require $d.'v_tahunlulus.php';
                     break;
 
                     // guru dan pelajaran

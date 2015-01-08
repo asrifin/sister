@@ -87,11 +87,7 @@
 				}
 				// $menu='tampil';	
 				$recpage= 5;//jumlah data per halaman
-				$aksi    ='tampil';
-				$subaksi ='';
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
 				#ada data
@@ -155,11 +151,11 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT m.*, s.nisn,s.nama,j.nama AS jenismutasi,d.nama AS departemen
-						FROM aka_mutasi m
-						LEFT JOIN aka_siswa s ON s.replid=m.siswa
-						LEFT JOIN aka_jenismutasi j ON j.replid=m.jenismutasi
-						LEFT JOIN departemen d ON d.replid=m.departemen
+						FROM aka_mutasi m, aka_siswa s, aka_jenismutasi j, departemen d
 						WHERE
+						   s.replid=m.siswa AND
+						   j.replid=m.jenismutasi AND
+						   d.replid=m.departemen AND
 								m.replid='.$_POST['replid'];
 				// print_r($s);exit();
 				$e 		= mysql_query($s);
@@ -167,6 +163,7 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
+							'siswa'       =>$r['siswa'],
 							'departemen'       =>$r['departemen'],
 							'nama'       =>$r['nama'],
 							'tanggal'   =>$r['tanggal'],
