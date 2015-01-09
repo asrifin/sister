@@ -70,8 +70,8 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen     = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
-				$tingkat       = isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
+				$departemen     	= isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
+				$tingkat       		= isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
 				$tahunajaran        = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
 
 				$sql ='SELECT 
@@ -85,12 +85,14 @@
 							LEFT JOIN aka_tahunajaran t ON t.replid=k.tahunajaran
 							LEFT JOIN departemen d ON d.replid=t.departemen
 							LEFT JOIN aka_tingkat g ON g.replid=k.tingkat
-						WHERE 
-							t.departemen like "%'.$departemen.'%" and 
-							k.tingkat like "%'.$tingkat.'%" and 
-							k.tahunajaran like "%'.$tahunajaran.'%"
+						WHERE
+							k.tahunajaran='.$tahunajaran.' AND
+							k.tingkat='.$tingkat.' AND 
+							t.departemen ='.$departemen.'
+
 						ORDER BY
 							k.kelas ASC';
+							// t.replid ='.$tahunajaran.$tingkat.'
 				// print_r($sql);exit();
 				// var_dump($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
