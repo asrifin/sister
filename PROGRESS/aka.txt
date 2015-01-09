@@ -10,7 +10,7 @@
 * presensi siswa (P)
 * rapor siswa  (P)
 * pendataan alumni (P)
-* pendataan mutasi siswa (P)
+* pendataan mutasi siswa (C)
 
 * pelajaran (C)
 * guru (C)
@@ -22,7 +22,7 @@
 * angkatan (C)
 * tahun ajaran (C)
 * tingkat (C)
-* kelas (P)
+* kelas (C)
   - Form > walikelas > autosuggest   
 * semester (C)
 	
