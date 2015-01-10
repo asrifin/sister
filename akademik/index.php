@@ -91,6 +91,7 @@
                     <li><a href="kelas">Kelas </a></li>
                     <li><a href="semester">Semester </a></li>
                     <li><a href="jenis-mutasi">Jenis Mutasi</a></li>
+                    <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
                     <li><a href="tahun-lulus">Tahun Lulus</a></li>
                 </ul>
             </div>
@@ -170,6 +171,9 @@
                     break;
                     case 'vmutasi':
                         require $d.'v_mutasi.php';
+                    break;
+                    case 'valumni':
+                        require $d.'v_alumni.php';
                     break;
 
                     default:

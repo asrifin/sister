@@ -4,7 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'tingkat';
+	$mnu = 'alumni';
 	$tb  = 'aka_'.$mnu;
 	// $out=array();
 
@@ -15,17 +15,13 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
-				$tingkat   = isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
-				$keterangan = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
+				$tahunlulus = isset($_POST['tahunlulusS'])?filter(trim($_POST['tahunlulusS'])):'';
 				$sql = 'SELECT *
 						FROM '.$tb.' 
 						WHERE 
-							tahunajaran like "%'.$tahunajaran.'%" and
-							tingkat like "%'.$tingkat.'%" and
-							keterangan like "%'.$keterangan.'%"
+							tahunajaran = "%'.$tahunajaran.'%" 
 						ORDER 
-							BY urutan asc';
+							BY replid asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
