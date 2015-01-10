@@ -276,22 +276,19 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         autosuggest();
     }
 
-//create TR rekening by number
+//create TR rekening by increment
+    var iTR=1;
     function rekTR(n){
-        var ret='';
-        // if (n!=0) {
-            for(var id=1; id<=n; id++){
-                ret+='<tr class="rekTR" id="rekTR_'+id+'">'
-                        +'<td>'
-                            +'<input id="ju_rek'+id+'H" name="ju_rek'+id+'H[]" type="hidden" />'
-                            +'<span class="input-control text"><input id="ju_rek'+id+'TB" name="ju_rek'+id+'TB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
-                        +'</td>'
-                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debet'+id+'TB[]" type="text" placeholder="nominal debet"/></td>'
-                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kredit'+id+'TB[]" type="text"  placeholder="nominal kredit"/></td>'
-                        +'<td><a href="#" onclick="delRekTR('+id+');" class="button"><i class="icon-cancel-2"></i></a></td>'
-                    +'</tr>';
-            }
-        // }
+        var ret='<tr class="rekTR" id="rekTR_'+iTR+'">'
+                +'<td>'
+                    +'<input id="ju_rek'+iTR+'H" name="ju_rek'+iTR+'H[]" type="hidden" />'
+                    +'<span class="input-control text"><input id="ju_rek'+iTR+'TB" name="ju_rek'+iTR+'TB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                +'</td>'
+                +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debet'+iTR+'TB[]" type="text" placeholder="nominal debet"/></td>'
+                +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kredit'+iTR+'TB[]" type="text"  placeholder="nominal kredit"/></td>'
+                +'<td><a href="#" onclick="delRekTR('+iTR+');" class="button"><i class="icon-cancel-2"></i></a></td>'
+            +'</tr>';
+        iTR++;
         return ret;
     }
 

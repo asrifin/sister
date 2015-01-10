@@ -23,8 +23,10 @@
 * tahun ajaran (C)
 * tingkat (C)
 * kelas (C)
-  - Form > walikelas > autosuggest   
+  + Form > walikelas > autosuggest   
 * semester (C)
+* jenis mutasi (C)
+* tahun lulus (C)
 	
 
 
