@@ -1,6 +1,6 @@
-var mnu       = 'tingkat';
+var mnu       = 'alumni';
 var mnu2      = 'departemen';
-var mnu3      = 'tahunajaran';
+var mnu3      = 'tahunlulus';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = 'models/m_'+mnu2+'.php';
 var dir3      = 'models/m_'+mnu3+'.php';
@@ -52,24 +52,19 @@ var contentFR = '';
         });
 
         //search action
-        $('#tahunajaranS').on('change',function (){
+        $('#departemenS').on('change',function(){
+            cmbtahunlulus($(this).val());
+        });
+        $('#tahunlulusS').on('change',function (){
             viewTB();
-        });$('#departemenS').on('change',function(){
-            cmbtahunajaran($(this).val());
-        });$('#tingkatS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
-        });$('#keteranganS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
         });
 
         // search button
-        $('#cariBC').on('click',function(){
-            $('#cariTR').toggle('slow');
-            $('#tingkatS').val('');
-            $('#keteraganS').val('');
-        });
+        // $('#cariBC').on('click',function(){
+        //     $('#cariTR').toggle('slow');
+        //     $('#tingkatS').val('');
+        //     $('#keteraganS').val('');
+        // });
     }); 
 // end of save process ---
 
@@ -96,10 +91,10 @@ var contentFR = '';
 //end of combo departemen ---
 
 // combo tahunajaran ---
-    function cmbtahunajaran(dep){
+    function cmbtahunlulus(dep){
         $.ajax({
             url:dir3,
-            data:'aksi=cmbtahunajaran&departemen='+dep,
+            data:'aksi=cmbtahunlulus&departemen='+dep,
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -107,16 +102,16 @@ var contentFR = '';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    $.each(dt.tahunajaran, function(id,item){
+                    $.each(dt.nama, function(id,item){
                         if(item.aktif=='1'){
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.tahunajaran+' (aktif)</option>';
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
                         }else{
-                            out+='<option value="'+item.replid+'">'+item.tahunajaran+'</option>';
+                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                         }
                     });
-                    // viewTB(dep,dt.tahunajaran[0].replid); 
+                    // viewTB(dep,dt.tahunlulus[0].replid); 
                 }
-                $('#tahunajaranS').html(out);
+                $('#tahunlulusS').html(out);
                 viewTB(); 
             }
         });
@@ -157,9 +152,7 @@ var contentFR = '';
 // view table ---
     function viewTB(){
         var aksi ='aksi=tampil';
-        var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&tingkatS='+$('#tingkatS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        var cari = '&tahunlulusS='+$('#tahunlulusS').val();
         $.ajax({
             url : dir,
             type: 'post',

@@ -41,7 +41,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">Pendatan alumni</div>
+            <div class="label">Pendataan alumni</div>
         </div>
     </a>
     <!--end of  pendatan alumni -->
