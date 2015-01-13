@@ -264,7 +264,9 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
 //add TR rekening into an element 
     function addRekTR(e){
         $('#'+e).append(rekTR(0));
-        autosuggest();
+        setTimeout(function() {
+            autosuggest();
+        },500);
     }
 /* form jurnal umum (add & edit) */
     function juFR(id){
