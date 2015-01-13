@@ -17,9 +17,9 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$nopendaftaran = trim($_POST['no_pendaftaranS'])?filter($_POST['no_pendaftaranS']):'';
-				$kelompok      = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
-				$nama          = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$nopendaftaran = isset($_POST['no_pendaftaranS'])?filter($_POST['no_pendaftaranS']):'';
+				$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
+				$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
@@ -34,15 +34,11 @@
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
-
-				$aksi    ='';
-				$subaksi ='tampil';
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
-				$result =$obj->result;
+				$recpage = 5;
+				$aksi    ='tampil';
+				$subaksi ='';
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$result  = $obj->result;
 
 				#ada data
 				$jum	= mysql_num_rows($result);
@@ -158,10 +154,8 @@
 						$r 		= mysql_fetch_assoc($e);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array(
-									// 'kode'       =>$r['kode'],
-									'nama'       =>$r['nama'],
-									// 'lokasi'     =>$r['lokasi'],
-									// 'keterangan' =>$r['keterangan']
+									'nama'          =>$r['nama'],
+									'nopendaftaran' =>$r['nopendaftaran'],
 								));					
 					break;
 

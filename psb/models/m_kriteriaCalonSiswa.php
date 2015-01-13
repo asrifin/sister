@@ -13,8 +13,8 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$kriteria = trim($_POST['kriteriaS'])?$_POST['kriteriaS']:'';
-				$keterangan = trim($_POST['keteranganS'])?$_POST['keteranganS']:'';
+				$kriteria = isset($_POST['kriteriaS'])?$_POST['kriteriaS']:'';
+				$keterangan = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
 				$sql = 'SELECT *
 						FROM psb_kriteria
 						WHERE 
@@ -28,15 +28,11 @@
 					$starting=0;
 				}
 				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
-								$aksi    ='';
-				$subaksi ='periode';
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
-				$result =$obj->result;
+				$recpage = 5;
+				$aksi    ='tampil';
+				$subaksi ='';
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$result  = $obj->result;
 
 				#ada data
 				$jum	= mysql_num_rows($result);

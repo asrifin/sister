@@ -4,6 +4,7 @@
 <script src="js/metro/metro-calendar.js"></script>
 <script src="js/metro/metro-datepicker.js"></script>
  -->
+ <!--  <script type="../js/metro/metro-scroll.js"></script> -->
 <h4 style="color:white;">Pendataan Calon Siswa</h4>
 <div id="loadarea"></div>
 
@@ -61,19 +62,20 @@
     </tfoot>
 </table>
 
-      <div class="table hovered bordered striped panelx" id="panel1" style="display:none;" >
-                <form autocomplete="off" onsubmit="simpan();return false;"> 
+      <div class="table hovered bordered striped panelx" id="panel1" style="display:none;overflow:scroll;" >
+          <div style="overflow:scroll;height:600px;" >
+                  <form autocomplete="off" onsubmit="simpan();return false;"> 
                         <input id="idformH" type="hidden"> 
                         <!-- Panel -->
                         <div class="panel">
-                          <div class="panel-header">
+                          <div class="panel-header bg-lightBlue fg-white">
                           Kriteria Calon
                           </div>
                           <div class="panel-content">
 
                           <div class="grid">     
                             <div class="row">
-                              <div class="span12">
+                              <div class="span6">
                               <!-- <label><b>Kriteria Calon :</b></label> -->
                               <label>Kriteria calon :</label>
                               <div class="input-control select size3">
@@ -92,7 +94,6 @@
                               <label><b>Sumbangan :</b></label>
                               <label>Uang Pangkal</label>
                               <div class="input-control text size3">
-      <!--                             <input type="hidden" name="tahunajaranH" id="tahunajaranH"> -->
                                   <input type="text" name="uang_pangkalTB" id="uang_pangkalTB">
                                   <button class="btn-clear"></button>
                               </div>
@@ -111,7 +112,7 @@
                                     <option>Value 1</option>
                                   </select>
                               </div>
-                              <label>Angusran per Bulan</label>
+                              <label>Angusuran per Bulan</label>
                               <div class="input-control text size3">
                                   <input type="text" name="angsuranbulanTB" id="angsuranbulanTB">
                                   <button class="btn-clear"></button>
@@ -177,14 +178,14 @@
 
                         <!-- Panel Data Siswa-->
                         <div class="panel">
-                          <div class="panel-header">
+                          <div class="panel-header bg-lightBlue fg-white">
                           Data Pribadi Siswa
                           </div>
                           <div class="panel-content">
 
                       <div class="grid">     
                         <div class="row">
-                          <div class="span12">
+                          <div class="span6">
 
                         <label>Nomor Pendaftaran</label>
                         <div class="input-control text3">
@@ -200,7 +201,7 @@
                         <label>Jenis Kelamin</label>
                         <div class="input-control radio">
                         <label>
-                            <input type="radio" />
+                            <input value="0" type="radio" name="jkTB" />
                             <span class="check"></span>
                             Laki-Laki
                         </label>
@@ -208,7 +209,7 @@
 
                         <div class="input-control radio">
                         <label>
-                            <input type="radio" />
+                            <input value="1" type="radio" name="jkTB"/>
                             <span class="check"></span>
                             Perempuan
                         </label>
@@ -251,6 +252,7 @@
                         </div>
 
                         <!-- Data Ayah -->
+                        <label><b>Data Ayah Siswa</b></label>
                         <label>Nama Ayah</label>
                         <div class="input-control text size3">
                             <input placeholder="Nama Ayah" type="text" name="ayahTB" id="ayahTB">
@@ -296,6 +298,7 @@
                         </div>
 
                         <!-- Data Ibu -->
+                        <label><b>Data Ibu Siswa</b></label>
                         <label>Nama Ibu</label>
                         <div class="input-control text size3">
                             <input placeholder="Nama Ibu" type="text" name="ibuTB" id="ibuTB">
@@ -354,7 +357,7 @@
                         </div>
                         <!-- End span -->
 
-                        <div class="span12">
+                        <div class="span8">
                             <label><b>Foto Siswa :</b></label>
                                <img width="150" id="previmg" src="../img/no_image.jpg" >
                              <div class="input-control file info-state" data-role="input-control" >
@@ -406,9 +409,11 @@
                         <!-- End Panel Data Siswa -->
                  </div>
 
-                        <div class="form-actions"> 
+                        <div class="form-actions"> &nbsp;
                             <button class="button primary">simpan</button>&nbsp;
                             <button class="button" type="button" onclick="$.Dialog.close()">Batal</button> 
                         </div>
-                    </form>;
+                    </form>
+        </div>
+              <!-- Akhir Scrollbar -->
     </div>

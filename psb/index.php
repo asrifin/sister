@@ -36,6 +36,7 @@
     <script src="../js/docs.js"></script>
     <!--<script src="js/github.info.js"></script>-->
     <script src="../js/start-screen.js"></script>
+    <!-- // <script type="../js/metro/metro-scroll.js"></script> -->
 
 
 <!--
@@ -66,6 +67,22 @@
     <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
     <script type="text/javascript" language="javascript" src="js/shCore.js"></script>
     <link rel="stylesheet" type="text/css" href="css/shCore.css">-->
+    <script>
+        $(function(){
+            $(".form").scrollbar({
+                // height: 355,
+                axis: 'y'
+            });
+            $("#scrollbox2").scrollbar({
+                axis: 'x',
+                // height: 355
+            });
+            // $("#panel2").scrollbar({
+                // height: 355
+                // height: 768
+            // });
+        });
+    </script>
 
 
     <title>.:SISTER PSB:.</title>

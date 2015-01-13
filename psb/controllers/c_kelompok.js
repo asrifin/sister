@@ -72,7 +72,7 @@ var contentFR = '';
 
         //add form
         $("#tambahBC").on('click', function(){
-            viewFR('');
+            viewFR();
         });
 
         //search action
@@ -279,6 +279,7 @@ var contentFR = '';
     }
 // end of form ---
 
+    // /paging ---
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
         var cari ='';

@@ -4,18 +4,18 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'calonsiswa';
-	$mnu_ayah = 'calonsiswa_ayah';
-	$mnu_ibu = 'calonsiswa_ibu';
-	$mnu_keluarga = 'calonsiswa_keluarga';
+	$mnu               = 'calonsiswa';
+	$mnu_ayah          = 'calonsiswa_ayah';
+	$mnu_ibu           = 'calonsiswa_ibu';
+	$mnu_keluarga      = 'calonsiswa_keluarga';
 	$mnu_kontakdarurat = 'calonsiswa_kontakdarurat';
-	$mnu_saudara = 'calonsiswa_saudara';
-	$tb  = 'psb_'.$mnu;
-	$tb_ayah  = 'psb_'.$mnu_ayah;
-	$tb_ibu  = 'psb_'.$mnu_ibu;
-	$tb_keluarga  = 'psb_'.$mnu_keluarga;
+	$mnu_saudara       = 'calonsiswa_saudara';
+	$tb                = 'psb_'.$mnu;
+	$tb_ayah           = 'psb_'.$mnu_ayah;
+	$tb_ibu            = 'psb_'.$mnu_ibu;
+	$tb_keluarga       = 'psb_'.$mnu_keluarga;
 	$tb_kontakdarurat  = 'psb_'.$mnu_kontakdarurat;
-	$tb_saudara  = 'psb_'.$mnu_saudara;
+	$tb_saudara        = 'psb_'.$mnu_saudara;
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -26,8 +26,8 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$nopendaftaran    = trim($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
-				$nama  = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
+				$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.' 							
 						ORDER 
@@ -103,55 +103,56 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$siswa = $tb.' set 	kriteria 		= "'.filter($_POST['kriteriaTB']).'",
-								golongan  	= "'.filter($_POST['golonganTB']).'",
-								sumpokok  	= "'.filter($_POST['uang_pangkalTB']).'",
-								sumnet  	= "'.filter($_POST['uang_pangkalnetTB']).'",
-								sppbulan  		= "'.filter($_POST['angsuranTB']).'",
-								jmlangsuran  		= "'.filter($_POST['angsuranTB']).'",
-								angsuran 	= "'.filter($_POST['angsuranbulanTB']).'",
-								disctb 	= "'.filter($_POST['diskon_subsidiTB']).'",
-								discsaudara 	= "'.filter($_POST['diskon_saudaraTB']).'",
-								disctunai 	= "'.filter($_POST['diskon_tunaiTB']).'",
-								disctotal 	= "'.filter($_POST['diskon_totalTB']).'",
-								nopendaftaran 	= "'.filter($_POST['nopendaftaranTB']).'",
-								nama 	= "'.filter($_POST['namaTB']).'",
-								kelamin 	= "'.filter($_POST['jkTB']).'",
-								templahir 	= "'.filter($_POST['tempatlahirTB']).'",
-								tgllahir 	= "'.filter($_POST['tgllahiranakTB']).'",
-								agama 	= "'.filter($_POST['agamaTB']).'",
-								alamat 	= "'.filter($_POST['alamatsiswaTB']).'",
-								telpon 	= "'.filter($_POST['telpsiswaTB']).'",
-								sekolahasal 	= "'.filter($_POST['asalsekolahTB']).'",
-								darah 	= "'.filter($_POST['goldarahTB']).'",
-								kesehatan 	= "'.filter($_POST['penyakitTB']).'",
-								ketkesehatan 	= "'.filter($_POST['catatan_kesehatanTB']).'",
-								photo 	= "'.filter($_POST['photoTB']).'"';
-
-				$ayah = $tb.' set 	nama 	= "'.filter($_POST['ayahTB']).'",
-								kebangsaan 	= "'.filter($_POST['kebangsaan_ayahTB']).'",
-								templahir 	= "'.filter($_POST['tempatlahir_ayahTB']).'",
-								tgllahir 	= "'.filter($_POST['tgllahir_ayahTB']).'",
-								pekerjaan 	= "'.filter($_POST['pekerjaan_ayahTB']).'",
-								telpon 	= "'.filter($_POST['telpayahTB']).'",
-								pinbb 	= "'.filter($_POST['pinbb_ayahTB']).'",
-								email 	= "'.filter($_POST['email_ayahTB']).'"';
-
-				$ibu = $tb.' set 	nama 	= "'.filter($_POST['ibuTB']).'",
-								kebangsaan 	= "'.filter($_POST['kebangsaan_ibuTB']).'",
-								templahir 	= "'.filter($_POST['tempatlahir_ibuTB']).'",
-								tgllahir 	= "'.filter($_POST['tgllahir_ibuTB']).'",
-								pekerjaan 	= "'.filter($_POST['pekerjaan_ibuTB']).'",
-								telpon 	= "'.filter($_POST['telpibuTB']).'",
-								pinbb 	= "'.filter($_POST['pinbb_ibuTB']).'",
-								email 	= "'.filter($_POST['email_ibuTB']).'"';
-
-				$dar = $tb.' set 	nama 	= "'.filter($_POST['nama_kontakTB']).'",
-								hubungan 	= "'.filter($_POST['hubunganTB']).'",
-								telpon 	= "'.filter($_POST['nomorTB']).'"';
-
-				$keluarga = $tb.' set 	kakek-nama 	= "'.filter($_POST['kakekTB']).'",
-								nenek-nama 	= "'.filter($_POST['nenekTB']).'"';
+								$siswa        = $tb.' set 	kriteria 		= "'.filter($_POST['kriteriaTB']).'",
+								golongan      = "'.filter($_POST['golonganTB']).'",
+								sumpokok      = "'.filter($_POST['uang_pangkalTB']).'",
+								sumnet        = "'.filter($_POST['uang_pangkalnetTB']).'",
+								sppbulan      = "'.filter($_POST['angsuranTB']).'",
+								jmlangsuran   = "'.filter($_POST['angsuranTB']).'",
+								angsuran      = "'.filter($_POST['angsuranbulanTB']).'",
+								disctb        = "'.filter($_POST['diskon_subsidiTB']).'",
+								discsaudara   = "'.filter($_POST['diskon_saudaraTB']).'",
+								disctunai     = "'.filter($_POST['diskon_tunaiTB']).'",
+								disctotal     = "'.filter($_POST['diskon_totalTB']).'",
+								nopendaftaran = "'.filter($_POST['nopendaftaranTB']).'",
+								nama          = "'.filter($_POST['namaTB']).'",
+								kelamin       = "'.filter($_POST['jkTB']).'",
+								templahir     = "'.filter($_POST['tempatlahirTB']).'",
+								tgllahir      = "'.filter($_POST['tgllahiranakTB']).'",
+								agama         = "'.filter($_POST['agamaTB']).'",
+								alamat        = "'.filter($_POST['alamatsiswaTB']).'",
+								telpon        = "'.filter($_POST['telpsiswaTB']).'",
+								sekolahasal   = "'.filter($_POST['asalsekolahTB']).'",
+								darah         = "'.filter($_POST['goldarahTB']).'",
+								kesehatan     = "'.filter($_POST['penyakitTB']).'",
+								ketkesehatan  = "'.filter($_POST['catatan_kesehatanTB']).'",
+								'.(isset($_POST['file'])?', photo2= "'.$_POST['file'].'"':'');
+								var_dump($siswa);exit();
+								
+								$ayah         = $tb.' set 	nama 	= "'.filter($_POST['ayahTB']).'",
+								kebangsaan    = "'.filter($_POST['kebangsaan_ayahTB']).'",
+								templahir     = "'.filter($_POST['tempatlahir_ayahTB']).'",
+								tgllahir      = "'.filter($_POST['tgllahir_ayahTB']).'",
+								pekerjaan     = "'.filter($_POST['pekerjaan_ayahTB']).'",
+								telpon        = "'.filter($_POST['telpayahTB']).'",
+								pinbb         = "'.filter($_POST['pinbb_ayahTB']).'",
+								email         = "'.filter($_POST['email_ayahTB']).'"';
+								
+								$ibu          = $tb.' set 	nama 	= "'.filter($_POST['ibuTB']).'",
+								kebangsaan    = "'.filter($_POST['kebangsaan_ibuTB']).'",
+								templahir     = "'.filter($_POST['tempatlahir_ibuTB']).'",
+								tgllahir      = "'.filter($_POST['tgllahir_ibuTB']).'",
+								pekerjaan     = "'.filter($_POST['pekerjaan_ibuTB']).'",
+								telpon        = "'.filter($_POST['telpibuTB']).'",
+								pinbb         = "'.filter($_POST['pinbb_ibuTB']).'",
+								email         = "'.filter($_POST['email_ibuTB']).'"';
+								
+								$dar          = $tb.' set 	nama 	= "'.filter($_POST['nama_kontakTB']).'",
+								hubungan      = "'.filter($_POST['hubunganTB']).'",
+								telpon        = "'.filter($_POST['nomorTB']).'"';
+								
+								$keluarga     = $tb.' set 	kakek-nama 	= "'.filter($_POST['kakekTB']).'",
+								nenek-nama    = "'.filter($_POST['nenekTB']).'"';
 
 				if ($jumc==0){
 					$tipex ='add';
@@ -234,65 +235,65 @@
 								tkel.*
 							from 
 								JOIN '.$tb.' t
-								JOIN '.$tb_ayah.' ta ON ta.calonsiswa = t.calonsiswa 
-								JOIN '.$tb_ibu.' ti ON ti.calonsiswa = t.calonsiswa
-								JOIN '.$tb_kontakdarurat.' tk ON tk.calonsiswa = t.calonsiswa
-								JOIN '.$tb_keluarga.' tkel ON tkel.calonsiswa = t.calonsiswa
+								JOIN '.$tb_ayah.' ta ON ta.psb_calonsiswa_ayah = t.psb_calonsiswa
+								JOIN '.$tb_ibu.' ti ON ti.pwb_calonsiswa_ibu = t.psb_calonsiswa
+								JOIN '.$tb_kontakdarurat.' tk ON tk.psb_calonsiswa_kontakdarurat = t.psb_calonsiswa
+								JOIN '.$tb_keluarga.' tkel ON tkel.psb_keluarga_calonsiswa = t.psb_calonsiswa_keluarga
 							WHERE 
 								t.replid='.$_POST['replid'];
-				$e 		= mysql_query($s);
+				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'     	=>$stat,
-							'kriteria'    	=>$r['kriteria'],
-							'golongan'    	=>$r['golongan'],
-							'sumpokok'  	=>$r['sumpokok'],
-							'sumnet'    	=>$r['sumnet'],
-							'sppbulan' 		=>$r['sppbulan'],
-							'jmlangsuran'  	=>$r['jmlangsuran'],
-							'angsuran'    	=>$r['angsuran'],
-							'disctb'	  	=>$r['disctb'],
-							'discsaudara'   =>$r['discsaudara'],
-							'disctunai'     =>$r['disctunai'],
-							'disctotal'     =>$r['disctotal'],
-							'nopendaftaran' =>$r['nopendaftaran'],
-							'nama'          =>$r['nama'],
-							'kelamin'       =>$r['kelamin'],
-							'templahir'     =>$r['templahir'],
-							'tgllahir'      =>$r['tgllahir'],
-							'agama'         =>$r['agama'],
-							'alamat'        =>$r['alamat'],
-							'telpon'        =>$r['telpon'],
-							'sekolahasal'   =>$r['sekolahasal'],
-							'darah'         =>$r['darah'],
-							'kesehatan'     =>$r['kesehatan'],
-							'ketkesehatan'  =>$r['ketkesehatan'],
-							'photo'         =>$r['photo'],
+							'status'          =>$stat,
+							'kriteria'        =>$r['kriteria'],
+							'golongan'        =>$r['golongan'],
+							'sumpokok'        =>$r['sumpokok'],
+							'sumnet'          =>$r['sumnet'],
+							'sppbulan'        =>$r['sppbulan'],
+							'jmlangsuran'     =>$r['jmlangsuran'],
+							'angsuran'        =>$r['angsuran'],
+							'disctb'          =>$r['disctb'],
+							'discsaudara'     =>$r['discsaudara'],
+							'disctunai'       =>$r['disctunai'],
+							'disctotal'       =>$r['disctotal'],
+							'nopendaftaran'   =>$r['nopendaftaran'],
+							'nama'            =>$r['nama'],
+							'kelamin'         =>$r['kelamin'],
+							'templahir'       =>$r['templahir'],
+							'tgllahir'        =>$r['tgllahir'],
+							'agama'           =>$r['agama'],
+							'alamat'          =>$r['alamat'],
+							'telpon'          =>$r['telpon'],
+							'sekolahasal'     =>$r['sekolahasal'],
+							'darah'           =>$r['darah'],
+							'kesehatan'       =>$r['kesehatan'],
+							'ketkesehatan'    =>$r['ketkesehatan'],
+							'photo'           =>$r['photo'],
 							
-							'nama_ayah'    			=>$r['nama'],
-							'kebangsaan_ayah'    	=>$r['kebangsaan'],
-							'templahir_ayah'  		=>$r['templahir'],
-							'tgllahir_ayah'    		=>$r['tgllahir'],
-							'pekerjaan_ayah' 		=>$r['pekerjaan'],
-							'telpon_ayah'  			=>$r['telpon'],
-							'pinbb_ayah'    		=>$r['pinbb'],
-							'email_ayah'			=>$r['email'],
+							'nama_ayah'       =>$r['nama'],
+							'kebangsaan_ayah' =>$r['kebangsaan'],
+							'templahir_ayah'  =>$r['templahir'],
+							'tgllahir_ayah'   =>$r['tgllahir'],
+							'pekerjaan_ayah'  =>$r['pekerjaan'],
+							'telpon_ayah'     =>$r['telpon'],
+							'pinbb_ayah'      =>$r['pinbb'],
+							'email_ayah'      =>$r['email'],
 							
-							'nama_ibu'    			=>$r['nama'],
-							'kebangsaan_ibu'    	=>$r['kebangsaan'],
-							'templahir_ibu'  		=>$r['templahir'],
-							'tgllahir_ibu'    		=>$r['tgllahir'],
-							'pekerjaan_ibu' 		=>$r['pekerjaan'],
-							'telpon_ibu'  			=>$r['telpon'],
-							'pinbb_ibu' 	   		=>$r['pinbb'],
-							'email_ibu'	  			=>$r['email'],
+							'nama_ibu'        =>$r['nama'],
+							'kebangsaan_ibu'  =>$r['kebangsaan'],
+							'templahir_ibu'   =>$r['templahir'],
+							'tgllahir_ibu'    =>$r['tgllahir'],
+							'pekerjaan_ibu'   =>$r['pekerjaan'],
+							'telpon_ibu'      =>$r['telpon'],
+							'pinbb_ibu'       =>$r['pinbb'],
+							'email_ibu'       =>$r['email'],
 							
-							'nama_dar'	 			=>$r['nama'],
-							'hubungan'		    	=>$r['hubungan'],
-							'telpon'		  		=>$r['telpon'],
-							'kakek-nama'    		=>$r['kakek-nama'],
-							'nenek-nama' 			=>$r['nenek-nama']
+							'nama_dar'        =>$r['nama'],
+							'hubungan'        =>$r['hubungan'],
+							'telpon'          =>$r['telpon'],
+							'kakek-nama'      =>$r['kakek-nama'],
+							'nenek-nama'      =>$r['nenek-nama']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
