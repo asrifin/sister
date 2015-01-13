@@ -110,12 +110,14 @@ var contentFR_terima = contentFR_siswa = '';
 // end of save process ---
 
 // combo departemen ---
-    function cmbdepartemen(dep){
+    // function cmbdepartemen(dep){
+    function cmbdepartemen(typ,dep){
         $.ajax({
             url:dir2,
             data:'aksi=cmbdepartemen',
             dataType:'json',
             type:'post',
+            async:false,
             success:function(dt){
                 var out='';
                 if(dt.status!='sukses'){
@@ -124,8 +126,10 @@ var contentFR_terima = contentFR_siswa = '';
                     $.each(dt.departemen, function(id,item){
                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
-                    $('#departemenS').html(out);
-                }cmbtahunajaran(dt.departemen[0].replid);
+                }
+                if(typ=='')
+                $('#departemenS').html(out);
+                cmbtahunajaran(dt.departemen[0].replid);
             }
         });
     }
