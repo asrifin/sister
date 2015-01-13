@@ -154,14 +154,15 @@
 								$keluarga     = $tb.' set 	kakek-nama 	= "'.filter($_POST['kakekTB']).'",
 								nenek-nama    = "'.filter($_POST['nenekTB']).'"';
 
-				if ($jumc==0){
+				if (!isset($_POST['replid'])){ //add
+				// if ($jumc==0){
 					$tipex ='add';
 					$siswa = 'INSERT INTO '.$tb.' set '.$siswa;
 					$sqayah = 'INSERT INTO '.$tb_ayah.' set '.$ayah;
 					$sqibu = 'INSERT INTO '.$tb_ibu.' set '.$ibu;
 					$sqdar = 'INSERT INTO '.$tb_kontakdarurat.' set '.$dar;
 					$sqkel = 'INSERT INTO '.$tb_keluarga.' set '.$keluarga;
-				}else{
+				}else{ //edit
 					$tipex ='edit';
 					$s=mysql_fetch_assoc(mysql_query('SELECT calonsiswa from psb_calonsiswa'));
 					$calonsiswa=$s['calonsiswa'];

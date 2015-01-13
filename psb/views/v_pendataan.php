@@ -20,7 +20,7 @@
     <select data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
 </div>
 
-<table class="table hovered bordered striped panelx" id="pendataanFR">
+<table id="pendataanTBL" style="display:visible;" class="table hovered bordered striped panelx" >
     <thead>
         <tr style="color:white;" class="info">
             <th class="text-left" rowspan="2">Nomor Pendaftaran</th>
@@ -62,7 +62,7 @@
     </tfoot>
 </table>
 
-      <div class="table hovered bordered striped panelx" id="panel1" style="display:none;overflow:scroll;" >
+      <div class="table hovered bordered striped panelx" id="pendataanFR" style="display:none;overflow:scroll;" >
           <div style="overflow:scroll;height:600px;" >
                   <form autocomplete="off" onsubmit="simpan();return false;"> 
                         <input id="idformH" type="hidden"> 
@@ -411,7 +411,8 @@
 
                         <div class="form-actions"> &nbsp;
                             <button class="button primary">simpan</button>&nbsp;
-                            <button class="button" type="button" onclick="$.Dialog.close()">Batal</button> 
+                            <a class="button" href="#" onclick="switchPN(); return false;" >Batal</a> 
+                            <!-- <button class="button" type="button" onclick="$.Dialog.close()">Batal</button>  -->
                         </div>
                     </form>
         </div>
