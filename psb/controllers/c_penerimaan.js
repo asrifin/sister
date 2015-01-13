@@ -2,10 +2,14 @@ var mnu       = 'penerimaan';
 var mnu2      = 'departemen';
 var mnu3      = 'tahunajaran';
 var mnu4      = 'kelompok';
+var mnu5      = 'angkatan';
+
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
 var dir3      = '../akademik/models/m_'+mnu3+'.php';
 var dir4       = 'models/m_'+mnu4+'.php';
+var dir5      = '../akademik/models/m_'+mnu5+'.php';
+
 var contentFR = ''; 
 var contentFR_terima = contentFR_siswa = '';
 
@@ -182,7 +186,6 @@ var contentFR_terima = contentFR_siswa = '';
         });
     }
 //end of combo tingkat ---
-79167e76
 
 //save process ---
     function simpan(){ //Tombol Tidak Terima
@@ -275,58 +278,68 @@ var contentFR_terima = contentFR_siswa = '';
             padding: 10,
             onShow: function(){
                 var titlex;
+                cmbdepartemen();
                 // form :: departemen (disabled field) -----------------------------
-                    $.ajax({
-                        url:dir2,
-                        data:'aksi=cmb'+mnu2+'&replid='+$('#departemenS').val(),
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#departemenH').val($('#departemenS').val());
-                            // $('#namaH').val($('#tahunajaranS').val());
-                            var out;
-                            if(dt.status!='sukses'){
-                                out=dt.status;
-                            }else{
-                                out=dt.departemen[0].nama;
-                            }$('#departemenTB').val(out);
-                        // form :: tahun ajaran (disabled field) --------------
-                            $.ajax({
-                                url:dir3,
-                                data:'aksi=cmbtahunajaran&departemen='+$('#departemenS').val()+'&replid='+$('#tahunajaranS').val(),
-                                dataType:'json',
-                                type:'post',
-                                success:function(dt2){
-                                    var out2;
-                                    if(dt.status!='sukses'){
-                                        out2=dt2.status;
-                                    }else{
-                                        out2=dt2.tahunajaran[0].tahunajaran;
-                                    }$('#tahunajaranTB').val(out2);
-                                    
-                                    if (id!='') { // edit mode
-                                    // form :: edit :: tampilkan data 
-                                        $.ajax({
-                                            url:dir,
-                                            data:'aksi=ambiledit&subaksi=tidak_terima&replid='+id,
-                                            type:'post',
-                                            dataType:'json',
-                                            success:function(dt3){
-                                                $('#idformH').val(id);
-                                                $('#namaTB').val(dt3.nama);
-                                                $('#nopendaftaranTB').val(dt3.nopendaftaran);
-                                            }
-                                        });
-                                    // end of form :: edit :: tampilkan data 
-                                        titlex='<span class="icon-pencil"></span> Ubah ';
-                                    }else{ //add mode
-                                        titlex='<span class="icon-plus-2"></span> Tambah ';
-                                    }
-                                }
-                            });
-                        //end of  form :: tahun ajaran (disabled field) --------------
-                        }
-                    });
+                    // $.ajax({
+                    //     url:dir2,
+                    //     data:'aksi=cmb'+mnu2+'&replid='+$('#departemenS').val(),
+                    //     type:'post',
+                    //     dataType:'json',
+                    //     success:function(dt){
+                    //         $('#departemenH').val($('#departemenS').val());
+                    //         // $('#namaH').val($('#tahunajaranS').val());
+                    //         var out;
+                    //         if(dt.status!='sukses'){
+                    //             out=dt.status;
+                    //         }else{
+                    //             out=dt.departemen[0].nama;
+                    //         }$('#departemenTB').val(out);
+                    //     // form :: tahun ajaran (disabled field) --------------
+                    //         $.ajax({
+                    //             url:dir3,
+                    //             data:'aksi=cmbtahunajaran&departemen='+$('#departemenS').val()+'&replid='+$('#tahunajaranS').val(),
+                    //             dataType:'json',
+                    //             type:'post',
+                    //             success:function(dt2){
+                    //                 var out2;
+                    //                 if(dt.status!='sukses'){
+                    //                     out2=dt2.status;
+                    //                 }else{
+                    //                     out2=dt2.tahunajaran[0].tahunajaran;
+                    //                 }$('#tahunajaranTB').val(out2);
+                    //             // angkatan
+                    //                 $.ajax({
+                    //                     url:dir5,
+                    //                     data:'aksi=cmbtahunajaran&departemen='+$('#departemenS').val(),
+                    //                     dataType:'json',
+                    //                     type:'post',
+                    //                     success:function(dt3){
+                    //                         $('#angkatanTB').val(dt3.angkatan);    
+                    //                     }
+                    //                 });
+                    //                 // if (id!='') { // edit mode
+                    //                 // // form :: edit :: tampilkan data 
+                    //                 //     $.ajax({
+                    //                 //         url:dir,
+                    //                 //         data:'aksi=ambiledit&subaksi=tidak_terima&replid='+id,
+                    //                 //         type:'post',
+                    //                 //         dataType:'json',
+                    //                 //         success:function(dt3){
+                    //                 //             $('#idformH').val(id);
+                    //                 //             $('#namaTB').val(dt3.nama);
+                    //                 //             $('#nopendaftaranTB').val(dt3.nopendaftaran);
+                    //                 //         }
+                    //                 //     });
+                    //                 // // end of form :: edit :: tampilkan data 
+                    //                 //     titlex='<span class="icon-pencil"></span> Ubah ';
+                    //                 // }else{ //add mode
+                    //                 //     titlex='<span class="icon-plus-2"></span> Tambah ';
+                    //                 // }
+                    //             }
+                    //         });
+                    //     //end of  form :: tahun ajaran (disabled field) --------------
+                    //     }
+                    // });
                 //end of form :: departemen (disabled field) -----------------------------
                 $.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
