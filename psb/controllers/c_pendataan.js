@@ -8,31 +8,23 @@ var dir3      = '../akademik/models/m_'+mnu3+'.php';
 var dir_kel   = 'models/m_'+mnu_kel+'.php';
 var contentFR = '';
 
+//epiii : switch panel (form<=>table)
+    function switchPN(){
+        $('#pendataanFR').toggle('slow');
+        $('#pendataanTBL').toggle('slow');
+    }
+
 // main function ---
     $(document).ready(function(){
-        
-        // combo departemen
         cmbdepartemen('');
-        // cmbdepartemen(false,'');
+        // $('#panel1').removeAttr('style');
+        // $('#pendataanFR').attr('style','display:none;');
 
-        //add form
-        $("#tambahBC").on('click', function(){
-                   // $('#pendataanFR').toggle();
-             // $('#tambah').toggle('slow');
-            $('#panel1').removeAttr('style');
-            $('#pendataanFR').attr('style','display:none;');
-
-        });
-
-        $("#editBC").on('click', function(){
-                   // $('#pendataanFR').toggle();
-             // $('#tambah').toggle('slow');
-            $('#panel1').removeAttr('style');
-            $('#pendataanFR').attr('style','display:none;');
-
-        });
-
-        //search action
+    // epiii : button action
+        $("#tambahBC").on('click',switchPN); 
+        // $('#').on('click',switchPN);
+          
+    //search action
         $('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
         });$('#tahunajaranS').on('change',function (){
@@ -257,19 +249,35 @@ var contentFR = '';
 // end of form ---
 
         function viewFR(id) {
-            $.ajax({
-                url : dir,
-                type: 'post',
-                data:'aksi=ambiledit&replid='+id,
-                dataType:'json',
-                success:function(dt3){
-                    $('#idformH').val(id);
-                setTimeout(function(){
-                    $('#panel1').toggle(dt3).fadeIn();
-                },1000);
+            // epi:edit
+            if(id!='') {
+                $.ajax({
+                    url : dir,
+                    type: 'post',
+                    data:'aksi=ambiledit&replid='+id,
+                    dataType:'json',
+                    success:function(dt){
+                        $('#idformH').val(id);
+                    }
+                });
+            }else{ 
 
-                }
-            });
+            }
+            // epiii : switch panel
+            switchPN();
+
+            // $.ajax({
+            //     url : dir,
+            //     type: 'post',
+            //     data:'aksi=ambiledit&replid='+id,
+            //     dataType:'json',
+            //     success:function(dt3){
+            //         $('#idformH').val(id);
+            //         setTimeout(function(){
+            //             $('#panel1').toggle(dt3).fadeIn();
+            //         },1000);
+            //     }
+            // });
         }   
 
 
