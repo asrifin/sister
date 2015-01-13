@@ -248,16 +248,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             });
         }
     
-/* form jurnal umum (add & edit) */
-    function juFR(id){
-        if(id!=''){ // edit mode
-            
-        }else{ // add  mode
-            var cgArr  =['ju_rek1','ju_rek2','ju_rek3','ju_rek4'];
-            var inpArr ={"ju_tanggalTB":getToday(),"ju_nomerTB":kodeTrans('ju')};
-            loadFR('<i class="icon-plus-2"></i> Tambah ',ju_contentFR,cgArr,inpArr,2);
-        }
-    }
+
 
 // remove TR rekening
     function delRekTR (e) {
@@ -272,28 +263,56 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
 
 //add TR rekening into an element 
     function addRekTR(e){
-        $('#'+e).append(rekTR(1));
+        $('#'+e).append(rekTR(0));
         autosuggest();
+    }
+/* form jurnal umum (add & edit) */
+    function juFR(id){
+        if(id!=''){ // edit mode
+            
+        }else{ // add  mode
+            // var cgArr  =['ju_rek1','ju_rek2','ju_rek3','ju_rek4'];
+            // loadFR(titl,ju_contentFR,cgArr,inpArr,2);
+            var titl   ='<i class="icon-plus-2"></i> Tambah ';
+            var inpArr ={"ju_tanggalTB":getToday(),"ju_nomerTB":kodeTrans('ju')};
+            loadFR(titl,ju_contentFR,inpArr,2,'ju');
+        }
     }
 
 //create TR rekening by increment
-    var iTR=1;
+    var iTR=3;
     function rekTR(n){
-        var ret='<tr class="rekTR" id="rekTR_'+iTR+'">'
-                +'<td>'
-                    +'<input id="ju_rek'+iTR+'H" name="ju_rek'+iTR+'H[]" type="hidden" />'
-                    +'<span class="input-control text"><input id="ju_rek'+iTR+'TB" name="ju_rek'+iTR+'TB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
-                +'</td>'
-                +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debet'+iTR+'TB[]" type="text" placeholder="nominal debet"/></td>'
-                +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kredit'+iTR+'TB[]" type="text"  placeholder="nominal kredit"/></td>'
-                +'<td><a href="#" onclick="delRekTR('+iTR+');" class="button"><i class="icon-cancel-2"></i></a></td>'
-            +'</tr>';
-        iTR++;
+        var ret ='';
+        if(n!=0){
+            for (var i = 1; i <= n; i++) {
+                ret+='<tr class="rekTR" id="rekTR_'+i+'">'
+                        +'<td>'
+                            +'<input id="ju_rek'+i+'H" name="ju_rek'+i+'H[]" type="hidden" />'
+                            +'<span class="input-control text"><input id="ju_rek'+i+'TB" name="ju_rek'+i+'TB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                        +'</td>'
+                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debet'+i+'TB[]" type="text" placeholder="nominal debet"/></td>'
+                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kredit'+i+'TB[]" type="text"  placeholder="nominal kredit"/></td>'
+                        +'<td><a href="#" onclick="delRekTR('+i+');" class="button"><i class="icon-cancel-2"></i></a></td>'
+                    +'</tr>';
+            }
+        }else{
+            ret+='<tr class="rekTR" id="rekTR_'+iTR+'">'
+                    +'<td>'
+                        +'<input id="ju_rek'+iTR+'H" name="ju_rek'+iTR+'H[]" type="hidden" />'
+                        +'<span class="input-control text"><input id="ju_rek'+iTR+'TB" name="ju_rek'+iTR+'TB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
+                    +'</td>'
+                    +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debet'+iTR+'TB[]" type="text" placeholder="nominal debet"/></td>'
+                    +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kredit'+iTR+'TB[]" type="text"  placeholder="nominal kredit"/></td>'
+                    +'<td><a href="#" onclick="delRekTR('+iTR+');" class="button"><i class="icon-cancel-2"></i></a></td>'
+                +'</tr>';
+            iTR++;
+        }
         return ret;
     }
 
 // load form (all)
-    function loadFR(titl,cont,cgArr,inpArr,rekN){
+    // function loadFR(titl,cont,cgArr,inpArr,rekN){
+    function loadFR(titl,cont,inpArr,rekN,pre){
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -308,10 +327,13 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                     $.each(inpArr,function (id,item) {
                        $('#'+id).val(item);
                     });
-                }if(cgArr!=null){// detail form
+                // }if(cgArr!=null){// detail form
+                // }if(!isNaN(rekN) && rekN>0){// detail form
+                }if(rekN>0){// detail form
                     setTimeout(function(){
                         $('#ju_rekTBL').append(rekTR(rekN));
-                        autosuggest(cgArr);
+                        autosuggest(pre,rekN);
+                        // autosuggest(cgArr);
                     },500);
                 }
             }
@@ -319,9 +341,14 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
     }
 
 // autosuggest (all)
-    function autosuggest(el){
-        $.each(el,function(index,val){
-            $('#'+val+'TB').combogrid({
+    // function autosuggest(id){
+        // $.each(id,function(index,val){
+            // $('#'+val+'TB').combogrid({
+    function autosuggest(pre,n){
+        for(var i=1;i<=n; i++){
+            // alert(pre+'_'+i);
+            // return false;
+            $('#'+pre+'_rek'+i+'TB').combogrid({
                 debug:true,
                 width:'400px',
                 colModel: [{
@@ -338,19 +365,23 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                     }],
                 url: dir+'?aksi=autocomp',
                 select: function( event, ui ) { // event setelah data terpilih 
-                    $('#'+val+'H').val(ui.item.replid);
-                    $('#'+val+'TB').val(ui.item.nama+' ('+ui.item.kode+')      ');
-                    return false;
+                    // alert(ui.item.nama);return false;
+                    $('#'+pre+'_rek'+i+'H').val(ui.item.replid);
+                    $('#'+pre+'_rek'+i+'TB').val(ui.item.nama+' ('+ui.item.kode+')      ');
+                    // $('#'+val+'H').val(ui.item.replid);
+                    // $('#'+val+'TB').val(ui.item.nama+' ('+ui.item.kode+')      ');
+                    // return false;
                 }
             });
-        });
+        }
+        // });
     }
 
 /*reset form*/
     //jurnal umm   ---
         function ju_resetFR(){
-            $('#idformTB').val('');
-            $('#g_kodeTB').val('');
+            // $('#idformTB').val('');
+            // $('#g_kodeTB').val('');
         }
     //end of grup ---
 
