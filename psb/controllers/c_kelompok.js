@@ -125,7 +125,7 @@ var contentFR = '';
 
 // combo tahunajaran ---
     function cmbtahunajaran(dep){
-        alert(dep);
+        // alert(dep);
         $.ajax({
             url:dir3,
             data:'aksi=cmbtahunajaran&departemen='+dep,
@@ -189,7 +189,7 @@ var contentFR = '';
         var cari = '&tahunajaranS='+$('#tahunajaranS').val()
                     // +'&kelompokS='+$('#kelompokS').val()
                      +'&departemenS='+$('#departemenS').val();
-        alert(cari);        
+        // alert(cari);        
         $.ajax({
             url : dir,
             type: 'post',
