@@ -8,7 +8,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">pendataan siswa</div>
+            <div class="label">Pendataan siswa</div>
         </div>
     </a>
     <!--end of  pendataan siswa -->
@@ -19,7 +19,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">presensi siswa</div>
+            <div class="label">Presensi siswa</div>
         </div>
     </a>
     <!--end of  presensi siswa -->
@@ -30,7 +30,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">rapor siswa</div>
+            <div class="label">Rapor siswa</div>
         </div>
     </a>
     <!--end of  rapor siswa -->
@@ -41,7 +41,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">pendatan alumni</div>
+            <div class="label">Pendataan alumni</div>
         </div>
     </a>
     <!--end of  pendatan alumni -->
@@ -52,7 +52,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">pendataan mutasi siswa</div>
+            <div class="label">Pendataan mutasi siswa</div>
         </div>
     </a>
     <!--end of  pendataan mutasi siswa -->
@@ -67,7 +67,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">pelajaran</div>
+            <div class="label">Pelajaran</div>
         </div>
     </a>
     <!--end of  pelajaran -->
@@ -78,7 +78,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">guru</div>
+            <div class="label">Guru</div>
         </div>
     </a>
     <!--end of  guru -->
@@ -89,7 +89,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">jadwal pelajaran</div>
+            <div class="label">Jadwal pelajaran</div>
         </div>
     </a>
     <!--end of  jadwal pelajaran -->
@@ -100,7 +100,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">presensi guru</div>
+            <div class="label">Presensi guru</div>
         </div>
     </a>
     <!--end of  presensi guru -->
@@ -111,7 +111,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">kegiatan akademik</div>
+            <div class="label">Kegiatan akademik</div>
         </div>
     </a>
     <!--end of  kegiatan akademik -->
@@ -127,7 +127,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">departemen</div>
+            <div class="label">Departemen</div>
         </div>
     </a>
     <!--end of  departemen -->
@@ -138,7 +138,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">angkatan</div>
+            <div class="label">Angkatan</div>
         </div>
     </a>
     <!--end of  angkatan -->
@@ -149,7 +149,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">tahun ajaran</div>
+            <div class="label">Tahun ajaran</div>
         </div>
     </a>
     <!--end of  tahun ajaran -->
@@ -160,7 +160,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">tingkat</div>
+            <div class="label">Tingkat</div>
         </div>
     </a>
     <!--end of  tingkat -->
@@ -171,7 +171,7 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">kelas</div>
+            <div class="label">Kelas</div>
         </div>
     </a>
     <!--end of  kelas -->
@@ -182,9 +182,29 @@
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">semester</div>
+            <div class="label">Semester</div>
         </div>
     </a>
     <!--end of  semester -->
+    <!-- Jenis Mutasi -->
+    <a href="Jenis-mutasi" class="tile bg-blue" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-address-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Jenis Mutasi</div>
+        </div>
+    </a>
+    <!--end of  Jenis Mutasi -->
+    <!-- Tahun Lulus -->
+    <a href="tahun-lulus" class="tile bg-blue" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-address-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Tahun Lulus</div>
+        </div>
+    </a>
+    <!--end of  Tahun Lulus -->
 
 </div> <!-- End group -->

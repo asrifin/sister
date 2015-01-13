@@ -91,7 +91,7 @@ var contentFR = '';
         $('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
         });$('#tahunajaranS').on('change',function (){
-            viewTB('');
+            cmbtingkat($(this).val());
         });$('#tingkatS').on('change',function (){
             viewTB(''); 
         })
