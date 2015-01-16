@@ -206,7 +206,7 @@
 						AND t.replid = '.$_POST['tahunajaran'].'
 						ORDER BY
 							k.kelompok ASC';
-				// print_r($s);exit();
+				// print_r($s);e xit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar = $dt=array();
