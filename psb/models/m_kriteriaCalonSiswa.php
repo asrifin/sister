@@ -3,6 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
+	$mnu = 'kriteriaCalonSiswa';	
 	$tb = 'psb_kriteria';
 	// $out=array();
 
@@ -103,6 +104,45 @@
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
+
+			case 'cmb'.$mnu:
+				$w='';
+				if(isset($_POST['replid'])){
+					$w.='where replid ='.$_POST['replid'];
+				}else{
+					if(isset($_POST[$mnu])){
+						$w.='where '.$mnu.'='.$_POST[$mnu];
+					}elseif(isset($_POST['departemen'])){
+						$w.='where departemen ='.$_POST['departemen'];
+					}
+				}
+				
+				$s	= ' SELECT *
+						from '.$tb.'
+						'.$w.'		
+						ORDER  BY kriteria desc';
+				// var_dump($s);exit();
+				$e 	= mysql_query($s);
+				$n 	= mysql_num_rows($e);
+				$ar=$dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error');
+				}else{
+					if($n=0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}$ar = array('status'=>'sukses','kriteria'=>$dt);
+					}
+				}$out=json_encode($ar);
+			break;
+			
 		}
 
 	}

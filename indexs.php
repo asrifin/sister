@@ -107,7 +107,7 @@
                                 <img src="images/employee.png">
                             </center>
                             <h2 class="fg-white no-margin">Kepegawaian</h2><br>
-                            <p class="tertiary-text fg-white">Segala tentang kepegawaian ada disini deh bro silahkan diklik gan.....</p>
+                            <p class="tertiary-text fg-white">Segala tentang kepegawaian ada disini.....</p>
                         </div>
                     </div>
                 </a>
@@ -122,7 +122,7 @@
                             </center>
                             <h2 class="fg-white no-margin">Keuangan</h2>
                             <br>
-                            <p class="tertiary-text fg-white">Segala tentang kepegawaian ada disini deh bro silahkan diklik gan.....</p>
+                            <p class="tertiary-text fg-white">Segala tentang keuangan ada disini.....</p>
                         </div>
                     </div>
                 </a>
@@ -153,7 +153,7 @@
                                 <img src="images/sarpras.png">
                             </center>
                             <h2 class="fg-white no-margin">Sarana Prasarana</h2><br>
-                            <p class="tertiary-text fg-white">Segala tentang kepegawaian ada disini deh bro silahkan diklik gan.....</p>
+                            <p class="tertiary-text fg-white">Segala tentang Sarana Prasarana ada disini.....</p>
                         </div>
                     </div>
                 </a>
@@ -168,7 +168,7 @@
                     </div>
                     <div class="tile-content email">
                         <div class="email-data-text">Keterangan :</div>
-                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disisni ... </div>
+                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disini ... </div>
                     </div>
                     <div class="brand">
                         <div class="label">
@@ -190,7 +190,7 @@
                     </div>
                     <div class="tile-content email">
                         <div class="email-data-text">Keterangan :</div>
-                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disisni ... </div>
+                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disini ... </div>
                     </div>
                     <div class="brand">
                         <div class="label">

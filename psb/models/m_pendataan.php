@@ -235,13 +235,14 @@
 								tk.*,
 								tkel.*
 							from 
-								JOIN '.$tb.' t
-								JOIN '.$tb_ayah.' ta ON ta.psb_calonsiswa_ayah = t.psb_calonsiswa
-								JOIN '.$tb_ibu.' ti ON ti.pwb_calonsiswa_ibu = t.psb_calonsiswa
-								JOIN '.$tb_kontakdarurat.' tk ON tk.psb_calonsiswa_kontakdarurat = t.psb_calonsiswa
-								JOIN '.$tb_keluarga.' tkel ON tkel.psb_keluarga_calonsiswa = t.psb_calonsiswa_keluarga
+								'.$tb.' t
+								JOIN '.$tb_ayah.' ta ON ta.calonsiswa = t.replid
+								JOIN '.$tb_ibu.' ti ON ti.calonsiswa = t.replid
+								JOIN '.$tb_kontakdarurat.' tk ON tk.calonsiswa = t.replid
+								JOIN '.$tb_keluarga.' tkel ON tkel.calonsiswa = t.replid
 							WHERE 
 								t.replid='.$_POST['replid'];
+									// print_r($s);exit();
 				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
@@ -359,6 +360,61 @@
 				$out=json_encode($ar);
 			break;
 			// cmbtingkat -----------------------------------------------------------------
+			
+			case 'cmbagama':
+								
+				$s	= ' SELECT *
+						from mst_agama
+						ORDER  BY urutan desc';
+				// var_dump($s);exit();
+				$e 	= mysql_query($s);
+				$n 	= mysql_num_rows($e);
+				$ar=$dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error');
+				}else{
+					if($n=0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}$ar = array('status'=>'sukses','agama'=>$dt);
+					}
+				}$out=json_encode($ar);
+			break;
+
+			case 'cmbangsuran':
+								
+				$s	= ' SELECT *
+						from psb_angsuran
+						ORDER  BY cicilan desc';
+				// var_dump($s);exit();
+				$e 	= mysql_query($s);
+				$n 	= mysql_num_rows($e);
+				$ar=$dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error');
+				}else{
+					if($n=0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}$ar = array('status'=>'sukses','angsuran'=>$dt);
+					}
+				}$out=json_encode($ar);
+			break;
+
 
 		}
 	}
