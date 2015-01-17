@@ -80,14 +80,14 @@
                               <label>Kriteria calon :</label>
                               <div class="input-control select size3">
                                   <select id="kriteriaTB" name="kriteriaTB">
-                                    <option>Value 1</option>
+                                    <!-- <option>Value 1</option> -->
                                   </select>
                               </div>
 
                               <label>Golongan :</label>
                               <div class="input-control select size3">
                                   <select id="golonganTB" name="golonganTB">
-                                    <option>Value 1</option>
+                                    <!-- <option>Value 1</option> -->
                                   </select>
                               </div>
                               
@@ -109,7 +109,7 @@
                               <label>Lama Angsuran :</label>
                               <div class="input-control select size3">
                                   <select id="angsuranTB" name="angsuranTB">
-                                    <option>Value 1</option>
+                                    <!-- <option>Value 1</option> -->
                                   </select>
                               </div>
                               <label>Angusuran per Bulan</label>
@@ -132,13 +132,13 @@
                                 <label><b>Discount:</b></label>
                                 <label>Discount Subsidi :</label>
                                 <div class="input-control text size3">
-                                    <input type="text" name="diskon_subsidiTB" id="diskon_subsidiTB">
+                                    <input type="text" xonblur="getuang(this);" onclick="inputuang(this);" placeholder="Diskon Subsidi" name="diskon_subsidiTB" id="diskon_subsidiTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
                                 <label>Discount Saudara :</label>
                                 <div class="input-control text size3">
-                                    <input type="text" name="diskon_saudaraTB" id="diskon_saudaraTB">
+                                    <input type="text" xonblur="getuang(this);" onclick="inputuang(this);" placeholder="Diskon Saudara" name="diskon_saudaraTB" id="diskon_saudaraTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
@@ -146,6 +146,13 @@
                                 <div class="input-control select size2">
                                   <select id="diskon_tunai" name="diskon_tunai">
                                     <option>5%</option>
+                                    <option>10%</option>
+                                    <option>15%</option>
+                                    <option>20%</option>
+                                    <option>25%</option>
+                                    <option>40%</option>
+                                    <option>50%</option>
+                                    <option>80%</option>
                                   </select>
                               </div>
                                 <div class="input-control text size3">
@@ -232,7 +239,7 @@
                         <label>Agama</label>
                         <div class="input-control select size3">
                             <select id="agamaTB" name="agamaTB">
-                              <option>Kristen</option>
+                              <!-- <option>Kristen</option> -->
                             </select>
                         </div>
                         

@@ -52,7 +52,7 @@
 							k.proses = p.replid AND
 							p.tahunajaran = t.replid AND
 							t.replid = '.$tahunajaran;
-				// print_r($sql);exit();
+				print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
