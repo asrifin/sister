@@ -19,7 +19,7 @@ var content_stat = content_det = '';
         cmbdepartemenS();
 
         //form terima
-        content_stat += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+        content_stat += '<form autocomplete="off" onsubmit="simpan(this);return false;" id="'+mnu+'FR">' 
                         +'<table>'
                             +'<tr>'
                                 +'<td colspan="2">Terima calon siswa berikut ini </td>'
@@ -230,33 +230,10 @@ var content_stat = content_det = '';
     function simpan(e){
         var datax = $(e).serialize()+'&aksi=simpan&subaksi=penerimaan';
         ajax(dir,datax).done(function(res){
-            alert(res.status);
+                alert(res.status);
         });
-
-
-        /*$.ajax({
-            url:dir,
-            cache:false,
-            type:'post',
-            dataType:'json',
-            data:$('form').serialize()+urlx,
-            success:function(dt){
-                if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
-                    clr  = 'red';
-                }else{
-                    $.Dialog.close();
-                    kosongkan();
-                    viewTB($('#departemenS').val());
-                    cont = 'Berhasil menyimpan data';
-                    clr  = 'green';
-                }
-                notif(cont,clr);
-            }
-        });*/
     }
-//end of save process ---
-
+    
 //save process ---
     function terima(){ //Tombol Terima
         var urlx ='&aksi=terima&subaksi=tidak_terima';
