@@ -68,6 +68,9 @@
 						}
 						
 						$btn ='<td>
+									<button data-hint="ubah"  onclick="Modal('.$res['replid'].');">
+										<i class="icon-search on-left"></i>
+									</button>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>

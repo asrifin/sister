@@ -62,7 +62,7 @@
     </tfoot>
 </table>
 
-      <div class="table hovered bordered striped panelx" id="pendataanFR" style="display:none;overflow:scroll;" >
+      <div class="table hovered bordered striped panelx" id="pendataanFR" style="display:none;" >
           <div style="overflow:scroll;height:600px;" >
                   <form autocomplete="off" onsubmit="simpan();return false;"> 
                         <input id="idformH" type="hidden"> 
