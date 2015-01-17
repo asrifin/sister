@@ -4,6 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
+
 	$mnu  = 'calonsiswa';
 	$mnu2 = 'siswa';
 	$tb   = 'psb_'.$mnu;
@@ -101,16 +102,28 @@
 			case 'simpan':
 				switch ($_POST['subaksi']) {
 					case 'status':
-						$s = $tb.' set 	nama    		= "'.filter($_POST['namaTB']).'",
-										nopendaftaran 	= "'.filter($_POST['nopendaftaranTB']).'"';
-
-						$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						$e2 = mysql_query($s2) or die(mysql_error());
-						if(!$e2){
-							$stat = 'gagal menyimpan';
-						}else{
-							$stat = 'sukses';
-						}$out  = json_encode(array('status'=>$stat));
+						$s1 = 'UPDATE psb_calonsiswa set status  = 1 WHERE replid='.$_POST['replid'];
+						$s2 = $tb.' set nis           = '.$_POST['nisTB'].',
+										nisn          = '.$_POST['nisnTB'].',
+										nopendaftaran = '.$_POST['nopendaftaran'].',
+										nama          = '.$_POST['nama'].',
+										angkatan      = '.$_POST['angkatanTB'].',
+										proses        = '.$_POST['prosesTB'].',
+										kelompok      = '.$_POST['kelompokTB'].',
+										kriteria      = '.$_POST['kriteriaTB'].',
+										golongan      = '.$_POST['golonganTB'].',
+										status        = '.$_POST['statusTB'].',
+										kelamin       = '.$_POST['kelaminTB'].',
+										';
+						$x = mysql_fetch_assoc(mysql_query('select * from psb_calonsiswa where replid= '.$_POST['replid']));
+						var_dump($x);exit();
+						// $s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						// $e2 = mysql_query($s2) or die(mysql_error());
+						// if(!$e2){
+						// 	$stat = 'gagal menyimpan';
+						// }else{
+						// 	$stat = 'sukses';
+						// }$out  = json_encode(array('status'=>$stat));
 					break;
 
 					/*case 'status':
