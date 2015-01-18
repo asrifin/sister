@@ -50,14 +50,17 @@ var contentFR = '';
                         +'</table>'
                             +'</div>'
                             //Data Siswa
-                        +'<div style="overflow:scroll;height:600px;">'
+                        +'<div style="overflow:scroll;height:500px;">'
+                        // +'<div style="overflow:scroll;height:500px; width:700px">' 
+                        // epiii
                         +'<table>'
                             +'<tr>'
                                 +'<td colspan="2"><b>Data Pribadi Siswa :</b></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Nama</td>'
-                                +'<td>: <span id="namaTD"></span></td>'
+                                +'<td>: <span id="nama_siswaTD"></span></td>' /*epiii*/
+
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Jenis kelamin</td>'
@@ -108,12 +111,12 @@ var contentFR = '';
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Nama</td>'
-                                +'<td>: <span id="ayahTD"></span></td>'
-                                +'<td><span id="ibuTD"></span></td>'
+                                +'<td>: <span id="nama_ayahTD"></span></td>' /*epiii*/
+                                +'<td><span id="nama_ibuTD"></span></td>' /*epiii*/
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Kebangsaan</td>'
-                                +'<td>: <span id="kebangsaan_ayahTD"></span></td>'
+                                +'<td>: <span id="kebangsaan_ayahTD"></span></td>' /*epiii*/
                                 +'<td><span id="kebangsaan_ibuTD"></span></td>'
                             +'</tr>'
                             +'<tr>'
@@ -579,20 +582,23 @@ var contentFR = '';
             width: 'auto',
             height: 'auto',
             padding: 10,
-            // onShow: function(res){
             onShow: function(){
                 var titl,cont;
                     cont= content;
                     titl= 'Data Calon Siswa';
-                    // var res = sjax(dir,'aksi=detail&replid='+id);
-                     // console.log(res);  
-                     // alert(res);
-                    setTimeout(function(){
-                        $('#namaTD').html(res.data.nama);
+                    // var res = sjax(dir,'aksi=detail&replid='+id);  
+                    var res = sjax(dir,'aksi=detail&replid='+id);  // <-- hapus lagi comment nya gan  (epiii) 
+                    setTimeout(function(){ /*epiii*/
+                    // data calonsiswa
+                        $('#nama_siswaTD').html(res.data.nama_siswa);
+                    // data ayah
+                        $('#nama_ayahTD').html(res.data.nama_ayah);
+                    // data ibu
+                        $('#nama_ibuTD').html(res.data.nama_ibu);
                         // $('#nopendaftaranTD').html(res.data.nopendaftaran);
                         // $('#departemenTD').html(res.data.departemen);
                         // $('#angkatanTD').html(res.data.angkatan);
-                    },100);
+                    },200);
                 $.Dialog.title(titl);
                 $.Dialog.content(cont);
             }

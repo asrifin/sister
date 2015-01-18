@@ -304,7 +304,40 @@
 			
 			//detail siswa
 			case 'detail':
-				$s 		= ' SELECT 
+				/*epiii*/
+				/*tips :
+					-definisikan satu2 select nya ( takut rancu ada nama field yang sama di lain tabel) (-_-)
+					-inisialisasi nama tabel (FROM)ambil yg mudah saja : satu atau dua hurufawal  dri nama tabel
+					-inisialisasi nama field (SELECT) samakan dengan id textbox form (view/controller ) ex : "kebangsaan_ayah" 
+						query(model) = array/output(model) = ajax-success(controller) = textbox-form(view atau controller)   
+				*/
+				$s 		= ' SELECT
+							/*data siswa*/
+								cs.nama nama_siswa,
+								cs.kelamin jk,
+								cs.tmplahir tmp_lahir,
+								cs.tgllahir tgl_lahir,
+								cs.agama,
+								cs.alamat,
+								cs.telpon telepon,
+								cs.darah goldarah,
+							/*data ayah siswa*/
+								a.nama nama_ayah,
+								a.warga kebangsaan_ayah,
+							/*data ibu siswa*/
+								i.nama nama_ibu
+							/*dst...*/
+	
+							FROM
+								psb_calonsiswa cs
+								JOIN psb_calonsiswa_ayah a ON a.calonsiswa= cs.replid
+								JOIN psb_calonsiswa_ibu  i ON i.calonsiswa = cs.replid
+								JOIN psb_calonsiswa_kontakdarurat k ON k.calonsiswa = cs.replid
+								JOIN psb_calonsiswa_keluarga kel ON kel.calonsiswa = cs.replid
+							WHERE
+								cs.replid = '.$_POST['replid'];
+								// print_r($s);exit();
+				/*$s 		= ' SELECT 
 								t.*,
 								ta.*,
 								ti.*,
@@ -317,63 +350,67 @@
 								JOIN '.$tb_kontakdarurat.' tk ON tk.calonsiswa = t.replid
 								JOIN '.$tb_keluarga.' tkel ON tkel.calonsiswa = t.replid
 							WHERE 
-								t.replid='.$_POST['replid'];
+								t.replid='.$_POST['replid'];*/
 									// print_r($s);exit();
 				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'          =>$stat,
-							'kriteria'        =>$r['kriteria'],
-							'golongan'        =>$r['golongan'],
-							'sumpokok'        =>$r['sumpokok'],
-							'sumnet'          =>$r['sumnet'],
-							'sppbulan'        =>$r['sppbulan'],
-							// 'jmlangsuran'     =>$r['jmlangsuran'],
-							'angsuran'        =>$r['angsuran'],
-							'disctb'          =>$r['disctb'],
-							'discsaudara'     =>$r['discsaudara'],
-							'disctunai'       =>$r['disctunai'],
-							'disctotal'       =>$r['disctotal'],
-							'nopendaftaran'   =>$r['nopendaftaran'],
-							'nama'            =>$r['nama'],
-							'kelamin'         =>$r['kelamin'],
-							// 'templahir'       =>$r['templahir'],
-							'tgllahir'        =>$r['tgllahir'],
-							'agama'           =>$r['agama'],
-							'alamat'          =>$r['alamat'],
-							'telpon'          =>$r['telpon'],
-							'sekolahasal'     =>$r['sekolahasal'],
-							'darah'           =>$r['darah'],
-							'kesehatan'       =>$r['kesehatan'],
-							'ketkesehatan'    =>$r['ketkesehatan'],
-							'photo'           =>$r['photo'],
+							'status' =>$stat,
+							'data'   =>array( // tambahi node array ('data')
+							// data siswa 
+								'nama_siswa'            =>$r['nama_siswa'],
+								// 'kriteria'        =>$r['kriteria'],
+								// 'golongan'        =>$r['golongan'],
+								// 'sumpokok'        =>$r['sumpokok'],
+								// 'sumnet'          =>$r['sumnet'],
+								// 'sppbulan'        =>$r['sppbulan'],
+								// 	// 'jmlangsuran'     =>$r['jmlangsuran'],
+								// 'angsuran'        =>$r['angsuran'],
+								// 'disctb'          =>$r['disctb'],
+								// 'discsaudara'     =>$r['discsaudara'],
+								// 'disctunai'       =>$r['disctunai'],
+								// 'disctotal'       =>$r['disctotal'],
+								// 'nopendaftaran'   =>$r['nopendaftaran'],
+								// 'kelamin'         =>$r['kelamin'],
+								// 	// 'templahir'       =>$r['templahir'],
+								// 'tgllahir'        =>$r['tgllahir'],
+								// 'agama'           =>$r['agama'],
+								// 'alamat'          =>$r['alamat'],
+								// 'telpon'          =>$r['telpon'],
+								// 'sekolahasal'     =>$r['sekolahasal'],
+								// 'darah'           =>$r['darah'],
+								// 'kesehatan'       =>$r['kesehatan'],
+								// 'ketkesehatan'    =>$r['ketkesehatan'],
+								// 'photo'           =>$r['photo'],
 							
-							// 'nama_ayah'       =>$r['nama'],
-							// 'kebangsaan_ayah' =>$r['kebangsaan'],
-							// 'templahir_ayah'  =>$r['templahir'],
-							'tgllahir_ayah'   =>$r['tgllahir'],
-							'pekerjaan_ayah'  =>$r['pekerjaan'],
-							'telpon_ayah'     =>$r['telpon'],
-							'pinbb_ayah'      =>$r['pinbb'],
-							'email_ayah'      =>$r['email'],
+							// data ayah calon siswa	
+								'nama_ayah'       =>$r['nama_ayah'],
+								'kebangsaan_ayah' =>$r['kebangsaan_ayah'],
+								// 	// 'templahir_ayah'  =>$r['templahir'],
+								// 'tgllahir_ayah'   =>$r['tgllahir'],
+								// 'pekerjaan_ayah'  =>$r['pekerjaan'],
+								// 'telpon_ayah'     =>$r['telpon'],
+								// 'pinbb_ayah'      =>$r['pinbb'],
+								// 'email_ayah'      =>$r['email'],
 							
-							// 'nama_ibu'        =>$r['nama'],
-							// 'kebangsaan_ibu'  =>$r['kebangsaan'],
-							// 'templahir_ibu'   =>$r['templahir'],
-							'tgllahir_ibu'    =>$r['tgllahir'],
-							'pekerjaan_ibu'   =>$r['pekerjaan'],
-							'telpon_ibu'      =>$r['telpon'],
-							'pinbb_ibu'       =>$r['pinbb'],
-							'email_ibu'       =>$r['email'],
-							
-							'nama_dar'        =>$r['nama'],
-							'hubungan'        =>$r['hubungan'],
-							'telpon'          =>$r['telpon'],
-							'kakek-nama'      =>$r['kakek-nama'],
-							'nenek-nama'      =>$r['nenek-nama']
-						));
-		 // console.log(res);  alert(res);
+							// data ibu calon siswa	
+								'nama_ibu'        =>$r['nama_ibu'],
+								// 	// 'kebangsaan_ibu'  =>$r['kebangsaan'],
+								// 	// 'templahir_ibu'   =>$r['templahir'],
+								// 'tgllahir_ibu'    =>$r['tgllahir'],
+								// 'pekerjaan_ibu'   =>$r['pekerjaan'],
+								// 'telpon_ibu'      =>$r['telpon'],
+								// 'pinbb_ibu'       =>$r['pinbb'],
+								// 'email_ibu'       =>$r['email'],
+								
+								// 'nama_dar'        =>$r['nama'],
+								// 'hubungan'        =>$r['hubungan'],
+								// 'telpon'          =>$r['telpon'],
+								// 'kakek-nama'      =>$r['kakek-nama'],
+								// 'nenek-nama'      =>$r['nenek-nama']
+						)));
+		 // console.log(res);  alert(res); //epiii : console dan alert hanya untuk di javascript 
 			break;
 			// detail siswa -----------------------------------------------------------------
 
