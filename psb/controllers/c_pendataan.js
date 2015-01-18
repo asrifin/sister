@@ -3,6 +3,7 @@ var mnu2      = 'departemen';
 var mnu3      = 'tahunajaran';
 var mnu4      = 'kriteriaCalonSiswa';
 var mnu5      = 'golonganCalonSiswa';
+var mnu6      = 'setAngsuran'; 
 var mnu_kel   = 'kelompok';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
@@ -10,6 +11,7 @@ var dir3      = '../akademik/models/m_'+mnu3+'.php';
 var dir_kel   = 'models/m_'+mnu_kel+'.php';
 var dir4      = 'models/m_'+mnu4+'.php';
 var dir5      = 'models/m_'+mnu5+'.php';
+var dir6      = 'models/m_'+mnu6+'.php';
 var contentFR = '';
 
 //epiii : switch panel (form<=>table)
@@ -349,7 +351,7 @@ var contentFR = '';
         });
     }
 // end of view table ---
-
+        
         function viewFR(id) {
             // epi:edit
             if(id!='') {
@@ -360,6 +362,50 @@ var contentFR = '';
                     dataType:'json',
                     success:function(dt){
                         $('#idformH').val(id);
+                        $('#uang_pangkalTB').val(dt.sumpokok);
+                        $('#uang_pangkalnetTB').val(dt.sumnet);
+                        $('#angsuranTB').val(dt.angsuran);
+                        $('#sppTB').val(dt.sppbulan);
+                        $('#diskon_subsidiTB').val(dt.disctb);
+                        $('#diskon_saudaraTB').val(dt.discsaudara);
+                        $('#diskon_tunaiTB').val(dt.disctunai);
+                        $('#diskon_totalTB').val(dt.disctotal);
+                        $('#nopendaftaranTB').val(dt.nopendaftaran);
+                        $('#namaTB').val(dt.siswa);
+                        $('#tempatlahirTB').val(dt.tmplahir);
+                        $('#tgllahiranakTB').val(dt.tgllahir);
+                        $('#alamatsiswaTB').val(dt.alamat);
+                        $('#telpsiswaTB').val(dt.telpon);
+                        $('#asalsekolahTB').val(dt.sekolahasal);
+                        //Orangtua
+                        $('#ayahTB').val(dt.nama_ayah);
+                        $('#kebangsaan_ayahTB').val(dt.kebangsaan_ayah);
+                        $('#tempatlahir_ayahTB').val(dt.tempatlahir_ayah);
+                        $('#tgllahir_ayahTB').val(dt.tgllahir_ayah);
+                        $('#pekerjaan_ayahTB').val(dt.pekerjaan_ayah);
+                        $('#telpayahTB').val(dt.telpayah);
+                        $('#pinbb_ayahTB').val(dt.pinbb_ayah);
+                        $('#email_ayahTB').val(dt.email_ayah);
+                        
+                        $('#ibuTB').val(dt.nama_ibu);
+                        $('#kebangsaan_ibuTB').val(dt.kebangsaan_ibu);
+                        $('#tempatlahir_ibuTB').val(dt.temp_lahir_ibu);
+                        $('#tgllahir_ibuTB').val(dt.tgllahir_ibu);
+                        $('#pekerjaan_ibuTB').val(dt.pekerjaan_ibu);
+                        $('#telpibuTB').val(dt.telepon_ibu);
+                        $('#pinbb_ibuTB').val(dt.pinbb_ibu);
+                        $('#email_ibuTB').val(dt.email_ibu);
+
+                        $('#nama_kontakTB').val(dt.namalain);
+                        $('#hubunganTB').val(dt.hubungan);
+                        $('#nomorTB').val(dt.telponlain);
+
+                        $('#kakekTB').val(dt.kakek-nama);
+                        $('#nenekTB').val(dt.nenek-nama);
+                        cmbkriteria(dt.kriteria);
+                        cmbgolongan(dt.golongan);
+                        cmbagama(dt.agama);
+                        cmbangsuran(dt.jmlangsur);
                     }
                 });
             }else{ 
@@ -381,7 +427,7 @@ var contentFR = '';
             //     }
             // });
         }  
-         
+
         function cmbkriteria (kriteria) {
             // alert(1);return false;
             $.ajax({
@@ -464,13 +510,13 @@ var contentFR = '';
             });
         }
 
-        function cmbangsuran (angsuran) {
+        function cmbangsuran (cicilan) {
             // alert(1);return false;
             $.ajax({
-                url:dir,   
+                url:dir6,   
                 type:'post',
                 dataType:'json',
-                data:'aksi=cmbangsuran',
+                data:'aksi=cmb'+mnu6,
                 success:function(dt){
                     var opt='';
                     if (dt.status!='sukses') {
@@ -479,12 +525,12 @@ var contentFR = '';
                     }else{
                         // alert(id);return false;
                         var opt = '';
-                        $.each(dt.angsuran,function(id,item){
-                            if(angsuran==item.replid)
-                                opt+='<option selected="selected" value="'+item.replid+'">'+item.angsuran+'</option>'
+                        $.each(dt.cicilan,function(id,item){
+                            if(cicilan==item.replid)
+                                opt+='<option selected="selected" value="'+item.replid+'">'+item.cicilan+'</option>'
                             else
-                                opt+='<option value="'+item.replid+'">'+item.angsuran+'</option>'
-                        });$('#angsuranTB').html('<option value="">Pilih angsuran ..</option>'+opt);
+                                opt+='<option value="'+item.replid+'">'+item.cicilan+'</option>'
+                        });$('#angsuranTB').html('<option value="">Pilih Angsuran ..</option>'+opt);
                     }
                 },
             });

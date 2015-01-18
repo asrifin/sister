@@ -111,7 +111,7 @@
 								sumpokok      = "'.filter($_POST['uang_pangkalTB']).'",
 								sumnet        = "'.filter($_POST['uang_pangkalnetTB']).'",
 								sppbulan      = "'.filter($_POST['angsuranTB']).'",
-								jmlangsuran   = "'.filter($_POST['angsuranTB']).'",
+								jmlangsur     = "'.filter($_POST['angsuranTB']).'",
 								angsuran      = "'.filter($_POST['angsuranbulanTB']).'",
 								disctb        = "'.filter($_POST['diskon_subsidiTB']).'",
 								discsaudara   = "'.filter($_POST['diskon_saudaraTB']).'",
@@ -120,7 +120,7 @@
 								nopendaftaran = "'.filter($_POST['nopendaftaranTB']).'",
 								nama          = "'.filter($_POST['namaTB']).'",
 								kelamin       = "'.filter($_POST['jkTB']).'",
-								templahir     = "'.filter($_POST['tempatlahirTB']).'",
+								tmplahir      = "'.filter($_POST['tempatlahirTB']).'",
 								tgllahir      = "'.filter($_POST['tgllahiranakTB']).'",
 								agama         = "'.filter($_POST['agamaTB']).'",
 								alamat        = "'.filter($_POST['alamatsiswaTB']).'",
@@ -131,29 +131,29 @@
 								ketkesehatan  = "'.filter($_POST['catatan_kesehatanTB']).'"';
 								// var_dump($siswa);exit();
 								
-								$ayah         = $tb.' set 	nama 	= "'.filter($_POST['ayahTB']).'",
-								kebangsaan    = "'.filter($_POST['kebangsaan_ayahTB']).'",
-								templahir     = "'.filter($_POST['tempatlahir_ayahTB']).'",
-								tgllahir      = "'.filter($_POST['tgllahir_ayahTB']).'",
-								pekerjaan     = "'.filter($_POST['pekerjaan_ayahTB']).'",
-								telpon        = "'.filter($_POST['telpayahTB']).'",
-								pinbb         = "'.filter($_POST['pinbb_ayahTB']).'",
-								email         = "'.filter($_POST['email_ayahTB']).'"';
+								$ayah     = $tb_ayah.' set 	nama 	= "'.filter($_POST['ayahTB']).'",
+								warga     = "'.filter($_POST['kebangsaan_ayahTB']).'",
+								tmplahir  = "'.filter($_POST['tempatlahir_ayahTB']).'",
+								tgllahir  = "'.filter($_POST['tgllahir_ayahTB']).'",
+								pekerjaan = "'.filter($_POST['pekerjaan_ayahTB']).'",
+								telpon    = "'.filter($_POST['telpayahTB']).'",
+								pinbb     = "'.filter($_POST['pinbb_ayahTB']).'",
+								email     = "'.filter($_POST['email_ayahTB']).'"';
 								
-								$ibu          = $tb.' set 	nama 	= "'.filter($_POST['ibuTB']).'",
-								kebangsaan    = "'.filter($_POST['kebangsaan_ibuTB']).'",
-								templahir     = "'.filter($_POST['tempatlahir_ibuTB']).'",
-								tgllahir      = "'.filter($_POST['tgllahir_ibuTB']).'",
-								pekerjaan     = "'.filter($_POST['pekerjaan_ibuTB']).'",
-								telpon        = "'.filter($_POST['telpibuTB']).'",
-								pinbb         = "'.filter($_POST['pinbb_ibuTB']).'",
-								email         = "'.filter($_POST['email_ibuTB']).'"';
+								$ibu      = $tb_ibu.' set 	nama 	= "'.filter($_POST['ibuTB']).'",
+								warga     = "'.filter($_POST['kebangsaan_ibuTB']).'",
+								tmplahir  = "'.filter($_POST['tempatlahir_ibuTB']).'",
+								tgllahir  = "'.filter($_POST['tgllahir_ibuTB']).'",
+								pekerjaan = "'.filter($_POST['pekerjaan_ibuTB']).'",
+								telpon    = "'.filter($_POST['telpibuTB']).'",
+								pinbb     = "'.filter($_POST['pinbb_ibuTB']).'",
+								email     = "'.filter($_POST['email_ibuTB']).'"';
 								
-								$dar          = $tb.' set 	nama 	= "'.filter($_POST['nama_kontakTB']).'",
+								$dar          = $tb_kontakdarurat.' set 	nama 	= "'.filter($_POST['nama_kontakTB']).'",
 								hubungan      = "'.filter($_POST['hubunganTB']).'",
 								telpon        = "'.filter($_POST['nomorTB']).'"';
 								
-								$keluarga     = $tb.' set 	kakek-nama 	= "'.filter($_POST['kakekTB']).'",
+								$keluarga     = $tb_keluarga.' set 	kakek-nama 	= "'.filter($_POST['kakekTB']).'",
 								nenek-nama    = "'.filter($_POST['nenekTB']).'"';
 
 				if (!isset($_POST['replid'])){ //add
@@ -230,11 +230,42 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
+				// $s 		= ' SELECT 
+				// 				t.*,
+				// 				ta.*,
+				// 				ti.*,
+				// 				tk.*,
+				// 				tkel.*
+				// 			from 
+				// 				'.$tb.' t
+				// 				JOIN '.$tb_ayah.' ta ON ta.calonsiswa = t.replid
+				// 				JOIN '.$tb_ibu.' ti ON ti.calonsiswa = t.replid
+				// 				JOIN '.$tb_kontakdarurat.' tk ON tk.calonsiswa = t.replid
+				// 				JOIN '.$tb_keluarga.' tkel ON tkel.calonsiswa = t.replid
+				// 			WHERE 
+				// 				t.replid='.$_POST['replid'];
 				$s 		= ' SELECT 
 								t.*,
-								ta.*,
-								ti.*,
-								tk.*,
+								t.nama as siswa,
+								ta.nama as nama_ayah,
+								ta.warga as kebangsaan_ayah,
+								ta.tmplahir as tmplahir_ayah,
+								ta.tgllahir as tgllahir_ayah,
+								ta.pekerjaan as pekerjaan_ayah,
+								ta.telpon as telpon_ayah,
+								ta.pinbb as pinbb_ayah,
+								ta.email as email_ayah,
+								ti.nama as nama_ibu,
+								ti.warga as kebangsaan_ibu,
+								ti.tmplahir as tmplahir_ibu,
+								ti.tgllahir as tgllahir_ibu,
+								ti.pekerjaan as pekerjaan_ibu,
+								ti.telpon as telpon_ibu,
+								ti.pinbb as pinbb_ibu,
+								ti.email as email_ibu,
+								tk.nama as namalain,
+								tk.hubungan as hubungan,
+								tk.telpon as telponlain,
 								tkel.*
 							from 
 								'.$tb.' t
@@ -244,27 +275,28 @@
 								JOIN '.$tb_keluarga.' tkel ON tkel.calonsiswa = t.replid
 							WHERE 
 								t.replid='.$_POST['replid'];
+
 									// print_r($s);exit();
 				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array(
+				$out    = json_encode(array(
 							'status'          =>$stat,
 							'kriteria'        =>$r['kriteria'],
 							'golongan'        =>$r['golongan'],
 							'sumpokok'        =>$r['sumpokok'],
 							'sumnet'          =>$r['sumnet'],
 							'sppbulan'        =>$r['sppbulan'],
-							'jmlangsuran'     =>$r['jmlangsuran'],
+							'jmlangsur'       =>$r['jmlangsur'],
 							'angsuran'        =>$r['angsuran'],
 							'disctb'          =>$r['disctb'],
 							'discsaudara'     =>$r['discsaudara'],
 							'disctunai'       =>$r['disctunai'],
 							'disctotal'       =>$r['disctotal'],
 							'nopendaftaran'   =>$r['nopendaftaran'],
-							'nama'            =>$r['nama'],
+							'nama'            =>$r['siswa'],
 							'kelamin'         =>$r['kelamin'],
-							'templahir'       =>$r['templahir'],
+							'tmplahir'        =>$r['tmplahir'],
 							'tgllahir'        =>$r['tgllahir'],
 							'agama'           =>$r['agama'],
 							'alamat'          =>$r['alamat'],
@@ -275,27 +307,28 @@
 							'ketkesehatan'    =>$r['ketkesehatan'],
 							'photo'           =>$r['photo'],
 							
-							'nama_ayah'       =>$r['nama'],
-							'kebangsaan_ayah' =>$r['kebangsaan'],
-							'templahir_ayah'  =>$r['templahir'],
-							'tgllahir_ayah'   =>$r['tgllahir'],
-							'pekerjaan_ayah'  =>$r['pekerjaan'],
-							'telpon_ayah'     =>$r['telpon'],
-							'pinbb_ayah'      =>$r['pinbb'],
-							'email_ayah'      =>$r['email'],
+							'nama_ayah'       =>$r['nama_ayah'],
+							'kebangsaan_ayah' =>$r['kebangsaan_ayah'],
+							'tmplahir_ayah'   =>$r['tmplahir_ayah'],
+							'tgllahir_ayah'   =>$r['tgllahir_ayah'],
+							'pekerjaan_ayah'  =>$r['pekerjaan_ayah'],
+							'telpon_ayah'     =>$r['telpon_ayah'],
+							'pinbb_ayah'      =>$r['pinbb_ayah'],
+							'email_ayah'      =>$r['email_ayah'],
 							
-							'nama_ibu'        =>$r['nama'],
-							'kebangsaan_ibu'  =>$r['kebangsaan'],
-							'templahir_ibu'   =>$r['templahir'],
-							'tgllahir_ibu'    =>$r['tgllahir'],
-							'pekerjaan_ibu'   =>$r['pekerjaan'],
-							'telpon_ibu'      =>$r['telpon'],
-							'pinbb_ibu'       =>$r['pinbb'],
-							'email_ibu'       =>$r['email'],
+							'nama_ibu'        =>$r['nama_ibu'],
+							'kebangsaan_ibu'  =>$r['kebangsaan_ibu'],
+							'tmplahir_ibu'    =>$r['tmplahir_ibu'],
+							'tgllahir_ibu'    =>$r['tgllahir_ibu'],
+							'pekerjaan_ibu'   =>$r['pekerjaan_ibu'],
+							'telpon_ibu'      =>$r['telpon_ibu'],
+							'pinbb_ibu'       =>$r['pinbb_ibu'],
+							'email_ibu'       =>$r['email_ibu'],
 							
-							'nama_dar'        =>$r['nama'],
+							'nama_dar'        =>$r['namalain'],
 							'hubungan'        =>$r['hubungan'],
-							'telpon'          =>$r['telpon'],
+							'telpon'          =>$r['telponlain'],
+
 							'kakek-nama'      =>$r['kakek-nama'],
 							'nenek-nama'      =>$r['nenek-nama']
 						));
@@ -329,7 +362,7 @@
 							'sumpokok'        =>$r['sumpokok'],
 							'sumnet'          =>$r['sumnet'],
 							'sppbulan'        =>$r['sppbulan'],
-							// 'jmlangsuran'     =>$r['jmlangsuran'],
+							'jmlangsur'     =>$r['jmlangsur'],
 							'angsuran'        =>$r['angsuran'],
 							'disctb'          =>$r['disctb'],
 							'discsaudara'     =>$r['discsaudara'],
@@ -338,7 +371,7 @@
 							'nopendaftaran'   =>$r['nopendaftaran'],
 							'nama'            =>$r['nama'],
 							'kelamin'         =>$r['kelamin'],
-							// 'templahir'       =>$r['templahir'],
+							'tmplahir'       =>$r['tmplahir'],
 							'tgllahir'        =>$r['tgllahir'],
 							'agama'           =>$r['agama'],
 							'alamat'          =>$r['alamat'],
@@ -349,18 +382,18 @@
 							'ketkesehatan'    =>$r['ketkesehatan'],
 							'photo'           =>$r['photo'],
 							
-							// 'nama_ayah'       =>$r['nama'],
-							// 'kebangsaan_ayah' =>$r['kebangsaan'],
-							// 'templahir_ayah'  =>$r['templahir'],
+							'nama_ayah'       =>$r['nama'],
+							'kebangsaan_ayah' =>$r['warga'],
+							'tmplahir_ayah'  =>$r['tmplahir'],
 							'tgllahir_ayah'   =>$r['tgllahir'],
 							'pekerjaan_ayah'  =>$r['pekerjaan'],
 							'telpon_ayah'     =>$r['telpon'],
 							'pinbb_ayah'      =>$r['pinbb'],
 							'email_ayah'      =>$r['email'],
 							
-							// 'nama_ibu'        =>$r['nama'],
-							// 'kebangsaan_ibu'  =>$r['kebangsaan'],
-							// 'templahir_ibu'   =>$r['templahir'],
+							'nama_ibu'        =>$r['nama'],
+							'kebangsaan_ibu'  =>$r['warga'],
+							'tmplahir_ibu'   =>$r['tmplahir'],
 							'tgllahir_ibu'    =>$r['tgllahir'],
 							'pekerjaan_ibu'   =>$r['pekerjaan'],
 							'telpon_ibu'      =>$r['telpon'],
