@@ -128,9 +128,8 @@
 								sekolahasal   = "'.filter($_POST['asalsekolahTB']).'",
 								darah         = "'.filter($_POST['goldarahTB']).'",
 								kesehatan     = "'.filter($_POST['penyakitTB']).'",
-								ketkesehatan  = "'.filter($_POST['catatan_kesehatanTB']).'",
-								'.(isset($_POST['file'])?', photo2= "'.$_POST['file'].'"':'');
-								var_dump($siswa);exit();
+								ketkesehatan  = "'.filter($_POST['catatan_kesehatanTB']).'"';
+								// var_dump($siswa);exit();
 								
 								$ayah         = $tb.' set 	nama 	= "'.filter($_POST['ayahTB']).'",
 								kebangsaan    = "'.filter($_POST['kebangsaan_ayahTB']).'",
@@ -302,6 +301,81 @@
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
+			
+			//detail siswa
+			case 'detail':
+				$s 		= ' SELECT 
+								t.*,
+								ta.*,
+								ti.*,
+								tk.*,
+								tkel.*
+							from 
+								'.$tb.' t
+								JOIN '.$tb_ayah.' ta ON ta.calonsiswa = t.replid
+								JOIN '.$tb_ibu.' ti ON ti.calonsiswa = t.replid
+								JOIN '.$tb_kontakdarurat.' tk ON tk.calonsiswa = t.replid
+								JOIN '.$tb_keluarga.' tkel ON tkel.calonsiswa = t.replid
+							WHERE 
+								t.replid='.$_POST['replid'];
+									// print_r($s);exit();
+				$e 		= mysql_query($s) or die(mysql_error());
+				$r 		= mysql_fetch_assoc($e);
+				$stat 	= ($e)?'sukses':'gagal';
+				$out 	= json_encode(array(
+							'status'          =>$stat,
+							'kriteria'        =>$r['kriteria'],
+							'golongan'        =>$r['golongan'],
+							'sumpokok'        =>$r['sumpokok'],
+							'sumnet'          =>$r['sumnet'],
+							'sppbulan'        =>$r['sppbulan'],
+							// 'jmlangsuran'     =>$r['jmlangsuran'],
+							'angsuran'        =>$r['angsuran'],
+							'disctb'          =>$r['disctb'],
+							'discsaudara'     =>$r['discsaudara'],
+							'disctunai'       =>$r['disctunai'],
+							'disctotal'       =>$r['disctotal'],
+							'nopendaftaran'   =>$r['nopendaftaran'],
+							'nama'            =>$r['nama'],
+							'kelamin'         =>$r['kelamin'],
+							// 'templahir'       =>$r['templahir'],
+							'tgllahir'        =>$r['tgllahir'],
+							'agama'           =>$r['agama'],
+							'alamat'          =>$r['alamat'],
+							'telpon'          =>$r['telpon'],
+							'sekolahasal'     =>$r['sekolahasal'],
+							'darah'           =>$r['darah'],
+							'kesehatan'       =>$r['kesehatan'],
+							'ketkesehatan'    =>$r['ketkesehatan'],
+							'photo'           =>$r['photo'],
+							
+							// 'nama_ayah'       =>$r['nama'],
+							// 'kebangsaan_ayah' =>$r['kebangsaan'],
+							// 'templahir_ayah'  =>$r['templahir'],
+							'tgllahir_ayah'   =>$r['tgllahir'],
+							'pekerjaan_ayah'  =>$r['pekerjaan'],
+							'telpon_ayah'     =>$r['telpon'],
+							'pinbb_ayah'      =>$r['pinbb'],
+							'email_ayah'      =>$r['email'],
+							
+							// 'nama_ibu'        =>$r['nama'],
+							// 'kebangsaan_ibu'  =>$r['kebangsaan'],
+							// 'templahir_ibu'   =>$r['templahir'],
+							'tgllahir_ibu'    =>$r['tgllahir'],
+							'pekerjaan_ibu'   =>$r['pekerjaan'],
+							'telpon_ibu'      =>$r['telpon'],
+							'pinbb_ibu'       =>$r['pinbb'],
+							'email_ibu'       =>$r['email'],
+							
+							'nama_dar'        =>$r['nama'],
+							'hubungan'        =>$r['hubungan'],
+							'telpon'          =>$r['telpon'],
+							'kakek-nama'      =>$r['kakek-nama'],
+							'nenek-nama'      =>$r['nenek-nama']
+						));
+		 // console.log(res);  alert(res);
+			break;
+			// detail siswa -----------------------------------------------------------------
 
 			// aktifkan -----------------------------------------------------------------
 			case 'aktifkan':
