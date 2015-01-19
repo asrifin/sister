@@ -26,7 +26,7 @@ var contentFR = '';
         // $('#panel1').removeAttr('style');
         // $('#pendataanFR').attr('style','display:none;');
 
-                content +='<div>'
+                content +='<div class="span10">'
                             +'<table>'
                             +'<tr>'
                                 +'<td>Departemen</td>'
@@ -59,7 +59,7 @@ var contentFR = '';
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Nama</td>'
-                                +'<td>: <span id="namaTD"></span></td>'
+                                +'<td>: <span id="nama_siswaTD"></span></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Jenis kelamin</td>'
@@ -103,15 +103,14 @@ var contentFR = '';
                                 +'<td colspan="2"><b>Data Orantua Siswa :</b></td>'
                             +'</tr>'
                             +'<tr>'
-                                +'<td></td>'
-                                +'<td>Ayah</td>'
                                 +'<td>&nbsp;</td>'
+                                +'<td class="span4">Ayah</td>'
                                 +'<td>Ibu</td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Nama</td>'
-                                +'<td>: <span id="ayahTD"></span></td>'
-                                +'<td><span id="ibuTD"></span></td>'
+                                +'<td>: <span id="nama_ayahTD"></span></td>'
+                                +'<td><span id="nama_ibuTD"></span></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Kebangsaan</td>'
@@ -215,7 +214,16 @@ var contentFR = '';
             $('#namaS').val('');
             $('#nopendaftaranS').val('');
         });
+        $("#diskon_subsidiTB,#diskon_saudaraTB").keydown(function(){
+             hitung_diskon();
+             getuang($("#diskon_subsidiTB").val());
+        });
+        $("#diskon_tunaiTB").change(function(){
+             hitung_diskon();
+        });
+
     }); 
+
 // end of save process ---
 
 // combo departemen ---
@@ -371,7 +379,7 @@ var contentFR = '';
                         $('#diskon_tunaiTB').val(dt.disctunai);
                         $('#diskon_totalTB').val(dt.disctotal);
                         $('#nopendaftaranTB').val(dt.nopendaftaran);
-                        $('#namaTB').val(dt.siswa);
+                        $('#namaTB').val(dt.nama_siswa);
                         $('#tempatlahirTB').val(dt.tmplahir);
                         $('#tgllahiranakTB').val(dt.tgllahir);
                         $('#alamatsiswaTB').val(dt.alamat);
@@ -544,19 +552,18 @@ var contentFR = '';
         }
 
         function hitung_diskon(){
-            var disc_subsidi  = $("#diskon_subsidiTB").val();
-            var disc_saudara  = $("#diskon_saudaraTB").val();
-            var disc_tunai    = $("#disc_tunai").val();
-            var disc_tunaiTB  = $("#disc_tunaiTB").val();
-            if(disc_subsidi>0 && disc_saudara>0 && disc_tunaiTB>0){
-            var total_diskon = parseFloat(disc_subsidi)+parseFloat(disc_saudara)+parseFloat(disc_tunaiTB);
-            $("#diskon_totalTB").val(total_diskon);
-            }
+
+            var disc_subsidi  = parseFloat(getuang($("#diskon_subsidiTB").val()));
+            // var disc_saudara  = parseFloat($("#diskon_saudaraTB").val());
+            // var disc_tunai    = parseFloat($("#disc_tunai").val());
+            // var disc_tunaiTB  = parseFloat($("#disc_tunaiTB").val());
+            // alert(disc_tunai);
+            // if(disc_subsidi>0 && disc_saudara>0 && disc_tunaiTB>0){
+            // var total_diskon = disc_subsidi+disc_saudara+disc_tunaiTB;
+            // $("#diskon_totalTB").val(total_diskon);
+            // }
         }
 
-        $("#diskon_totalTB").keyup(function(){
-            hitung_diskon();
-        });
 
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
@@ -623,21 +630,20 @@ var contentFR = '';
             draggable: true,
             data:'aksi=detail&replid='+id,
             width: 'auto',
-            height: 'auto',
+            height: '500',
             padding: 10,
             // onShow: function(res){
             onShow: function(){
                 var titl,cont;
                     cont= content;
                     titl= 'Data Calon Siswa';
-                    // var res = sjax(dir,'aksi=detail&replid='+id);
-                     // console.log(res);  
-                     // alert(res);
+                    var res = sjax(dir,'aksi=detail&replid='+id);  // <-- hapus lagi comment nya gan  (epiii) 
                     setTimeout(function(){
-                        $('#namaTD').html(res.data.nama);
-                        // $('#nopendaftaranTD').html(res.data.nopendaftaran);
-                        // $('#departemenTD').html(res.data.departemen);
-                        // $('#angkatanTD').html(res.data.angkatan);
+                        $('#namaTD').html(res.data.nama_siswaTD);
+                    // data ayah
+                        $('#nama_ayahTD').html(res.data.nama_ayah);
+                    // data ibu
+                        $('#nama_ibuTD').html(res.data.nama_ibu);
                     },100);
                 $.Dialog.title(titl);
                 $.Dialog.content(cont);
@@ -675,7 +681,7 @@ var contentFR = '';
             precision:0,
             prefix:'Rp. ', 
             // allowNegative: true, 
-            thousands:'.', 
+            thousands:',', 
             // decimal:',', 
             affixesStay: true
         });
@@ -686,8 +692,16 @@ var contentFR = '';
     function getuang(e) {
         // var x =$(e).maskMoney('unmasked')[0];
         // var x =$(e).val();
-        var y = x.replace(/[r\.]/g, '');
-        return y;
+        // alert($(e).val());
+        // var x =$(e).val();
+        // var y = e.replace(/[r\.]/g, '');
+        var y = e.replace('Rp. ','').replace('.','').replace(',',''); 
+        // alert(y);
+        // var y = e.replace('Rp. ',''); 
+        //  x = y.replace('.',''); 
+        //  z = x.replace(',',''); 
+        // alert(z);
+        // return y;
     }
 // end of get uang --------------------------
 

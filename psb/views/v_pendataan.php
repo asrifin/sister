@@ -94,13 +94,13 @@
                               <label><b>Sumbangan :</b></label>
                               <label>Uang Pangkal</label>
                               <div class="input-control text size3">
-                                  <input type="text" name="uang_pangkalTB" id="uang_pangkalTB">
+                                  <input type="text" onclick="inputuang(this);" name="uang_pangkalTB" id="uang_pangkalTB">
                                   <button class="btn-clear"></button>
                               </div>
                               
                               <label>Uang Pangkal net</label>
                               <div class="input-control text size3">
-                                  <input type="hidden" name="uang_pangkalnetH" id="uang_pangkalnetH">
+                                  <input type="hidden" onclick="inputuang(this);" name="uang_pangkalnetH" id="uang_pangkalnetH">
                                   <input type="text" name="uang_pangkalnetTB" id="uang_pangkalnetTB">
                                   <button class="btn-clear"></button>
                               </div>
@@ -132,13 +132,13 @@
                                 <label><b>Discount:</b></label>
                                 <label>Discount Subsidi :</label>
                                 <div class="input-control text size3">
-                                    <input type="text" xonblur="getuang(this);" onclick="inputuang(this);" placeholder="Diskon Subsidi" name="diskon_subsidiTB" id="diskon_subsidiTB">
+                                    <input type="text" onclick="inputuang(this);" placeholder="Diskon Subsidi" name="diskon_subsidiTB" id="diskon_subsidiTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
                                 <label>Discount Saudara :</label>
                                 <div class="input-control text size3">
-                                    <input type="text" xonblur="getuang(this);" onclick="inputuang(this);" placeholder="Diskon Saudara" name="diskon_saudaraTB" id="diskon_saudaraTB">
+                                    <input type="text" onclick="inputuang(this);" placeholder="Diskon Saudara" name="diskon_saudaraTB" id="diskon_saudaraTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
