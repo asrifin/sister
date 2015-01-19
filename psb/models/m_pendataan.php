@@ -106,32 +106,32 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-								$siswa        = $tb.' set 	kriteria 		= "'.filter($_POST['kriteriaTB']).'",
-								golongan      = "'.filter($_POST['golonganTB']).'",
-								sumpokok      = "'.filter($_POST['uang_pangkalTB']).'",
-								sumnet        = "'.filter($_POST['uang_pangkalnetTB']).'",
-								sppbulan      = "'.filter($_POST['angsuranTB']).'",
-								jmlangsur     = "'.filter($_POST['angsuranTB']).'",
-								angsuran      = "'.filter($_POST['angsuranbulanTB']).'",
-								disctb        = "'.filter($_POST['diskon_subsidiTB']).'",
-								discsaudara   = "'.filter($_POST['diskon_saudaraTB']).'",
-								disctunai     = "'.filter($_POST['diskon_tunaiTB']).'",
-								disctotal     = "'.filter($_POST['diskon_totalTB']).'",
-								nopendaftaran = "'.filter($_POST['nopendaftaranTB']).'",
-								nama          = "'.filter($_POST['namaTB']).'",
-								kelamin       = "'.filter($_POST['jkTB']).'",
-								tmplahir      = "'.filter($_POST['tempatlahirTB']).'",
-								tgllahir      = "'.filter($_POST['tgllahiranakTB']).'",
-								agama         = "'.filter($_POST['agamaTB']).'",
-								alamat        = "'.filter($_POST['alamatsiswaTB']).'",
-								telpon        = "'.filter($_POST['telpsiswaTB']).'",
-								sekolahasal   = "'.filter($_POST['asalsekolahTB']).'",
-								darah         = "'.filter($_POST['goldarahTB']).'",
-								kesehatan     = "'.filter($_POST['penyakitTB']).'",
-								ketkesehatan  = "'.filter($_POST['catatan_kesehatanTB']).'"';
-								// var_dump($siswa);exit();
-								
-								$ayah     = $tb_ayah.' set 	nama 	= "'.filter($_POST['ayahTB']).'",
+				$siswa  = $tb.' set 	kriteria 		= "'.filter($_POST['kriteriaTB']).'",
+										golongan      = "'.filter($_POST['golonganTB']).'",
+										sumpokok      = "'.filter($_POST['uang_pangkalTB']).'",
+										sumnet        = "'.filter($_POST['uang_pangkalnetTB']).'",
+										sppbulan      = "'.filter($_POST['angsuranTB']).'",
+										jmlangsur     = "'.filter($_POST['angsuranTB']).'",
+										angsuran      = "'.filter($_POST['angsuranbulanTB']).'",
+										disctb        = "'.filter($_POST['diskon_subsidiTB']).'",
+										discsaudara   = "'.filter($_POST['diskon_saudaraTB']).'",
+										disctunai     = "'.filter($_POST['diskon_tunaiTB']).'",
+										disctotal     = "'.filter($_POST['diskon_totalTB']).'",
+										nopendaftaran = "'.filter($_POST['nopendaftaranTB']).'",
+										nama          = "'.filter($_POST['namaTB']).'",
+										kelamin       = "'.filter($_POST['jkTB']).'",
+										tmplahir      = "'.filter($_POST['tempatlahirTB']).'",
+										tgllahir      = "'.filter($_POST['tgllahiranakTB']).'",
+										agama         = "'.filter($_POST['agamaTB']).'",
+										alamat        = "'.filter($_POST['alamatsiswaTB']).'",
+										telpon        = "'.filter($_POST['telpsiswaTB']).'",
+										sekolahasal   = "'.filter($_POST['asalsekolahTB']).'",
+										darah         = "'.filter($_POST['goldarahTB']).'",
+										kesehatan     = "'.filter($_POST['penyakitTB']).'",
+										ketkesehatan  = "'.filter($_POST['catatan_kesehatanTB']).'"';
+										// var_dump($siswa);exit();
+										
+/*								$ayah     = $tb_ayah.' set 	nama 	= "'.filter($_POST['ayahTB']).'",
 								warga     = "'.filter($_POST['kebangsaan_ayahTB']).'",
 								tmplahir  = "'.filter($_POST['tempatlahir_ayahTB']).'",
 								tgllahir  = "'.filter($_POST['tgllahir_ayahTB']).'",
@@ -155,40 +155,44 @@
 								
 								$keluarga     = $tb_keluarga.' set 	kakek-nama 	= "'.filter($_POST['kakekTB']).'",
 								nenek-nama    = "'.filter($_POST['nenekTB']).'"';
-
+*/
 				if (!isset($_POST['replid'])){ //add
 				// if ($jumc==0){
 					$tipex ='add';
-					$siswa = 'INSERT INTO '.$tb.' set '.$siswa;
-					$sqayah = 'INSERT INTO '.$tb_ayah.' set '.$ayah;
-					$sqibu = 'INSERT INTO '.$tb_ibu.' set '.$ibu;
-					$sqdar = 'INSERT INTO '.$tb_kontakdarurat.' set '.$dar;
-					$sqkel = 'INSERT INTO '.$tb_keluarga.' set '.$keluarga;
+					$siswa = 'INSERT INTO '.$siswa;
+					// $sqayah = 'INSERT INTO '.$tb_ayah.' set '.$ayah;
+					// $sqibu = 'INSERT INTO '.$tb_ibu.' set '.$ibu;
+					// $sqdar = 'INSERT INTO '.$tb_kontakdarurat.' set '.$dar;
+					// $sqkel = 'INSERT INTO '.$tb_keluarga.' set '.$keluarga;
 				}else{ //edit
 					$tipex ='edit';
-					$s=mysql_fetch_assoc(mysql_query('SELECT calonsiswa from psb_calonsiswa'));
-					$calonsiswa=$s['calonsiswa'];
-					$siswa = 'UPDATE '.$tb.' set '.$siswa.' WHERE calonsiswa='.$calonsiswa;
-					$sqayah = 'UPDATE '.$tb_ayah.' set '.$ayah.' WHERE calonsiswa='.$calonsiswa;
-					$sqibu = 'UPDATE '.$tb_ibu.' set '.$ibu.' WHERE calonsiswa='.$calonsiswa;
-					$sqdar = 'UPDATE '.$tb_kontakdarurat.' set '.$dar.' WHERE calonsiswa='.$calonsiswa;
-					$sqkel = 'UPDATE '.$tb_keluarga.' set '.$keluarga.' WHERE calonsiswa='.$calonsiswa;
+					// $s=mysql_fetch_assoc(mysql_query('SELECT calonsiswa from psb_calonsiswa'));
+					// $calonsiswa=$s['calonsiswa'];
+					// $siswa = 'UPDATE '.$tb.' set '.$siswa.' WHERE calonsiswa='.$calonsiswa;
+					// $sqayah = 'UPDATE '.$tb_ayah.' set '.$ayah.' WHERE calonsiswa='.$calonsiswa;
+					// $sqibu = 'UPDATE '.$tb_ibu.' set '.$ibu.' WHERE calonsiswa='.$calonsiswa;
+					// $sqdar = 'UPDATE '.$tb_kontakdarurat.' set '.$dar.' WHERE calonsiswa='.$calonsiswa;
+					// $sqkel = 'UPDATE '.$tb_keluarga.' set '.$keluarga.' WHERE calonsiswa='.$calonsiswa;
 
 				}									
 
+				// $jumc= mysql_num_rows(mysql_query('SELECT * from psb_calonsiswa'));
+				// var_dump($siswa);exit();
 				$exa = mysql_query($siswa);
 				$ida =  mysql_insert_id();
 				if(!$exa){
-					$out = '{"status";"gagal insert siswa"}';
+					$out = '{"status":"gagal insert siswa"}';
 				}else{
-					if ($jumc==0) { //add
+					$out = '{"status":"OK"}';
 						// $siswa.=', calonsiswa 	= '.$ida;
+					if (!isset($_POST['replid'])) { //add
+					// if ($jumc==0) { //add
 						$sqayah.=', calonsiswa 	= '.$ida;
 						$sqibu.=', calonsiswa 	= '.$ida;
 						$sqdar.=', calonsiswa 	= '.$ida;
 						$sqkel.=', calonsiswa 	= '.$ida;
 					}
-
+					// else{
 						$exayah= mysql_query($sqayah);
 						if (!$exayah) {
 							$out='{"status":"gagal ayah"}';
@@ -232,7 +236,8 @@
 			case 'ambiledit':
 				$s 		= ' SELECT 
 								t.*,
-								t.nama as siswa,
+								t.nama as nama_siswa,
+								/* Data Ortu*/
 								ta.nama as nama_ayah,
 								ta.warga as kebangsaan_ayah,
 								ta.tmplahir as tmplahir_ayah,
@@ -270,7 +275,7 @@
 							'status'          =>$stat,
 							'kriteria'        =>$r['kriteria'],
 							'golongan'        =>$r['golongan'],
-							'sumpokok'        =>$r['sumpokok'],
+							'sumpokok'        =>'Rp. '.number_format($r['sumpokok']),
 							'sumnet'          =>$r['sumnet'],
 							'sppbulan'        =>$r['sppbulan'],
 							'jmlangsur'       =>$r['jmlangsur'],
@@ -330,8 +335,8 @@
 					-inisialisasi nama field (SELECT) samakan dengan id textbox form (view/controller ) ex : "kebangsaan_ayah" 
 						query(model) = array/output(model) = ajax-success(controller) = textbox-form(view atau controller)   
 				*/
-				$s 		= ' SELECT
-							/*data siswa*/
+				/*$s 		= ' SELECT
+							
 								cs.nama nama_siswa,
 								cs.kelamin jk,
 								cs.tmplahir tmp_lahir,
@@ -340,12 +345,9 @@
 								cs.alamat,
 								cs.telpon telepon,
 								cs.darah goldarah,
-							/*data ayah siswa*/
 								a.nama nama_ayah,
 								a.warga kebangsaan_ayah,
-							/*data ibu siswa*/
 								i.nama nama_ibu
-							/*dst...*/
 	
 							FROM
 								psb_calonsiswa cs
@@ -354,13 +356,31 @@
 								JOIN psb_calonsiswa_kontakdarurat k ON k.calonsiswa = cs.replid
 								JOIN psb_calonsiswa_keluarga kel ON kel.calonsiswa = cs.replid
 							WHERE
-								cs.replid = '.$_POST['replid'];
+								cs.replid = '.$_POST['replid']; */
 								// print_r($s);exit();
-				/*$s 		= ' SELECT 
+				$s 		= ' SELECT 
 								t.*,
-								ta.*,
-								ti.*,
-								tk.*,
+								t.nama as nama_siswa,
+								/* Data Ortu*/
+								ta.nama as nama_ayah,
+								ta.warga as kebangsaan_ayah,
+								ta.tmplahir as tmplahir_ayah,
+								ta.tgllahir as tgllahir_ayah,
+								ta.pekerjaan as pekerjaan_ayah,
+								ta.telpon as telpon_ayah,
+								ta.pinbb as pinbb_ayah,
+								ta.email as email_ayah,
+								ti.nama as nama_ibu,
+								ti.warga as kebangsaan_ibu,
+								ti.tmplahir as tmplahir_ibu,
+								ti.tgllahir as tgllahir_ibu,
+								ti.pekerjaan as pekerjaan_ibu,
+								ti.telpon as telpon_ibu,
+								ti.pinbb as pinbb_ibu,
+								ti.email as email_ibu,
+								tk.nama as namalain,
+								tk.hubungan as hubungan,
+								tk.telpon as telponlain,
 								tkel.*
 							from 
 								'.$tb.' t
@@ -369,8 +389,8 @@
 								JOIN '.$tb_kontakdarurat.' tk ON tk.calonsiswa = t.replid
 								JOIN '.$tb_keluarga.' tkel ON tkel.calonsiswa = t.replid
 							WHERE 
-								t.replid='.$_POST['replid'];*/
-									// print_r($s);exit();
+								t.replid='.$_POST['replid'];
+				
 				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';

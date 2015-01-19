@@ -36,6 +36,7 @@
     <script src="../js/docs.js"></script>
     <!--<script src="js/github.info.js"></script>-->
     <script src="../js/start-screen.js"></script>
+    <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
     <!-- // <script type="../js/metro/metro-scroll.js"></script> -->
 
 
