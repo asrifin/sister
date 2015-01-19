@@ -400,8 +400,8 @@ var contentFR = '';
                         $('#hubunganTB').val(dt.hubungan);
                         $('#nomorTB').val(dt.telponlain);
 
-                        $('#kakekTB').val(dt.kakek-nama);
-                        $('#nenekTB').val(dt.nenek-nama);
+                        // $('#kakekTB').val(dt.kakek-nama);
+                        // $('#nenekTB').val(dt.nenek-nama);
                         cmbkriteria(dt.kriteria);
                         cmbgolongan(dt.golongan);
                         cmbagama(dt.agama);
