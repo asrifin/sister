@@ -51,8 +51,7 @@ var contentFR = '';
                             +'</div>'
                             //Data Siswa
                         +'<div style="overflow:scroll;height:500px;">'
-                        // +'<div style="overflow:scroll;height:500px; width:700px">' 
-                        // epiii
+                        +'<div style="overflow:scroll;height:500px; width:700px">' 
                         +'<table>'
                             +'<tr>'
                                 +'<td colspan="2"><b>Data Pribadi Siswa :</b></td>'
