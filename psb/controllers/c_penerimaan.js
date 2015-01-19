@@ -322,8 +322,6 @@ var content_stat = content_det = '';
                     cont= content_stat;
                     titl= 'Calon Siswa (belum dikonfirmasi)';
                     var res = sjax(dir,'aksi=ambiledit&subaksi=status&replid='+id);
-                    // alert(res);
-                    // console.log(res);
                     setTimeout(function(){
                         $('#namaTD').html(res.data.nama);
                         $('#nopendaftaranTD').html(res.data.nopendaftaran);
