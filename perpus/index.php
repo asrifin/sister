@@ -18,7 +18,7 @@
     <meta name="author" content="Sergey S. Pimenov, Ukraine, Kiev">
 
     <link href="../css/metro-bootstrap.css" rel="stylesheet">
-    <link href="../css/metro-bootstrap-responsive.css" rel="stylesheet">
+    <!-- <link href="../css/metro-bootstrap-responsive.css" rel="stylesheet"> -->
     <link href="../css/iconFont.css" rel="stylesheet">
     <link href="../css/docs.css" rel="stylesheet">
     <link href="../prettify/prettify.css" rel="stylesheet">
@@ -50,6 +50,7 @@
 </head>
 
 <body class="metro">
+<div class="container">
     <!-- <nav class="navigation-bar light fixed-top"> -->
     <nav class="navigation-bar fixed-top">
         <nav class="navigation-bar-content">
@@ -64,13 +65,14 @@
             </a>
             <span class="element-divider"></span>
             <div class="element">
-                <a class="dropdown-toggle" href="#">inventaris</a>
+                <a class="dropdown-toggle" href="#">Menu Utama</a>
                 <ul class="dropdown-menu" data-role="dropdown">
+                    <li><a href="koleksi">Katalog</a></li>
                     <li><a href="koleksi">Daftar Koleksi</a></li>
-                    <li><a href="aktivitas">Aktivitas</a></li>
+<!--                     <li><a href="aktivitas">Aktivitas</a></li>
                     <li><a href="peminjaman">Peminjaman</a></li>
                     <li><a href="pengembalian">Pengembalian</a></li>
-                </ul>
+ -->                </ul>
             </div>
             <div class="element">
                 <a class="dropdown-toggle" href="#">Master</a>
@@ -147,20 +149,28 @@
                         require $d.'v_jenisbuku.php';
                     break;
 
-                    // inventaris
+                    // Menu Utama
                     case 'vkoleksi':
                         require $d.'v_koleksi.php';
                     break;
-                    case 'vaktivitas':
-                        require $d.'v_aktivitas.php';
+                    case 'vkatalog':
+                        require $d.'v_katalog.php';
                     break;
-                    case 'vpeminjam':
-                        require $d.'v_peminjam.php';
+                    case 'vdata-anggota':
+                        require $d.'v_data_anggota.php';
                     break;
                     case 'vkembali':
                         require $d.'v_kembali.php';
                     break;
-
+                    case 'vsirkulasi':
+                        require $d.'v_sirkulasi.php';
+                    break;
+                    case 'vstok-opname':
+                        require $d.'v_stok_opname.php';
+                    break;
+                    case 'vopac':
+                        require $d.'v_opac.php';
+                    break;
                     default:
                         require $d.'v_home.php';
                     break;
@@ -168,6 +178,7 @@
             }
         ?>
     </div>
+</div>
     <script src="js/hitua.js"></script>
     <script src="js/main.js"></script>
 

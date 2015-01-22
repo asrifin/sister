@@ -9,7 +9,7 @@
         <meta name="author" content="Sergey S. Pimenov, Ukraine, Kiev">
 
         <link href="css/metro-bootstrap.css" rel="stylesheet">
-        <link href="css/metro-bootstrap-responsive.css" rel="stylesheet">
+        <!-- <link href="css/metro-bootstrap-responsive.css" rel="stylesheet"> -->
         <link href="css/iconFont.css" rel="stylesheet">
         <link href="css/docs.css" rel="stylesheet">
         <link href="js/prettify/prettify.css" rel="stylesheet">
@@ -35,6 +35,7 @@
     <body class="metro">
         <!--menu utama / module-->
         <div class="tile-area tile-area-dark" id="tile-module">
+        <div class="container">
             <!-- <h1 class="tile-area-title fg-white">Start</h1> -->
             <!-- <h1 class="tile-area-title fg-white">S!5T3R n635oT - 4L@Y</h1> -->
             <h1 class="tile-area-title fg-white">SISTER</h1>
@@ -205,6 +206,7 @@
             </div> <!-- End group 2-->
 
         </div>
+    </div>
         <script src="js/main.js"></script>
         <script src="js/hitua.js"></script>
     </body>
