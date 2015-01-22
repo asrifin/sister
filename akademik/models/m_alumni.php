@@ -17,7 +17,10 @@
 			case 'tampil':
 				$tahunlulus = isset($_POST['tahunlulusS'])?filter(trim($_POST['tahunlulusS'])):'';
 				$sql = 'SELECT *
-						FROM '.$tb.' 
+						FROM aka_alumni a
+						LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
+						
+
 						WHERE 
 							tahunajaran = "%'.$tahunajaran.'%" 
 						ORDER 
@@ -28,14 +31,9 @@
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
 
-				$aksi    ='tampil';
-				$subaksi ='';
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
+				$recpage= 5;//jumlah data per halaman
+				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
 				#ada data
@@ -44,29 +42,18 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
-						if($res['aktif']=1){
-							$dis  = 'disabled';
-							$ico  = 'checkmark';
-							$hint = 'telah Aktif';
-							$func = '';
-						}else{
-							$dis  = '';
-							$ico  = 'blocked';
-							$hint = 'Aktifkan';
-							$func = 'onclick="aktifkan('.$res['replid'].');"';
-						}
 						$btn ='<td>
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
-									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['tingkat'].'</td>
-									<td>'.$res['keterangan'].'</td>
+									<td>'.$res['Tahun Lulus'].'</td>
+									<td>'.$res['Nama'].'</td>
+									<td>'.$res['NIP'].'</td>
+									<td>'.$res['Keterangan'].'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -79,7 +66,7 @@
 				#link paging
 				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-			break; 
+			break;  
 			// view -----------------------------------------------------------------
 
 			// add / edit -----------------------------------------------------------------

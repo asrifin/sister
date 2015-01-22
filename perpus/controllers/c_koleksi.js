@@ -75,7 +75,7 @@ var contentFR ='';
         $('#lokasiS').on('change',function(){
             cmbjenisbuku($(this).val());
         });$('#jenisbukuS').on('change',function (){
-            viewTB();
+            cmbtingkatbuku($(this).val());
         });$('#tingkatbukuS').on('change',function (){
             viewTB();
         });$('#barkodeS').on('keydown',function (e){ // keydown : textbox
@@ -251,6 +251,8 @@ function cmbtingkatbuku(tgt){
         var aksi ='aksi=tampil';
         // var cari ='&lokasiS='+lok
         var cari ='&lokasiS='+$('#lokasiS').val()
+                    +'&jenisbukuS='+$('#jenisbukuS').val()
+                    +'&tingkatbukuS='+$('#tingkatbukuS').val()
                     +'&barkodeS='+$('#barkodeS').val()
                     +'&idbukuS='+$('#idbukuS').val()
                     +'&judulS='+$('#judulS').val()
