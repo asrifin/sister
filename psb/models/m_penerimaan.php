@@ -103,6 +103,7 @@
 				switch ($_POST['subaksi']) {
 					case 'status':
 						$s1 = 'UPDATE psb_calonsiswa set status  = 1 WHERE replid='.$_POST['replid'];
+						
 						$s2 = $tb.' set nis           = '.$_POST['nisTB'].',
 										nisn          = '.$_POST['nisnTB'].',
 										nopendaftaran = '.$_POST['nopendaftaran'].',
