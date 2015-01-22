@@ -52,20 +52,18 @@
 							k.proses = p.replid AND
 							p.tahunajaran = t.replid AND
 							t.replid = '.$tahunajaran;
-				// print_r($sql);exit();
+				print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
 				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
+				$recpage = 5;
 				$aksi    ='tampil';
 				$subaksi ='';
-
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-				$result =$obj->result;
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$result  = $obj->result;
 
 				#ada data
 				$jum	= mysql_num_rows($result) or die(mysql_error());
@@ -208,7 +206,7 @@
 						AND t.replid = '.$_POST['tahunajaran'].'
 						ORDER BY
 							k.kelompok ASC';
-				// print_r($s);exit();
+				// print_r($s);e xit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar = $dt=array();

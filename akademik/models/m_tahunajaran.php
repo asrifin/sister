@@ -174,7 +174,6 @@
 
 			// cmbtahunajaran -----------------------------------------------------------------
 			case 'cmb'.$mnu:
-				// var_dump($_POST);exit();
 				$w='';
 				if(isset($_POST['replid'])){
 					$w.='where replid ='.$_POST['replid'];

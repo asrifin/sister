@@ -151,17 +151,12 @@
 						'.$w.'		
 						ORDER  BY urut asc';
 
-				// $s	= ' SELECT *
-				// 		from '.$tb.'
-				// 		'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
-				// 		ORDER  BY urut asc';
 				$e  = mysql_query($s);
-				// var_dump($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
 
 				if(!$e){ //error
-					$ar = array('status'=>'error');
+					$ar = array('status'=>'error'.mysql_error());
 				}else{
 					if($n=0){ // kosong 
 						$ar = array('status'=>'kosong');

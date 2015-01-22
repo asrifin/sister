@@ -1,5 +1,5 @@
 
-<div class="tile-group six">
+<div class="tile-group four">
     <div class="tile-group-title">Menu Utama</div>
 
     <!-- kriteria calon siswa -->
@@ -38,7 +38,7 @@
     <!-- golongan calon siswa -->
     <a href="penerimaan" class="tile double bg-lightOrange" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-user-2"></span>
         </div>
         <div class="brand">
             <div class="label">Penerimaan Siswa Baru</div>
@@ -47,15 +47,15 @@
     <!--end of  golongan calon siswa -->
 
     <!-- golongan calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile double bg-lightOrange" data-click="transform">
+<!--     <a href="kriteria-calon-siswa" class="tile double bg-lightOrange" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-address-book"></span>
         </div>
         <div class="brand">
-            <div class="label">golongan calon siswa</div>
+            <div class="label">Golongan Calon Siswa</div>
         </div>
     </a>
-    <!--end of  golongan calon siswa -->
+ -->    <!--end of  golongan calon siswa -->
 
     <!-- golongan calon siswa 
     <a href="kriteria-calon-siswa" class="tile double bg-lightOrange" data-click="transform">
@@ -71,13 +71,13 @@
 
 </div> <!-- End group -->
 
-<div class="tile-group four">
+<div class="tile-group triple">
     <div class="tile-group-title">Referensi</div>
 
     <!-- kriteria calon siswa -->
     <a href="kriteria-calon-siswa" class="tile bg-lightBlue" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-file"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Kriteria Calon Siswa</div>
@@ -88,7 +88,7 @@
     <!-- golongan calon siswa -->
     <a href="golongan-calon-siswa" class="tile bg-yellow" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-file"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Golongan Calon Siswa</div>
@@ -99,7 +99,7 @@
     
     <a href="set-biaya-calon-siswa" class="tile bg-lightRed" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-file"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Set Biaya Calon Siswa</div>
@@ -108,10 +108,19 @@
     
     <a href="set-angsuran" class="tile bg-green" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-file"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Set Angsuran</div>
+        </div>
+    </a>
+
+    <a href="set-diskon" class="tile bg-blue" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Set diskon</div>
         </div>
     </a>
 

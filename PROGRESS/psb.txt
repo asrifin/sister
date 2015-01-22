@@ -8,15 +8,15 @@
 ______________________________________________________
 
 * periode penerimaan (P)
-	- view > warna table header
+	- view > warna table header	+
   	- form : 
-     		-title form : "undefined periode"
-	     	-angkatan : combo tidak ter-select
-  	- search > belum ada
+     		-title form : "undefined periode"	-
+	     	-angkatan : combo tidak ter-select  +
+  	- search > belum ada	( tanpa Search)
 
 * Kelompok Pendaftaran (P)
-	- paging > Menampilkan syntax query (klik next)
-	- filtering > Combo "Tahun-Ajaran", table tidak tampil (onchange)
+	- paging > Menampilkan syntax query (klik next)	-
+	- filtering > Combo "Tahun-Ajaran", table tidak tampil (onchange)	
 
 * Pendataan calon siswa (P)
 	- filtering >  combo "kelompok", table tidak ngefek (query)
@@ -27,35 +27,35 @@ ______________________________________________________
 	- paging > klik next, table tidak tampil
 ____________________________________________________
 
-* golongan calon siswa (P)
+* golongan calon siswa (C)
 	- view > 
-		- table header (theme)
+		- table header (theme) +
 		- form (dark backgound >theme)  
-		- button add (theme)
+		- button add (theme) 
 		- paging > ...
 	- searching :
-		- button search
-		- event onkeydown (enter)
+		- button search +
+		- event onkeydown (enter) +
 	
-* kriteria calon siswa (P)
+* kriteria calon siswa (C)
 	- view :
-		- table header (theme)
+		- table header (theme) +
 		- form (dark backgound >theme)  
 		- button add (theme)
 	- paging > ...
 	- searching :
-		- button search 
-		- event onkeydown (enter)
+		- button search 	+
+		- event onkeydown (enter)  +
 
 * Set Biaya Calon Siswa (P)
 	- view gk tampil
 
-* set angsuran (P)
+* set angsuran (C)
 	- view :
-		- table header (theme)
+		- table header (theme)  +
 		- form (dark backgound >theme)  
 		- button add (theme)
 	- paging > ...
 	- searching :
-		- button search 
-		- event onkeydown (enter)
+		- button search  +
+		- event onkeydown (enter)  +

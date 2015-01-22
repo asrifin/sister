@@ -1,5 +1,5 @@
 
-<div class="tile-group six">
+<div class="tile-group four">
     <div class="tile-group-title">Transaksi Keuangan</div>
 
     <!--Transaksi -->
@@ -47,7 +47,7 @@
     <!--end of  Pembayaran Uang Pangkal -->
 
     <!-- Pembayaran Uang Sekolah -->
-    <a href="pembayaran-uang-sekolah" class="tile double bg-lightOrange" data-click="transform">
+    <a href="pembayaran-uang-sekolah" class="tile double bg-violet" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-pencil"></span>
         </div>
@@ -58,7 +58,7 @@
     <!--end of  Pembayaran Uang Sekolah -->
 
     <!-- Inventory  -->
-    <a href="inventory" class="tile double bg-lightOrange" data-click="transform">
+    <a href="inventory" class="tile double bg-lightPink" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-box"></span>
         </div>
@@ -71,13 +71,13 @@
 
 </div> <!-- End group -->
 
-<div class="tile-group four">
+<div class="tile-group double">
     <div class="tile-group-title">Referensi</div>
 
     <!-- Tahun Buku -->
     <a href="tahun-buku" class="tile bg-lightBlue" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-clipboard-2"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Tahun Buku</div>
@@ -88,7 +88,7 @@
     <!-- Kode Rekening -->
     <a href="rekening" class="tile bg-yellow" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-clipboard-2"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Kode Rekening</div>
@@ -99,7 +99,7 @@
     <!-- Tahun Anggaran -->
     <a href="tahun-anggaran" class="tile bg-lightRed" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-clipboard-2"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Tahun Anggaran</div>

@@ -243,22 +243,10 @@ var contentFR='';
                             }else{
                                 out=dt.departemen[0].nama;
                             }$('#departemenTB').val(out);
-                        // form :: tahun ajaran (disabled field) --------------
-                            // $.ajax({
-                            //     url:dir3,
-                            //     data:'aksi=cmbtahunajaran&departemen='+$('#departemenS').val()+'&replid='+$('#tahunajaranS').val(),
-                            //     dataType:'json',
-                            //     type:'post',
-                            //     success:function(dt2){
-                            //         var out2;
-                            //         if(dt.status!='sukses'){
-                            //             out2=dt2.status;
-                            //         }else{
-                            //             out2=dt2.tahunajaran[0].tahunajaran;
-                            //         }$('#tahunajaranTB').val(out2);
-                                    
+                         
                                     if (id!='') { // edit mode
                                     // form :: edit :: tampilkan data 
+                                        titlex='<span class="icon-pencil"></span> Ubah ';
                                         $.ajax({
                                             url:dir,
                                             data:'aksi=ambiledit&replid='+id,
@@ -280,8 +268,9 @@ var contentFR='';
                                             }
                                         });
                                     // end of form :: edit :: tampilkan data 
-                                        titlex='<span class="icon-pencil"></span> Ubah ';
-                                    }else{ //add mode
+                                        // titlex='<span class="icon-pencil"></span> Ubah ';
+                                    }
+                                    else{ //add mode
                                         titlex='<span class="icon-plus-2"></span> Tambah ';
                                     }
                             //     }

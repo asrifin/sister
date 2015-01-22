@@ -18,7 +18,7 @@
     <meta name="author" content="Sergey S. Pimenov, Ukraine, Kiev">
 
     <link href="css/metro-bootstrap.css" rel="stylesheet">
-    <link href="css/metro-bootstrap-responsive.css" rel="stylesheet">
+    <!-- <link href="css/metro-bootstrap-responsive.css" rel="stylesheet"> -->
     <link href="css/iconFont.css" rel="stylesheet">
     <link href="css/docs.css" rel="stylesheet">
     <!-- <link href="css/paging.css" rel="stylesheet"> -->
@@ -35,7 +35,7 @@
 
     <!-- Local JavaScript -->
     <script src="js/docs.js"></script>
-    <!--<script src="js/github.info.js"></script>-->
+    <script src="js/github.info.js"></script>
     <script src="js/start-screen.js"></script>
 
     <!-- js for datatables -->
@@ -44,11 +44,11 @@
     <script type="text/javascript" language="javascript" src="js/shCore.js"></script>
     <link rel="stylesheet" type="text/css" href="css/shCore.css">-->
 
-
-    <title>.:SISTER:.</title>
+    <title>.: SISTER Akademik :.</title>
 </head>
 
 <body class="metro">
+    <div class="container">
     <!-- <nav class="navigation-bar light fixed-top"> -->
     <nav class="navigation-bar fixed-top">
         <nav class="navigation-bar-content">
@@ -183,6 +183,7 @@
             }
         ?>
     </div>
+</div>
     <script src="js/hitua.js"></script>
     <script src="js/main.js"></script>
 

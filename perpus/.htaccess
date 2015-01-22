@@ -20,8 +20,12 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^jenisbuku/?$   								index.php?page=vjenisbuku
 
 	#inventaris
+	RewriteRule   ^katalog/?$   								index.php?page=vkatalog
 	RewriteRule   ^koleksi/?$   								index.php?page=vkoleksi
-	RewriteRule   ^aktivitas/?$   								index.php?page=vaktivitas
+	RewriteRule   ^data-anggota/?$ 								index.php?page=vdata-anggota
+	RewriteRule   ^sirkulasi/?$   								index.php?page=vsirkulasi
+	RewriteRule   ^stok-opname/?$ 								index.php?page=vstok-opname
+	RewriteRule   ^opac/?$		   								index.php?page=vopac
 
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 

@@ -9,7 +9,7 @@
         <meta name="author" content="Sergey S. Pimenov, Ukraine, Kiev">
 
         <link href="css/metro-bootstrap.css" rel="stylesheet">
-        <link href="css/metro-bootstrap-responsive.css" rel="stylesheet">
+        <!-- <link href="css/metro-bootstrap-responsive.css" rel="stylesheet"> -->
         <link href="css/iconFont.css" rel="stylesheet">
         <link href="css/docs.css" rel="stylesheet">
         <link href="js/prettify/prettify.css" rel="stylesheet">
@@ -35,6 +35,7 @@
     <body class="metro">
         <!--menu utama / module-->
         <div class="tile-area tile-area-dark" id="tile-module">
+        <div class="container">
             <!-- <h1 class="tile-area-title fg-white">Start</h1> -->
             <!-- <h1 class="tile-area-title fg-white">S!5T3R n635oT - 4L@Y</h1> -->
             <h1 class="tile-area-title fg-white">SISTER</h1>
@@ -107,7 +108,7 @@
                                 <img src="images/employee.png">
                             </center>
                             <h2 class="fg-white no-margin">Kepegawaian</h2><br>
-                            <p class="tertiary-text fg-white">Segala tentang kepegawaian ada disini deh bro silahkan diklik gan.....</p>
+                            <p class="tertiary-text fg-white">Segala tentang kepegawaian ada disini.....</p>
                         </div>
                     </div>
                 </a>
@@ -122,7 +123,7 @@
                             </center>
                             <h2 class="fg-white no-margin">Keuangan</h2>
                             <br>
-                            <p class="tertiary-text fg-white">Segala tentang kepegawaian ada disini deh bro silahkan diklik gan.....</p>
+                            <p class="tertiary-text fg-white">Segala tentang keuangan ada disini.....</p>
                         </div>
                     </div>
                 </a>
@@ -153,7 +154,7 @@
                                 <img src="images/sarpras.png">
                             </center>
                             <h2 class="fg-white no-margin">Sarana Prasarana</h2><br>
-                            <p class="tertiary-text fg-white">Segala tentang kepegawaian ada disini deh bro silahkan diklik gan.....</p>
+                            <p class="tertiary-text fg-white">Segala tentang Sarana Prasarana ada disini.....</p>
                         </div>
                     </div>
                 </a>
@@ -168,7 +169,7 @@
                     </div>
                     <div class="tile-content email">
                         <div class="email-data-text">Keterangan :</div>
-                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disisni ... </div>
+                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disini ... </div>
                     </div>
                     <div class="brand">
                         <div class="label">
@@ -190,7 +191,7 @@
                     </div>
                     <div class="tile-content email">
                         <div class="email-data-text">Keterangan :</div>
-                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disisni ... </div>
+                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disini ... </div>
                     </div>
                     <div class="brand">
                         <div class="label">
@@ -205,6 +206,7 @@
             </div> <!-- End group 2-->
 
         </div>
+    </div>
         <script src="js/main.js"></script>
         <script src="js/hitua.js"></script>
     </body>
