@@ -19,8 +19,9 @@
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
-            <th class="text-center">No.</th>
-            <th class="text-left">Tingkat </th>
+            <th class="text-center">NISN</th>
+            <th class="text-left">Nama </th>
+            <th class="text-left">Tahun Lulus </th>
             <th class="text-left">Keterangan</th>
             <th class="text-left">Aksi</th>
         </tr>

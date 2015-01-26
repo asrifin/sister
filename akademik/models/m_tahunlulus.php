@@ -22,7 +22,7 @@
 						WHERE 
 							departemen like "%'.$departemen.'%" 
 						ORDER 
-							BY nama asc';
+							BY nama desc';
 							// angkatan like "%'.$angkatan.'%" and 
 							// keterangan like "%'.$keterangan.'%" 
 				if(isset($_POST['starting'])){ //nilai awal halaman
@@ -130,7 +130,7 @@
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY '.$mnu.' desc';
+						ORDER  BY nama asc';
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
