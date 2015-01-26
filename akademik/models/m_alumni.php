@@ -15,16 +15,14 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
+			$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
 				$tahunlulus = isset($_POST['tahunlulusS'])?filter(trim($_POST['tahunlulusS'])):'';
-				$sql = 'SELECT *
-						FROM aka_alumni a
-						LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
-						
-
-						WHERE 
-							tahunajaran = "%'.$tahunajaran.'%" 
-						ORDER 
-							BY replid asc';
+				$sql = 'SELECT a.replid, t.nama AS tahunlulus, s.nama AS siswa, a.keterangan AS ket, s.nisn
+						 FROM aka_alumni a 
+						 LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
+						 LEFT JOIN aka_siswa s ON s.replid=a.siswa 
+						 WHERE t.departemen = '.$departemen.'
+						ORDER BY a.tahunlulus ASC';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -50,10 +48,10 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$res['Tahun Lulus'].'</td>
-									<td>'.$res['Nama'].'</td>
-									<td>'.$res['NIP'].'</td>
-									<td>'.$res['Keterangan'].'</td>
+									<td>'.$res['nisn'].'</td>
+									<td>'.$res['siswa'].'</td>
+									<td>'.$res['tahunlulus'].'</td>
+									<td>'.$res['ket'].'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -97,38 +95,43 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT *
-							from '.$tb.'
-							WHERE 
-								replid='.$_POST['replid'];
+				$s 		= ' SELECT a.replid, t.nama AS tahunlulus, s.nama AS siswa, a.keterangan AS ket, s.nisn
+						 FROM aka_alumni a 
+						 LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
+						 LEFT JOIN aka_siswa s ON s.replid=a.siswa
+						WHERE
+						a.replid='.$_POST['replid'];
+				// print_r($s);exit();	
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'tingkat'    =>$r['tingkat'],
-							'keterangan' =>$r['keterangan'],
+							'tahunlulus'    =>$r['tahunlulus'],
+							'siswa'    		=>$r['siswa'],
+							'nisn'    		=>$r['nisn'],
+							'ket' =>$r['ket']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 
-			// aktifkan -----------------------------------------------------------------
-			case 'aktifkan':
-				$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0" where departemen = '.$_POST['departemen']);
-				if(!$e1){
-					$stat='gagal menonaktifkan';
-				}else{
-					$s2 = 'UPDATE  '.$tb.' set aktif="1" where replid = '.$_POST['replid'];
-					$e2 = mysql_query($s2);
-					if(!$e2){
-						$stat='gagal mengaktifkan';
-					}else{
-						$stat='sukses';
-					}
-				}$out  = json_encode(array('status'=>$stat));
-				//var_dump($stat);exit();
-			break;
-			// aktifkan -----------------------------------------------------------------
+			// // aktifkan -----------------------------------------------------------------
+			// case 'aktifkan':
+			// 	$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0" where departemen = '.$_POST['departemen']);
+			// 	if(!$e1){
+			// 		$stat='gagal menonaktifkan';
+			// 	}else{
+			// 		$s2 = 'UPDATE  '.$tb.' set aktif="1" where replid = '.$_POST['replid'];
+			// 		$e2 = mysql_query($s2);
+			// 		if(!$e2){
+			// 			$stat='gagal mengaktifkan';
+			// 		}else{
+			// 			$stat='sukses';
+			// 		}
+			// 	}$out  = json_encode(array('status'=>$stat));
+			// 	//var_dump($stat);exit();
+			// break;
+			// // aktifkan -----------------------------------------------------------------
 
 			// cmbtingkat -----------------------------------------------------------------
 			case 'cmb'.$mnu:
