@@ -122,7 +122,13 @@
 						from '.$tb.'
 						'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
 						ORDER  BY kode asc';
-
+				
+				// $s	= ' SELECT kode,
+				// 			   nama as jenisbuku,
+				// 			   keterangan
+				// 		from '.$tb.'
+				// 		'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
+				// 		ORDER  BY kode asc';
 				// var_dump($s);
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
@@ -146,7 +152,8 @@
 				$out=json_encode($ar);
 				// echo $out;
 			break;
-			// end of cmbjenisbuku ---------------------------------------------------------
+			// end of cmbjenisbuku ---------------------------------------------------------		
+
 		}
 	}
 	echo $out;

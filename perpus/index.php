@@ -46,7 +46,7 @@
     <link rel="stylesheet" type="text/css" href="css/shCore.css">-->
 
 
-    <title>.:SISTER:.</title>
+    <title>.:SISTER Perpustakaan:.</title>
 </head>
 
 <body class="metro">
@@ -67,7 +67,7 @@
             <div class="element">
                 <a class="dropdown-toggle" href="#">Menu Utama</a>
                 <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="koleksi">Katalog</a></li>
+                    <li><a href="katalog">Katalog</a></li>
                     <li><a href="koleksi">Daftar Koleksi</a></li>
 <!--                     <li><a href="aktivitas">Aktivitas</a></li>
                     <li><a href="peminjaman">Peminjaman</a></li>
@@ -179,7 +179,7 @@
         ?>
     </div>
 </div>
-    <script src="js/hitua.js"></script>
+    <!-- // <script src="js/hitua.js"></script> -->
     <script src="js/main.js"></script>
 
 </body>
