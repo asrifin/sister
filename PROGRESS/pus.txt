@@ -17,6 +17,8 @@ ____________________________________________________
 	
 	- sorting : all column (belum ada lib/contoh) 
 * katalog (P)
+	- edit field yang belum ( jenis buku, bahasa dan tahun)
+	- Insert (foto)
 * data anggota (P)
 * sirkulasi (P)
 * OPAC (P)

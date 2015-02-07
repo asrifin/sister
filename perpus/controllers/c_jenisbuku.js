@@ -42,7 +42,8 @@ var contentFR ='';
         $('#kodeS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
-        });$('#namaS').keydown(function (e){
+        });
+        $('#namaS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
         });$('#keteranganS').keydown(function (e){

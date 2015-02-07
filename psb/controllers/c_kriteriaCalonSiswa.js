@@ -7,7 +7,7 @@ var contentFR='';
                         +'<input  id="idformH" type="hidden">' 
                         +'<label>Kriteria</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="kriteriaTB" id="kriteriaTB">'
+                            +'<input required type="text" placeholder="kriteria" name="kriteriaTB" id="kriteriaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>keterangan</label>'
