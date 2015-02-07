@@ -135,6 +135,7 @@
 							from '.$tb.'
 							WHERE 
 								replid='.$_POST['replid'];
+				// var_dump($s);exit();
 				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
