@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu= $tb = 'departemen';
+	$mnu= $tb = 'aka_jenismutasi';
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -13,17 +13,14 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$nama       = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
-				$alamat  = isset($_POST['alamatS'])?filter(trim($_POST['alamatS'])):'';
-				$telepon = isset($_POST['teleponS'])?filter(trim($_POST['teleponS'])):'';
+				// $nama       = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
+				// $alamat  = isset($_POST['alamatS'])?filter(trim($_POST['alamatS'])):'';
+				// $telepon = isset($_POST['teleponS'])?filter(trim($_POST['teleponS'])):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
-						WHERE 
-							nama like "%'.$nama.'%" and 
-							alamat like "%'.$alamat.'%" and 
-							telepon like "%'.$telepon.'%" 
+						 
 						ORDER 
-							BY urut asc';
+							BY nama asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -43,19 +40,8 @@
 				$jum	= mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
-					// $nox 	= $starting+1;
+					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
-						// urutan
-							$nox = '<select replid1="'.$res['replid'].'" urutan1="'.$res['urut'].'" onchange="urutFC(this);" >';
-							for($i=1; $i<=$jum; $i++){
-								if($i==$res['urut'])
-									$nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
-								else
-									$nox.='<option value="'.$i.'">'.$i.'</option>';
-							}$nox.='</select>';
-						// end of urutan
-
-						// action button
 						$btn ='<td>
 									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -63,17 +49,10 @@
 									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 								 </td>';
-						//end of  action button
-
-						// table row
-						$out.= '<tr id="TR_'.$res['replid'].'">
-									<td>'.$nox.'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
-									<td>'.$res['alamat'].'</td>
-									<td>'.$res['telepon'].'</td>
+						$out.= '<tr>
+									<td>'.$res['nama'].'</td>
 									'.$btn.'
 								</tr>';
-						// end of table row
 						$nox++;
 					}
 				}else{ #kosong
@@ -89,17 +68,9 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	nama 	= "'.filter($_POST['namaTB']).'",
-										alamat 	= "'.filter($_POST['alamatTB']).'",
-										telepon	= "'.filter($_POST['teleponTB']).'"';
-				if(isset($_POST['replid'])){
-					$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
-				}else{
-					$n  = mysql_num_rows(mysql_query('SELECT * from '.$tb));
-					$s2 = 'INSERT INTO '.$s.', urut='.($n+1);
+				$s 		= $tb.' set 	nama 	= "'.filter($_POST['namaTB']).'"';
 
-				}
-				// $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array('status'=>$stat));
@@ -128,15 +99,13 @@
 				// var_dump($s);
 				$out 	= json_encode(array(
 							'status'  =>$stat,
-							'nama'    =>$r['nama'],
-							'alamat'  =>$r['alamat'],
-							'telepon' =>$r['telepon']
+							'nama'    =>$r['nama']
 						));
 			break;
 			// ambiledit ------			
 
 			// cmbdepartemen -----------------------------------------------------------------
-			case 'cmbdepartemen':
+			case 'cmbjenismutasi':
 				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
@@ -147,16 +116,21 @@
 				}
 				
 				$s	= ' SELECT *
-						from '.$tb.'
+						from '.$tb.' 
 						'.$w.'		
-						ORDER  BY urut asc';
+						ORDER  BY replid asc';
 
+				// $s	= ' SELECT *
+				// 		from '.$tb.'
+				// 		'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
+				// 		ORDER  BY urut asc';
 				$e  = mysql_query($s);
+				// var_dump($s);exit();
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
 
 				if(!$e){ //error
-					$ar = array('status'=>'error'.mysql_error());
+					$ar = array('status'=>'error');
 				}else{
 					if($n=0){ // kosong 
 						$ar = array('status'=>'kosong');
@@ -168,41 +142,41 @@
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
 						}
-						$ar = array('status'=>'sukses','departemen'=>$dt);
+						$ar = array('status'=>'sukses','nama'=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;
 			// cmbdepartemen -----------------------------------------------------------------
 
-			// urutan -----------------------------------------------------------------
-			case 'urutan':
-				// 1 = asal
-				// 2 = tujuan
-				$_1 = mysql_fetch_assoc(mysql_query('SELECT urut from '.$tb.' WHERE replid='.$_POST['replid1']));
-				$_2 = mysql_fetch_assoc(mysql_query('SELECT replid from '.$tb.' WHERE urut='.$_POST['urutan2']));
-				$s1		= ' UPDATE '.$tb.' 
-							SET urut = '.$_POST['urutan2'].'  
-							WHERE 
-								replid='.$_POST['replid1'];
-				$s2		= ' UPDATE '.$tb.' 
-							SET urut = '.$_1['urut'].'  
-							WHERE 
-								replid='.$_2['replid'];
-				// var_dump($s1);exit();
-				$e1 	= mysql_query($s1);
-				if(!$e1){
-					$stat='gagal ubah urutan semula ';
-				}else{
-					$e2 = mysql_query($s2);
-					if(!$e2)
-						$stat = 'gagal ubah urutan kedua';
-					else
-						$stat= 'sukses';
-				}
-				$out 	= json_encode(array(
-							'status'  =>$stat,
-						));
-			break;
+			// // urutan -----------------------------------------------------------------
+			// case 'urutan':
+			// 	// 1 = asal
+			// 	// 2 = tujuan
+			// 	$_1 = mysql_fetch_assoc(mysql_query('SELECT urut from '.$tb.' WHERE replid='.$_POST['replid1']));
+			// 	$_2 = mysql_fetch_assoc(mysql_query('SELECT replid from '.$tb.' WHERE urut='.$_POST['urutan2']));
+			// 	$s1		= ' UPDATE '.$tb.' 
+			// 				SET urut = '.$_POST['urutan2'].'  
+			// 				WHERE 
+			// 					replid='.$_POST['replid1'];
+			// 	$s2		= ' UPDATE '.$tb.' 
+			// 				SET urut = '.$_1['urut'].'  
+			// 				WHERE 
+			// 					replid='.$_2['replid'];
+			// 	// var_dump($s1);exit();
+			// 	$e1 	= mysql_query($s1);
+			// 	if(!$e1){
+			// 		$stat='gagal ubah urutan semula ';
+			// 	}else{
+			// 		$e2 = mysql_query($s2);
+			// 		if(!$e2)
+			// 			$stat = 'gagal ubah urutan kedua';
+			// 		else
+			// 			$stat= 'sukses';
+			// 	}
+			// 	$out 	= json_encode(array(
+			// 				'status'  =>$stat,
+			// 			));
+			// break;
 			// urutan ------			
 		}
 	}echo $out;

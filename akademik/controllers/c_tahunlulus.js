@@ -1,4 +1,4 @@
-var mnu  ='angkatan';
+var mnu  ='tahunlulus';
 var mnu2 ='departemen';
 var dir  ='models/m_'+mnu+'.php';
 var dir2 ='models/m_'+mnu2+'.php';
@@ -14,16 +14,16 @@ var contentFR ='';
                             +'<input disabled="disabled" name="departemenTB" id="departemenTB" class="span2">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>angkatan</label>'
+                        +'<label>Tahun Lulus</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="angkatanTB" id="angkatanTB">'
+                            +'<input required type="text" name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>keterangan</label>'
-                        +'<div class="input-control text">'
-                            +'<input required type="text" name="keteranganTB" id="keteranganTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
+                        // +'<label>keterangan</label>'
+                        // +'<div class="input-control text">'
+                        //     +'<input required type="text" name="keteranganTB" id="keteranganTB">'
+                        //     +'<button class="btn-clear"></button>'
+                        // +'</div>'
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -42,22 +42,16 @@ var contentFR ='';
         });
 
         //search action
-        $('#angkatanS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB($('#departemenS').val());
-        });$('#keteranganS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB($('#departemenS').val());
-        });$('#departemenS').on('change',function(){
+        $('#departemenS').on('change',function(){
             viewTB($(this).val());
         })
 
         // search button
-        $('#cariBC').on('click',function(){
-            $('#cariTR').toggle('slow');
-            $('#angkatanS').val('');
-            $('#keteranganS').val('');
-        });
+        // $('#cariBC').on('click',function(){
+        //     $('#cariTR').toggle('slow');
+        //     $('#angkatanS').val('');
+        //     $('#keteranganS').val('');
+        // });
 
     }); 
 // end of main function ---
@@ -118,9 +112,7 @@ var contentFR ='';
 // view table ---
     function viewTB(dep){
         var aksi ='aksi=tampil';
-        var cari = '&departemenS='+dep
-                    +'&angkatanS='+$('#angkatanS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        var cari = '&departemenS='+dep;
         $.ajax({
             url : dir,
             type: 'post',
@@ -170,8 +162,8 @@ var contentFR ='';
                             $('#idformH').val(id);
                             $('#departemenH').val($('#departemenS').val());
                             $('#departemenTB').val(dt.nama);
-                            $('#angkatanTB').val(dt.angkatan);
-                            $('#keteranganTB').val(dt.keterangan);
+                            $('#namaTB').val(dt.nama);
+                            // $('#keteranganTB').val(dt.keterangan);
                         }
                     });
                 }$.Dialog.title(titlex+' '+mnu);
@@ -257,11 +249,11 @@ function notif(cont,clr) {
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#angkatanTB').val('');
-        $('#keteranganTB').val('');
+        $('#namaTB').val('');
+        // $('#keteranganTB').val('');
     }
 //end of reset form ---
 
     // ---------------------- //
-    // -- created by epiii -- //
+    // -- created by rovi -- //
     // ---------------------- //

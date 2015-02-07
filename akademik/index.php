@@ -18,7 +18,7 @@
     <meta name="author" content="Sergey S. Pimenov, Ukraine, Kiev">
 
     <link href="css/metro-bootstrap.css" rel="stylesheet">
-    <link href="css/metro-bootstrap-responsive.css" rel="stylesheet">
+    <!-- <link href="css/metro-bootstrap-responsive.css" rel="stylesheet"> -->
     <link href="css/iconFont.css" rel="stylesheet">
     <link href="css/docs.css" rel="stylesheet">
     <!-- <link href="css/paging.css" rel="stylesheet"> -->
@@ -35,7 +35,7 @@
 
     <!-- Local JavaScript -->
     <script src="js/docs.js"></script>
-    <!--<script src="js/github.info.js"></script>-->
+    <script src="js/github.info.js"></script>
     <script src="js/start-screen.js"></script>
 
     <!-- js for datatables -->
@@ -44,11 +44,11 @@
     <script type="text/javascript" language="javascript" src="js/shCore.js"></script>
     <link rel="stylesheet" type="text/css" href="css/shCore.css">-->
 
-
-    <title>.:SISTER:.</title>
+    <title>.: SISTER Akademik :.</title>
 </head>
 
 <body class="metro">
+    <div class="container">
     <!-- <nav class="navigation-bar light fixed-top"> -->
     <nav class="navigation-bar fixed-top">
         <nav class="navigation-bar-content">
@@ -68,7 +68,7 @@
                     <li><a href="pendataan-siswa">Pendataan Siswa</a></li>
                     <li><a href="presensi-siswa">Presensi Siswa</a></li>
                     <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
-                    <li><a href="pendataan-mutasi-siswa">Pendataan Mutasi Siswa</a></li>
+                    <li><a href="mutasi">Pendataan Mutasi Siswa</a></li>
                 </ul>
             </div>
             <div class="element">
@@ -90,6 +90,9 @@
                     <li><a href="tingkat">Tingkat </a></li>
                     <li><a href="kelas">Kelas </a></li>
                     <li><a href="semester">Semester </a></li>
+                    <li><a href="jenis-mutasi">Jenis Mutasi</a></li>
+                    <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
+                    <li><a href="tahun-lulus">Tahun Lulus</a></li>
                 </ul>
             </div>
              
@@ -143,6 +146,12 @@
                     case 'vkelas':
                         require $d.'v_kelas.php';
                     break;
+                    case 'vjenismutasi':
+                        require $d.'v_jenismutasi.php';
+                    break;
+                    case 'vtahunlulus':
+                        require $d.'v_tahunlulus.php';
+                    break;
 
                     // guru dan pelajaran
                     case 'vguru':
@@ -160,6 +169,12 @@
                     case 'vkegiatan':
                         require $d.'v_kegiatan.php';
                     break;
+                    case 'vmutasi':
+                        require $d.'v_mutasi.php';
+                    break;
+                    case 'valumni':
+                        require $d.'v_alumni.php';
+                    break;
 
                     default:
                         require $d.'v_home.php';
@@ -168,6 +183,7 @@
             }
         ?>
     </div>
+</div>
     <script src="js/hitua.js"></script>
     <script src="js/main.js"></script>
 

@@ -3,11 +3,11 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	require_once '../../lib/tglindo.php';
-	$mnu = 'kelas';
-	$tb  = 'aka_'.$mnu;
-	// $out=array();
+	$tb = 'aka_guru';
 
+	// if(!isset($_POST['aksi'])){
+		// $out=json_encode(array('status'=>'invalid_no_post'));		
+		// $out=['status'=>'invalid_no_post'];		
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
 			$page       = $_GET['page']; // get the requested page
@@ -16,22 +16,21 @@
 			$sord       = $_GET['sord']; // get the direction
 			$searchTerm = $_GET['searchTerm'];
 
-
 			if(!$sidx) 
 				$sidx =1;
-			$ss=	'SELECT * 
-					FROM(
-						SELECT p.nama AS wali, p.nip, p.replid
-							
-						FROM hrd_pegawai p
-							LEFT JOIN aka_kelas k ON p.replid = k.wali
-						
-						)tb
-					WHERE	
-						tb.wali LIKE "%'.$searchTerm.'%"
-						OR tb.nip LIKE "%'.$searchTerm.'%"';
+			$ss='SELECT * 
+				FROM(
+					SELECT p.nama,p.nip,p.replid
+					FROM hrd_pegawai p
+						LEFT JOIN aka_guru G ON p.replid=g.pegawai
+					where 
+						p.replid NOT IN (SELECT pegawai FROM aka_guru) 
+					)tb
+				WHERE	
+					tb.nama LIKE "%'.$searchTerm.'%"
+					OR tb.nip LIKE "%'.$searchTerm.'%"';
 							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
-			//print_r($ss);exit();
+			// print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -54,8 +53,8 @@
 			while($row = mysql_fetch_assoc($result)) {
 				$rows[]= array(
 					'replid' =>$row['replid'],
-					'wali'   =>$row['wali'],
-					'nip'   =>$row['nip']
+					'nip'   =>$row['nip'],
+					'nama'   =>$row['nama']
 				);
 			}$response=array(
 				'page'    =>$page,
@@ -65,36 +64,25 @@
 			);$out=json_encode($response);
 		}else{
 			$out=json_encode(array('status'=>'invalid_no_post'));	
-		}		
+		}
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen     	= isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
-				$tingkat       		= isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
-				$tahunajaran        = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
-
-				$sql ='SELECT 
-							k.replid,
-							k.kelas,
-							p.nama AS wali,
-							k.kapasitas,
-							k.keterangan
-						FROM aka_kelas k
-							LEFT JOIN hrd_pegawai p ON p.replid = k.wali
-							LEFT JOIN aka_tahunajaran t ON t.replid=k.tahunajaran
-							LEFT JOIN departemen d ON d.replid=t.departemen
-							LEFT JOIN aka_tingkat g ON g.replid=k.tingkat
-						WHERE
-							k.tahunajaran='.$tahunajaran.' AND
-							k.tingkat='.$tingkat.' AND 
-							t.departemen ='.$departemen.'
-
-						ORDER BY
-							k.kelas ASC';
-							// t.replid ='.$tahunajaran.$tingkat.'
+				$departemen  = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
+				$pelajaran   = (isset($_POST['pelajaranS'])and !empty($_POST['pelajaranS']))?' AND g.pelajaran='.$_POST['pelajaranS']:'';
+				$sql = 'SELECT g.*,t.tahunajaran, j.nama AS pelajaran, p.nip, g.keterangan, p.nama
+						FROM aka_guru g
+							LEFT JOIN hrd_pegawai p ON p.replid=g.pegawai
+							LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
+							LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
+						WHERE 
+							t.departemen ='.$departemen.' and 
+							t.replid ='.$tahunajaran.$pelajaran.'
+						ORDER 
+							BY g.replid asc';
 				// print_r($sql);exit();
-				// var_dump($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -111,25 +99,20 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
-						
 						$btn ='<td>
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
-									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelas'].'</td>
-									<td>'.$res['wali'].'</td>
-									<td>'.$res['kapasitas'].'</td>
-									<td>-</td>
+									<td>'.$res['pelajaran'].'</td>
+									<td>'.$res['nama'].'</td>
+									<td>'.$res['nip'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
-								// <td>'.$res['terisi'].'</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -145,21 +128,15 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
-								kelas    	= "'.filter($_POST['kelasTB']).'",
-								kapasitas    	= "'.filter($_POST['kapasitasTB']).'",
-								tingkat    	= "'.filter($_POST['tingkatH']).'",
-								wali    	= "'.filter($_POST['guruH']).'",
-								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-
-				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e2 = mysql_query($s2);
-								// print_r($e2);exit();
-				if(!$e2){
-					$stat = 'gagal menyimpan';
-				}else{
-					$stat = 'sukses';
-				}$out  = json_encode(array('status'=>$stat));
+										// aktif 		= 1,
+				$s 		= $tb.' set 	pegawai 	= "'.$_POST['guruH'].'",
+										tahunajaran	= "'.$_POST['tahunajaran'].'",
+										pelajaran 	= "'.$_POST['pelajaranTB'].'",
+										keterangan  = "'.filter($_POST['keteranganTB']).'"';
+				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				$e 		= mysql_query($s2);
+				$stat 	= ($e)?'sukses':'gagal';
+				$out 	= json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -169,57 +146,36 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['tahunajaran']));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT k.*, p.nip AS nip, p.nama AS nama
-							from aka_kelas k, 
-							hrd_pegawai p
+				$s 		= ' SELECT
+								h.nip,h.nama,g.pelajaran,g.tahunajaran,g.keterangan
+							FROM
+								aka_guru g
+							LEFT JOIN hrd_pegawai h ON g.pegawai = h.replid
+							LEFT JOIN aka_pelajaran p ON g.pelajaran = p.replid
 							WHERE
-								 p.replid =k.wali AND
-								k.replid='.$_POST['replid'];
-
-												// print_r($s);exit();
+							g.replid ='.$_POST['replid'];
+				// print_r($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'kelas'      =>$r['kelas'],
-							'wali'      =>$r['wali'],
-							'nip'       =>$r['nip'],
-							'nama'       =>$r['nama'],
-							'kapasitas'  =>$r['kapasitas'],
+							'status'      =>$stat,
+							'nip'         =>$r['nip'],
+							'nama'        =>$r['nama'],
+							'pelajaran'   =>$r['pelajaran'],
 							'tahunajaran' =>$r['tahunajaran'],
-							'keterangan' =>$r['keterangan']
+							'keterangan'  =>$r['keterangan']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
-
-			// aktifkan -----------------------------------------------------------------
-			// case 'aktifkan':
-			// 	$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0" where departemen = '.$_POST['departemen']);
-			// 	if(!$e1){
-			// 		$stat='gagal menonaktifkan';
-			// 	}else{
-			// 		$s2 = 'UPDATE  '.$tb.' set aktif="1" where replid = '.$_POST['replid'];
-			// 		$e2 = mysql_query($s2);
-			// 		if(!$e2){
-			// 			$stat='gagal mengaktifkan';
-			// 		}else{
-			// 			$stat='sukses';
-			// 		}
-			// 	}$out  = json_encode(array('status'=>$stat));
-			// break;
-			// aktifkan -----------------------------------------------------------------
-
 		}
-	}echo $out;
-
-	// ---------------------- //
-	// -- created by rovi -- //
-	// ---------------------- //
+	}
+	echo $out;
+	// echo json_encode($out);
 ?>
