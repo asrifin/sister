@@ -100,6 +100,9 @@ var contentFR = '';
         }else{// search
             tb='#tahunlulusS';
             select+='<option value="">---------- Semua ----------</option>';
+            // if ($('#tahunlulusS').val()!='') {
+            //     tl=''
+            // };
         }
         $.ajax({
             url:dir3,

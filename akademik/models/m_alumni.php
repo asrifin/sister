@@ -15,20 +15,19 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-
+				$tahunlulus =  ($_POST['tahunlulusS']!='')?' AND a.tahunlulus='.$_POST['tahunlulusS']:'';
+				// var_dump($tahunlulus);exit();
 				$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
-
-			$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
-
-				$tahunlulus = isset($_POST['tahunlulusS'])?filter(trim($_POST['tahunlulusS'])):'';
+				// $tahunlulus = isset($_POST['tahunlulusS'])?filter(trim($_POST['tahunlulusS'])):'';
 				$sql = 'SELECT a.replid, t.nama AS tahunlulus, s.nama AS siswa, a.keterangan AS ket, s.nisn
 						 FROM aka_alumni a 
 						 LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
 						 LEFT JOIN aka_siswa s ON s.replid=a.siswa 
 
 						 WHERE 
-						 t.departemen = '.$departemen.'
-						ORDER BY a.tahunlulus ASC';
+						 t.departemen = '.$departemen.$tahunlulus.' 
+ 						ORDER BY a.replid ASC';
+						 // '.($_POST['tahunlulusS']!=''?'and a.tahunlulus = '.$_POST['tahunlulus']:'').'
 
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
