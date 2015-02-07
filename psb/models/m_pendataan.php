@@ -4,6 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
+	// require_once '../../lib/excel_reader2.php';
 	$mnu               = 'calonsiswa';
 	$mnu_ayah          = 'calonsiswa_ayah';
 	$mnu_ibu           = 'calonsiswa_ibu';
@@ -106,120 +107,309 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$siswa  = $tb.' set 	kriteria 		= "'.filter($_POST['kriteriaTB']).'",
-										golongan      = "'.filter($_POST['golonganTB']).'",
-										sumpokok      = "'.filter($_POST['uang_pangkalTB']).'",
-										sumnet        = "'.filter($_POST['uang_pangkalnetTB']).'",
-										sppbulan      = "'.filter($_POST['angsuranTB']).'",
-										jmlangsur     = "'.filter($_POST['angsuranTB']).'",
-										angsuran      = "'.filter($_POST['angsuranbulanTB']).'",
-										disctb        = "'.filter($_POST['diskon_subsidiTB']).'",
-										discsaudara   = "'.filter($_POST['diskon_saudaraTB']).'",
-										disctunai     = "'.filter($_POST['diskon_tunaiTB']).'",
-										disctotal     = "'.filter($_POST['diskon_totalTB']).'",
-										nopendaftaran = "'.filter($_POST['nopendaftaranTB']).'",
-										nama          = "'.filter($_POST['namaTB']).'",
-										kelamin       = "'.filter($_POST['jkTB']).'",
-										tmplahir      = "'.filter($_POST['tempatlahirTB']).'",
-										tgllahir      = "'.filter($_POST['tgllahiranakTB']).'",
-										agama         = "'.filter($_POST['agamaTB']).'",
-										alamat        = "'.filter($_POST['alamatsiswaTB']).'",
-										telpon        = "'.filter($_POST['telpsiswaTB']).'",
-										sekolahasal   = "'.filter($_POST['asalsekolahTB']).'",
-										darah         = "'.filter($_POST['goldarahTB']).'",
-										kesehatan     = "'.filter($_POST['penyakitTB']).'",
-										ketkesehatan  = "'.filter($_POST['catatan_kesehatanTB']).'"';
-										// var_dump($siswa);exit();
-										
-/*								$ayah     = $tb_ayah.' set 	nama 	= "'.filter($_POST['ayahTB']).'",
-								warga     = "'.filter($_POST['kebangsaan_ayahTB']).'",
-								tmplahir  = "'.filter($_POST['tempatlahir_ayahTB']).'",
-								tgllahir  = "'.filter($_POST['tgllahir_ayahTB']).'",
-								pekerjaan = "'.filter($_POST['pekerjaan_ayahTB']).'",
-								telpon    = "'.filter($_POST['telpayahTB']).'",
-								pinbb     = "'.filter($_POST['pinbb_ayahTB']).'",
-								email     = "'.filter($_POST['email_ayahTB']).'"';
-								
-								$ibu      = $tb_ibu.' set 	nama 	= "'.filter($_POST['ibuTB']).'",
-								warga     = "'.filter($_POST['kebangsaan_ibuTB']).'",
-								tmplahir  = "'.filter($_POST['tempatlahir_ibuTB']).'",
-								tgllahir  = "'.filter($_POST['tgllahir_ibuTB']).'",
-								pekerjaan = "'.filter($_POST['pekerjaan_ibuTB']).'",
-								telpon    = "'.filter($_POST['telpibuTB']).'",
-								pinbb     = "'.filter($_POST['pinbb_ibuTB']).'",
-								email     = "'.filter($_POST['email_ibuTB']).'"';
-								
-								$dar          = $tb_kontakdarurat.' set 	nama 	= "'.filter($_POST['nama_kontakTB']).'",
-								hubungan      = "'.filter($_POST['hubunganTB']).'",
-								telpon        = "'.filter($_POST['nomorTB']).'"';
-								
-								$keluarga     = $tb_keluarga.' set 	kakek-nama 	= "'.filter($_POST['kakekTB']).'",
-								nenek-nama    = "'.filter($_POST['nenekTB']).'"';
-*/
-				if (!isset($_POST['replid'])){ //add
-				// if ($jumc==0){
-					$tipex ='add';
-					$siswa = 'INSERT INTO '.$siswa;
-					// $sqayah = 'INSERT INTO '.$tb_ayah.' set '.$ayah;
-					// $sqibu = 'INSERT INTO '.$tb_ibu.' set '.$ibu;
-					// $sqdar = 'INSERT INTO '.$tb_kontakdarurat.' set '.$dar;
-					// $sqkel = 'INSERT INTO '.$tb_keluarga.' set '.$keluarga;
-				}else{ //edit
-					$tipex ='edit';
-					// $s=mysql_fetch_assoc(mysql_query('SELECT calonsiswa from psb_calonsiswa'));
-					// $calonsiswa=$s['calonsiswa'];
-					// $siswa = 'UPDATE '.$tb.' set '.$siswa.' WHERE calonsiswa='.$calonsiswa;
-					// $sqayah = 'UPDATE '.$tb_ayah.' set '.$ayah.' WHERE calonsiswa='.$calonsiswa;
-					// $sqibu = 'UPDATE '.$tb_ibu.' set '.$ibu.' WHERE calonsiswa='.$calonsiswa;
-					// $sqdar = 'UPDATE '.$tb_kontakdarurat.' set '.$dar.' WHERE calonsiswa='.$calonsiswa;
-					// $sqkel = 'UPDATE '.$tb_keluarga.' set '.$keluarga.' WHERE calonsiswa='.$calonsiswa;
+				switch ($_POST['subaksi']) {
+					case 'siswa':
+						$siswa  = $tb.' set 	kriteria 		= "'.filter($_POST['kriteriaTB']).'",
+												golongan      = "'.filter($_POST['golonganTB']).'",
+												sumpokok      = "'.filter($_POST['uang_pangkalTB']).'",
+												sumnet        = "'.filter($_POST['uang_pangkalnetTB']).'",
+												sppbulan      = "'.filter($_POST['angsuranTB']).'",
+												jmlangsur     = "'.filter($_POST['angsuranTB']).'",
+												angsuran      = "'.filter($_POST['angsuranbulanTB']).'",
+												disctb        = "'.filter($_POST['diskon_subsidiTB']).'",
+												discsaudara   = "'.filter($_POST['diskon_saudaraTB']).'",
+												disctunai     = "'.filter($_POST['diskon_tunaiTB']).'",
+												disctotal     = "'.filter($_POST['diskon_totalTB']).'",
+												nopendaftaran = "'.filter($_POST['nopendaftaranTB']).'",
+												nama          = "'.filter($_POST['namaTB']).'",
+												kelamin       = "'.filter($_POST['jkTB']).'",
+												tmplahir      = "'.filter($_POST['tempatlahirTB']).'",
+												tgllahir      = "'.filter($_POST['tgllahiranakTB']).'",
+												agama         = "'.filter($_POST['agamaTB']).'",
+												alamat        = "'.filter($_POST['alamatsiswaTB']).'",
+												telpon        = "'.filter($_POST['telpsiswaTB']).'",
+												sekolahasal   = "'.filter($_POST['asalsekolahTB']).'",
+												darah         = "'.filter($_POST['goldarahTB']).'",
+												kesehatan     = "'.filter($_POST['penyakitTB']).'",
+												ketkesehatan  = "'.filter($_POST['catatan_kesehatanTB']).'"';
+												// var_dump($siswa);exit();
+												
+						if (!isset($_POST['replid'])){ //add
+						// if ($jumc==0){
+							$tipex ='add';
+							$siswa = 'INSERT INTO '.$siswa;
+							// $sqayah = 'INSERT INTO '.$tb_ayah.' set '.$ayah;
+							// $sqibu = 'INSERT INTO '.$tb_ibu.' set '.$ibu;
+							// $sqdar = 'INSERT INTO '.$tb_kontakdarurat.' set '.$dar;
+							// $sqkel = 'INSERT INTO '.$tb_keluarga.' set '.$keluarga;
+						}else{ //edit
+							$tipex ='edit';
+							// $s=mysql_fetch_assoc(mysql_query('SELECT calonsiswa from psb_calonsiswa'));
+							// $calonsiswa=$s['calonsiswa'];
+							// $siswa = 'UPDATE '.$tb.' set '.$siswa.' WHERE calonsiswa='.$calonsiswa;
+							// $sqayah = 'UPDATE '.$tb_ayah.' set '.$ayah.' WHERE calonsiswa='.$calonsiswa;
+							// $sqibu = 'UPDATE '.$tb_ibu.' set '.$ibu.' WHERE calonsiswa='.$calonsiswa;
+							// $sqdar = 'UPDATE '.$tb_kontakdarurat.' set '.$dar.' WHERE calonsiswa='.$calonsiswa;
+							// $sqkel = 'UPDATE '.$tb_keluarga.' set '.$keluarga.' WHERE calonsiswa='.$calonsiswa;
 
-				}									
+						}									
 
-				// $jumc= mysql_num_rows(mysql_query('SELECT * from psb_calonsiswa'));
-				// var_dump($siswa);exit();
-				$exa = mysql_query($siswa);
-				$ida =  mysql_insert_id();
-				if(!$exa){
-					$out = '{"status":"gagal insert siswa"}';
-				}else{
-					$out = '{"status":"OK"}';
-						// $siswa.=', calonsiswa 	= '.$ida;
-					if (!isset($_POST['replid'])) { //add
-					// if ($jumc==0) { //add
-						$sqayah.=', calonsiswa 	= '.$ida;
-						$sqibu.=', calonsiswa 	= '.$ida;
-						$sqdar.=', calonsiswa 	= '.$ida;
-						$sqkel.=', calonsiswa 	= '.$ida;
-					}
-					// else{
-						$exayah= mysql_query($sqayah);
-						if (!$exayah) {
-							$out='{"status":"gagal ayah"}';
-						} else {
-							$exibu= mysql_query($sqibu);
-							if (!$exibu) {
-								$out='{"status":"gagal ibu"}';
-							} else {
-								$exdar= mysql_query($sqdar);
-								if (!$exdar) {
-									$out='{"status":"gagal kontak darurat"}';
+						// $jumc= mysql_num_rows(mysql_query('SELECT * from psb_calonsiswa'));
+						// var_dump($siswa);exit();
+						$exa = mysql_query($siswa);
+						$ida =  mysql_insert_id();
+						if(!$exa){
+							$out = '{"status":"gagal insert siswa"}';
+						}else{
+							$out = '{"status":"OK"}';
+								// $siswa.=', calonsiswa 	= '.$ida;
+							if (!isset($_POST['replid'])) { //add
+							// if ($jumc==0) { //add
+								$sqayah.=', calonsiswa 	= '.$ida;
+								$sqibu.=', calonsiswa 	= '.$ida;
+								$sqdar.=', calonsiswa 	= '.$ida;
+								$sqkel.=', calonsiswa 	= '.$ida;
+							}
+							// else{
+								$exayah= mysql_query($sqayah);
+								if (!$exayah) {
+									$out='{"status":"gagal ayah"}';
 								} else {
-									$exkel= mysql_query($sqkel);
-									if (!$exkel) {
-										// var_dump($sqas);exit();
-										$out='{"status":"gagal keluarga"}';
+									$exibu= mysql_query($sqibu);
+									if (!$exibu) {
+										$out='{"status":"gagal ibu"}';
 									} else {
-										$out='{
-												"status":"sukses"
-											  }';
-									} //keluarga
-								}//kon darurat
-							} //ibu
-						}//ayah
-					}//calon siswa
-				echo $out;
-			break;
+										$exdar= mysql_query($sqdar);
+										if (!$exdar) {
+											$out='{"status":"gagal kontak darurat"}';
+										} else {
+											$exkel= mysql_query($sqkel);
+											if (!$exkel) {
+												// var_dump($sqas);exit();
+												$out='{"status":"gagal keluarga"}';
+											} else {
+												$out='{
+														"status":"sukses"
+													  }';
+											} //keluarga
+										}//kon darurat
+									} //ibu
+								}//ayah
+							}//calon siswa
+						echo $out;
+					break;
+
+					case 'import':
+						$data 	= new Spreadsheet_Excel_Reader($_FILES['fileTB']['tmp_name']);
+						$baris 	= $data->rowcount($sheet_index=0);
+						$kolom	= $data->colcount($sheet_index=0);
+						$sukses = 0;
+						$gagal 	= 0;
+						$backb	= $data->val(2,1);
+						
+						#14 vs 16
+						for($i=7; $i<=$baris; $i++){
+							//tb_backbone
+							//tb perangkat detail
+								$channela	= $data->val($i, 2);
+								$channelb	= $data->val($i, 3);
+							//tb sirkit
+								#linka n linkb------------------
+								$linka		= $data->val($i, 4);
+								$linkb		= $data->val($i, 5);
+							
+							if($kolom=14){
+								$ddfa		= $data->val($i, 6);
+								$ddfb		= $data->val($i, 7);
+								
+								#tb user------------------------
+								$user		= $data->val($i, 8);
+								#sirkit-------------------------
+								$tid		= $data->val($i, 9);
+								$diu		= $data->val($i, 10);
+								$tc			= $data->val($i, 11);
+								$ddftc		= $data->val($i, 12);
+								$ddfuser	= $data->val($i, 13);
+								$keterangan	= $data->val($i, 14);
+								//echo '14';exit();
+							}else{
+								$ddfa1		= $data->val($i, 6);
+								$ddfa2		= $data->val($i, 7);
+								$ddfa3		= $data->val($i, 8);
+								$ddfa		= $ddfa1.'_'.$ddfa2.'_'.$ddfa3;
+								$ddfb		= $data->val($i, 9);
+								
+								#tb user------------------------
+								$user		= $data->val($i, 10);
+								#sirkit-------------------------
+								$tid		= $data->val($i, 11);
+								$diu		= $data->val($i, 12);
+								$tc			= $data->val($i, 13);
+								$ddftc		= $data->val($i, 14);
+								$ddfuser	= $data->val($i, 15);
+								$keterangan	= $data->val($i, 16);
+								
+								//echo '16';exit();
+							}
+						
+						//perangkat detail 
+							$sqlpd	= "select id_per_detail from tb_perangkat_detail where channelida='$channela'";
+							//var_dump($sqlpd);exit();
+							$exepd	= mysql_query($sqlpd);
+							$cekpd	= mysql_fetch_assoc($exepd);
+							$jumpd	= mysql_num_rows($exepd);
+						//backbone 
+							$sqlbc	="select id_backbone from tb_backbone where kode = '$backb'";
+							//var_dump($sqlbc);exit();
+							$exebc	= mysql_query($sqlbc);
+							$cekbc	= mysql_fetch_assoc($exebc);
+							$jumbc	= mysql_num_rows($exebc);
+						
+							#var_dump($jumpd);exit();
+							#var_dump($jumbc);exit();
+						
+						//perangkat detail : ada
+							if($jumpd>0){
+								$sqlbc1 = "SELECT
+											avail2mbps - (
+												SELECT
+													count(*) jum
+												FROM
+													tb_sirkit s,
+													tb_perangkat_detail pd
+												WHERE
+													s.id_per_detail = pd.id_per_detail
+												AND pd.id_backbone = '$cekbc[id_backbone]'
+											) as sisa
+										FROM
+											tb_backbone
+										WHERE
+											id_backbone = '$cekbc[id_backbone]'";
+								//var_dump($sqlbc1);exit();
+								$exebc1	= mysql_query($sqlbc1);
+								$cekbc1	= mysql_fetch_assoc($exebc1);
+								$sisa = $cekbc1['sisa'];
+								//var_dump($x);exit();
+								if($sisa<$baris){
+									$sqlbc2 = "update tb_backbone set avail2mbps =avail2mbps - 6  + $baris where id_backbone = '$cekbc[id_backbone]' ";
+									//var_dump($sqlbc2);exit();
+									$exebc2 = mysql_query($sqlbc2);
+									//var_dump($exebc2);exit();
+								}
+								$id_pd	= $cekpd['id_per_detail'];
+								//var_dump($id_pd);exit();
+							}
+							//perangkat detail : tidak ada
+							else{
+								//backbone
+								if($jumbc>0){
+									$sqlbc1 = "SELECT
+												avail2mbps - (
+													SELECT
+														count(*) jum
+													FROM
+														tb_sirkit s,
+														tb_perangkat_detail pd
+													WHERE
+														s.id_per_detail = pd.id_per_detail
+													AND pd.id_backbone = '$cekbc[id_backbone]'
+												) as sisa
+											FROM
+												tb_backbone
+											WHERE
+												id_backbone = '$cekbc[id_backbone]'";
+									//var_dump($sqlbc1);exit();
+									$exebc1	= mysql_query($sqlbc1);
+									$cekbc1	= mysql_fetch_assoc($exebc1);
+									$sisa = $cekbc1['sisa'];
+									//var_dump($x);exit();
+									if($sisa<$baris){
+										$sqlbc2 = "update tb_backbone set avail2mbps =avail2mbps - 6  + $baris where id_backbone = '$cekbc[id_backbone]' ";
+										//var_dump($sqlbc2);exit();
+										$exebc2 = mysql_query($sqlbc2);
+										//var_dump($exebc2);exit();
+									}
+									$id_bc = $cekbc['id_backbone'];
+								}else{
+									$sqlbc2="insert into tb_backbone set 	kode 		= '$backb', 
+																			keterangan 	= '$backb', 	
+																			id_sistra	= '1',
+																			avail2mbps	= $baris - 6,
+																			availstm1	= '0',
+																			availstm4	= '0',
+																			availstm16	= '0',
+																			availstm64	= '0'";
+									//var_dump($sqlbc2);exit();
+									$exebc2 = mysql_query($sqlbc2);
+									$id_bc = mysql_insert_id();
+								}
+								$sqlpd2 = "insert into tb_perangkat_detail set 	id_per		= 'P001',
+																				id_backbone	= '$id_bc',
+																				channelida 	= '$channela', 
+																				channelidb 	= '$channelb', 	
+																				ddf_a		= '$ddfa',
+																				ddf_b		= '$ddfb'";
+								$exepd2 = mysql_query($sqlpd2);
+								$id_pd	= mysql_insert_id();
+							}
+								
+							//linka 
+							$exela	= mysql_query("select id_linka from tb_linka where nama='$linka'");
+							$cekla	= mysql_fetch_assoc($exela);
+							$jumla	= mysql_num_rows($exela);
+							if($jumla>0){
+								$id_la	= $cekla['id_linka'];
+							}else{
+								$exela2 = mysql_query("insert into tb_linka set nama = '$linka', keterangan = '$linka'");
+								$id_la	= mysql_insert_id();
+							}
+							
+							//linkb
+							$exelb	= mysql_query("select id_linkb from tb_linkb where nama='$linkb'");
+							$ceklb	= mysql_fetch_assoc($exelb);
+							$jumlb	= mysql_num_rows($exelb);
+							if($jumlb>0){
+								$id_lb	= $ceklb['id_linkb'];
+							}else{
+								$exelb2 = mysql_query("insert into tb_linkb set nama = '$linkb', keterangan = '$linkb'");
+								$id_lb	= mysql_insert_id();
+							}
+							
+							//user
+							$exeus	= mysql_query("select id_user from tb_user where user='$user'");
+							$cekus	= mysql_fetch_assoc($exeus);
+							$jumus	= mysql_num_rows($exeus);
+							if($jumus>0){
+								$id_us	= $cekus['id_user'];
+							}else{
+								$exeus2 = mysql_query("insert into tb_user set user = LOWER('$user'), keterangan = LOWER('$user')");
+								$id_us	= mysql_insert_id();
+							}
+							
+							$query 	= "INSERT INTO tb_sirkit set 	id_per_detail 	= '$id_pd',
+																	id_linka		= '$id_la',
+																	id_linkb		= '$id_lb',
+																	id_user			= '$id_us',
+																	
+																	tid				= '$tid',
+																	diu				= '$diu',
+																	tc				= '$tc',
+																	ddf_tc			= '$ddftc',
+																	ddf_user		= '$ddfuser',
+																	keterangan		= '$keterangan',
+																	
+																	tgl_update		= NOW()";
+							$hasil 	= mysql_query($query);
+							if ($hasil) 
+								$sukses++;
+							else 
+								$gagal++;
+						}
+						echo "<script>alert(' import ".$_FILES['fileTB']['name'].", sukses :".$sukses." baris, gagal:".$gagal." baris');window.location='../?hlm=dGltcG9ydA=='</script>";
+							
+						break;
+						}
+					break;
 			// add / edit -----------------------------------------------------------------
 			
 			// delete -----------------------------------------------------------------
@@ -236,7 +426,7 @@
 			case 'ambiledit':
 				$s 		= ' SELECT 
 								t.*,
-								t.nama as nama_siswa,
+								t.nama as siswa,
 								/* Data Ortu*/
 								ta.nama as nama_ayah,
 								ta.warga as kebangsaan_ayah,
@@ -285,7 +475,7 @@
 							'disctunai'       =>$r['disctunai'],
 							'disctotal'       =>$r['disctotal'],
 							'nopendaftaran'   =>$r['nopendaftaran'],
-							'nama'            =>$r['siswa'],
+							'siswa'            =>$r['siswa'],
 							'kelamin'         =>$r['kelamin'],
 							'tmplahir'        =>$r['tmplahir'],
 							'tgllahir'        =>$r['tgllahir'],

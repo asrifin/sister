@@ -304,7 +304,7 @@ var contentAdd=contentDetail='';
                 // barangExist();
             }
         });
-
+        //autocomplete
         $("#barangTB").combogrid({
             debug:true,
             width:'400px',
@@ -374,6 +374,7 @@ var contentAdd=contentDetail='';
             y.push($(this).attr('val'));
         });return y;
     }
+// end autocomplete
 
 //paging ---
     function pagination(page,aksix,subaksi){ 

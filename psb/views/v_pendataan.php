@@ -1,3 +1,4 @@
+
 <script src="controllers/c_pendataan.js"></script>
 <!-- <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
@@ -10,6 +11,7 @@
 
 <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
+<button data-hint="Import Data" xclass="large" id="importBC">Import</button>
 <div class="input-control select span3">
     <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
@@ -62,9 +64,45 @@
     </tfoot>
 </table>
 
+<div class="table hovered bordered panelx" id="importFR" style="display:none;" >
+<!--           <div style="overflow:scroll;height:600px;" >
+ -->                  <form autocomplete="off" enctype="multipart/form-data" onsubmit="importSV();return false;"> 
+                        <input id="import_idformH" type="hidden"> 
+                        <!-- Panel -->
+                        <div class="panel">
+                          <div class="panel-header bg-lightBlue fg-white">
+                          Import Data Siswa
+                          </div>
+                          <div class="panel-content">
+
+                          <div class="grid">     
+                            <div class="row">
+                              <div placeholder="choose a file" class="input-control file size3">
+                                  <input type="file" />
+                                  <button class="btn-file"></button>
+                              </div>
+                          
+                            </div>
+                          </div>
+                                <!-- End Grid-->
+                        </div>
+                        <div class="form-actions"> &nbsp;
+                            <button class="button primary">simpan</button>&nbsp;
+                            <a class="button" href="#" onclick="switchPN2(); return false;" >Batal</a> 
+                            <!-- <button class="button" type="button" onclick="$.Dialog.close()">Batal</button>  -->
+                        </div>
+
+                    </div>
+                            <!-- End Panel -->
+
+                       
+                    </form>
+        </div>
+        <!-- End panel Import -->
+
       <div class="table hovered bordered striped panelx" id="pendataanFR" style="display:none;" >
           <div style="overflow:scroll;height:600px;" >
-                  <form autocomplete="off" onsubmit="simpan();return false;"> 
+                  <form autocomplete="off" onsubmit="siswaSV();return false;"> 
                         <input id="idformH" type="hidden"> 
                         <!-- Panel -->
                         <div class="panel">

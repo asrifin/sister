@@ -17,6 +17,12 @@ var contentFR = '';
 //epiii : switch panel (form<=>table)
     function switchPN(){
         $('#pendataanFR').toggle('slow');
+        // $('#importFR').toggle('slow');
+        $('#pendataanTBL').toggle('slow');
+    }
+    function switchPN2(){
+        // $('#pendataanFR').toggle('slow');
+        $('#importFR').toggle('slow');
         $('#pendataanTBL').toggle('slow');
     }
 
@@ -197,8 +203,10 @@ var contentFR = '';
             getuang('');
             inputuang('');
         // $('#').on('click',switchPN);
-    });
-          
+    });$("#importBC").on('click',function(){
+            switchPN2();             
+        });
+        
     //search action
         $('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
@@ -308,9 +316,9 @@ var contentFR = '';
 
 
 //save process ---
-    function simpan(){
+    function siswaSV(){
         // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
-        var urlx ='&aksi=simpan';
+        var urlx ='&aksi=simpan&subaksi=siswa';
         // edit mode
         if($('#idformH').val()!=''){
             urlx += '&replid='+$('#idformH').val();
@@ -330,6 +338,42 @@ var contentFR = '';
                     kosongkan();
                     viewTB($('#departemenS').val());
                      $('#pendataanFR').removeAttr('style');
+                     $('#importFR').removeAttr('style');
+                     $('#panel1').attr('style','display:none;');
+                    cont = 'Berhasil menyimpan data';
+                    clr  = 'green';
+                }
+                notif(cont,clr);
+            }
+        });
+    }
+//end of save process ---
+
+
+//save process ---
+    function importSV(){
+        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
+        var urlx ='&aksi=simpan&subaksi=import';
+        // edit mode
+        if($('#import_idformH').val()!=''){
+            urlx += '&replid='+$('#import_idformH').val();
+        }
+        $.ajax({
+            url:dir,
+            cache:false,
+            type:'post',
+            dataType:'json',
+            data:$('form').serialize()+urlx,
+            success:function(dt){
+                if(dt.status!='sukses'){
+                    cont = 'Gagal menyimpan data';
+                    clr  = 'red';
+                }else{
+                    $.Dialog.close();
+                    kosongkan();
+                    viewTB($('#departemenS').val());
+                     // $('#pendataanFR').removeAttr('style');
+                     $('#importFR').removeAttr('style');
                      $('#panel1').attr('style','display:none;');
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
@@ -379,7 +423,7 @@ var contentFR = '';
                         $('#diskon_tunaiTB').val(dt.disctunai);
                         $('#diskon_totalTB').val(dt.disctotal);
                         $('#nopendaftaranTB').val(dt.nopendaftaran);
-                        $('#namaTB').val(dt.nama_siswa);
+                        $('#namaTB').val(dt.siswa);
                         $('#tempatlahirTB').val(dt.tmplahir);
                         $('#tgllahiranakTB').val(dt.tgllahir);
                         $('#alamatsiswaTB').val(dt.alamat);
@@ -552,16 +596,14 @@ var contentFR = '';
         }
 
         function hitung_diskon(){
-
             var disc_subsidi  = parseFloat(getuang($("#diskon_subsidiTB").val()));
-            // var disc_saudara  = parseFloat($("#diskon_saudaraTB").val());
-            // var disc_tunai    = parseFloat($("#disc_tunai").val());
-            // var disc_tunaiTB  = parseFloat($("#disc_tunaiTB").val());
-            // alert(disc_tunai);
-            // if(disc_subsidi>0 && disc_saudara>0 && disc_tunaiTB>0){
-            // var total_diskon = disc_subsidi+disc_saudara+disc_tunaiTB;
-            // $("#diskon_totalTB").val(total_diskon);
-            // }
+            var disc_saudara  = parseFloat(getuang($("#diskon_saudaraTB").val()));
+            var disc_tunai    = parseFloat(getuang($("#disc_tunai").val()));
+            var disc_tunaiTB  = parseFloat(getuang($("#disc_tunaiTB").val()));
+            if(disc_subsidi>0 && disc_saudara>0 && disc_tunaiTB>0){
+                var total_diskon = disc_subsidi+disc_saudara+disc_tunaiTB;
+                $("#diskon_totalTB").val(total_diskon);
+            }
         }
 
 
@@ -690,18 +732,8 @@ var contentFR = '';
 
 // get uang --------------------------
     function getuang(e) {
-        // var x =$(e).maskMoney('unmasked')[0];
-        // var x =$(e).val();
-        // alert($(e).val());
-        // var x =$(e).val();
-        // var y = e.replace(/[r\.]/g, '');
-        var y = e.replace('Rp. ','').replace('.','').replace(',',''); 
-        // alert(y);
-        // var y = e.replace('Rp. ',''); 
-        //  x = y.replace('.',''); 
-        //  z = x.replace(',',''); 
-        // alert(z);
-        // return y;
+        x = $(e).val().replace(/[^0-9]/g,'')
+        return x;
     }
 // end of get uang --------------------------
 
