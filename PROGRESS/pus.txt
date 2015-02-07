@@ -1,0 +1,33 @@
+ _________________
+| NOTE  	  |	
+|  + : solved 	  |
+|  - : error/bug  |
+|  C : completed  |
+|  P : progress	  |
+|_________________|  
+|  * : menu	  |
+|_________________|
+____________________________________________________
+* daftar koleksi (P)
+	- select all (checkbox) 
+	- delete : all & per-record
+	- searching : all column, tidak ngefek ke "tabel"
+	- filtering > combo :  jenis_buku & tingkat_buku , tidak ngefek ke "table"
+	- form (edit_mode) : tidak tampil
+	
+	- sorting : all column (belum ada lib/contoh) 
+* katalog (P)
+* data anggota (P)
+* sirkulasi (P)
+* OPAC (P)
+____________________________________________________
+* perangkat (C)
+* lokasi (C)
+* daftar penerbit (C)
+* daftar pengarang (C)
+* klasifikasi (C)
+* jenis koleksi (P)
+* tingkat koleksi (C)
+* daftar bahasa (C)
+* satuan mata uang (C)
+_____________________________________________________

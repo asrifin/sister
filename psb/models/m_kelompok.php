@@ -15,9 +15,9 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-					$departemen  = trim(isset($_POST['departemenS']))?filter($_POST['departemenS']):'';
-				$tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
+					$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
+				$kelompok    = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
 				$sql = 'SELECT
 							k.replid,
@@ -52,23 +52,21 @@
 							k.proses = p.replid AND
 							p.tahunajaran = t.replid AND
 							t.replid = '.$tahunajaran;
-				// print_r($sql);exit();
+				print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
 				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
-				$aksi    ='';
-				$subaksi ='periode';
-
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-				$result =$obj->result;
+				$recpage = 5;
+				$aksi    ='tampil';
+				$subaksi ='';
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$result  = $obj->result;
 
 				#ada data
-				$jum	= mysql_num_rows($result);
+				$jum	= mysql_num_rows($result) or die(mysql_error());
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
@@ -196,11 +194,19 @@
 					}
 				}
 				
-				$s	= ' SELECT *
-						from '.$tb.'
-						'.$w.'		
-						ORDER  BY '.$mnu.' asc';
-				// var_dump($s);exit();
+				$s	= ' SELECT
+							k.replid,k.kelompok
+						FROM
+							psb_kelompok k,
+							psb_proses p,
+							aka_tahunajaran t
+						WHERE
+							k.proses = p.replid
+						AND t.replid = p.tahunajaran
+						AND t.replid = '.$_POST['tahunajaran'].'
+						ORDER BY
+							k.kelompok ASC';
+				// print_r($s);e xit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar = $dt=array();
@@ -209,7 +215,7 @@
 					$ar = array('status'=>'error');
 				}else{
 					if($n==0){ // kosong 
-						var_dump($n);exit();
+						// var_dump($n);exit();
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
 						if(!isset($_POST['replid'])){

@@ -24,14 +24,28 @@ var contentFR='';
         //load table
         viewTB();
 
-        // search
-        $('#angsuranS').on('keyup',viewTB);
-        $('#keteranganS').on('keyup',viewTB);
-
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
         });
+         $('#angsuranS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });$('#keteranganS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });
+        // $('#alamatS').keydown(function (e){
+
+
+        // search button
+        $('#cariBC').on('click',function(){
+            $('#cariTR').toggle('slow');
+            $('#angsuranS').val('');
+            $('#keteranganS').val('');
+        });
+
+
     }); 
 // end of main function ---
 
@@ -83,7 +97,7 @@ var contentFR='';
     function viewFR(id){
         $.Dialog({
             shadow: true,
-            overlay: false,
+            overlay: true,
             draggable: true,
             icon: '<span class="icon-plus-2"></span>',
             title: 'Draggable window',
@@ -115,22 +129,41 @@ var contentFR='';
 // end of add form ---
 
 //paging ---
-    function pagination(page,aksix,menux){
-        $('#isi').html('<img src="../img/loader.gif"> ').fadeIn();
-        var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari = '&angsuran='+$('#angsuran').val();
+    function pagination(page,aksix,subaksi){ 
+        var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
+        var cari ='';
+        var el,el2;
+
+        if(subaksi!=''){ // multi paging 
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
 
         $.ajax({
             url:dir,
-            type:"GET",
-            data: datax+cari,
-            success:function(data){
-                $("#loadtabel").fadeOut();
-                $('#isi').hide().html(data).fadeIn(1000);
+            type:"post",
+            data: aksi+cari,
+            beforeSend:function(){
+                $(el2).html('<tr><td align="center" colspan="8"><img src="../img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                setTimeout(function(){
+                    $(el2).html(dt).fadeIn();
+                },1000);
             }
         });
-    }   
+    }
 //end of paging ---
+
+    
     
 //del process ---
     function del(id){

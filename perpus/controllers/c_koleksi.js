@@ -75,7 +75,7 @@ var contentFR ='';
         $('#lokasiS').on('change',function(){
             cmbjenisbuku($(this).val());
         });$('#jenisbukuS').on('change',function (){
-            viewTB();
+            cmbtingkatbuku($(this).val());
         });$('#tingkatbukuS').on('change',function (){
             viewTB();
         });$('#barkodeS').on('keydown',function (e){ // keydown : textbox
@@ -251,6 +251,8 @@ function cmbtingkatbuku(tgt){
         var aksi ='aksi=tampil';
         // var cari ='&lokasiS='+lok
         var cari ='&lokasiS='+$('#lokasiS').val()
+                    +'&jenisbukuS='+$('#jenisbukuS').val()
+                    +'&tingkatbukuS='+$('#tingkatbukuS').val()
                     +'&barkodeS='+$('#barkodeS').val()
                     +'&idbukuS='+$('#idbukuS').val()
                     +'&judulS='+$('#judulS').val()
@@ -340,11 +342,11 @@ function pagination(page,aksix,subaksi){
         });
 
         $.ajax({
-            url:dir,
+            url:dir6,
             type:"post",
             data: aksi+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="9"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();

@@ -16,7 +16,7 @@
 
      
     <link href="../css/metro-bootstrap.css" rel="stylesheet">
-    <link href="../css/metro-bootstrap-responsive.css" rel="stylesheet">
+    <!-- <link href="../css/metro-bootstrap-responsive.css" rel="stylesheet"> -->
     <link href="../css/iconFont.css" rel="stylesheet">
     <link href="../css/docs.css" rel="stylesheet">
     <link href="../prettify/prettify.css" rel="stylesheet">
@@ -34,44 +34,35 @@
 
     <!-- Local JavaScript -->
     <script src="../js/docs.js"></script>
-    <!--<script src="js/github.info.js"></script>-->
-    <script src="../js/start-screen.js"></script>
-
-
-<!--
-    <link href="css/metro-bootstrap.css" rel="stylesheet">
-    <link href="css/metro-bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/iconFont.css" rel="stylesheet">
-    <link href="css/docs.css" rel="stylesheet">
-    <link href="js/prettify/prettify.css" rel="stylesheet">
-
-    <!-- Load JavaScript Libraries 
-    <script src="js/jquery/jquery.min.js"></script>
-    <script src="js/jquery/jquery.widget.min.js"></script>
-    <script src="js/jquery/jquery.mousewheel.js"></script>
-    <script src="js/prettify/prettify.js"></script>
-    -->
-    <!-- Metro UI CSS JavaScript plugins 
-    <script src="js/load-metro.js"></script>
-    -->
-
-    <!-- Local JavaScript 
-    <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
-    <script src="js/start-screen.js"></script>
-    -->
+    <script src="../js/start-screen.js"></script>
+    <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
+    <!-- // <script type="../js/metro/metro-scroll.js"></script> -->
 
-    <!-- js for datatables -->
-    <!--<script type="text/javascript" language="javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
-    <script type="text/javascript" language="javascript" src="js/shCore.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/shCore.css">-->
+
+    <script>
+        $(function(){
+            $(".form").scrollbar({
+                // height: 355,
+                axis: 'y'
+            });
+            $("#scrollbox2").scrollbar({
+                axis: 'x',
+                // height: 355
+            });
+            // $("#panel2").scrollbar({
+                // height: 355
+                // height: 768
+            // });
+        });
+    </script>
 
 
     <title>.:SISTER PSB:.</title>
 </head>
 
 <body class="metro">
+<!-- <div class="container"> -->
     <nav class="navigation-bar fixed-top">
         <nav class="navigation-bar-content">
             <a class="element brand" href="../">
@@ -173,6 +164,7 @@
             }
         ?>
     </div>
+<!-- </div> -->
     <!--
     <script src="js/hitua.js"></script>
     -->

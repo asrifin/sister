@@ -49,11 +49,12 @@
 							AND k.penerbit = t.replid 
 							AND k.pengarang = r.replid
 							/*search*/
-							AND b.lokasi like "%'.$lokasi.'%"
-							AND k.jenisbuku like "%'.$jenisbuku.'%"
-							AND b.tingkatbuku like "%'.$tingkatbuku.'%"
+							AND b.lokasi = "%'.$lokasi.'%"
+							AND k.jenisbuku = "%'.$jenisbuku.'%"
+							AND b.tingkatbuku = "%'.$tingkatbuku.'%"
 						';
 						// l.replid and
+				// var_dump($sql);exit();
 							  // b.lokasi like "%'.$lokasi.'%" and
 						// 	  l.replid=
 				if(isset($_POST['starting'])){ //nilai awal halaman
@@ -113,7 +114,6 @@
 			// 							nama 	= "'.filter($_POST['namaTB']).'",
 			// 							keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 			// 	$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-			// 	// var_dump($s2);exit();
 			// 	$e 		= mysql_query($s2);
 			// 	$stat 	= ($e)?'sukses':'gagal';
 			// 	$out 	= json_encode(array('status'=>$stat));

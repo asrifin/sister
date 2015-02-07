@@ -84,7 +84,7 @@
             // });
         });
     </script>
-    <title>.:SISTER:.</title>
+    <title>.:SISTER Sarpras:.</title>
 </head>
 
 <body class="metro">
@@ -102,16 +102,15 @@
             </a>
             <span class="element-divider"></span>
             <div class="element">
-                <a class="dropdown-toggle" href="#">inventaris</a>
+                <a class="dropdown-toggle" href="#">Menu Utama</a>
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="inventaris">Inventaris</a></li>
                     <li><a href="aktivitas">Aktivitas</a></li>
                     <li><a href="peminjaman">Peminjaman</a></li>
-                    <li><a href="pengembalian">Pengembalian</a></li>
                 </ul>
             </div>
             <div class="element">
-                <a class="dropdown-toggle" href="#">Refrensi</a>
+                <a class="dropdown-toggle" href="#">Referensi</a>
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="lokasi">Lokasi</a></li>
                     <li><a href="tempat">Tempat</a></li>
@@ -173,10 +172,6 @@
                     case 'vpeminjaman':
                         require $d.'v_peminjaman.php';
                     break;
-                    case 'vkembali':
-                        require $d.'v_kembali.php';
-                    break;
-
                     default:
                         require $d.'v_home.php';
                     break;

@@ -164,7 +164,8 @@
 							'kapasitas'   =>$r['kapasitas'],
 							'keterangan' =>$r['keterangan'],
 						));
-						// var_dump($s);exit(); $e=mysql_query();
+						// var_dump($s);exit(); 
+				// $e=mysql_query();
 								// var_dump($stat);exit();
 			break;
 			// ambiledit -----------------------------------------------------------------

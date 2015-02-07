@@ -4,6 +4,7 @@
 <script src="js/metro/metro-calendar.js"></script>
 <script src="js/metro/metro-datepicker.js"></script>
  -->
+ <!--  <script type="../js/metro/metro-scroll.js"></script> -->
 <h4 style="color:white;">Pendataan Calon Siswa</h4>
 <div id="loadarea"></div>
 
@@ -19,7 +20,7 @@
     <select data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
 </div>
 
-<table class="table hovered bordered striped panelx" id="pendataanFR">
+<table id="pendataanTBL" style="display:visible;" class="table hovered bordered striped panelx" >
     <thead>
         <tr style="color:white;" class="info">
             <th class="text-left" rowspan="2">Nomor Pendaftaran</th>
@@ -61,45 +62,45 @@
     </tfoot>
 </table>
 
-      <div class="table hovered bordered striped panelx" id="panel1" style="display:none;" >
-                <form autocomplete="off" onsubmit="simpan();return false;"> 
+      <div class="table hovered bordered striped panelx" id="pendataanFR" style="display:none;" >
+          <div style="overflow:scroll;height:600px;" >
+                  <form autocomplete="off" onsubmit="simpan();return false;"> 
                         <input id="idformH" type="hidden"> 
                         <!-- Panel -->
                         <div class="panel">
-                          <div class="panel-header">
+                          <div class="panel-header bg-lightBlue fg-white">
                           Kriteria Calon
                           </div>
                           <div class="panel-content">
 
                           <div class="grid">     
                             <div class="row">
-                              <div class="span12">
+                              <div class="span6">
                               <!-- <label><b>Kriteria Calon :</b></label> -->
                               <label>Kriteria calon :</label>
                               <div class="input-control select size3">
                                   <select id="kriteriaTB" name="kriteriaTB">
-                                    <option>Value 1</option>
+                                    <!-- <option>Value 1</option> -->
                                   </select>
                               </div>
 
                               <label>Golongan :</label>
                               <div class="input-control select size3">
                                   <select id="golonganTB" name="golonganTB">
-                                    <option>Value 1</option>
+                                    <!-- <option>Value 1</option> -->
                                   </select>
                               </div>
                               
                               <label><b>Sumbangan :</b></label>
                               <label>Uang Pangkal</label>
                               <div class="input-control text size3">
-      <!--                             <input type="hidden" name="tahunajaranH" id="tahunajaranH"> -->
-                                  <input type="text" name="uang_pangkalTB" id="uang_pangkalTB">
+                                  <input type="text" onclick="inputuang(this);" name="uang_pangkalTB" id="uang_pangkalTB">
                                   <button class="btn-clear"></button>
                               </div>
                               
                               <label>Uang Pangkal net</label>
                               <div class="input-control text size3">
-                                  <input type="hidden" name="uang_pangkalnetH" id="uang_pangkalnetH">
+                                  <input type="hidden" onclick="inputuang(this);" name="uang_pangkalnetH" id="uang_pangkalnetH">
                                   <input type="text" name="uang_pangkalnetTB" id="uang_pangkalnetTB">
                                   <button class="btn-clear"></button>
                               </div>
@@ -108,12 +109,19 @@
                               <label>Lama Angsuran :</label>
                               <div class="input-control select size3">
                                   <select id="angsuranTB" name="angsuranTB">
-                                    <option>Value 1</option>
+                                    <!-- <option>Value 1</option> -->
                                   </select>
                               </div>
-                              <label>Angusran per Bulan</label>
+                              <label>Angusuran per Bulan</label>
                               <div class="input-control text size3">
                                   <input type="text" name="angsuranbulanTB" id="angsuranbulanTB">
+                                  <button class="btn-clear"></button>
+                              </div>
+
+                              <label><b>Uang Sekolah :</b></label>
+                              <label>Uang Sekolah per Bulan</label>
+                              <div class="input-control text size3">
+                                  <input type="text" name="sppTB" id="sppTB">
                                   <button class="btn-clear"></button>
                               </div>
 
@@ -124,20 +132,27 @@
                                 <label><b>Discount:</b></label>
                                 <label>Discount Subsidi :</label>
                                 <div class="input-control text size3">
-                                    <input type="text" name="diskon_subsidiTB" id="diskon_subsidiTB">
+                                    <input type="text" onclick="inputuang(this);" placeholder="Diskon Subsidi" name="diskon_subsidiTB" id="diskon_subsidiTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
                                 <label>Discount Saudara :</label>
                                 <div class="input-control text size3">
-                                    <input type="text" name="diskon_saudaraTB" id="diskon_saudaraTB">
+                                    <input type="text" onclick="inputuang(this);" placeholder="Diskon Saudara" name="diskon_saudaraTB" id="diskon_saudaraTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
                                 <label>Discount tunai :</label>
                                 <div class="input-control select size2">
-                                  <select id="angsuranTB" name="angsuranTB">
+                                  <select id="diskon_tunai" name="diskon_tunai">
                                     <option>5%</option>
+                                    <option>10%</option>
+                                    <option>15%</option>
+                                    <option>20%</option>
+                                    <option>25%</option>
+                                    <option>40%</option>
+                                    <option>50%</option>
+                                    <option>80%</option>
                                   </select>
                               </div>
                                 <div class="input-control text size3">
@@ -145,9 +160,16 @@
                                     <button class="btn-clear"></button>
                                 </div>                                
 
-                                <label>Total Discount :</label>
+                                <label><b>Total Discount :</b></label>
                                 <div class="input-control text size3">
                                     <input type="text" name="diskon_totalTB" id="diskon_totalTB">
+                                    <button class="btn-clear"></button>
+                                </div>                                
+
+                                <label><b>Denda :</b></label>
+                                <label>Denda keterlambatan</label>
+                                <div class="input-control text size3">
+                                    <input type="text" name="dendaTB" id="dendaTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
@@ -163,14 +185,14 @@
 
                         <!-- Panel Data Siswa-->
                         <div class="panel">
-                          <div class="panel-header">
+                          <div class="panel-header bg-lightBlue fg-white">
                           Data Pribadi Siswa
                           </div>
                           <div class="panel-content">
 
                       <div class="grid">     
                         <div class="row">
-                          <div class="span12">
+                          <div class="span6">
 
                         <label>Nomor Pendaftaran</label>
                         <div class="input-control text3">
@@ -186,7 +208,7 @@
                         <label>Jenis Kelamin</label>
                         <div class="input-control radio">
                         <label>
-                            <input type="radio" />
+                            <input value="0" type="radio" name="jkTB" id="jkTB" />
                             <span class="check"></span>
                             Laki-Laki
                         </label>
@@ -194,7 +216,7 @@
 
                         <div class="input-control radio">
                         <label>
-                            <input type="radio" />
+                            <input value="1" type="radio" name="jkTB" id="jkTB" />
                             <span class="check"></span>
                             Perempuan
                         </label>
@@ -217,7 +239,7 @@
                         <label>Agama</label>
                         <div class="input-control select size3">
                             <select id="agamaTB" name="agamaTB">
-                              <option>Kristen</option>
+                              <!-- <option>Kristen</option> -->
                             </select>
                         </div>
                         
@@ -237,6 +259,7 @@
                         </div>
 
                         <!-- Data Ayah -->
+                        <label><b>Data Ayah Siswa</b></label>
                         <label>Nama Ayah</label>
                         <div class="input-control text size3">
                             <input placeholder="Nama Ayah" type="text" name="ayahTB" id="ayahTB">
@@ -282,6 +305,7 @@
                         </div>
 
                         <!-- Data Ibu -->
+                        <label><b>Data Ibu Siswa</b></label>
                         <label>Nama Ibu</label>
                         <div class="input-control text size3">
                             <input placeholder="Nama Ibu" type="text" name="ibuTB" id="ibuTB">
@@ -326,10 +350,21 @@
                             <input placeholder="Email" type="text" name="email_ibuTB" id="email_ibuTB">
                         </div>
 
+                        <label><b>Data Keluarga (Opsional) :</b></label>
+                        <label>Nama Kakek :</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Email" type="text" name="kakekTB" id="kakekTB">
+                        </div>
+
+                        <label>Nama Nenek :</label>
+                        <div class="input-control text size5">
+                            <input placeholder="Email" type="text" name="nenekTB" id="nenekTB">
+                        </div>
+
                         </div>
                         <!-- End span -->
 
-                        <div class="span12">
+                        <div class="span8">
                             <label><b>Foto Siswa :</b></label>
                                <img width="150" id="previmg" src="../img/no_image.jpg" >
                              <div class="input-control file info-state" data-role="input-control" >
@@ -381,9 +416,12 @@
                         <!-- End Panel Data Siswa -->
                  </div>
 
-                        <div class="form-actions"> 
+                        <div class="form-actions"> &nbsp;
                             <button class="button primary">simpan</button>&nbsp;
-                            <button class="button" type="button" onclick="$.Dialog.close()">Batal</button> 
+                            <a class="button" href="#" onclick="switchPN(); return false;" >Batal</a> 
+                            <!-- <button class="button" type="button" onclick="$.Dialog.close()">Batal</button>  -->
                         </div>
-                    </form>;
+                    </form>
+        </div>
+              <!-- Akhir Scrollbar -->
     </div>

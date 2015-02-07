@@ -1119,7 +1119,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         // function cmbtempat (id) {
         function cmbtempat (tempat) {
             $.ajax({
-                url:dir7,
+                url:dir7,   
                 type:'post',
                 dataType:'json',
                 data:'aksi=cmb'+mnu7+'&lokasi='+$('#g_lokasiS').val(),

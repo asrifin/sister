@@ -15,16 +15,21 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
+
 				$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
+
+			$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
+
 				$tahunlulus = isset($_POST['tahunlulusS'])?filter(trim($_POST['tahunlulusS'])):'';
 				$sql = 'SELECT a.replid, t.nama AS tahunlulus, s.nama AS siswa, a.keterangan AS ket, s.nisn
 						 FROM aka_alumni a 
 						 LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
 						 LEFT JOIN aka_siswa s ON s.replid=a.siswa 
+
 						 WHERE 
-						 
-						 t.departemen = '.$departemen.$tahunlulus.'
-						ORDER BY a.replid ASC';
+						 t.departemen = '.$departemen.'
+						ORDER BY a.tahunlulus ASC';
+
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];

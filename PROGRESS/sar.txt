@@ -1,0 +1,28 @@
+ _________________
+| NOTE  	  |	
+|  + : solved 	  |
+|  - : error/bug  |
+|  C : completed  |
+|  P : progress	  |
+|_________________|
+______________________________________________________
+
+* inventaris (P)
+	- unit_barang > grafik 
+  
+* aktivitas (C)
+
+* peminjaman & pengembalian (P)
+	- form add (peminjaman): 
+		-barang > autosuggest : barang yg dipilih tidak boleh double dg id yg sama (query)
+		-tgl pinjam & kembali : default tgl hari ini, saat load form
+	- form detail_barang (pengembalian) 
+		-select all (checkbox)
+		-warna status ambigu (masih dipinjam/dikembalikan)
+		-button "kembalikan" : tdk boleh aktif ketika SEMUA barang sudah dikembalikan
+	
+____________________________________________________
+
+* lokasi (C)
+* jenis barang (C)
+* tempat(C)

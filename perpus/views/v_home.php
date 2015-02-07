@@ -1,12 +1,66 @@
 
-<div class="tile-group double">
+<div class="tile-group four">
+
+    <div class="tile-group-title">Menu Utama</div>
+    <a href="katalog" class="tile double bg-brown" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Katalog</div>
+        </div>
+    </a>
+    <a href="koleksi" class="tile double bg-red" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-pencil"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Daftar Koleksi</div>
+        </div>
+    </a>
+    <a href="data-anggota" class="tile double bg-blue" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-user"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Data Anggota</div>
+        </div>
+    </a>
+    <a href="sirkulasi" class="tile double bg-violet" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-tab"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Sirkulasi</div>
+        </div>
+    </a>
+    <a href="stok-opname" class="tile double bg-violet" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-pencil"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Stok Opname</div>
+        </div>
+    </a>
+    <a href="opac" class="tile double bg-magenta" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-grid-view"></span>
+        </div>
+        <div class="brand">
+            <div class="label">OPAC</div>
+        </div>
+    </a>
+</div>
+<!-- End Menu Utama -->
+
+<div class="tile-group triple">
     <div class="tile-group-title">Master</div>
 
     <!-- lokasi -->
 
     <a href="lokasi" class="tile  bg-yellow" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Lokasi</div>
@@ -17,10 +71,10 @@
 
     <a href="jenisbuku" class="tile  bg-pink" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
-            <div class="label">jenis Buku</div>
+            <div class="label">Jenis Buku</div>
         </div>
     </a>
     <!--end of  jenisbuku-->
@@ -28,7 +82,7 @@
 
     <a href="perangkat" class="tile  bg-green" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Perangkat</div>
@@ -37,20 +91,20 @@
     <!--end of  perangkat -->
     <!-- penerbit -->
 
-    <a href="penerbit" class="tile  bg-green" data-click="transform">
+    <a href="penerbit" class="tile  bg-blue" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Daftar Penerbit</div>
         </div>
     </a>
     <!--end of  penerbit -->
+   
     <!-- pengarang -->
-
-    <a href="pengarang" class="tile  bg-green" data-click="transform">
+    <a href="pengarang" class="tile  bg-lime" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Daftar Pengarang</div>
@@ -58,9 +112,9 @@
     </a>
     <!--end of  pengarang -->
     <!-- klasifikasi -->
-    <a href="klasifikasi" class="tile  bg-pink" data-click="transform">
+    <a href="klasifikasi" class="tile bg-darkViolet" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Klasifikasi</div>
@@ -70,7 +124,7 @@
     <!-- bahasa -->
     <a href="bahasa" class="tile  bg-brown" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Daftar Bahasa</div>
@@ -79,9 +133,9 @@
     <!--end of  bahasa -->
     <!-- tingkatbuku -->
 
-    <a href="tingkatbuku" class="tile  bg-yellow" data-click="transform">
+    <a href="tingkatbuku" class="tile  bg-orange" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Tingkat Buku</div>
@@ -91,50 +145,11 @@
     <!-- satuan -->
     <a href="satuan" class="tile  bg-brown" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-address-book"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Satuan Mata Uang</div>
         </div>
     </a>
-    <!--end of  satuan -->
-
-    
-</div> <!-- End group -->
-
-<div class="tile-group double">
-    <div class="tile-group-title">Daftar Koleksi</div>
-    <a href="koleksi" class="tile bg-red" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Daftar Koleksi</div>
-        </div>
-    </a>
-    <a href="aktivitas" class="tile bg-brown" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Aktivitas</div>
-        </div>
-    </a>
-    <a href="peminjaman" class="tile bg-blue" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Peminjaman</div>
-        </div>
-    </a>
-    <a href="pengembalian" class="tile bg-violet" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-address-book"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Pengembalian</div>
-        </div>
-    </a>
-    
+    <!--end of  satuan --> 
 </div> <!-- End group -->

@@ -1,6 +1,6 @@
 <script src="controllers/c_periode.js"></script>
 
-<h4>Periode Penerimaan</h4>
+<h4 style="color:white;">Periode Penerimaan</h4>
 <div id="loadarea"></div>
 <button data-hint="Tambah Data" class="button" id="tambahBC"><i class="icon-plus-2 on-left"></i>Tambah </button>
 <!-- <button data-hint="Field Pencarian" class="button" id="cariBC"><span class="icon-search"></span> </button> -->
@@ -9,7 +9,7 @@
 </div>
 <table class="table hovered bordered striped">
     <thead>
-        <tr class="selected">
+        <tr style="color:white;"class="info">
             <th class="text-left">Periode Penerimaan</th>
             <th class="text-left">Kode Awalan</th>
             <th class="text-left">Angkatan</th>

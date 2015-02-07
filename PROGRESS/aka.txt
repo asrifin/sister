@@ -1,0 +1,34 @@
+ _________________
+| NOTE  	  |	
+|  + : solved 	  |
+|  - : error/bug  |
+|  C : completed  |
+|  P : progress	  |
+|_________________|
+
+* pendataan siswa (P)
+* presensi siswa (P)
+* rapor siswa  (P)
+* pendataan alumni (P)
+* pendataan mutasi siswa (C)
+
+* pelajaran (C)
+* guru (C)
+* jadwal pelajaran  (P)
+* presensi guru (P)
+* kegiatan akademik (C)
+
+* departemen (C)
+* angkatan (C)
+* tahun ajaran (C)
+* tingkat (C)
+* kelas (C)
+  + Form > walikelas > autosuggest   
+* semester (C)
+* jenis mutasi (C)
+* tahun lulus (C)
+	
+
+
+
+
