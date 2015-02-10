@@ -595,16 +595,14 @@ var contentFR = '';
         }
 
         function hitung_diskon(){
-
             var disc_subsidi  = parseFloat(getuang($("#diskon_subsidiTB").val()));
-            // var disc_saudara  = parseFloat($("#diskon_saudaraTB").val());
-            // var disc_tunai    = parseFloat($("#disc_tunai").val());
-            // var disc_tunaiTB  = parseFloat($("#disc_tunaiTB").val());
-            // alert(disc_tunai);
-            // if(disc_subsidi>0 && disc_saudara>0 && disc_tunaiTB>0){
-            // var total_diskon = disc_subsidi+disc_saudara+disc_tunaiTB;
-            // $("#diskon_totalTB").val(total_diskon);
-            // }
+            var disc_saudara  = parseFloat(getuang($("#diskon_saudaraTB").val()));
+            var disc_tunai    = parseFloat(getuang($("#disc_tunai").val()));
+            var disc_tunaiTB  = parseFloat(getuang($("#disc_tunaiTB").val()));
+            if(disc_subsidi>0 && disc_saudara>0 && disc_tunaiTB>0){
+                var total_diskon = disc_subsidi+disc_saudara+disc_tunaiTB;
+                $("#diskon_totalTB").val(total_diskon);
+            }
         }
 
 
@@ -733,18 +731,8 @@ var contentFR = '';
 
 // get uang --------------------------
     function getuang(e) {
-        // var x =$(e).maskMoney('unmasked')[0];
-        // var x =$(e).val();
-        // alert($(e).val());
-        // var x =$(e).val();
-        // var y = e.replace(/[r\.]/g, '');
-        var y = e.replace('Rp. ','').replace('.','').replace(',',''); 
-        // alert(y);
-        // var y = e.replace('Rp. ',''); 
-        //  x = y.replace('.',''); 
-        //  z = x.replace(',',''); 
-        // alert(z);
-        // return y;
+        x = $(e).val().replace(/[^0-9]/g,'')
+        return x;
     }
 // end of get uang --------------------------
 

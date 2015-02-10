@@ -64,13 +64,6 @@ var contentFR = '';
         $('#tahunlulusS').on('change',function (){
             viewTB();
         });
-
-        // search button
-        // $('#cariBC').on('click',function(){
-        //     $('#cariTR').toggle('slow');
-        //     $('#tingkatS').val('');
-        //     $('#keteraganS').val('');
-        // });
     }); 
 // end of save process ---
 
@@ -97,41 +90,19 @@ var contentFR = '';
     }
 //end of combo departemen ---
 
-// combo tahunajaran ---
-    // function cmbtahunlulus(dep){
-    //     $.ajax({
-    //         url:dir3,
-    //         data:'aksi=cmbtahunlulus&departemen='+dep,
-    //         dataType:'json',
-    //         type:'post',
-    //         success:function(dt){
-    //             var out='';
-    //             if(dt.status!='sukses'){
-    //                 out+='<option value="">'+dt.status+'</option>';
-    //             }else{
-    //                 $.each(dt.nama, function(id,item){
-    //                     if(item.aktif=='1'){
-    //                         out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
-    //                     }else{
-    //                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-    //                     }
-    //                 });
-    //                 // viewTB(dep,dt.tahunlulus[0].replid); 
-    //             }
-    //             $('#tahunlulusS').html(out);
-    //             viewTB(); 
-    //         }
-    //     });
-    // }
-//end of combo tahunajaran ---
 // combo tahunlulus ---
     function cmbtahunlulus(dep,hun,idhun){
+        console.log(dep+','+hun+','+idhun);
+        // return false;
         var select='',tb;
         if(hun){// form
             tb='#tahunlulusTB';
         }else{// search
             tb='#tahunlulusS';
             select+='<option value="">---------- Semua ----------</option>';
+            // if ($('#tahunlulusS').val()!='') {
+            //     tl=''
+            // };
         }
         $.ajax({
             url:dir3,
@@ -204,8 +175,7 @@ var contentFR = '';
                     viewTB($('#departemenS').val());
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
-                }
-                notif(cont,clr);
+                }notif(cont,clr);
             }
         });
     }
@@ -249,12 +219,13 @@ var contentFR = '';
                         data:'aksi=ambiledit&replid='+id,
                         type:'post',
                         dataType:'json',
-                        success:function(dt3){
+                        success:function(dt){
                             $('#idformH').val(id);
-                            $('#nisnTB').val(dt3.nisn); /*epiii*/
-                            $('#siswaTB').val(dt3.siswa);
-                            $('#keteranganTB').val(dt3.ket);
-                            cmbtahunlulus(dt3.nama,true,dt3.nama);
+                            $('#nisnTB').val(dt.nisn); 
+                            $('#siswaTB').val(dt.siswa);
+                            $('#keteranganTB').val(dt.ket);
+                            // cmbtahunlulus(dt3.nama,true,dt3.nama);
+                            cmbtahunlulus(dt.departemen,true,dt.nama); /*epiii*/
                         }
                     });titlex='<span class="icon-pencil"></span> Ubah ';
                 }else{ //add mode

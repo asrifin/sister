@@ -15,14 +15,20 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-			$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
-				$tahunlulus = isset($_POST['tahunlulusS'])?filter(trim($_POST['tahunlulusS'])):'';
+				$tahunlulus =  ($_POST['tahunlulusS']!='')?' AND a.tahunlulus='.$_POST['tahunlulusS']:'';
+				// var_dump($tahunlulus);exit();
+				$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
+				// $tahunlulus = isset($_POST['tahunlulusS'])?filter(trim($_POST['tahunlulusS'])):'';
 				$sql = 'SELECT a.replid, t.nama AS tahunlulus, s.nama AS siswa, a.keterangan AS ket, s.nisn
 						 FROM aka_alumni a 
 						 LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
 						 LEFT JOIN aka_siswa s ON s.replid=a.siswa 
-						 WHERE t.departemen = '.$departemen.'
-						ORDER BY a.tahunlulus ASC';
+
+						 WHERE 
+						 t.departemen = '.$departemen.$tahunlulus.' 
+ 						ORDER BY a.replid ASC';
+						 // '.($_POST['tahunlulusS']!=''?'and a.tahunlulus = '.$_POST['tahunlulus']:'').'
+
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -95,22 +101,30 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT a.replid, t.nama AS tahunlulus, s.nama AS siswa, a.keterangan AS ket, s.nisn
-						 FROM aka_alumni a 
-						 LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
-						 LEFT JOIN aka_siswa s ON s.replid=a.siswa
-						WHERE
-						a.replid='.$_POST['replid'];
+				$s 		= ' SELECT 
+								a.replid, 
+								t.nama AS tahunlulus, 
+								s.nama AS siswa, 
+								a.keterangan AS ket, 
+								s.nisn,
+								t.departemen /*epiii*/
+
+							FROM aka_alumni a 
+							 	LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
+							 	LEFT JOIN aka_siswa s ON s.replid=a.siswa
+							WHERE
+								a.replid='.$_POST['replid'];
 				// print_r($s);exit();	
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'tahunlulus'    =>$r['tahunlulus'],
-							'siswa'    		=>$r['siswa'],
-							'nisn'    		=>$r['nisn'],
-							'ket' =>$r['ket']
+							'departemen' =>$r['departemen'],
+							'tahunlulus' =>$r['tahunlulus'],
+							'siswa'      =>$r['siswa'],
+							'nisn'       =>$r['nisn'],
+							'ket'        =>$r['ket']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
@@ -159,7 +173,7 @@
 					$ar = array('status'=>'error');
 				}else{
 					if($n==0){ // kosong 
-						var_dump($n);exit();
+						// var_dump($n);exit();
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
 						if(!isset($_POST['replid'])){
