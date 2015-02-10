@@ -84,14 +84,17 @@
 						}
 						
 						$btn ='<td>
-									<button data-hint="ubah"  onclick="k_view('.$res['replid'].');">
-										<i class="icon-search on-left"></i>
+									<button data-hint="Lihat Katalog"  onclick="k_view('.$res['replid'].');">
+										<i class="icon-zoom-in on-left"></i>
 									</button>
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+									<button data-hint="Ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
 									<button data-hint="hapus" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
+									</button>
+									<button data-hint="Tambah Koleksi"  onclick="koleksiFR('.$res['replid'].');">
+										<i class="icon-plus-2 on-left"></i>
 									</button>
 								 </td>';
 						$out.= '<tr>
@@ -355,6 +358,71 @@
 									'halaman'     =>$r['halaman'],
 									'dimensi'     =>$r['dimensi'],
 									'deskripsi'   =>$r['deskripsi']			
+								));
+
+					break;
+
+					case 'koleksi':
+						$s 		= ' SELECT
+				                          kg.replid as replid,
+				                          kg.judul,
+										  LPAD(pb.idbuku,18,0)as kode,
+										  pb.barkode,
+										  pb.harga,
+										  pb.tanggal,
+										  pb.lokasi,
+										  pb.tingkatbuku,
+										  if(pb.sumber=0,"Beli","Pemberian") as sumber,
+										  pj.nama jenisbuku,
+				                          kg.callnumber,
+				                          kg.dimensi,
+				                          kg.deskripsi, 
+				                          (SELECT count(*) from pus_buku where katalog=kg.replid) as jum
+				                        FROM
+				                          pus_katalog kg
+				                          LEFT JOIN pus_buku pb ON pb.replid = kg.pengarang
+				                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
+				                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
+				                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+				                        order BY
+				                          kg.replid asc';
+									/*	b.replid,
+										b.barkode,
+										LPAD(b.idbuku,18,0)as kode,
+										k.judul,
+										k.tanggal,
+										k.callnumber,
+										CONCAT("[",f.kode,"] ",f.nama) klasifikasi,
+										r.nama2 as pengarang,
+										t.nama as penerbit,
+										if(b.status=1,"Tersedia","Dipinjam") as status,
+										if(b.status=0,"Beli","Pemberian") as sumber
+									from 
+										pus_buku b,
+										pus_katalog k,
+										pus_klasifikasi f,
+										pus_penerbit t,
+										pus_pengarang r
+									WHERE	
+										b.katalog = k.replid 
+										AND klasifikasi = f.replid 
+										AND k.penerbit = t.replid 
+										AND k.pengarang = r.replid';	*/
+											// print_r($s);exit();
+						$e 		= mysql_query($s) or die(mysql_error());
+						$r 		= mysql_fetch_assoc($e);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out    = json_encode(array(
+									'status'      =>$stat,
+									'judul'       =>$r['judul'],
+									'jumlah'      =>$r['jum'],
+									'kode'      =>$r['kode'],
+									'barkode'     =>$r['barkode'],
+									'sumber'      =>$r['sumber'],
+									'harga'       =>$r['harga'],
+									'tanggal'     =>$r['tanggal'],
+									'lokasi'      =>$r['lokasi'],
+									'tingkatbuku' =>$r['tingkatbuku']
 								));
 
 					break;

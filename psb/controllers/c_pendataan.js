@@ -21,7 +21,6 @@ var contentFR = '';
         $('#pendataanTBL').toggle('slow');
     }
     function switchPN2(){
-        // $('#pendataanFR').toggle('slow');
         $('#importFR').toggle('slow');
         $('#pendataanTBL').toggle('slow');
     }

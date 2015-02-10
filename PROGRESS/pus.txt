@@ -17,9 +17,12 @@ ____________________________________________________
 	
 	- sorting : all column (belum ada lib/contoh) 
 * katalog (P)
-	- edit field yang belum ( jenis buku, bahasa dan tahun)
+	- edit field yang belum ( jenis buku, bahasa dan tahun)	
 	- Insert (foto)
+	- Tambah Koleksi menampilkan hasil yang sama meskipun pilih koleksi yang lain
 * data anggota (P)
+	- view siswa
+	- pegawai (guru)
 * sirkulasi (P)
 * OPAC (P)
 ____________________________________________________
@@ -28,7 +31,7 @@ ____________________________________________________
 * daftar penerbit (C)
 * daftar pengarang (C)
 * klasifikasi (C)
-* jenis koleksi (P)
+* jenis koleksi (C)
 * tingkat koleksi (C)
 * daftar bahasa (C)
 * satuan mata uang (C)

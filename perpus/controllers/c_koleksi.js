@@ -57,7 +57,7 @@ var contentFR ='';
         // cmbjenisbuku();
         
         //load table // edit by epiii
-        // viewTB();
+        viewTB();
 
         //add form
         // $("#tambahBC").on('click', function(){
@@ -117,27 +117,6 @@ var contentFR ='';
     }); 
 // end of main function ---
 
-// combo lokasi ---
-    // function cmblokasi(lok){
-    //     $.ajax({
-    //         url:dir,
-    //         data:'aksi=cmblokasi',
-    //         dataType:'json',
-    //         type:'post',
-    //         success:function(dt){
-    //             var out='';
-    //             if(dt.status!='sukses'){
-    //                 out+='<option value="">'+dt.status+'</option>';
-    //             }else{
-    //                 $.each(dt.lokasi, function(id,item){
-    //                     out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
-    //                 });
-    //                 //panggil fungsi viewTB() ==> tampilkan tabel 
-    //                 viewTB(dt.lokasi[0].replid); 
-    //             }$('#lokasiS').html(out);
-    //         }
-    //     });
-    // }
     function cmblokasi(lok){
         $.ajax({
             url:dir,
@@ -202,7 +181,7 @@ function cmbtingkatbuku(tgt){
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    $.each(dt.nama, function(id,item){
+                    $.each(dt.tingkatbuku, function(id,item){
                         if(item.aktif=='1'){
                             out+='<option selected="selected" value="'+item.replid+'">'+item.nama       +' (aktif)</option>';
                         }else{

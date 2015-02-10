@@ -199,22 +199,36 @@
 			break;
 			// ambiledit -----------------------------------------------------------------
 
-			// aktifkan -----------------------------------------------------------------
-			// case 'aktifkan':
-			// 	$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0" where departemen = '.$_POST['departemen']);
-			// 	if(!$e1){
-			// 		$stat='gagal menonaktifkan';
-			// 	}else{
-			// 		$s2 = 'UPDATE  '.$tb.' set aktif="1" where replid = '.$_POST['replid'];
-			// 		$e2 = mysql_query($s2);
-			// 		if(!$e2){
-			// 			$stat='gagal mengaktifkan';
-			// 		}else{
-			// 			$stat='sukses';
-			// 		}
-			// 	}$out  = json_encode(array('status'=>$stat));
-			// break;
-			// aktifkan -----------------------------------------------------------------
+		// cmbkelas ---------------------------------------------------------
+			case 'cmbkelas':
+				$s	= ' SELECT *
+						from '.$tb.'
+						'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
+						ORDER  BY replid asc';
+				$e  = mysql_query($s);
+				// var_dump($s);
+				$n  = mysql_num_rows($e);
+				$ar =$dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error');
+				}else{
+					if($n=0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}$ar = array('status'=>'sukses','kelas'=>$dt);
+					}
+				}
+				$out=json_encode($ar);
+				// echo $out;
+			break;
+			// end of cmbkelas ---------------------------------------------------------
 
 		}
 	}echo $out;

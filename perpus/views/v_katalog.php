@@ -8,7 +8,7 @@
 <h4 style="color:white;">Katalog</h4>
 <div id="loadarea"></div>
 
-<button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> Katalog</button>
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
 <!-- <div class="input-control select span3">
@@ -54,7 +54,7 @@
     </tfoot>
 </table>
 
-      <!-- Form View detail Katalog -->
+<!-- Form View detail Katalog -->
       <div class="table hovered bordered striped panelx" id="k_viewFR" style="display:none;" >
           <div style="overflow:scroll;height:600px;" >
                   <form autocomplete="off" onsubmit="katalog_viewSV();return false;"> 
@@ -66,10 +66,15 @@
                           </div>
                           <div class="panel-content">
 
-                          <div class="grid">     
-                            <div class="row">
+                  <!-- <button data-hint="Kembali" xclass="large" id="kembaliBC"><span class=" icon-arrow-left-2"></span> Katalog</button> -->
+                  <a href="#" data-hint="Kembali" onclick="switchPN_view(); return false;" class="button"><span class="icon-arrow-left-2"></span> Katalog</a>
+                  <button data-hint="Edit" xclass="large" id="edit_katalogBC"><span class=" icon-pencil"></span> Edit Informasi Katalog</button>
+                  <a href="#" data-hint="Tambah Koleksi" id="koleksiBC" class="button"><span class="icon-plus-2"></span> Koleksi</a>
+
+                          <div class="grid">  
+                            <div class="row">     
                               <div class="span6">
-                              <!-- <label><b>Kriteria Calon :</b></label> -->
+                              <label><b>Informasi Katalog :</b></label>
                               <div class="row">
                                   <div class="span2">Judul :</div>
                                   <div  class="span2" id="judulTD"></div>
@@ -145,21 +150,18 @@
                                   <div class="span2">Jenis Buku :</div>
                                   <div class="span2" id="jenis_bukuTD"></div>
                               </div>
+                              &nbsp;
+                              <div class="form-actions"> &nbsp;
+                                <button class="button primary">simpan</button>&nbsp;
+                                <a class="button" href="#" onclick="switchPN_view(); return false;" >Batal</a> 
+                                <!-- <button class="button" type="button" onclick="$.Dialog.close()">Batal</button>  -->
+                              </div>
 
                         </div>
-                                <!-- End Span-->
+                                <!-- End Span 1-->
 
                               <div class="span6">
-<!--                                 <label><b>Gambar Sampul Buku:</b></label>
-                               <img width="150" id="previmg" src="../img/no_image.jpg" >
-                              <div class="input-control file info-state" data-role="input-control" >
-                               <input type="hidden" id="k_photoH"/>
-                               <div id="photoDV" class="input-control file" data-role="input-control">
-                                    <input onchange="PreviewImage(this);" id="k_photoTD" name="k_photoTD" type="file">
-                                    <button class="btn-file"></button>
-                                </div>
-                              </div>
- -->                                <label><b>Deskripsi Buku :</b></label>
+                                <label><b>Deskripsi Buku :</b></label>
                                 <div class="row">
                                     <div class="span2">Jumlah Halaman :</div>
                                     <div  class="span2" id="jumlahTD"></div>
@@ -172,28 +174,28 @@
 
                               <div class="row">
                                     <div class="span2">Sinopsis :</div>
-                                    <div class="span2" id="sinopsisTD">Sinopsis :</div>
+                                    <div class="span2" id="sinopsisTD"></div>
                                 </div>                                
 
                               </div>
-                                <!-- End span-->
+                                <!-- End span 2-->
 
-                              
+                              </div>
                             </div>
+                                <!-- End Grid-->                            
                           </div>
-                                <!-- End Grid-->
+
                         </div>
-                        <div class="form-actions"> &nbsp;
+                        <!-- End Panel -->
+<!--                         <div class="form-actions"> &nbsp;
                             <button class="button primary">simpan</button>&nbsp;
                             <a class="button" href="#" onclick="switchPN_view(); return false;" >Batal</a> 
-                            <!-- <button class="button" type="button" onclick="$.Dialog.close()">Batal</button>  -->
                         </div>
-                    </form>
+ -->                    </form>
 
                     </div>
-                            <!-- End Panel -->
-                        <!-- Panel Data Siswa-->                                             
-    </div>
+                            <!-- End Scroll -->
+    </div> 
 
       <!-- Form tambah dan edit katalog  -->
       <div class="table hovered bordered striped panelx" id="katalogFR" style="display:none;" >
@@ -224,16 +226,15 @@
 
                               <div class="input-control text size3">
                                   <input type="text" placeholder="Klasifikasi" name="klasifikasi_selectTB" id="klasifikasi_selectTB">
-                              </div>
-                              
+                              </div>                            
                               <a href="#" data-hint="Tambah Kalsifikasi" id="klasifikasiBC" class="button"><span class="icon-plus-2"></span> </a>
 
                               <label>Pengarang :</label>
                               <div class="input-control text size4">
                                   <input type="text" placeholder="Pengarang" name="pengarangTB" id="pengarangTB">
+                                  <input type="hidden" name="pengarangH" id="pengarangH">
                                   <button class="btn-clear"></button>
-                              </div>
-      
+                              </div>      
                                   <a href="#" data-hint="Tambah Pengarang" xclass="large" id="pengarangBC" class="button"><span class="icon-plus-2"></span> </a>
                         
                               <label>Callnumber</label>
@@ -321,8 +322,8 @@
                                 <!-- End Span-->
                               <div class="span6">
                                 <label><b>Gambar Sampul Buku:</b></label>
-                               <img width="150" id="previmg" src="../img/no_image.jpg" >
-                              <div class="input-control file info-state" data-role="input-control" >
+                               <img width="150" id="previmg" src="../img/no_image.jpg" ><br>
+                              <div class="input-control file info-state size3" data-role="input-control">
                                <input type="hidden" id="k_photoH"/>
                                <div id="photoDV" class="input-control file" data-role="input-control">
                                     <input onchange="PreviewImage(this);" id="k_photoTB" name="k_photoTB" type="file">
@@ -331,7 +332,7 @@
                               </div>
                                 <label><b>Deskripsi Buku :</b></label>
                                 <label>Jumlah Halaman :</label>
-                                <div class="input-control text size5">
+                                <div class="input-control text size2">
                                     <input type="text" name="jumlahTB" id="jumlahTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
@@ -363,7 +364,7 @@
                     </form>
 
                     </div>
-                            <!-- End Panel -->
+                            <!-- End Scroll -->
 
                         <!-- Panel Data Siswa-->                                             
     </div>

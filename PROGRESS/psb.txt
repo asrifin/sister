@@ -1,4 +1,4 @@
- _________________
+ ________________
 | NOTE  	  |	
 |  + : solved 	  |
 |  - : error/bug  |
@@ -7,12 +7,13 @@
 |_________________|
 ______________________________________________________
 
+PSB V2.0
 * periode penerimaan (P)
 	- view > warna table header	+
   	- form : 
      		-title form : "undefined periode"	-
 	     	-angkatan : combo tidak ter-select  +
-  	- search > belum ada	( tanpa Search)
+  	- search > belum ada	( tanpa Search)	
 
 * Kelompok Pendaftaran (P)
 	- paging > Menampilkan syntax query (klik next)	-
