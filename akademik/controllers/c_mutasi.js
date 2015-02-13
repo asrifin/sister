@@ -236,6 +236,7 @@ var contentFR ='';
                 $.Dialog.content(contentFR);
             }
         });
+        // autosuggest
         $("#siswaTB").combogrid({
             debug:true,
             width:'400px',

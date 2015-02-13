@@ -17,8 +17,63 @@
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
-		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
+		// $out=json_encode(array('status'=>'invalid_no_post'));		
+		// $out=['status'=>'invalid_no_post'];	
+
+		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
+			$page       = $_GET['page']; // get the requested page
+			$limit      = $_GET['rows']; // get how many rows we want to have into the grid
+			$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
+			$sord       = $_GET['sord']; // get the direction
+			$searchTerm = $_GET['searchTerm'];
+
+
+			if(!$sidx) 
+				$sidx =1;
+			$ss=	'SELECT * 
+					FROM(
+						SELECT replid, nama
+						FROM pus_pengarang
+						where 
+							replid 
+						)tb
+					WHERE	
+						tb.nama LIKE "%'.$searchTerm.'%""';
+							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
+			// print_r($ss);exit();
+			$result = mysql_query($ss);
+			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
+			$count  = mysql_num_rows($result);
+
+			if( $count >0 ) {
+				$total_pages = ceil($count/$limit);
+			} else {
+				$total_pages = 0;
+			}
+			if ($page > $total_pages) $page=$total_pages;
+			$start 	= $limit*$page - $limit; // do not put $limit*($page - 1)
+			if($total_pages!=0) {
+				$ss.='ORDER BY '.$sidx.' '.$sord.' LIMIT '.$start.','.$limit;
+			}else {
+				$ss.='ORDER BY '.$sidx.' '.$sord;
+			}
+			print_r($ss);exit();
+			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
+			$rows 	= array();
+			while($row = mysql_fetch_assoc($result)) {
+				$rows[]= array(
+					'replid' =>$row['replid'],
+					'nama'   =>$row['nama']
+				);
+			}$response=array(
+				'page'    =>$page,
+				'total'   =>$total_pages,
+				'records' =>$count,
+				'rows'    =>$rows,
+			);$out=json_encode($response);
+		}else{
+			$out=json_encode(array('status'=>'invalid_no_post'));	
+		}	
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
@@ -84,14 +139,17 @@
 						}
 						
 						$btn ='<td>
-									<button data-hint="ubah"  onclick="k_view('.$res['replid'].');">
-										<i class="icon-search on-left"></i>
+									<button data-hint="Lihat Katalog"  onclick="k_view('.$res['replid'].');">
+										<i class="icon-zoom-in on-left"></i>
 									</button>
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+									<button data-hint="Ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
 									<button data-hint="hapus" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
+									</button>
+									<button data-hint="Tambah Koleksi"  onclick="koleksiFR('.$res['replid'].');">
+										<i class="icon-plus-2 on-left"></i>
 									</button>
 								 </td>';
 						$out.= '<tr>
@@ -355,6 +413,71 @@
 									'halaman'     =>$r['halaman'],
 									'dimensi'     =>$r['dimensi'],
 									'deskripsi'   =>$r['deskripsi']			
+								));
+
+					break;
+
+					case 'koleksi':
+						$s 		= ' SELECT
+				                          kg.replid as replid,
+				                          kg.judul,
+										  LPAD(pb.idbuku,18,0)as kode,
+										  pb.barkode,
+										  pb.harga,
+										  pb.tanggal,
+										  pb.lokasi,
+										  pb.tingkatbuku,
+										  if(pb.sumber=0,"Beli","Pemberian") as sumber,
+										  pj.nama jenisbuku,
+				                          kg.callnumber,
+				                          kg.dimensi,
+				                          kg.deskripsi, 
+				                          (SELECT count(*) from pus_buku where katalog=kg.replid) as jum
+				                        FROM
+				                          pus_katalog kg
+				                          LEFT JOIN pus_buku pb ON pb.replid = kg.pengarang
+				                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
+				                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
+				                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+				                        order BY
+				                          kg.replid asc';
+									/*	b.replid,
+										b.barkode,
+										LPAD(b.idbuku,18,0)as kode,
+										k.judul,
+										k.tanggal,
+										k.callnumber,
+										CONCAT("[",f.kode,"] ",f.nama) klasifikasi,
+										r.nama2 as pengarang,
+										t.nama as penerbit,
+										if(b.status=1,"Tersedia","Dipinjam") as status,
+										if(b.status=0,"Beli","Pemberian") as sumber
+									from 
+										pus_buku b,
+										pus_katalog k,
+										pus_klasifikasi f,
+										pus_penerbit t,
+										pus_pengarang r
+									WHERE	
+										b.katalog = k.replid 
+										AND klasifikasi = f.replid 
+										AND k.penerbit = t.replid 
+										AND k.pengarang = r.replid';	*/
+											// print_r($s);exit();
+						$e 		= mysql_query($s) or die(mysql_error());
+						$r 		= mysql_fetch_assoc($e);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out    = json_encode(array(
+									'status'      =>$stat,
+									'judul'       =>$r['judul'],
+									'jumlah'      =>$r['jum'],
+									'kode'      =>$r['kode'],
+									'barkode'     =>$r['barkode'],
+									'sumber'      =>$r['sumber'],
+									'harga'       =>$r['harga'],
+									'tanggal'     =>$r['tanggal'],
+									'lokasi'      =>$r['lokasi'],
+									'tingkatbuku' =>$r['tingkatbuku']
 								));
 
 					break;

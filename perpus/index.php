@@ -38,7 +38,13 @@
     <script src="../js/docs.js"></script>
     <!--<script src="js/github.info.js"></script>-->
     <script src="../js/start-screen.js"></script>
+<!-- 
+<script src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
+<script src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>
 
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery-ui-1.10.1.custom.css"/>
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery.ui.combogrid.css"/>
+ -->
         <!-- js for datatables -->
     <!--<script type="text/javascript" language="javascript" src="js/jquery.js"></script>
     <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
@@ -50,7 +56,7 @@
 </head>
 
 <body class="metro">
-<div class="container">
+<!-- <div class="container"> -->
     <!-- <nav class="navigation-bar light fixed-top"> -->
     <nav class="navigation-bar fixed-top">
         <nav class="navigation-bar-content">
@@ -69,10 +75,11 @@
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="katalog">Katalog</a></li>
                     <li><a href="koleksi">Daftar Koleksi</a></li>
-<!--                     <li><a href="aktivitas">Aktivitas</a></li>
-                    <li><a href="peminjaman">Peminjaman</a></li>
-                    <li><a href="pengembalian">Pengembalian</a></li>
- -->                </ul>
+                    <li><a href="data-anggota">Data Anggota</a></li>
+                    <li><a href="sirkulasi">Sirkulasi</a></li>
+                    <li><a href="stok-opname">Stok Opname</a></li>
+                    <li><a href="opac">OPAC</a></li>
+                </ul>
             </div>
             <div class="element">
                 <a class="dropdown-toggle" href="#">Master</a>
@@ -156,8 +163,8 @@
                     case 'vkatalog':
                         require $d.'v_katalog.php';
                     break;
-                    case 'vdata-anggota':
-                        require $d.'v_data_anggota.php';
+                    case 'vanggota':
+                        require $d.'v_anggota.php';
                     break;
                     case 'vkembali':
                         require $d.'v_kembali.php';
@@ -166,7 +173,7 @@
                         require $d.'v_sirkulasi.php';
                     break;
                     case 'vstok-opname':
-                        require $d.'v_stok_opname.php';
+                        require $d.'v_stokopname.php';
                     break;
                     case 'vopac':
                         require $d.'v_opac.php';
@@ -178,7 +185,7 @@
             }
         ?>
     </div>
-</div>
+<!-- </div> -->
     <!-- // <script src="js/hitua.js"></script> -->
     <script src="js/main.js"></script>
 

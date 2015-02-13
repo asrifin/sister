@@ -139,7 +139,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','nama'=>$dt);
+						}$ar = array('status'=>'sukses','tingkatbuku'=>$dt);
 					}
 				}
 				$out=json_encode($ar);
