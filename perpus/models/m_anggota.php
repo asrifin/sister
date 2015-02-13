@@ -25,29 +25,56 @@
 						$tingkatbuku = isset($_POST['tingkatbukuS'])?filter(trim($_POST['tingkatbukuS'])):'';
 						$kelas       = isset($_POST['kelasS'])?filter(trim($_POST['kelasS'])):'';
 						
+						// $sql = 'SELECT
+						// 			a.nis,
+						// 			a.nama,
+						// 		/*	(SELECT 
+						// 				COOUNT(*)
+						// 				FROM pus_buku
+						// 				WHERE pus_buku.replid = pus_peminjaman.buku)
+						// 			jumlah */
+						// 			SUM(if (pus_peminjaman.status=1,1,0)) total
+						// 		FROM
+						// 			aka_siswa_kelas ask
+						// 		LEFT JOIN aka_siswa a ON a.replid = ask.siswa 
+						// 		LEFT JOIN aka_kelas ak ON ak.replid = ask.kelas
+						// 		LEFT JOIN aka_tingkat at ON at.replid = ak.kelas
+						// 		LEFT JOIN aka_tahunajaran aj ON aj.replid = at.replid
+						// 		LEFT JOIN departemen d ON d.replid = aj.departemen
+						// 		LEFT JOIN pus_peminjaman ON (pus_peminjaman.member = a.replid AND pus_peminjaman.mtipe = 1)
+						// 		WHERE
+						// 			a.nis like "%'.$nis.'%" and
+						// 			a.nama like "%'.$nama.'%" 
+						// 		ORDER BY
+						// 			a.replid asc';
 						$sql = 'SELECT
-									a.nis,
-									a.nama,
-								/*	(SELECT 
-										COOUNT(*)
-										FROM pus_buku
-										WHERE pus_buku.replid = pus_peminjaman.buku)
-									jumlah */
-									SUM(if (pus_peminjaman.status=1,1,0)) total
+									s.nis,
+									s.nama,(
+											SELECT count(*)
+											FROM
+												pus_peminjaman 
+											where 
+											mtipe = pj.mtipe and 
+											member= s.replid and 
+											status=1
+									)borrowing,(
+										SELECT
+											count(*)
+										FROM
+											pus_peminjaman 
+										WHERE
+											mtipe = pj.mtipe and 
+											member= s.replid
+									) total
 								FROM
-									aka_siswa_kelas ask
-								LEFT JOIN aka_siswa a ON a.replid = ask.siswa 
-								LEFT JOIN aka_kelas ak ON ak.replid = ask.kelas
-								LEFT JOIN aka_tingkat at ON at.replid = ak.kelas
-								LEFT JOIN aka_tahunajaran aj ON aj.replid = at.replid
-								LEFT JOIN departemen d ON d.replid = aj.departemen
-								LEFT JOIN pus_peminjaman ON (pus_peminjaman.member = a.replid AND pus_peminjaman.mtipe = 1)
+									aka_siswa s 
+									left JOIN pus_peminjaman pj ON pj.member = s.replid 
 								WHERE
-									a.nis like "%'.$nis.'%" and
-									a.nama like "%'.$nama.'%" 
-								ORDER BY
-									a.replid asc';
-						print_r($sql);exit(); 	
+									pj.mtipe = 1 AND
+									s.aktif != 2
+								GROUP BY
+									s.replid';
+						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
@@ -69,8 +96,8 @@
 								$out.= '<tr>
 											<td>'.$res['nis'].'</td>
 											<td>'.$res['nama'].'</td>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
+											<td>'.$res['borrowing'].'</td>
+											<td>'.$res['total'].'</td>
 										</tr>';
 								/*$totaset+=$res['aset'];	*/
 								$nox++;
