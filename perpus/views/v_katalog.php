@@ -4,6 +4,13 @@
 <script src="js/metro/metro-calendar.js"></script>
 <script src="js/metro/metro-datepicker.js"></script>
  -->
+     <!-- combo grid -->
+    <script src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
+    <script src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="../../css/combogrid/jquery-ui-1.10.1.custom.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="../../css/combogrid/jquery.ui.combogrid.css"/>
+    <!--end of combo grid -->
+
  <!--  <script type="../js/metro/metro-scroll.js"></script> -->
 <h4 style="color:white;">Katalog</h4>
 <div id="loadarea"></div>
@@ -231,8 +238,9 @@
 
                               <label>Pengarang :</label>
                               <div class="input-control text size4">
+                                  <!-- <input type="text" placeholder="Cari Pengarang" name="cari_pengarangTB" id="cari_pengarangTB"> -->
                                   <input type="text" placeholder="Pengarang" name="pengarangTB" id="pengarangTB">
-                                  <input type="hidden" name="pengarangH" id="pengarangH">
+                                  <input type="hidden" name="pengarang_autoH" id="pengarang_autoH">
                                   <button class="btn-clear"></button>
                               </div>      
                                   <a href="#" data-hint="Tambah Pengarang" xclass="large" id="pengarangBC" class="button"><span class="icon-plus-2"></span> </a>

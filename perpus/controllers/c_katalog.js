@@ -732,7 +732,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         $('#judulTB').val(dt.judul);
                         $('#klasifikasiTB').val(dt.kode_klas);
                         $('#klasifikasi_selectTB').val(dt.klasifikasi);
-                        $('#pengarangTB').val(dt.pengarang);
+                        $('#nama_pengarangTB').val(dt.pengarang);
                         $('#callnumberTB').val(dt.callnumber);
                         $('#penerjemahTB').val(dt.penerjemah);
                         $('#editorTB').val(dt.editor);
@@ -983,13 +983,14 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                 }],
             url: dir+'?aksi=autocomp',
             select: function( event, ui ) {
-                $('#pengarangH').val(ui.item.replid);
+                $('#pengarang_autoH').val(ui.item.replid);
                 $('#pengarangTB').val(ui.item.nama);
-                $('#pengarangTB').combogrid( "option", "url", dir+'?aksi=autocomp' );
+                $('#pengarangTB').combogrid( "option", "url", dir+'?aksi=autocomp&departemen='+$('#departemenS').val() );
+                // $('#pengarangTB').combogrid( "option", "url", dir+'?aksi=autocomp' );
                 return false;
             }
         });
-    }
+    // }
 // end of form ---
 
     function pagination(page,aksix,subaksi){ 

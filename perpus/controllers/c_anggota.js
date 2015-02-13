@@ -44,10 +44,13 @@ var contentFR ='';
         cmbdepartemen();
         
         //load table Siswa
-        vwSiswa('');
+        vwSiswa();
 
+        $("#pegawai").on('click', function(){
+            vwPegawai();
+        });
         $("#luar").on('click', function(){
-            vwLuar('');
+            vwLuar();
         });
 
         //add form
@@ -58,14 +61,14 @@ var contentFR ='';
         //search action
         $('#nisS').keydown(function (e){
             if(e.keyCode == 13)
-             vwSiswa('');
+             vwSiswa();
         });
         $('#namaS').keydown(function (e){
             if(e.keyCode == 13)
-             vwSiswa('');
+             vwSiswa();
         });$('#keteranganS').keydown(function (e){
             if(e.keyCode == 13)
-            vwSiswa('');
+            vwSiswa();
 
         });
                 //search action
@@ -76,7 +79,7 @@ var contentFR ='';
         });$('#tingkatS').on('change',function (){
             cmbkelas($(this).val());
         });$('#kelasS').on('change',function (){
-            vwSiswa(''); 
+            vwSiswa(); 
         });
 
         // search button
@@ -158,7 +161,7 @@ function cmbtingkatbuku(tgt){
                     });
                 }$('#tingkatbukuS').html(out);
                 cmbkelas(dt.tingkatbuku[0].replid);
-                vwSiswa(); 
+                // vwSiswa(); 
  
             }
         });
@@ -185,7 +188,7 @@ function cmbkelas(kls){
                     });
                 }$('#kelasS').html(out);
                 // cmbtingkatbuku(dt.tingkatbuku[0].replid);
-                vwSiswa(); 
+                // vwSiswa(); 
  
             }
         });
@@ -221,7 +224,7 @@ function cmbkelas(kls){
 //end of save process ---
 
 // view table ---
-    function vwSiswa(kode){
+    function vwSiswa(){
         var aksi ='aksi=tampil&subaksi=siswa';
         var cari = '&nisS='+$('#nisS').val()
                     +'&namaS='+$('#namaS').val();
@@ -243,7 +246,7 @@ function cmbkelas(kls){
 // end of view table ---
 
 // view table PEgawai ---
-    function vwPegawai(kode){
+    function vwPegawai(){
         var aksi ='aksi=tampil&subaksi=pegawai';
         var cari = '&nipS='+$('#nipS').val()
                     +'&pegawaiS='+$('#pegawaiS').val();

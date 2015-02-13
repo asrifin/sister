@@ -20,23 +20,34 @@
 					case 'siswa':
 						$nis         = isset($_POST['nisS'])?filter(trim($_POST['nisS'])):'';
 						$nama        = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
+						$lokasi      = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
+						$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
+						$tingkatbuku = isset($_POST['tingkatbukuS'])?filter(trim($_POST['tingkatbukuS'])):'';
+						$kelas       = isset($_POST['kelasS'])?filter(trim($_POST['kelasS'])):'';
 						
 						$sql = 'SELECT
-									a.replid,
 									a.nis,
-									a.nama
+									a.nama,
+								/*	(SELECT 
+										COOUNT(*)
+										FROM pus_buku
+										WHERE pus_buku.replid = pus_peminjaman.buku)
+									jumlah */
+									SUM(if (pus_peminjaman.status=1,1,0)) total
 								FROM
-									aka_siswa a
-								JOIN aka_kelas ak
-								JOIN aka_tingkat at
-								JOIN aka_tahunajaran aj
-								JOIN departemen d
+									aka_siswa_kelas ask
+								LEFT JOIN aka_siswa a ON a.replid = ask.siswa 
+								LEFT JOIN aka_kelas ak ON ak.replid = ask.kelas
+								LEFT JOIN aka_tingkat at ON at.replid = ak.kelas
+								LEFT JOIN aka_tahunajaran aj ON aj.replid = at.replid
+								LEFT JOIN departemen d ON d.replid = aj.departemen
+								LEFT JOIN pus_peminjaman ON (pus_peminjaman.member = a.replid AND pus_peminjaman.mtipe = 1)
 								WHERE
 									a.nis like "%'.$nis.'%" and
 									a.nama like "%'.$nama.'%" 
 								ORDER BY
 									a.replid asc';
-						// print_r($sql);exit(); 	
+						print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
