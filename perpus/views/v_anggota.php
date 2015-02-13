@@ -7,8 +7,8 @@
     <div class="tab-control" data-role="tab-control">
         <ul class="tabs">
             <li class="active"><a href="#anggota">Siswa</a></li>
-            <li><a href="#pegawai">Pegawai</a></li>
-            <li><a href="#luar">Member Luar</a></li>
+            <li><a onclick="vwPegawai();" href="#pegawai">Pegawai</a></li>
+            <li><a onclick="vwPegawai();" href="#luar">Member Luar</a></li>
         </ul>
      
     <div class="frames">

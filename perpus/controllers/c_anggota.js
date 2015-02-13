@@ -47,6 +47,7 @@ var contentFR ='';
         vwSiswa();
 
         $("#pegawai").on('click', function(){
+            // alert(897987);
             vwPegawai();
         });
         $("#luar").on('click', function(){
@@ -247,6 +248,7 @@ function cmbkelas(kls){
 
 // view table PEgawai ---
     function vwPegawai(){
+        // alert(0099999);
         var aksi ='aksi=tampil&subaksi=pegawai';
         var cari = '&nipS='+$('#nipS').val()
                     +'&pegawaiS='+$('#pegawaiS').val();
