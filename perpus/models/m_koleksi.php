@@ -27,33 +27,48 @@
 				$penerbit   = isset($_POST['penerbitS'])?filter(trim($_POST['penerbitS'])):'';
 				$klasifikasi   = isset($_POST['klasifikasiS'])?filter(trim($_POST['klasifikasiS'])):'';
 				
-				$sql = 'SELECT  	
-							b.replid
-							,b.barkode
-							,LPAD(b.idbuku,18,0)as kode
-							,k.judul
-							,k.callnumber
-							,CONCAT("[",f.kode,"] ",f.nama) klasifikasi
-							,r.nama2 as pengarang
-							,t.nama as penerbit
-							,if(b.status=1,"Tersedia","Dipinjam") as status
-						from 
-							pus_buku b,
-							pus_katalog k,
-							pus_klasifikasi f,
-							pus_penerbit t,
-							pus_pengarang r
-						WHERE	
-							b.katalog = k.replid 
-							AND klasifikasi = f.replid 
-							AND k.penerbit = t.replid 
-							AND k.pengarang = r.replid
-							/*search*/
-							AND b.lokasi = "%'.$lokasi.'%"
-							AND k.jenisbuku = "%'.$jenisbuku.'%"
-							AND b.tingkatbuku = "%'.$tingkatbuku.'%"
+				$sql = 'SELECT *, b.idbuku AS kode,
+								l.nama AS klasifikasi, 
+								r.nama AS penerbit, 
+								if(b.status=1,"Tersedia","Dipinjam") as status, 
+								p.nama2 AS pengarang
+
+						FROM pus_buku b
+
+						LEFT JOIN pus_katalog k on k.replid=b.katalog
+						LEFT JOIN pus_tingkatbuku t on t.replid=b.tingkatbuku
+						LEFT JOIN pus_klasifikasi l on l.replid=k.klasifikasi
+						LEFT JOIN pus_pengarang p on p.replid=k.pengarang
+						LEFT JOIN pus_penerbit r on r.replid=k.penerbit
+						LEFT JOIN pus_jenisbuku u on u.replid=k.jenisbuku
+						WHERE 
+						b.lokasi='.$lokasi.'
+						AND b.tingkatbuku='.$tingkatbuku.'
+						AND k.jenisbuku='.$jenisbuku.'
+	
 						';
+						// 	b.replid
+						// 	,b.barkode
+						// 	,LPAD(b.idbuku,18,0)as kode
+						// 	,k.judul
+						// 	,k.callnumber
+						// 	,CONCAT("[",f.kode,"] ",f.nama) klasifikasi
+						// 	,r.nama2 as pengarang
+						// 	,t.nama as penerbit
+						// 	,if(b.status=1,"Tersedia","Dipinjam") as status
+						// FROM pus_katalog k
+						// LEFT JOIN pus_buku b on b.katalog = k.replid
+						// LEFT JOIN pus_klasifikasi f on f.kode = k.klasifikasi
+						// LEFT JOIN pus_penerbit t on t.replid=k.penerbit
+						// LEFT JOIN pus_pengarang r on r.replid=k.pengarang
+						// WHERE	
+							 
+						// 	AND klasifikasi = f.replid 
+						// 	AND k.jenisbuku = "%'.$jenisbuku.'%"
+						// 	AND b.tingkatbuku = "%'.$tingkatbuku.'%"
 						// l.replid and
+							// /*search*/
+							// AND b.lokasi = "%'.$lokasi.'%"
 				// var_dump($sql);exit();
 							  // b.lokasi like "%'.$lokasi.'%" and
 						// 	  l.replid=

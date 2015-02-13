@@ -92,7 +92,7 @@ var contentFR = '';
 
 // combo tahunlulus ---
     function cmbtahunlulus(dep,hun,idhun){
-        console.log(dep+','+hun+','+idhun);
+        // console.log(dep+','+hun+','+idhun);
         // return false;
         var select='',tb;
         if(hun){// form
@@ -221,6 +221,7 @@ var contentFR = '';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
+                            $('#departemenTB').val(dt.departemen[0].nama);
                             $('#nisnTB').val(dt.nisn); 
                             $('#siswaTB').val(dt.siswa);
                             $('#keteranganTB').val(dt.ket);
