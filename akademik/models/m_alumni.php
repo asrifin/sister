@@ -104,13 +104,16 @@
 				$s 		= ' SELECT 
 								a.replid, 
 								t.nama AS tahunlulus, 
+								t.replid AS idtahunlulus,
 								s.nama AS siswa, 
 								a.keterangan AS ket, 
 								s.nisn,
-								t.departemen /*epiii*/
+								d.nama AS departemen, /*epiii*/
+								d.replid AS iddepartemen
 
 							FROM aka_alumni a 
 							 	LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
+							 	LEFT JOIN departemen d ON d.replid=t.departemen
 							 	LEFT JOIN aka_siswa s ON s.replid=a.siswa
 							WHERE
 								a.replid='.$_POST['replid'];
@@ -121,11 +124,14 @@
 				$out 	= json_encode(array(
 							'status'     =>$stat,
 							'departemen' =>$r['departemen'],
+							'iddepartemen' =>$r['iddepartemen'],
+							'idtahunlulus' =>$r['idtahunlulus'],
 							'tahunlulus' =>$r['tahunlulus'],
 							'siswa'      =>$r['siswa'],
 							'nisn'       =>$r['nisn'],
 							'ket'        =>$r['ket']
 						));
+
 			break;
 			// ambiledit -----------------------------------------------------------------
 

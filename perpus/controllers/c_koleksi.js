@@ -57,7 +57,7 @@ var contentFR ='';
         // cmbjenisbuku();
         
         //load table // edit by epiii
-        viewTB();
+        // viewTB();
 
         //add form
         // $("#tambahBC").on('click', function(){
@@ -152,7 +152,7 @@ var contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     // $.each(dt.jenisbuku, function(id,item){
-                    $.each(dt.nama, function(id,item){
+                    $.each(dt.jenisbuku, function(id,item){
                         if(item.aktif=='1'){
                             out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
                             // out+='<option selected="selected" value="'+item.replid+'">'+item.jenisbuku+' (aktif)</option>';
@@ -162,7 +162,7 @@ var contentFR ='';
                         }
                     });
                 }$('#jenisbukuS').html(out);
-                cmbtingkatbuku(dt.nama[0].replid);
+                cmbtingkatbuku(dt.jenisbuku[0].replid);
             }
         });
     }

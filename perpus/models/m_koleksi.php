@@ -45,33 +45,10 @@
 						b.lokasi='.$lokasi.'
 						AND b.tingkatbuku='.$tingkatbuku.'
 						AND k.jenisbuku='.$jenisbuku.'
-	
 						';
-						// 	b.replid
-						// 	,b.barkode
-						// 	,LPAD(b.idbuku,18,0)as kode
-						// 	,k.judul
-						// 	,k.callnumber
-						// 	,CONCAT("[",f.kode,"] ",f.nama) klasifikasi
-						// 	,r.nama2 as pengarang
-						// 	,t.nama as penerbit
-						// 	,if(b.status=1,"Tersedia","Dipinjam") as status
-						// FROM pus_katalog k
-						// LEFT JOIN pus_buku b on b.katalog = k.replid
-						// LEFT JOIN pus_klasifikasi f on f.kode = k.klasifikasi
-						// LEFT JOIN pus_penerbit t on t.replid=k.penerbit
-						// LEFT JOIN pus_pengarang r on r.replid=k.pengarang
-						// WHERE	
-							 
-						// 	AND klasifikasi = f.replid 
-						// 	AND k.jenisbuku = "%'.$jenisbuku.'%"
-						// 	AND b.tingkatbuku = "%'.$tingkatbuku.'%"
-						// l.replid and
-							// /*search*/
-							// AND b.lokasi = "%'.$lokasi.'%"
+						
 				// var_dump($sql);exit();
-							  // b.lokasi like "%'.$lokasi.'%" and
-						// 	  l.replid=
+						
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
