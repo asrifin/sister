@@ -28,7 +28,7 @@ var contentFR = '';
                         +'<label>Nama Siswa</label>'
                         +'<div class="input-control text">'
                             +'<input placeholder="Nama Siswa" id="siswaTB">'
-                            +'<input  type="hidden" name="siswaH" id="siswaH" >'
+                            // +'<input  type="hidden" name="siswaH" id="siswaH" >'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 

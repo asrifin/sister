@@ -67,7 +67,7 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									<td>'.tgl_indo($res['tanggal1']).'</td>
+									<td>'.tgl_indo($res['tanggal1']).'-'.tgl_indo($res['tanggal2']).' </td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
