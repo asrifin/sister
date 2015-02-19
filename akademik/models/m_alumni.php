@@ -19,7 +19,7 @@
 				// var_dump($tahunlulus);exit();
 				$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
 				// $tahunlulus = isset($_POST['tahunlulusS'])?filter(trim($_POST['tahunlulusS'])):'';
-				$sql = 'SELECT a.replid, t.nama AS tahunlulus, s.nama AS siswa, a.keterangan AS ket, s.nisn
+				$sql = 'SELECT a.replid, t.nama AS tahunlulus, s.nama AS nsiswa, a.keterangan AS ket, s.nisn
 						 FROM aka_alumni a 
 						 LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
 						 LEFT JOIN aka_siswa s ON s.replid=a.siswa 
@@ -55,7 +55,7 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$res['nisn'].'</td>
-									<td>'.$res['siswa'].'</td>
+									<td>'.$res['nsiswa'].'</td>
 									<td>'.$res['tahunlulus'].'</td>
 									<td>'.$res['ket'].'</td>
 									'.$btn.'
@@ -75,10 +75,12 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
-								tingkat    	= "'.filter($_POST['tingkatTB']).'",
+				$s = $tb.' set 	tahunlulus = "'.filter($_POST['tahunlulusTB']).'",
+								siswa    	= "'.filter($_POST['siswaH']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-
+				print_r($s);exit();
+								// nisn    	= "'.filter($_POST['nisnH']).'",
+								// departemen    	= "'.filter($_POST['departemenH']).'",
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2 = mysql_query($s2);
 				if(!$e2){
@@ -104,13 +106,17 @@
 				$s 		= ' SELECT 
 								a.replid, 
 								t.nama AS tahunlulus, 
-								s.nama AS siswa, 
+								t.replid AS idtahunlulus,
+								s.nama AS nsiswa, 
 								a.keterangan AS ket, 
 								s.nisn,
-								t.departemen /*epiii*/
+								d.nama AS departemen, /*epiii*/
+								d.replid AS iddepartemen,
+								s.replid AS idsis
 
 							FROM aka_alumni a 
 							 	LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
+							 	LEFT JOIN departemen d ON d.replid=t.departemen
 							 	LEFT JOIN aka_siswa s ON s.replid=a.siswa
 							WHERE
 								a.replid='.$_POST['replid'];
@@ -121,11 +127,15 @@
 				$out 	= json_encode(array(
 							'status'     =>$stat,
 							'departemen' =>$r['departemen'],
+							'iddepartemen' =>$r['iddepartemen'],
+							'idtahunlulus' =>$r['idtahunlulus'],
 							'tahunlulus' =>$r['tahunlulus'],
-							'siswa'      =>$r['siswa'],
+							'siswa'      =>$r['nsiswa'],
+							'siswak'      =>$r['idsis'],
 							'nisn'       =>$r['nisn'],
 							'ket'        =>$r['ket']
 						));
+
 			break;
 			// ambiledit -----------------------------------------------------------------
 

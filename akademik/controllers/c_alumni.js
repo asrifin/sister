@@ -28,7 +28,7 @@ var contentFR = '';
                         +'<label>Nama Siswa</label>'
                         +'<div class="input-control text">'
                             +'<input placeholder="Nama Siswa" id="siswaTB">'
-                            +'<input  type="hidden" name="siswaH" id="siswaH" >'
+                            // +'<input  type="hidden" name="siswaH" id="siswaH" >'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -221,16 +221,16 @@ var contentFR = '';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#departemenTB').val(dt.departemen[0].nama);
+                            $('#departemenTB').val(dt.departemen);
                             $('#nisnTB').val(dt.nisn); 
                             $('#siswaTB').val(dt.siswa);
                             $('#keteranganTB').val(dt.ket);
                             // cmbtahunlulus(dt3.nama,true,dt3.nama);
-                            cmbtahunlulus(dt.departemen,true,dt.nama); /*epiii*/
+                            cmbtahunlulus2(dt.tahun); /*epiii*/
                         }
                     });titlex='<span class="icon-pencil"></span> Ubah ';
                 }else{ //add mode
-                    cmbtahunlulus($('#tahunlulusS').val(),true,null);
+                    cmbtahunlulus($('#tahunlulus2S').val(),true,null);
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                 }
                 $.Dialog.title(titlex+' '+mnu);

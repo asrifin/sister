@@ -163,27 +163,27 @@ var contentFR = '';
 //end of combo pelajaran ----
 
 // combo pelajaran2 ---
-    function cmbpelajaran2(pel){
-        $.ajax({
-            url:dir4,
-            data:'aksi=cmbpelajaran',
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.pelajaran, function(id,item){
-                        if(item.replid==pel)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
-                        else
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                }$('#pelajaranTB').html(out);
-            }
-        });
-    }
+    // function cmbpelajaran2(pel){
+    //     $.ajax({
+    //         url:dir4,
+    //         data:'aksi=cmbpelajaran',
+    //         dataType:'json',
+    //         type:'post',
+    //         success:function(dt){
+    //             var out='';
+    //             if(dt.status!='sukses'){
+    //                 out+='<option value="">'+dt.status+'</option>';
+    //             }else{
+    //                 $.each(dt.pelajaran, function(id,item){
+    //                     if(item.replid==pel)
+    //                         out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
+    //                     else
+    //                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+    //                 });
+    //             }$('#pelajaranTB').html(out);
+    //         }
+    //     });
+    // }
 //end of combo pelajaran2 ----
 
 //save process ---
