@@ -24,12 +24,13 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                     'width':'40',
                     'label':'NAMA'
                 }],
-            url: dir+'?aksi=autocomp',
+            url: dir+'?aksi=autocomp&subaksi=pengarang', /*epiii*/
             select: function( event, ui ) {
                 $('#pengarang_autoH').val(ui.item.replid);
                 $('#pengarangTB').val(ui.item.nama);
-                $('#pengarangTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=penerbit&departemen='+$('#departemenS').val() );
-                // $('#pengarangTB').combogrid( "option", "url", dir+'?aksi=autocomp' );
+
+                urlx = dir+'?aksi=autocomp&subaksi=pengarang&departemen='+$('#departemenS').val(); /*epiii*/
+                $('#pengarangTB').combogrid( "option", "url", urlx ); /*epiii*/
                 return false;
             }
         });
@@ -46,8 +47,8 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
             select: function( event, ui ) {
                 $('#penerbit_autoH').val(ui.item.replid);
                 $('#penerbitTB').val(ui.item.nama);
-                $('#penerbitTB').combogrid( "option", "url", dir+'?aksi=autocomp&departemen='+$('#departemenS').val() );
-                // $('#pengarangTB').combogrid( "option", "url", dir+'?aksi=autocomp' );
+
+                $('#penerbitTB').combogrid( "option", "url", dir+'?aksi=autocomp&departemen='+$('#departemenS').val());
                 return false;
             }
         });
@@ -260,9 +261,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
         //load table
         viewTB();
 
-    // epiii : button action
         $("#tambahBC").on('click',function(){
-            // viewFR('');
             switchPN(); 
             cmbjenisbuku('');
             cmbbahasa('');
@@ -270,11 +269,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
         $("#edit_katalogBC").on('click',function(){
             viewFR('');
         });
-    //     $("#kembaliBC").on('click',function(){
-    //         // viewTB();
-    //         switchPN_view();
-    // });
-    
+
         //add
     $("#klasifikasiBC").on('click',function(){
             klasifikasiFR();
@@ -797,7 +792,6 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
             }else{ 
 
             }
-            // epiii : switch panel
             switchPN();
 
         }  
@@ -841,7 +835,6 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
             }else{ //add
 
             }
-            // epiii : switch panel
             switchPN_view();
         }  
 

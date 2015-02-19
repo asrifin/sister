@@ -14,8 +14,12 @@
 	$tb4  = 'pus_'.$mnu4;
 	$tb5  = 'pus_bahasa';
 	$tb6  = 'pus_jenisbuku';
+	// $out=array();
 
 	if(!isset($_POST['aksi'])){
+		// $out=json_encode(array('status'=>'invalid_no_post'));		
+		// $out=['status'=>'invalid_no_post'];	
+
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
 			$page       = $_GET['page']; // get the requested page
 			$limit      = $_GET['rows']; // get how many rows we want to have into the grid
@@ -23,20 +27,25 @@
 			$sord       = $_GET['sord']; // get the direction
 			$searchTerm = $_GET['searchTerm'];
 
+
 			if(!$sidx) 
 				$sidx =1;
 			if(isset($_GET['subaksi']) && $_GET['subaksi']=='penerbit'){
 				$table = 'pus_penerbit';
 			}else{
 				$table = 'pus_pengarang';
-			}
 
-			$ss='SELECT
-					*
-				FROM
-					'.$table.'
-				WHERE
-					nama LIKE "%'.$searchTerm.'%"';
+			}
+				$ss=	'SELECT * 
+					FROM(
+						SELECT replid, nama
+						FROM '.$table.'
+						where 
+							replid 
+						)tb
+					WHERE	
+						tb.nama LIKE "%'.$searchTerm.'%"';
+							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
 			// print_r($ss);exit();
 			$result = mysql_query($ss) or die(mysql_error());
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -54,15 +63,23 @@
 			}else {
 				$ss.='ORDER BY '.$sidx.' '.$sord;
 			}
-
+			// print_r($ss);exit();
 			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
 			$rows 	= array();
 			while($row = mysql_fetch_assoc($result)) {
+			if ($_GET['pengarang'] == 'pengarang'){
+				$f1 = 'nama_pengarang';
+			}else{
+				$f1 = 'nama_penerbit';				
+			}
 				$rows[]= array(
-					'replid' =>$row['replid'], /*epiii*/
-					'nama'   =>$row['nama'] /*epiii*/
+					'replid' =>$row['replid'],
+					// 'nama'   =>$row['nama']
+					// 'replid' =>$row['replid'],
+					'nama'   =>$row[$f1]
 				);
-			}$response=array(
+			}
+			$response=array(
 				'page'    =>$page,
 				'total'   =>$total_pages,
 				'records' =>$count,
@@ -75,6 +92,7 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
+				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$judul            = isset($_POST['judulS'])?filter($_POST['judulS']):'';
 				$kode_klasifikasi = isset($_POST['kode_klasifikasiS'])?filter($_POST['kode_klasifikasiS']):'';
 				$pengarang        = isset($_POST['pengarangS'])?filter($_POST['pengarangS']):'';

@@ -28,7 +28,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
             select: function( event, ui ) {
                 $('#pengarang_autoH').val(ui.item.replid);
                 $('#pengarangTB').val(ui.item.nama);
-                $('#pengarangTB').combogrid( "option", "url", dir+'?aksi=autocomp&departemen='+$('#departemenS').val() );
+                $('#pengarangTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=penerbit&departemen='+$('#departemenS').val() );
                 // $('#pengarangTB').combogrid( "option", "url", dir+'?aksi=autocomp' );
                 return false;
             }
@@ -877,22 +877,23 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#koleksiH').val(id);
-                            // $('#lokasiH').val($('#lokasiS').val());
-                            $('#judulTD').html(dt.judul);alert(dt.judul);
-                            // $('#judulTB').val(dt.judul);
-                            $('#jmlTB').val(dt.jum);
-                            $('#idbukuTB').val(dt.kode);
-                            $('#barcodeTB').val(dt.barkode);
-                                    $.each($('input[name="sumberTB"]'),function(){
-                                        if(dt.sumber==$(this).val())
-                                            $(this).attr('checked',true);
-                                    });                            
-                            // $('#sumberTB').val(dt.sumber);
-                            $('#hargaTB').val(dt.harga);
-                            $('#tglTB').val(dt.tanggal);
-                            $('#lokasiTB').val(dt.lokasi);
-                            $('#tingkatTB').val(dt.tingkatbuku);
+                            var arr = {
+                                    'status':dt.stat,
+                                    'judul':dt.judul
+                            };
+                            // $('#koleksiH').val(id);
+                            // $('#judulTD').html(dt.judul);alert(dt.judul);
+                            // $('#jmlTB').val(dt.jum);
+                            // $('#idbukuTB').val(dt.kode);
+                            // $('#barcodeTB').val(dt.barkode);
+                            //         $.each($('input[name="sumberTB"]'),function(){
+                            //             if(dt.sumber==$(this).val())
+                            //                 $(this).attr('checked',true);
+                            //         });                            
+                            // $('#hargaTB').val(dt.harga);
+                            // $('#tglTB').val(dt.tanggal);
+                            // $('#lokasiTB').val(dt.lokasi);
+                            // $('#tingkatTB').val(dt.tingkatbuku);
                             
                             cmblokasi(dt.lokasi);
                             cmbtingkatbuku(dt.tingkatbuku);
