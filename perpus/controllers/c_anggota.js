@@ -63,14 +63,21 @@ var contentFR ='';
         $('#nisS').keydown(function (e){
             if(e.keyCode == 13)
              vwSiswa();
-        });
-        $('#namaS').keydown(function (e){
+        });$('#namaS').keydown(function (e){
             if(e.keyCode == 13)
              vwSiswa();
-        });$('#keteranganS').keydown(function (e){
+        });$('#nipS').keydown(function (e){
             if(e.keyCode == 13)
-            vwSiswa();
-
+             vwPegawai();
+        });$('#pegawaiS').keydown(function (e){
+            if(e.keyCode == 13)
+             vwPegawai();
+        });$('#idmemberS').keydown(function (e){
+            if(e.keyCode == 13)
+             vwLuar();
+        });$('#nama_luarS').keydown(function (e){
+            if(e.keyCode == 13)
+             vwLuar();
         });
                 //search action
         $('#lokasiS').on('change',function(){
@@ -88,6 +95,18 @@ var contentFR ='';
             $('#cariTR').toggle('slow');
             $('#nisS').val('');
             $('#namaS').val('');
+        });
+        // search pegawai
+        $('#cari_pegawaiBC').on('click',function(){
+            $('#cari_pegawaiTR').toggle('slow');
+            $('#nipS').val('');
+            $('#pegawaiS').val('');
+        });
+        // search button
+        $('#cari_luarBC').on('click',function(){
+            $('#cari_luarTR').toggle('slow');
+            $('#idmemberS').val('');
+            $('#nama_luarS').val('');
         });
     }); 
 // end of main function ---
@@ -235,7 +254,7 @@ function cmbkelas(kls){
             // data: aksi,
             data: aksi+cari, //edit by epiii
             beforeSend:function(){
-                $('#siswa_tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#siswa_tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#siswa_tbody').html(dt).fadeIn();
@@ -258,7 +277,7 @@ function cmbkelas(kls){
             // data: aksi,
             data: aksi+cari, //edit by epiii
             beforeSend:function(){
-                $('#pegawai_tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#pegawai_tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#pegawai_tbody').html(dt).fadeIn();

@@ -4,12 +4,7 @@
 <script src="js/metro/metro-calendar.js"></script>
 <script src="js/metro/metro-datepicker.js"></script>
  -->
-     <!-- combo grid -->
-    <script src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
-    <script src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>
-    <link rel="stylesheet" type="text/css" media="screen" href="../../css/combogrid/jquery-ui-1.10.1.custom.css"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="../../css/combogrid/jquery.ui.combogrid.css"/>
-    <!--end of combo grid -->
+   
 
  <!--  <script type="../js/metro/metro-scroll.js"></script> -->
 <h4 style="color:white;">Katalog</h4>

@@ -25,7 +25,7 @@
 						$tingkatbuku = isset($_POST['tingkatbukuS'])?filter(trim($_POST['tingkatbukuS'])):'';
 						$kelas       = isset($_POST['kelasS'])?filter(trim($_POST['kelasS'])):'';
 						
-						// $sql = 'SELECT
+						// // $sql = 'SELECT
 						// 			a.nis,
 						// 			a.nama,
 						// 		/*	(SELECT 
@@ -37,10 +37,10 @@
 						// 		FROM
 						// 			aka_siswa_kelas ask
 						// 		LEFT JOIN aka_siswa a ON a.replid = ask.siswa 
-						// 		LEFT JOIN aka_kelas ak ON ak.replid = ask.kelas
-						// 		LEFT JOIN aka_tingkat at ON at.replid = ak.kelas
-						// 		LEFT JOIN aka_tahunajaran aj ON aj.replid = at.replid
-						// 		LEFT JOIN departemen d ON d.replid = aj.departemen
+								// LEFT JOIN aka_kelas ak ON ak.replid = ask.kelas
+								// LEFT JOIN aka_tingkat at ON at.replid = ak.kelas
+								// LEFT JOIN aka_tahunajaran aj ON aj.replid = at.replid
+								// LEFT JOIN departemen d ON d.replid = aj.departemen
 						// 		LEFT JOIN pus_peminjaman ON (pus_peminjaman.member = a.replid AND pus_peminjaman.mtipe = 1)
 						// 		WHERE
 						// 			a.nis like "%'.$nis.'%" and
@@ -71,7 +71,9 @@
 									left JOIN pus_peminjaman pj ON pj.member = s.replid 
 								WHERE
 									pj.mtipe = 1 AND
-									s.aktif != 2
+									s.aktif != 2 
+								/*	s.nis = "%'.$nis.'%" AND
+									s.nama = "%'.$nama.'%" 	*/
 								GROUP BY
 									s.replid';
 						// print_r($sql);exit(); 	
@@ -119,9 +121,32 @@
 						$nip     = isset($_POST['nipS'])?filter(trim($_POST['nipS'])):'';
 						$pegawai = isset($_POST['pegawaiS'])?filter(trim($_POST['pegawaiS'])):'';
 						// var_dump($k_grup);exit();
-						$sql = 'SELECT *
-								FROM hrd_karyawan	
-									';
+						$sql = 'SELECT
+									s.nip,
+									s.nama,(
+											SELECT count(*)
+											FROM
+												pus_peminjaman 
+											where 
+											mtipe = pj.mtipe and 
+											member= s.id and 
+											status=1
+									)borrowing,(
+										SELECT
+											count(*)
+										FROM
+											pus_peminjaman 
+										WHERE
+											mtipe = pj.mtipe and 
+											member= s.id
+									) total
+								FROM
+									hrd_karyawan s 
+									left JOIN pus_peminjaman pj ON pj.member = s.id 
+								WHERE
+									pj.mtipe = 2 
+								GROUP BY
+									s.id';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -145,8 +170,8 @@
 								$out.= '<tr>
 											<td>'.$res['nip'].'</td>
 											<td>'.$res['nama'].'</td>
-											<td>'.$res['jenis'].'</td>
-											<td>'.$res['jum_unit'].'</td>
+											<td>'.$res['borrowing'].'</td>
+											<td>'.$res['total'].'</td>
 										</tr>';
 								$totaset+=$res['aset'];
 								$nox++;
@@ -168,9 +193,33 @@
 						$idmember     = isset($_POST['idmemberS'])?filter(trim($_POST['idmemberS'])):'';
 						$nama_luar    = isset($_POST['nama_luarS'])?filter(trim($_POST['nama_luarS'])):'';
 						
-						$sql = 'SELECT pm.* 
-								FROM pus_member pm 
-								';
+						$sql = 'SELECT
+									s.*,(
+											SELECT count(*)
+											FROM
+												pus_peminjaman 
+											where 
+											mtipe = pj.mtipe and 
+											member= s.replid and 
+											status=1
+									)borrowing,(
+										SELECT
+											count(*)
+										FROM
+											pus_peminjaman 
+										WHERE
+											mtipe = pj.mtipe and 
+											member= s.replid
+									) total
+								FROM
+									pus_member s 
+									left JOIN pus_peminjaman pj ON pj.member = s.replid 
+								WHERE
+									pj.mtipe = 3
+								/*	s.nid = "%'.$idmember.'%" AND
+									s.nama = "%'.$nama_luar.'%"  */
+								GROUP BY
+									s.replid';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -203,8 +252,8 @@
 											<td>'.$res['nama'].'</td>
 											<td>'.$res['kontak'].'</td>
 											<td>'.$res['alamat'].'</td>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
+											<td>'.$res['borrowing'].'</td>
+											<td>'.$res['total'].'</td>
 											'.$btn.'
 										</tr>';
 								// $nox++;

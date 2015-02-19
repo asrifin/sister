@@ -8,43 +8,86 @@ var dir6  = 'models/m_koleksi.php';
 var dir7  = 'models/m_jenisbuku.php';
 var dir8  = 'models/m_tingkatbuku.php';
 
-var contentFR ='';
+var koleksi_contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="koleksiFR">' 
-                        +'<input id="idformH" type="hidden">' 
-                        +'<label>Lokasi</label>'
+        koleksi_contentFR += '<form autocomplete="off" onsubmit="koleksiSV(this);return false;" id="kolekFR">' 
+                        +'<input  id="koleksiH" type="hidden">'
+                            +'<tr>'
+                                +'<td>Judul</td>'
+                                +'<td>: <span id="judulTD"></span></td>'
+                            +'</tr>'
 
-                        +'<div class="input-control text">'
-                            +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span2">'
-                            // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" class="span2">'
-                            +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" class="span2">'
+                        // +'<label>Judul</label>' 
+                        // +'<div class="input-control text size2">'
+                        //     +'<input required type="text" name="judulTB" id="judulTB">'
+                        //     +'<button class="btn-clear"></button>'
+                        // +'</div>'
+                        +'<label>Jumlah Koleksi Baru</label>' 
+                        +'<div class="input-control text size2">'
+                            +'<input required type="text" name="jml_koleksiTB" id="jml_koleksiTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        
-                        +'<label>Kode Tempat</label>'
+                        +'<label>ID Buku</label>' 
                         +'<div class="input-control text">'
-                            +'<input placeholder="kode tampat"  class="span2" required type="text" name="kodeTB" id="kodeTB">'
+                            +'<input disabled="disabled" required type="text" name="idbukuTB" id="idbukuTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-
-                        +'<label>Nama Tempat</label>'
-                        +'<div class="input-control text">'
-                            +'<input  placeholder="kode" required type="text" name="namaTB" id="namaTB">'
+                        +'<label>Barcode</label>'
+                        +'<div class="input-control text size3">'
+                            +'<input disabled="disabled" required type="text" name="barcodeTB" id="barcodeTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-
-                        +'<label>Keterangan</label>'
-                        +'<div class="input-control textarea">'
-                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
+                                        +'<label>Sumber</label>'
+                                        +'<div>'
+                                            +'<div class="input-control radio margin3" >'
+                                                +'<label>'
+                                                    +'<input value="0" required type="radio" name="sumberTB" />'
+                                                    +'<span class="check"></span>'
+                                                    +'Beli'
+                                                +'</label>'
+                                            +'</div>'
+                                        +'</div>'
+                                        +'<div>'
+                                            +'<div class="input-control radio margin3" >'
+                                                +'<label>'
+                                                    +'<input  value="1" required type="radio" name="sumberTB"/>'
+                                                    +'<span class="check"></span>'
+                                                    +'Pemberian'
+                                                +'</label>'
+                                            +'</div>'
+                                        +'</div>'
+                                        +'<div>'
+                        +'<label>Harga</label>'
+                        +'<div class="input-control text size3">'
+                            +'<input disabled="disabled" required type="text" name="hargaTB" id="hargaTB">'
+                            +'<button class="btn-clear"></button>'
                         +'</div>'
-                        
+                        +'<label>Tanggal Diperoleh</label>'
+                        +'<div class="input-control text size2" data-role="datepicker"'
+                            +'data-format="yyyy-mm-dd"'
+                            +'data-effect="slide">'
+                            +'<input id="tglTB" name="tglTB" type="text">'
+                            +'<button class="btn-date"></button>'
+                        +'</div>'
+                        +'<label>Alokasi Lokasi</label>' 
+                        +'<label>Lokasi</label>' 
+                        +'<div class="input-control select size4">'
+                            +'<select id="lokasiTB" name="lokasiTB">'
+                              +'</select>'
+                        +'</div>'
+                        +'<label>Tingkat</label>' 
+                        +'<div class="input-control select size4">'
+                            +'<select id="tingkatTB" name="tingkatTB">'
+                              +'</select>'
+                        +'</div>'
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
+
 
         /*
         load pertama kali (pilihn salah satu) :
@@ -78,7 +121,9 @@ var contentFR ='';
             cmbtingkatbuku($(this).val());
         });$('#tingkatbukuS').on('change',function (){
             viewTB();
-        });$('#barkodeS').on('keydown',function (e){ // keydown : textbox
+        });
+
+        $('#barkodeS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
                 viewTB($('#lokasiS').val());
         });$('#idbukuS').on('keydown',function (e){ // keydown : textbox
@@ -139,7 +184,42 @@ var contentFR ='';
     }
 //end of combo lokasi ---
 // combo jenisbuku ---
-    
+   // function cmbjenisbuku(lok,hun,idhun){
+   //      // console.log(dep+','+hun+','+idhun);
+   //      // return false;
+   //      var select='',tb;
+   //      // if(hun){// form
+   //      //     tb='#jenisbukuTB';
+   //      // }
+   //      if(!hun){// search
+   //          tb='#jenisbukuS';
+   //          select+='<option value="">---------- Semua ----------</option>';
+   //          // if ($('#jenisbukuS').val()!='') {
+   //          //     tl=''
+   //          // };
+   //      }
+   //      $.ajax({
+   //          url:dir7,
+   //          data:'aksi=cmbjenisbuku&lokasi='+lok,
+   //          dataType:'json',
+   //          type:'post',
+   //          success:function(dt){
+   //              var out='';
+   //              if(dt.status!='sukses'){
+   //                  out+='<option value="">'+dt.status+'</option>';
+   //              }else{
+   //                  $.each(dt.jenisbuku, function(id,item){
+   //                      if(idhun==item.replid)
+   //                          out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
+   //                      else
+   //                          out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+   //                  });
+   //              }$(tb).html((dt.jenisbuku==null?'':select)+out);
+   //              if(!hun) viewTB();
+   //          }
+   //      });
+   //  }
+
     function cmbjenisbuku(lok){
         $.ajax({
             url:dir7,
@@ -244,7 +324,7 @@ function cmbtingkatbuku(tgt){
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="9"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -255,7 +335,7 @@ function cmbtingkatbuku(tgt){
 // end of view table ---
 
 // form ---
-    function viewFR(id){
+    function koleksiFR(id){
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -265,36 +345,51 @@ function cmbtingkatbuku(tgt){
             onShow: function(){
                 var titlex;
                 if(id==''){  //add mode
-                    // alert('halooo');
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                     $.ajax({
-                        url:dir6,
-                        data:'aksi=cmblokasi&replid='+$('#lokasiS').val(),
+                        url:dir,
+                        data:'aksi=replid',
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#lokasiTB').val(dt.lokasi[0].nama);
-                            $('#lokasiH').val($('#lokasiS').val());
+                            // $('#lokasiH').val($('#lokasiS').val());
+                            // $('#lokasiTB').val(dt.lokasi[0].kode);
+                            cmblokasi('');
                         }
                     });
+
                 }else{ // edit mode
-                    titlex='<span class="icon-pencil"></span> Ubah';
+                    titlex='<span class="icon-pencil"></span> Tambah';
                     $.ajax({
-                        url:dir6,
+                        url:dir,
                         data:'aksi=ambiledit&replid='+id,
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            $('#idformH').val(id);
-                            $('#lokasiH').val($('#lokasiS').val()); // edit by epii
+                            $('#koleksiH').val(id);
+                            // $('#lokasiH').val($('#lokasiS').val());
+                            $('#judulTD').val(dt.judul);
+                            // $('#judulTB').val(dt.judul);
+                            $('#jmlTB').val(dt.jum);
+                            $('#idbukuTB').val(dt.kode);
+                            $('#barcodeTB').val(dt.barkode);
+                                    $.each($('input[name="sumberTB"]'),function(){
+                                        if(dt.sumber==$(this).val())
+                                            $(this).attr('checked',true);
+                                    });                            
+                            // $('#sumberTB').val(dt.sumber);
+                            $('#hargaTB').val(dt.harga);
+                            $('#tglTB').val(dt.tanggal);
                             $('#lokasiTB').val(dt.lokasi);
-                            $('#kodeTB').val(dt.kode);
-                            $('#namaTB').val(dt.nama);
-                            $('#keteranganTB').val(dt.keterangan);
+                            $('#tingkatTB').val(dt.tingkatbuku);
+                            
+                            cmblokasi(dt.lokasi);
+                            cmbtingkatbuku(dt.tingkatbuku);
+
                         }
                     });
-                }$.Dialog.title(titlex+' '+mnu); // edit by epiii
-                $.Dialog.content(contentFR);
+                }$.Dialog.title(titlex+' Koleksi');
+                $.Dialog.content(koleksi_contentFR);
             }
         });
     }
@@ -333,53 +428,29 @@ function pagination(page,aksix,subaksi){
             }
         });
     }
-    // function pagination(page,aksix,menux){ 
-    //     var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-    //     var cari ='&lokasiS='+lok
-    //                 +'&barkodeS='+$('#barkodeS').val()
-    //                 +'&idbukuS='+$('#idbukuS').val()
-    //                 +'&judulS='+$('#judulS').val()
-    //                 +'&callnumberS='+$('#callnumberS').val()
-    //                 +'&klasifikasiS='+$('#klasifikasiS').val()
-    //                 +'&pengarangS='+$('#pengarangS').val()
-    //                 +'&penerbitS='+$('#penerbitS').val();
-    //     $.ajax({
-    //         url:dir,
-    //         type:"post",
-    //         data: datax+cari,
-    //         beforeSend:function(){
-    //             $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
-    //         },success:function(dt){
-    //             setTimeout(function(){
-    //                 $('#tbody').html(dt).fadeIn();
-    //             },1000);
-    //         }
-    //     });
-    // }   
-//end of paging ---
     
 //del process ---
-    // function del(id){
-    //     if(confirm('melanjutkan untuk menghapus data?'))
-    //     $.ajax({
-    //         url:dir,
-    //         type:'post',
-    //         data:'aksi=hapus&replid='+id,
-    //         dataType:'json',
-    //         success:function(dt){
-    //             var cont,clr;
-    //             if(dt.status!='sukses'){
-    //                 cont = '..Gagal Menghapus '+dt.terhapus+' ..';
-    //                 clr  ='red';
-    //             }else{
-    //                 viewTB($('#lokasiS').val());
-    //                 cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
-    //                 clr  ='green';
-    //             }
-    //             notif(cont,clr);
-    //         }
-    //     });
-    // }
+    function del(id){
+        if(confirm('melanjutkan untuk menghapus data?'))
+        $.ajax({
+            url:dir,
+            type:'post',
+            data:'aksi=hapus&replid='+id,
+            dataType:'json',
+            success:function(dt){
+                var cont,clr;
+                if(dt.status!='sukses'){
+                    cont = '..Gagal Menghapus '+dt.terhapus+' ..';
+                    clr  ='red';
+                }else{
+                    viewTB($('#lokasiS').val());
+                    cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
+                    clr  ='green';
+                }
+                notif(cont,clr);
+            }
+        });
+    }
 //end of del process ---
 
 // notifikasi
