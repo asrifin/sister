@@ -30,18 +30,24 @@
 
 			if(!$sidx) 
 				$sidx =1;
-			$ss=	'SELECT * 
+			if(isset($_GET['subaksi']) && $_GET['subaksi']=='penerbit'){
+				$table = 'pus_penerbit';
+			}else{
+				$table = 'pus_pengarang';
+
+			}
+				$ss=	'SELECT * 
 					FROM(
 						SELECT replid, nama
-						FROM pus_pengarang
+						FROM '.$table.'
 						where 
 							replid 
 						)tb
 					WHERE	
-						tb.nama LIKE "%'.$searchTerm.'%""';
+						tb.nama LIKE "%'.$searchTerm.'%"';
 							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
 			// print_r($ss);exit();
-			$result = mysql_query($ss);
+			$result = mysql_query($ss) or die(mysql_error());
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
 
@@ -57,15 +63,23 @@
 			}else {
 				$ss.='ORDER BY '.$sidx.' '.$sord;
 			}
-			print_r($ss);exit();
+			// print_r($ss);exit();
 			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
 			$rows 	= array();
 			while($row = mysql_fetch_assoc($result)) {
+			if ($_GET['pengarang'] == 'pengarang'){
+				$f1 = 'nama_pengarang';
+			}else{
+				$f1 = 'nama_penerbit';				
+			}
 				$rows[]= array(
 					'replid' =>$row['replid'],
-					'nama'   =>$row['nama']
+					// 'nama'   =>$row['nama']
+					// 'replid' =>$row['replid'],
+					'nama'   =>$row[$f1]
 				);
-			}$response=array(
+			}
+			$response=array(
 				'page'    =>$page,
 				'total'   =>$total_pages,
 				'records' =>$count,
@@ -149,7 +163,7 @@
 										<i class="icon-remove on-left"></i>
 									</button>
 									<button data-hint="Tambah Koleksi"  onclick="koleksiFR('.$res['replid'].');">
-										<i class="icon-plus-2 on-left"></i>
+										<i class="icon-plus-2 on-left"></i> Koleksi
 									</button>
 								 </td>';
 						$out.= '<tr>
@@ -310,8 +324,8 @@
 		                          kg.edisi,
 		                          kg.volume,
 		                          kg.halaman,
-								  b.nama bahasa,
-								  pj.nama jenisbuku,
+								  kg.bahasa,
+								  kg.jenisbuku,
 		                          kg.callnumber,
 		                          kg.dimensi,
 		                          kg.deskripsi, 
@@ -321,8 +335,8 @@
 		                          LEFT JOIN pus_pengarang pr ON pr.replid = kg.pengarang
 		                          LEFT JOIN pus_penerbit pb ON pb.replid = kg.penerbit
 		                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
-		                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
-		                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+		                        WHERE 
+		                          kg.replid = '.$_POST['replid'].'
 		                        order BY
 		                          kg.judul asc';
 											// print_r($s);exit();
@@ -439,30 +453,10 @@
 				                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
 				                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
 				                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+				                        WHERE
+				                        	kg.replid = '.$_POST['replid'].'
 				                        order BY
 				                          kg.replid asc';
-									/*	b.replid,
-										b.barkode,
-										LPAD(b.idbuku,18,0)as kode,
-										k.judul,
-										k.tanggal,
-										k.callnumber,
-										CONCAT("[",f.kode,"] ",f.nama) klasifikasi,
-										r.nama2 as pengarang,
-										t.nama as penerbit,
-										if(b.status=1,"Tersedia","Dipinjam") as status,
-										if(b.status=0,"Beli","Pemberian") as sumber
-									from 
-										pus_buku b,
-										pus_katalog k,
-										pus_klasifikasi f,
-										pus_penerbit t,
-										pus_pengarang r
-									WHERE	
-										b.katalog = k.replid 
-										AND klasifikasi = f.replid 
-										AND k.penerbit = t.replid 
-										AND k.pengarang = r.replid';	*/
 											// print_r($s);exit();
 						$e 		= mysql_query($s) or die(mysql_error());
 						$r 		= mysql_fetch_assoc($e);

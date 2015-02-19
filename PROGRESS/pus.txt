@@ -11,19 +11,22 @@ ____________________________________________________
 * daftar koleksi (P)
 	- select all (checkbox) 
 	- delete : all & per-record
-	- searching : all column, tidak ngefek ke "tabel"
-	- filtering > combo :  jenis_buku & tingkat_buku , tidak ngefek ke "table"
-	- form (edit_mode) : tidak tampil
-	
+	- searching : all column, tidak ngefek ke "tabel" (C)
+	- filtering > combo :  jenis_buku & tingkat_buku , tidak ngefek ke "table"  (C)
+	- form (edit_mode) : tidak tampil		-
+	- SQL Where pengarang, penerbit, klasifikasi belum bisa
+
 	- sorting : all column (belum ada lib/contoh) 
 * katalog (P)
-	- edit field yang belum ( jenis buku, bahasa dan tahun)	
+	- edit field yang belum ( jenis buku, bahasa dan tahun)	(+)
 	- Insert (foto)
 	- Tambah Koleksi menampilkan hasil yang sama meskipun pilih koleksi yang lain
 * data anggota (P)
-	- view siswa
-	- pegawai (guru)
+	- view siswa, pegawai dan member lain hanya bisa menampilkan yang sudah pinjam aja
+	- Search(SQL) Where tidak bisa
+	-
 * sirkulasi (P)
+
 * OPAC (P)
 ____________________________________________________
 * perangkat (C)

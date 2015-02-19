@@ -31,10 +31,12 @@
 
 				if(!$sidx) 
 					$sidx =1;
-				$ss='SELECT *
-					FROM '.$tb2.' 
-					WHERE	kode  LIKE "%'.$searchTerm.'%"
-							OR nama LIKE "%'.$searchTerm.'%"';
+				$ss='SELECT pus_buku.barkode barkode,
+							pus_katalog.judul judul
+					FROM pus_katalog
+					LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
+					WHERE	barkode  LIKE "%'.$searchTerm.'%"
+							OR judul LIKE "%'.$searchTerm.'%"';
 				// print_r($ss);exit();
 				$result = mysql_query($ss);
 				$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -57,9 +59,9 @@
 				$rows 	= array();
 				while($row = mysql_fetch_assoc($result)) {
 					$rows[]= array(
-						'replid' =>$row['replid'],
-						'kode'   =>$row['kode'],
-						'nama'   =>$row['nama'],
+						'replid'  =>$row['replid'],
+						'barkode' =>$row['barkode'],
+						'judul'   =>$row['judul'],
 					);
 				}$response=array(
 					'page'    =>$page,
@@ -77,8 +79,10 @@
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					case 'ju':
-						$ju_no     = isset($_POST['ju_noS'])?filter(trim($_POST['ju_noS'])):'';
-						$ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
+						$member  = isset($_POST['memberS'])?filter(trim($_POST['memberS'])):'';
+						$barcode = isset($_POST['barcodeS'])?filter(trim($_POST['barcodeS'])):'';
+						$judul   = isset($_POST['judulS'])?filter(trim($_POST['judulS'])):'';
+
 						$sql       = 'SELECT * 
 									from '.$tb.' 
 									WHERE 
@@ -138,12 +142,12 @@
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
-									<td  colspan=9 ><span style="color:red;text-align:center;">
+									<td  colspan=10 ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
 						}
 						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+						$out.= '<tr class="info"><td colspan=10>'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan=10>'.$obj->total.'</td></tr>';
 					break;
 					// grup barang
 				}

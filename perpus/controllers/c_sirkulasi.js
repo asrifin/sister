@@ -1,10 +1,10 @@
-var mnu       ='transaksi'; 
+var mnu       ='sirkulasi'; 
 var mnu2      ='lokasi'; 
 
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
 
-var ju_contentFR = k_contentFR = b_contentFR ='';
+var pinjam_contentFR = k_contentFR = b_contentFR ='';
 // main function load first 
     $(document).ready(function(){
         $('#optionBC').on('click',function(){
@@ -18,87 +18,177 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             $('#tgl2TB').val(getLastDate());
         });
     //form content
-        ju_contentFR += '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="juSV(this); return false;" id="'+mnu+'FR">'
-                        +'<input id="ju_idformH" type="hidden">' 
-
-                        +'<label>No. Jurnal</label>'
-                        +'<div class="input-control size4 text">'
-                            +'<input readonly name="ju_nomerTB" id="ju_nomerTB" >'
-                        +'</div>'
-                        
-                        +'<label>No. Bukti </label>'
-                        +'<div class="input-control size4 text">'
-                            +'<input placeholder="no bukti" name="ju_nobuktiTB" id="ju_nobuktiTB">'
+        pinjam_contentFR +='<div style="overflow:scroll;height:500px;"  class="">'
+                   +'<legend>Daftar item yang dipinjam</legend>'
+                        +'<label>Lokasi</label>'
+                        +'<div class="input-control select span4">'
+                            +'<select  name="lokasiTB" id="lokasiTB"></select>'
+                        +'</div><br>'
+                        +'<div class="input-control text size4">'
+                            +'<input placeholder="Barcode atau Judul item" id="judulTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        
-                        +'<label>Tanggal</label>'
-                        +'<div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">'
-                            +'<input required type="text" id="ju_tanggalTB" name="ju_tanggalTB">'
-                            +'<button class="btn-date"></button>'
-                        +'</div>'
-
-                        +'<div input-control checkbox" >'
-                            +'<label>'
-                                // +'<input onclick="$(\'#uraianDV\').toggle();" type="checkbox" />'
-                                +'<span class="check"></span>'
-                                +' Uraian' 
-                            +'</label>'
-                        +'</div>'
-                        // +'<label>Uraian</label>'
-                        +'<div xstyle="display:none;" id="uraianDV" class="input-control textarea">'
-                            +'<textarea required placeholder="uraian" name="ju_uraianTB" id="ju_uraianTB"></textarea>'
-                        +'</div>'
-
-                        //rek. perkiraan 
-                        +'<legend >Rekening :' 
-                            +'<a onclick="addRekTR(\'ju_rekTBL\');return false;" href="#" class="button" >'
-                            +'<i class="icon-plus"></i></a>'
-                        +'</legend>'
                         +'<table class="table hovered bordered striped">'
                             +'<thead>'
                                 +'<tr style="color:white;"class="info">'
-                                    +'<th class="text-center">Rek Perkiraan</th>'
-                                    +'<th class="text-center">Debet</th>'
-                                    +'<th class="text-center">Kredit</th>'
-                                    +'<th class="text-center"></th>'
+                                    +'<th class="text-center">Barcode</th>'
+                                    +'<th class="text-center">Judul</th>'
+                                    +'<th class="text-center">Aksi</th>'
                                 +'</tr>'
                             +'</thead>'
-                            +'<tbody id="ju_rekTBL">'
+                            +'<tbody id="bukuTBL">'
                             +'</tbody>'
-                            +'<tfoot id="legendDet">'
+                                // +'<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih barang.. </td></tr>'
+                            +'<tfoot>'
                             +'</tfoot>'
                         +'</table>'
+
+                    +'<legend>Data Peminjaman</legend>'
+                    +'<form onsubmit="simpan();return false;" autocomplete="off"><input id="idformH" type="hidden">' 
+                        // +'<div class="grid">'
+                        +'<div class="row">'
+                          +'<div class="span8">'
+                            +'<div class="row">'
+                            +'<label><b>Data Peminjam</b></label>'
+                            +'<label>Peminjam</label>'
+                            +'<div class="span4 input-control text size3">'
+                                +'<input placeholder="ID atau nama member"  required type="text" name="peminjamTB" id="peminjamTB">'
+                                +'<button class="btn-clear"></button>'
+                            +'</div>'
+                            +'<label>Peminjam 2</label>'
+                            +'<div class="span4 input-control text size3">'
+                                +'<input placeholder="ID atau nama member"  required type="text" name="peminjamTB" id="peminjamTB">'
+                                +'<button class="btn-clear"></button>'
+                            +'</div>'
+
+                          +'</div>'
+                          // end Span
+
+                            +'<div class="row">'
+                            +'<label><b>Data Peminjam</b></label>'
+                            +'<label>Peminjam</label>'
+                            +'<div class="span4 input-control text size3">'
+                                +'<input placeholder="ID atau nama member"  required type="text" name="peminjamTB" id="peminjamTB">'
+                                +'<button class="btn-clear"></button>'
+                            +'</div>'
+                            +'<label>Peminjam 4</label>'
+                            +'<div class=" span4 input-control text size3">'
+                                +'<input placeholder="ID atau nama member"  required type="text" name="peminjamTB" id="peminjamTB">'
+                                +'<button class="btn-clear"></button>'
+                            +'</div>'
+
+                          +'</div>'
+
+                          // +'<div class="span6">'
+                          //   +'<label>Tanggal Peminjaman</label>'
+                          //   +'<div class="input-control text size3" data-role="datepicker"'
+                          //       // +'data-date="2014-10-23"'
+                          //       +'data-format="yyyy-mm-dd"'
+                          //       +'data-effect="slide">'
+                          //       +'<input required="required"  id="tgl_pinjamTB" name="tgl_pinjamTB" type="text">'
+                          //       +'<button class="btn-date"></button>'
+                          //   +'</div>'
+
+                          //   +'<label>Tanggal Pengembalian</label>'
+                          //   +'<div class="input-control text size3" data-role="datepicker"'
+                          //       // +'data-date="2014-10-23"'
+                          //       +'data-format="yyyy-mm-dd"'
+                          //       +'data-effect="slide">'
+                          //       +'<input required="required" id="tgl_kembaliTB" name="tgl_kembaliTB" type="text">'
+                          //       +'<button class="btn-date"></button>'
+                          //   +'</div>'
+
+                          //   +'<label>Keterangan</label>'
+                          //   +'<div class="input-control textarea">'
+                          //       +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
+                          //   +'</div>'
+
+                          +'</div>'
+                          // end Span
+                        +'</div>'
+                          // end Row
+                        // +'</div>'
+                          // end Grid
 
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
-                    +'</form>';
+
+                    +'</form>'
+                +'</div>';
+
+        cmblokasi();
 
     // button action
         //add ---
-        $("#ju_addBC").on('click', function(){ 
-            juFR('');
+        $("#peminjamanBC").on('click', function(){ 
+            pinjamFR('');
         });
         //print ---
         $('#ju_cetakBC').on('click',function(){
             printPDF('grup');
         });
+
+        $("#statistik").on('click', function(){
+            statistikVW();
+        });
+
         //search ---
-        $('#ju_noS,#ju_uraianS').on('keydown',function (e){ // kode grup
-            if(e.keyCode == 13) juVW();
+        $('#memberS').keydown(function (e){
+            if(e.keyCode == 13)
+                sirkulasiVW();
+        });
+        $('#barcodeS').keydown(function (e){
+            if(e.keyCode == 13)
+                sirkulasiVW();
+        });$('#judulS').keydown(function (e){
+            if(e.keyCode == 13)
+                sirkulasiVW();
+        });$('#s_judulS').keydown(function (e){
+            if(e.keyCode == 13)
+                statistikVW();
+        });$('#klasifikasiS').keydown(function (e){
+            if(e.keyCode == 13)
+                statistikVW();
+        });
+        $('#pengarangS').keydown(function (e){
+            if(e.keyCode == 13)
+                statistikVW();
+        });
+        $('#penerbitS').keydown(function (e){
+            if(e.keyCode == 13)
+                statistikVW();
         });
 
         // set default this month
         $('#tgl1TB').val(getFirstDate());
         $('#tgl2TB').val(getLastDate());
+
+        $('#s_tgl1TB').val(getFirstDate());
+        $('#s_tgl2TB').val(getLastDate());
         // jurnal umum :: tampilkan detail jurnal
-        $('#ju_detiljurnalCB').on('click',function(){
-            $('.uraianCOL').toggle();
+        // $('#ju_detiljurnalCB').on('click',function(){
+        //     $('.uraianCOL').toggle();
+        // });
+
+        // search button
+        $('#cari_sirkulasiBC').on('click',function(){
+            $('#cari_sirkulasiTR').toggle('slow');
+            $('#memberS').val('');
+            $('#barcodeS').val('');
+            $('#judulS').val('');
         });
+        $('#cari_statistikBC').on('click',function(){
+            $('#cari_statistikTR').toggle('slow');
+            $('#s_judulS').val('');
+            $('#klasifikasiS').val('');
+            $('#pengarangS').val('');
+            $('#penerbitS').val('');
+        });
+
         // default tampilkan jurnal umum 
-        juVW();
+        sirkulasiVW();
     }); 
 // end of main function ---------
 
@@ -127,7 +217,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             type:"post",
             data: aksi+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();
@@ -137,21 +227,87 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
     }
 //end of paging ---
 
+    function cmbstatistik(lok){
+        $.ajax({
+            url:dir,
+            data:'aksi=cmbstatistik',
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                    // out+='<option value="1">'+Judulyangpalingseringdipinjam+'</option>';
+                    // out+='<option value="2">'+Member dengan peminjaman terbanyak+'</option>';
+
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.statistik, function(id,item){
+                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                    });
+                }
+                $('#statistikS').html(out);
+                // statistikVW();
+            }
+        });
+    }
+    function cmblokasi(lok){
+        $.ajax({
+            url:dir2,
+            data:'aksi=cmblokasi',
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.lokasi, function(id,item){
+                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                    });
+                }
+                $('#lokasiS').html(out);
+                // statistikVW();
+            }
+        });
+    }
+
+
 /*view*/
-    // ju ---
-        function juVW(){  
-            var aksi ='aksi=tampil&subaksi=ju';
-            var cari ='&ju_noS='+$('#ju_noS').val()
-                     +'&ju_uraianS='+$('#ju_uraianS').val();
+    // Sirkulasi ---
+        function sirkulasiVW(){  
+            var aksi ='aksi=tampil&subaksi=sirkulasi';
+            var cari ='&memberS='+$('#memberS').val()
+                     +'&barcodeS='+$('#barcodeS').val();
+                     +'&judulS='+$('#judulS').val();
             $.ajax({
                 url : dir,
                 type: 'post',
                 data: aksi+cari,
                 beforeSend:function(){
-                    $('#ju_tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                    $('#sirkulasi_tbody').html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr></center>');
                 },success:function(dt){
                     setTimeout(function(){
-                        $('#ju_tbody').html(dt).fadeIn();
+                        $('#sirkulasi_tbody').html(dt).fadeIn();
+                    },1000);
+                }
+            });
+        }
+
+        function statistikVW(){  
+            var aksi ='aksi=tampil&subaksi=statistik';
+            var cari ='&s_judulS='+$('#s_judulS').val()
+                     +'&klasifikasiS='+$('#klasifikasiS').val();
+                     +'&pengarangS='+$('#pengarangS').val();
+                     +'&penerbitS='+$('#penerbitS').val();
+            $.ajax({
+                url : dir,
+                type: 'post',
+                data: aksi+cari,
+                beforeSend:function(){
+                    $('#statistik_tbody').html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr></center>');
+                },success:function(dt){
+                    setTimeout(function(){
+                        $('#statistik_tbody').html(dt).fadeIn();
                     },1000);
                 }
             });
@@ -165,24 +321,6 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             dataType:'json',
             data:d
         });
-    }
-
-// generate kode transaksi form (jurnal umum/income/outcome) : syncronous
-    function kodeTrans(typ){
-        var ret;
-        $.ajax({
-            url:dir,
-            type:'post',
-            async:false,
-            dataType:'json',
-            data :'aksi=codeGen&subaksi=transNo&tipe='+typ,
-            success:function(dt){
-                if(dt.status!='sukses')
-                    ret=dt.status;
-                else
-                    ret=dt.kode;
-            }
-        });return ret;
     }
 
 /*save (insert & update)*/
@@ -225,6 +363,24 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         // return false;
     }
 
+        //Add
+    function pinjamFR(){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: 800,
+            padding: 10,
+            onShow: function(){
+                var titlex;
+                $.Dialog.title(" Tambah Data Peminjaman ");
+                $.Dialog.content(pinjam_contentFR);
+            }
+        });
+    }
+// end of form ---
+
+
 /*delete*/
     //jurnal umum   ---
         function juDel(id){
@@ -247,145 +403,35 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                 }
             });
         }
-    
 
-
-// remove TR rekening
-    function delRekTR (e) {
-        if(($('.rekTR').length)<=2){
-            notif('minimal lengkapi kredit dan debit','red');
-        }else{
-            $('#rekTR_'+e).fadeOut('slow',function(){
-                $('#rekTR_'+e).remove();
-            });
-        }
-    }
-
-//add TR rekening into an element 
-    function addRekTR(e){
-        $('#'+e).append(rekTR(0));
-        setTimeout(function() {
-            autosuggest();
-        },500);
-    }
-/* form jurnal umum (add & edit) */
-    function juFR(id){
-        if(id!=''){ // edit mode
-            
-        }else{ // add  mode
-            // var cgArr  =['ju_rek1','ju_rek2','ju_rek3','ju_rek4'];
-            // loadFR(titl,ju_contentFR,cgArr,inpArr,2);
-            var titl   ='<i class="icon-plus-2"></i> Tambah ';
-            var inpArr ={"ju_tanggalTB":getToday(),"ju_nomerTB":kodeTrans('ju')};
-            loadFR(titl,ju_contentFR,inpArr,2,'ju');
-        }
-    }
-
-//create TR rekening by increment
-    var iTR=3;
-    function rekTR(n){
-        var ret ='';
-        if(n!=0){
-            for (var i = 1; i <= n; i++) {
-                ret+='<tr class="rekTR" id="rekTR_'+i+'">'
-                        +'<td>'
-                            +'<input id="ju_rek'+i+'H" name="ju_rek'+i+'H[]" type="hidden" />'
-                            +'<span class="input-control text"><input id="ju_rek'+i+'TB" name="ju_rek'+i+'TB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
-                        +'</td>'
-                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debet'+i+'TB[]" type="text" placeholder="nominal debet"/></td>'
-                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kredit'+i+'TB[]" type="text"  placeholder="nominal kredit"/></td>'
-                        +'<td><a href="#" onclick="delRekTR('+i+');" class="button"><i class="icon-cancel-2"></i></a></td>'
-                    +'</tr>';
-            }
-        }else{
-            ret+='<tr class="rekTR" id="rekTR_'+iTR+'">'
-                    +'<td>'
-                        +'<input id="ju_rek'+iTR+'H" name="ju_rek'+iTR+'H[]" type="hidden" />'
-                        +'<span class="input-control text"><input id="ju_rek'+iTR+'TB" name="ju_rek'+iTR+'TB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
-                    +'</td>'
-                    +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debet'+iTR+'TB[]" type="text" placeholder="nominal debet"/></td>'
-                    +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kredit'+iTR+'TB[]" type="text"  placeholder="nominal kredit"/></td>'
-                    +'<td><a href="#" onclick="delRekTR('+iTR+');" class="button"><i class="icon-cancel-2"></i></a></td>'
-                +'</tr>';
-            iTR++;
-        }
-        return ret;
-    }
-
-// load form (all)
-    // function loadFR(titl,cont,cgArr,inpArr,rekN){
-    function loadFR(titl,cont,inpArr,rekN,pre){
-        $.Dialog({
-            shadow: true,
-            overlay: true,
-            draggable: true,
-            width: 500,
-            padding: 10,
-            onShow: function(){
-                $.Dialog.title(titl+' '+mnu); 
-                $.Dialog.content(cont);
-                  
-                if(inpArr!=null){ // main form : set value fields 
-                    $.each(inpArr,function (id,item) {
-                       $('#'+id).val(item);
-                    });
-                // }if(cgArr!=null){// detail form
-                // }if(!isNaN(rekN) && rekN>0){// detail form
-                }if(rekN>0){// detail form
-                    setTimeout(function(){
-                        $('#ju_rekTBL').append(rekTR(rekN));
-                        autosuggest(pre,rekN);
-                        // autosuggest(cgArr);
-                    },500);
-                }
-            }
-        });
-    }
-
-// autosuggest (all)
-    // function autosuggest(id){
-        // $.each(id,function(index,val){
-            // $('#'+val+'TB').combogrid({
-    function autosuggest(pre,n){
-        for(var i=1;i<=n; i++){
-            // alert(pre+'_'+i);
-            // return false;
-            $('#'+pre+'_rek'+i+'TB').combogrid({
-                debug:true,
-                width:'400px',
-                colModel: [{
-                        'align':'left',
-                        'columnName':'kode',
-                        'hide':true,
-                        'width':'20',
-                        'label':'Kode'
-                    },{   
-                        'align':'left',
-                        'columnName':'nama',
-                        'width':'60',
-                        'label':'Rekening'
-                    }],
-                url: dir+'?aksi=autocomp',
-                select: function( event, ui ) { // event setelah data terpilih 
-                    // alert(ui.item.nama);return false;
-                    $('#'+pre+'_rek'+i+'H').val(ui.item.replid);
-                    $('#'+pre+'_rek'+i+'TB').val(ui.item.nama+' ('+ui.item.kode+')      ');
-                    // $('#'+val+'H').val(ui.item.replid);
-                    // $('#'+val+'TB').val(ui.item.nama+' ('+ui.item.kode+')      ');
-                    // return false;
-                }
-            });
-        }
+        // //autocomplete
+        // $("#judulTB").combogrid({
+        //     debug:true,
+        //     width:'400px',
+        //     colModel: [{
+        //             'align':'left',
+        //             'columnName':'barkode',
+        //             'hide':true,
+        //             'width':'55',
+        //             // 'width':'8',
+        //             'label':'Barcode'
+        //         },{   
+        //             'columnName':'judul',
+        //             'width':'40',
+        //             'label':'Judul'
+        //         }],
+        //     url: dir+'?aksi=autocomp',
+        //     // url: dir+'?aksi=autocomp&lokasi='+lok+'&judul='+judulArr(),
+        //     // $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
+        //     select: function( event, ui ) { // event setelah data terpilih 
+        //         // $('#gruruH').val(ui.item.replid);
+                
+        //         // $(this).combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
+        //         judulAdd(ui.item.replid,ui.item.kode,ui.item.nama);
+        //         $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
+        //         return false;
+        //     }
         // });
-    }
-
-/*reset form*/
-    //jurnal umm   ---
-        function ju_resetFR(){
-            // $('#idformTB').val('');
-            // $('#g_kodeTB').val('');
-        }
-    //end of grup ---
 
 // input uang --------------------------
     function inputuang(e) {
@@ -400,14 +446,6 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
     }
 // end of input uang --------------------------
 
-// get uang --------------------------
-    // function getuang(e) {
-    //     // var x =$(e).maskMoney('unmasked')[0];
-    //     var x =$(e).val();
-    //     var y = x.replace(/[r\.]/g, '');
-    //     return y;
-    // }
-// end of get uang --------------------------
 
 // notifikasi
     function notif(cont,clr) {
@@ -515,37 +553,3 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
     }
 
         
-// function kodeTrans(typ){
-    //     var data ='aksi=codeGen&subaksi=transNo&tipe='+typ;
-    //     ajaxFC(dir,data).done(function(res){
-    //         $('#'+typ+'_nomerTB').val(res.kode);
-    //     });
-    // }    
-    // ---------------------- //
-    // -- created by epiii -- //
-    // ---------------------- // 
-
-    // jQuery(document).ready(function(){
-    //     // $.each(elm,function(id,item){
-    //         // $("#"+item+'TB').on('keyup', function(e){
-    //         $('#ju_rek1TB').on('keyup', function(e){
-    //             var key     = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-    //             var keyCode = $.ui.keyCode;
-    //             if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.DOWN) {
-    //                 $('#ju_rek1TB').val('');
-    //             }
-    //         });
-    //     // });
-    // });
-
-
-
-                    // $("#"+val+'TB').on('keyup', function(e){
-                    //     var key     = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-                    //     var keyCode = $.ui.keyCode;
-                    //     if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.DOWN) {
-                    //         // alert('terhapus');
-                    //         $('#'+val+'H').val('');
-                    //         $('#'+val+'TB').val('');
-                    //     }
-                    // });

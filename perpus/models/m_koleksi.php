@@ -5,7 +5,7 @@
 	require_once '../../lib/pagination_class.php';
 	
 	// $tb   = 'pus_lokasi';
-	// $tb2  = 'pus_buku';
+	$tb2  = 'pus_buku';
 	// $tb3  = 'pus_katalog';
 	// $tb4  = 'pus_penerbit';
 	// $tb5  = 'pus_pengarang';
@@ -18,23 +18,26 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$lokasi 	= isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
-				$jenisbuku	= isset($_POST['jenisbukuS'])?filter(trim($_POST['jenisbukuS'])):'';
-				$tingkatbuku= isset($_POST['tingkatbukuS'])?filter(trim($_POST['tingkatbukuS'])):'';
-				$judul 		= isset($_POST['judulS'])?filter(trim($_POST['judulS'])):'';
-				$callnumber = isset($_POST['callnumberS'])?filter(trim($_POST['callnumberS'])):'';
-				$pengarang  = isset($_POST['pengarangS'])?filter(trim($_POST['pengarangS'])):'';
-				$penerbit   = isset($_POST['penerbitS'])?filter(trim($_POST['penerbitS'])):'';
-				$klasifikasi   = isset($_POST['klasifikasiS'])?filter(trim($_POST['klasifikasiS'])):'';
+				$lokasi      = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
+				$jenisbuku   = isset($_POST['jenisbukuS'])?filter(trim($_POST['jenisbukuS'])):'';
+				$tingkatbuku = isset($_POST['tingkatbukuS'])?filter(trim($_POST['tingkatbukuS'])):'';
+				$barkode     = isset($_POST['barkodeS'])?filter(trim($_POST['barkodeS'])):'';
+				$idbuku      = isset($_POST['idbukuS'])?filter(trim($_POST['idbukuS'])):'';
+				$judul       = isset($_POST['judulS'])?filter(trim($_POST['judulS'])):'';
+				$callnumber  = isset($_POST['callnumberS'])?filter(trim($_POST['callnumberS'])):'';
+				$klasifikasi = isset($_POST['klasifikasiS'])?filter(trim($_POST['klasifikasiS'])):'';
+				$pengarang   = isset($_POST['pengarangS'])?filter(trim($_POST['pengarangS'])):'';
+				$penerbit    = isset($_POST['penerbitS'])?filter(trim($_POST['penerbitS'])):'';
+				$status      = isset($_POST['statusS'])?filter(trim($_POST['statusS'])):'';
 				
 				$sql = 'SELECT *, b.idbuku AS kode,
+								k.judul AS judul,
 								l.nama AS klasifikasi, 
 								r.nama AS penerbit, 
 								if(b.status=1,"Tersedia","Dipinjam") as status, 
 								p.nama2 AS pengarang
 
 						FROM pus_buku b
-
 						LEFT JOIN pus_katalog k on k.replid=b.katalog
 						LEFT JOIN pus_tingkatbuku t on t.replid=b.tingkatbuku
 						LEFT JOIN pus_klasifikasi l on l.replid=k.klasifikasi
@@ -45,33 +48,13 @@
 						b.lokasi='.$lokasi.'
 						AND b.tingkatbuku='.$tingkatbuku.'
 						AND k.jenisbuku='.$jenisbuku.'
-	
+						AND b.barkode like "%'.$barkode.'%"
+						AND b.idbuku like "%'.$idbuku.'%"
+						AND k.judul like "%'.$judul.'%"
+						AND b.callnumber like "%'.$callnumber.'%"
+						AND b.status like "%'.$status.'%"
 						';
-						// 	b.replid
-						// 	,b.barkode
-						// 	,LPAD(b.idbuku,18,0)as kode
-						// 	,k.judul
-						// 	,k.callnumber
-						// 	,CONCAT("[",f.kode,"] ",f.nama) klasifikasi
-						// 	,r.nama2 as pengarang
-						// 	,t.nama as penerbit
-						// 	,if(b.status=1,"Tersedia","Dipinjam") as status
-						// FROM pus_katalog k
-						// LEFT JOIN pus_buku b on b.katalog = k.replid
-						// LEFT JOIN pus_klasifikasi f on f.kode = k.klasifikasi
-						// LEFT JOIN pus_penerbit t on t.replid=k.penerbit
-						// LEFT JOIN pus_pengarang r on r.replid=k.pengarang
-						// WHERE	
-							 
-						// 	AND klasifikasi = f.replid 
-						// 	AND k.jenisbuku = "%'.$jenisbuku.'%"
-						// 	AND b.tingkatbuku = "%'.$tingkatbuku.'%"
-						// l.replid and
-							// /*search*/
-							// AND b.lokasi = "%'.$lokasi.'%"
-				// var_dump($sql);exit();
-							  // b.lokasi like "%'.$lokasi.'%" and
-						// 	  l.replid=
+				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -91,7 +74,7 @@
 					while($res = mysql_fetch_array($result)){	
 				// print_r($res);exit(); 	
 						$btn ='<td>
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
+									<button data-hint="ubah"  class="button" onclick="koleksiFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
 									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
@@ -136,37 +119,57 @@
 			// // add / edit -----------------------------------------------------------------
 			
 			// // delete -----------------------------------------------------------------
-			// case 'hapus':
-			// 	$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb2.' where replid='.$_POST['replid']));
-			// 	$s    = 'DELETE from '.$tb2.' WHERE replid='.$_POST['replid'];
-			// 	$e    = mysql_query($s);
-			// 	$stat = ($e)?'sukses':'gagal';
-			// 	$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
-			// break;
+			case 'hapus':
+				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb2.' where replid='.$_POST['replid']));
+				$s    = 'DELETE from '.$tb2.' WHERE replid='.$_POST['replid'];
+				$e    = mysql_query($s);
+				$stat = ($e)?'sukses':'gagal';
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+			break;
 			// // delete -----------------------------------------------------------------
 
 			// // ambiledit -----------------------------------------------------------------
-			// case 'ambiledit':
-			// 	$s 		= ' SELECT 
-			// 					t.kode,
-			// 					t.nama,
-			// 					t.keterangan,
-			// 					l.nama as lokasi
-			// 				from '.$tb.' t, sar_lokasi l
-			// 				WHERE 
-			// 					t.lokasi= l.replid and
-			// 					t.replid='.$_POST['replid'];
-			// 	// var_dump($s);exit();
-			// 	$e 		= mysql_query($s);
-			// 	$r 		= mysql_fetch_assoc($e);
-			// 	// $stat 	= ($e)?'sukses':'gagal';
-			// 	$out 	= json_encode(array(
-			// 				'kode'       =>$r['kode'],
-			// 				'lokasi'     =>$r['lokasi'],
-			// 				'nama'       =>$r['nama'],
-			// 				'keterangan' =>$r['keterangan']
-			// 			));
-			// break;
+			case 'ambiledit':
+						$s 		= ' SELECT
+				                          pb.replid as replid,
+				                          kg.judul,
+										  LPAD(pb.idbuku,18,0)as kode,
+										  pb.barkode,
+										  pb.harga,
+										  pb.tanggal,
+										  pb.lokasi,
+										  pb.tingkatbuku,
+										  if(pb.sumber=0,"Beli","Pemberian") as sumber,
+										  pj.nama jenisbuku,
+				                          kg.callnumber,
+				                          kg.dimensi,
+				                          kg.deskripsi, 
+				                          (SELECT count(*) from pus_buku where katalog=kg.replid) as jum
+				                        FROM
+				                          pus_katalog kg
+				                          LEFT JOIN pus_buku pb ON pb.replid = kg.pengarang
+				                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
+				                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
+				                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+				                        order BY
+				                          pb.replid asc';
+											// print_r($s);exit();
+						$e 		= mysql_query($s) or die(mysql_error());
+						$r 		= mysql_fetch_assoc($e);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out    = json_encode(array(
+									'status'      =>$stat,
+									'judul'       =>$r['judul'],
+									'jumlah'      =>$r['jum'],
+									'kode'      =>$r['kode'],
+									'barkode'     =>$r['barkode'],
+									'sumber'      =>$r['sumber'],
+									'harga'       =>$r['harga'],
+									'tanggal'     =>$r['tanggal'],
+									'lokasi'      =>$r['lokasi'],
+									'tingkatbuku' =>$r['tingkatbuku']
+								));
+			break;
 			// // ambiledit -----------------------------------------------------------------
 
 			// // cmbtempat ---------------------------------------------------------
