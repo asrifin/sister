@@ -225,7 +225,6 @@ var contentFR = '';
                             $('#nisnTB').val(dt.nisn); 
                             $('#siswaTB').val(dt.siswa);
                             $('#keteranganTB').val(dt.ket);
-                            // cmbtahunlulus(dt3.nama,true,dt3.nama);
                             cmbtahunlulus2(dt.tahun); /*epiii*/
                         }
                     });titlex='<span class="icon-pencil"></span> Ubah ';
