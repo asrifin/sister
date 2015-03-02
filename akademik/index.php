@@ -175,6 +175,10 @@
                     case 'valumni':
                         require $d.'v_alumni.php';
                     break;
+                    case 'vpresensisiswa':
+                        // echo 'asem';
+                        require $d.'v_presensisiswa.php';
+                    break;
 
                     default:
                         require $d.'v_home.php';
