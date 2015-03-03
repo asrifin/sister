@@ -17,106 +17,118 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
             $('#tgl1TB').val(getFirstDate());
             $('#tgl2TB').val(getLastDate());
         });
-    //form content
-        pinjam_contentFR +='<div style="overflow:scroll;height:500px;"  class="">'
-                   +'<legend>Daftar item yang dipinjam</legend>'
-                        +'<label>Lokasi</label>'
-                        +'<div class="input-control select span4">'
-                            +'<select  name="lokasiTB" id="lokasiTB"></select>'
-                        +'</div><br>'
-                        +'<div class="input-control text size4">'
-                            +'<input placeholder="Barcode atau Judul item" id="judulTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        +'<table class="table hovered bordered striped">'
-                            +'<thead>'
-                                +'<tr style="color:white;"class="info">'
-                                    +'<th class="text-center">Barcode</th>'
-                                    +'<th class="text-center">Judul</th>'
-                                    +'<th class="text-center">Aksi</th>'
-                                +'</tr>'
-                            +'</thead>'
-                            +'<tbody id="bukuTBL">'
-                            +'</tbody>'
-                                // +'<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih barang.. </td></tr>'
-                            +'<tfoot>'
-                            +'</tfoot>'
-                        +'</table>'
 
-                    +'<legend>Data Peminjaman</legend>'
-                    +'<form onsubmit="simpan();return false;" autocomplete="off"><input id="idformH" type="hidden">' 
-                        // +'<div class="grid">'
-                        +'<div class="row">'
-                          +'<div class="span8">'
-                            +'<div class="row">'
-                            +'<label><b>Data Peminjam</b></label>'
-                            +'<label>Peminjam</label>'
-                            +'<div class="span4 input-control text size3">'
-                                +'<input placeholder="ID atau nama member"  required type="text" name="peminjamTB" id="peminjamTB">'
+            //Dialog Pinjam
+        pinjam_contentFR +='<div style="overflow:scroll;height:500px;">'
+                       +'<legend>Daftar item yang dipinjam</legend>'
+                            +'<label>Lokasi</label>'
+                            +'<div class="input-control select span4">'
+                                +'<select  name="lokasiTB" id="lokasiTB"></select>'
+                            +'</div><br>'
+                            +'<div class="input-control text size4">'
+                                +'<input placeholder="Barcode atau Judul item" id="judulTB">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
-                            +'<label>Peminjam 2</label>'
-                            +'<div class="span4 input-control text size3">'
-                                +'<input placeholder="ID atau nama member"  required type="text" name="peminjamTB" id="peminjamTB">'
-                                +'<button class="btn-clear"></button>'
+                            +'<table class="table hovered bordered striped">'
+                                +'<thead>'
+                                    +'<tr style="color:white;"class="info">'
+                                        +'<th class="text-center">Barcode</th>'
+                                        +'<th class="text-center">Judul</th>'
+                                        +'<th class="text-center">Aksi</th>'
+                                    +'</tr>'
+                                +'</thead>'
+                                +'<tbody id="barangTBL">'
+                                +'</tbody>'
+                                    // +'<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih barang.. </td></tr>'
+                                +'<tfoot>'
+                                +'</tfoot>'
+                            +'</table>'
+
+                            +'<div class="grid">'
+                            +'<legend>Data Peminjaman</legend>'
+                                +'<form enctype="multipart/form-data" class="span12" autocomplete="off" onsubmit="pinjamSV(); return false;">' 
+                                    +'<input id="idformH" type="hidden">' 
+                                    // lokasi , keterangan
+                                    +'<div class="row">'
+                                        +'<div class="span5"> '
+                                            +'<label>Peminjam</label>'
+                                            +'<div class="input-control select span4">'
+                                                +'<select  name="memberTB" id="memberTB"></select>'
+                                            +'</div>'
+                                            +'<div class="input-control text size4">'
+                                                +'<input placeholder="ID atau Nama Peminjam" id="peminjamTB">'
+                                                +'<button class="btn-clear"></button>'
+                                            +'</div>'
+                                        +'</div>'
+                                        +'<div class="span5">'
+                                            +'<label><b>Waktu Peminjaman</b></label>'
+                                            +'<label>Tanggal Peminjaman</label>'
+                                            +'<div class="input-control text size3" data-role="datepicker"'
+                                                // +'data-date="2014-10-23"'
+                                                +'data-format="yyyy-mm-dd"'
+                                                +'data-effect="slide">'
+                                                +'<input required="required"  id="tgl_pinjamTB" name="tgl_pinjamTB" type="text">'
+                                                +'<button class="btn-date"></button>'
+                                            +'</div>'
+                                            +'<label>Tanggal Pengembalian</label>'
+                                            +'<div class="input-control text size3" data-role="datepicker"'
+                                                // +'data-date="2014-10-23"'
+                                                +'data-format="yyyy-mm-dd"'
+                                                +'data-effect="slide">'
+                                                +'<input required="required" id="tgl_kembaliTB" name="tgl_kembaliTB" type="text">'
+                                                +'<button class="btn-date"></button>'
+                                            +'</div>'                                            
+                                            +'<label><b>Catatan Peminjaman</b></label>'
+                                            +'<label>Keterangan</label>'
+                                            +'<div class="input-control textarea">'
+                                                +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
+                                            +'</div>'
+                                        +'</div>' //end span
+                                    +'</div>' //end row
+                                    
+                                    // nama member
+                                    +'<div class="row">'
+                                        +'<div class="span5"> '
+
+                                        +'</div>'
+                                        +'<div class="span5"> '
+                                            // +'<label>Tanggal Pengembalian</label>'
+                                            // +'<div class="input-control text size3" data-role="datepicker"'
+                                            //     // +'data-date="2014-10-23"'
+                                            //     +'data-format="yyyy-mm-dd"'
+                                            //     +'data-effect="slide">'
+                                            //     +'<input required="required" id="tgl_kembaliTB" name="tgl_kembaliTB" type="text">'
+                                            //     +'<button class="btn-date"></button>'
+                                            // +'</div>'
+                                        +'</div>'
+                                    +'</div>'
+                                    
+                                    // // nama 
+                                    // +'<div class="row">'
+                                    //     +'<div class="span5"> '
+
+                                    //     +'</div>'
+                                    //     +'<div class="span5"> '
+                                    //             +'<label>Keterangan</label>'
+                                    //             +'<div class="input-control textarea">'
+                                    //                 +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
+                                    //             +'</div>'
+                                    //     +'</div>'
+                                    // +'</div>'
+
+                                    +'<div class="row">'
+                                        +'<div class="span5"> '
+                                            +'<div class="form-actions">' 
+                                                +'<button class="button primary">simpan</button>&nbsp;'
+                                                +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                                            +'</div>'
+                                        +'</div>'
+                                    +'</div>'
+                                +'</form>'
                             +'</div>'
-
-                          +'</div>'
-                          // end Span
-
-                            +'<div class="row">'
-                            +'<label><b>Data Peminjam</b></label>'
-                            +'<label>Peminjam</label>'
-                            +'<div class="span4 input-control text size3">'
-                                +'<input placeholder="ID atau nama member"  required type="text" name="peminjamTB" id="peminjamTB">'
-                                +'<button class="btn-clear"></button>'
-                            +'</div>'
-                            +'<label>Peminjam 4</label>'
-                            +'<div class=" span4 input-control text size3">'
-                                +'<input placeholder="ID atau nama member"  required type="text" name="peminjamTB" id="peminjamTB">'
-                                +'<button class="btn-clear"></button>'
-                            +'</div>'
-
-                          +'</div>'
-
-                          // +'<div class="span6">'
-                          //   +'<label>Tanggal Peminjaman</label>'
-                          //   +'<div class="input-control text size3" data-role="datepicker"'
-                          //       // +'data-date="2014-10-23"'
-                          //       +'data-format="yyyy-mm-dd"'
-                          //       +'data-effect="slide">'
-                          //       +'<input required="required"  id="tgl_pinjamTB" name="tgl_pinjamTB" type="text">'
-                          //       +'<button class="btn-date"></button>'
-                          //   +'</div>'
-
-                          //   +'<label>Tanggal Pengembalian</label>'
-                          //   +'<div class="input-control text size3" data-role="datepicker"'
-                          //       // +'data-date="2014-10-23"'
-                          //       +'data-format="yyyy-mm-dd"'
-                          //       +'data-effect="slide">'
-                          //       +'<input required="required" id="tgl_kembaliTB" name="tgl_kembaliTB" type="text">'
-                          //       +'<button class="btn-date"></button>'
-                          //   +'</div>'
-
-                          //   +'<label>Keterangan</label>'
-                          //   +'<div class="input-control textarea">'
-                          //       +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
-                          //   +'</div>'
-
-                          +'</div>'
-                          // end Span
-                        +'</div>'
-                          // end Row
-                        // +'</div>'
-                          // end Grid
-
-                        +'<div class="form-actions">' 
-                            +'<button class="button primary">simpan</button>&nbsp;'
-                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-                        +'</div>'
-
-                    +'</form>'
-                +'</div>';
+                                //End Grid  
+                        +'</div>';
+                         //End div
 
         cmblokasi();
 
@@ -250,7 +262,9 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
             }
         });
     }
-    function cmblokasi(lok){
+
+// combo departemen ---
+    function cmblokasi(){
         $.ajax({
             url:dir2,
             data:'aksi=cmblokasi',
@@ -262,15 +276,120 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.lokasi, function(id,item){
-                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                        out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
+                    });(dt.lokasi[0].replid);
+                    // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+dt.lokasi[0].replid);
+                }$('#lokasiS').html(out);
+            }
+        });
+    }
+//end of combo departemen ---
+
+// load form (all)
+    function loadFR(titl,cont,inpArr){        
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: 500,
+            padding: 10,
+            onShow: function(){
+                $.Dialog.title(titl+' '+mnu); 
+                $.Dialog.content(cont);
+                  
+                if(inpArr!=null){ // main form : set value fields 
+                    $.each(inpArr,function (id,item) {
+                       $('#'+id).val(item);
                     });
                 }
-                $('#lokasiS').html(out);
-                // statistikVW();
+                // if(rekN>0){// detail form
+                //     setTimeout(function(){
+                //         $('#ju_rekTBL').append(rekTR(rekN));
+                //         autosuggest(pre,rekN);
+                //         // autosuggest(cgArr);
+                //     },500);
+                // }
             }
         });
     }
 
+/* form peminjaman (add & edit) */
+    function pinjamFR(id){
+        if(id!=''){ // edit mode
+            
+        }else{ // add  mode
+            var titl   ='<i class="icon-plus-2"></i> Tambah ';
+            var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
+            loadFR(titl,pinjam_contentFR,inpArr);
+        }
+
+        //autocomplete
+        $("#judulTB").combogrid({
+            debug:true,
+            width:'400px',
+            colModel: [{
+                    'align':'left',
+                    'columnName':'barkode',
+                    'hide':true,
+                    'width':'55',
+                    // 'width':'8',
+                    'label':'Barkode'
+                },{   
+                    'columnName':'judul',
+                    'width':'40',
+                    'label':'Judul'
+                }],
+            url: dir+'?aksi=autocomp&subaksi=judul',
+            select: function( event, ui ) { // event setelah data terpilih 
+                barangAdd(ui.item.replid,ui.item.barkode,ui.item.judul);
+                $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=judul&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
+                return false;
+            }
+        }); //End autocomplete
+
+    }
+
+    // hapus barang terpilih
+        function barangDel(id){
+            $('#barangTR_'+id).fadeOut('slow',function(){
+                $('#barangTR_'+id).remove();
+                // barangExist();
+            });
+        }
+    //barang record kosong --
+        function barangExist(){
+            // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
+            alert('jumlah tr: '+$('#barangTBL','.barangTR').length);return false;
+            var tr ='<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih Judul Buku ..</td></tr>';
+            if($('#barangTBL').html()=='')
+                $('#barangTBL').html(tr);
+            else
+                $('#barangTBL').html('');
+        }
+    //end of barang record kosong --
+
+    // pilih barang yg akan dipinjam ---
+        function barangAdd (id,barkode,judul) {
+            var tr ='<tr val="'+id+'" class="barangTR" id="barangTR_'+id+'">'
+                        +'<td>'+barkode+'</td>'
+                        +'<td>'+judul+'</td>'
+                        +'<td><button onclick="barangDel('+id+');"><i class="icon-remove"></button></i></td>'
+                    +'</tr>';
+            $('#barangTBL').append(tr); 
+            barangArr();
+            // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
+
+            // barangExist();
+        }
+        
+    //himpun array barang terpilih
+        function barangArr(){
+            var y=[];
+            $('.barangTR').each(function(id,item){
+                y.push($(this).attr('val'));
+            });return y;
+        }
+    // end autocomplete
 
 /*view*/
     // Sirkulasi ---
@@ -363,23 +482,6 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
         // return false;
     }
 
-        //Add
-    function pinjamFR(){
-        $.Dialog({
-            shadow: true,
-            overlay: true,
-            draggable: true,
-            width: 800,
-            padding: 10,
-            onShow: function(){
-                var titlex;
-                $.Dialog.title(" Tambah Data Peminjaman ");
-                $.Dialog.content(pinjam_contentFR);
-            }
-        });
-    }
-// end of form ---
-
 
 /*delete*/
     //jurnal umum   ---
@@ -404,34 +506,6 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
             });
         }
 
-        // //autocomplete
-        // $("#judulTB").combogrid({
-        //     debug:true,
-        //     width:'400px',
-        //     colModel: [{
-        //             'align':'left',
-        //             'columnName':'barkode',
-        //             'hide':true,
-        //             'width':'55',
-        //             // 'width':'8',
-        //             'label':'Barcode'
-        //         },{   
-        //             'columnName':'judul',
-        //             'width':'40',
-        //             'label':'Judul'
-        //         }],
-        //     url: dir+'?aksi=autocomp',
-        //     // url: dir+'?aksi=autocomp&lokasi='+lok+'&judul='+judulArr(),
-        //     // $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
-        //     select: function( event, ui ) { // event setelah data terpilih 
-        //         // $('#gruruH').val(ui.item.replid);
-                
-        //         // $(this).combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
-        //         judulAdd(ui.item.replid,ui.item.kode,ui.item.nama);
-        //         $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
-        //         return false;
-        //     }
-        // });
 
 // input uang --------------------------
     function inputuang(e) {

@@ -65,15 +65,13 @@
 										WHERE
 											mtipe = pj.mtipe and 
 											member= s.replid
-									) total
+									) total,
 								FROM
 									aka_siswa s 
 									left JOIN pus_peminjaman pj ON pj.member = s.replid 
 								WHERE
 									pj.mtipe = 1 AND
 									s.aktif != 2 
-								/*	s.nis = "%'.$nis.'%" AND
-									s.nama = "%'.$nama.'%" 	*/
 								GROUP BY
 									s.replid';
 						// print_r($sql);exit(); 	
@@ -126,7 +124,7 @@
 									s.nama,(
 											SELECT count(*)
 											FROM
-												pus_peminjaman 
+												pus_peminjaman pj
 											where 
 											mtipe = pj.mtipe and 
 											member= s.id and 
@@ -135,7 +133,7 @@
 										SELECT
 											count(*)
 										FROM
-											pus_peminjaman 
+											pus_peminjaman pj
 										WHERE
 											mtipe = pj.mtipe and 
 											member= s.id
@@ -144,7 +142,9 @@
 									hrd_karyawan s 
 									left JOIN pus_peminjaman pj ON pj.member = s.id 
 								WHERE
-									pj.mtipe = 2 
+									pj.mtipe = 2 AND
+									s.nip like "%'.$nip.'%" AND
+									s.nama like "%'.$pegawai.'%"  
 								GROUP BY
 									s.id';
 						// print_r($sql);exit(); 	
@@ -215,9 +215,9 @@
 									pus_member s 
 									left JOIN pus_peminjaman pj ON pj.member = s.replid 
 								WHERE
-									pj.mtipe = 3
-								/*	s.nid = "%'.$idmember.'%" AND
-									s.nama = "%'.$nama_luar.'%"  */
+									pj.mtipe = 3 AND
+									s.nid like "%'.$idmember.'%" AND
+									s.nama like "%'.$nama_luar.'%"  
 								GROUP BY
 									s.replid';
 						// print_r($sql);exit(); 	

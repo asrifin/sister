@@ -15,7 +15,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
         $('#tambahBC').toggle('slow');
         $('#cariBC').toggle('slow');
     
-        // autosuggest
+        // autosuggest pengarang
         $("#pengarangTB").combogrid({
             debug:true,
             width:'400px',
@@ -33,8 +33,8 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                 $('#pengarangTB').combogrid( "option", "url", urlx ); /*epiii*/
                 return false;
             }
-        });
-        // autosuggest
+        }); 
+        // autosuggest penerbit
         $("#penerbitTB").combogrid({
             debug:true,
             width:'400px',
@@ -43,12 +43,42 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                     'width':'40',
                     'label':'NAMA'
                 }],
-            url: dir+'?aksi=autocomp',
+            url: dir+'?aksi=autocomp&subaksi=penerbit',
+            // url: dir+'?aksi=autocomp',
             select: function( event, ui ) {
                 $('#penerbit_autoH').val(ui.item.replid);
                 $('#penerbitTB').val(ui.item.nama);
 
-                $('#penerbitTB').combogrid( "option", "url", dir+'?aksi=autocomp&departemen='+$('#departemenS').val());
+                urlx = dir+'?aksi=autocomp&subaksi=pengerbit&departemen='+$('#departemenS').val(); 
+                $('#penerbitTB').combogrid( "option", "url", urlx ); 
+                // $('#penerbitTB').combogrid( "option", "url", dir+'?aksi=autocomp&departemen='+$('#departemenS').val());
+                return false;
+            }
+        });
+
+        // autosuggest penerbit
+        $("#klasifikasi_selectTB").combogrid({
+            debug:true,
+            width:'400px',
+            colModel: [{   
+                    'columnName':'kode',
+                    'width':'40',
+                    'label':'Kode'
+                },{   
+                    'columnName':'nama',
+                    'width':'50',
+                    'label':'NAMA'
+                }],
+            url: dir+'?aksi=autocomp&subaksi=klasifikasi',
+            // url: dir+'?aksi=autocomp',
+            select: function( event, ui ) {
+                $('#klasifikasi_selectH').val(ui.item.replid);
+                $('#klasifikasiTB').val(ui.item.kode);
+                $('#klasifikasi_selectTB').val(ui.item.nama);
+
+                urlx = dir+'?aksi=autocomp&subaksi=klasifikasi&departemen='+$('#departemenS').val(); 
+                $('#klasifikasi_selectTB').combogrid( "option", "url", urlx ); 
+                // $('#penerbitTB').combogrid( "option", "url", dir+'?aksi=autocomp&departemen='+$('#departemenS').val());
                 return false;
             }
         });
@@ -271,21 +301,21 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
         });
 
         //add
-    $("#klasifikasiBC").on('click',function(){
-            klasifikasiFR();
-    });$("#penerbitBC").on('click',function(){
-            penerbitFR(); 
-    });$("#pengarangBC").on('click',function(){
-            pengarangFR(); 
-    });$("#bahasaBC").on('click',function(){
-            bahasaFR();
-    });$("#jenisbukuBC").on('click',function(){
-            jenisbukuFR(); 
-    });
-    // $("#koleksiBC").on('click',function(){
-    //         koleksiFR(); 
-    // });
-    //search action
+        $("#klasifikasiBC").on('click',function(){
+                klasifikasiFR();
+        });$("#penerbitBC").on('click',function(){
+                penerbitFR(); 
+        });$("#pengarangBC").on('click',function(){
+                pengarangFR(); 
+        });$("#bahasaBC").on('click',function(){
+                bahasaFR();
+        });$("#jenisbukuBC").on('click',function(){
+                jenisbukuFR(); 
+        });
+        // $("#koleksiBC").on('click',function(){
+        //         koleksiFR(); 
+        // });
+        //search action
         // $('#judulS,#kode_klasifikasiS,#pengarangS,#penerbitS').keydown(function (e){
         //     if(e.keyCode == 13)
         //         viewTB();
@@ -321,116 +351,116 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
  
 
         // //preview image sebelum upload -------
-        //     function PreviewImage(e){
-        //         var typex   = e.files[0].type;
-        //         var sizex   = e.files[0].size;
-        //         var namex   = e.files[0].name;
+            function PreviewImage(e){
+                var typex   = e.files[0].type;
+                var sizex   = e.files[0].size;
+                var namex   = e.files[0].name;
                 
-        //         if(typex =='image/png'||typex =='image/jpg'||typex =='image/jpeg'|| typex =='image/gif'){ //validasi format
-        //             if(sizex>(900*900)){ //validasi size
-        //                 notif('ukuran max 1 MB','red');
-        //                 $(e).val('');
-        //                 return false;   
-        //             }else{ 
-        //                 $('#previmg').attr('src','../img/w8loader.gif');
-        //                 var reader = new FileReader();
-        //                 reader.readAsDataURL(e.files[0]);
+                if(typex =='image/png'||typex =='image/jpg'||typex =='image/jpeg'|| typex =='image/gif'){ //validasi format
+                    if(sizex>(900*900)){ //validasi size
+                        notif('ukuran max 1 MB','red');
+                        $(e).val('');
+                        return false;   
+                    }else{ 
+                        $('#previmg').attr('src','../img/w8loader.gif');
+                        var reader = new FileReader();
+                        reader.readAsDataURL(e.files[0]);
             
-        //                 reader.onload = function (oFREvent){
-        //                     var urlx  = oFREvent.target.result;
-        //                     setTimeout(function(){
-        //                         $('#previmg').attr('src',urlx);//.removeAttr('style');
-        //                     },1000);
-        //                 };
-        //             }
-        //         }else{ // format salah
-        //             $('#previmg').attr('src','<img src="../img/loader.gif">');
-        //             $(e).val('');
-        //             notif('hanya format gambar(jpeg,jpg,png)','red');
-        //             return false;
-        //         }
-        //     };
+                        reader.onload = function (oFREvent){
+                            var urlx  = oFREvent.target.result;
+                            setTimeout(function(){
+                                $('#previmg').attr('src',urlx);//.removeAttr('style');
+                            },1000);
+                        };
+                    }
+                }else{ // format salah
+                    $('#previmg').attr('src','<img src="../img/loader.gif">');
+                    $(e).val('');
+                    notif('hanya format gambar(jpeg,jpg,png)','red');
+                    return false;
+                }
+            };
         //end of preview image sebelum upload -------
 
 // // submit katalog ---------------------------
-//             function katalogSV () {
-//                 //add image
-//                 var files =new Array();
-//                 $("input:file").each(function() {
-//                     files.push($(this).get(0).files[0]); 
-//                 });
+            function katalogSV () {
+                //add image
+                var files =new Array();
+                $("input:file").each(function() {
+                    files.push($(this).get(0).files[0]); 
+                });
                  
-//                 // Create a formdata object and add the files
-//                 var filesAdd = new FormData();
-//                 $.each(files, function(key, value){
-//                     filesAdd.append(key, value);
-//                 });
+                // Create a formdata object and add the files
+                var filesAdd = new FormData();
+                $.each(files, function(key, value){
+                    filesAdd.append(key, value);
+                });
 
-//                 if($('#k_photoTB').val()=='')//upload
-//                     katalogDb('');
-//                 else// ga upload
-//                     katalogUp(filesAdd);
-//             }
+                if($('#k_photoTB').val()=='')//upload
+                    katalogDb('');
+                else// ga upload
+                    katalogUp(filesAdd);
+            }
         //end of submit katalog ---------------------------
 
         // // upload image
-        //     function katalogUp(dataAdd){
-        //         $.ajax({
-        //             url: dir+'?upload',
-        //             type: 'POST',
-        //             data: dataAdd,
-        //             cache: false,
-        //             dataType: 'json',
-        //             processData: false,// Don't process the files
-        //             contentType: false,//Set content type to false as jq 'll tell the server its a query string request
-        //             success: function(data, textStatus, jqXHR){
-        //                 if(data.status == 'sukses'){ //gak error
-        //                     katalogDb(data);
-        //                 }else{ //error
-        //                     notif(data.status,'red');
-        //                 }
-        //             },error: function(jqXHR, textStatus, errorThrown){
-        //                 notif('error'+textStatus,'red');// $('#loadarea').html('<img src="../img/loader.gif"> ').fadeOut();
-        //             }
-        //         });
-        //     }
+            function katalogUp(dataAdd){
+                $.ajax({
+                    url: dir+'?upload',
+                    type: 'POST',
+                    data: dataAdd,
+                    cache: false,
+                    dataType: 'json',
+                    processData: false,// Don't process the files
+                    contentType: false,//Set content type to false as jq 'll tell the server its a query string request
+                    success: function(data, textStatus, jqXHR){
+                        if(data.status == 'sukses'){ //gak error
+                            katalogDb(data);
+                        }else{ //error
+                            notif(data.status,'red');
+                        }
+                    },error: function(jqXHR, textStatus, errorThrown){
+                        notif('error'+textStatus,'red');// $('#loadarea').html('<img src="../img/loader.gif"> ').fadeOut();
+                    }
+                });
+            }
         //end of upload image
 
         // simpan ke database
-            // function katalogDb(filex){
-            //     var formData = $('#katalogFR').serialize();
-            //     if($('#k_idformH').val()!=''){
-            //         formData +='&replid='+$('#k_idformH').val();
-            //     }
+            function katalogDb(filex){
+                var formData = $('#katalogFR').serialize();
+                if($('#idformH').val()!=''){
+                    formData +='&replid='+$('#idformH').val();
+                }
 
-            //     if(filex!=''){// ada upload file nya
-            //         formData +='&file='+filex.file ;    
-            //         if($('#k_photoH').val()!=''){
-            //             formData+='&photo_asal='+$('#k_photoH').val();
-            //         }
-            //     }
-            //     // alert(formData);return false;
-            //     $.ajax({
-            //         url: dir,
-            //         type:'POST',
-            //         data:formData+'&aksi=simpan&subaksi=katalog',
-            //         cache:false,
-            //         dataType: 'json',
-            //         success: function(data, textStatus, jqXHR){
-            //             if(data.status != 'sukses')
-            //                notif(data.status,'red');
-            //             else
-            //                notif(data.status,'green'); 
-            //         },error: function(jqXHR, textStatus, errorThrown){
-            //             console.log('ERRORS savedata2: ' + textStatus);
-            //         },complete: function(){
-            //             $.Dialog.close(); 
-            //             // vwKatalog($('#k_grupS').val());
-            //             // kkosongkan();
-            //         }
-            //     });
-            // }
-        // end of simpan ke database
+                if(filex!=''){// ada upload file nya
+                    formData +='&file='+filex.file ;    
+                    if($('#k_photoH').val()!=''){
+                        formData+='&photo_asal='+$('#k_photoH').val();
+                    }
+                }
+                // alert(formData);return false;
+                $.ajax({
+                    url: dir,
+                    type:'POST',
+                    data:formData+'&aksi=simpan&subaksi=katalog',
+                    cache:false,
+                    dataType: 'json',
+                    success: function(data, textStatus, jqXHR){
+                        if(data.status != 'sukses')
+                           notif(data.status,'red');
+                        else
+                           notif(data.status,'green'); 
+                    },error: function(jqXHR, textStatus, errorThrown){
+                        console.log('ERRORS savedata2: ' + textStatus);
+                    },complete: function(){
+                        $.Dialog.close(); 
+                        // vwKatalog($('#k_grupS').val());
+                        // kkosongkan();
+                    }
+                });
+            }
+        // // end of simpan ke database
 
 //save process ---
     function simpan(){
@@ -751,7 +781,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
 //     }
 // // end of form ---
 
-
+        //add katalog
         function viewFR(id) {
             // alert(9999);
             // epi:edit
@@ -781,6 +811,14 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         $('#edisiTB').val(dt.edisi);
                         $('#jenis_bukuTB').val(dt.jenisbuku);
                         // $('#photoTB').val(dt.photo);
+                        var img;
+                        if(dt.photo2!='' && dt.photo2!=null){//ada gambar
+                            img='../img/upload/'+dt.photo2;
+                        }else{
+                            img='../img/no_image.jpg';
+                        }
+                        $('#previmg').attr('src',img);
+                        $('#k_photoH').val(dt.photo2);
                         $('#jumlahTB').val(dt.halaman);
                         $('#edisiTB').val(dt.edisi);
                         $('#sinopsisTB').val(dt.deskripsi);
@@ -827,6 +865,14 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         $('#jumlahTD').html(dt.halaman);
                         $('#edisiTD').html(dt.edisi);
                         $('#sinopsisTD').html(dt.deskripsi);
+                        $('#barkodeTH').html(dt.barkode);
+                        $('#nomorTH').html(dt.idbuku);
+                        $('#sumberTH').html(dt.sumber);
+                        $('#hargaTH').html(dt.harga);
+                        $('#tgl_diperolehTH').html(dt.tanggal);
+                        $('#statusTH').html(dt.statusbuku);
+                        $('#lokasiTH').html(dt.lokasi);
+                        $('#tingkatbuku').html(dt.tingkatbuku);
 
                         cmbjenisbuku(dt.jenisbuku);
                         cmbbahasa(dt.bahasa);

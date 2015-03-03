@@ -27,8 +27,14 @@
 				$sidx =1;
 			if(isset($_GET['subaksi']) && $_GET['subaksi']=='penerbit'){
 				$table = 'pus_penerbit';
-			}else{
+				$where = 'nama LIKE "%'.$searchTerm.'%"';
+			}elseif (isset($_GET['subaksi']) && $_GET['subaksi']=='klasifikasi') {
+				$table = 'pus_klasifikasi';
+				$where = 'kode LIKE "%'.$searchTerm.'%" OR nama LIKE "%'.$searchTerm.'%"';
+			}
+			else{
 				$table = 'pus_pengarang';
+				$where = 'nama LIKE "%'.$searchTerm.'%"';
 			}
 
 			$ss='SELECT
@@ -36,7 +42,7 @@
 				FROM
 					'.$table.'
 				WHERE
-					nama LIKE "%'.$searchTerm.'%"';
+					'.$where;
 			// print_r($ss);exit();
 			$result = mysql_query($ss) or die(mysql_error());
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -58,9 +64,23 @@
 			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
 			$rows 	= array();
 			while($row = mysql_fetch_assoc($result)) {
+			// if ($_GET['pengarang'] == 'pus_pengarang'){
+			// 	$f = $row['replid'] AND
+			// 		  $row['nama'];
+			// }elseif ($_GET['klasifikasi'] == 'pus_klasifikasi') {
+			// 	$f = $row['replid'] AND 
+			// 		  $row['kode'] AND
+			// 		  $row['nama'];
+			// }
+			// else{
+			// 	$f = $row['replid'] AND
+			// 		  $row['nama'];				
+			// }
+				$kode = (isset($_GET['subaksi']) and $_GET['subaksi']=='klasifikasi')?$row['kode']:'';
 				$rows[]= array(
 					'replid' =>$row['replid'], /*epiii*/
-					'nama'   =>$row['nama'] /*epiii*/
+					'nama'   =>$row['nama'], /*epiii*/
+					'kode'	 =>$kode
 				);
 			}$response=array(
 				'page'    =>$page,
@@ -297,6 +317,7 @@
 		                          pr.nama pengarang,
 		                          pb.nama penerbit,
 		                          kg.editor,
+		                          kg.photo2,
 		                          kg.tahunterbit,
 		                          kg.kota,
 		                          kg.isbn,
@@ -334,6 +355,7 @@
 									'callnumber'  =>$r['callnumber'],
 									'penerjemah'  =>$r['penerjemah'],
 									'editor'      =>$r['editor'],
+									'photo2'      =>$r['photo2'],
 									'penerbit'    =>$r['penerbit'],
 									'tahunterbit' =>$r['tahunterbit'],
 									'kota'        =>$r['kota'],
@@ -372,15 +394,28 @@
 								  pj.nama jenisbuku,
 		                          kg.callnumber,
 		                          kg.dimensi,
-		                          kg.deskripsi, 
+		                          kg.deskripsi,
+		                          buku.barkode, 
+		                          buku.idbuku,
+								  -- if(buku.sumber=1,"Beli","Pemberian") as sumber, 
+		        --                   buku.harga,
+		        --                   buku.tanggal,
+								  -- if(buku.status=1,"Tersedia","Dipinjam") as statusbuku, 
+		        --                   pl.nama lokasi,
+		        --                   pt.nama tingkatbuku,
 		                          (SELECT count(*) from pus_buku where katalog=kg.replid)jum
 		                        FROM
 		                          pus_katalog kg
+		                          LEFT JOIN pus_buku buku ON kg.replid = buku.katalog
+		                          LEFT JOIN pus_tingkatbuku pt ON pt.replid = buku.tingkatbuku
+		                          JOIN pus_lokasi pl ON pl.replid = buku.lokasi
 		                          LEFT JOIN pus_pengarang pr ON pr.replid = kg.pengarang
-		                          LEFT JOIN pus_penerbit pb ON pb.replid = kg.penerbit
+		                          JOIN pus_penerbit pb ON pb.replid = kg.penerbit
 		                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
 		                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
 		                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+		                        WHERE 
+		                          kg.replid = '.$_POST['replid'].'
 		                        order BY
 		                          kg.judul asc';
 											// print_r($s);exit();
@@ -408,7 +443,15 @@
 									'jenisbuku'   =>$r['jenisbuku'],
 									'halaman'     =>$r['halaman'],
 									'dimensi'     =>$r['dimensi'],
-									'deskripsi'   =>$r['deskripsi']			
+									'deskripsi'   =>$r['deskripsi'],		
+									'barkode'     =>$r['barkode'],		
+									'idbuku'      =>$r['idbuku']	
+									// 'sumber'      =>$r['sumber'],		
+									// 'harga'       =>$r['harga'],		
+									// 'tanggal'     =>$r['tanggal'],		
+									// 'status'      =>$r['statusbuku'],		
+									// 'lokasi'      =>$r['lokasi'],		
+									// 'tingkatbuku' =>$r['tingkatbuku']	
 								));
 
 					break;

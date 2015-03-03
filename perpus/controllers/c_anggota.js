@@ -74,10 +74,8 @@ var contentFR ='';
              vwPegawai();
         });$('#idmemberS').keydown(function (e){
             if(e.keyCode == 13)
-             vwLuar();
         });$('#nama_luarS').keydown(function (e){
             if(e.keyCode == 13)
-             vwLuar();
         });
                 //search action
         $('#lokasiS').on('change',function(){

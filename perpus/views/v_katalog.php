@@ -83,7 +83,7 @@
                               </div>
                               <div class="row">                          
                                   <div class="span2">Kalsifikasi :</div>
-                                  <div class="span2" id="klasifikasiTD"></div>
+                                  <div class="span2" id="klasifikasiTD"></div><div class="span2" id="klasifikasi_selectTD"></div>
                               </div>
                               <div class="row">                              
                                   <div class="span2">Pengarang :</div>
@@ -151,13 +151,51 @@
                               <div class="row">
                                   <div class="span2">Jenis Buku :</div>
                                   <div class="span2" id="jenis_bukuTD"></div>
+                              </div><br>
+                              
+                                <label><b>Daftar Koleksi :</b></label>
+                                <label>Lokasi :</label>
+                              <div class="input-control select span4">
+                                  <select placeholder="Lokasi" name="lokasiS" id="lokasiS" ></select>
                               </div>
-                              &nbsp;
-                              <div class="form-actions"> &nbsp;
-                                <button class="button primary">simpan</button>&nbsp;
-                                <a class="button" href="#" onclick="switchPN_view(); return false;" >Batal</a> 
-                                <!-- <button class="button" type="button" onclick="$.Dialog.close()">Batal</button>  -->
-                              </div>
+
+                              <table id="katalogTBL" style="display:visible;" class="table hovered bordered striped panelx" >
+                                  <thead>
+                                      <tr style="color:white;" class="info">
+                                          <th class="text-left">Barkode</th>
+                                          <th class="text-left" >Nomor ID</th>
+                                          <th class="text-left" >Sumber</th>
+                                          <th class="text-center">Harga</th>
+                                          <th class="text-right" >Tanggal Diperoleh</th>
+                                          <th class="text-left" >Status</th>
+                                          <th class="text-left" >Lokasi</th>
+                                          <th class="text-left" >Tingkat</th>
+                                          <th class="text-left">Pilihan</th>
+                                          <!-- <th class="text-left" >Aksi</th> -->
+                                      </tr>
+                                      <tr style="display:visible;" class="selected">
+                                          <!-- <th class="text-left"></th> -->
+                                          <th class="text-left" id="barkodeTH"></th>
+                                          <th class="text-left" id="nomorTH"></th>
+                                          <th class="text-left" id="sumberTH"></th>
+                                          <th class="text-left" id="hargaTH"></th>
+                                          <th class="text-left" id="tgl_diperolehTH"></th>
+                                          <th class="text-left" id="statusTH"></th>
+                                          <th class="text-left" id="lokasiTH"></th>
+                                          <th class="text-left" id="tingkatTH"></th>
+                                          <th class="text-left" id="lokasiS">
+                                            
+                                          </th>
+                                      </tr>
+                                  </thead>
+
+                                  <tbody id="k_viewtbody">
+                                      <!-- row table -->
+                                  </tbody>
+                                  <tfoot>
+                                      
+                                  </tfoot>
+                              </table>
 
                         </div>
                                 <!-- End Span 1-->
@@ -211,6 +249,12 @@
                           </div>
                           <div class="panel-content">
 
+                              <div class="form-actions"> &nbsp;
+                                <button class="button primary">simpan</button>&nbsp;
+                                <a class="button" href="#" onclick="switchPN(); return false;" >Batal</a> 
+                                <!-- <button class="button" type="button" onclick="$.Dialog.close()">Batal</button>  -->
+                              </div>
+
                           <div class="grid">     
                             <div class="row">
                               <div class="span6">
@@ -227,7 +271,9 @@
                               </div>
 
                               <div class="input-control text size3">
+                                  <input type="hidden" name="klasifikasi_selectH" id="klasifikasi_selectH">
                                   <input type="text" placeholder="Klasifikasi" name="klasifikasi_selectTB" id="klasifikasi_selectTB">
+                                  <button class="btn-clear"></button>
                               </div>                            
                               <a href="#" data-hint="Tambah Kalsifikasi" id="klasifikasiBC" class="button"><span class="icon-plus-2"></span> </a>
 

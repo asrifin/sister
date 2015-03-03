@@ -1,8 +1,5 @@
 <?php
     session_start();
-    // echo '<pre>';
-    //     print_r($_SESSION);exit();
-    // echo '</pre>';
 
     if(!isset($_SESSION['loginS'])){
         header('location:../');

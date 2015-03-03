@@ -89,7 +89,7 @@
         
         <!-- Member Luar -->
         <div class="frame" id="luar">
-            <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+            <button data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
             <button data-hint="Field Pencarian" xclass="large" id="cari_luarBC"><span class="icon-search"></span> </button>
         
             <table id="luarTBL" style="display:visible;" class="table hovered bordered striped panelx" >
@@ -106,6 +106,7 @@
                     <tr style="display:none;" id="cari_luarTR" class="selected">
                         <th class="text-left"><input placeholder="idmember" id="idmemberS" name="idmemberS"></th>
                         <th class="text-left"><input placeholder="Nama" id="nama_luarS" name="nama_luarS"></th>
+                        <th class="text-left"></th>
                         <th class="text-left"></th>
                         <th class="text-left"></th>
                         <th class="text-left"></th>

@@ -9,17 +9,17 @@
 	// in : pemasukkan
 	// out : pengeluaran
 
-	$mnu  = 'transaksi';
-	$mnu2 = 'rekening';
-	$mnu3 = 'katalog';
-	$mnu4 = 'barang';
-	$mnu5 = 'jenis';
+	$mnu  = 'katalog';
+	// $mnu2 = 'rekening';
+	// $mnu3 = 'katalog';
+	// $mnu4 = 'barang';
+	// $mnu5 = 'jenis';
 	
-	$tb   = 'keu_'.$mnu;
-	$tb2  = 'keu_'.$mnu2;
-	$tb3  = 'keu_'.$mnu3;
-	$tb4  = 'keu_'.$mnu4;
-	$tb5  = 'keu_'.$mnu5;
+	$tb   = 'pus_'.$mnu;
+	// $tb2  = 'keu_'.$mnu2;
+	// $tb3  = 'keu_'.$mnu3;
+	// $tb4  = 'keu_'.$mnu4;
+	// $tb5  = 'keu_'.$mnu5;
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
@@ -31,14 +31,20 @@
 
 				if(!$sidx) 
 					$sidx =1;
-				$ss='SELECT pus_buku.barkode barkode,
-							pus_katalog.judul judul
-					FROM pus_katalog
-					LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
-					WHERE	barkode  LIKE "%'.$searchTerm.'%"
-							OR judul LIKE "%'.$searchTerm.'%"';
+				$ss='SELECT *
+						FROM(SELECT
+									pus_katalog.replid,
+									pus_buku.barkode barkode,
+									pus_katalog.judul judul
+							FROM pus_katalog
+							LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
+							LEFT JOIN pus_lokasi ON pus_lokasi.replid = pus_buku.lokasi
+							WHERE pus_lokasi.replid
+							)tb
+							WHERE	tb.barkode  LIKE "%'.$searchTerm.'%"
+									OR tb.judul LIKE "%'.$searchTerm.'%"';
 				// print_r($ss);exit();
-				$result = mysql_query($ss);
+				$result = mysql_query($ss) or die(mysql_error());
 				$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 				$count  = mysql_num_rows($result);
 
@@ -61,7 +67,7 @@
 					$rows[]= array(
 						'replid'  =>$row['replid'],
 						'barkode' =>$row['barkode'],
-						'judul'   =>$row['judul'],
+						'judul'   =>$row['judul']
 					);
 				}$response=array(
 					'page'    =>$page,
