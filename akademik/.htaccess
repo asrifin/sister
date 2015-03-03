@@ -26,9 +26,9 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	
 	#kesiswaan
 	RewriteRule   ^pendataan-siswa/?$   						index.php?page=vsiswa
-	RewriteRule   ^presensi-siswa/?$   							index.php?page=absensiswa
 	RewriteRule   ^rapor-siswa/?$								index.php?page=vrapor
 	RewriteRule   ^pendataan-alumni/?$							index.php?page=valumni
+	RewriteRule   ^presensi-siswa/?$							index.php?page=vpresensisiswa
 	RewriteRule   ^mutasi/?$									index.php?page=vmutasi
 	
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
