@@ -5,7 +5,7 @@ var dir       = 'models/m_'+mnu+'.php';
 var dir2      = 'models/m_'+mnu2+'.php';
 var dir3      = 'models/m_'+mnu3+'.php';
 var contentFR = '';
-
+//cek
 // main function ---
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
