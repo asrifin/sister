@@ -125,15 +125,15 @@
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'departemen' =>$r['departemen'],
+							'status'       =>$stat,
+							'departemen'   =>$r['departemen'],
 							'iddepartemen' =>$r['iddepartemen'],
 							'idtahunlulus' =>$r['idtahunlulus'],
-							'tahunlulus' =>$r['tahunlulus'],
-							'siswa'      =>$r['nsiswa'],
-							'siswak'      =>$r['idsis'],
-							'nisn'       =>$r['nisn'],
-							'ket'        =>$r['ket']
+							'tahunlulus'   =>$r['tahunlulus'],
+							'siswa'        =>$r['nsiswa'],
+							'siswak'       =>$r['idsis'],
+							'nisn'         =>$r['nisn'],
+							'ket'          =>$r['ket']
 						));
 
 			break;

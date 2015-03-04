@@ -65,7 +65,9 @@ var contentFR = '';
             viewTB();
         });$('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
-        });$('#pelajaranS').keydown(function(e){
+        });
+
+        $('#pelajaranS').keydown(function(e){
             if(e.keyCode==13)
                 viewTB();
         });$('#singkatanS').keydown(function(e){

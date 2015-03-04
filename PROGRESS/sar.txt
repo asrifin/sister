@@ -1,5 +1,5 @@
  _________________
-| NOTE  	  |	
+| NOTE 	 	  |	
 |  + : solved 	  |
 |  - : error/bug  |
 |  C : completed  |
@@ -10,8 +10,9 @@ ______________________________________________________
 * inventaris (P)
 	- unit_barang > grafik 
   
-* aktivitas (C)
-
+* aktivitas (p)
+	- katalog 
+		- view : column : jumlah unit (0=>1) 
 * peminjaman & pengembalian (P)
 	- form add (peminjaman): 
 		-barang > autosuggest : barang yg dipilih tidak boleh double dg id yg sama (query)
