@@ -13,7 +13,7 @@ var contentFR = '';
                         
                         +'<label>Departemen</label>'
                         +'<div class="input-control select">'
-                            +'<select name="departemenTB" id="departemenTB"></select>'
+                            +'<select onchange="cmbtahunlulus2(\'form\',this.value,\'\');" name="departemenTB" id="departemenTB"></select>'
                         +'</div>'
                         
                         +'<label>NISN</label>'
@@ -59,12 +59,13 @@ var contentFR = '';
         $('#departemenS').on('change',function(){
             cmbtahunlulus2('filter',$(this).val(),'');
         });
-        $('#departemenTB').on('change',function(){
-            cmbtahunlulus2('filter',$(this).val(),'');
-        });
         $('#tahunlulusS').on('change',function (){
             viewTB();
         });
+        // form        
+        // $('#departemenTB').on('change',function(){
+        //     cmbtahunlulus2('filter',$(this).val(),'');
+        // });
     }); 
 // end of save process ---
 
@@ -232,7 +233,7 @@ var contentFR = '';
                 if (id!='') { // edit mode
                     $.ajax({
                         url:dir,
-                    data:'aksi=ambiledit&replid='+id,
+                        data:'aksi=ambiledit&replid='+id,
                         type:'post',
                         dataType:'json',
                         success:function(dt){
@@ -242,7 +243,8 @@ var contentFR = '';
                             $('#siswaH').val(dt.siswak);
                             $('#siswaTB').val(dt.siswa);
                             $('#keteranganTB').val(dt.ket);
-                            cmbtahunlulus2('form',dt.departemen,dt.tahun);
+                            cmbdepartemen('form',$('#departemenS').val());
+                            cmbtahunlulus2('form',dt.iddepartemen,dt.idtahunlulus);
                         }
                     });titlex='<span class="icon-pencil"></span> Ubah ';
                 }else{ //add mode
