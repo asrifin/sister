@@ -240,7 +240,7 @@
       <!-- Form tambah dan edit katalog  -->
       <div class="table hovered bordered striped panelx" id="katalogFR" style="display:none;" >
           <div style="overflow:scroll;height:600px;" >
-                  <form autocomplete="off" onsubmit="katalogSV();return false;"> 
+                  <form autocomplete="off" enctype="multipart/form-data" onsubmit="katalogSV();return false;" id="katalog_form"> 
                         <input id="idformH" type="hidden"> 
                         <!-- Panel -->
                         <div class="panel">

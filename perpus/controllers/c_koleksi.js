@@ -1,10 +1,10 @@
 
-var dir   = 'models/m_lokasi.php';
+var dir  = 'models/m_koleksi.php';
 var dir2  = 'models/m_buku.php';
 var dir3  = 'models/m_katalog.php';
 var dir4  = 'models/m_penerbit.php';
 var dir5  = 'models/m_pengarang.php';
-var dir6  = 'models/m_koleksi.php';
+var dir6   = 'models/m_lokasi.php';
 var dir7  = 'models/m_jenisbuku.php';
 var dir8  = 'models/m_tingkatbuku.php';
 
@@ -164,7 +164,7 @@ var koleksi_contentFR ='';
 
     function cmblokasi(lok){
         $.ajax({
-            url:dir,
+            url:dir6,
             data:'aksi=cmblokasi',
             dataType:'json',
             type:'post',
@@ -320,7 +320,7 @@ function cmbtingkatbuku(tgt){
                     +'&pengarangS='+$('#pengarangS').val()
                     +'&penerbitS='+$('#penerbitS').val();
         $.ajax({
-            url : dir6,
+            url : dir,
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
@@ -352,8 +352,6 @@ function cmbtingkatbuku(tgt){
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            // $('#lokasiH').val($('#lokasiS').val());
-                            // $('#lokasiTB').val(dt.lokasi[0].kode);
                             cmblokasi('');
                         }
                     });
@@ -368,9 +366,9 @@ function cmbtingkatbuku(tgt){
                         success:function(dt){
                             $('#koleksiH').val(id);
                             // $('#lokasiH').val($('#lokasiS').val());
-                            $('#judulTD').val(dt.judul);
+                            $('#judulTD').html(dt.judul);
                             // $('#judulTB').val(dt.judul);
-                            $('#jmlTB').val(dt.jum);
+                            $('#jml_koleksiTB').val(dt.jum);
                             $('#idbukuTB').val(dt.kode);
                             $('#barcodeTB').val(dt.barkode);
                                     $.each($('input[name="sumberTB"]'),function(){
@@ -416,7 +414,7 @@ function pagination(page,aksix,subaksi){
         });
 
         $.ajax({
-            url:dir6,
+            url:dir,
             type:"post",
             data: aksi+cari,
             beforeSend:function(){

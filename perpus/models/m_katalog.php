@@ -16,7 +16,20 @@
 	$tb6  = 'pus_jenisbuku';
 
 	if(!isset($_POST['aksi'])){
-		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
+		if(isset($_GET['upload'])){
+			$tipex    = substr($_FILES[0]['type'],6);
+			$namaAwal = $_FILES[0]['name'];
+			$namaSkrg = $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
+			$src      = $_FILES[0]['tmp_name'];
+			$destix   = '../img/upload/'.basename($namaSkrg);
+
+			if(move_uploaded_file($src, $destix))
+				$o=array('status'=>'sukses','file'=>$namaSkrg);
+			else
+				$o=array('status'=>'gagal');
+
+			$out=json_encode($o);
+		}elseif(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
 			$page       = $_GET['page']; // get the requested page
 			$limit      = $_GET['rows']; // get how many rows we want to have into the grid
 			$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
@@ -192,6 +205,7 @@
 
 				// add / edit -----------------------------------------------------------------
 			case 'simpan':
+			// echo "string"; exit();
 				switch ($_POST['subaksi']) {
 					case 'klasifikasi':
 						$s 		= $tb2.' set 	kode 		= "'.filter($_POST['kode_klasifikasiTB']).'",
@@ -248,8 +262,9 @@
 					break;
 
 					case 'katalog':
+					// echo 'ok';exit();
 						$s 		= $tb.' set 	judul 			 = "'.$_POST['judulTB'].'",
-												klasifikasi-kode = "'.filter($_POST['klasifikasiTB']).'",
+												klasifikasi_kode = "'.filter($_POST['klasifikasiTB']).'",
 												klasifikasi      = "'.filter($_POST['klasifikasi_selectTB']).'",
 												pengarang        = "'.filter($_POST['pengarangTB']).'",
 												callnumber       = "'.$_POST['callnumberTB'].'",
@@ -277,7 +292,7 @@
 						}else{ //edit
 							$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
 							if(isset($_POST['photo_asal'])){ //change image
-								$img='../../img/upload/'.$_POST['photo_asal'];
+								$img='../img/upload/'.$_POST['photo_asal'];
 								if(file_exists($img)){ //checking image is exist
 									$delimg = unlink($img);
 									$stat2  = !$delimg?false:true;
@@ -287,6 +302,7 @@
 						if(!$stat2){// gagal hapus
 							$stat='gagal_hapus_file';
 						}else{ //sukses hapus file
+							// var_dump($s2);
 							$e    = mysql_query($s2);
 							$stat = $e?'sukses':'gagal_simpan_db';
 						}$out  = json_encode(array('status'=>$stat));
@@ -418,7 +434,7 @@
 		                          kg.replid = '.$_POST['replid'].'
 		                        order BY
 		                          kg.judul asc';
-											// print_r($s);exit();
+											print_r($s);exit();
 						$e 		= mysql_query($s) or die(mysql_error());
 						$r 		= mysql_fetch_assoc($e);
 						$stat 	= ($e)?'sukses':'gagal';
@@ -550,7 +566,7 @@
 					$ar = array('status'=>'error');
 				}else{
 					if($n==0){ // kosong 
-						var_dump($n);exit();
+						// var_dump($n);exit();
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
 						if(!isset($_POST['replid'])){
