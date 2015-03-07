@@ -1,7 +1,5 @@
 var mnu       = 'tahunbuku';
-// var mnu2      = 'departemen';
 var dir       = 'models/m_'+mnu+'.php';
-// var dir2      = 'models/m_'+mnu2+'.php';
 var contentFR = '';
 
 // main function ---

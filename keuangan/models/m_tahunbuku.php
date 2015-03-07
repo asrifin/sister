@@ -6,16 +6,13 @@
 	require_once '../../lib/tglindo.php';
 	$mnu = 'tahunbuku';
 	$tb  = 'keu_'.$mnu;
-	// $out=array();
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				// $departemen  = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
 				$tahunbuku = trim($_POST['tahunbukuS'])?filter($_POST['tahunbukuS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
@@ -29,18 +26,13 @@
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
+				$recpage = 5;//jumlah data per halaman
 				$aksi    ='';
 				$subaksi ='tampil';
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
 				$result =$obj->result;
 
-				#ada data
-				$jum	= mysql_num_rows($result);
+				$jum = mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
@@ -71,7 +63,6 @@
 									<td>'.$nox.'</td>
 									<td id="tahunbukuTD_'.$res['replid'].'">'.$res['nama'].'</td>
 									<td>'.tgl_indo($res['tanggal1']).'</td>
-									<td>'.tgl_indo($res['saldoawal']).'</td>
 									<td>'.$res['keterangan'].'</td>
 									<td>'.($res['aktif']==1?'Aktif':'Tidak Aktif').'</td>
 									'.$btn.'
@@ -168,7 +159,6 @@
 
 			// cmbtahunbuku -----------------------------------------------------------------
 			case 'cmb'.$mnu:
-				// var_dump($_POST);exit();
 				$w='';
 				if(isset($_POST['replid'])){
 					$w.='where replid ='.$_POST['replid'];

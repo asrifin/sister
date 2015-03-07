@@ -78,7 +78,7 @@
 				$s = $tb.' set 	tahunlulus = "'.filter($_POST['tahunlulusTB']).'",
 								siswa    	= "'.filter($_POST['siswaH']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-				print_r($s);exit();
+				// print_r($s);exit();
 								// nisn    	= "'.filter($_POST['nisnH']).'",
 								// departemen    	= "'.filter($_POST['departemenH']).'",
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;

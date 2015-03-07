@@ -117,8 +117,8 @@
                     case 'rekening':
                         require $d.'v_rekening.php';
                     break;
-                    case 'tahun_anggaran':
-                        require $d.'v_tahun_anggaran.php';
+                    case 'manggaran':
+                        require $d.'v_manggaran.php';
                     break;
 
                     // transaksi

@@ -12,10 +12,8 @@ var contentFR = '';
                         +'<input id="idformH" type="hidden">' 
                         
                         +'<label>Departemen</label>'
-                        +'<div class="input-control text">'
-                            +'<input type="hidden" name="departemenH" id="departemenH">'
-                            +'<input disabled type="text" name="departemenTB" id="departemenTB">'
-                            +'<button class="btn-clear"></button>'
+                        +'<div class="input-control select">'
+                            +'<select onchange="cmbtahunlulus2(\'form\',this.value,\'\');" name="departemenTB" id="departemenTB"></select>'
                         +'</div>'
                         
                         +'<label>NISN</label>'
@@ -28,7 +26,7 @@ var contentFR = '';
                         +'<label>Nama Siswa</label>'
                         +'<div class="input-control text">'
                             +'<input placeholder="Nama Siswa" id="siswaTB">'
-                            // +'<input  type="hidden" name="siswaH" id="siswaH" >'
+                            +'<input  type="hidden" name="siswaH" id="siswaH" >'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -49,7 +47,7 @@ var contentFR = '';
                     +'</form>';
 
         // combo departemen
-        cmbdepartemen('');
+        cmbdepartemen('filter','');
         // cmbdepartemen(false,'');
 
         //add form
@@ -59,16 +57,21 @@ var contentFR = '';
 
         //search action
         $('#departemenS').on('change',function(){
-            cmbtahunlulus($(this).val());
+            cmbtahunlulus2('filter',$(this).val(),'');
         });
         $('#tahunlulusS').on('change',function (){
             viewTB();
         });
+        // form        
+        // $('#departemenTB').on('change',function(){
+        //     cmbtahunlulus2('filter',$(this).val(),'');
+        // });
     }); 
 // end of save process ---
 
 // combo departemen ---
-    function cmbdepartemen(dep){
+    // function cmbdepartemen(dep){
+    function cmbdepartemen(typ,dep){
         $.ajax({
             url:dir2,
             data:'aksi=cmbdepartemen',
@@ -82,28 +85,57 @@ var contentFR = '';
                     $.each(dt.departemen, function(id,item){
                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
-                    $('#departemenS').html(out);
+                    if(typ=='filter'){ // filtering/ searching
+                        $('#departemenS').html(out);
+                        cmbtahunlulus2('filter',dt.departemen[0].replid,'');
+                    }else{ //form
+                        $('#departemenTB').html(out);
+                    }
                 }
-                cmbtahunlulus(dt.departemen[0].replid);
             }
         });
     }
 //end of combo departemen ---
 
-// combo tahunlulus ---
-    function cmbtahunlulus(dep,hun,idhun){
-        // console.log(dep+','+hun+','+idhun);
-        // return false;
-        var select='',tb;
-        if(hun){// form
-            tb='#tahunlulusTB';
-        }else{// search
-            tb='#tahunlulusS';
-            select+='<option value="">---------- Semua ----------</option>';
-            // if ($('#tahunlulusS').val()!='') {
-            //     tl=''
-            // };
-        }
+// // combo tahunlulus ---
+//     function cmbtahunlulus(dep,hun,idhun){
+//         // console.log(dep+','+hun+','+idhun);
+//         // return false;
+//         var select='',tb;
+//         if(hun){// form
+//             tb='#tahunlulusTB';
+//         }else{// search
+//             tb='#tahunlulusS';
+//             select+='<option value="">---------- Semua ----------</option>';
+//             // if ($('#tahunlulusS').val()!='') {
+//             //     tl=''
+//             // };
+//         }
+//         $.ajax({
+//             url:dir3,
+//             data:'aksi=cmbtahunlulus&departemen='+dep,
+//             dataType:'json',
+//             type:'post',
+//             success:function(dt){
+//                 var out='';
+//                 if(dt.status!='sukses'){
+//                     out+='<option value="">'+dt.status+'</option>';
+//                 }else{
+//                     $.each(dt.nama, function(id,item){
+//                         if(idhun==item.replid)
+//                             out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
+//                         else
+//                             out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+//                     });
+//                 }$(tb).html((dt.nama==null?'':select)+out);
+//                 if(!hun) viewTB();
+//             }
+//         });
+//     }
+// //end of combo tahunlulus ----
+
+// combo tahunlulus2 ---
+    function cmbtahunlulus2(typ,dep,hun){
         $.ajax({
             url:dir3,
             data:'aksi=cmbtahunlulus&departemen='+dep,
@@ -114,38 +146,23 @@ var contentFR = '';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    $.each(dt.nama, function(id,item){
-                        if(idhun==item.replid)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
-                        else
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                }$(tb).html((dt.nama==null?'':select)+out);
-                if(!hun) viewTB();
-            }
-        });
-    }
-//end of combo tahunlulus ----
-
-// combo tahunlulus2 ---
-    function cmbtahunlulus2(hun){
-        $.ajax({
-            url:dir3,
-            data:'aksi=cmbtahunlulus',
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.nama, function(id,item){
-                        if(item.replid==hun)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
-                        else
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                }$('#tahunlulusTB').html(out);
+                    if(dt.nama.length==0)
+                        out+='<option value="">kosong</option>';
+                    else{
+                        $.each(dt.nama, function(id,item){
+                            if(item.replid==hun)
+                                out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
+                            else
+                                out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                        });
+                    }    
+                }
+                if(typ=='form'){ //form
+                    $('#tahunlulusTB').html(out);
+                }else{// filtering
+                    $('#tahunlulusS').html(out);
+                    viewTB();
+                } 
             }
         });
     }
@@ -223,13 +240,17 @@ var contentFR = '';
                             $('#idformH').val(id);
                             $('#departemenTB').val(dt.departemen);
                             $('#nisnTB').val(dt.nisn); 
+                            $('#siswaH').val(dt.siswak);
                             $('#siswaTB').val(dt.siswa);
                             $('#keteranganTB').val(dt.ket);
-                            cmbtahunlulus2(dt.tahun); /*epiii*/
+                            cmbdepartemen('form',$('#departemenS').val());
+                            cmbtahunlulus2('form',dt.iddepartemen,dt.idtahunlulus);
                         }
                     });titlex='<span class="icon-pencil"></span> Ubah ';
                 }else{ //add mode
-                    cmbtahunlulus($('#tahunlulus2S').val(),true,null);
+                    // alert($('#departemenS').val());
+                    cmbdepartemen('form',$('#departemenS').val());
+                    cmbtahunlulus2('form',$('#tahunlulusS').val());
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                 }
                 $.Dialog.title(titlex+' '+mnu);
