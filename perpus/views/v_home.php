@@ -56,28 +56,6 @@
 <div class="tile-group triple">
     <div class="tile-group-title">Master</div>
 
-    <!-- lokasi -->
-
-    <a href="lokasi" class="tile  bg-yellow" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-copy"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Lokasi</div>
-        </div>
-    </a>
-    <!--end of  lokasi-->
-    <!-- tingkatbuku -->
-
-    <a href="jenisbuku" class="tile  bg-pink" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-copy"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Jenis Buku</div>
-        </div>
-    </a>
-    <!--end of  jenisbuku-->
     <!-- perangkat -->
 
     <a href="perangkat" class="tile  bg-green" data-click="transform">
@@ -89,17 +67,51 @@
         </div>
     </a>
     <!--end of  perangkat -->
-    <!-- penerbit -->
 
-    <a href="penerbit" class="tile  bg-blue" data-click="transform">
+    <!-- lokasi -->
+    <a href="lokasi" class="tile  bg-yellow" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-copy"></span>
         </div>
         <div class="brand">
-            <div class="label">Daftar Penerbit</div>
+            <div class="label">Lokasi</div>
         </div>
     </a>
-    <!--end of  penerbit -->
+    <!--end of  lokasi-->
+
+    <!-- tingkatbuku -->
+    <a href="tingkatbuku" class="tile  bg-orange" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Tingkat Koleksi</div>
+        </div>
+    </a>
+    <!--end of  tingkatbuku-->
+
+    <!-- tingkatbuku -->
+
+    <a href="jenisbuku" class="tile  bg-pink" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Jenis Koleksi</div>
+        </div>
+    </a>
+    <!--end of  jenisbuku-->
+
+    <!-- klasifikasi -->
+    <a href="klasifikasi" class="tile bg-darkViolet" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Klasifikasi</div>
+        </div>
+    </a>
+    <!--end of  klasifikasi -->    
    
     <!-- pengarang -->
     <a href="pengarang" class="tile  bg-lime" data-click="transform">
@@ -111,16 +123,18 @@
         </div>
     </a>
     <!--end of  pengarang -->
-    <!-- klasifikasi -->
-    <a href="klasifikasi" class="tile bg-darkViolet" data-click="transform">
+
+    <!-- penerbit -->
+    <a href="penerbit" class="tile  bg-blue" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-copy"></span>
         </div>
         <div class="brand">
-            <div class="label">Klasifikasi</div>
+            <div class="label">Daftar Penerbit</div>
         </div>
     </a>
-    <!--end of  klasifikasi -->
+    <!--end of  penerbit -->
+
     <!-- bahasa -->
     <a href="bahasa" class="tile  bg-brown" data-click="transform">
         <div class="tile-content icon">
@@ -131,17 +145,6 @@
         </div>
     </a>
     <!--end of  bahasa -->
-    <!-- tingkatbuku -->
-
-    <a href="tingkatbuku" class="tile  bg-orange" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-copy"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Tingkat Buku</div>
-        </div>
-    </a>
-    <!--end of  tingkatbuku-->
     <!-- satuan -->
     <a href="satuan" class="tile  bg-brown" data-click="transform">
         <div class="tile-content icon">

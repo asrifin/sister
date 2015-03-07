@@ -216,7 +216,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         +'<input  id="koleksiH" type="hidden">'
                             +'<tr>'
                                 +'<td>Judul</td>'
-                                +'<td>: <span id="judulTD"></span></td>'
+                                +'<td>: <span id="judul_koleksiTD"></span></td>'
                             +'</tr>'
 
                         // +'<label>Judul</label>' 
@@ -428,7 +428,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
 
         // simpan ke database
             function katalogDb(filex){
-                var formData = $('#katalogFR').serialize();
+                var formData = $('#katalog_form').serialize();
                 if($('#idformH').val()!=''){
                     formData +='&replid='+$('#idformH').val();
                 }
@@ -441,9 +441,12 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                 }
                 // alert(formData);return false;
                 $.ajax({
+                    // url: dir+'?aksi=simpan&subaksi=katalog',
                     url: dir,
                     type:'POST',
                     data:formData+'&aksi=simpan&subaksi=katalog',
+                    // data:'aksi=simpan&subaksi=katalog'+formData,
+                    // data:'aksi=simpan&subaksi=katalog'+formData+$('#katalog_form').serialize(),
                     cache:false,
                     dataType: 'json',
                     success: function(data, textStatus, jqXHR){
@@ -916,23 +919,19 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         type:'post',
                         dataType:'json',
                         success:function(dt){
-                            var arr = {
-                                    'status':dt.stat,
-                                    'judul':dt.judul
-                            };
-                            // $('#koleksiH').val(id);
-                            // $('#judulTD').html(dt.judul);alert(dt.judul);
-                            // $('#jmlTB').val(dt.jum);
-                            // $('#idbukuTB').val(dt.kode);
-                            // $('#barcodeTB').val(dt.barkode);
-                            //         $.each($('input[name="sumberTB"]'),function(){
-                            //             if(dt.sumber==$(this).val())
-                            //                 $(this).attr('checked',true);
-                            //         });                            
-                            // $('#hargaTB').val(dt.harga);
-                            // $('#tglTB').val(dt.tanggal);
-                            // $('#lokasiTB').val(dt.lokasi);
-                            // $('#tingkatTB').val(dt.tingkatbuku);
+                            $('#koleksiH').val(id);
+                            $('#judul_koleksiTD').html(dt.judul);
+                            $('#jml_koleksiTB').val(dt.jum);
+                            $('#idbukuTB').val(dt.kode);
+                            $('#barcodeTB').val(dt.barkode);
+                                    $.each($('input[name="sumberTB"]'),function(){
+                                        if(dt.sumber==$(this).val())
+                                            $(this).attr('checked',true);
+                                    });                            
+                            $('#hargaTB').val(dt.harga);
+                            $('#tglTB').val(dt.tanggal);
+                            $('#lokasiTB').val(dt.lokasi);
+                            $('#tingkatTB').val(dt.tingkatbuku);
                             
                             cmblokasi(dt.lokasi);
                             cmbtingkatbuku(dt.tingkatbuku);
@@ -940,14 +939,14 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         }
                     });
                 }
-                setTimeout(function(){
                     $.Dialog.title(titlex+' Koleksi');
                     $.Dialog.content(koleksi_contentFR);
-                },2000);
             }
         });
     }
 // end of form ---
+
+
         function cmbjenisbuku (jenisbuku) {
             // alert(1);return false;
             $.ajax({
@@ -1003,7 +1002,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
         }
 
         function cmblokasi (lokasi) {
-            // alert(1);return false;
+            // alert(lokasi);return false;
             $.ajax({
                 url:dir5,   
                 type:'post',

@@ -16,6 +16,7 @@ ____________________________________________________
 * pembayaran pendaftaran(P)
 * pembayaran uang pangkal(P)
 * pembayaran uang sekolah(P)
+	- Rincian nominal pembayaran uang sekolah dan uang pangkal
 * inventory(P)
 
 ____________________________________________________

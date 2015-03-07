@@ -19,12 +19,10 @@ ____________________________________________________
 	- sorting : all column (belum ada lib/contoh) 
 * katalog (P)
 	- edit field yang belum ( jenis buku, bahasa dan tahun)	(+)
-	- Insert (foto)
-	- Tambah Koleksi menampilkan hasil yang sama meskipun pilih koleksi yang lain 
-	- Lihat dan edit katalog sql belum bisa nampil data koleksi
+	- Insert (foto) dan semua data  (+)
+	- Tambah Koleksi menampilkan hasil yang sama meskipun pilih koleksi yang lain (+)
+	- Lihat katalog sql belum bisa nampil data koleksi	
 	- Combogrid SQL pada models gimana kalau beda field??  (+)
-	- menampilkan detil kotak2
-	- menambah data
 * data anggota (P)
 	- view siswa, pegawai dan member lain hanya bisa menampilkan yang sudah pinjam aja
 	-
