@@ -299,6 +299,9 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
         $("#edit_katalogBC").on('click',function(){
             viewFR('');
         });
+        $("#koleksiBC").on('click',function(){
+            koleksiFR('');
+        });
 
         //add
         $("#klasifikasiBC").on('click',function(){
@@ -875,10 +878,10 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         $('#tgl_diperolehTH').html(dt.tanggal);
                         $('#statusTH').html(dt.statusbuku);
                         $('#lokasiTH').html(dt.lokasi);
-                        $('#tingkatbuku').html(dt.tingkatbuku);
+                        $('#tingkatTH').html(dt.tingkatbuku);
 
-                        cmbjenisbuku(dt.jenisbuku);
-                        cmbbahasa(dt.bahasa);
+                        // cmbjenisbuku(dt.jenisbuku);
+                        // cmbbahasa(dt.bahasa);
                     }
                 });
             }else{ //add
@@ -1154,7 +1157,7 @@ function notif(cont,clr) {
 
 //reset form ---
     function kosongkan(){
-        $('#idformTB').val('');
+        $('#katalog_form').val('');
         // $('#kelompokTB').val('');
         // $('#tglmulaiTB').val('');
         // $('#tglakhirTB').val('');
