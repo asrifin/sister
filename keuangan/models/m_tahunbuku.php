@@ -82,14 +82,14 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	nama	 = "'.filter($_POST['tahunbukuTB']).'",
-								tanggal1    = "'.filter($_POST['tanggal1TB']).'",
-								saldoawal    = "'.filter($_POST['saldoTB']).'",
-								keterangan  = "'.filter($_POST['keteranganTB']).'"';
+				$s = $tb.' set 	nama       = "'.filter($_POST['namaTB']).'",
+								tanggal1   = "'.filter($_POST['tanggal1TB']).'",
+								keterangan = "'.filter($_POST['keteranganTB']).'"';
 				
 				if(!isset($_POST['replid'])){ //add
 					if(mysql_num_rows(mysql_query('SELECT * from '.$tb))>0){
-						$s1 ='UPDATE '.$tb.' set aktif="0" where replid='.$_POST['replid'];
+						$s1 ='UPDATE '.$tb.' set aktif="0"';// where replid='.$_POST['replid'];
+						// $s1 ='UPDATE '.$tb.' set aktif="0" where replid='.$_POST['replid'];
 						$e1 = mysql_query($s1);
 					}$s2 = 'INSERT INTO '.$s.' ,aktif = "1"';
 				}else{ //edit
@@ -131,18 +131,18 @@
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'        =>$stat,
-							'nama	'	   =>$r['nama'],
-							'tanggal1'      =>$r['tanggal1'],
-							'saldoawal'      =>$r['saldoawal'],
-							'keterangan'    =>$r['keterangan'],
+							'status'     =>$stat,
+							'nama'       =>$r['nama'],
+							'tanggal1'   =>$r['tanggal1'],
+							'saldoawal'  =>$r['saldoawal'],
+							'keterangan' =>$r['keterangan'],
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 
 			// aktifkan -----------------------------------------------------------------
 			case 'aktifkan':
-				$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0" where departemen = '.$_POST['departemen']);
+				$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0"');
 				if(!$e1){
 					$stat='gagal menonaktifkan';
 				}else{

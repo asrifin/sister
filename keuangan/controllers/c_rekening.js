@@ -8,41 +8,34 @@ var contentFR ='';
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-                        // +'<label>Kategori Rekening</label>'
-                        // +'<div class="input-control text">'
-                        //     +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span2">'
-                        //     // +'<input enabled="enabled" name="kategoriTB" id="kategoriTB" class="span2">'
-                        //     +'<input name="kategoriTB" id="kategoriTB" class="span2">'
-                        //     +'<button class="btn-clear"></button>'
-                        // +'</div>'
-// Jenis
-                                    +'<div class="row">'
-                                        +'<div class="span5">'
-                                            +'<label>Kategori Rekening</label>'
-                                            +'<div class="input-control select">'
-                                            +'<select required name="kategoriTB" id="kategoriTB"><option value="">Pilih Kategori Rekening</option></select>'
-                                            +'</div>'
-                                        +'</div>'
+                            +'<div class="row">'
+                                +'<div class="span5">'
+                                    +'<label>Kategori Rekening</label>'
+                                    +'<div class="input-control select">'
+                                    +'<select required name="kategoriTB" id="kategoriTB"><option value="">Pilih Kategori Rekening</option></select>'
                                     +'</div>'
+                                +'</div>'
+                            +'</div>'
 
                         +'<label>Kode</label>'
-                        // +'<label>Saldo Awal</label>'
-                        '<div class="span3 size-2">'
+                        +'<div class="span3 size-2">'
                             +'<div class="input-control text" >'
                                 +'<input required maxlength="9" placeholder="Kode Rekening" name="kodeTB" id="kodeTB" type="text">'
                             +'</div>'
                         +'</div>'                        
+
                         +'<label>Rekening</label>'
-                        // ++'<label>Saldo Awal</label>'
-                        '<div class="span3 size-2">'
+                        +'<div class="span3 size-2">'
                             +'<div class="input-control text" >'
                                 +'<input required maxlength="9" placeholder="Rekening" name="rekeningTB" id="rekeningTB" type="text">'
                             +'</div>'
                         +'</div>'
+                        
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
+                        
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -55,11 +48,7 @@ var contentFR ='';
         viewTB : jika tanpa combo box
         */
 
-        //combo lokasi
-        cmbkategori();
-        
-        //load table // edit by epiii
-        // viewTB();
+        cmbkategorirek('');
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -67,21 +56,18 @@ var contentFR ='';
         });
 
         //search action // edit by epiii
-        $('#kategoriS').on('change',function (e){ // change : combo box
-                viewTB($('#kategoriS').val());
+        $('#kategorirekS').on('change',function (e){ // change : combo box
+            viewTB($(this).val());
         });
        
     }); 
 // end of main function ---
 
-// ghjg
-// ghjg
 // combo departemen ---
-    // function cmbkategori(lok){ 
-    function cmbkategori(){
+    function cmbkategorirek(id){
         $.ajax({
             url:dir,
-            data:'aksi=cmbkategori',
+            data:'aksi=cmbkategorirek',
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -89,12 +75,14 @@ var contentFR ='';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    $.each(dt.kategori, function(id,item){
-                        out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
-                    });
-                    //panggil fungsi viewTB() ==> tampilkan tabel 
-                    viewTB(dt.kategori[0].replid); 
-                }$('#kategoriS').html(out);
+                    $.each(dt.kategorirek, function(id,item){
+                        if(id==item.replid)
+                            out+='<option selected="selected" value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
+                        else
+                            out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
+                    });$('#kategorirekS').html('<option value="">--SEMUA--</option>'+out);
+                    viewTB(dt.kategorirek[0].replid); 
+                }
             }
         });
     }
@@ -132,11 +120,12 @@ var contentFR ='';
 
 // view table ---
     // function viewTB(nama){          
-    function viewTB(lok){ //edit by epiii 
+    function viewTB(){ //edit by epiii 
         var aksi ='aksi=tampil';
-        var cari ='&kategoriS='+lok
-                    // +'&aktivitasS='+$('#aktivitasS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        var cari ='&kategorirekS='+$('#kategorirekS').val()
+                +'&kodeS='+$('#kodeS').val()
+                +'&namaS='+$('#namaS').val()
+                +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',

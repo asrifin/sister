@@ -5,44 +5,39 @@
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 	$mnu  = 'rekening';
-	// $mnu2 = 'lokasi';
 	$tb   = 'keu_'.$mnu;
-	// $tb2  = 'sar_'.$mnu2;
-	// $out=array();
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$kategori     = trim($_POST['kategoriS'])?filter($_POST['kategoriS']):'';
-				// $tempat     = trim($_POST['tempatS'])?filter($_POST['tempatS']):'';
-				// $keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$kategorirek = trim($_POST['kategorirekS'])?filter($_POST['kategorirekS']):'';
+				$kode        = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
+				$nama        = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$keterangan  = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
-							kategorirek ='.$kategori.'
-						ORDER BY t.tanggal1 asc';
-				// print_r($sql);exit(); 	
-							// t.nama LIKE "%'.$tempat.'%" and
-							// t.keterangan LIKE "%'.$keterangan.'%" 
+							kategorirek like "%'.$kategorirek.'%" and
+							kode like "%'.$kode.'%" and
+							nama like "%'.$nama.'%" and
+							keterangan like "%'.$keterangan.'%" 
+						ORDER BY 
+							kode asc';
+
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
 				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
+				$recpage = 5;//jumlah data per halaman
 				$aksi    ='';
 				$subaksi ='tampil';
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
-				$result =$obj->result;
-
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+				$result  =$obj->result;
 				#ada data
 				$jum	= mysql_num_rows($result);
 				$out ='';
@@ -63,7 +58,6 @@
 									'.$btn.'
 								</tr>';
 						$nox++;
-									// <td>'.$res['replid'].'</td>
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -113,10 +107,8 @@
 							WHERE 
 								t.lokasi= l.replid and
 								t.replid='.$_POST['replid'];
-				// var_dump($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
-				// $stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'lokasi'     =>$r['lokasi'],
 							'tanggal1'  =>$r['tanggal1'],
@@ -126,6 +118,47 @@
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
+			
+			// cmbkategorirek -----------------------------------------------------------------
+			case 'cmbkategorirek':
+				$w='';
+				if(isset($_POST['replid'])){
+					$w='where replid ='.$_POST['replid'];
+				}else{
+					if(isset($_POST[$mnu])){
+						$w='where '.$mnu.'='.$_POST[$mnu];
+					}
+				}
+				
+				$s	= ' SELECT *
+						from keu_kategorirek
+							'.$w.'		
+						ORDER  BY 
+							kode asc ,
+							nama asc';
+
+				$e  = mysql_query($s);
+				$n  = mysql_num_rows($e);
+				$ar =$dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error'.mysql_error());
+				}else{
+					if($n=0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}$ar = array('status'=>'sukses','kategorirek'=>$dt);
+					}
+				}$out=json_encode($ar);
+			break;
+			// cmbdepartemen -----------------------------------------------------------------
+
 		}
 	}echo $out;
 

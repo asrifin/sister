@@ -6,12 +6,10 @@
 <div id="loadarea"></div>
 
 <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
-<!-- <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button> -->
+<button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
 <div class="input-control select span3">
-    <!-- (name & id) usahakan sama  -->
-    <!-- <select data-hint="lokasi" name="lokasiTB" id="kategoriS"></select> -->
-    <select data-hint="Kategori Rekening" name="kategoriS" id="kategoriS"></select>
+    <select data-hint="Kategori Rekening" name="kategorirekS" id="kategorirekS"></select>
 </div>
 
 <table class="table hovered bordered striped">
@@ -22,11 +20,12 @@
             <th class="text-left">Keterangan</th>
             <th class="text-left">Aksi</th>
         </tr>
-        <!-- <tr style="display:none;" id="cariTR" class="selected">
+        <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-left"></th>
-            <th class="text-left"><input placeholder="aktivitas" id="aktivitasS" name="aktivitasS"></th>
+            <th class="text-left"><input placeholder="aktivitas" id="kodeS" name="kodeS"></th>
+            <th class="text-left"><input placeholder="nama" id="namaS" name="namaS"></th>
             <th class="text-left"><input placeholder="keterangan" id="keteranganS" name="keteranganS"></th>
-        </tr> -->
+        </tr>
     </thead>
 
     <tbody id="tbody">

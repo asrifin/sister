@@ -4,7 +4,7 @@
 <script src="../js/metro/metro-calendar.js"></script>
 <script src="../js/metro/metro-datepicker.js"></script>
 
-<h4 style="color:white;">Tahun Ajaran</h4>
+<h4 style="color:white;">Tahun Buku</h4>
 <div id="loadarea"></div>
 
 <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
