@@ -158,8 +158,11 @@
                               <div class="input-control select span4">
                                   <select placeholder="Lokasi" name="lokasiS" id="lokasiS" ></select>
                               </div>
+                              <div class="form-actions">
+                                <a href="#" data-hint="Tambah Koleksi" id="koleksiBC" onclick="koleksiFR(this)" class="button"><span class="icon-plus-2"></span> Koleksi</a>
+                              </div>
 
-                              <table id="katalogTBL" style="display:visible;" class="table hovered bordered striped panelx" >
+                              <table id="katalogTBL" style="display:visible;" width="800px" class="table hovered bordered striped panelx" >
                                   <thead>
                                       <tr style="color:white;" class="info">
                                           <th class="text-left">Barkode</th>
@@ -174,7 +177,6 @@
                                           <!-- <th class="text-left" >Aksi</th> -->
                                       </tr>
                                       <tr style="display:visible;" class="selected">
-                                          <!-- <th class="text-left"></th> -->
                                           <th class="text-left" id="barkodeTH"></th>
                                           <th class="text-left" id="nomorTH"></th>
                                           <th class="text-left" id="sumberTH"></th>
@@ -183,7 +185,8 @@
                                           <th class="text-left" id="statusTH"></th>
                                           <th class="text-left" id="lokasiTH"></th>
                                           <th class="text-left" id="tingkatTH"></th>
-                                          <th class="text-left" id="lokasiS">
+                                          <th class="text-left"></th>
+                                          <!-- <th class="text-left" id="lokasiS"> -->
                                             
                                           </th>
                                       </tr>

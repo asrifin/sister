@@ -130,7 +130,7 @@
 							pkat.judul like "%'.$judul.'%" and
 							pkas.nama like "%'.$kode_klasifikasi.'%"	and					
 							pg.nama like "%'.$pengarang.'%" and					
-							pn.nama like "%'.$pengarang.'%"						
+							penerbit like "%'.$penerbit.'%"						
 							ORDER BY pkat.replid asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
@@ -348,7 +348,7 @@
 		                          kg.callnumber,
 		                          kg.dimensi,
 		                          kg.deskripsi, 
-		                          (SELECT count(*) from pus_buku where katalog=kg.replid)jum
+		                          -- (SELECT count(*) from pus_buku where katalog=kg.replid)jum
 		                        FROM
 		                          pus_katalog kg
 		                          LEFT JOIN pus_pengarang pr ON pr.replid = kg.pengarang
@@ -413,20 +413,20 @@
 		                          kg.deskripsi,
 		                          buku.barkode, 
 		                          buku.idbuku,
-								  -- if(buku.sumber=1,"Beli","Pemberian") as sumber, 
-		        --                   buku.harga,
-		        --                   buku.tanggal,
-								  -- if(buku.status=1,"Tersedia","Dipinjam") as statusbuku, 
-		        --                   pl.nama lokasi,
-		        --                   pt.nama tingkatbuku,
-		                          (SELECT count(*) from pus_buku where katalog=kg.replid)jum
+								  if(buku.sumber=1,"Beli","Pemberian") as sumber, 
+		                          buku.harga,
+		                          buku.tanggal,
+								  if(buku.status=1,"Tersedia","Dipinjam") as statusbuku, 
+		                          pl.nama lokasi,
+		                          pt.nama tingkatbuku
+		                          -- (SELECT count(*) from pus_buku where katalog=kg.replid)jum
 		                        FROM
 		                          pus_katalog kg
 		                          LEFT JOIN pus_buku buku ON kg.replid = buku.katalog
 		                          LEFT JOIN pus_tingkatbuku pt ON pt.replid = buku.tingkatbuku
-		                          JOIN pus_lokasi pl ON pl.replid = buku.lokasi
+		                          LEFT JOIN pus_lokasi pl ON pl.replid = buku.lokasi
 		                          LEFT JOIN pus_pengarang pr ON pr.replid = kg.pengarang
-		                          JOIN pus_penerbit pb ON pb.replid = kg.penerbit
+		                          LEFT JOIN pus_penerbit pb ON pb.replid = kg.penerbit
 		                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
 		                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
 		                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
@@ -434,7 +434,7 @@
 		                          kg.replid = '.$_POST['replid'].'
 		                        order BY
 		                          kg.judul asc';
-											print_r($s);exit();
+											// print_r($s);exit();
 						$e 		= mysql_query($s) or die(mysql_error());
 						$r 		= mysql_fetch_assoc($e);
 						$stat 	= ($e)?'sukses':'gagal';
@@ -461,13 +461,13 @@
 									'dimensi'     =>$r['dimensi'],
 									'deskripsi'   =>$r['deskripsi'],		
 									'barkode'     =>$r['barkode'],		
-									'idbuku'      =>$r['idbuku']	
-									// 'sumber'      =>$r['sumber'],		
-									// 'harga'       =>$r['harga'],		
-									// 'tanggal'     =>$r['tanggal'],		
-									// 'status'      =>$r['statusbuku'],		
-									// 'lokasi'      =>$r['lokasi'],		
-									// 'tingkatbuku' =>$r['tingkatbuku']	
+									'idbuku'      =>$r['idbuku'],	
+									'sumber'      =>$r['sumber'],		
+									'harga'       =>$r['harga'],		
+									'tanggal'     =>$r['tanggal'],		
+									'statusbuku'  =>$r['statusbuku'],		
+									'lokasi'      =>$r['lokasi'],		
+									'tingkatbuku' =>$r['tingkatbuku']	
 								));
 
 					break;
@@ -509,7 +509,7 @@
 									'kode'      =>$r['kode'],
 									'barkode'     =>$r['barkode'],
 									'sumber'      =>$r['sumber'],
-									'harga'       =>$r['harga'],
+									'harga'       =>'Rp. '.number_format($r['harga']),
 									'tanggal'     =>$r['tanggal'],
 									'lokasi'      =>$r['lokasi'],
 									'tingkatbuku' =>$r['tingkatbuku']
