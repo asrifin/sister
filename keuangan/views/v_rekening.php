@@ -9,7 +9,7 @@
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
 <div class="input-control select span3">
-    <select data-hint="Kategori Rekening" name="kategorirekS" id="kategorirekS"></select>
+    <select data-hint="Kategori Rekening" class="cari" name="kategorirekS" id="kategorirekS"></select>
 </div>
 
 <table class="table hovered bordered striped">
@@ -21,10 +21,10 @@
             <th class="text-left">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
+            <th class="text-right"><input  class="cari" placeholder="kode" id="kodeS" name="kodeS"></th>
+            <th class="text-left"><input  class="cari" placeholder="nama" id="namaS" name="namaS"></th>
+            <th class="text-left"><input  class="cari" placeholder="keterangan" id="keteranganS" name="keteranganS"></th>
             <th class="text-left"></th>
-            <th class="text-left"><input placeholder="aktivitas" id="kodeS" name="kodeS"></th>
-            <th class="text-left"><input placeholder="nama" id="namaS" name="namaS"></th>
-            <th class="text-left"><input placeholder="keterangan" id="keteranganS" name="keteranganS"></th>
         </tr>
     </thead>
 
