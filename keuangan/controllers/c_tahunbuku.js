@@ -1,52 +1,37 @@
 var mnu       = 'tahunbuku';
-// var mnu2      = 'departemen';
 var dir       = 'models/m_'+mnu+'.php';
-// var dir2      = 'models/m_'+mnu2+'.php';
 var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-                                                
-                        +'<label>Nama Tahun Buku</label>'
-                        +'<div class="span3">'
-                            +'<div class="input-control text" >'
-                                +'<input required maxlength="9" placeholder="Nama " name="tahunbukuTB" id="tahunbukuTB" type="text">'
-                            +'</div>'
-                        +'</div>'
 
+                        +'<label>Nama Tahun Buku</label>'
+                        +'<div class="input-control text size1">'
+                            +'<input maxlength="4" size="4" required name="namaTB" id="namaTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        
                         +'<label>Tanggal Mulai</label>'
-                        +'<div class="input-control text" data-role="datepicker"'
+                        +'<div required class="input-control text" data-role="datepicker"'
                             +'data-date="2014-10-23"'
                             +'data-format="yyyy-mm-dd"'
                             +'data-effect="slide">'
-                            +'<input id="tglmulaiTB" name="tglmulaiTB" type="text">'
+                            +'<input id="tanggal1TB" name="tanggal1TB" type="text">'
                             +'<button class="btn-date"></button>'
-                        +'</div>'
-
-                        +'<label>Saldo Awal</label>'
-                        '<div class="span3 size-2">'
-                            +'<div class="input-control text" >'
-                                +'<input required maxlength="9" placeholder="ex : 2011-2012 " name="saldoTB" id="saldoTB" type="text">'
-                            +'</div>'
                         +'</div>'
 
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
-                        
+
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
-
-        // combo departemen
-        // cmbdepartemen();
-
-        // load table
         viewTB();
 
         //add form
@@ -70,12 +55,9 @@ var contentFR = '';
 
 //save process ---
     function simpan(){
-        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
         var urlx ='&aksi=simpan';
-        // edit mode
-        if($('#idformH').val()!=''){
-            urlx += '&replid='+$('#idformH').val();
-        }
+        if($('#idformH').val()!='') urlx += '&replid='+$('#idformH').val();
+
         $.ajax({
             url:dir,
             cache:false,
@@ -103,7 +85,7 @@ var contentFR = '';
     function viewTB(dep){
         var aksi ='aksi=tampil';
         // var cari = '&departemenS='+dep
-                var cari =   '&tahunbukuS='+$('#tahunbukuS').val();
+        var cari =   '&tahunbukuS='+$('#tahunbukuS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -140,9 +122,8 @@ var contentFR = '';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#tahunbukuTB').val(dt.nama);
-                            $('#tglmulaiTB').val(dt.tanggal1);
-                            $('#saldoTB').val(dt.saldoawal);
+                            $('#namaTB').val(dt.nama);
+                            $('#tanggal1TB').val(dt.tanggal1);
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });
@@ -187,9 +168,9 @@ var contentFR = '';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    // viewTB($('#departemenS').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
+                    viewTB();
                 }
                 notif(cont,clr);
             }
@@ -224,13 +205,11 @@ var contentFR = '';
 //aktifkan process ---
     function aktifkan(id){
     	var th  = $('#'+mnu+'TD_'+id).html();
-    	// var dep = $('#'+mnu2+'S').val();
-
         if(confirm(' mengaktifkan "'+th+'"" ?'))
         $.ajax({
             url:dir,
             type:'post',
-            data:'aksi=aktifkan&replid='+id+'&departemen='+dep,
+            data:'aksi=aktifkan&replid='+id,
             dataType:'json',
             success:function(dt){
                 var cont,clr;
@@ -241,6 +220,7 @@ var contentFR = '';
                     // viewTB($('#departemenS').val());
                     cont = '..Berhasil Mengaktifkan '+th+' ..';
                     clr  ='green';
+                    viewTB();
                 }
                 notif(cont,clr);
             }

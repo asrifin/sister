@@ -46,7 +46,17 @@
     <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
     <script type="text/javascript" language="javascript" src="js/shCore.js"></script>
     <link rel="stylesheet" type="text/css" href="css/shCore.css">-->
-
+    <script>
+        $(function(){
+            $(".form").scrollbar({
+                // height: 355,
+                axis: 'y'
+            });
+            $("#scrollbox2").scrollbar({
+                axis: 'x',
+            });
+        });
+    </script>
 
     <title>.:SISTER Perpustakaan:.</title>
 </head>
@@ -80,14 +90,14 @@
             <div class="element">
                 <a class="dropdown-toggle" href="#">Master</a>
                 <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="lokasi">Lokasi Perpustakaan</a></li>
                     <li><a href="perangkat">Perangkat</a></li>
-                    <li><a href="jenisbuku">Jenis Koleksi</a></li>
-                    <li><a href="penerbit">Daftar Penerbit</a></li>
-                    <li><a href="klasifikasi">Klasifikasi</a></li>
-                    <li><a href="bahasa">Daftar Bahasa</a></li>
+                    <li><a href="lokasi">Lokasi Perpustakaan</a></li>
                     <li><a href="tingkatbuku">Tingkat Koleksi</a></li>
+                    <li><a href="jenisbuku">Jenis Koleksi</a></li>
+                    <li><a href="klasifikasi">Klasifikasi</a></li>
                     <li><a href="pengarang">Daftar Pengarang</a></li>
+                    <li><a href="penerbit">Daftar Penerbit</a></li>
+                    <li><a href="bahasa">Daftar Bahasa</a></li>
                     <li><a href="satuan">Satuan Mata Uang</a></li>
                 </ul>
             </div>

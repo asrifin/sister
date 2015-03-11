@@ -70,16 +70,18 @@
 
                   <!-- <button data-hint="Kembali" xclass="large" id="kembaliBC"><span class=" icon-arrow-left-2"></span> Katalog</button> -->
                   <a href="#" data-hint="Kembali" onclick="switchPN_view(); return false;" class="button"><span class="icon-arrow-left-2"></span> Katalog</a>
-                  <button data-hint="Edit" xclass="large" id="edit_katalogBC"><span class=" icon-pencil"></span> Edit Informasi Katalog</button>
-                  <a href="#" data-hint="Tambah Koleksi" id="koleksiBC" class="button"><span class="icon-plus-2"></span> Koleksi</a>
+                  <a href="#" data-hint="Edit Katalog" id="edit_katalogBC" class="button"><span class="icon-pencil"></span> Edit Informasi Katalog</a>
+                  <!-- <button data-hint="Edit" xclass="large" id="edit_katalogBC"><span class=" icon-pencil"></span> Edit Informasi Katalog</button> -->
+                 <a href="#" data-hint="Tambah Koleksi" id="koleksiBC" class="button"><span class="icon-plus-2"></span> Koleksi</a>
 
                           <div class="grid">  
                             <div class="row">     
                               <div class="span6">
                               <label><b>Informasi Katalog :</b></label>
+                              <input  id="idkatalogH" name="idkatalogH" type="hidden">
                               <div class="row">
                                   <div class="span2">Judul :</div>
-                                  <div  class="span2" id="judulTD"></div>
+                                  <div  class="span4" id="judulTD"></div>
                               </div>
                               <div class="row">                          
                                   <div class="span2">Kalsifikasi :</div>
@@ -157,11 +159,15 @@
                                 <label>Lokasi :</label>
                               <div class="input-control select span4">
                                   <select placeholder="Lokasi" name="lokasiS" id="lokasiS" ></select>
+                              </div><br><br>
+                              <div class="form-actions">
+                                <a href="#" data-hint="Tambah Koleksi" align="left" id="koleksi_duaBC" class="button"><span class="icon-plus-2"></span> Koleksi</a>
                               </div>
 
-                              <table id="katalogTBL" style="display:visible;" class="table hovered bordered striped panelx" >
+                              <table id="katalogTBL" style="display:visible;" width="800px" class="table hovered bordered striped panelx" >
                                   <thead>
                                       <tr style="color:white;" class="info">
+                                      <input  id="dua_idkatalogH" name="dua_idkatalogH" type="hidden">
                                           <th class="text-left">Barkode</th>
                                           <th class="text-left" >Nomor ID</th>
                                           <th class="text-left" >Sumber</th>
@@ -174,7 +180,6 @@
                                           <!-- <th class="text-left" >Aksi</th> -->
                                       </tr>
                                       <tr style="display:visible;" class="selected">
-                                          <!-- <th class="text-left"></th> -->
                                           <th class="text-left" id="barkodeTH"></th>
                                           <th class="text-left" id="nomorTH"></th>
                                           <th class="text-left" id="sumberTH"></th>
@@ -183,7 +188,11 @@
                                           <th class="text-left" id="statusTH"></th>
                                           <th class="text-left" id="lokasiTH"></th>
                                           <th class="text-left" id="tingkatTH"></th>
-                                          <th class="text-left" id="lokasiS">
+                                          <th class="text-left">
+                                            <button data-hint="Ubah Koleksi" id="ubah_koleksiBC"><span class="icon-pencil"></span></button>
+                                            <button data-hint="Hapus Koleksi" id="hapus_koleksiBC"><span class="icon-remove"></span></button>
+                                          </th>
+                                          <!-- <th class="text-left" id="lokasiS"> -->
                                             
                                           </th>
                                       </tr>
@@ -214,7 +223,7 @@
 
                               <div class="row">
                                     <div class="span2">Sinopsis :</div>
-                                    <div class="span2" id="sinopsisTD"></div>
+                                    <div class="span4" id="sinopsisTD"></div>
                                 </div>                                
 
                               </div>
@@ -240,7 +249,7 @@
       <!-- Form tambah dan edit katalog  -->
       <div class="table hovered bordered striped panelx" id="katalogFR" style="display:none;" >
           <div style="overflow:scroll;height:600px;" >
-                  <form autocomplete="off" onsubmit="katalogSV();return false;"> 
+                  <form autocomplete="off" enctype="multipart/form-data" onsubmit="katalogSV();return false;" id="katalog_form"> 
                         <input id="idformH" type="hidden"> 
                         <!-- Panel -->
                         <div class="panel">
@@ -258,6 +267,7 @@
                           <div class="grid">     
                             <div class="row">
                               <div class="span6">
+                              <input  id="edit_katalogH" name="edit_katalogH" type="hidden">
                               <!-- <label><b>Kriteria Calon :</b></label> -->
                               <label>Judul :</label>
                               <div class="input-control text">

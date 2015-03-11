@@ -16,7 +16,20 @@
 	$tb6  = 'pus_jenisbuku';
 
 	if(!isset($_POST['aksi'])){
-		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
+		if(isset($_GET['upload'])){
+			$tipex    = substr($_FILES[0]['type'],6);
+			$namaAwal = $_FILES[0]['name'];
+			$namaSkrg = $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
+			$src      = $_FILES[0]['tmp_name'];
+			$destix   = '../img/upload/'.basename($namaSkrg);
+
+			if(move_uploaded_file($src, $destix))
+				$o=array('status'=>'sukses','file'=>$namaSkrg);
+			else
+				$o=array('status'=>'gagal');
+
+			$out=json_encode($o);
+		}elseif(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
 			$page       = $_GET['page']; // get the requested page
 			$limit      = $_GET['rows']; // get how many rows we want to have into the grid
 			$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
@@ -117,7 +130,7 @@
 							pkat.judul like "%'.$judul.'%" and
 							pkas.nama like "%'.$kode_klasifikasi.'%"	and					
 							pg.nama like "%'.$pengarang.'%" and					
-							pn.nama like "%'.$pengarang.'%"						
+							penerbit like "%'.$penerbit.'%"						
 							ORDER BY pkat.replid asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
@@ -192,6 +205,7 @@
 
 				// add / edit -----------------------------------------------------------------
 			case 'simpan':
+			// echo "string"; exit();
 				switch ($_POST['subaksi']) {
 					case 'klasifikasi':
 						$s 		= $tb2.' set 	kode 		= "'.filter($_POST['kode_klasifikasiTB']).'",
@@ -247,9 +261,21 @@
 						$out 	= json_encode(array('status'=>$stat));
 					break;
 
+					case 'koleksi':
+						$s 		= 'pus_buku set 	kode 		= "'.filter($_POST['kode_jenisTB']).'",
+												nama 		= "'.filter($_POST['nama_jenisTB']).'",
+												keterangan 	= "'.filter($_POST['ket_jenisTB']).'"';
+						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						// var_dump($s2);exit();
+						$e 		= mysql_query($s2);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array('status'=>$stat));
+					break;
+
 					case 'katalog':
+					// echo 'ok';exit();
 						$s 		= $tb.' set 	judul 			 = "'.$_POST['judulTB'].'",
-												klasifikasi-kode = "'.filter($_POST['klasifikasiTB']).'",
+												klasifikasi_kode = "'.filter($_POST['klasifikasiTB']).'",
 												klasifikasi      = "'.filter($_POST['klasifikasi_selectTB']).'",
 												pengarang        = "'.filter($_POST['pengarangTB']).'",
 												callnumber       = "'.$_POST['callnumberTB'].'",
@@ -277,7 +303,7 @@
 						}else{ //edit
 							$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
 							if(isset($_POST['photo_asal'])){ //change image
-								$img='../../img/upload/'.$_POST['photo_asal'];
+								$img='../img/upload/'.$_POST['photo_asal'];
 								if(file_exists($img)){ //checking image is exist
 									$delimg = unlink($img);
 									$stat2  = !$delimg?false:true;
@@ -287,6 +313,7 @@
 						if(!$stat2){// gagal hapus
 							$stat='gagal_hapus_file';
 						}else{ //sukses hapus file
+							// var_dump($s2);
 							$e    = mysql_query($s2);
 							$stat = $e?'sukses':'gagal_simpan_db';
 						}$out  = json_encode(array('status'=>$stat));
@@ -331,8 +358,8 @@
 								  kg.jenisbuku,
 		                          kg.callnumber,
 		                          kg.dimensi,
-		                          kg.deskripsi, 
-		                          (SELECT count(*) from pus_buku where katalog=kg.replid)jum
+		                          kg.deskripsi
+		                          -- (SELECT count(*) from pus_buku where katalog=kg.replid)jum
 		                        FROM
 		                          pus_katalog kg
 		                          LEFT JOIN pus_pengarang pr ON pr.replid = kg.pengarang
@@ -397,20 +424,20 @@
 		                          kg.deskripsi,
 		                          buku.barkode, 
 		                          buku.idbuku,
-								  -- if(buku.sumber=1,"Beli","Pemberian") as sumber, 
-		        --                   buku.harga,
-		        --                   buku.tanggal,
-								  -- if(buku.status=1,"Tersedia","Dipinjam") as statusbuku, 
-		        --                   pl.nama lokasi,
-		        --                   pt.nama tingkatbuku,
-		                          (SELECT count(*) from pus_buku where katalog=kg.replid)jum
+								  if(buku.sumber=1,"Beli","Pemberian") as sumber, 
+		                          buku.harga,
+		                          buku.tanggal,
+								  if(buku.status=1,"Tersedia","Dipinjam") as statusbuku, 
+		                          pl.nama lokasi,
+		                          pt.nama tingkatbuku
+		                          -- (SELECT count(*) from pus_buku where katalog=kg.replid)jum
 		                        FROM
 		                          pus_katalog kg
 		                          LEFT JOIN pus_buku buku ON kg.replid = buku.katalog
 		                          LEFT JOIN pus_tingkatbuku pt ON pt.replid = buku.tingkatbuku
-		                          JOIN pus_lokasi pl ON pl.replid = buku.lokasi
+		                          LEFT JOIN pus_lokasi pl ON pl.replid = buku.lokasi
 		                          LEFT JOIN pus_pengarang pr ON pr.replid = kg.pengarang
-		                          JOIN pus_penerbit pb ON pb.replid = kg.penerbit
+		                          LEFT JOIN pus_penerbit pb ON pb.replid = kg.penerbit
 		                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
 		                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
 		                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
@@ -445,13 +472,13 @@
 									'dimensi'     =>$r['dimensi'],
 									'deskripsi'   =>$r['deskripsi'],		
 									'barkode'     =>$r['barkode'],		
-									'idbuku'      =>$r['idbuku']	
-									// 'sumber'      =>$r['sumber'],		
-									// 'harga'       =>$r['harga'],		
-									// 'tanggal'     =>$r['tanggal'],		
-									// 'status'      =>$r['statusbuku'],		
-									// 'lokasi'      =>$r['lokasi'],		
-									// 'tingkatbuku' =>$r['tingkatbuku']	
+									'idbuku'      =>$r['idbuku'],	
+									'sumber'      =>$r['sumber'],		
+									'harga'       =>$r['harga'],		
+									'tanggal'     =>$r['tanggal'],		
+									'statusbuku'  =>$r['statusbuku'],		
+									'lokasi'      =>$r['lokasi'],		
+									'tingkatbuku' =>$r['tingkatbuku']	
 								));
 
 					break;
@@ -490,10 +517,10 @@
 									'status'      =>$stat,
 									'judul'       =>$r['judul'],
 									'jumlah'      =>$r['jum'],
-									'kode'      =>$r['kode'],
+									'kode'        =>$r['kode'],
 									'barkode'     =>$r['barkode'],
 									'sumber'      =>$r['sumber'],
-									'harga'       =>$r['harga'],
+									'harga'       =>'Rp. '.number_format($r['harga']),
 									'tanggal'     =>$r['tanggal'],
 									'lokasi'      =>$r['lokasi'],
 									'tingkatbuku' =>$r['tingkatbuku']
@@ -550,7 +577,7 @@
 					$ar = array('status'=>'error');
 				}else{
 					if($n==0){ // kosong 
-						var_dump($n);exit();
+						// var_dump($n);exit();
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
 						if(!isset($_POST['replid'])){

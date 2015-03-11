@@ -131,7 +131,7 @@
 						from '.$tb.'
 						'.$w.'		
 						ORDER  BY nama asc';
-				// var_dump($s);exit();
+				// print_r($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
 				$ar=$dt=array();
