@@ -8,8 +8,8 @@ var contentFR = '';
                         +'<input id="idformH" type="hidden">' 
 
                         +'<label>Nama Tahun Buku</label>'
-                        +'<div class="input-control text">'
-                            +'<input required name="namaTB" id="namaTB" class="span2">'
+                        +'<div class="input-control text size1">'
+                            +'<input maxlength="4" size="4" required name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
@@ -32,8 +32,6 @@ var contentFR = '';
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
-
-        // load table
         viewTB();
 
         //add form
@@ -57,12 +55,9 @@ var contentFR = '';
 
 //save process ---
     function simpan(){
-        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
         var urlx ='&aksi=simpan';
-        // edit mode
-        if($('#idformH').val()!=''){
-            urlx += '&replid='+$('#idformH').val();
-        }
+        if($('#idformH').val()!='') urlx += '&replid='+$('#idformH').val();
+
         $.ajax({
             url:dir,
             cache:false,
@@ -90,7 +85,7 @@ var contentFR = '';
     function viewTB(dep){
         var aksi ='aksi=tampil';
         // var cari = '&departemenS='+dep
-                var cari =   '&tahunbukuS='+$('#tahunbukuS').val();
+        var cari =   '&tahunbukuS='+$('#tahunbukuS').val();
         $.ajax({
             url : dir,
             type: 'post',

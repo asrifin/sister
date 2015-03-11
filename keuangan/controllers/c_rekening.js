@@ -1,7 +1,5 @@
 var mnu       ='rekening'; 
-// var mnu2      ='lokasi'; 
 var dir       ='models/m_'+mnu+'.php';
-// var dir2      ='models/m_'+mnu2+'.php';
 var contentFR ='';
 
 // main function ---
@@ -12,22 +10,22 @@ var contentFR ='';
                                 +'<div class="span5">'
                                     +'<label>Kategori Rekening</label>'
                                     +'<div class="input-control select">'
-                                    +'<select required name="kategoriTB" id="kategoriTB"><option value="">Pilih Kategori Rekening</option></select>'
+                                    +'<select required name="kategorirekTB" id="kategorirekTB"><option value="">Pilih Kategori Rekening</option></select>'
                                     +'</div>'
                                 +'</div>'
                             +'</div>'
 
                         +'<label>Kode</label>'
-                        +'<div class="span3 size-2">'
-                            +'<div class="input-control text" >'
-                                +'<input required maxlength="9" placeholder="Kode Rekening" name="kodeTB" id="kodeTB" type="text">'
+                        +'<div>'
+                            +'<div class="input-control size2 text" >'
+                                +'<input required maxlength="6" placeholder="Kode Rekening" name="kodeTB" id="kodeTB" type="text">'
                             +'</div>'
                         +'</div>'                        
 
                         +'<label>Rekening</label>'
-                        +'<div class="span3 size-2">'
-                            +'<div class="input-control text" >'
-                                +'<input required maxlength="9" placeholder="Rekening" name="rekeningTB" id="rekeningTB" type="text">'
+                        +'<div>'
+                            +'<div class="input-control size3 text" >'
+                                +'<input required placeholder="Rekening" name="namaTB" id="namaTB" type="text">'
                             +'</div>'
                         +'</div>'
                         
@@ -42,29 +40,35 @@ var contentFR ='';
                         +'</div>'
                     +'</form>';
 
-        /*
-        load pertama kali (pilihn salah satu) :
-        cmbkategori : bila ada combo box
-        viewTB : jika tanpa combo box
-        */
-
-        cmbkategorirek('');
+        cmbkategorirek('filter','');
 
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
         });
 
+        //cari ----
+        $('#cariBC').on('click',function(){
+            $('#cariTR').toggle('slow');
+            $('#kodeS').val('');
+            $('#namaS').val('');
+            $('#keteranganS').val('');
+        });
         //search action // edit by epiii
         $('#kategorirekS').on('change',function (e){ // change : combo box
-            viewTB($(this).val());
+            viewTB();
+        });
+        $('#kodeS,#namaS,#keteranganS').on('keydown',function (e){ // kode grup
+            if(e.keyCode == 13)
+                viewTB();
         });
        
     }); 
 // end of main function ---
 
 // combo departemen ---
-    function cmbkategorirek(id){
+    function cmbkategorirek(typ,idkat){
+        // alert(typ+', '+id);
         $.ajax({
             url:dir,
             data:'aksi=cmbkategorirek',
@@ -76,12 +80,17 @@ var contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.kategorirek, function(id,item){
-                        if(id==item.replid)
+                        if(idkat==item.replid)
                             out+='<option selected="selected" value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                         else
                             out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
-                    });$('#kategorirekS').html('<option value="">--SEMUA--</option>'+out);
-                    viewTB(dt.kategorirek[0].replid); 
+                    });
+                    if(typ=='filter'){
+                        $('#kategorirekS').html('<option value="">--SEMUA--</option>'+out);
+                        viewTB(dt.kategorirek[0].replid); 
+                    }else{
+                        $('#kategorirekTB').html(out);
+                    }
                 }
             }
         });
@@ -108,10 +117,9 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    // viewTB($('#aktivitasS').val());
-                    //viewTB($('#'+mnu2+'S').val()); //value : combo box LOKASI 
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
+                    viewTB();
                 }notif(cont,clr);
             }
         });
@@ -119,8 +127,7 @@ var contentFR ='';
 //end of save process ---
 
 // view table ---
-    // function viewTB(nama){          
-    function viewTB(){ //edit by epiii 
+    function viewTB(){ 
         var aksi ='aksi=tampil';
         var cari ='&kategorirekS='+$('#kategorirekS').val()
                 +'&kodeS='+$('#kodeS').val()
@@ -152,18 +159,8 @@ var contentFR ='';
             onShow: function(){
                 var titlex;
                 if(id==''){  //add mode
-                    // alert('halooo');
                     titlex='<span class="icon-plus-2"></span> Tambah ';
-                    $.ajax({
-                        url:dir2,
-                        data:'aksi=cmbkategori&replid='+$('#kategoriS').val(),
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#kategoriTB').val(dt.kategori[0].nama);
-                            // $('#lokasiH').val($('#kategoriS').val());
-                        }
-                    });
+                    cmbkategorirek('form','');
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({
@@ -173,13 +170,10 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            // $('#tempatH').val($('#tempatS').val());
-                            // $('#lokasiH').val($('#kategoriS').val()); // edit by epii
-                            $('#kategoriTB').val(dt.kategori);
                             $('#kodeTB').val(dt.kode);
-                            $('#rekeningTB').val(dt.rekening);
-                            // $('#aktivitasTB').val(dt.aktivitas);
+                            $('#namaTB').val(dt.nama);
                             $('#keteranganTB').val(dt.keterangan);
+                            cmbkategorirek('form',dt.kategorirek)
                         }
                     });
                 }$.Dialog.title(titlex+' '+mnu); // edit by epiii
@@ -190,24 +184,58 @@ var contentFR ='';
 // end of form ---
 
 //paging ---
-    function pagination(page,aksix,menux){ 
-        var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari  = '&kategoriS='+$('#kategoriS').val();
-                    // +'&tempatS='+$('#tempatS').val()
-                    // +'&keteranganS='+$('#keteranganS').val();
+    function pagination(page,aksix,subaksi){ 
+        var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
+        var cari ='';
+        var el,el2;
+
+        if(subaksi!=''){ // multi paging 
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
         $.ajax({
             url:dir,
             type:"post",
-            data: datax+cari,
+            data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
-    }   
+    }
+//end of paging ---
+
+    // function pagination(page,aksix,menux){ 
+    //     var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
+    //     var cari  = '&kategoriS='+$('#kategoriS').val();
+    //                 // +'&tempatS='+$('#tempatS').val()
+    //                 // +'&keteranganS='+$('#keteranganS').val();
+    //     $.ajax({
+    //         url:dir,
+    //         type:"post",
+    //         data: datax+cari,
+    //         beforeSend:function(){
+    //             $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
+    //         },success:function(dt){
+    //             setTimeout(function(){
+    //                 $('#tbody').html(dt).fadeIn();
+    //             },1000);
+    //         }
+    //     });
+    // }   
 //end of paging ---
     
 //del process ---
