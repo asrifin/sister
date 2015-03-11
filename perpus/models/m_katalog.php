@@ -261,6 +261,17 @@
 						$out 	= json_encode(array('status'=>$stat));
 					break;
 
+					case 'koleksi':
+						$s 		= 'pus_buku set 	kode 		= "'.filter($_POST['kode_jenisTB']).'",
+												nama 		= "'.filter($_POST['nama_jenisTB']).'",
+												keterangan 	= "'.filter($_POST['ket_jenisTB']).'"';
+						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						// var_dump($s2);exit();
+						$e 		= mysql_query($s2);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array('status'=>$stat));
+					break;
+
 					case 'katalog':
 					// echo 'ok';exit();
 						$s 		= $tb.' set 	judul 			 = "'.$_POST['judulTB'].'",
@@ -347,7 +358,7 @@
 								  kg.jenisbuku,
 		                          kg.callnumber,
 		                          kg.dimensi,
-		                          kg.deskripsi, 
+		                          kg.deskripsi
 		                          -- (SELECT count(*) from pus_buku where katalog=kg.replid)jum
 		                        FROM
 		                          pus_katalog kg
@@ -506,7 +517,7 @@
 									'status'      =>$stat,
 									'judul'       =>$r['judul'],
 									'jumlah'      =>$r['jum'],
-									'kode'      =>$r['kode'],
+									'kode'        =>$r['kode'],
 									'barkode'     =>$r['barkode'],
 									'sumber'      =>$r['sumber'],
 									'harga'       =>'Rp. '.number_format($r['harga']),

@@ -13,7 +13,7 @@ ____________________________________________________
 	- delete : all & per-record
 	- searching : all column, tidak ngefek ke "tabel" (C)
 	- filtering > combo :  jenis_buku & tingkat_buku , tidak ngefek ke "table"  (C)
-	- form (edit_mode) : tidak tampil		-
+	- form (edit_mode) : tidak tampil		(+)
 	- SQL Where pengarang, penerbit, klasifikasi belum bisa
 
 	- sorting : all column (belum ada lib/contoh) 
@@ -23,7 +23,8 @@ ____________________________________________________
 	- Tambah Koleksi menampilkan hasil yang sama meskipun pilih koleksi yang lain (+)
 	- Lihat katalog sql belum bisa nampil data koleksi (+)	
 	- Combogrid SQL pada models gimana kalau beda field??  (+)	
-	- Tambah koleksi untuk Lihat Katalog belum bisa
+	- Tambah koleksi untuk Lihat Katalog belum bisa (+)
+	- Edit Informasi Katalog pada View Katalog
 * data anggota (P)
 	- view siswa, pegawai dan member lain hanya bisa menampilkan yang sudah pinjam aja
 	-
