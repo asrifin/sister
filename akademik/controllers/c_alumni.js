@@ -28,7 +28,7 @@ var contentFR = '';
                         +'<label>Nama Siswa</label>'
                         +'<div class="input-control text">'
                             +'<input placeholder="Nama Siswa" id="siswaTB">'
-                            // +'<input  type="hidden" name="siswaH" id="siswaH" >'
+                            +'<input  type="hidden" name="siswaH" id="siswaH" >'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -223,6 +223,7 @@ var contentFR = '';
                             $('#idformH').val(id);
                             $('#departemenTB').val(dt.departemen);
                             $('#nisnTB').val(dt.nisn); 
+                            $('#siswaH').val(dt.siswak);
                             $('#siswaTB').val(dt.siswa);
                             $('#keteranganTB').val(dt.ket);
                             cmbtahunlulus2(dt.tahun); /*epiii*/
