@@ -1,37 +1,47 @@
-var mnu       ='rekening'; 
-var dir       ='models/m_'+mnu+'.php';
+var mnu  ='saldorekening'; 
+var dir  ='models/m_'+mnu+'.php';
+var mnu2 ='tahunbuku'; 
+var dir2 ='models/m_'+mnu2+'.php';
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-                            +'<div class="row">'
-                                +'<div class="span5">'
-                                    +'<label>Kategori Rekening</label>'
-                                    +'<div class="input-control select">'
-                                    +'<select required name="kategorirekTB" id="kategorirekTB"><option value="">Pilih Kategori Rekening</option></select>'
-                                    +'</div>'
-                                +'</div>'
-                            +'</div>'
 
-                        +'<label>Kode</label>'
+                        +'<label>Tahun Buku</label>'
                         +'<div>'
                             +'<div class="input-control size2 text" >'
-                                +'<input required maxlength="6" placeholder="Kode Rekening" name="kodeTB" id="kodeTB" type="text">'
+                                +'<input disabled name="tahunbukuTB" id="tahunbukuTB" type="text">'
+                            +'</div>'
+                        +'</div>'    
+
+                        +'<label>Kategori Rekening</label>'
+                        +'<div>'
+                            +'<div class="input-control size2 text" >'
+                                +'<input disabled name="kategorirekTB" id="kategorirekTB" type="text">'
+                            +'</div>'
+                        +'</div>'                
+
+                        +'<label>Kode Rekening</label>'
+                        +'<div>'
+                            +'<div class="input-control size2 text" >'
+                                +'<input disabled name="kodeTB" id="kodeTB" type="text">'
                             +'</div>'
                         +'</div>'                        
 
                         +'<label>Rekening</label>'
                         +'<div>'
                             +'<div class="input-control size3 text" >'
-                                +'<input required placeholder="Rekening" name="namaTB" id="namaTB" type="text">'
+                                +'<input disabled name="namaTB" id="namaTB" type="text">'
                             +'</div>'
                         +'</div>'
                         
-                        +'<label>Keterangan</label>'
-                        +'<div class="input-control textarea">'
-                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
+                        +'<label>Saldo</label>'
+                        +'<div>'
+                            +'<div class="input-control size3 text" >'
+                                +'<input required name="nominalTB" id="nominalTB" type="text">'
+                            +'</div>'
                         +'</div>'
                         
                         +'<div class="form-actions">' 
@@ -40,7 +50,7 @@ var contentFR ='';
                         +'</div>'
                     +'</form>';
 
-        cmbkategorirek('filter','');
+        cmbkategorirek();
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -55,10 +65,10 @@ var contentFR ='';
             $('#keteranganS').val('');
         });
         //search action // edit by epiii
-        $('#kategorirekS').on('change',function (e){ // change : combo box
+        $('#kategorirekS,#tahunbukuS').on('change',function (e){ // change : combo box
             viewTB();
         });
-        $('#kodeS,#namaS,#keteranganS').on('keydown',function (e){ // kode grup
+        $('#kodeS,#namaS').on('keydown',function (e){ // kode grup
             if(e.keyCode == 13)
                 viewTB();
         });
@@ -67,7 +77,7 @@ var contentFR ='';
 // end of main function ---
 
 // combo departemen ---
-    function cmbkategorirek(typ,idkat){
+    function cmbkategorirek(){
         $.ajax({
             url:dir,
             data:'aksi=cmbkategorirek',
@@ -79,17 +89,36 @@ var contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.kategorirek, function(id,item){
-                        if(idkat==item.replid)
-                            out+='<option selected="selected" value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
-                        else
-                            out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
+                        out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                     });
-                    if(typ=='filter'){
-                        $('#kategorirekS').html('<option value="">--SEMUA--</option>'+out);
-                        viewTB(dt.kategorirek[0].replid); 
-                    }else{
-                        $('#kategorirekTB').html(out);
-                    }
+                    $('#kategorirekS').html('<option value="">--SEMUA--</option>'+out);
+                    cmbtahunbuku();
+                }
+            }
+        });
+    }
+//end of combo departemen ---
+
+// combo tahun buku  ---
+    function cmbtahunbuku(){
+        $.ajax({
+            url:dir2,
+            data:'aksi=cmb'+mnu2,
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.tahunbuku, function(id,item){
+                        if(item.aktif==1)
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
+                        else
+                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                    });
+                    $('#tahunbukuS').html(out);
+                    viewTB(); 
                 }
             }
         });
@@ -131,7 +160,8 @@ var contentFR ='';
         var cari ='&kategorirekS='+$('#kategorirekS').val()
                 +'&kodeS='+$('#kodeS').val()
                 +'&namaS='+$('#namaS').val()
-                +'&keteranganS='+$('#keteranganS').val();
+                +'&tahunbukuS='+$('#tahunbukuS').val();
+                // +'&nominalS='+$('#nominalS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -156,26 +186,22 @@ var contentFR ='';
             width: 500,
             padding: 10,
             onShow: function(){
-                var titlex;
-                if(id==''){  //add mode
-                    titlex='<span class="icon-plus-2"></span> Tambah ';
-                    cmbkategorirek('form','');
-                }else{ // edit mode
-                    titlex='<span class="icon-pencil"></span> Ubah';
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=ambiledit&replid='+id,
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#idformH').val(id);
-                            $('#kodeTB').val(dt.kode);
-                            $('#namaTB').val(dt.nama);
-                            $('#keteranganTB').val(dt.keterangan);
-                            cmbkategorirek('form',dt.kategorirek)
-                        }
-                    });
-                }$.Dialog.title(titlex+' '+mnu); // edit by epiii
+                var titlex='<span class="icon-pencil"></span> Ubah';
+                $.ajax({
+                    url:dir,
+                    data:'aksi=ambiledit&replid='+id,
+                    type:'post',
+                    dataType:'json',
+                    success:function(dt){
+                        $('#idformH').val(id);
+                        $('#tahunbukuTB').val(dt.tahunbuku);
+                        $('#kategorirekTB').val(dt.kategorirek);
+                        $('#kodeTB').val(dt.kode);
+                        $('#namaTB').val(dt.nama);
+                        $('#nominalTB').val(dt.nominal);
+                    }
+                });
+                $.Dialog.title(titlex+' '+mnu); // edit by epiii
                 $.Dialog.content(contentFR);
             }
         });

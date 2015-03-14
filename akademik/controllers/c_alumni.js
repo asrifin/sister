@@ -16,19 +16,35 @@ var contentFR = '';
                             +'<select onchange="cmbtahunlulus2(\'form\',this.value,\'\');" name="departemenTB" id="departemenTB"></select>'
                         +'</div>'
                         
-                        +'<label>NISN</label>'
+                        +'<label>Cari Pegawai</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="NISN" id="nisnTB">'
-                            +'<input  type="hidden" name="nisnH" id="nisnH" >'
+                            +'<input placeholder="kode/nama siswa" id="sisTB">'
+                            +'<input  type="hidden" name="sisH" id="sisH" >'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+                        +'<label>nisn</label>'
+                        +'<div class="input-control text">'
+                            +'<input disabled="disabled" placeholder="nisn" id="nisnTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        +'<label>nama</label>'
+                        +'<div class="input-control text">'
+                            +'<input disabled="disabled" placeholder="nama" id="siswaTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'  
+                        // +'<label>NISN</label>'
+                        // +'<div class="input-control text">'
+                        //     +'<input placeholder="NISN" id="nisnTB">'
+                        //     +'<input  type="hidden" name="nisnH" id="nisnH" >'
+                        //     +'<button class="btn-clear"></button>'
+                        // +'</div>'
                         
-                        +'<label>Nama Siswa</label>'
-                        +'<div class="input-control text">'
-                            +'<input placeholder="Nama Siswa" id="siswaTB">'
-                            +'<input  type="hidden" name="siswaH" id="siswaH" >'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
+                        // +'<label>Nama Siswa</label>'
+                        // +'<div class="input-control text">'
+                        //     +'<input placeholder="Nama Siswa" id="siswaTB">'
+                        //     +'<input  type="hidden" name="siswaH" id="siswaH" >'
+                        //     +'<button class="btn-clear"></button>'
+                        // +'</div>'
 
                         +'<label>Tahun Lulus</label>'
                         +'<div class="input-control select span3">'
@@ -219,13 +235,16 @@ var contentFR = '';
 // end of view table ---
 
 // form ---
+
     function viewFR(id){
+        var pel=$('#tahunlulusS').val();
         $.Dialog({
-            shadow: true,
-            overlay: true,
-            draggable: true,
-            width: 500,
-            padding: 10,
+            shadow:true,
+            overlay:true,
+            draggable:true,
+            height:'auto',
+            width:'35%',
+            padding:20,
             onShow: function(){
                 var titlex;
                 $('#departemenH').val($('#departemenS').val());
@@ -239,10 +258,10 @@ var contentFR = '';
                         success:function(dt){
                             $('#idformH').val(id);
                             $('#departemenTB').val(dt.departemen);
-                            $('#nisnTB').val(dt.nisn); 
-                            $('#siswaH').val(dt.siswak);
-                            $('#siswaTB').val(dt.siswa);
-                            $('#keteranganTB').val(dt.ket);
+                            $('#sisH').val(dt.siswak); /*jjj*/
+                            $('#namaTB').val(dt.nama);
+                            $('#nisnTB').val(dt.nisn);
+                        $('#keteranganTB').val(dt.ket);
                             cmbdepartemen('form',$('#departemenS').val());
                             cmbtahunlulus2('form',dt.iddepartemen,dt.idtahunlulus);
                         }
@@ -255,6 +274,29 @@ var contentFR = '';
                 }
                 $.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
+            }
+        });
+        $("#sisTB").combogrid({
+            debug:true,
+            width:'400px',
+            colModel: [{
+                    'align':'left',
+                    'columnName':'nisn',
+                    'hide':true,
+                    'width':'55',
+                    'label':'NISN'
+                },{   
+                    'columnName':'nama',
+                    'width':'40',
+                    'label':'NAMA'
+                }],
+            url: dir+'?aksi=autocomp',
+            select: function( event, ui ) {
+                $('#sisH').val(ui.item.replid);
+                $('#nisnTB').val(ui.item.nisn);
+                $('#siswaTB').val(ui.item.nama);
+                // $('#sisTB').combogrid( "option", "url", dir+'?aksi=autocomp';
+                return false;
             }
         });
 }

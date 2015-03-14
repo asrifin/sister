@@ -75,7 +75,8 @@
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="tahun-buku">Tahun Buku</a></li>
                     <li><a href="rekening">Kode Rekening</a></li>
-                    <li><a href="tahun-anggaran">Tahun Anggaran</a></li>
+                    <li><a href="saldo-rekening">Saldo Rekening</a></li>
+                    <li><a href="anggaran">Anggaran</a></li>
                 </ul>
             </div>
              
@@ -117,9 +118,16 @@
                     case 'rekening':
                         require $d.'v_rekening.php';
                     break;
-                    case 'manggaran':
-                        require $d.'v_manggaran.php';
+                    case 'saldorekening':
+                        require $d.'v_saldorekening.php';
                     break;
+                    case 'anggaran':
+                        require $d.'v_anggaran.php';
+                    break;
+                    case 'detilanggaran':
+                        require $d.'v_detilanggaran.php';
+                    break;
+
 
                     // transaksi
                     case 'transaksi':

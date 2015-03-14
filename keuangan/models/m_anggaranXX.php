@@ -7,18 +7,17 @@
 	$mnu2 = 'departemen';
 	$tb   = 'keu_'.$mnu;
 	$tb2  = $mnu2;
-	// $out=array();
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$anggaran   = trim($_POST['anggaranS'])?filter($_POST['anggaranS']):'';
+				$nama       = trim($_POST['namaS'])?filter($_POST['namaS']):'';
 				$departemen = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
-				$tahunbuku   = trim($_POST['tahunbukuS'])?filter($_POST['tahunbukuS']):'';
+				$keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$tahunbuku  = trim($_POST['tahunbukuS'])?filter($_POST['tahunbukuS']):'';
 				$sql = 'SELECT
 							b.tahunuku,
 							b.nama,
