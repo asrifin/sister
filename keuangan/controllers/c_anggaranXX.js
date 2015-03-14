@@ -1,4 +1,4 @@
-var mnu       ='tahun_anggaran'; 
+var mnu       ='anggaran'; 
 var mnu2      ='tahunbuku'; 
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php'; 
@@ -40,17 +40,7 @@ var contentFR ='';
                         +'</div>'
                     +'</form>';
 
-        /*
-        load pertama kali (pilihn salah satu) :
-        cmblokasi : bila ada combo box
-        viewTB : jika tanpa combo box
-        */
-
-        //combo lokasi
-        cmblokasi();
-        
-        //load table // edit by epiii
-        // viewTB();
+        cmbtahunbuku('filter','');
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -79,10 +69,10 @@ var contentFR ='';
 // end of main function ---
 
 // combo departemen ---
-    function cmblokasi(){
+    function cmbdepartemen(typ,dep){
         $.ajax({
             url:dir2,
-            data:'aksi=cmblokasi',
+            data:'aksi=cmb'+mnu2,
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -90,16 +80,50 @@ var contentFR ='';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    $.each(dt.lokasi, function(id,item){
-                        out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
+                    $.each(dt.departemen, function(id,item){
+                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
-                    //panggil fungsi viewTB() ==> tampilkan tabel 
-                    viewTB(dt.lokasi[0].replid); 
-                }$('#tahunbukuS').html(out);
+                    if(typ=='filter'){
+                        $('#departemenS').html(out);
+                        viewTB(); 
+                    }else{
+                        $('#departemenTB').html(dt.departemen[0].nama);
+                    }
+                }
             }
         });
     }
-//end of combo departemen ---
+//end of combo tahun buku ---
+
+// combo tahun buku ---
+    function cmbtahunbuku(typ,thn){
+        $.ajax({
+            url:dir2,
+            data:'aksi=cmb'+mnu2,
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.tahunbuku, function(id,item){
+                        if(item.aktif==1)
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
+                        else
+                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                    });
+                    if(typ=='filter'){
+                        $('#tahunbukuS').html(out);
+                        cmbdepartemen();
+                    }else{
+                        $('#tahunbukuTB').html(out);
+                    }
+                }
+            }
+        });
+    }
+//end of combo tahun buku ---
 
 //save process ---
     function simpan(){
@@ -131,12 +155,12 @@ var contentFR ='';
 //end of save process ---
 
 // view table ---
-    function viewTB(lok){ //edit by epiii 
+    function viewTB(){ 
         var aksi ='aksi=tampil';
-        var cari ='&tahunbukuS='+lok
-                    +'&anggaranS='+$('#anggaranS').val()
-                    +'&departemenS='+$('#departemenS').val();
-                    // +'&kodeS='+$('#kodeS').val()
+        var cari ='&tahunbukuS='+$('#tahunbukuS').val()
+                +'&namaS='+$('#namaS').val()
+                +'&keteranganS='+$('#keteranganS').val()
+                +'&departemenS='+$('#departemenS').val();
         $.ajax({
             url : dir,
             type: 'post',

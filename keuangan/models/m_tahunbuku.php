@@ -88,24 +88,50 @@
 				
 				if(!isset($_POST['replid'])){ //add
 					if(mysql_num_rows(mysql_query('SELECT * from '.$tb))>0){
-						$s1 ='UPDATE '.$tb.' set aktif="0"';// where replid='.$_POST['replid'];
-						// $s1 ='UPDATE '.$tb.' set aktif="0" where replid='.$_POST['replid'];
+						$s1 ='UPDATE '.$tb.' set aktif="0"';
 						$e1 = mysql_query($s1);
 					}$s2 = 'INSERT INTO '.$s.' ,aktif = "1"';
 				}else{ //edit
 					$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
 				}
 
+				$ssr = 'SELECT max(replid) from keu_tahunbuku';
+				$esr = mysql_query($ssr);
+				$rsr = mysql_fetch_assoc($esr);
+
+
 				$e2 = mysql_query($s2);
-				if(!$e2){
+				$id = mysql_insert_id();
+				// var_dump($id);exit();
+				if(!$e2){ // gagal simpan
 					$stat = 'gagal menyimpan';
-				}else{
-					$stat = 'sukses';
-				}
+				}else{// berhasil simpan 
+					if($id='' or $id=null){ // add mode
+						$stat='sukses';
+					}else{
+						
+						$sr = 'SELECT * from keu_rekening';
+						$er = mysql_query($sr);
+						$stat2 = true;
+						if(mysql_num_rows($er)>0){ // ada rekening
+							$stat='ada data';
+							while ($rc=mysql_fetch_assoc($er)) { // rekap saldo rekening untuk tahun x (baru) 
+								$nominal = $rc['nominal2']!=0?',nominal='.$rc['nominal2'].',nominal2='.$rc['nominal2']:'';
+								$si = 'INSERT INTO keu_saldorekening 
+										SET rekening  = '.$rc['replid'].',
+											tahunbuku = '.$id.$nominal;
+											var_dump($id);exit();
+								$ei   = mysql_query($si);
+								$stat2 =!$ei?false:true;						
+							} //end of rekap saldo rekening
+						}$stat=!$stat2?'gagal_insert_saldorekening_'.mysql_error():'sukses';
+					}
+				}// end of berhasil simpan  
 				$out  = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
+
 			// delete -----------------------------------------------------------------
 			case 'hapus':
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
@@ -173,7 +199,7 @@
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY '.$mnu.' desc';
+						ORDER  BY nama desc';
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
@@ -191,7 +217,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','nama'=>$dt);
+						}$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;

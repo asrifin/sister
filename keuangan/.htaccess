@@ -10,7 +10,8 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^home/?$   									index.php?page=vhome
 	RewriteRule   ^tahun-buku/?$   								index.php?page=tahunbuku
 	RewriteRule   ^rekening/?$   								index.php?page=rekening
-	RewriteRule   ^tahun-anggaran/?$   							index.php?page=tahun_anggaran
+	RewriteRule   ^saldo-rekening/?$   							index.php?page=saldorekening
+	RewriteRule   ^anggaran/?$   								index.php?page=anggaran
 	
 	#transaksi keuangan
 	RewriteRule   ^transaksi/?$			   						index.php?page=transaksi
