@@ -25,18 +25,23 @@ ____________________________________________________
 	- Combogrid SQL pada models gimana kalau beda field??  (+)	
 	- Tambah koleksi untuk Lihat Katalog belum bisa (+)
 	- Edit Informasi Katalog pada View Katalog
+	- combo lokasi pada view katalog
+	- pencarian judul pas jumlahnya 2 hasilnya ikut 2
+	- cara looping data koleksi buku pada view katalog
+	- data katalog berhasil di insert tapi di searching ga nampil
+	- cara memasukkan replid pada textbox klasifikasi,pengarang, penerbit
 * data anggota (P)
 	- view siswa, pegawai dan member lain hanya bisa menampilkan yang sudah pinjam aja
 	-
 * sirkulasi (P)
-	- Peminjaman -> pencarian judul buku pas dipilih Object elemen html
+	- Peminjaman -> pencarian judul buku pas dipilih Object elemen html (+)
 	- Peminjaman  -> pencarian data peminjam menggunakan open dialog dan tab??
 	- Peminjaman  -> cara menampilkan tanggal pengembalian
 
 * OPAC (P)
 	- Cara Membuat menunya Gimana karena buka tab baru??
 ____________________________________________________
-* perangkat (C)
+* perangkat (P)
 * lokasi (C)
 * daftar penerbit (C)
 * daftar pengarang (C)

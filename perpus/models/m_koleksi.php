@@ -31,6 +31,7 @@
 				$status      = isset($_POST['statusS'])?filter(trim($_POST['statusS'])):'';
 				
 				$sql = 'SELECT *, b.idbuku AS kode,
+								k.replid as replid,
 								k.judul AS judul,
 								l.nama AS klasifikasi, 
 								r.nama AS penerbit, 
@@ -53,7 +54,7 @@
 						AND k.judul like "%'.$judul.'%"
 						AND b.callnumber like "%'.$callnumber.'%"
 						AND b.status like "%'.$status.'%"
-						';
+						ORDER BY k.replid asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -130,8 +131,31 @@
 
 			// // ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
+						// $s 		= ' SELECT
+				  //                         pb.replid as replid,
+				  //                         kg.judul,
+						// 				  LPAD(pb.idbuku,18,0)as kode,
+						// 				  pb.barkode,
+						// 				  pb.harga,
+						// 				  pb.tanggal,
+						// 				  pb.lokasi,
+						// 				  pb.tingkatbuku,
+						// 				  if(pb.sumber=0,"Beli","Pemberian") as sumber,
+						// 				  pj.nama jenisbuku,
+				  //                         kg.callnumber,
+				  //                         kg.dimensi,
+				  //                         kg.deskripsi, 
+				  //                         (SELECT count(*) from pus_buku where katalog=kg.replid) as jum
+				  //                       FROM
+				  //                         pus_katalog kg
+				  //                         LEFT JOIN pus_buku pb ON pb.replid = kg.pengarang
+				  //                         LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
+				  //                         LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
+				  //                         LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+				  //                       order BY
+				  //                         pb.replid asc';
 						$s 		= ' SELECT
-				                          pb.replid as replid,
+				                          kg.replid as replid,
 				                          kg.judul,
 										  LPAD(pb.idbuku,18,0)as kode,
 										  pb.barkode,
@@ -151,8 +175,11 @@
 				                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
 				                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
 				                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+				                        WHERE
+				                        	kg.replid = '.$_POST['replid'].'
 				                        order BY
-				                          pb.replid asc';
+				                          kg.replid asc';
+			
 											// print_r($s);exit();
 						$e 		= mysql_query($s) or die(mysql_error());
 						$r 		= mysql_fetch_assoc($e);
@@ -161,7 +188,7 @@
 									'status'      =>$stat,
 									'judul'       =>$r['judul'],
 									'jumlah'      =>$r['jum'],
-									'kode'      =>$r['kode'],
+									'kode'        =>$r['kode'],
 									'barkode'     =>$r['barkode'],
 									'sumber'      =>$r['sumber'],
 									'harga'       =>$r['harga'],
