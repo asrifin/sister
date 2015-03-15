@@ -9,6 +9,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	#refrensi
 	RewriteRule   ^home/?$   									index.php?page=vhome
 	RewriteRule   ^tahun-buku/?$   								index.php?page=tahunbuku
+	RewriteRule   ^kategori-rekening/?$   						index.php?page=kategorirek
 	RewriteRule   ^rekening/?$   								index.php?page=rekening
 	RewriteRule   ^saldo-rekening/?$   							index.php?page=saldorekening
 	RewriteRule   ^anggaran/?$   								index.php?page=anggaran

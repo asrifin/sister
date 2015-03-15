@@ -8,7 +8,7 @@
 <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
 
 <!-- panel 1 -->
-<div title="Grup Barang" class="panelx" id="panel1" style="display:none;">
+<div title="Kategori Anggaran" class="panelx" id="panel1" style="display:none;">
     <div class="input-control select span3">
         <select class="anggaran_cari" name="a_tahunbukuS" id="a_tahunbukuS" data-hint="Tahun Buku" ></select>
     </div>
@@ -46,26 +46,29 @@
 <!-- end of panel 1 -->
 
 <!-- panel 2 -->
-<div title="Katalog Barang" class="panelx" id="panel2" style="display:none;">
-    <button data-hint="kembali" id="k_grupBC"><span class=" icon-arrow-left-2"></span> </button>
+<div title="Detil Anggaran" class="panelx" id="panel2" style="display:none;">
+    <button data-hint="kembali" id="d_anggaranBC"><span class=" icon-arrow-left-2"></span> </button>
     <button data-hint="Tambah Data" id="k_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="k_cariBC"><span class="icon-search"></span> </button>
     <button data-hint="Cetak " id="k_cetakBC"><span class="icon-printer"></span> </button>
     
     <div class="grid" style="color:white;">
         <!-- <input type="hidden" id="k_grupH1" name="k_grupH1" > -->
-        <input type="hidden" id="k_grupS" class="katalog_cari" >
+        <input type="text" id="d_anggaranS" class="katalog_cari" >
         <div class="row">
-            <div class="span2">Grup Barang : </div>
-            <div id="k_grupDV" class="span2"></div>
+            <div>Kategori Anggaran : </div>
+            <div id="d_anggaranDV" ></div>
+            <!-- <div id="k_grupDV" class="span2"></div> -->
         </div>
         <div class="row">
-            <div class="span2">Lokasi :</div>
-            <div id="k_lokasiDV" class="span2"></div>
+            <div class="span2">Tahun Buku:</div>
+            <div id="d_tahunbukuDV"></div>
+            <!-- <div id="k_lokasiDV" class="span2"></div> -->
         </div>
         <div class="row">
-            <div class="span2">Total Aset :</div>
-            <div id="k_totasetDV" class="span2"></div>
+            <div class="span2">Departemen :</div>
+            <div id="d_departemenDV"></div>
+            <!-- <div id="k_totasetDV" class="span2"></div> -->
         </div>
     </div>
 
@@ -73,27 +76,19 @@
         <thead>
             <tr style="color:white;"class="info">
                 <th class="text-center">Kode </th>
-                <th class="text-center">Nama Barang</th>
-                <th class="text-left">Jenis</th>
-                <th class="text-left">Jumlah Unit</th>
-                <th class="text-left">Asset</th>
-                <th class="text-left">Penyusutan per th</th>
-                <th class="text-left">Keterangan</th>
+                <th class="text-center">Rekening</th>
+                <th class="text-left">nominal</th>
                 <th class="text-left">Aksi</th>
             </tr>
             <tr style="display:none;" id="k_cariTR" class="info">
-                <th class="text-left"><input placeholder="kode" id="k_kodeS"  class="katalog_cari" class="span1"></th>
-                <th class="text-left"><input placeholder="nama" id="k_namaS" class="katalog_cari"></th>
-                <th class="text-left"></th>
-                <th class="text-left"></th>
-                <th class="text-left"></th>
-                <th class="text-left"></th>
-                <th class="text-left"><input placeholder="keterangan" id="k_keteranganS"class="katalog_cari"></th>
+                <th class="text-left"><input placeholder="kode" id="d_kodeS"  class="detilanggaran_cari" class="span1"></th>
+                <th class="text-left"><input placeholder="Rekening" id="d_namaS" class="detilanggaran_cari"></th>
+                <th class="text-left"><input placeholder="nominal" id="d_nominalS" class="detilanggaran_cari"></th>
                 <th class="text-left"></th>
             </tr>
         </thead>
 
-        <tbody id="katalog_tbody">
+        <tbody id="detilanggaran_tbody">
         </tbody>
         <tfoot>
         </tfoot>

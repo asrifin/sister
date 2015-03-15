@@ -85,6 +85,17 @@
     </a>
     <!--end of  Tahun Buku -->
 
+    <!-- kategori  Rekening -->
+    <a href="kategori-rekening" class="tile bg-orange" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">kategori  Rekening</div>
+        </div>
+    </a>
+    <!--end of  kategori  Rekening -->
+
     <!-- Kode Rekening -->
     <a href="rekening" class="tile bg-yellow" data-click="transform">
         <div class="tile-content icon">

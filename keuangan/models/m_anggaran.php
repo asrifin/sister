@@ -82,7 +82,7 @@
 							$nox 	= $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
 								$btn ='<td>
-											<button data-hint="detail"  class="button" onclick="vwKatalog('.$res['replid'].');">
+											<button data-hint="detail"  class="button" onclick="vwDetilAnggaran('.$res['replid'].');">
 												<i class="icon-zoom-in"></i>
 											</button>
 											<button data-hint="ubah"  class="button" onclick="anggaranFR('.$res['replid'].');">
@@ -112,34 +112,17 @@
 					// grup barang
 
 					// katalog
-					case 'katalog':
-						$k_grup       = isset($_POST['k_grupS'])?filter(trim($_POST['k_grupS'])):'';
-						$k_kode       = isset($_POST['k_kodeS'])?filter(trim($_POST['k_kodeS'])):'';
-						$k_nama       = isset($_POST['k_namaS'])?filter(trim($_POST['k_namaS'])):'';
-						$k_keterangan = isset($_POST['k_keteranganS'])?filter(trim($_POST['k_keteranganS'])):'';
+					case 'detilanggaran':
+						$d_anggaran   = isset($_POST['d_anggaranS'])?filter(trim($_POST['d_anggaranS'])):'';
+						$d_kode       = isset($_POST['d_kodeS'])?filter(trim($_POST['d_kodeS'])):'';
+						$d_nama       = isset($_POST['d_namaS'])?filter(trim($_POST['d_namaS'])):'';
+						$d_nominal    = isset($_POST['d_nominalS'])?filter(trim($_POST['d_nominalS'])):'';
+						$d_keterangan = isset($_POST['d_keteranganS'])?filter(trim($_POST['d_keteranganS'])):'';
 						// var_dump($k_grup);exit();
-						$sql = 'SELECT
-									k.replid,
-									k.kode,
-									k.nama,
-									j.nama jenis,
-									COUNT(*) jum_unit,
-									SUM(b.harga) aset,
-									k.susut,
-									k.keterangan
-								FROM	
-									sar_katalog k
-									LEFT JOIN sar_jenis  j on j.replid = k.jenis
-									LEFT JOIN sar_barang b on b.katalog = k.replid
-								WHERE
-									k.grup = '.$k_grup.' and
-									k.kode like "%'.$k_kode.'%" and
-									k.nama like "%'.$k_nama.'%" and
-									k.keterangan like "%'.$k_keterangan.'%"
-								GROUP BY 
-									k.replid
-								ORDER BY
-									k.kode asc';
+						$sql = 'SELECT db.replid,db.nominal, r.kode, r.nama
+								FROM keu_detilbudget db 
+									LEFT JOIN keu_rekening r on r.replid = db.rekening
+								where db.budget ='.$d_anggaran;
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -149,8 +132,7 @@
 
 						$recpage = 5;//jumlah data per halaman
 						$aksi    ='tampil';
-						$subaksi ='katalog';
-						// $obj  = new pagination_class($sql,$starting,$recpage);
+						$subaksi ='detilanggaran';
 						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 						$result  = $obj->result;
 						
@@ -159,28 +141,22 @@
 						$out     ='';$totaset=0;
 						if($jum!=0){	
 							$nox 	= $starting+1;
-							while($res = mysql_fetch_array($result)){	
+							while($res = mysql_fetch_assoc($result)){	
 								$btn ='<td>
-											<button data-hint="detail"  class="button" onclick="vwBarang('.$res['replid'].');">
-												<i class="icon-zoom-in"></i>
-											</button>
-											<button data-hint="ubah"  class="button" onclick="katalogFR('.$res['replid'].');">
+											<button data-hint="ubah"  class="button" onclick="detilangggaranFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
-											<button data-hint="hapus"  class="button" onclick="katalogDel('.$res['replid'].');">
+											<button data-hint="hapus"  class="button" onclick="detilanggaranDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
+											</button>
 										 </td>';
 								$out.= '<tr>
 											<td>'.$res['kode'].'</td>
 											<td>'.$res['nama'].'</td>
-											<td>'.$res['jenis'].'</td>
-											<td>'.$res['jum_unit'].'</td>
-											<td class="text-right">Rp. '.number_format($res['aset']).',-</td>
-											<td class="text-right">'.$res['susut'].'%</td>
-											<td>'.$res['keterangan'].'</td>
+											<td class="text-right">Rp. '.number_format($res['nominal']).',-</td>
 											'.$btn.'
 										</tr>';
-								$totaset+=$res['aset'];
+								$totaset+=$res['nominal'];
 								$nox++;
 							}
 						}else{ #kosong
@@ -399,6 +375,7 @@
 											nama       = "'.filter($_POST['a_namaTB']).'",
 											nominal    = "'.getuang(filter($_POST['a_nominalTB'])).'",
 											keterangan = "'.filter($_POST['a_keteranganTB']).'"';
+						// var_dump($s);exit();
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 						$e 		= mysql_query($s2);
 						$stat 	= ($e)?'sukses':'gagal';

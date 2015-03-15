@@ -28,8 +28,9 @@ ________________________   master  ____________________________
 	- view : tidak tampil 
 	- filtering : combo rekening tidak tampil
 	- dll 
-* tahun anggaran (P)
-	- view : tidak tampil 
-	- filtering : combo rekening tidak tampil
-	- dll
+* anggaran (P)
+	+ view : tidak tampil 
+	+ filtering : combo rekening tidak tampil
+* detil anggaran (P)
+	- CRUDP 
 _____________________________________________________
