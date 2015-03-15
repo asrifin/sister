@@ -9,7 +9,7 @@
 * pendataan siswa (P)
 * presensi siswa (P)
 * rapor siswa  (P)
-* pendataan alumni (P)
+* pendataan alumni (P) >multiple input > status siswa ke alumni
 * pendataan mutasi siswa (C)
 
 * pelajaran (C)

@@ -29,7 +29,7 @@
 				WHERE	
 					tb.nama LIKE "%'.$searchTerm.'%"
 					OR tb.nisn LIKE "%'.$searchTerm.'%"';
-							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
+					// tb.tahunlulus = '.$_GET['tahunlulus'].' and 
 			// print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -129,18 +129,39 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunlulus = "'.filter($_POST['tahunlulusTB']).'",
-								siswa    	= "'.filter($_POST['siswaH']).'",
-								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-				// print_r($s);exit();
-								// nisn    	= "'.filter($_POST['nisnH']).'",
-								// departemen    	= "'.filter($_POST['departemenH']).'",
-				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e2 = mysql_query($s2);
-				if(!$e2){
-					$stat = 'gagal menyimpan';
+				if(isset($_POST['replid']) && $_POST['replid']!='' ){
+					// $xx = 'masuk edit';
+					// var_dump($xx);exit();
+					$s = 'UPDATE '.$tb.' set 	tahunlulus = "'.filter($_POST['tahunlulusH']).'",
+												siswa    	= "'.filter($_POST['siswaH']).'",
+												keterangan 	= "'.filter($_POST['keteranganTB']).'"
+										WHERE replid='.$_POST['replid'];
+									// print_r($s);exit();
+					$e2    =mysql_query($s);
+					$stat =$e2?'sukses':'gagal';
 				}else{
-					$stat = 'sukses';
+					$stat2=true;
+					if(isset($_POST['siswa'])){
+
+						foreach ($_POST['siswa'] as $i=> $v) {
+							$s2='INSERT INTO aka_alumni set 	siswa 		= '.$v.',
+																tahunlulus 	= "'.$_POST['tahunlulusTB'].'",
+																keterangan 	= "'.$_POST['keteranganTB'].'"';
+							// $s2='INSERT INTO aka_alumni set 	tahunlulus = "'.filter($_POST['tahunlulusH'][]).'",
+							// 									siswa    	= "'.filter($_POST['siswaH']).'",
+							// 									keterangan 	= "'.filter($_POST['keteranganTB']).'"';
+							$e2    =mysql_query($s2);
+							$stat2 =$e2?true:false;
+
+						}
+						if($stat2){
+							$sq = 'UPDATE aka_siswa set status = 0';
+							$esq=mysql_query($sq);
+							$stats=$esq?'berhasil':'gagal';	
+						}else{
+							$stats='gagal';
+						}
+					}$stat=$stat2?'sukses':'gagal_simpan_barang';
 				}$out  = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
@@ -151,7 +172,7 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['siswa']));
 			break;
 			// delete -----------------------------------------------------------------
 
