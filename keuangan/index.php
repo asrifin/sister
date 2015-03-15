@@ -74,8 +74,10 @@
                 <a class="dropdown-toggle" href="#">Referensi</a>
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="tahun-buku">Tahun Buku</a></li>
+                    <li><a href="kategori-rekening">Kategori Rekening</a></li>
                     <li><a href="rekening">Kode Rekening</a></li>
-                    <li><a href="tahun-anggaran">Tahun Anggaran</a></li>
+                    <li><a href="saldo-rekening">Saldo Rekening</a></li>
+                    <li><a href="anggaran">Anggaran</a></li>
                 </ul>
             </div>
              
@@ -111,15 +113,25 @@
             }else{
                 switch ($_GET['page']) {
                     // referensi
+                    case 'kategorirek':
+                        require $d.'v_kategorirek.php';
+                    break;
                     case 'tahunbuku':
                         require $d.'v_tahunbuku.php';
                     break;
                     case 'rekening':
                         require $d.'v_rekening.php';
                     break;
-                    case 'manggaran':
-                        require $d.'v_manggaran.php';
+                    case 'saldorekening':
+                        require $d.'v_saldorekening.php';
                     break;
+                    case 'anggaran':
+                        require $d.'v_anggaran.php';
+                    break;
+                    case 'detilanggaran':
+                        require $d.'v_detilanggaran.php';
+                    break;
+
 
                     // transaksi
                     case 'transaksi':

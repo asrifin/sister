@@ -7,7 +7,7 @@
 |_________________|  
 |  * : menu	  |
 |_________________|
-____________________________________________________
+_________________________  transact  ___________________________
 
 * transaksi (P)
 	+ submenu : jurnal_umum 
@@ -19,15 +19,18 @@ ____________________________________________________
 	- Rincian nominal pembayaran uang sekolah dan uang pangkal
 * inventory(P)
 
-____________________________________________________
+________________________   master  ____________________________
 
-* tahun buku (C)
+* tahun buku (P)
+	- add : trigger -> rekap data saldo rekening @tahun
+	- delete : trigger -> hapus data saldo rekening @tahun
 * kode rekening (P)
 	- view : tidak tampil 
 	- filtering : combo rekening tidak tampil
 	- dll 
-* tahun anggaran (P)
-	- view : tidak tampil 
-	- filtering : combo rekening tidak tampil
-	- dll
+* anggaran (P)
+	+ view : tidak tampil 
+	+ filtering : combo rekening tidak tampil
+* detil anggaran (P)
+	- CRUDP 
 _____________________________________________________

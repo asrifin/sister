@@ -85,6 +85,17 @@
     </a>
     <!--end of  Tahun Buku -->
 
+    <!-- kategori  Rekening -->
+    <a href="kategori-rekening" class="tile bg-orange" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">kategori  Rekening</div>
+        </div>
+    </a>
+    <!--end of  kategori  Rekening -->
+
     <!-- Kode Rekening -->
     <a href="rekening" class="tile bg-yellow" data-click="transform">
         <div class="tile-content icon">
@@ -96,16 +107,27 @@
     </a>
     <!--end of  Kode Rekening -->
 
-    <!-- Tahun Anggaran -->
-    <a href="tahun-anggaran" class="tile bg-lightRed" data-click="transform">
+    <!-- Kode saldo Rekening -->
+    <a href="saldo-rekening" class="tile bg-lightGreen" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-copy"></span>
         </div>
         <div class="brand">
-            <div class="label">Tahun Anggaran</div>
+            <div class="label">Saldo Rekening</div>
         </div>
     </a>
-    <!-- end of Tahun Anggaran -->
+    <!--end of  Kode saldoRekening -->
+
+    <!-- Anggaran -->
+    <a href="anggaran" class="tile bg-lightRed" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Anggaran</div>
+        </div>
+    </a>
+    <!-- end of Anggaran -->
 
 <!--     <a href="set-angsuran" class="tile bg-green" data-click="transform">
         <div class="tile-content icon">

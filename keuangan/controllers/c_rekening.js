@@ -68,7 +68,6 @@ var contentFR ='';
 
 // combo departemen ---
     function cmbkategorirek(typ,idkat){
-        // alert(typ+', '+id);
         $.ajax({
             url:dir,
             data:'aksi=cmbkategorirek',
