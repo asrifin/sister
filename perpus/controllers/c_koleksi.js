@@ -381,8 +381,8 @@ function cmbtingkatbuku(tgt){
                             $('#lokasiTB').val(dt.lokasi);
                             $('#tingkatTB').val(dt.tingkatbuku);
                             
-                            cmblokasi(dt.lokasi);
-                            cmbtingkatbuku(dt.tingkatbuku);
+                            cmblokasi(dt.lok);
+                            cmbtingkatbuku(dt.tgt);
 
                         }
                     });

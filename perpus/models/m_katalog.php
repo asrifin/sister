@@ -262,9 +262,16 @@
 					break;
 
 					case 'koleksi':
-						$s 		= 'pus_buku set 	kode 		= "'.filter($_POST['kode_jenisTB']).'",
-												nama 		= "'.filter($_POST['nama_jenisTB']).'",
-												keterangan 	= "'.filter($_POST['ket_jenisTB']).'"';
+						$s 		= 'pus_buku set 	
+												judul   = "'.filter($_POST['judul_jenisTB']).'",
+												jumlah  = "'.filter($_POST['jml_jenisTB']).'",
+												idbuku  = "'.filter($_POST['idbukuTB']).'",
+												barkode = "'.filter($_POST['barcodeTB']).'",
+												sumber  = "'.filter($_POST['sumberTB']).'",
+												harga   = "'.filter($_POST['hargaTB']).'",
+												tanggal = "'.filter($_POST['tglTB']).'",
+												lokasi  = "'.filter($_POST['lokasiTB']).'",
+												tingkat = "'.filter($_POST['tingkatTB']).'"';
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 						// var_dump($s2);exit();
 						$e 		= mysql_query($s2);
@@ -325,11 +332,23 @@
 		
 			// delete -----------------------------------------------------------------
 			case 'hapus':
-				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
-				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
-				$e    = mysql_query($s);
-				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
+				switch ($_POST['subaksi']) {
+					case 'katalog':
+							$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
+							$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
+							$e    = mysql_query($s);
+							$stat = ($e)?'sukses':'gagal';
+							$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
+						break;
+					
+					case 'koleksi':
+							$d    = mysql_fetch_assoc(mysql_query('SELECT * from pus_buku where replid='.$_POST['replid']));
+							$s    = 'DELETE from pus_buku WHERE replid='.$_POST['replid'];
+							$e    = mysql_query($s);
+							$stat = ($e)?'sukses':'gagal';
+							$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
+						break;
+				}
 			break;
 			// delete -----------------------------------------------------------------
 
@@ -399,15 +418,17 @@
 								));
 
 					break;
-					
-					case 'k_detail':
-						$s 		= ' SELECT
+
+					case 'k_detail':						
+						$s   = ' SELECT
+								  kg.replid as replid,
 		                          kg.judul,
 		                          kf.kode kode_klas,
 		                          kf.nama klasifikasi,
 		                          pr.nama pengarang,
 		                          pb.nama penerbit,
 		                          kg.editor,
+		                          kg.photo2,
 		                          kg.tahunterbit,
 		                          kg.kota,
 		                          kg.isbn,
@@ -421,67 +442,97 @@
 								  pj.nama jenisbuku,
 		                          kg.callnumber,
 		                          kg.dimensi,
-		                          kg.deskripsi,
-		                          buku.barkode, 
-		                          buku.idbuku,
-								  if(buku.sumber=1,"Beli","Pemberian") as sumber, 
-		                          buku.harga,
-		                          buku.tanggal,
-								  if(buku.status=1,"Tersedia","Dipinjam") as statusbuku, 
-		                          pl.nama lokasi,
-		                          pt.nama tingkatbuku
-		                          -- (SELECT count(*) from pus_buku where katalog=kg.replid)jum
+		                          kg.deskripsi
 		                        FROM
 		                          pus_katalog kg
-		                          LEFT JOIN pus_buku buku ON kg.replid = buku.katalog
-		                          LEFT JOIN pus_tingkatbuku pt ON pt.replid = buku.tingkatbuku
-		                          LEFT JOIN pus_lokasi pl ON pl.replid = buku.lokasi
 		                          LEFT JOIN pus_pengarang pr ON pr.replid = kg.pengarang
 		                          LEFT JOIN pus_penerbit pb ON pb.replid = kg.penerbit
 		                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
-		                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
-		                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+				                  LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
+				                  LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
 		                        WHERE 
 		                          kg.replid = '.$_POST['replid'].'
 		                        order BY
 		                          kg.judul asc';
 											// print_r($s);exit();
-						$e 		= mysql_query($s) or die(mysql_error());
-						$r 		= mysql_fetch_assoc($e);
-						$stat 	= ($e)?'sukses':'gagal';
-						$out    = json_encode(array(
-									'status'      =>$stat,
-									'judul'       =>$r['judul'],
-									'kode_klas'   =>$r['kode_klas'],
-									'klasifikasi' =>$r['klasifikasi'],
-									'pengarang'   =>$r['pengarang'],
-									'callnumber'  =>$r['callnumber'],
-									'penerjemah'  =>$r['penerjemah'],
-									'editor'      =>$r['editor'],
-									'penerbit'    =>$r['penerbit'],
-									'tahunterbit' =>$r['tahunterbit'],
-									'kota'        =>$r['kota'],
-									'isbn'        =>$r['isbn'],
-									'issn'        =>$r['issn'],
-									'bahasa'      =>$r['bahasa'],
-									'seri'        =>$r['seri'],
-									'volume'      =>$r['volume'],
-									'edisi'       =>$r['edisi'],
-									'jenisbuku'   =>$r['jenisbuku'],
-									'halaman'     =>$r['halaman'],
-									'dimensi'     =>$r['dimensi'],
-									'deskripsi'   =>$r['deskripsi'],		
-									'barkode'     =>$r['barkode'],		
-									'idbuku'      =>$r['idbuku'],	
-									'sumber'      =>$r['sumber'],		
-									'harga'       =>$r['harga'],		
-									'tanggal'     =>$r['tanggal'],		
-									'statusbuku'  =>$r['statusbuku'],		
-									'lokasi'      =>$r['lokasi'],		
-									'tingkatbuku' =>$r['tingkatbuku']	
-								));
-
+						$e   = mysql_query($s);
+						$r   = mysql_fetch_assoc($e);
+						$barangArr=array();
+						if(!$e){ 
+							$stat='gagal_view';
+						}else{
+							$s2 = 'SELECT
+				                          kg.replid as replid,
+				                          kg.judul,
+										  LPAD(pb.idbuku,18,0)as idbuku,
+										  pb.barkode,
+										  pb.harga,
+										  pb.tanggal,
+										  pl.nama lokasi,
+										  pt.nama tingkatbuku,
+										  if(pb.sumber=0,"Beli","Pemberian") as sumber,
+				                          kg.callnumber,
+							 			  if(pb.status=1,"Tersedia","Dipinjam") as statusbuku, 
+				                          kg.dimensi,
+				                          kg.deskripsi, 
+				                          (SELECT count(*) from pus_buku where katalog=kg.replid) as jum
+				                        FROM
+				                          pus_katalog kg
+				                          LEFT JOIN pus_buku pb ON pb.replid = kg.pengarang
+				                          LEFT JOIN pus_tingkatbuku pt ON pt.replid = pb.tingkatbuku
+				                          LEFT JOIN pus_lokasi pl ON pl.replid = pb.lokasi
+				                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
+				                        WHERE
+				                        	kg.replid = '.$_POST['replid'].'
+				                        order BY
+				                          kg.replid asc';
+							// var_dump($s2);exit();
+							$e2 = mysql_query($s2);
+							if(!$e2){
+								$stat=mysql_error();
+							}else{
+								while ($r2=mysql_fetch_assoc($e2)) {
+									$barangArr[]=array(
+											'barkode'     =>$r2['barkode'],		
+											'idbuku'      =>$r2['idbuku'],	
+											'sumber'      =>$r2['sumber'],		
+											'harga'       =>$r2['harga'],		
+											'tanggal'     =>$r2['tanggal'],		
+											'statusbuku'  =>$r2['statusbuku'],		
+											'lokasi'      =>$r2['lokasi'],		
+											'tingkatbuku' =>$r2['tingkatbuku']	
+										);
+								}$stat='sukses';
+							}
+						}
+						$out = json_encode(array(
+									'status' =>$stat,
+									'data'   =>array(
+										'replid'      =>$r['replid'],
+										'judul'       =>$r['judul'],
+										'kode_klas'   =>$r['kode_klas'],
+										'klasifikasi' =>$r['klasifikasi'],
+										'pengarang'   =>$r['pengarang'],
+										'callnumber'  =>$r['callnumber'],
+										'penerjemah'  =>$r['penerjemah'],
+										'editor'      =>$r['editor'],
+										'penerbit'    =>$r['penerbit'],
+										'tahunterbit' =>$r['tahunterbit'],
+										'kota'        =>$r['kota'],
+										'isbn'        =>$r['isbn'],
+										'issn'        =>$r['issn'],
+										'bahasa'      =>$r['bahasa'],
+										'seri'        =>$r['seri'],
+										'volume'      =>$r['volume'],
+										'edisi'       =>$r['edisi'],
+										'jenisbuku'   =>$r['jenisbuku'],
+										'halaman'     =>$r['halaman'],
+										'dimensi'     =>$r['dimensi'],
+										'deskripsi'   =>$r['deskripsi'],		
+										'barangArr'   =>$barangArr
+								)));					
 					break;
+					
 
 					case 'koleksi':
 						$s 		= ' SELECT

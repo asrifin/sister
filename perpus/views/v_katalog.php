@@ -161,13 +161,13 @@
                                   <select placeholder="Lokasi" name="lokasiS" id="lokasiS" ></select>
                               </div><br><br>
                               <div class="form-actions">
-                                <a href="#" data-hint="Tambah Koleksi" align="left" id="koleksi_duaBC" class="button"><span class="icon-plus-2"></span> Koleksi</a>
+                                <a href="#" data-hint="Tambah Koleksi" xclass="large" id="koleksi_duaBC" class="button"><span class="icon-plus-2"></span> Koleksi</a>
                               </div>
 
                               <table id="katalogTBL" style="display:visible;" width="800px" class="table hovered bordered striped panelx" >
                                   <thead>
                                       <tr style="color:white;" class="info">
-                                      <input  id="dua_idkatalogH" name="dua_idkatalogH" type="hidden">
+                                      <!-- <input  id="dua_idkatalogH" name="dua_idkatalogH" type="hidden"> -->
                                           <th class="text-left">Barkode</th>
                                           <th class="text-left" >Nomor ID</th>
                                           <th class="text-left" >Sumber</th>
@@ -177,24 +177,6 @@
                                           <th class="text-left" >Lokasi</th>
                                           <th class="text-left" >Tingkat</th>
                                           <th class="text-left">Pilihan</th>
-                                          <!-- <th class="text-left" >Aksi</th> -->
-                                      </tr>
-                                      <tr style="display:visible;" class="selected">
-                                          <th class="text-left" id="barkodeTH"></th>
-                                          <th class="text-left" id="nomorTH"></th>
-                                          <th class="text-left" id="sumberTH"></th>
-                                          <th class="text-left" id="hargaTH"></th>
-                                          <th class="text-left" id="tgl_diperolehTH"></th>
-                                          <th class="text-left" id="statusTH"></th>
-                                          <th class="text-left" id="lokasiTH"></th>
-                                          <th class="text-left" id="tingkatTH"></th>
-                                          <th class="text-left">
-                                            <button data-hint="Ubah Koleksi" id="ubah_koleksiBC"><span class="icon-pencil"></span></button>
-                                            <button data-hint="Hapus Koleksi" id="hapus_koleksiBC"><span class="icon-remove"></span></button>
-                                          </th>
-                                          <!-- <th class="text-left" id="lokasiS"> -->
-                                            
-                                          </th>
                                       </tr>
                                   </thead>
 
