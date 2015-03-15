@@ -6,18 +6,21 @@
 |  P : progress	  |
 |_________________|
 
+---------------   transact ----------------
 * pendataan siswa (P)
 * presensi siswa (P)
 * rapor siswa  (P)
 * pendataan alumni (P)
 * pendataan mutasi siswa (C)
-
 * pelajaran (C)
 * guru (C)
 * jadwal pelajaran  (P)
+	- CRUD+P
 * presensi guru (P)
+	- CRUD+P
 * kegiatan akademik (C)
 
+---------------  master   -----------------
 * departemen (C)
 * angkatan (C)
 * tahun ajaran (C)
@@ -27,8 +30,4 @@
 * semester (C)
 * jenis mutasi (C)
 * tahun lulus (C)
-	
-
-
-
-
+-------------------------------------------
