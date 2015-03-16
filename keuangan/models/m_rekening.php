@@ -4,7 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu  = 'rekening';
+	$mnu  = 'detilrekening';
 	$tb   = 'keu_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -13,15 +13,15 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$kategorirek = trim($_POST['kategorirekS'])?filter($_POST['kategorirekS']):'';
-				$kode        = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
-				$nama        = trim($_POST['namaS'])?filter($_POST['namaS']):'';
-				$keterangan  = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$kategorirekening = trim($_POST['kategorirekeningS'])?filter($_POST['kategorirekeningS']):'';
+				$kode             = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
+				$nama             = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$keterangan       = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
-							kategorirek like "%'.$kategorirek.'%" and
+							kategorirekening like "%'.$kategorirekening.'%" and
 							kode like "%'.$kode.'%" and
 							nama like "%'.$nama.'%" and
 							keterangan like "%'.$keterangan.'%" 
@@ -45,17 +45,17 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					$curKat = '';
-					while($res = mysql_fetch_assoc($result)){	
-						// print_r($res);
-						if($res['kategorirek']!=$curKat){
-							$ss = 'SELECT replid,nama,RPAD(kode,6,0)kode from keu_kategorirek where replid='.$res['kategorirek'];	
-							$ee = mysql_query($ss);
-							$rr = mysql_fetch_assoc($ee);
-							$out.= '<tr>
-										<td><b>'.$rr['kode'].'</b></td>
-										<td colspan="3"><b>'.$rr['nama'].'</b></td>
-									</tr>';
-						}else{
+					while($res = mysql_fetch_assoc($result)){
+						// print_r($res);exit();	
+						// if($res['kategorirekening']!=$curKat){
+						// 	$ss = 'SELECT replid,nama,RPAD(kode,6,0)kode from keu_kategorirekening where replid='.$res['kategorirekening'];	
+						// 	$ee = mysql_query($ss);
+						// 	$rr = mysql_fetch_assoc($ee);
+						// 	$out.= '<tr>
+						// 				<td><b>'.$rr['kode'].'</b></td>
+						// 				<td colspan="3"><b>'.$rr['nama'].'</b></td>
+						// 			</tr>';
+						// }else{
 							$btn ='<td>
 										<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 											<i class="icon-pencil on-left"></i>
@@ -69,8 +69,8 @@
 										<td>'.$res['keterangan'].'</td>
 										'.$btn.'
 									</tr>';
-						}
-						$curKat=$res['kategorirek'];
+						// }
+						$curKat=$res['kategorirekening'];
 						$nox++;
 					}
 				}else{ #kosong
