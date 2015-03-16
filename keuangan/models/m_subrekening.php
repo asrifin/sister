@@ -4,23 +4,24 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'kategorirek';
+	$mnu = 'subrekening';
 	$tb  = 'keu_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
 	}else{
 		switch ($_POST['aksi']) {
+			// -----------------------------------------------------------------
 			case 'tampil':
-				$kode = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
-				$nama = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$nama       = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
-							nama like "%'.$nama.'%" and
-							kode like "%'.$kode.'%" 
+							nama like "%'.$nama.'%" AND
+							keterangan like "%'.$keterangan.'%" 
 						ORDER 
-							BY kode asc';
+							BY nama desc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -31,7 +32,7 @@
 				$aksi    ='tampil';
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-				$result =$obj->result;
+				$result  =$obj->result;
 
 				$jum = mysql_num_rows($result);
 				$out ='';
@@ -46,10 +47,10 @@
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
-									// <td id="tahunbukuTD_'.$res['replid'].'">'.$res['nama'].'</td>
 						$out.= '<tr>
-									<td>'.$res['kode'].'</td>
+									<td>'.$nox.'</td>
 									<td>'.$res['nama'].'</td>
+									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -67,16 +68,14 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 	= $tb.' set kode  = "'.filter($_POST['kodeTB']).'",
-								nama = "'.filter($_POST['namaTB']).'"';
-				// var_dump($s);exit();
-				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e    = mysql_query($s2);
-				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat));
+				$s 		= $tb.' set nama  		= "'.filter($_POST['namaTB']).'",
+									keterangan  = "'.filter($_POST['keteranganTB']).'"';
+				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				$e 		= mysql_query($s2);
+				$stat 	= ($e)?'sukses':'gagal';
+				$out 	= json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
-			
 
 			// delete -----------------------------------------------------------------
 			case 'hapus':
@@ -92,15 +91,14 @@
 			case 'ambiledit':
 				$s 		= ' SELECT *
 							from '.$tb.'
-							WHERE replid='.$_POST['replid'];
-				// var_dump($s);exit();
+							WHERE  replid='.$_POST['replid'];
 				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status' =>$stat,
-							'nama'   =>$r['nama'],
-							'kode'   =>$r['kode']
+							'status'     =>$stat,
+							'nama'       =>$r['nama'],
+							'keterangan' =>$r['keterangan']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
@@ -130,8 +128,6 @@
 				}else{
 					if(isset($_POST[$mnu])){
 						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST['departemen'])){
-						$w.='where departemen ='.$_POST['departemen'];
 					}
 				}
 				

@@ -73,6 +73,8 @@
             <div class="element">
                 <a class="dropdown-toggle" href="#">Referensi</a>
                 <ul class="dropdown-menu" data-role="dropdown">
+                    <li><a href="sub-rekening">Sub Rekening</a></li>
+                    <li><a href="status-rekening">Status Rekening</a></li>
                     <li><a href="tahun-buku">Tahun Buku</a></li>
                     <li><a href="kategori-rekening">Kategori Rekening</a></li>
                     <li><a href="rekening">Kode Rekening</a></li>
@@ -113,8 +115,14 @@
             }else{
                 switch ($_GET['page']) {
                     // referensi
-                    case 'kategorirek':
-                        require $d.'v_kategorirek.php';
+                    case 'statusrekening':
+                        require $d.'v_statusrekening.php';
+                    break;
+                    case 'subrekening':
+                        require $d.'v_subrekening.php';
+                    break;
+                    case 'kategorirekening':
+                        require $d.'v_kategorirekening.php';
                     break;
                     case 'tahunbuku':
                         require $d.'v_tahunbuku.php';

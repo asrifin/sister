@@ -1,4 +1,4 @@
-var mnu       = 'kategorirek';
+var mnu       = 'subrekening';
 var dir       = 'models/m_'+mnu+'.php';
 var contentFR = '';
 
@@ -7,18 +7,17 @@ var contentFR = '';
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
 
-                        +'<label>Kode </label>'
-                        +'<div class="input-control text size1">'
-                            +'<input maxlength="6" required name="kodeTB" id="kodeTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        
-                        +'<label>Kategori Rekening </label>'
+                        +'<label>Nama Sub Rekening</label>'
                         +'<div class="input-control text">'
-                            +'<input required name="namaTB" id="namaTB">'
+                            +'<input required placeholder="nama sub rekekening" name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        
+
+                        +'<label>Keterangan</label>'
+                        +'<div class="input-control textarea">'
+                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
+                        +'</div>'
+
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -32,7 +31,7 @@ var contentFR = '';
         });
 
         //search action
-        $('#kodeS,#namaS').keydown(function (e){
+        $('#namaS,#keteranganS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
         });
@@ -63,11 +62,10 @@ var contentFR = '';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#departemenS').val());
+                    viewTB();
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
-                }
-                notif(cont,clr);
+                }notif(cont,clr);
             }
         });
     }
@@ -77,7 +75,7 @@ var contentFR = '';
     function viewTB(){
         var aksi ='aksi=tampil';
         var cari ='&namaS='+$('#namaS').val()
-                +'&kodeS='+$('#kodeS').val();
+                +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -85,9 +83,9 @@ var contentFR = '';
             beforeSend:function(){
                 $('#tbody').html('<tr><td align="center" colspan="7"><img src="../img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
-                setTimeout(function(){
+                // setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
-                },1000);
+                // },1000);
             }
         });
     }
@@ -115,7 +113,7 @@ var contentFR = '';
                         success:function(dt){
                             $('#idformH').val(id);
                             $('#namaTB').val(dt.nama);
-                            $('#kodeTB').val(dt.kode);
+                            $('#keteranganTB').val(dt.keterangan);
                         }
                     });
                 }$.Dialog.title(titlex+' '+mnu);
@@ -127,9 +125,9 @@ var contentFR = '';
 
 //paging ---
     function pagination(page,aksix,menux){
-        var datax= 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-        var cari ='&kodeS='+$('#kodeS').val()
-                 +'&namaS='+$('#namaS').val();
+        var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
+        var cari ='&namaS='+$('#namaS').val()
+                 +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url:dir,
             type:"post",
@@ -137,9 +135,9 @@ var contentFR = '';
             beforeSend:function(){
                 $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
-                setTimeout(function(){
+                // setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
-                },1000);
+                // },1000);
             }
         });
     }   
