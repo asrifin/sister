@@ -179,7 +179,7 @@ var a_contentFR = k_contentFR = b_contentFR ='';
             });
             //print----
             $('#a_cetakBC').on('click',function(){
-                printPDF('grup');
+                printPDF('anggaran');
             });$('#k_cetakBC').on('click',function(){
                 printPDF('katalog');
             });$('#b_cetakBC').on('click',function(){
@@ -283,8 +283,9 @@ var a_contentFR = k_contentFR = b_contentFR ='';
         // switch panel
             switchPN(1);
             // back button
-            $('#k_grupBC').on('click',function(){ // << grup
-                cmblokasi();
+            $('#d_anggaranBC').on('click',function(){ // << grup
+                cmbtahunbuku('filter','');
+                // cmblokasi();
                 switchPN(1);
             });$('#b_katalogBC').on('click',function(){ // << katalog
                 // vwKatalog($('#g_lokasiS').val());
@@ -370,28 +371,28 @@ var a_contentFR = k_contentFR = b_contentFR ='';
     // end of kategori anggaran  ---
 
     // katalog barang
-        // function vwKatalog(id) {
-        //     var aksi ='aksi=tampil&subaksi=katalog&k_grupS='+id;
-        //     var cari ='&k_kodeS='+$('#k_kodeS').val()
-        //             +'&k_namaS='+$('#k_namaS').val()
-        //             +'&k_keteranganS='+$('#k_keteranganS').val();
-        //             // alert(aksi+cari);
-        //     $.ajax({
-        //         url : dir,
-        //         type: 'post',
-        //         data: aksi+cari,
-        //         beforeSend:function(){
-        //             $('#katalog_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
-        //         },success:function(dt){
-        //             $('#k_grupS').val(id);
-        //             switchPN(2);
-        //             vwHeadKatalog(id);
-        //             setTimeout(function(){
-        //                 $('#katalog_tbody').html(dt).fadeIn();
-        //             },1000);
-        //         }
-        //     });
-        // }   
+        function vwDetilAnggaran(id) {
+            var aksi ='aksi=tampil&subaksi=detilanggaran&d_anggaranS='+id;
+            var cari ='&d_kodeS='+$('#d_kodeS').val()
+                    +'&d_namaS='+$('#d_namaS').val()
+                    +'&d_nominalS='+$('#d_nominalS').val()
+                    +'&d_keteranganS='+$('#d_keteranganS').val();
+            $.ajax({
+                url : dir,
+                type: 'post',
+                data: aksi+cari,
+                beforeSend:function(){
+                    $('#detilanggaran_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                },success:function(dt){
+                    $('#d_anggaranS').val(id);
+                    switchPN(2);
+                    vwHeadDetAnggaran(id);
+                    setTimeout(function(){
+                        $('#detilanggaran_tbody').html(dt).fadeIn();
+                    },1000);
+                }
+            });
+        }   
     //end of  katalog barang
 
     // barang
@@ -731,9 +732,9 @@ var a_contentFR = k_contentFR = b_contentFR ='';
                                 $.each(dt.jenis,function(id,item){
                                     opt+='<option value="'+item.replid+'">'+item.nama+'</option>';
                                 });$('#k_jenisTB').html('<option value="">Pilih Jenis</option>'+opt);
-                                $('#k_lokasiTB').val($('#k_lokasiDV').html());
+                                $('#k_lokasiTB').val($('#d_tahunbukuDV').html());
                                 $('#k_grupH2').val($('#k_grupS').val());
-                                $('#k_grupTB').val($('#k_grupDV').html());
+                                $('#k_grupTB').val($('#d_anggaranDV').html());
                             }
                         });// end of form :: lokasi (disabled)
                     }else{ // edit mode
@@ -750,8 +751,8 @@ var a_contentFR = k_contentFR = b_contentFR ='';
                                 }else{
                                     $('#k_idformH').val(id);
                                     $('#k_grupH2').val($('#k_grupS').val());
-                                    $('#k_lokasiTB').val($('#k_lokasiDV').html());
-                                    $('#k_grupTB').val($('#k_grupDV').html());
+                                    $('#k_lokasiTB').val($('#d_tahunbukuDV').html());
+                                    $('#k_grupTB').val($('#d_anggaranDV').html());
                                     $('#k_kodeTB').val(dt.data.kode);
                                     $('#k_namaTB').val(dt.data.nama);
                                     $('#k_susutTB').val(dt.data.susut);
@@ -851,19 +852,19 @@ var a_contentFR = k_contentFR = b_contentFR ='';
 
 /*headinfo*/
     // katalog
-        function vwHeadKatalog (id) {
+        function vwHeadDetAnggaran (id) {
             $.ajax({
                 url:dir,
                 type:'post',
                 dataType:'json',
-                data:'aksi=headinfo&subaksi=katalog&grup='+id,
+                data:'aksi=headinfo&subaksi=detilanggaran&anggaran='+id,
                 success:function (dt) {
                     if (dt.status!='sukses') {
                         alert(dt.status+' memuat data header');
                     }else{
-                        $('#k_grupDV').html(dt.grup);
-                        $('#k_lokasiDV').html(dt.lokasi);
-                        $('#k_totasetDV').html('Rp. '+dt.totaset+',-');
+                        $('#d_anggaranDV').html(dt.anggaran);
+                        $('#d_tahunbukuDV').html(dt.tahunbuku);
+                        $('#d_departemenDV').html(dt.departemen);
                     }
                 },
             });

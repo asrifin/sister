@@ -24,12 +24,19 @@ ________________________   master  ____________________________
 * tahun buku (P)
 	- add : trigger -> rekap data saldo rekening @tahun
 	- delete : trigger -> hapus data saldo rekening @tahun
-* kode rekening (P)
+* kategori rekening (C)
+	+ CRUD
+* detil rekening (P)
 	- view : tidak tampil 
 	- filtering : combo rekening tidak tampil
 	- dll 
-* tahun anggaran (P)
-	- view : tidak tampil 
-	- filtering : combo rekening tidak tampil
-	- dll
+* anggaran (P)
+	+ view : tidak tampil 
+	+ filtering : combo rekening tidak tampil
+* detil anggaran (P)
+	- CRUDP 
+* sub rekening (C)
+	+ CRUD 
+* status rekening (C)
+	+ CRUD 
 _____________________________________________________

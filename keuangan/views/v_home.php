@@ -85,6 +85,39 @@
     </a>
     <!--end of  Tahun Buku -->
 
+    <!-- kategori  Rekening -->
+    <a href="kategori-rekening" class="tile bg-orange" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">kategori  Rekening</div>
+        </div>
+    </a>
+    <!--end of  kategori  Rekening -->
+
+    <!-- Status rekening -->
+    <a href="status-rekening" class="tile bg-red" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Status Rekening</div>
+        </div>
+    </a>
+    <!--end of  sub rekening -->
+
+    <!-- sub rekening -->
+    <a href="sub-rekening" class="tile bg-green" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Sub Rekening</div>
+        </div>
+    </a>
+    <!--end of  sub rekening -->
+
     <!-- Kode Rekening -->
     <a href="rekening" class="tile bg-yellow" data-click="transform">
         <div class="tile-content icon">

@@ -1,5 +1,7 @@
-var mnu       ='rekening'; 
-var dir       ='models/m_'+mnu+'.php';
+var mnu  ='rekening'; 
+var dir  ='models/m_'+mnu+'.php';
+var mnu2 ='kategorirekening'; 
+var dir2 ='models/m_'+mnu2+'.php';
 var contentFR ='';
 
 // main function ---
@@ -10,7 +12,7 @@ var contentFR ='';
                                 +'<div class="span5">'
                                     +'<label>Kategori Rekening</label>'
                                     +'<div class="input-control select">'
-                                    +'<select required name="kategorirekTB" id="kategorirekTB"><option value="">Pilih Kategori Rekening</option></select>'
+                                    +'<select required name="kategorirekeningTB" id="kategorirekeningTB"><option value="">Pilih Kategori Rekening</option></select>'
                                     +'</div>'
                                 +'</div>'
                             +'</div>'
@@ -40,7 +42,7 @@ var contentFR ='';
                         +'</div>'
                     +'</form>';
 
-        cmbkategorirek('filter','');
+        cmbkategorirekening('filter','');
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -55,7 +57,7 @@ var contentFR ='';
             $('#keteranganS').val('');
         });
         //search action // edit by epiii
-        $('#kategorirekS').on('change',function (e){ // change : combo box
+        $('#kategorirekeningS').on('change',function (e){ // change : combo box
             viewTB();
         });
         $('#kodeS,#namaS,#keteranganS').on('keydown',function (e){ // kode grup
@@ -67,10 +69,10 @@ var contentFR ='';
 // end of main function ---
 
 // combo departemen ---
-    function cmbkategorirek(typ,idkat){
+    function cmbkategorirekening(typ,idkat){
         $.ajax({
-            url:dir,
-            data:'aksi=cmbkategorirek',
+            url:dir2,
+            data:'aksi=cmb'+mnu2,
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -78,17 +80,17 @@ var contentFR ='';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    $.each(dt.kategorirek, function(id,item){
+                    $.each(dt.kategorirekening, function(id,item){
                         if(idkat==item.replid)
                             out+='<option selected="selected" value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                         else
                             out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                     });
                     if(typ=='filter'){
-                        $('#kategorirekS').html('<option value="">--SEMUA--</option>'+out);
-                        viewTB(dt.kategorirek[0].replid); 
+                        $('#kategorirekeningS').html('<option value="">--SEMUA--</option>'+out);
+                        viewTB(dt.kategorirekening[0].replid); 
                     }else{
-                        $('#kategorirekTB').html(out);
+                        $('#kategorirekeningTB').html(out);
                     }
                 }
             }
@@ -128,7 +130,7 @@ var contentFR ='';
 // view table ---
     function viewTB(){ 
         var aksi ='aksi=tampil';
-        var cari ='&kategorirekS='+$('#kategorirekS').val()
+        var cari ='&kategorirekeningS='+$('#kategorirekeningS').val()
                 +'&kodeS='+$('#kodeS').val()
                 +'&namaS='+$('#namaS').val()
                 +'&keteranganS='+$('#keteranganS').val();
@@ -159,7 +161,7 @@ var contentFR ='';
                 var titlex;
                 if(id==''){  //add mode
                     titlex='<span class="icon-plus-2"></span> Tambah ';
-                    cmbkategorirek('form','');
+                    cmbkategorirekening('form','');
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({
