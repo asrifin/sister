@@ -24,12 +24,13 @@ ____________________________________________________
 	- Lihat katalog sql belum bisa nampil data koleksi (+)	
 	- Combogrid SQL pada models gimana kalau beda field??  (+)	
 	- Tambah koleksi untuk Lihat Katalog belum bisa (+)
-	- Edit Informasi Katalog pada View Katalog
+	- Edit Informasi Katalog pada View Katalog (+) --> ditambahkan ajax yang sama pada edit katalog
 	- combo lokasi pada view katalog
-	- pencarian judul pas jumlahnya 2 hasilnya ikut 2
-	- cara looping data koleksi buku pada view katalog
-	- data katalog berhasil di insert tapi di searching ga nampil
-	- cara memasukkan replid pada textbox klasifikasi,pengarang, penerbit
+	- pencarian judul pas jumlahnya 2 hasilnya ikut 2 (+) --> menggunakan SQL Group By
+	- cara looping data koleksi buku pada view katalog (+) --> salah SQLnya
+	- data katalog berhasil di insert tapi di searching ga nampil (+) --> di SQL tampil pakai JOIN seharusnya LEFT JOIN
+	- cara memasukkan replid pada textbox klasifikasi,pengarang, penerbit (+) -->ditambahkan id hidden pada masing2 inputan
+	- pas edit katalog nyimpan klasifikasi,pengarang, penerbit tidak bisa
 * data anggota (P)
 	- view siswa, pegawai dan member lain hanya bisa menampilkan yang sudah pinjam aja
 	-
