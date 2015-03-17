@@ -321,12 +321,12 @@
 						if(!$stat2){// gagal hapus
 							$stat='gagal_hapus_file';
 						}else{ //sukses hapus file
-							// var_dump($s2);
 							$e  = mysql_query($s2);
 							$id ='';
 							if (!isset($_POST['replid'])) {
 								$id   = mysql_insert_id();
 							}
+							// var_dump($id);exit();
 							$stat = $e?'sukses':'gagal_simpan_db';
 						}$out  = json_encode(array('status'=>$stat,'id'=>$id));
 					break;
@@ -465,7 +465,7 @@
 		                          kg.replid = '.$_POST['replid'].'
 		                        order BY
 		                          kg.judul asc';
-											// print_r($s);exit();
+						// print_r($s);exit();
 						$e   = mysql_query($s);
 						$r   = mysql_fetch_assoc($e);
 						$barangArr=array();
@@ -587,7 +587,6 @@
 									'lokasi'      =>$r['lokasi'],
 									'tingkatbuku' =>$r['tingkatbuku']
 								));
-
 					break;
 					
 				}

@@ -168,10 +168,10 @@
                                 <a href="#" data-hint="Tambah Koleksi" xclass="large" id="koleksi_duaBC" class="button"><span class="icon-plus-2"></span> Koleksi</a>
                               </div>
 
-                              <table id="katalogTBL" style="display:visible;" width="800px" class="table hovered bordered striped panelx" >
+                              <!-- <table id="koleksiTBL" style="display:visible;" width="800px" class="table hovered bordered striped panelx" > -->
+                              <table width="800px" class="table hovered bordered striped panelx" >
                                   <thead>
                                       <tr style="color:white;" class="info">
-                                      <!-- <input  id="dua_idkatalogH" name="dua_idkatalogH" type="hidden"> -->
                                           <th class="text-left">Barkode</th>
                                           <th class="text-left" >Nomor ID</th>
                                           <th class="text-left" >Sumber</th>
@@ -235,178 +235,174 @@
       <!-- Form tambah dan edit katalog  -->
       <div class="table hovered bordered striped panelx" id="katalogFR" style="display:none;" >
           <div style="overflow:scroll;height:600px;" >
-                  <form autocomplete="off" enctype="multipart/form-data" onsubmit="katalogSV();return false;" id="katalog_form"> 
-                        <input id="idformH" type="hidden"> <!--Untuk ambil id form -->
-                        <!-- Panel -->
-                        <div class="panel">
-                          <div class="panel-header bg-lightBlue fg-white">
-                          Informasi Katalog Buku
-                          </div>
-                          <div class="panel-content">
+            <form autocomplete="off" enctype="multipart/form-data" onsubmit="katalogSV();return false;" id="katalog_form"> 
+                  <input id="idformH" type="hidden"> <!--Untuk ambil id form -->
+                  <!-- Panel -->
+                  <div class="panel">
+                    <div class="panel-header bg-lightBlue fg-white">
+                      Informasi Katalog Buku
+                    </div>
+                    <div class="panel-content">
 
-                              <div class="form-actions"> &nbsp;
-                                <button class="button primary">simpan</button>&nbsp;
-                                <a class="button" href="#" onclick="switchPN(); return false;" >Batal</a> 
-                                <!-- <button class="button" type="button" onclick="$.Dialog.close()">Batal</button>  -->
-                              </div>
+                    <div class="form-actions"> &nbsp;
+                      <button class="button primary">simpan</button>&nbsp;
+                      <a class="button" href="#" onclick="switchPN(); return false;" >Batal</a> 
+                    </div>
 
-                          <div class="grid">     
-                            <div class="row">
-                              <div class="span6">
-                              <input  id="edit_katalogH" name="edit_katalogH" type="hidden"> <!--Untuk ambil id tambah koleksi -->
-                              <!-- <label><b>Kriteria Calon :</b></label> -->
-                              <label>Judul :</label>
-                              <div class="input-control text">
-                                  <input type="text" placeholder="Judul" name="judulTB" id="judulTB">
-                              </div>
-                          
-                              <!-- <label><b>Informasi Katalog Buku :</b></label> -->
-                              <label>Kalsifikasi :</label>
-                              <div class="input-control text size2">
-                                  <input type="text" placeholder="Kode Klasifikasi" name="klasifikasiTB" id="klasifikasiTB">
-                              </div>
-
-                              <div class="input-control text size3">
-                                  <input type="hidden" name="klasifikasi_selectH" id="klasifikasi_selectH">
-                                  <input type="text" placeholder="Klasifikasi" name="klasifikasi_selectTB" id="klasifikasi_selectTB">
-                                  <button class="btn-clear"></button>
-                              </div>                            
-                              <a href="#" data-hint="Tambah Kalsifikasi" id="klasifikasiBC" class="button"><span class="icon-plus-2"></span> </a>
-
-                              <label>Pengarang :</label>
-                              <div class="input-control text size4">
-                                  <input type="hidden" name="pengarang_autoH" id="pengarang_autoH">
-                                  <input type="text" placeholder="Pengarang" name="pengarangTB" id="pengarangTB">
-                                  <button class="btn-clear"></button>
-                              </div>      
-                                  <a href="#" data-hint="Tambah Pengarang" xclass="large" id="pengarangBC" class="button"><span class="icon-plus-2"></span> </a>
-                        
-                              <label>Callnumber</label>
-                              <div class="input-control text size3">
-                                  <input type="text" placeholder="Callnumber" name="callnumberTB" id="callnumberTB">
-                                  <button class="btn-clear"></button>
-                              </div>
-
-                              <label>Penerjemah :</label>
-                              <div class="input-control text">
-                                  <input type="text" placeholder="Penerjemah" name="penerjemahTB" id="penerjemahTB">
-                                    <!-- <option>Value 1</option> -->
-                              </div>
-
-                              <label>Editor</label>
-                              <div class="input-control text size3">
-                                  <input type="text" placeholder="Editor" name="editorTB" id="editorTB">
-                                  <button class="btn-clear"></button>
-                              </div>
-
-                              <label>Penerbit</label>
-                              <div class="input-control text size4">
-                                  <input type="hidden" name="penerbit_autoH" id="penerbit_autoH">
-                                  <input type="text" placeholder="Penerbit" name="penerbitTB" id="penerbitTB">
-                                  <button class="btn-clear"></button>
-                              </div>
-                              <a href="#" class="button" data-hint="Tambah Penerbit" xclass="large" id="penerbitBC"><span class="icon-plus-2"></span> </a>
-
-                              <label>Tahun terbit :</label>
-                              <div class="input-control text size3">
-                                  <input type="text" placeholder="tahun terbit" name="tahun_terbitTB" id="tahun_terbitTB">
-                                  <button class="btn-clear"></button>
-
-                                  <!-- <select name="tahun_terbitTB" id="tahun_terbitTB"></select> -->
-                              </div>
-
-                              <label>Kota</label>
-                              <div class="input-control text size3">
-                                  <input type="text" placeholder="Kota" name="kotaTB" id="kotaTB">
-                                  <button class="btn-clear"></button>
-                              </div>
-
-                              <label>ISBN</label>
-                              <div class="input-control text size3">
-                                  <input type="text" placeholder="ISBN" name="isbnTB" id="isbnTB">
-                                  <button class="btn-clear"></button>
-                              </div>
-
-                              <label>ISSN</label>
-                              <div class="input-control text size3">
-                                  <input type="text" placeholder="ISSN" name="issnTB" id="issnTB">
-                                  <button class="btn-clear"></button>
-                              </div>
-
-                              <label>Bahasa</label>
-                              <div class="input-control select size3">
-                                  <select name="bahasaTB" id="bahasaTB"></select>
-                              </div>
-                              <a href="#" data-hint="Tambah Bahasa" id="bahasaBC" class="button"><span class="icon-plus-2"></span> </a>
-
-                              <label>Seri Buku</label>
-                              <div class="input-control text size3">
-                                  <input type="text" placeholder="Seri Buku" name="seri_bukuTB" id="seri_bukuTB">
-                                  <button class="btn-clear"></button>
-                              </div>
-
-                              <label>Volume</label>
-                              <div class="input-control text size3">
-                                  <input type="text" placeholder="Volume" name="volumeTB" id="volumeTB">
-                                  <button class="btn-clear"></button>
-                              </div>
-
-                              <label>Edisi</label>
-                              <div class="input-control text size3">
-                                  <input type="text" placeholder="Edisi" name="edisiTB" id="edisiTB">
-                                  <button class="btn-clear"></button>
-                              </div>
-
-                              <label>Jenis Buku</label>
-                              <div class="input-control select size3">
-                                  <select name="jenis_bukuTB" id="jenis_bukuTB"></select>
-                              </div>
-                              <a href="#" data-hint="Tambah Jenis Buku" xclass="large" id="jenisbukuBC" class="button"><span class="icon-plus-2"></span> </a>
-
-                              </div>
-                                <!-- End Span-->
-                              <div class="span6">
-                                <label><b>Gambar Sampul Buku:</b></label>
-                               <img width="150" id="previmg" src="../img/no_image.jpg" ><br>
-                              <div class="input-control file info-state size3" data-role="input-control">
-                               <input type="hidden" id="k_photoH"/>
-                               <div id="photoDV" class="input-control file" data-role="input-control">
-                                    <input onchange="PreviewImage(this);" id="k_photoTB" name="k_photoTB" type="file">
-                                    <button class="btn-file"></button>
-                                </div>
-                              </div>
-                                <label><b>Deskripsi Buku :</b></label>
-                                <label>Jumlah Halaman :</label>
-                                <div class="input-control text size2">
-                                    <input type="text" name="jumlahTB" id="jumlahTB">
-                                    <button class="btn-clear"></button>
-                                </div>                                
-
-                                <label>Dimensi :</label>
-                                <div class="input-control text size3">
-                                    <input type="text" placeholder="Dimensi" name="dimensiTB" id="dimensiTB">
-                                    <button class="btn-clear"></button>
-                                </div>                                
-
-                                <label>Sinopsis :</label>
-                                <div class="input-control textarea">
-                                    <textarea placeholder="Sinopsis" name="sinopsisTB" id="sinopsisTB"></textarea>
-                                </div>                                
-
-                              </div>
-                                <!-- End span-->
-
-                              
-                            </div>
-                          </div>
-                                <!-- End Grid-->
+                    <div class="grid">     
+                      <div class="row">
+                        <div class="span6">
+                        <input  id="edit_katalogH" name="edit_katalogH" type="hidden"> <!--Untuk ambil id tambah koleksi -->
+                        <label>Judul :</label>
+                        <div class="input-control text">
+                            <input type="text" placeholder="Judul" required name="judulTB" id="judulTB">
                         </div>
-                        <div class="form-actions"> &nbsp;
-                            <button class="button primary">simpan</button>&nbsp;
-                            <a class="button" href="#" onclick="switchPN(); return false;" >Batal</a> 
-                            <!-- <button class="button" type="button" onclick="$.Dialog.close()">Batal</button>  -->
+                    
+                        <!-- <label><b>Informasi Katalog Buku :</b></label> -->
+                        <label>Kalsifikasi :</label>
+                        <div class="input-control text size2">
+                            <input type="text" placeholder="Kode Klasifikasi" required name="klasifikasiTB" id="klasifikasiTB">
                         </div>
-                    </form>
+
+                        <div class="input-control text size3">
+                            <input type="hidden" name="klasifikasi_selectH" id="klasifikasi_selectH">
+                            <input type="text" placeholder="Klasifikasi" name="klasifikasi_selectTB" id="klasifikasi_selectTB">
+                            <button class="btn-clear"></button>
+                        </div>                            
+                        <a href="#" data-hint="Tambah Klasifikasi" id="klasifikasiBC" class="button"><span class="icon-plus-2"></span> </a>
+
+                        <label>Pengarang :</label>
+                        <div class="input-control text size4">
+                            <input type="hidden" name="pengarang_autoH" id="pengarang_autoH">
+                            <input type="text" placeholder="Pengarang" name="pengarangTB" id="pengarangTB">
+                            <button class="btn-clear"></button>
+                        </div>      
+                            <a href="#" data-hint="Tambah Pengarang" xclass="large" id="pengarangBC" class="button"><span class="icon-plus-2"></span> </a>
+                  
+                        <label>Callnumber</label>
+                        <div class="input-control text size3">
+                            <input type="text" placeholder="Callnumber" name="callnumberTB" id="callnumberTB">
+                            <button class="btn-clear"></button>
+                        </div>
+
+                        <label>Penerjemah :</label>
+                        <div class="input-control text">
+                            <input type="text" placeholder="Penerjemah" name="penerjemahTB" id="penerjemahTB">
+                              <!-- <option>Value 1</option> -->
+                        </div>
+
+                        <label>Editor</label>
+                        <div class="input-control text size3">
+                            <input type="text" placeholder="Editor" name="editorTB" id="editorTB">
+                            <button class="btn-clear"></button>
+                        </div>
+
+                        <label>Penerbit</label>
+                        <div class="input-control text size4">
+                            <input type="hidden" name="penerbit_autoH" id="penerbit_autoH">
+                            <input type="text" placeholder="Penerbit" name="penerbitTB" id="penerbitTB">
+                            <button class="btn-clear"></button>
+                        </div>
+                        <a href="#" class="button" data-hint="Tambah Penerbit" xclass="large" id="penerbitBC"><span class="icon-plus-2"></span> </a>
+
+                        <label>Tahun terbit :</label>
+                        <div class="input-control text size3">
+                            <input type="text" placeholder="tahun terbit" name="tahun_terbitTB" id="tahun_terbitTB">
+                            <button class="btn-clear"></button>
+
+                            <!-- <select name="tahun_terbitTB" id="tahun_terbitTB"></select> -->
+                        </div>
+
+                        <label>Kota</label>
+                        <div class="input-control text size3">
+                            <input type="text" placeholder="Kota" name="kotaTB" id="kotaTB">
+                            <button class="btn-clear"></button>
+                        </div>
+
+                        <label>ISBN</label>
+                        <div class="input-control text size3">
+                            <input type="text" placeholder="ISBN" name="isbnTB" id="isbnTB">
+                            <button class="btn-clear"></button>
+                        </div>
+
+                        <label>ISSN</label>
+                        <div class="input-control text size3">
+                            <input type="text" placeholder="ISSN" name="issnTB" id="issnTB">
+                            <button class="btn-clear"></button>
+                        </div>
+
+                        <label>Bahasa</label>
+                        <div class="input-control select size3">
+                            <select name="bahasaTB" id="bahasaTB"></select>
+                        </div>
+                        <a href="#" data-hint="Tambah Bahasa" id="bahasaBC" class="button"><span class="icon-plus-2"></span> </a>
+
+                        <label>Seri Buku</label>
+                        <div class="input-control text size3">
+                            <input type="text" placeholder="Seri Buku" name="seri_bukuTB" id="seri_bukuTB">
+                            <button class="btn-clear"></button>
+                        </div>
+
+                        <label>Volume</label>
+                        <div class="input-control text size3">
+                            <input type="text" placeholder="Volume" name="volumeTB" id="volumeTB">
+                            <button class="btn-clear"></button>
+                        </div>
+
+                        <label>Edisi</label>
+                        <div class="input-control text size3">
+                            <input type="text" placeholder="Edisi" name="edisiTB" id="edisiTB">
+                            <button class="btn-clear"></button>
+                        </div>
+
+                        <label>Jenis Buku</label>
+                        <div class="input-control select size3">
+                            <select name="jenis_bukuTB" id="jenis_bukuTB"></select>
+                        </div>
+                        <a href="#" data-hint="Tambah Jenis Buku" xclass="large" id="jenisbukuBC" class="button"><span class="icon-plus-2"></span> </a>
+
+                        </div>
+                          <!-- End Span-->
+                        <div class="span6">
+                          <label><b>Gambar Sampul Buku:</b></label>
+                         <img width="150" id="previmg" src="../img/no_image.jpg" ><br>
+                        <div class="input-control file info-state size3" data-role="input-control">
+                         <input type="hidden" id="k_photoH"/>
+                         <div id="photoDV" class="input-control file" data-role="input-control">
+                              <input onchange="PreviewImage(this);" id="k_photoTB" name="k_photoTB" type="file">
+                              <button class="btn-file"></button>
+                          </div>
+                        </div>
+                          <label><b>Deskripsi Buku :</b></label>
+                          <label>Jumlah Halaman :</label>
+                          <div class="input-control text size2">
+                              <input type="text" name="jumlahTB" id="jumlahTB">
+                              <button class="btn-clear"></button>
+                          </div>                                
+
+                          <label>Dimensi :</label>
+                          <div class="input-control text size3">
+                              <input type="text" placeholder="Dimensi" name="dimensiTB" id="dimensiTB">
+                              <button class="btn-clear"></button>
+                          </div>                                
+
+                          <label>Sinopsis :</label>
+                          <div class="input-control textarea">
+                              <textarea placeholder="Sinopsis" name="sinopsisTB" id="sinopsisTB"></textarea>
+                          </div>                                
+
+                        </div>
+                          <!-- End span-->
+                      </div>
+                    </div>
+                          <!-- End Grid-->
+                  </div>
+                  <div class="form-actions"> &nbsp;
+                      <button class="button primary">simpan</button>&nbsp;
+                      <a class="button" href="#" onclick="switchPN(); return false;" >Batal</a> 
+                      <!-- <button class="button" type="button" onclick="$.Dialog.close()">Batal</button>  -->
+                  </div>
+              </form>
 
                     </div>
                             <!-- End Scroll -->
