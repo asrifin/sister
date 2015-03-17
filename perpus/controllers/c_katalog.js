@@ -8,83 +8,126 @@ var dir5      = 'models/m_lokasi.php';
 var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_contentFR = jenis_contentFR = koleksi_contentFR = dua_koleksi_contentFR ='';
 
 //asrifin : switch panel (form<=>table)
-    function switchPN(){
-        // $('#katalogFR').toggle();
-        $('#katalogFR').toggle('slow');
-        $('#katalogTBL').toggle('slow');
-        $('#tambahBC').toggle('slow');
-        $('#cariBC').toggle('slow');
-        kosongkan();    
-        // autosuggest pengarang
-        $("#pengarangTB").combogrid({
-            debug:true,
-            width:'400px',
-            colModel: [{   
-                    'columnName':'nama',
-                    'width':'40',
-                    'label':'NAMA'
-                }],
-            url: dir+'?aksi=autocomp&subaksi=pengarang', /*epiii*/
-            select: function( event, ui ) {
-                $('#pengarang_autoH').val(ui.item.replid);
-                $('#pengarangTB').val(ui.item.nama);
+    // function switchPN(){
+    //     // $('#katalogFR').toggle();
+    //     $('#katalogFR').toggle('slow');
+    //     $('#katalogTBL').toggle('slow');
+    //     $('#tambahBC').toggle('slow');
+    //     $('#cariBC').toggle('slow');
+    //     kosongkan();    
+    //     // autosuggest pengarang
+    //     $("#pengarangTB").combogrid({
+    //         debug:true,
+    //         width:'400px',
+    //         colModel: [{   
+    //                 'columnName':'nama',
+    //                 'width':'40',
+    //                 'label':'NAMA'
+    //             }],
+    //         url: dir+'?aksi=autocomp&subaksi=pengarang', /*epiii*/
+    //         select: function( event, ui ) {
+    //             $('#pengarang_autoH').val(ui.item.replid);
+    //             $('#pengarangTB').val(ui.item.nama);
 
-                urlx = dir+'?aksi=autocomp&subaksi=pengarang&departemen='+$('#departemenS').val(); /*epiii*/
-                $('#pengarangTB').combogrid( "option", "url", urlx ); /*epiii*/
-                return false;
-            }
-        }); 
-        // autosuggest penerbit
-        $("#penerbitTB").combogrid({
-            debug:true,
-            width:'400px',
-            colModel: [{   
-                    'columnName':'nama',
-                    'width':'40',
-                    'label':'NAMA'
-                }],
-            url: dir+'?aksi=autocomp&subaksi=penerbit',
-            // url: dir+'?aksi=autocomp',
-            select: function( event, ui ) {
-                $('#penerbit_autoH').val(ui.item.replid);
-                $('#penerbitTB').val(ui.item.nama);
+    //             urlx = dir+'?aksi=autocomp&subaksi=pengarang&departemen='+$('#departemenS').val(); /*epiii*/
+    //             $('#pengarangTB').combogrid( "option", "url", urlx ); /*epiii*/
+    //             return false;
+    //         }
+    //     }); 
+    //     // autosuggest penerbit
+    //     $("#penerbitTB").combogrid({
+    //         debug:true,
+    //         width:'400px',
+    //         colModel: [{   
+    //                 'columnName':'nama',
+    //                 'width':'40',
+    //                 'label':'NAMA'
+    //             }],
+    //         url: dir+'?aksi=autocomp&subaksi=penerbit',
+    //         // url: dir+'?aksi=autocomp',
+    //         select: function( event, ui ) {
+    //             $('#penerbit_autoH').val(ui.item.replid);
+    //             $('#penerbitTB').val(ui.item.nama);
 
-                urlx = dir+'?aksi=autocomp&subaksi=pengerbit&departemen='+$('#departemenS').val(); 
-                $('#penerbitTB').combogrid( "option", "url", urlx ); 
-                // $('#penerbitTB').combogrid( "option", "url", dir+'?aksi=autocomp&departemen='+$('#departemenS').val());
-                return false;
-            }
-        });
+    //             urlx = dir+'?aksi=autocomp&subaksi=pengerbit&departemen='+$('#departemenS').val(); 
+    //             $('#penerbitTB').combogrid( "option", "url", urlx ); 
+    //             // $('#penerbitTB').combogrid( "option", "url", dir+'?aksi=autocomp&departemen='+$('#departemenS').val());
+    //             return false;
+    //         }
+    //     });
 
-        // autosuggest penerbit
-        $("#klasifikasi_selectTB").combogrid({
-            debug:true,
-            width:'400px',
-            colModel: [{   
-                    'columnName':'kode',
-                    'width':'40',
-                    'label':'Kode'
-                },{   
-                    'columnName':'nama',
-                    'width':'50',
-                    'label':'NAMA'
-                }],
-            url: dir+'?aksi=autocomp&subaksi=klasifikasi',
-            // url: dir+'?aksi=autocomp',
-            select: function( event, ui ) {
-                $('#klasifikasi_selectH').val(ui.item.replid);
-                $('#klasifikasiTB').val(ui.item.kode);
-                $('#klasifikasi_selectTB').val(ui.item.nama);
+    //     // autosuggest penerbit
+    //     $("#klasifikasi_selectTB").combogrid({
+    //         debug:true,
+    //         width:'400px',
+    //         colModel: [{   
+    //                 'columnName':'kode',
+    //                 'width':'40',
+    //                 'label':'Kode'
+    //             },{   
+    //                 'columnName':'nama',
+    //                 'width':'50',
+    //                 'label':'NAMA'
+    //             }],
+    //         url: dir+'?aksi=autocomp&subaksi=klasifikasi',
+    //         // url: dir+'?aksi=autocomp',
+    //         select: function( event, ui ) {
+    //             $('#klasifikasi_selectH').val(ui.item.replid);
+    //             $('#klasifikasiTB').val(ui.item.kode);
+    //             $('#klasifikasi_selectTB').val(ui.item.nama);
 
-                urlx = dir+'?aksi=autocomp&subaksi=klasifikasi&departemen='+$('#departemenS').val(); 
-                $('#klasifikasi_selectTB').combogrid( "option", "url", urlx ); 
-                // $('#penerbitTB').combogrid( "option", "url", dir+'?aksi=autocomp&departemen='+$('#departemenS').val());
-                return false;
-            }
-        });
-    }
+    //             urlx = dir+'?aksi=autocomp&subaksi=klasifikasi&departemen='+$('#departemenS').val(); 
+    //             $('#klasifikasi_selectTB').combogrid( "option", "url", urlx ); 
+    //             // $('#penerbitTB').combogrid( "option", "url", dir+'?aksi=autocomp&departemen='+$('#departemenS').val());
+    //             return false;
+    //         }
+    //     });
+    // }
     //SwitchPN edit info katalog pada view katalog
-    function switchPN_edit(){
+    function switchPN_edit(id){
+        if (id!=''){
+            $.ajax({
+                    url : dir,
+                    type: 'post',
+                    data:'aksi=ambiledit&subaksi=katalog&replid='+id,
+                    dataType:'json',
+                    success:function(dt){
+                        $('#idformH').val(id);
+                        $('#judulTB').val(dt.judul);
+                        $('#klasifikasiTB').val(dt.kode_klas);
+                        $('#klasifikasi_selectTB').val(dt.klasifikasi);
+                        $('#nama_pengarangTB').val(dt.pengarang);
+                        $('#callnumberTB').val(dt.callnumber);
+                        $('#penerjemahTB').val(dt.penerjemah);
+                        $('#editorTB').val(dt.editor);
+                        $('#penerbitTB').val(dt.penerbit);
+                        $('#tahun_terbitTB').val(dt.tahun_terbit);
+                        $('#kotaTB').val(dt.kota);
+                        $('#isbnTB').val(dt.isbn);
+                        $('#issnTB').val(dt.issn);
+                        $('#bahasaTB').val(dt.bahasa);
+                        $('#seri_bukuTB').val(dt.seri);
+                        $('#volumeTB').val(dt.volume);
+                        $('#edisiTB').val(dt.edisi);
+                        $('#jenis_bukuTB').val(dt.jenisbuku);
+                        // $('#photoTB').val(dt.photo);
+                        var img;
+                        if(dt.photo2!='' && dt.photo2!=null){//ada gambar
+                            img='../img/upload/'+dt.photo2;
+                        }else{
+                            img='../img/no_image.jpg';
+                        }
+                        $('#previmg').attr('src',img);
+                        $('#k_photoH').val(dt.photo2);
+                        $('#jumlahTB').val(dt.halaman);
+                        $('#edisiTB').val(dt.edisi);
+                        $('#sinopsisTB').val(dt.deskripsi);
+
+                        cmbjenisbuku(dt.jenisbuku);
+                        cmbbahasa(dt.bahasa);
+                    }
+                });
+        }
         // $('#katalogFR').toggle();
         $('#katalogFR').toggle('slow');
         $('#katalogTBL').attr('style','display:none;');
@@ -163,6 +206,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
 
     function switchPN_view(){
         $('#k_viewFR').toggle('slow');
+        // $('#katalogFR').toggle('slow');
         $('#katalogTBL').toggle('slow');
         $('#tambahBC').toggle('slow');
         $('#cariBC').toggle('slow');
@@ -436,12 +480,15 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
         viewTB();
 
         $("#tambahBC").on('click',function(){
-            switchPN(); 
+            // switchPN(); 
+            $('#katalogFR').toggle('slow');
+            $('#katalogTBL').toggle('slow');
             cmbjenisbuku('');
             cmbbahasa('');
         });
         $("#edit_katalogBC").on('click',function(){
-            switchPN_edit();
+            switchPN_edit($('#idkatalogH').val());
+            // viewFR($('#idkatalogH').val());
         });
         $("#koleksiBC").on('click',function(){
             koleksiFR('');
@@ -600,51 +647,52 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                     success: function(data, textStatus, jqXHR){
                         if(data.status != 'sukses')
                            notif(data.status,'red');
-                        else
-                           notif(data.status,'green'); 
+                        else{
+                            notif(data.status,'green'); 
+                            k_view(data.id);
+                        }
                     },error: function(jqXHR, textStatus, errorThrown){
                         console.log('ERRORS savedata2: ' + textStatus);
                     },complete: function(){
-                        $.Dialog.close(); 
-                        k_view();
+                        // $.Dialog.close(); 
                         // kosongkan();
                     }
                 });
             }
         // // end of simpan ke database
 
-//save process ---
-    function simpan(){
-        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
-        var urlx ='&aksi=simpan&subaksi=katalog';
-        // edit mode
-        if($('#idformH').val()!=''){
-            urlx += '&replid='+$('#idformH').val();
-        }
-        $.ajax({
-            url:dir,
-            cache:false,
-            type:'post',
-            dataType:'json',
-            data:$('form').serialize()+urlx,
-            success:function(dt){
-                if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
-                    clr  = 'red';
-                }else{
-                    $.Dialog.close();
-                    kosongkan();
-                    viewTB($('#departemenS').val());
-                     $('#katalogFR').removeAttr('style');
-                     $('#panel1').attr('style','display:none;');
-                    cont = 'Berhasil menyimpan data';
-                    clr  = 'green';
-                }
-                notif(cont,clr);
-            }
-        });
-    }
- //end of save process ---
+//save process katalog ---
+ //    function simpan(){
+ //        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
+ //        var urlx ='&aksi=simpan&subaksi=katalog';
+ //        // edit mode
+ //        if($('#idformH').val()!=''){
+ //            urlx += '&replid='+$('#idformH').val();
+ //        }
+ //        $.ajax({
+ //            url:dir,
+ //            cache:false,
+ //            type:'post',
+ //            dataType:'json',
+ //            data:$('form').serialize()+urlx,
+ //            success:function(dt){
+ //                if(dt.status!='sukses'){
+ //                    cont = 'Gagal menyimpan data';
+ //                    clr  = 'red';
+ //                }else{
+ //                    $.Dialog.close();
+ //                    kosongkan();
+ //                    viewTB($('#departemenS').val());
+ //                     $('#katalogFR').removeAttr('style');
+ //                     $('#panel1').attr('style','display:none;');
+ //                    cont = 'Berhasil menyimpan data';
+ //                    clr  = 'green';
+ //                }
+ //                notif(cont,clr);
+ //            }
+ //        });
+ //    }
+ // //end of save process ---
 
     function klasifikasiSV(e){
         var urlx ='&aksi=simpan&subaksi=klasifikasi';
@@ -665,7 +713,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                     clr  = 'red';
                 }else{
                     $.Dialog.close();
-                    kosongkan();
+                    // kosongkan();
                     viewTB($('').val());
                      $('#katalogFR').removeAttr('style');
                      // $('#panel1').attr('style','display:none;');
@@ -697,7 +745,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                     clr  = 'red';
                 }else{
                     $.Dialog.close();
-                    kosongkan();
+                    // kosongkan();
                     viewTB($('').val());
                      $('#katalogFR').removeAttr('style');
                      // $('#panel1').attr('style','display:none;');
@@ -729,7 +777,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                     clr  = 'red';
                 }else{
                     $.Dialog.close();
-                    kosongkan();
+                    // kosongkan();
                     viewTB($('').val());
                      $('#katalogFR').removeAttr('style');
                      // $('#panel1').attr('style','display:none;');
@@ -761,7 +809,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                     clr  = 'red';
                 }else{
                     $.Dialog.close();
-                    kosongkan();
+                    // kosongkan();
                     viewTB($('').val());
                      $('#katalogFR').removeAttr('style');
                      // $('#panel1').attr('style','display:none;');
@@ -793,7 +841,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                     clr  = 'red';
                 }else{
                     $.Dialog.close();
-                    kosongkan();
+                    // kosongkan();
                     viewTB($('').val());
                      $('#katalogFR').removeAttr('style');
                      // $('#panel1').attr('style','display:none;');
@@ -961,11 +1009,14 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         $('#idformH').val(id);
                         $('#judulTB').val(dt.judul);
                         $('#klasifikasiTB').val(dt.kode_klas);
+                        $('#klasifikasi_selectH').val(dt.idklasifikasi);
                         $('#klasifikasi_selectTB').val(dt.klasifikasi);
+                        $('#pengarang_autoH').val(dt.idpengarang);
                         $('#nama_pengarangTB').val(dt.pengarang);
                         $('#callnumberTB').val(dt.callnumber);
                         $('#penerjemahTB').val(dt.penerjemah);
                         $('#editorTB').val(dt.editor);
+                        $('#penerbit_autoH').val(dt.idpenerbit);
                         $('#penerbitTB').val(dt.penerbit);
                         $('#tahun_terbitTB').val(dt.tahun_terbit);
                         $('#kotaTB').val(dt.kota);
@@ -991,11 +1042,16 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
 
                         cmbjenisbuku(dt.jenisbuku);
                         cmbbahasa(dt.bahasa);
+                        $('#katalogFR').toggle('slow');
+                        $('#katalogTBL').toggle('slow');
+                        $('#tambahBC').toggle('slow');
+                        $('#cariBC').toggle('slow');
+                        // switchPN();
                     }
                 });
             }else{ 
                     titlex='<span class="icon-plus-2"></span> Tambah ';
-                    var idkatalog = $('#idformH').val();
+                    var idkatalog = $('#idformH').val(); 
                     $.ajax({
                         url:dir,
                         data:'aksi=ambiledit&subaksi=katalog&replid='+idkatalog,
@@ -1036,11 +1092,13 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
 
                         cmbjenisbuku(dt.jenisbuku);
                         cmbbahasa(dt.bahasa);
+                        $('#katalogFR').toggle('slow');
+                        $('#katalogTBL').toggle('slow');
+                        $('#tambahBC').toggle('slow');
+                        $('#cariBC').toggle('slow');
                         }
                     });
-                // switchPN_edit();
             }
-            switchPN();
 
         }  
 
@@ -1083,6 +1141,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                             
                             var tbl='';
                             $.each(dt.data.barangArr,function(id,item){
+                                // alert(item.barkode);
                                 var btn;
                                 tbl+='<tr>'
                                     // +'<td><input '+(item.status==3||item.status==4?'disabled':'')+' type="checkbox" dp="'+item.iddpeminjaman+'" brg="'+item.idbarang+'" /></td>'
@@ -1094,11 +1153,14 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                                     +'<td>'+item.statusbuku+'</td>'
                                     +'<td>'+item.lokasi+'</td>'
                                     +'<td>'+item.tingkatbuku+'</td>'
-                                    // +'<td>'
-                                    //     +'<button onclick="kembalikanFC('+item.id+')">'
-                                    //         +'<i style="color:white;" class="icon-pencil"></i>'
-                                    //     +'</button>'
-                                    // +'</td>'
+                                    +'<td>'
+                                        +'<button onclick="koleksiFR('+item.id+')">'
+                                            +'<i style="color:black;" class="icon-pencil"></i>'
+                                        +'</button>'
+                                        +'<button onclick="del_koleksi('+item.id+')">'
+                                            +'<i style="color:black;" class="icon-remove"></i>'
+                                        +'</button>'
+                                    +'</td>'
                                     +'</tr>';
                             });$('#k_viewtbody').html(tbl);
                           }
@@ -1129,7 +1191,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                 var titlex;
                 if(id==''){  //add mode
                     titlex='<span class="icon-plus-2"></span> Tambah ';
-                    var idkatalog = $('#idkatalogH').val();
+                    var idkatalog = $('#idkatalogH').val(); // untuk nambah koleksi pada view katalog
                     $.ajax({
                         url:dir,
                         data:'aksi=ambiledit&subaksi=koleksi&replid='+idkatalog,
