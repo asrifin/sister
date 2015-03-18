@@ -145,11 +145,12 @@
 
 						foreach ($_POST['siswa'] as $i=> $v) {
 							$s2='INSERT INTO aka_alumni set 	siswa 		= '.$v.',
-																tahunlulus 	= "'.$_POST['tahunlulusTB'].'",
-																keterangan 	= "'.$_POST['keteranganTB'].'"';
+																tahunlulus 	= "'.$_POST['tahunlulusTB'].'"';
 							// $s2='INSERT INTO aka_alumni set 	tahunlulus = "'.filter($_POST['tahunlulusH'][]).'",
 							// 									siswa    	= "'.filter($_POST['siswaH']).'",
 							// 									keterangan 	= "'.filter($_POST['keteranganTB']).'"';
+																// ,
+																// keterangan 	= "'.$_POST['keteranganTB'].'"
 							$e2    =mysql_query($s2);
 							$stat2 =$e2?true:false;
 
