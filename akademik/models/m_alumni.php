@@ -129,21 +129,20 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				if(isset($_POST['replid']) && $_POST['replid']!='' ){
-					// $xx = 'masuk edit';
-					// var_dump($xx);exit();
+				process 
+				if(isset($_POST['replid']) && $_POST['replid']!='' ){ // ada id (edit mode)
 					$s = 'UPDATE '.$tb.' set 	tahunlulus = "'.filter($_POST['tahunlulusH']).'",
 												siswa    	= "'.filter($_POST['siswaH']).'",
 												keterangan 	= "'.filter($_POST['keteranganTB']).'"
-										WHERE replid='.$_POST['replid'];
+										WHERE 	replid='.$_POST['replid'];
 									// print_r($s);exit();
 					$e2    =mysql_query($s);
 					$stat =$e2?'sukses':'gagal';
-				}else{
+				}else{// tidak ada id (add mode)
 					$stat2=true;
-					if(isset($_POST['siswa'])){
-
+					if(isset($_POST['siswa'])){ // ada array (siswa)  
 						foreach ($_POST['siswa'] as $i=> $v) {
+
 							$s2='INSERT INTO aka_alumni set 	siswa 		= '.$v.',
 																tahunlulus 	= "'.$_POST['tahunlulusTB'].'"';
 							// $s2='INSERT INTO aka_alumni set 	tahunlulus = "'.filter($_POST['tahunlulusH'][]).'",
@@ -151,15 +150,18 @@
 							// 									keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 																// ,
 																// keterangan 	= "'.$_POST['keteranganTB'].'"
+
+							$s2 	='INSERT INTO aka_alumni set 	siswa 		= '.$v.',
+																	tahunlulus 	= "'.$_POST['tahunlulusTB'].'"';
+
 							$e2    =mysql_query($s2);
 							$stat2 =$e2?true:false;
-
 						}
-						if($stat2){
+						if($stat2){ //  berhasil insert
 							$sq = 'UPDATE aka_siswa set status = 0';
 							$esq=mysql_query($sq);
 							$stats=$esq?'berhasil':'gagal';	
-						}else{
+						}else{ // gagal insert 
 							$stats='gagal';
 						}
 					}$stat=$stat2?'sukses':'gagal_simpan_barang';

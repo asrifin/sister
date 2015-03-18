@@ -125,12 +125,14 @@
 								JOIN pus_klasifikasi pkas ON pkat.klasifikasi = pkas.replid 
 								JOIN pus_pengarang pg ON pkat.pengarang = pg.replid
 								JOIN pus_penerbit pn ON pkat.penerbit = pn.replid
-								JOIN pus_buku pb ON pb.katalog = pkat.replid							
+								JOIN pus_buku pb ON pb.katalog = pkat.replid	
 						WHERE 
 							pkat.judul like "%'.$judul.'%" and
-							pkas.nama like "%'.$kode_klasifikasi.'%"	and					
+							pkas.nama like "%'.$kode_klasifikasi.'%" and					
 							pg.nama like "%'.$pengarang.'%" and					
 							penerbit like "%'.$penerbit.'%"						
+						GROUP BY
+							pkat.replid						
 							ORDER BY pkat.replid asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
@@ -280,15 +282,14 @@
 					break;
 
 					case 'katalog':
-					// echo 'ok';exit();
 						$s 		= $tb.' set 	judul 			 = "'.$_POST['judulTB'].'",
 												klasifikasi_kode = "'.filter($_POST['klasifikasiTB']).'",
-												klasifikasi      = "'.filter($_POST['klasifikasi_selectTB']).'",
-												pengarang        = "'.filter($_POST['pengarangTB']).'",
+												klasifikasi      = "'.filter($_POST['klasifikasi_selectH']).'",
+												pengarang      = "'.filter($_POST['pengarang_autoH']).'",
 												callnumber       = "'.$_POST['callnumberTB'].'",
 												penerjemah       = "'.filter($_POST['penerjemahTB']).'",
 												editor           = "'.filter($_POST['editorTB']).'",
-												penerbit         = "'.filter($_POST['penerbitTB']).'",
+												penerbit         = "'.filter($_POST['penerbit_autoH']).'",
 												tahunterbit      = "'.filter($_POST['tahun_terbitTB']).'",
 												kota             = "'.filter($_POST['kotaTB']).'",
 												isbn             = "'.filter($_POST['isbnTB']).'",
@@ -320,10 +321,14 @@
 						if(!$stat2){// gagal hapus
 							$stat='gagal_hapus_file';
 						}else{ //sukses hapus file
-							// var_dump($s2);
-							$e    = mysql_query($s2);
+							$e  = mysql_query($s2);
+							$id ='';
+							if (!isset($_POST['replid'])) {
+								$id   = mysql_insert_id();
+							}
+							// var_dump($id);exit();
 							$stat = $e?'sukses':'gagal_simpan_db';
-						}$out  = json_encode(array('status'=>$stat));
+						}$out  = json_encode(array('status'=>$stat,'id'=>$id));
 					break;
 
 				}
@@ -359,8 +364,11 @@
 						$s 		= ' SELECT
 		                          kg.judul,
 		                          kf.kode kode_klas,
+		                          kf.replid as idklasifikasi,
 		                          kf.nama klasifikasi,
+		                          pr.replid idpengarang,
 		                          pr.nama pengarang,
+		                          pb.replid idpenerbit,
 		                          pb.nama penerbit,
 		                          kg.editor,
 		                          kg.photo2,
@@ -393,28 +401,31 @@
 						$r 		= mysql_fetch_assoc($e);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out    = json_encode(array(
-									'status'      =>$stat,
-									'judul'       =>$r['judul'],
-									'kode_klas'   =>$r['kode_klas'],
-									'klasifikasi' =>$r['klasifikasi'],
-									'pengarang'   =>$r['pengarang'],
-									'callnumber'  =>$r['callnumber'],
-									'penerjemah'  =>$r['penerjemah'],
-									'editor'      =>$r['editor'],
-									'photo2'      =>$r['photo2'],
-									'penerbit'    =>$r['penerbit'],
-									'tahunterbit' =>$r['tahunterbit'],
-									'kota'        =>$r['kota'],
-									'isbn'        =>$r['isbn'],
-									'issn'        =>$r['issn'],
-									'bahasa'      =>$r['bahasa'],
-									'seri'        =>$r['seri'],
-									'volume'      =>$r['volume'],
-									'edisi'       =>$r['edisi'],
-									'jenisbuku'   =>$r['jenisbuku'],
-									'halaman'     =>$r['halaman'],
-									'dimensi'     =>$r['dimensi'],
-									'deskripsi'   =>$r['deskripsi']			
+									'status'      	=>$stat,
+									'judul'         =>$r['judul'],
+									'kode_klas'     =>$r['kode_klas'],
+									'idklasifikasi' =>$r['idklasifikasi'],
+									'klasifikasi'   =>$r['klasifikasi'],
+									'idpengarang'   =>$r['idpengarang'],
+									'pengarang'     =>$r['pengarang'],
+									'callnumber'    =>$r['callnumber'],
+									'penerjemah'    =>$r['penerjemah'],
+									'editor'        =>$r['editor'],
+									'photo2'        =>$r['photo2'],
+									'idpenerbit'    =>$r['idpenerbit'],
+									'penerbit'      =>$r['penerbit'],
+									'tahunterbit'   =>$r['tahunterbit'],
+									'kota'          =>$r['kota'],
+									'isbn'          =>$r['isbn'],
+									'issn'          =>$r['issn'],
+									'bahasa'        =>$r['bahasa'],
+									'seri'          =>$r['seri'],
+									'volume'        =>$r['volume'],
+									'edisi'         =>$r['edisi'],
+									'jenisbuku'     =>$r['jenisbuku'],
+									'halaman'       =>$r['halaman'],
+									'dimensi'       =>$r['dimensi'],
+									'deskripsi'     =>$r['deskripsi']			
 								));
 
 					break;
@@ -454,7 +465,7 @@
 		                          kg.replid = '.$_POST['replid'].'
 		                        order BY
 		                          kg.judul asc';
-											// print_r($s);exit();
+						// print_r($s);exit();
 						$e   = mysql_query($s);
 						$r   = mysql_fetch_assoc($e);
 						$barangArr=array();
@@ -477,8 +488,8 @@
 				                          kg.deskripsi, 
 				                          (SELECT count(*) from pus_buku where katalog=kg.replid) as jum
 				                        FROM
-				                          pus_katalog kg
-				                          LEFT JOIN pus_buku pb ON pb.replid = kg.pengarang
+				                          pus_buku pb
+				                          LEFT JOIN pus_katalog kg ON kg.replid = pb.katalog
 				                          LEFT JOIN pus_tingkatbuku pt ON pt.replid = pb.tingkatbuku
 				                          LEFT JOIN pus_lokasi pl ON pl.replid = pb.lokasi
 				                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
@@ -576,7 +587,6 @@
 									'lokasi'      =>$r['lokasi'],
 									'tingkatbuku' =>$r['tingkatbuku']
 								));
-
 					break;
 					
 				}

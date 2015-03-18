@@ -75,7 +75,7 @@
     <div class="tile-group-title">Referensi</div>
 
     <!-- Tahun Buku -->
-    <a href="tahun-buku" class="tile bg-lightBlue" data-click="transform">
+    <a href="tahun-buku" class="tile bg-green" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-copy"></span>
         </div>
@@ -84,6 +84,28 @@
         </div>
     </a>
     <!--end of  Tahun Buku -->
+
+    <!-- Status rekening -->
+    <a href="status-rekening" class="tile bg-red" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Status Rekening</div>
+        </div>
+    </a>
+    <!--end of  sub rekening -->
+
+    <!-- sub rekening -->
+    <a href="sub-rekening" class="tile bg-lightRed" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Sub Rekening</div>
+        </div>
+    </a>
+    <!--end of  sub rekening -->
 
     <!-- kategori  Rekening -->
     <a href="kategori-rekening" class="tile bg-orange" data-click="transform">
@@ -96,19 +118,19 @@
     </a>
     <!--end of  kategori  Rekening -->
 
-    <!-- Kode Rekening -->
-    <a href="rekening" class="tile bg-yellow" data-click="transform">
+    <!--  Rekening -->
+    <a href="rekening" class="tile bg-lightOrange" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-copy"></span>
         </div>
         <div class="brand">
-            <div class="label">Kode Rekening</div>
+            <div class="label"> Rekening</div>
         </div>
     </a>
-    <!--end of  Kode Rekening -->
+    <!--end of   Rekening -->
 
     <!-- Kode saldo Rekening -->
-    <a href="saldo-rekening" class="tile bg-lightGreen" data-click="transform">
+    <a href="saldo-rekening" class="tile bg-yellow" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-copy"></span>
         </div>
@@ -119,7 +141,7 @@
     <!--end of  Kode saldoRekening -->
 
     <!-- Anggaran -->
-    <a href="anggaran" class="tile bg-lightRed" data-click="transform">
+    <a href="anggaran" class="tile bg-blue" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-copy"></span>
         </div>
@@ -129,14 +151,16 @@
     </a>
     <!-- end of Anggaran -->
 
-<!--     <a href="set-angsuran" class="tile bg-green" data-click="transform">
+    <!--detil  Anggaran -->
+    <a href="detil-anggaran" class="tile bg-lightBlue" data-click="transform">
         <div class="tile-content icon">
-            <span class="icon-file"></span>
+            <span class="icon-copy"></span>
         </div>
         <div class="brand">
-            <div class="label">Set Angsuran</div>
+            <div class="label">Detil Anggaran</div>
         </div>
     </a>
- -->
+    <!-- end of Detil Anggaran -->
+
     
 </div> <!-- End group 2-->

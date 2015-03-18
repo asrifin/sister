@@ -85,9 +85,12 @@
                               </div>
                               <div class="row">                          
                                   <div class="span2">Kalsifikasi :</div>
-                                  <div class="span2" id="klasifikasiTD"></div><div class="span2" id="klasifikasi_selectTD"></div>
+                                  <!-- <input  id="idklasifikasiH" name="idklasifikasiH" type="hidden">                                   -->
+                                  <div class="span2" id="klasifikasiTD"></div>
+                                  <div class="span2" id="klasifikasi_selectTD"></div>
                               </div>
                               <div class="row">                              
+                                  <!-- <input  id="idpengarangH" name="idpengarangH" type="hidden"> -->
                                   <div class="span2">Pengarang :</div>
                                   <div class="span2" id="pengarangTD"></div>
                               </div>
@@ -106,6 +109,7 @@
                               </div>
 
                               <div class="row">
+                                  <!-- <input  id="idpenerbitH" name="idpenerbitH" type="hidden"> -->
                                   <div class="span2">Penerbit :</div>
                                   <div class="span2" id="penerbitTD"></div>
                               </div>
@@ -164,10 +168,10 @@
                                 <a href="#" data-hint="Tambah Koleksi" xclass="large" id="koleksi_duaBC" class="button"><span class="icon-plus-2"></span> Koleksi</a>
                               </div>
 
-                              <table id="katalogTBL" style="display:visible;" width="800px" class="table hovered bordered striped panelx" >
+                              <!-- <table id="koleksiTBL" style="display:visible;" width="800px" class="table hovered bordered striped panelx" > -->
+                              <table width="800px" class="table hovered bordered striped panelx" >
                                   <thead>
                                       <tr style="color:white;" class="info">
-                                      <!-- <input  id="dua_idkatalogH" name="dua_idkatalogH" type="hidden"> -->
                                           <th class="text-left">Barkode</th>
                                           <th class="text-left" >Nomor ID</th>
                                           <th class="text-left" >Sumber</th>
@@ -232,7 +236,7 @@
       <div class="table hovered bordered striped panelx" id="katalogFR" style="display:none;" >
           <div style="overflow:scroll;height:600px;" >
                   <form autocomplete="off" enctype="multipart/form-data" onsubmit="katalogSV();return false;" id="katalog_form"> 
-                        <input id="idformH" type="hidden"> 
+                        <input id="idformH" type="hidden"> <!--Untuk ambil id form -->
                         <!-- Panel -->
                         <div class="panel">
                           <div class="panel-header bg-lightBlue fg-white">
@@ -249,7 +253,7 @@
                           <div class="grid">     
                             <div class="row">
                               <div class="span6">
-                              <input  id="edit_katalogH" name="edit_katalogH" type="hidden">
+                              <input  id="edit_katalogH" name="edit_katalogH" type="hidden"> <!--Untuk ambil id tambah koleksi -->
                               <!-- <label><b>Kriteria Calon :</b></label> -->
                               <label>Judul :</label>
                               <div class="input-control text">
@@ -271,9 +275,8 @@
 
                               <label>Pengarang :</label>
                               <div class="input-control text size4">
-                                  <!-- <input type="text" placeholder="Cari Pengarang" name="cari_pengarangTB" id="cari_pengarangTB"> -->
-                                  <input type="text" placeholder="Pengarang" name="pengarangTB" id="pengarangTB">
                                   <input type="hidden" name="pengarang_autoH" id="pengarang_autoH">
+                                  <input type="text" placeholder="Pengarang" name="pengarangTB" id="pengarangTB">
                                   <button class="btn-clear"></button>
                               </div>      
                                   <a href="#" data-hint="Tambah Pengarang" xclass="large" id="pengarangBC" class="button"><span class="icon-plus-2"></span> </a>
@@ -298,6 +301,7 @@
 
                               <label>Penerbit</label>
                               <div class="input-control text size4">
+                                  <input type="hidden" name="penerbit_autoH" id="penerbit_autoH">
                                   <input type="text" placeholder="Penerbit" name="penerbitTB" id="penerbitTB">
                                   <button class="btn-clear"></button>
                               </div>
