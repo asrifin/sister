@@ -25,16 +25,18 @@
 							kr.nama kategorirek,
 							r.kode,
 							r.nama,
-							IFNULL(sr.nominal2,0)saldo
+							kr.jenis,
+							IFNULL(sr.nominal,0)saldo
 						FROM
 							keu_rekening r
 							LEFT JOIN keu_saldorekening sr ON sr.rekening = r.replid
-							LEFT JOIN keu_kategorirek kr ON kr.replid = r.kategorirek
+							LEFT JOIN keu_kategorirekening kr ON kr.replid = r.kategorirek
 						WHERE
 							kr.replid LIKE "%'.$kategorirek.'%"
 							AND r.nama LIKE "%'.$nama.'%"
 							AND r.kode LIKE "%'.$kode.'%"
 							AND sr.tahunbuku = "'.$tahunbuku.'"';
+							// var_dump($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -70,7 +72,7 @@
 								$rr = mysql_fetch_assoc($ee);
 								$out.= '<tr>
 											<td><b>'.$rr['kode'].'</b></td>
-											<td colspan="3"><b>'.$rr['nama'].'</b></td>
+											<td colspan="5"><b>'.$rr['nama'].'</b></td>
 										</tr>';
 							}else{ // sub rekening
 								$btn ='<td>
@@ -78,12 +80,30 @@
 												<i class="icon-pencil on-left"></i>
 											</button>
 									 </td>';
+							 	if($res['jenis']=='debit-kredit'){
+									$debit  = 0;  
+									$kredit = 0; 
+									$normal = $res['saldo'];
+							 	}elseif($res['jenis']=='debit'){ // kredit
+									$debit  = $res['saldo']; 
+									$kredit = 0;  
+									$normal = 0;
+							 	}else{ // kredit
+									$debit  = 0; 
+									$kredit = $res['saldo'];  
+									$normal = 0;
+							 	}
+
 								$out.= '<tr>
 											<td class="text-right">'.$res['kode'].'</td>
 											<td>'.$res['nama'].'</td>
-											<td class="text-right">Rp. '.number_format($res['saldo']).',-</td>
+											<td class="text-right">Rp. '.number_format($normal).',-</td>
+											<td class="text-right">Rp. '.number_format($debit).',-</td>
+											<td class="text-right">Rp. '.number_format($kredit).',-</td>
 											'.$btn.'
 										</tr>';
+										// <td class="text-right">Rp. '.($res['jenis']!='debit'?'':number_format($res['saldo'])).',-</td>
+										// <td class="text-right">Rp. '.number_format($res['saldo']).',-</td>
 							}$curKat=$res['idkategorirek'];
 						}$nox++;
 					}
@@ -115,11 +135,12 @@
 							kr.nama kategorirek,
 							r.kode,
 							r.nama,
+							kr.jenis,
 							IFNULL(sr.nominal,0)nominal
 						FROM
 							keu_rekening r
 							LEFT JOIN keu_saldorekening sr ON sr.rekening = r.replid
-							LEFT JOIN keu_kategorirek kr ON kr.replid = r.kategorirek
+							LEFT JOIN keu_kategorirekening kr ON kr.replid = r.kategorirek
 							LEFT JOIN keu_tahunbuku tb  ON tb.replid =sr.tahunbuku
 						WHERE
 							sr.replid ='.$_POST['replid'];
@@ -131,6 +152,7 @@
 							'kategorirek' =>$r['kategorirek'],
 							'kode'        =>$r['kode'],
 							'nama'        =>$r['nama'],
+							'jenis'       =>$r['jenis'],
 							'nominal'     =>$r['nominal']
 						));
 			break;

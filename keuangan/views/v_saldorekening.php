@@ -17,14 +17,20 @@
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
-            <th class="text-center">Kode</th>
-            <th class="text-center">Rekening</th>
-            <th class="text-center">Saldo</th>
-            <th class="text-left">Aksi</th>
+            <th class="text-center" rowspan="2">Kode</th>
+            <th class="text-center" rowspan="2">Rekening</th>
+            <th class="text-center" colspan="3">Saldo</th>
+            <th class="text-left" rowspan="2">Aksi</th>
+        </tr>
+        <tr style="color:white;" class="info">
+            <th>normal</th>
+            <th>debit</th>
+            <th>kredit</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-right"><input  class="cari" placeholder="kode" id="kodeS" name="kodeS"></th>
             <th class="text-left"><input  class="cari" placeholder="nama" id="namaS" name="namaS"></th>
+            <th class="text-left">
             <th class="text-left">
             <!-- <input  class="cari" placeholder="nominal" id="nominalS" name="nominalS"> -->
             </th>

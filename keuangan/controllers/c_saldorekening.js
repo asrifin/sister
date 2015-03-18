@@ -36,6 +36,13 @@ var contentFR ='';
                                 +'<input disabled name="namaTB" id="namaTB" type="text">'
                             +'</div>'
                         +'</div>'
+
+                        +'<label>Jenis</label>'
+                        +'<div>'
+                            +'<div class="input-control size3 text" >'
+                                +'<input disabled name="jenisTB" id="jenisTB" type="text">'
+                            +'</div>'
+                        +'</div>'
                         
                         +'<label>Saldo</label>'
                         +'<div>'
@@ -198,6 +205,7 @@ var contentFR ='';
                         $('#kategorirekTB').val(dt.kategorirek);
                         $('#kodeTB').val(dt.kode);
                         $('#namaTB').val(dt.nama);
+                        $('#jenisTB').val(dt.jenis);
                         $('#nominalTB').val(dt.nominal);
                     }
                 });
