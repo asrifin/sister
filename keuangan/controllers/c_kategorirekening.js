@@ -1,25 +1,11 @@
 var mnu  = 'kategorirekening';
 var dir  = 'models/m_'+mnu+'.php';
-var mnu2 = 'subrekening';
-var dir2 = 'models/m_'+mnu2+'.php';
-var mnu3 = 'statusrekening';
-var dir3 = 'models/m_'+mnu3+'.php';
 var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-
-                        +'<label>Sub Rekening</label>'
-                        +'<div class="input-control select">'
-                            +'<select name="subrekeningTB" id="subrekeningTB"></select>'
-                        +'</div>'
-
-                        +'<label>Status</label>'
-                        +'<div class="input-control select">'
-                            +'<select name="statusrekeningTB" id="statusrekeningTB"></select>'
-                        +'</div>'
 
                         +'<label>Kode </label>'
                         +'<div class="input-control text">'
@@ -33,27 +19,20 @@ var contentFR = '';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
-                        +'<label>Keterangan</label>'
-                        +'<div class="input-control textarea">'
-                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
-                        +'</div>'
-                        
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
-        // viewTB();
-        cmbsubrekening('filter','');
+        viewTB();
+
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
         });
 
         //search action
-        $('#subrekeningS,#statusrekeningS').on('change',function(){
-            viewTB();
-        });$('#kodeS,#namaS,#keteranganS').keydown(function (e){
+        $('#kodeS,#namaS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
         });
@@ -65,67 +44,6 @@ var contentFR = '';
         });
     }); 
 // end of save process ---
-
-// combo statusrekening ---
-    function cmbstatusrekening(typ,stat){
-        $.ajax({
-            url:dir3,
-            data:'aksi=cmb'+mnu3,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.statusrekening, function(id,item){
-                        if(stat==item.replid)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
-                        else
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                    if(typ=='filter'){ // filtering/ searching
-                        $('#statusrekeningS').html('<option value="">..SEMUA..</option>'+out);
-                        viewTB();
-                    }else{ //form
-                        $('#statusrekeningTB').html(out);
-                    }
-                }
-            }
-        });
-    }
-//end of combo statusrekening ---
-
-// combo subrekening ---
-    function cmbsubrekening(typ,sub){
-        $.ajax({
-            url:dir2,
-            data:'aksi=cmb'+mnu2,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.subrekening, function(id,item){
-                        if(sub==item.replid)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
-                        else
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                    if(typ=='filter'){ // filtering/ searching
-                        $('#subrekeningS').html('<option value="">..SEMUA..</option>'+out);
-                        cmbstatusrekening('filter','');
-                    }else{ //form
-                        $('#subrekeningTB').html(out);
-                    }
-                }
-            }
-        });
-    }
-//end of combo subrekening ---
-
 
 //save process ---
     function simpan(){
@@ -160,8 +78,6 @@ var contentFR = '';
         var aksi ='aksi=tampil';
         var cari ='&namaS='+$('#namaS').val()
                 +'&keteranganS='+$('#keteranganS').val()
-                +'&statusrekeningS='+$('#statusrekeningS').val()
-                +'&subrekeningS='+$('#subrekeningS').val()
                 +'&kodeS='+$('#kodeS').val();
         $.ajax({
             url : dir,
@@ -190,8 +106,6 @@ var contentFR = '';
                 var titlex;
                 if(id==''){  //add mode
                     titlex='<span class="icon-plus-2"></span> Tambah ';
-                    cmbsubrekening('form','');
-                    cmbstatusrekening('form','');
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({
@@ -203,9 +117,6 @@ var contentFR = '';
                             $('#idformH').val(id);
                             $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
-                            $('#keteranganTB').val(dt.keterangan);
-                            cmbsubrekening('form',dt.subrekening);
-                            cmbstatusrekening('form',dt.statusrekening);
                         }
                     });
                 }$.Dialog.title(titlex+' '+mnu);
@@ -220,8 +131,6 @@ var contentFR = '';
         var datax= 'starting='+page+'&aksi='+aksix+'&menu='+menux;
         var cari ='&kodeS='+$('#kodeS').val()
                  +'&keteranganS='+$('#keteranganS').val()
-                 +'&subrekeningS='+$('#subrekeningS').val()
-                 +'&statusrekeningS='+$('#statusrekeningS').val()
                  +'&namaS='+$('#namaS').val();
         $.ajax({
             url:dir,
