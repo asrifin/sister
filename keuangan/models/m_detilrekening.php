@@ -86,14 +86,27 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set kategorirek = "'.filter($_POST['kategorirekTB']).'",
-									kode        = "'.filter($_POST['kodeTB']).'",
-									nama        = "'.filter($_POST['namaTB']).'",
-									keterangan  = "'.filter($_POST['keteranganTB']).'"';
-				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e 		= mysql_query($s2);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array('status'=>$stat));
+				$s 	  = $tb.' set 	kategorirekening = "'.filter($_POST['kategorirekeningTB']).'",
+									kode             = "'.filter($_POST['kodeTB']).'",
+									nama             = "'.filter($_POST['namaTB']).'",
+									keterangan       = "'.filter($_POST['keteranganTB']).'"';
+				if(isset($_POST['replid']) and $_POST['replid']!=''){
+					$s2   = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
+					$e    = mysql_query($s2);
+					$stat = $e?'sukses':'gagal_'.mysql_error();
+				}else{
+					$s2 = 'INSERT INTO '.$s;				
+					$e  = mysql_query($s2);
+					$id = mysql_insert_id();
+					if(!$e){
+						$stat2  = false;
+					}else{
+						$tbuku = mysql_fetch_assoc(mysql_query('SELECT replid from keu_tahunbuku WHERE aktif=1'));
+						$s3    = 'INSERT INTO keu_saldorekening SET tahunbuku ='.$tbuku['replid'].',rekening  ='.$id;
+						$e2    = mysql_query($s3);
+						$stat2 = $e2?true:false;
+					}$stat  = $stat2?'sukses':'gagal_'.mysql_error();
+				}$out  = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -102,15 +115,20 @@
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
-				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				if(!$e){
+					$stat = 'gagal_'.mysql_error();
+				}else{
+					$s2   = 'DELETE FROM '.$tb.' WHERE rekening = '.$d['replid'];
+					$e2   = mysql_query($s2);
+					$stat = $e2?'sukses':'gagal_'.mysql_error();
+				}$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 	  = ' SELECT 
-								kategorirek,
+								kategorirekening,
 								kode,
 								nama,
 								keterangan
@@ -121,10 +139,10 @@
 				$e   = mysql_query($s);
 				$r   = mysql_fetch_assoc($e);
 				$out = json_encode(array(
-							'kategorirek' =>$r['kategorirek'],
-							'keterangan'  =>$r['keterangan'],
-							'kode'        =>$r['kode'],
-							'nama'        =>$r['nama']
+							'kategorirekening' =>$r['kategorirekening'],
+							'keterangan'       =>$r['keterangan'],
+							'kode'             =>$r['kode'],
+							'nama'             =>$r['nama']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

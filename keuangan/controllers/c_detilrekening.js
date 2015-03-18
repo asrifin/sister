@@ -174,7 +174,7 @@ var contentFR ='';
                             $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
                             $('#keteranganTB').val(dt.keterangan);
-                            cmbkategorirek('form',dt.kategorirek)
+                            cmbkategorirekening('form',dt.kategorirekening);
                         }
                     });
                 }$.Dialog.title(titlex+' '+mnu); // edit by epiii
