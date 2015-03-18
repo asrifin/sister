@@ -47,7 +47,7 @@ var contentFR ='';
                         +'<label>Saldo</label>'
                         +'<div>'
                             +'<div class="input-control size3 text" >'
-                                +'<input required name="nominalTB" id="nominalTB" type="text">'
+                                +'<input onclick="inputuang(this);" placeholder="saldo" type="text" name="nominalTB" id="nominalTB">'
                             +'</div>'
                         +'</div>'
                         
@@ -174,7 +174,7 @@ var contentFR ='';
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -319,6 +319,19 @@ function notif(cont,clr) {
         $('#keteranganTB').val('');
     }
 //end of reset form ---
+
+// input uang --------------------------
+    function inputuang(e) {
+        $(e).maskMoney({
+            precision:0,
+            prefix:'Rp. ', 
+            // allowNegative: true, 
+            thousands:'.', 
+            // decimal:',', 
+            affixesStay: true
+        });
+    }
+// end of input uang --------------------------
 
     // ---------------------- //
     // -- created by rovi  -- //

@@ -75,12 +75,12 @@
 											<td colspan="5"><b>'.$rr['nama'].'</b></td>
 										</tr>';
 							}else{ // sub rekening
-								$btn ='<td>
+								$btn ='<td align="center">
 											<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
 									 </td>';
-							 	if($res['jenis']=='debit-kredit'){
+							 	if($res['jenis']=='debit_kredit'){
 									$debit  = 0;  
 									$kredit = 0; 
 									$normal = $res['saldo'];
@@ -120,7 +120,8 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s    = $tb.' set nominal = "'.filter($_POST['nominalTB']).'", nominal2 = "'.filter($_POST['nominalTB']).'"';
+				$s    = $tb.' set 	nominal 	= "'.getuang(filter($_POST['nominalTB'])).'", 
+									nominal2 	= "'.getuang(filter($_POST['nominalTB'])).'"';
 				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e    = mysql_query($s2);
 				$stat = ($e)?'sukses':'gagal';
