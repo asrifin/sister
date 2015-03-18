@@ -1,24 +1,14 @@
 <?php
-	// error_reporting(0);
 	session_start();
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 
-	// var_dump($_SESSION);exit();
-	$mnu  = 'budget';
-	$mnu2 = 'lokasi';
-	$mnu3 = 'katalog';
-	$mnu4 = 'barang';
-	$mnu5 = 'jenis';
-	
+	$mnu  = 'kategorianggaran';
+	$mnu2 = 'detilanggaran';
 	$tb   = 'keu_'.$mnu;
 	$tb2  = 'keu_'.$mnu2;
-	$tb3  = 'keu_'.$mnu3;
-	$tb4  = 'keu_'.$mnu4;
-	$tb5  = 'keu_'.$mnu5;
-	// $out=array();
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['upload'])){
@@ -120,8 +110,8 @@
 						$d_keterangan = isset($_POST['d_keteranganS'])?filter(trim($_POST['d_keteranganS'])):'';
 						// var_dump($k_grup);exit();
 						$sql = 'SELECT db.replid,db.nominal, r.kode, r.nama
-								FROM keu_detilbudget db 
-									LEFT JOIN keu_rekening r on r.replid = db.rekening
+								FROM '.$tb2.' db 
+									LEFT JOIN keu_detilrekening r on r.replid = db.rekening
 								where db.budget ='.$d_anggaran;
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
@@ -142,6 +132,7 @@
 						if($jum!=0){	
 							$nox 	= $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
+								// print_r($res);exit();
 								$btn ='<td>
 											<button data-hint="ubah"  class="button" onclick="detilangggaranFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>

@@ -3,65 +3,58 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu  = 'budget';
-	$mnu2 = 'departemen';
-	$tb   = 'keu_'.$mnu;
-	$tb2  = $mnu2;
+	require_once '../../lib/tglindo.php';
+	$mnu = 'kategorirekening';
+	$tb  = 'keu_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
 	}else{
 		switch ($_POST['aksi']) {
-			// -----------------------------------------------------------------
 			case 'tampil':
-				$nama       = trim($_POST['namaS'])?filter($_POST['namaS']):'';
-				$departemen = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
-				$keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
-				$tahunbuku  = trim($_POST['tahunbukuS'])?filter($_POST['tahunbukuS']):'';
-				$sql = 'SELECT
-							b.tahunuku,
-							b.nama,
-							b.nominal,
-							b.keterangan,
-							d.nama AS departemen
-						FROM
-							keu_budget b,
-							departemen d
-						WHERE
-							b.id_department = d.replid
-							';
-				// print_r($sql);exit(); 	
+				$kode           = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
+				$subrekening    = trim($_POST['subrekeningS'])?filter($_POST['subrekeningS']):'';
+				$statusrekening = trim($_POST['statusrekeningS'])?filter($_POST['statusrekeningS']):'';
+				$nama           = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$keterangan     = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$sql = 'SELECT *
+						FROM '.$tb.'
+						WHERE 
+							keterangan like "%'.$keterangan.'%" and
+							nama like "%'.$nama.'%" and
+							statusrekening like "%'.$statusrekening.'%" and
+							subrekening like "%'.$subrekening.'%" and
+							kode like "%'.$kode.'%" 
+						ORDER 
+							BY kode asc';
+				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
-
-
-				$recpage = 5;
+				$recpage = 4;//jumlah data per halaman
 				$aksi    ='tampil';
 				$subaksi ='';
-				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-				$result  = $obj->result;
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+				$result =$obj->result;
 
-				#ada data
-				$jum	= mysql_num_rows($result);
+				$jum = mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
+					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td>
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
+									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+									<button data-hint="hapus" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
+									</button>
 								 </td>';
 						$out.= '<tr>
+									<td>'.$res['kode'].'</td>
 									<td>'.$res['nama'].'</td>
-									<td>'.$res['nominal'].'</td>
-									<td>'.$res['nama'].'</td>
-									<td>'.$res['departemen'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -80,18 +73,19 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	id_department 	= "'.filter($_POST['departemenH']).'",
-										nama       		= "'.filter($_POST['namaTB']).'",
-										nominal    		= "'.filter($_POST['nominalTB']).'",
-										keterangan 		= "'.filter($_POST['keteranganTB']).'"';
-				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// var_dump($s2);exit();
-				$e 		= mysql_query($s2);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array('status'=>$stat));
+				$s 	= $tb.' set kode       	= "'.filter($_POST['kodeTB']).'",
+								subrekening = "'.filter($_POST['subrekeningTB']).'",
+								nama        = "'.filter($_POST['namaTB']).'",
+								keterangan  = "'.filter($_POST['keteranganTB']).'"';
+				// var_dump($s);exit();
+				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				$e    = mysql_query($s2);
+				$stat = ($e)?'sukses':'gagal';
+				$out  = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
+
 			// delete -----------------------------------------------------------------
 			case 'hapus':
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
@@ -104,29 +98,42 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT 
-								t.nama,
-								t.nominal,
-								t.keterangan,
-								d.nama as departemen
-							from '.$tb.' t, departemen d 
-							WHERE 
-								t.id_department= d.replid and
-								t.replid='.$_POST['replid'];
+				$s 		= ' SELECT *
+							from '.$tb.'
+							WHERE replid='.$_POST['replid'];
 				// var_dump($s);exit();
-				$e 		= mysql_query($s);
+				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
-				// $stat 	= ($e)?'sukses':'gagal';
+				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'nama'          =>$r['nama'],
-							'nominal'       =>$r['nominal'],
-							'id_department' =>$r['id_department'],
-							'keterangan'    =>$r['keterangan']
+							'status'         =>$stat,
+							'subrekening'    =>$r['subrekening'],
+							'statusrekening' =>$r['statusrekening'],
+							'kode'           =>$r['kode'],
+							'nama'           =>$r['nama'],
+							'keterangan'     =>$r['keterangan']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 
-			// cmbtempat ---------------------------------------------------------
+			// aktifkan -----------------------------------------------------------------
+			case 'aktifkan':
+				$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0"');
+				if(!$e1){
+					$stat='gagal menonaktifkan';
+				}else{
+					$s2 = 'UPDATE  '.$tb.' set aktif="1" where replid = '.$_POST['replid'];
+					$e2 = mysql_query($s2);
+					if(!$e2){
+						$stat='gagal mengaktifkan';
+					}else{
+						$stat='sukses';
+					}
+				}$out  = json_encode(array('status'=>$stat));
+			break;
+			// aktifkan -----------------------------------------------------------------
+
+			// cmbtahunbuku -----------------------------------------------------------------
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
@@ -134,8 +141,8 @@
 				}else{
 					if(isset($_POST[$mnu])){
 						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST[$mnu2])){
-						$w.='where '.$mnu2.' ='.$_POST[$mnu2];
+					}elseif(isset($_POST['departemen'])){
+						$w.='where departemen ='.$_POST['departemen'];
 					}
 				}
 				
@@ -164,7 +171,7 @@
 					}
 				}$out=json_encode($ar);
 			break;
-			// end of cmblokasi ---------------------------------------------------------
+			// cmbtahunajaran -----------------------------------------------------------------
 
 		}
 	}echo $out;
