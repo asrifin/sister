@@ -21,7 +21,7 @@ var contentFR ='';
                         +'<label>Kategori Rekening</label>'
                         +'<div>'
                             +'<div class="input-control size2 text" >'
-                                +'<input disabled name="kategorirekTB" id="kategorirekTB" type="text">'
+                                +'<input disabled name="kategorirekeningTB" id="kategorirekeningTB" type="text">'
                             +'</div>'
                         +'</div>'                
 
