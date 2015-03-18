@@ -2,6 +2,8 @@ var mnu  ='saldorekening';
 var dir  ='models/m_'+mnu+'.php';
 var mnu2 ='tahunbuku'; 
 var dir2 ='models/m_'+mnu2+'.php';
+var mnu3 ='kategorirekening'; 
+var dir3 ='models/m_'+mnu3+'.php';
 var contentFR ='';
 
 // main function ---
@@ -57,7 +59,7 @@ var contentFR ='';
                         +'</div>'
                     +'</form>';
 
-        cmbkategorirek();
+        cmbkategorirekening();
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -72,7 +74,7 @@ var contentFR ='';
             $('#keteranganS').val('');
         });
         //search action // edit by epiii
-        $('#kategorirekS,#tahunbukuS').on('change',function (e){ // change : combo box
+        $('#kategorirekeningS,#tahunbukuS').on('change',function (e){ // change : combo box
             viewTB();
         });
         $('#kodeS,#namaS').on('keydown',function (e){ // kode grup
@@ -84,10 +86,10 @@ var contentFR ='';
 // end of main function ---
 
 // combo departemen ---
-    function cmbkategorirek(){
+    function cmbkategorirekening(){
         $.ajax({
-            url:dir,
-            data:'aksi=cmbkategorirek',
+            url:dir3,
+            data:'aksi=cmb'+mnu3,
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -95,10 +97,10 @@ var contentFR ='';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    $.each(dt.kategorirek, function(id,item){
+                    $.each(dt.kategorirekening, function(id,item){
                         out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                     });
-                    $('#kategorirekS').html('<option value="">--SEMUA--</option>'+out);
+                    $('#kategorirekeningS').html('<option value="">--SEMUA--</option>'+out);
                     cmbtahunbuku();
                 }
             }
@@ -164,7 +166,7 @@ var contentFR ='';
 // view table ---
     function viewTB(){ 
         var aksi ='aksi=tampil';
-        var cari ='&kategorirekS='+$('#kategorirekS').val()
+        var cari ='&kategorirekeningS='+$('#kategorirekeningS').val()
                 +'&kodeS='+$('#kodeS').val()
                 +'&namaS='+$('#namaS').val()
                 +'&tahunbukuS='+$('#tahunbukuS').val();
@@ -202,7 +204,7 @@ var contentFR ='';
                     success:function(dt){
                         $('#idformH').val(id);
                         $('#tahunbukuTB').val(dt.tahunbuku);
-                        $('#kategorirekTB').val(dt.kategorirek);
+                        $('#kategorirekeningTB').val(dt.kategorirekening);
                         $('#kodeTB').val(dt.kode);
                         $('#namaTB').val(dt.nama);
                         $('#jenisTB').val(dt.jenis);

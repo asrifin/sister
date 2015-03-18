@@ -8,7 +8,7 @@
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
 <div class="input-control select span3">
-    <select data-hint="Kategori Rekening" class="cari" name="kategorirekS" id="kategorirekS"></select>
+    <select data-hint="Kategori Rekening" class="cari" name="kategorirekeningS" id="kategorirekeningS"></select>
 </div>
 <div class="input-control select span3">
     <select data-hint="Tahun Buku" class="cari" name="tahunbukuS" id="tahunbukuS"></select>

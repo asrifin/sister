@@ -13,30 +13,30 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$kategorirek = trim($_POST['kategorirekS'])?filter($_POST['kategorirekS']):'';
-				$kode        = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
-				$nama        = trim($_POST['namaS'])?filter($_POST['namaS']):'';
-				$tahunbuku   = trim($_POST['tahunbukuS'])?filter($_POST['tahunbukuS']):'';
+				$kategorirekening = (isset($_POST['kategorirekeningS']) and $_POST['kategorirekeningS']!='')?' kr.replid='.$_POST['kategorirekeningS'].' AND':'';
+				$kode             = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
+				$nama             = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$tahunbuku        = trim($_POST['tahunbukuS'])?filter($_POST['tahunbukuS']):'';
 
 				$sql = 'SELECT
 							sr.replid,
 							r.replid idrekening,
-							kr.replid  idkategorirek,
-							kr.nama kategorirek,
+							kr.replid idkategorirekening,
+							kr.nama kategorirekening,
 							r.kode,
 							r.nama,
 							kr.jenis,
 							IFNULL(sr.nominal,0)saldo
 						FROM
-							keu_rekening r
+							keu_detilrekening r
 							LEFT JOIN keu_saldorekening sr ON sr.rekening = r.replid
-							LEFT JOIN keu_kategorirekening kr ON kr.replid = r.kategorirek
+							LEFT JOIN keu_kategorirekening kr ON kr.replid = r.kategorirekening
 						WHERE
-							kr.replid LIKE "%'.$kategorirek.'%"
-							AND r.nama LIKE "%'.$nama.'%"
+							'.$kategorirekening.'
+							r.nama LIKE "%'.$nama.'%"
 							AND r.kode LIKE "%'.$kode.'%"
 							AND sr.tahunbuku = "'.$tahunbuku.'"';
-							// var_dump($sql);exit();
+							// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -56,18 +56,18 @@
 					$curKat = '';
 					$ec = mysql_query($sql);
 					while($res = mysql_fetch_assoc($result)){	
- 						if($res['replid']==NULL){ // belum ada
-							$si = 'INSERT INTO keu_saldorekening set 
-									rekening = '.$res['idrekening'].',
-									tahunbuku = '.$tahunbuku;
-							$ei = mysql_query($si);
-							if($ei)
-								echo '<script>window.location=\'saldo-rekening\';</script>';
-							else
-								$out.='<tr><td>'.$res['nama'].' is failed to insert </td></tr>';
-						}else{ //sudah ada
-							if($res['idkategorirek']!=$curKat){ // kategori rek 
-								$ss = 'SELECT replid,nama,RPAD(kode,6,0)kode from keu_kategorirek where replid='.$res['idkategorirek'];	
+ 					// 	if($res['replid']==NULL){ // belum ada
+						// 	$si = 'INSERT INTO keu_saldorekening set 
+						// 			rekening = '.$res['idrekening'].',
+						// 			tahunbuku = '.$tahunbuku;
+						// 	$ei = mysql_query($si);
+						// 	if($ei)
+						// 		echo '<script>window.location=\'saldo-rekening\';</script>';
+						// 	else
+						// 		$out.='<tr><td>'.$res['nama'].' is failed to insert </td></tr>';
+						// }else{ //sudah ada
+							if($res['idkategorirekening']!=$curKat){ // kategori rek 
+								$ss = 'SELECT replid,nama,RPAD(kode,6,0)kode from keu_kategorirekening where replid='.$res['idkategorirekening'];	
 								$ee = mysql_query($ss);
 								$rr = mysql_fetch_assoc($ee);
 								$out.= '<tr>
@@ -104,8 +104,9 @@
 										</tr>';
 										// <td class="text-right">Rp. '.($res['jenis']!='debit'?'':number_format($res['saldo'])).',-</td>
 										// <td class="text-right">Rp. '.number_format($res['saldo']).',-</td>
-							}$curKat=$res['idkategorirek'];
-						}$nox++;
+							}$curKat=$res['idkategorirekening'];
+						// }
+						$nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -133,15 +134,15 @@
 			case 'ambiledit':
 				$s = 'SELECT
 							tb.nama tahunbuku,
-							kr.nama kategorirek,
+							kr.nama kategorirekening,
 							r.kode,
 							r.nama,
 							kr.jenis,
 							IFNULL(sr.nominal,0)nominal
 						FROM
-							keu_rekening r
+							keu_detilrekening r
 							LEFT JOIN keu_saldorekening sr ON sr.rekening = r.replid
-							LEFT JOIN keu_kategorirekening kr ON kr.replid = r.kategorirek
+							LEFT JOIN keu_kategorirekening kr ON kr.replid = r.kategorirekening
 							LEFT JOIN keu_tahunbuku tb  ON tb.replid =sr.tahunbuku
 						WHERE
 							sr.replid ='.$_POST['replid'];
@@ -149,12 +150,12 @@
 				$e   = mysql_query($s);
 				$r   = mysql_fetch_assoc($e);
 				$out = json_encode(array(
-							'tahunbuku'   =>$r['tahunbuku'],
-							'kategorirek' =>$r['kategorirek'],
-							'kode'        =>$r['kode'],
-							'nama'        =>$r['nama'],
-							'jenis'       =>$r['jenis'],
-							'nominal'     =>$r['nominal']
+							'tahunbuku'        =>$r['tahunbuku'],
+							'kategorirekening' =>$r['kategorirekening'],
+							'kode'             =>$r['kode'],
+							'nama'             =>$r['nama'],
+							'jenis'            =>$r['jenis'],
+							'nominal'          =>$r['nominal']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
