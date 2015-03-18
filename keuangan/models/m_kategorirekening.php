@@ -12,8 +12,8 @@
 	}else{
 		switch ($_POST['aksi']) {
 			case 'tampil':
-				$kode           = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
-				$nama           = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$kode = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
+				$nama = trim($_POST['namaS'])?filter($_POST['namaS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
@@ -49,6 +49,7 @@
 						$out.= '<tr>
 									<td>'.$res['kode'].'</td>
 									<td>'.$res['nama'].'</td>
+									<td>'.$res['jenis'].'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -66,8 +67,9 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 	= $tb.' set kode = "'.filter($_POST['kodeTB']).'",
-								nama = "'.filter($_POST['namaTB']).'"';
+				$s 	= $tb.' set kode 	= "'.filter($_POST['kodeTB']).'",
+								jenis 	= "'.filter($_POST['jenisTB']).'",
+								nama 	= "'.filter($_POST['namaTB']).'"';
 				// var_dump($s);exit();
 				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e    = mysql_query($s2);
@@ -99,7 +101,8 @@
 				$out 	= json_encode(array(
 							'status' =>$stat,
 							'kode'   =>$r['kode'],
-							'nama'   =>$r['nama']
+							'nama'   =>$r['nama'],
+							'jenis'  =>$r['jenis']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

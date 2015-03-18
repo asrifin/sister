@@ -13,11 +13,13 @@
         <tr style="color:white;"class="info">
             <th class="text-left">Kode </th>
             <th class="text-left">Nama</th>
+            <th class="text-left">Jenis</th>
             <th class="text-left">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-left"><input placeholder="kode" id="kodeS" name="kodeS"></th>
             <th class="text-left"><input placeholder="nama" id="namaS" name="namaS"></th>
+            <th class="text-left"></th>
             <th class="text-left"></th>
         </tr>
     </thead>

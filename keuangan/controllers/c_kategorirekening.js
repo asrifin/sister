@@ -19,6 +19,15 @@ var contentFR = '';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
+                        +'<label>Jenis </label>'
+                        +'<div class="input-control select">'
+                            +'<select required name="jenisTB" id="jenisTB">'
+                                +'<option value="debit_kredit">DEBIT & KREDIT</option>'
+                                +'<option value="debit">DEBIT</option>'
+                                +'<option value="kredit">KREDIT</option>'
+                            +'</select>'
+                        +'</div>'
+
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -117,6 +126,7 @@ var contentFR = '';
                             $('#idformH').val(id);
                             $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
+                            $('#jenisTB').val(dt.jenis);
                         }
                     });
                 }$.Dialog.title(titlex+' '+mnu);
