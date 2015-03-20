@@ -79,7 +79,8 @@
                     <li><a href="kategori-rekening">Kategori Rekening</a></li>
                     <li><a href="detil-rekening">Rekening</a></li>
                     <li><a href="saldo-rekening">Saldo Rekening</a></li>
-                    <li><a href="anggaran">Anggaran</a></li>
+                    <li><a href="set-anggaran">Set Anggaran</a></li>
+                    <li><a href="anggaran-tahunan">Anggaran Tahunan</a></li>
                 </ul>
             </div>
              
@@ -138,6 +139,9 @@
                     break;
                     case 'detilanggaran':
                         require $d.'v_detilanggaran.php';
+                    break;
+                    case 'anggarantahunan':
+                        require $d.'v_anggarantahunan.php';
                     break;
 
 

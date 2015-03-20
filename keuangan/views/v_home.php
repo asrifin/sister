@@ -141,26 +141,26 @@
     <!--end of  Kode saldoRekening -->
 
     <!-- Anggaran -->
-    <a href="anggaran" class="tile bg-blue" data-click="transform">
+    <a href="set-anggaran" class="tile bg-blue" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-copy"></span>
         </div>
         <div class="brand">
-            <div class="label">Anggaran</div>
+            <div class="label">Set Anggaran</div>
         </div>
     </a>
     <!-- end of Anggaran -->
 
-    <!--detil  Anggaran -->
-    <a href="detil-anggaran" class="tile bg-lightBlue" data-click="transform">
+    <!--  Anggaran Tahunan -->
+    <a href="anggaran-tahunan" class="tile bg-lightBlue" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-copy"></span>
         </div>
         <div class="brand">
-            <div class="label">Detil Anggaran</div>
+            <div class="label">Anggaran Tahunan</div>
         </div>
     </a>
-    <!-- end of Detil Anggaran -->
+    <!-- end of Anggaran Tahunan-->
 
     
 </div> <!-- End group 2-->
