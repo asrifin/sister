@@ -41,11 +41,12 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                         +'</form>';
             //katalog
             d_contentFR +=' <div class="grid">'
-                                +'<form autocomplete="off" onsubmit="katalogSV(); return false;" id="detilanggaranFR">' 
-                                    +'<input id="a_idformH" type="hidden">' 
+                                +'<form autocomplete="off" onsubmit="detilanggaranSV(); return false;" id="detilanggaranFR">' 
+                                    +'<input id="d_idformH" type="hidden">' 
                             
 		                            +'<label>Kategori Anggaran</label>'
 		                            +'<div class="input-control text">'
+		                                +'<input type="hidden" id="d_kategorianggaranH2" name="d_kategorianggaranH2"/>'
 		                                +'<input type="text" disabled name="d_kategorianggaranTB" id="d_kategorianggaranTB">'
 		                                +'<button class="btn-clear"></button>'
 		                            +'</div>'
@@ -63,14 +64,14 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 		                            
 		                            +'<label>Rekening</label>'
 		                            +'<div class="input-control text">'
-		                            	+'<input type="text" required id="d_rekeningH" name="d_rekeningH" />'
+		                            	+'<input type="hidden" required id="d_rekeningH" name="d_rekeningH" />'
 		                                +'<input  placeholder="Rekening" required type="text" name="d_rekeningTB" id="d_rekeningTB">'
 		                                +'<button class="btn-clear"></button>'
 		                            +'</div>'
 
 		                            +'<label>Keterangan</label>'
 		                            +'<div class="input-control textarea">'
-		                                +'<textarea placeholder="keterangan" name="a_keteranganTB" id="a_keteranganTB"></textarea>'
+		                                +'<textarea placeholder="keterangan" name="d_keteranganTB" id="d_keteranganTB"></textarea>'
 		                            +'</div>'
 		                            
 		                            +'<div class="form-actions">' 
@@ -261,7 +262,7 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 
     // katalog barang
         function vwDetilAnggaran(id) {
-            var aksi ='aksi=tampil&subaksi=detilanggaran&d_kategorianggaranS='+id;
+            var aksi ='aksi=tampil&subaksi=detilanggaran&d_kategorianggaranH='+id;
             var cari ='&d_namaS='+$('#d_namaS').val()
                     +'&d_rekeningS='+$('#d_rekeningS').val()
                     +'&d_departemenS='+$('#d_departemenS').val()
@@ -274,6 +275,7 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                     $('#detilanggaran_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
                 },success:function(dt){
                     $('#d_kategorianggaranH').val(id);
+                    // $('#d_kategorianggaranH2').val(id);
                     switchPN(2);
                     // vwHeadDetilAnggaran(id);
                     setTimeout(function(){
@@ -314,7 +316,40 @@ var a_contentFR = d_contentFR = b_contentFR ='';
     //end of barang
 
 /*save (insert & update)*/
-    //grup ---
+    //detil anggaran save ---
+        function detilanggaranSV(){
+            var urlx ='&aksi=simpan&subaksi=detilanggaran';
+            // edit mode
+            if($('#d_idformH').val()!=''){
+                urlx += '&replid='+$('#d_idformH').val();
+            }
+            // if($('#d_rekeningH').val()==''){
+            // 	notif('silahkan mengisi "Rekening" dengan benar');
+            // }else{
+	            $.ajax({
+	                url:dir,
+	                cache:false,
+	                type:'post',
+	                dataType:'json',
+	                data:$('#detilanggaranFR').serialize()+urlx,
+	                success:function(dt){
+	                    if(dt.status!='sukses'){
+	                        cont = 'Gagal menyimpan data';
+	                        clr  = 'red';
+	                    }else{
+	                        $.Dialog.close();
+	                        // gkosongkan();
+	                        vwDetilAnggaran($('#d_kategorianggaranH').val());
+	                        cont = 'Berhasil menyimpan data';
+	                        clr  = 'green';
+	                    }notif(cont,clr);
+	                }
+	            });
+           // }
+        }
+    //end kategori anggaran save  ---
+
+    //kategori anggaran save ---
         function anggaranSV(){
             var urlx ='&aksi=simpan&subaksi=anggaran';
             // edit mode
@@ -341,7 +376,7 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                 }
             });
         }
-    //end grup  ---
+    //end kategori anggaran save  ---
 
     //barang ---
         // function barangSV(){
@@ -487,7 +522,30 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 
 
 /*delete*/
-    //grup  ---
+    //detil anggaran  ---
+        function detilanggaranDel(id){
+            if(confirm('melanjutkan untuk menghapus data?'))
+            $.ajax({
+                url:dir,
+                type:'post',
+                data:'aksi=hapus&subaksi=detilanggaran&replid='+id,
+                dataType:'json',
+                success:function(dt){
+                    var cont,clr;
+                    if(dt.status!='sukses'){
+                        cont = '..Gagal Menghapus '+dt.terhapus+' ..';
+                        clr  ='red';
+                    }else{
+                    	vwDetilAnggaran($('#d_kategorianggaranH').val());
+                        cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
+                        clr  ='green';
+                    }notif(cont,clr);
+                }
+            });
+        }
+    //end of detil  anggaran ---
+    
+    //kategori anggaran  ---
         function anggaranDel(id){
             if(confirm('melanjutkan untuk menghapus data?'))
             $.ajax({
@@ -508,7 +566,7 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                 }
             });
         }
-    //end of grup ---
+    //end of kategori anggaran ---
     
     //katalog ---
         // function katalogDel(id){
@@ -594,7 +652,6 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 
     // form katalog---
         function detilanggaranFR(id){
-	        var pel=$('#tahunajaranS').val();
 	        $.Dialog({
 	            shadow:true,
 	            overlay:true,
@@ -604,61 +661,61 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 	            padding:20,
 	            onShow: function(){
 	                var titlex;
-	                $('#tahunajaranH').val($('#tahunajaranS').val());
 	                if (id!='') { // edit mode
-	                    // $.ajax({
-	                    //     url:dir,
-	                    //     data:'aksi=ambiledit&replid='+id,
-	                    //     type:'post',
-	                    //     dataType:'json',
-	                    //     success:function(dt3){
-	                    //         $('#idformH').val(id);
-	                    //         $('#guruH').val(dt3.idpegawai); epiii
-	                    //         $('#namaTB').val(dt3.nama);
-	                    //         $('#nipTB').val(dt3.nip);
-	                    //         $('#keteranganTB').val(dt3.keterangan);
-	                    //         // cmbpelajaran(dt3.tahunajaran,true,dt3.pelajaran);
-	                    //     }
-	                    // });titlex='<span class="icon-pencil"></span> Ubah ';
+	                    $.ajax({
+	                        url:dir,
+	                        data:'aksi=ambiledit&subaksi=detilanggaran&replid='+id,
+	                        type:'post',
+	                        dataType:'json',
+	                        success:function(dt){
+	                            $('#d_idformH').val(id);
+	                            $('#d_rekeningH').val(dt.data.idrekening);
+	                            $('#d_rekeningTB').val(dt.data.rekening);
+	                            $('#d_namaTB').val(dt.data.nama);
+	                            $('#d_keteranganTB').val(dt.data.keterangan);
+								cmbdepartemen(dt.data.kategorianggaran,'form',dt.data.departemen);
+	                        }
+	                    });titlex='<span class="icon-pencil"></span> Ubah ';
 	                }else{ //add mode
-	                    // cmbpelajaran($('#tahunajaranS').val(),true,null);
 	                    titlex='<span class="icon-plus-2"></span> Tambah ';
+		                cmbdepartemen('','form','');
 	                }
-	                cmbdepartemen('','form','');
                 	$.Dialog.title(titlex+' '+mnu);
                 	$.Dialog.content(d_contentFR);
 	            }
 	        });
 	        $("#d_rekeningTB").combogrid({
 	            debug:true,
-	            width:'400px',
+	            width:'600px',
 	            colModel: [{
 	                    // 'align':'left',
 	                    'columnName':'kode',
 	                    // 'hide':true,
-	                    'width':'55',
+	                    'width':'15',
 	                    'label':'KODE'
 	                },{   
+	                    'align':'left',
 	                    'columnName':'nama',
-	                    'width':'40',
+	                    'width':'85',
 	                    'label':'NAMA'
 	                }],
 	            url: dir+'?aksi=autocomp',
 	            select: function( event, ui ) {
 	                $('#d_rekeningH').val(ui.item.replid);
-	                $('#d_rekeningTB').val(ui.item.nama);
+	                $(this).val(ui.item.nama);
 	                
-	                $("#d_rekeningTB").on('keyup', function(e){
-						var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-						var keyCode = $.ui.keyCode;
-						if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.DOWN) {
-							$('#d_rekeningH').val('');
-							$('#d_rekeningTB').val('');
-						}
-					});
-	                // $('#guruTB').combogrid( "option", "url", dir+'?aksi=autocomp';//&pelajaran='+$('#pelajaranS').val() );
-	                // $('#guruTB').combogrid( "option", "url", dir+'?aksi=autocomp&pelajaran='+$('#pelajaranS').val() );
-	                return false;
+	                // validasi input (tidak sesuai data dr server)
+		                $(this).on('keyup', function(e){
+							var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+							var keyCode = $.ui.keyCode;
+							if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
+	                			if($('#d_rekeningH').val()!=''){
+									$('#d_rekeningH').val('');
+									$('#d_rekeningTB').val('');
+								}
+							}
+						});
+	               	return false;
 	            }
 	        });
         }
@@ -944,12 +1001,13 @@ var a_contentFR = d_contentFR = b_contentFR ='';
         function cmbdepartemen(kat,typ,dep){
             var replid ='';
             var tipe =typ;
-            if (typ=='form' && dep!=='')
-                replid = '&replid='+dep;
-            
+            // if (typ=='form' && dep!=='')
+            //     replid = '&replid='+dep;
+
             $.ajax({
                 url:dir3,
-                data:'aksi=cmb'+mnu3+replid,
+                data:'aksi=cmb'+mnu3,
+                // data:'aksi=cmb'+mnu3+replid,
                 dataType:'json',
                 type:'post',
                 success:function(dt){
@@ -965,6 +1023,7 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                         });
                         if(tipe=='form'){
                         	$('#d_departemenTB').html(out);
+	    	                $('#d_kategorianggaranH2').val($('#d_kategorianggaranH').val());
 	    	                $('#d_kategorianggaranTB').val($('#d_kategorianggaranDV').html());
                         }else{
                             $('#d_departemenS').html('<option value="">-SEMUA-</option>'+out);

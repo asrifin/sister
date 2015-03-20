@@ -55,7 +55,7 @@
     <button data-hint="Cetak " id="k_cetakBC"><span class="icon-printer"></span> </button>
     
     <div class="grid" style="color:white;">
-        <input type="text" id="d_kategorianggaranH" class="katalog_cari" >
+        <input type="hidden" id="d_kategorianggaranH" id="d_kategorianggaranH" class="detilanggaran_cari" >
         <div class="row">
             <span class="span3">Kategori Anggaran : </span>
             <span id="d_kategorianggaranDV"></span>

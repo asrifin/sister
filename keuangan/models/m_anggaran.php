@@ -150,7 +150,7 @@
 
 					// katalog
 					case 'detilanggaran':
-						$d_kategorianggaran = isset($_POST['d_kategorianggaranS'])?filter(trim($_POST['d_kategorianggaranS'])):'';
+						$d_kategorianggaran = isset($_POST['d_kategorianggaranH'])?filter(trim($_POST['d_kategorianggaranH'])):'';
 						$d_departemen       = isset($_POST['d_departemenS'])&& $_POST['d_departemenS']!=''?' da.departemen ='.$_POST['d_departemenS'].' AND ':'';
 						$d_nama             = isset($_POST['d_namaS'])?filter(trim($_POST['d_namaS'])):'';
 						$d_rekening         = isset($_POST['d_rekeningS'])?filter(trim($_POST['d_rekeningS'])):'';
@@ -189,7 +189,7 @@
 							$nox 	= $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
 								$btn ='<td align="center">
-											<button data-hint="ubah"  class="button" onclick="detilangggaranFR('.$res['replid'].');">
+											<button data-hint="ubah"  class="button" onclick="detilanggaranFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
 											<button data-hint="hapus"  class="button" onclick="detilanggaranDel('.$res['replid'].');">
@@ -409,8 +409,20 @@
 					case 'anggaran':
 						$s 		= $tb.' set nama       = "'.filter($_POST['a_namaTB']).'",
 											keterangan = "'.filter($_POST['a_keteranganTB']).'"';
-						// var_dump($s);exit();
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						$e 		= mysql_query($s2);
+						$stat 	= ($e)?'sukses':'gagal';
+						$out 	= json_encode(array('status'=>$stat));
+					break;
+
+					case 'detilanggaran':
+						$s 		= 'keu_detilanggaran  set 	kategorianggaran = "'.$_POST['d_kategorianggaranH2'].'",
+															departemen       = "'.filter($_POST['d_departemenTB']).'",
+															nama             = "'.filter($_POST['d_namaTB']).'",
+															rekening         = "'.$_POST['d_rekeningH'].'",
+															keterangan       = "'.filter($_POST['d_keteranganTB']).'"';
+						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+											// print_r($s2);exit();
 						$e 		= mysql_query($s2);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array('status'=>$stat));
@@ -491,9 +503,9 @@
 						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
 					break;
 
-					case 'katalog':
-						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb3.' where replid='.$_POST['replid']));
-						$s    = 'DELETE from '.$tb3.' WHERE replid='.$_POST['replid'];
+					case 'detilanggaran':
+						$d    = mysql_fetch_assoc(mysql_query('SELECT * from keu_detilanggaran where replid='.$_POST['replid']));
+						$s    = 'DELETE from keu_detilanggaran WHERE replid='.$_POST['replid'];
 						// var_dump($s);exit();
 						$e    = mysql_query($s);
 						$stat = ($e)?'sukses':'gagal';
@@ -530,24 +542,21 @@
 								));					
 					break;
 
-					case 'katalog';
+					case 'detilanggaran';
 						$s = '	SELECT
-									k.kode,
-									k.nama,
-									k.jenis,
-									k.photo2,
-									k.susut,
-									k.keterangan,
-									l.nama as lokasi, 
-									g.nama as grup
-								FROM 
-									'.$tb3.' k,
-									 '.$tb2.' l,
-									 '.$tb.' g
-								WHERE 
-									g.replid = k.grup and 
-									l.replid = g.lokasi and 
-									k.replid ='.$_POST['replid'];
+									da.kategorianggaran,
+									dr.nama rekening,
+									da.rekening idrekening,
+									da.nama,
+									da.keterangan,
+									da.departemen
+								FROM
+									keu_detilanggaran da
+								LEFT JOIN keu_kategorianggaran ka ON ka.replid = da.kategorianggaran
+								LEFT JOIN keu_detilrekening dr ON dr.replid = da.rekening
+								WHERE
+									da.replid ='.$_POST['replid'];
+						// print_r($s);
 						$e 		= mysql_query($s);
 						$r 		= mysql_fetch_assoc($e);
 						$stat 	= ($e)?'sukses':'gagal';
@@ -556,14 +565,12 @@
 						}else{
 							$stat ='sukses';
 							$dt   =array(
-										'kode'       =>$r['kode'],
-										'nama'       =>$r['nama'],
-										'susut'      =>$r['susut'],
-										'lokasi'     =>$r['lokasi'],
-										'grup'       =>$r['grup'],
-										'photo2'     =>$r['photo2'],
-										'jenis'      =>$r['jenis'],
-										'keterangan' =>$r['keterangan']
+										'kategorianggaran' =>$r['kategorianggaran'],
+										'idrekening'       =>$r['idrekening'],
+										'rekening'         =>$r['rekening'],
+										'departemen'       =>$r['departemen'],
+										'nama'             =>$r['nama'],
+										'keterangan'       =>$r['keterangan']
 									);						
 						}$out 	= json_encode(array(
 									'status' =>$stat,
