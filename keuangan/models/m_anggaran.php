@@ -416,16 +416,27 @@
 					break;
 
 					case 'detilanggaran':
-						$s 		= 'keu_detilanggaran  set 	kategorianggaran = "'.$_POST['d_kategorianggaranH2'].'",
-															departemen       = "'.filter($_POST['d_departemenTB']).'",
-															nama             = "'.filter($_POST['d_namaTB']).'",
-															rekening         = "'.$_POST['d_rekeningH'].'",
-															keterangan       = "'.filter($_POST['d_keteranganTB']).'"';
-						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-											// print_r($s2);exit();
-						$e 		= mysql_query($s2);
-						$stat 	= ($e)?'sukses':'gagal';
-						$out 	= json_encode(array('status'=>$stat));
+						$s 	= 'keu_detilanggaran  set 	kategorianggaran = "'.$_POST['d_kategorianggaranH2'].'",
+														departemen       = "'.filter($_POST['d_departemenTB']).'",
+														nama             = "'.filter($_POST['d_namaTB']).'",
+														rekening         = "'.$_POST['d_rekeningH'].'",
+														keterangan       = "'.filter($_POST['d_keteranganTB']).'"';
+						$s2 = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+						$e  = mysql_query($s2);
+						$id = mysql_insert_id();
+						if(!$e){
+							$stat = 'gagal_'.mysql_error();
+						}else{
+							if(!isset($_POST['replid'])){
+								$tbuku  = mysql_fetch_assoc(mysql_query('SELECT replid from keu_tahunbuku where aktif =1'));
+								$s3     = 'INSERT INTO keu_anggarantahunan SET 	detilanggaran = '.$id.',
+																				tahunbuku ='.$tbuku['replid'];
+								$e3  	= mysql_query($s3);
+								$stat   = !$e3?'gagal_'.mysql_error():'sukses';
+							}else{
+								$stat   = 'sukses';
+							}
+						}$out 	= json_encode(array('status'=>$stat));
 					break;
 
 					case 'katalog':
@@ -508,6 +519,12 @@
 						$s    = 'DELETE from keu_detilanggaran WHERE replid='.$_POST['replid'];
 						// var_dump($s);exit();
 						$e    = mysql_query($s);
+						if(!$e){
+							$stat='gagal_'.mysql_error();
+						}else{
+							
+							$stat='sukses';
+						}
 						$stat = ($e)?'sukses':'gagal';
 						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
 					break;
