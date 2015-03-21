@@ -131,6 +131,7 @@
 											</button>
 											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
+											</button>
 										 </td>';
 								$out.= '<tr>
 											<td>'.$res['kode'].'</td>
