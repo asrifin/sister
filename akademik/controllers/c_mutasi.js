@@ -67,24 +67,31 @@ var contentFR ='';
         });
 
         //search action
-        $('#angkatanS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB($('#departemenS').val());
-        });
-        $('#keteranganS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB($('#departemenS').val());
-        });
+        // $('#angkatanS').keydown(function (e){
+        //     if(e.keyCode == 13)
+        //         viewTB($('#departemenS').val());
+        // });
+        // $('#keteranganS').keydown(function (e){
+        //     if(e.keyCode == 13)
+        //         viewTB($('#departemenS').val());
+        // });
         $('#departemenS').on('change',function(){
-            viewTB($(this).val());
+            viewTB();
         })
 
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
-            $('#angkatanS').val('');
+            $('#nisnS').val('');
+            $('#namaS').val('');
+            $('#jenismutasiS').val('');
             $('#keteranganS').val('');
         });
+        $('#nisnS,#namaS,#jenismutasiS,#keteranganS').on('keydown',function (e){ // kode grup
+            if(e.keyCode == 13)
+                viewTB();
+        });
+            // $('#tanggalS').val('');
 
     }); 
 // end of main function ---
@@ -104,9 +111,9 @@ var contentFR ='';
                     $.each(dt.departemen, function(id,item){
                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
-                    //panggil fungsi viewTB() ==> tampilkan tabel 
-                    viewTB(dt.departemen[0].replid); 
-                }$('#departemenS').html(out);
+                    $('#departemenS').html(out);
+                    viewTB(); 
+                }
             }
         });
     }
@@ -168,9 +175,13 @@ var contentFR ='';
 //end of save process ---
 
 // view table ---
-    function viewTB(dep){
+    function viewTB(){
         var aksi ='aksi=tampil';
-        var cari = '&departemenS='+dep;
+        var cari = '&departemenS='+$('#departemenS').val()
+                    +'&nisnS='+$('#nisnS').val()
+                    +'&namaS='+$('#namaS').val()
+                    +'&jenismutasiS='+$('#jenismutasiS').val()
+                    +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',
@@ -185,6 +196,7 @@ var contentFR ='';
             }
         });
     }
+                    // +'&tanggalS='+$('#tanggalS').val()
 // end of view table ---
 
 // form ---

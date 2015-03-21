@@ -25,16 +25,16 @@
         <tr style="color:white;"class="info">
             <th class="text-center">NISN</th>
             <th class="text-left">Nama </th>
-            <th class="text-left">Tahun Lulus </th>
+            <!-- <th class="text-left">Tahun Lulus </th> -->
             <th class="text-left">Keterangan</th>
             <th class="text-left">Aksi</th>
         </tr>
-        <!-- <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-left"></th>
-            <th class="text-left"><input placeholder="tingkat" id="tingkatS" name="tingkatS"></th>
+        <tr style="display:none;" id="cariTR" class="selected">
+            <th class="text-left"><input placeholder="NISN" id="nisnS" name="nisnS"></th>
+            <th class="text-left"><input placeholder="Nama" id="namaS" name="namaS"></th>
             <th class="text-left"><input placeholder="keterangan" id="keteranganS" name="keteranganS"></th>
             <th class="text-left"></th>
-        </tr> -->
+        </tr>
     </thead>
 
     <tbody id="tbody">

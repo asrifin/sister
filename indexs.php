@@ -203,7 +203,34 @@
                     </div>
                 </a> 
                 <!-- END OF MAN -->
-            </div> <!-- End group 2-->
+            </div> 
+
+            <!-- group 3-->
+            <div class="tile-group one">
+                <!-- <div class="tile-group-title">Menu Utama</div> -->
+                <!-- AKA -->
+                <!-- <a id="mod-aka" href="akademik" class="tile double selected live" data-role="live-tile" data-effect="slideUp" data-click="transform"> -->
+                <a id="mod-guru" href="guru" class="tile double bg-blue live" data-role="live-tile" data-effect="slideUp" data-click="transform">
+                    <div style="align:center;" class="tile-content email">
+                        <center>
+                            <img src="images/akademik.png">
+                        </center>
+                    </div>
+                    <div class="tile-content email">
+                        <div class="email-data-text">Keterangan :</div>
+                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan tugas guru ada disini ... </div>
+                    </div>
+                    <div class="brand">
+                        <div class="label">
+                            <h4 class="no-margin fg-white">
+                                Guru<!-- <span class="icon-mail"></span> -->
+                            </h4>
+                        </div>
+                        <div class="badge">3</div>
+                    </div>
+                </a> 
+                <!-- END OF AKA -->
+            </div>
 
         </div>
     </div>

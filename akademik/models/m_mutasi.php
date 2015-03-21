@@ -71,15 +71,25 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
+				// $tanggal = isset($_POST['tanggalS'])?filter(trim($_POST['tanggalS'])):'';
+				$nisn = isset($_POST['nisnS'])?filter(trim($_POST['nisnS'])):'';
+				$nama = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
+				$jenismutasi = isset($_POST['jenismutasiS'])?filter(trim($_POST['jenismutasiS'])):'';
+				$keterangan = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
 				$sql = 'SELECT m.*, s.nisn,s.nama,j.nama AS jenismutasi
 						FROM aka_mutasi m
 						LEFT JOIN aka_siswa s ON s.replid=m.siswa
 						LEFT JOIN aka_jenismutasi j ON j.replid=m.jenismutasi
 						LEFT JOIN departemen d ON d.replid=m.departemen
 						WHERE 
-							departemen like "%'.$departemen.'%"
-						ORDER 
-							BY m.tanggal asc';
+							departemen = '.$departemen.'
+							AND s.nisn like "%'.$nisn.'%"
+							AND s.nama like "%'.$nama.'%"
+							AND j.nama like "%'.$jenismutasi.'%"
+							AND m.keterangan like "%'.$keterangan.'%"';
+
+							// AND m.tanggal like "%'.$tanggal.'%"
+					// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{

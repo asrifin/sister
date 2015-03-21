@@ -142,6 +142,16 @@ var contentAdd=contentEdit='';
         $('#tahunlulusS').on('change',function (){
             viewTB();
         });
+        $('#cariBC').on('click',function(){
+            $('#cariTR').toggle('slow');
+            $('#nisnS').val('');
+            $('#namaS').val('');
+            $('#keteranganS').val('');
+        });
+        $('#nisnS,#namaS,#keteranganS').on('keydown',function (e){ // kode grup
+            if(e.keyCode == 13)
+                viewTB();
+        });
         // form        
         // $('#departemenTB').on('change',function(){
         //     cmbtahunlulus2('filter',$(this).val(),'');
@@ -276,6 +286,7 @@ var contentAdd=contentEdit='';
                         cont = 'Berhasil menyimpan data';
                         clr  = 'green';
                     }notif(cont,clr);
+                    viewTB();
                 }
             });
         }
@@ -286,7 +297,10 @@ var contentAdd=contentEdit='';
     function viewTB(){
         var aksi ='aksi=tampil';
         var cari = '&tahunlulusS='+$('#tahunlulusS').val()
-                    +'&departemenS='+$('#departemenS').val();
+                    +'&departemenS='+$('#departemenS').val()
+                    +'&nisnS='+$('#nisnS').val()
+                    +'&namaS='+$('#namaS').val()
+                    +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
             url : dir,
             type: 'post',

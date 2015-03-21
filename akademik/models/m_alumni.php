@@ -70,17 +70,22 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$tahunlulus =  ($_POST['tahunlulusS']!='')?' AND a.tahunlulus='.$_POST['tahunlulusS']:'';
-				// var_dump($tahunlulus);exit();
 				$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
-				// $tahunlulus = isset($_POST['tahunlulusS'])?filter(trim($_POST['tahunlulusS'])):'';
+				$ket = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
+				$nama = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
+				$nisn = isset($_POST['nisnS'])?filter(trim($_POST['nisnS'])):'';
+				// var_dump($nisn);exit();
+				$tahunlus = isset($_POST['tahunlusS'])?filter(trim($_POST['tahunlusS'])):'';
 				$sql = 'SELECT a.replid, t.nama AS tahunlulus, s.nama AS nsiswa, a.keterangan AS ket, s.nisn
 						 FROM aka_alumni a 
 						 LEFT JOIN aka_tahunlulus t ON t.replid=a.tahunlulus
 						 LEFT JOIN aka_siswa s ON s.replid=a.siswa 
 
 						 WHERE 
-						 t.departemen = '.$departemen.$tahunlulus.' 
- 						ORDER BY a.replid ASC';
+						 t.departemen = '.$departemen.$tahunlulus.'
+						 AND s.nisn LIKE "%'.$nisn.'%"
+						 AND s.nama LIKE "%'.$nama.'%"
+						 AND a.keterangan LIKE "%'.$ket.'%"';
 						 // '.($_POST['tahunlulusS']!=''?'and a.tahunlulus = '.$_POST['tahunlulus']:'').'
 
 				// print_r($sql);exit();
@@ -110,10 +115,10 @@
 						$out.= '<tr>
 									<td>'.$res['nisn'].'</td>
 									<td>'.$res['nsiswa'].'</td>
-									<td>'.$res['tahunlulus'].'</td>
 									<td>'.$res['ket'].'</td>
 									'.$btn.'
 								</tr>';
+									// <td>'.$res['tahunlulus'].'</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -129,7 +134,7 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				process 
+				// process 
 				if(isset($_POST['replid']) && $_POST['replid']!='' ){ // ada id (edit mode)
 					$s = 'UPDATE '.$tb.' set 	tahunlulus = "'.filter($_POST['tahunlulusH']).'",
 												siswa    	= "'.filter($_POST['siswaH']).'",
@@ -158,7 +163,7 @@
 							$stat2 =$e2?true:false;
 						}
 						if($stat2){ //  berhasil insert
-							$sq = 'UPDATE aka_siswa set status = 0';
+							$sq = 'UPDATE aka_siswa set aktif = 2';
 							$esq=mysql_query($sq);
 							$stats=$esq?'berhasil':'gagal';	
 						}else{ // gagal insert 
