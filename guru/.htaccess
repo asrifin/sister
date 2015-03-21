@@ -1,0 +1,21 @@
+#php_flag display_errors off
+Options -Indexes
+#indexIgnore *
+
+RewriteEngine On
+#ErrorDocument 404 /404.html
+ErrorDocument 404 Maaf-halaman-tidak-ditemukan
+
+	#refrensi
+	
+	#kesiswaan
+	RewriteRule   ^pendataan-siswa/?$   						index.php?page=vsiswa
+	RewriteRule   ^rapor-siswa/?$								index.php?page=vrapor
+	RewriteRule   ^pendataan-alumni/?$							index.php?page=valumni
+	RewriteRule   ^presensi-siswa/?$							index.php?page=vpresensisiswa
+	RewriteRule   ^mutasi/?$									index.php?page=vmutasi
+	
+	RewriteRule   ^keluar/?$ 									index.php?page=logout 
+
+# Send all blocked request to homepage with 403 Forbidden error!
+#RewriteRule ^(.*)$ index.php [F,L]
