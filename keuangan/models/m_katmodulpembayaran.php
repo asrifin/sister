@@ -3,8 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	require_once '../../lib/tglindo.php';
-	$mnu  = 'anggarantahunan';
+	$mnu  = 'katmodulpembayaran';
 	$tb   = 'keu_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -13,31 +12,19 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$kategorianggaran = (isset($_POST['kategorianggaranS']) and $_POST['kategorianggaranS']!='')?' da.kategorianggaran ='.$_POST['kategorianggaranS'].' AND':'';
-				$departemen       = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
-				$tahunbuku        = trim($_POST['tahunbukuS'])?filter($_POST['tahunbukuS']):'';
-				$nama             = trim($_POST['namaS'])?filter($_POST['namaS']):'';
-				$rekening         = trim($_POST['rekeningS'])?filter($_POST['rekeningS']):'';
+				$nama       = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$siswa      = trim($_POST['siswaS'])?filter($_POST['siswaS']):'';
+				$sifat      = trim($_POST['sifatS'])?filter($_POST['sifatS']):'';
+				$keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 
-				$sql = 'SELECT 
-							`at`.replid,
-							da.nama,
-							CONCAT(dr.kode," - ",dr.nama) rekening,
-							`at`.nominal
-						from 
-							keu_anggarantahunan at 
-							LEFT JOIN keu_detilanggaran da on da.replid = `at`.detilanggaran
-							LEFT JOIN keu_detilrekening dr on dr.replid = da.rekening
+				$sql = 'SELECT * 
+						from keu_katmodulpembayaran
 						WHERE
-							'.$kategorianggaran.' 
-							`at`.tahunbuku = '.$tahunbuku.' AND
-							da.departemen = '.$departemen.' AND
-							da.nama LIKE "%'.$nama.'%" AND
-							(
-								dr.nama LIKE "%'.$rekening.'%" OR 
-								dr.kode LIKE "%'.$rekening.'%" 
-							)';
-							// print_r($sql);exit();
+							nama LIKE "%'.$nama.'%" AND 
+							siswa LIKE "%'.$siswa.'%" AND 
+							sifat LIKE "%'.$sifat.'%" AND 
+							keterangan LIKE "%'.$keterangan.'%"';
+				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -61,11 +48,15 @@
 									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
+									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+										<i class="icon-remove on-left"></i>
+									</button>
 							 </td>';
 						$out.= '<tr>
-									<td class="text-right">'.$res['nama'].'</td>
-									<td>'.$res['rekening'].'</td>
-									<td class="text-right">Rp. '.number_format($res['nominal']).',-</td>
+									<td>'.$res['nama'].'</td>
+									<td>'.$res['siswa'].'</td>
+									<td>'.$res['sifat'].'</td>
+									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -83,7 +74,10 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s    = $tb.' set 	nominal 	= "'.getuang(filter($_POST['nominalTB'])).'"'; 
+				$s    = $tb.' set 	nama 	   = "'.filter($_POST['namaTB']).'", 
+									sifat      = "'.$_POST['sifatTB'].'", 
+									keterangan = "'.filter($_POST['keteranganTB']).'", 
+									siswa      = "'.$_POST['siswaTB'].'"'; 
 				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e    = mysql_query($s2);
 				$stat = ($e)?'sukses':'gagal';
@@ -93,42 +87,25 @@
 			
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s = 'SELECT 
-							da.nama,
-							CONCAT(dr.kode," - ",dr.nama) rekening,
-							`at`.nominal,
-							tb.nama tahunbuku,
-							ka.nama kategorianggaran,
-							da.nama detilanggaran,
-							d.nama departemen
-						from 
-							keu_anggarantahunan at 
-							LEFT JOIN keu_tahunbuku tb on tb.replid = at.tahunbuku
-							LEFT JOIN keu_detilanggaran da on da.replid = `at`.detilanggaran
-							LEFT JOIN departemen d on d.replid = da.departemen
-							LEFT JOIN keu_kategorianggaran ka on ka.replid = da.kategorianggaran
-							LEFT JOIN keu_detilrekening dr on dr.replid = da.rekening
-						WHERE
-							at.replid = '.$_POST['replid'];
+				$s = ' SELECT *
+						from keu_katmodulpembayaran
+						WHERE replid = '.$_POST['replid'];
 				// print_r($s);exit();
 				$e   = mysql_query($s);
 				$stat= $e?'sukses':'gagal';
 				$r   = mysql_fetch_assoc($e);
 				$out = json_encode(array(
-							'status'           =>$stat,
-							'departemen'       =>$r['departemen'],
-							'kategorianggaran' =>$r['kategorianggaran'],
-							'detilanggaran'    =>$r['detilanggaran'],
-							'tahunbuku'        =>$r['tahunbuku'],
-							'nama'             =>$r['nama'],
-							'rekening'         =>$r['rekening'],
-							'nominal'          =>$r['nominal']
+							'status'     =>$stat,
+							'nama'       =>$r['nama'],
+							'siswa'      =>$r['siswa'],
+							'sifat'      =>$r['sifat'],
+							'keterangan' =>$r['keterangan']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 			
 			// cmbkategorirek -----------------------------------------------------------------
-			case 'cmbkategorirek':
+			case 'cmbkatmodulpembayaran':
 				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
@@ -139,11 +116,9 @@
 				}
 				
 				$s	= ' SELECT *
-						from keu_kategorirek
+						from '.$tb.'
 							'.$w.'		
-						ORDER  BY 
-							kode asc ,
-							nama asc';
+						ORDER  BY nama asc';
 
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
@@ -161,12 +136,21 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','kategorirek'=>$dt);
+						}$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;
 			// cmbdepartemen -----------------------------------------------------------------
 
+			// delete -----------------------------------------------------------------
+			case 'hapus':
+				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
+				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
+				$e    = mysql_query($s);
+				$stat = ($e)?'sukses':'gagal';
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+			break;
+			// delete -----------------------------------------------------------------
 		}
 	}echo $out;
 

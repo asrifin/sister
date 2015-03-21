@@ -1,14 +1,5 @@
 var mnu  ='katmodulpembayaran'; 
 var dir  ='models/m_'+mnu+'.php';
-
-var mnu2 ='tahunbuku'; 
-var dir2 ='models/m_'+mnu2+'.php';
-
-var mnu3 ='departemen'; 
-var dir3 ='../akademik/models/m_'+mnu3+'.php';
-
-var mnu4 ='anggaran'; 
-var dir4 ='models/m_'+mnu4+'.php';
 var contentFR ='';
 
 // main function ---
@@ -16,48 +7,40 @@ var contentFR ='';
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
 
-                        +'<label>Departemen</label>'
+                        +'<label>Kategori</label>'
                         +'<div>'
                             +'<div class="input-control size3 text" >'
-                                +'<input disabled name="departemenTB" id="departemenTB" type="text">'
+                                +'<input  placeholder="kategori" name="namaTB" id="namaTB" type="text">'
                             +'</div>'
                         +'</div>'    
 
-                        +'<label>Tahun Buku</label>'
+                        +'<label>siswa</label>'
                         +'<div>'
-                            +'<div class="input-control size2 text" >'
-                                +'<input disabled name="tahunbukuTB" id="tahunbukuTB" type="text">'
+                            +'<div class="input-control size2 select" >'
+                                +'<select name="siswaTB" id="siswaTB">'
+                                    +'<option value="aktif">Siswa Aktif</option>'
+                                    +'<option value="calon">Calon Siswa</option>'
+                                +'</select>'
+                            +'</div>'
+                        +'</div>'        
+
+                        +'<label>Sumbangan</label>'
+                        +'<div>'
+                            +'<div class="input-control size2 select" >'
+                                +'<select name="sifatTB" id="sifatTB">'
+                                    +'<option value="wajib">wajib</option>'
+                                    +'<option value="sukarela">sukarela</option>'
+                                +'</select>'
                             +'</div>'
                         +'</div>'                        
 
-                        +'<label>Kategori Anggaran</label>'
+                        +'<label>Ketarangan</label>'
                         +'<div>'
-                            +'<div class="input-control size4 text" >'
-                                +'<input disabled name="kategorianggaranTB" id="kategorianggaranTB" type="text">'
+                            +'<div class="input-control textarea" >'
+                                +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                             +'</div>'
-                        +'</div>'                
+                        +'</div>'                        
 
-                        +'<label>Detil Anggaran</label>'
-                        +'<div>'
-                            +'<div class="input-control size4 text" >'
-                                +'<input disabled name="detilanggaranTB" id="detilanggaranTB" type="text">'
-                            +'</div>'
-                        +'</div>'                
-
-                        +'<label>Rekening</label>'
-                        +'<div>'
-                            +'<div class="input-control size3 text" >'
-                                +'<input disabled name="rekeningTB" id="rekeningTB" type="text">'
-                            +'</div>'
-                        +'</div>'
-
-                        +'<label>Nominal</label>'
-                        +'<div>'
-                            +'<div class="input-control size3 text" >'
-                                +'<input onclick="inputuang(this);" placeholder="nominal" type="text" name="nominalTB" id="nominalTB">'
-                            +'</div>'
-                        +'</div>'
-                        
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -65,7 +48,6 @@ var contentFR ='';
                     +'</form>';
 
         viewTB();
-        // cmbdepartemen('filter','');
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -75,117 +57,18 @@ var contentFR ='';
         //cari ----
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
-            $('#kodeS').val('');
             $('#namaS').val('');
             $('#keteranganS').val('');
         });
+
         //search action // edit by epiii
-        $('#departemenS,#tahunbukuS,#kategorianggaranS').on('change',function (e){ // change : combo box
-            viewTB();
-        });
-        $('#kodeS,#namaS').on('keydown',function (e){ // kode grup
+        $('#namaS,#siswaS,#keteranganS,#sifatS').on('keydown',function (e){ // kode grup
             if(e.keyCode == 13)
                 viewTB();
         });
        
     }); 
 // end of main function ---
-// 
-// combo departemen ---
-    function cmbdepartemen(typ,dep){
-        var depart ='';
-        if(dep!='') 
-            depart = '&replid='+dep;
-        $.ajax({
-            url:dir3,
-            data:'aksi=cmb'+mnu3+depart,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    if(dt.departemen.length==0)
-                        out+='<option value="">kosong</option>';
-                    else{
-                        $.each(dt.departemen, function(id,item){
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                        });
-                    }    
-                }
-                if(typ=='form'){ //form
-                    $('#departemenTB').text(dt.departemen[0].nama);
-                }else{// filtering
-                    $('#departemenS').html(out);
-                    cmbtahunbuku('filter','');
-                } 
-            }
-        });
-    }
-//end of combo departemen ----
-
-
-// combo departemen ---
-    function cmbkategorianggaran(typ,kat){
-        $.ajax({
-            url:dir4,
-            data:'aksi=cmbkategori'+mnu4,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.kategorianggaran, function(id,item){
-                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                }
-
-                if(typ=='form'){ //form
-                    $('#kategorianggaranTB').html(dt.kategorianggaran[0].nama);
-                }else{// filtering
-                    $('#kategorianggaranS').html(out);
-                    viewTB();
-                } 
-
-            }
-        });
-    }
-//end of combo departemen ---
-
-// combo tahun buku  ---
-    function cmbtahunbuku(typ,thn){
-        $.ajax({
-            url:dir2,
-            data:'aksi=cmb'+mnu2,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.tahunbuku, function(id,item){
-                        if(item.aktif==1)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
-                        else
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                }
-
-                if(typ=='form'){ //form
-                    $('#tahunbukuTB').html(dt.tahunbuku[0].nama);
-                }else{// filtering
-                    $('#tahunbukuS').html(out);
-                    cmbkategorianggaran('filter','');
-                } 
-
-            }
-        });
-    }
-//end of combo departemen ---
 
 //save process ---
     function simpan(){
@@ -256,13 +139,10 @@ var contentFR ='';
                     dataType:'json',
                     success:function(dt){
                         $('#idformH').val(id);
-                        $('#kategorianggaranTB').val(dt.kategorianggaran);
-                        $('#tahunbukuTB').val(dt.tahunbuku);
-                        $('#departemenTB').val(dt.departemen);
-                        $('#detilanggaranTB').val(dt.detilanggaran);
-                        $('#rekeningTB').val(dt.rekening);
                         $('#namaTB').val(dt.nama);
-                        $('#nominalTB').val(dt.nominal);
+                        $('#keteranganTB').val(dt.keterangan);
+                        $('#siswaTB').val(dt.siswa);
+                        $('#sifatTB').val(dt.sifat);
                     }
                 });
                 $.Dialog.title(titlex+' '+mnu); // edit by epiii
@@ -307,26 +187,6 @@ var contentFR ='';
     }
 //end of paging ---
 
-    // function pagination(page,aksix,menux){ 
-    //     var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-    //     var cari  = '&kategoriS='+$('#kategoriS').val();
-    //                 // +'&tempatS='+$('#tempatS').val()
-    //                 // +'&keteranganS='+$('#keteranganS').val();
-    //     $.ajax({
-    //         url:dir,
-    //         type:"post",
-    //         data: datax+cari,
-    //         beforeSend:function(){
-    //             $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
-    //         },success:function(dt){
-    //             setTimeout(function(){
-    //                 $('#tbody').html(dt).fadeIn();
-    //             },1000);
-    //         }
-    //     });
-    // }   
-//end of paging ---
-    
 //del process ---
     function del(id){
         if(confirm('melanjutkan untuk menghapus data?'))
@@ -341,12 +201,10 @@ var contentFR ='';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    // viewTB($('#tempatS').val());
-                    viewTB($('#'+mnu2+'S').val());
+                    viewTB();
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
-                }
-                notif(cont,clr);
+                }notif(cont,clr);
             }
         });
     }
@@ -365,29 +223,14 @@ function notif(cont,clr) {
     });
 }
 // end of notifikasi
-// hjkagj
+
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
-        $('#kodeTB').val('');
-        $('#rekeningTB').val('');
-        // $('#aktivitasTB').val('');
+        $('#namaTB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---
-
-// input uang --------------------------
-    function inputuang(e) {
-        $(e).maskMoney({
-            precision:0,
-            prefix:'Rp. ', 
-            // allowNegative: true, 
-            thousands:'.', 
-            // decimal:',', 
-            affixesStay: true
-        });
-    }
-// end of input uang --------------------------
 
     // ---------------------- //
     // -- created by rovi  -- //
