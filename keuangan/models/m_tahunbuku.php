@@ -199,7 +199,9 @@
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY nama desc';
+						ORDER  BY 
+							aktif desc,
+							nama desc';
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);

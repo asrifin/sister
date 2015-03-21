@@ -1,4 +1,4 @@
-<script src="controllers/c_rekening.js"></script>
+<script src="controllers/c_detilrekening.js"></script>
 <script src="../../js/metro/metro-button-set.js"></script>
 <script src="../../js/metro/metro-hint.js"></script>
 

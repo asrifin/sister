@@ -73,13 +73,14 @@
             <div class="element">
                 <a class="dropdown-toggle" href="#">Referensi</a>
                 <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="sub-rekening">Sub Rekening</a></li>
-                    <li><a href="status-rekening">Status Rekening</a></li>
+                    <!-- <li><a href="sub-rekening">Sub Rekening</a></li> -->
+                    <!-- <li><a href="status-rekening">Status Rekening</a></li> -->
                     <li><a href="tahun-buku">Tahun Buku</a></li>
                     <li><a href="kategori-rekening">Kategori Rekening</a></li>
-                    <li><a href="rekening">Kode Rekening</a></li>
+                    <li><a href="detil-rekening">Rekening</a></li>
                     <li><a href="saldo-rekening">Saldo Rekening</a></li>
-                    <li><a href="anggaran">Anggaran</a></li>
+                    <li><a href="set-anggaran">Set Anggaran</a></li>
+                    <li><a href="anggaran-tahunan">Anggaran Tahunan</a></li>
                 </ul>
             </div>
              
@@ -115,20 +116,20 @@
             }else{
                 switch ($_GET['page']) {
                     // referensi
-                    case 'statusrekening':
-                        require $d.'v_statusrekening.php';
-                    break;
-                    case 'subrekening':
-                        require $d.'v_subrekening.php';
-                    break;
+                    // case 'statusrekening':
+                    //     require $d.'v_statusrekening.php';
+                    // break;
+                    // case 'subrekening':
+                    //     require $d.'v_subrekening.php';
+                    // break;
                     case 'kategorirekening':
                         require $d.'v_kategorirekening.php';
                     break;
+                    case 'detilrekening':
+                        require $d.'v_detilrekening.php';
+                    break;
                     case 'tahunbuku':
                         require $d.'v_tahunbuku.php';
-                    break;
-                    case 'rekening':
-                        require $d.'v_rekening.php';
                     break;
                     case 'saldorekening':
                         require $d.'v_saldorekening.php';
@@ -138,6 +139,9 @@
                     break;
                     case 'detilanggaran':
                         require $d.'v_detilanggaran.php';
+                    break;
+                    case 'anggarantahunan':
+                        require $d.'v_anggarantahunan.php';
                     break;
 
 
