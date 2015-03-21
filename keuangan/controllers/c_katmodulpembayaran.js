@@ -1,4 +1,4 @@
-var mnu  ='anggarantahunan'; 
+var mnu  ='katmodulpembayaran'; 
 var dir  ='models/m_'+mnu+'.php';
 
 var mnu2 ='tahunbuku'; 
@@ -64,7 +64,8 @@ var contentFR ='';
                         +'</div>'
                     +'</form>';
 
-        cmbdepartemen('filter','');
+        viewTB();
+        // cmbdepartemen('filter','');
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -218,12 +219,10 @@ var contentFR ='';
 // view table ---
     function viewTB(){ 
         var aksi ='aksi=tampil';
-        var cari ='&kategorianggaranS='+$('#kategorianggaranS').val()
-                +'&departemenS='+$('#departemenS').val()
-                +'&tahunbukuS='+$('#tahunbukuS').val()
-                +'&rekeningS='+$('#rekeningS').val()
-                +'&namaS='+$('#namaS').val()
-                +'&nominalS='+$('#nominalS').val();
+        var cari ='&namaS='+$('#namaS').val()
+                +'&siswaS='+$('#siswaS').val()
+                +'&sifatS='+$('#sifatS').val()
+                +'&keteranganS='+$('#keteranganS').val();
 
         $.ajax({
             url : dir,
@@ -234,7 +233,7 @@ var contentFR ='';
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
-                },1000);
+                },500);
             }
         });
     }

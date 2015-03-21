@@ -85,28 +85,6 @@
     </a>
     <!--end of  Tahun Buku -->
 
-    <!-- Status rekening -->
-    <!-- <a href="status-rekening" class="tile bg-red" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-copy"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Status Rekening</div>
-        </div>
-    </a> -->
-    <!--end of  sub rekening -->
-
-    <!-- sub rekening -->
-    <!-- <a href="sub-rekening" class="tile bg-lightRed" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-copy"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Sub Rekening</div>
-        </div>
-    </a> -->
-    <!--end of  sub rekening -->
-
     <!-- kategori  Rekening -->
     <a href="kategori-rekening" class="tile bg-orange" data-click="transform">
         <div class="tile-content icon">
@@ -162,5 +140,14 @@
     </a>
     <!-- end of Anggaran Tahunan-->
 
-    
+    <!--  kategori modul pembayaran -->
+    <a href="kategori-modul" class="tile bg-lightGreen" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Kategori Modul</div>
+        </div>
+    </a>
+    <!-- end of Anggaran Tahunan-->
 </div> <!-- End group 2-->
