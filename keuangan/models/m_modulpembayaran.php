@@ -24,9 +24,8 @@
 				FROM keu_detilrekening dr 
 					LEFT JOIN keu_kategorirekening kr on kr.replid = dr.kategorirekening
 				WHERE 
-					kr.nama="'.$_GET['subaksi'].'"  AND
-					dr.kode LIKE "%'.$searchTerm.'%" OR dr.nama LIKE "%'.$searchTerm.'%"';
-					// kr.nama="'.($_GET['subaksi']=='piutang'?).'"  AND
+					'.((isset($_GET['nama']) AND $_GET['nama']=='piutang')?' dr.nama LIKE "%piutang%" AND':' kr.nama="'.$_GET['subaksi'].'"  AND ').'
+					(dr.kode LIKE "%'.$searchTerm.'%" OR dr.nama LIKE "%'.$searchTerm.'%")';
 			// print_r($ss);exit();
 			$result = mysql_query($ss) or die(mysql_error());
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -69,6 +68,7 @@
 				$katmodulpembayaran = (isset($_POST['katmodulpembayaranS']) AND $_POST['katmodulpembayaranS']!='')?'m.katmodulpembayaran ='.$_POST['katmodulpembayaranS'].' AND ':'';
 				$angkatan           = isset($_POST['angkatanS'])?filter($_POST['angkatanS']):'';
 				$nama               = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+				$nominal            = isset($_POST['nominalS'])?filter($_POST['nominalS']):'';
 				$keterangan         = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				
 				$sql = 'SELECT 
@@ -85,6 +85,7 @@
 							'.$katmodulpembayaran.'
 							m.angkatan = '.$angkatan.' and
 							m.nama like "%'.$nama.'%" and
+							m.nominal like "%'.$nominal.'%" and
 							m.keterangan like "%'.$keterangan.'%" 
 						ORDER BY 
 							m.nama asc';
@@ -153,27 +154,22 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 	  = $tb.' set 	kategorirekening = "'.filter($_POST['kategorirekeningTB']).'",
-									kode             = "'.filter($_POST['kodeTB']).'",
-									nama             = "'.filter($_POST['namaTB']).'",
-									keterangan       = "'.filter($_POST['keteranganTB']).'"';
-				if(isset($_POST['replid']) and $_POST['replid']!=''){
-					$s2   = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
-					$e    = mysql_query($s2);
-					$stat = $e?'sukses':'gagal_'.mysql_error();
-				}else{
-					$s2 = 'INSERT INTO '.$s;				
-					$e  = mysql_query($s2);
-					$id = mysql_insert_id();
-					if(!$e){
-						$stat2  = false;
-					}else{
-						$tbuku = mysql_fetch_assoc(mysql_query('SELECT replid from keu_tahunbuku WHERE aktif=1'));
-						$s3    = 'INSERT INTO keu_saldorekening SET tahunbuku ='.$tbuku['replid'].',rekening  ='.$id;
-						$e2    = mysql_query($s3);
-						$stat2 = $e2?true:false;
-					}$stat  = $stat2?'sukses':'gagal_'.mysql_error();
-				}$out  = json_encode(array('status'=>$stat));
+				$s 	  = $tb.' set 	katmodulpembayaran = "'.$_POST['katmodulpembayaranTB'].'",
+									angkatan           = "'.$_POST['angkatanH'].'",
+									nama               = "'.filter($_POST['namaTB']).'",
+									rek1               = "'.filter($_POST['rek1H']).'",
+									rek2               = "'.filter($_POST['rek2H']).'",
+									rek3               = "'.filter($_POST['rek3H']).'",
+									nominal            = "'.getuang($_POST['nominalTB']).'",
+									cicilan            = "'.getuang($_POST['cicilanTB']).'",
+									diskon             = "'.getuang($_POST['diskonTB']).'",
+									biayaadmin         = "'.getuang($_POST['biayaadminTB']).'",
+									keterangan         = "'.filter($_POST['keteranganTB']).'"';
+
+				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				$e    = mysql_query($s2);
+				$stat = ($e)?'sukses':'gagal_'.print_r($s2);
+				$out  = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -182,34 +178,45 @@
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
-				if(!$e){
-					$stat = 'gagal_'.mysql_error();
-				}else{
-					$s2   = 'DELETE FROM '.$tb.' WHERE rekening = '.$d['replid'];
-					$e2   = mysql_query($s2);
-					$stat = $e2?'sukses':'gagal_'.mysql_error();
-				}$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				$stat = ($e)?'sukses':'gagal';
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 	  = ' SELECT 
-								kategorirekening,
-								kode,
-								nama,
-								keterangan
-							from '.$tb.'
-							WHERE 
-								replid='.$_POST['replid'];
-				// print_r($s);exit();
+				$s = 'SELECT 
+							m.katmodulpembayaran,
+							m.nama,
+							m.keterangan,
+							m.rek1,
+							m.rek2,
+							m.rek3,
+							m.nominal,
+							m.cicilan,
+							m.diskon,
+							m.biayaadmin
+						FROM '.$tb.' m 
+							left join keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
+						WHERE 
+							m.replid='.$_POST['replid'];
 				$e   = mysql_query($s);
+				// print_r($s);exit();
 				$r   = mysql_fetch_assoc($e);
 				$out = json_encode(array(
-							'kategorirekening' =>$r['kategorirekening'],
-							'keterangan'       =>$r['keterangan'],
-							'kode'             =>$r['kode'],
-							'nama'             =>$r['nama']
+							'katmodulpembayaran' =>$r['katmodulpembayaran'],
+							'nama'               =>$r['nama'],
+							'keterangan'         =>$r['keterangan'],
+							'idrek1'             =>$r['rek1'],
+							'idrek2'             =>$r['rek2'],
+							'idrek3'             =>$r['rek3'],
+							'rek1'               =>keuField(array('nama'),$tb2,$r['rek1']),
+							'rek2'               =>keuField(array('nama'),$tb2,$r['rek2']),
+							'rek3'               =>keuField(array('nama'),$tb2,$r['rek1']),
+							'nominal'            =>$r['nominal'],
+							'cicilan'            =>$r['cicilan'],
+							'diskon'             =>$r['diskon'],
+							'biayaadmin'         =>$r['biayaadmin'],
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

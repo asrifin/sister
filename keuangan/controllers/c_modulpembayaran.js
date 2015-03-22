@@ -12,7 +12,8 @@ var contentFR ='';
     $(document).ready(function(){
         contentFR +='<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-
+                        
+                        +'<input name="angkatanH"  id="angkatanH" type="hidden">' 
                         +'<label>Kategori Modul</label>'
                             +'<div class="input-control select">'
                                 +'<select name="katmodulpembayaranTB" id="katmodulpembayaranTB"></select>'
@@ -48,13 +49,25 @@ var contentFR ='';
                         
                         +'<label>Nominal</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="Nominal" name="nominalTB" id="nominalTB">'
+                            +'<input required onclick="inputuang(this);" placeholder="Nominal" name="nominalTB" id="nominalTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
-                        +'<label>Nominal</label>'
+                        +'<label>Cicilan</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="Nominal" name="nominalTB" id="nominalTB">'
+                            +'<input placeholder="cicilan" onclick="inputuang(this);"  name="cicilanTB" id="cicilanTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        
+                        +'<label>Diskon</label>'
+                        +'<div class="input-control text">'
+                            +'<input placeholder="diskon" onclick="inputuang(this);"  name="diskonTB" id="diskonTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+
+                        +'<label>Biaya Administrasi</label>'
+                        +'<div class="input-control text">'
+                            +'<input placeholder="biayaadmin" onclick="inputuang(this);"  name="biayaadminTB" id="biayaadminTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
@@ -258,10 +271,19 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#kodeTB').val(dt.kode);
+                            $('#nominalTB').val(dt.nominal);
+                            $('#diskonTB').val(dt.diskon);
+                            $('#cicilanTB').val(dt.cicilan);
+                            $('#biayaadminTB').val(dt.biayaadmin);
+                            $('#rek1TB').val(dt.rek1);
+                            $('#rek2TB').val(dt.rek2);
+                            $('#rek3TB').val(dt.rek3);
+                            $('#rek1H').val(dt.idrek1);
+                            $('#rek2H').val(dt.idrek2);
+                            $('#rek3H').val(dt.idrek3);
                             $('#namaTB').val(dt.nama);
                             $('#keteranganTB').val(dt.keterangan);
-                            cmbkategorirekening('form',dt.kategorirekening);
+                            cmbkatmodulpembayaran('form',dt.katmodulpembayaran);
                         }
                     });
                 }
@@ -269,6 +291,7 @@ var contentFR ='';
                 $.Dialog.content(contentFR);
             }
         });
+        $('#angkatanH').val($('#angkatanS').val());
 
         // autosuggest rek 1
         $("#rek1TB").combogrid({
@@ -358,7 +381,7 @@ var contentFR ='';
                     'width':'85',
                     'label':'NAMA'
             }],
-            url: dir+'?aksi=autocomp&subaksi=piutang', /*epiii*/
+            url: dir+'?aksi=autocomp&nama=piutang', /*epiii*/
             select: function( event, ui ) {
                 $('#rek3H').val(ui.item.replid);
                 $(this).val(ui.item.nama);
@@ -474,7 +497,7 @@ function notif(cont,clr) {
     });
 }
 // end of notifikasi
-// hjkagj
+
 //reset form ---
     function kosongkan(){
         $('#idformTB').val('');
@@ -484,6 +507,19 @@ function notif(cont,clr) {
         $('#keteranganTB').val('');
     }
 //end of reset form ---
+
+// input uang --------------------------
+    function inputuang(e) {
+        $(e).maskMoney({
+            precision:0,
+            prefix:'Rp. ', 
+            // allowNegative: true, 
+            thousands:'.', 
+            // decimal:',', 
+            affixesStay: true
+        });
+    }
+// end of input uang --------------------------
 
     // ---------------------- //
     // -- created by rovi  -- //
