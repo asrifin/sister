@@ -1,12 +1,8 @@
-<script src="controllers/c_perangkat.js"></script>
+<!-- <script src="controllers/c_perangkat.js"></script> -->
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
-  <!-- // <script type="../js/metro/metro-scroll.js"></script> -->
 
-            <!-- <div style="overflow:scroll;height::;0px;" > -->
 <h4 style="color:white;">Perangkat</h4>
-<!-- <div id="loadarea"></div> -->
-        <!-- <div class="span15" style="color:white;">  -->
             <div style="overflow:scroll;height:550px;" >
                        <legend style="color:white;">Pengaturan Nomor Item</legend>
                             <label style="color:white;">Format nomor ID (Identitas) :</label>
@@ -14,7 +10,7 @@
                                 <input type="text" name="idTB" id="idTB" >
                                 <button class="btn-clear"></button>
                             </div>
-                                <button data-hint="Edit Format ID" xclass="large" id="idBC"><span class="icon-pencil"></span> </button>
+                            <button data-hint="Edit Format ID" xclass="large" onclick="loadView('idfmt','')" id="idBC"><span class="icon-pencil"></span> </button>
                             <label style="color:white;">Contoh :</label>
 
                             <label style="color:white;">Format barkode :</label>
@@ -25,17 +21,16 @@
                             <a href="#" data-hint="Edit Barkode" id="barkodeBC" class="button"><span class="icon-pencil"></span> </a>
                                 <!-- <button data-hint="Edit Barkode" xclass="large" id="barkodeBC"><span class="icon-pencil"></span> </button> -->
                             <label style="color:white;">Contoh :</label>
-        <!-- </div> -->
-        <!-- <div class="span15" style="color:white;">  -->
+
                        <legend style="color:white;">Cetak Label</legend>
                             <label style="color:white;">Judul :</label>
                             <div class="input-control text size5">
-                                <input type="text" name="idTB" id="judulTB">
+                                <input type="text" name="judulTB" id="judulTB">
                                 <button class="btn-clear"></button>
                             </div>
                             <label style="color:white;">Deskripsi :</label>
                             <div class="input-control text size5">
-                                <input type="text" name="idTB" id="deskripsiTB">
+                                <input type="text" name="deskripsiTB" id="deskripsiTB">
                                 <button class="btn-clear"></button><br>
                             </div>
                         <div class="form-actions"> 
@@ -90,6 +85,5 @@
     </div>
 </div> <!-- end panel -->
 
-
-
 </div>
+<script src="controllers/c_perangkat.js"></script>

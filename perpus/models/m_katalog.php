@@ -618,9 +618,9 @@
 										WHERE kunci = "'.$_POST['kunci'].'"';
 								$sql =mysql_query($r);
 								$query = mysql_fetch_assoc($sql);
-								$pisah = explode('/',$query['nilai']);
-								$jmlauto = (substr($pisah[0],11,1));
-
+								// $pisah = explode('/',$query['nilai']);
+								$jmlauto = (substr($query['nilai'],10,1));
+					//select kode generate
 					$s='SELECT
 						tb1.lokasi,
 						tb1.grup,
@@ -651,6 +651,8 @@
 				}
 
 				// print_r($s);exit();
+				$sumber = $_POST['sumberTB'] == 0?"B":"H";
+				$id = 
 				$e    = mysql_query($s);
 				$r    = mysql_fetch_assoc($e);
 				$stat = !$e?'gagal':'sukses';

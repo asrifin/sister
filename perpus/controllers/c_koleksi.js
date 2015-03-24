@@ -43,7 +43,7 @@ var koleksi_contentFR ='';
                                         +'<div>'
                                             +'<div class="input-control radio margin3" >'
                                                 +'<label>'
-                                                    +'<input value="0" required type="radio" name="sumberTB" />'
+                                                    +'<input value="0" required type="radio" name="sumberTB" id="sumberTB"/>'
                                                     +'<span class="check"></span>'
                                                     +'Beli'
                                                 +'</label>'
