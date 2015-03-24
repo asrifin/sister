@@ -212,7 +212,7 @@
 							'idrek3'             =>$r['rek3'],
 							'rek1'               =>keuField(array('nama'),$tb2,$r['rek1']),
 							'rek2'               =>keuField(array('nama'),$tb2,$r['rek2']),
-							'rek3'               =>keuField(array('nama'),$tb2,$r['rek1']),
+							'rek3'               =>keuField(array('nama'),$tb2,$r['rek3']),
 							'nominal'            =>$r['nominal'],
 							'cicilan'            =>$r['cicilan'],
 							'diskon'             =>$r['diskon'],
