@@ -9,11 +9,11 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	#refrensi
 	
 	#kesiswaan
-	RewriteRule   ^pendataan-siswa/?$   						index.php?page=vsiswa
-	RewriteRule   ^rapor-siswa/?$								index.php?page=vrapor
-	RewriteRule   ^pendataan-alumni/?$							index.php?page=valumni
-	RewriteRule   ^presensi-siswa/?$							index.php?page=vpresensisiswa
-	RewriteRule   ^mutasi/?$									index.php?page=vmutasi
+	RewriteRule   ^rpp/?$   								index.php?page=vrpp
+	RewriteRule   ^penilaian/?$								index.php?page=vpenilaian
+	RewriteRule   ^daftar-nilai/?$							index.php?page=vdaftarnilai
+	RewriteRule   ^nilai-rapor/?$							index.php?page=vnilairapor
+	RewriteRule   ^jurnal-kelas/?$							index.php?page=vjurnalkelas
 	
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 
