@@ -76,7 +76,7 @@
             <div class="element">
                 <a class="dropdown-toggle" href="#">Menu Utama</a>
                 <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="periode">Periode Penerimaan</a></li>
+                    <li><a href="proses">Periode Penerimaan</a></li>
                     <li><a href="kelompok">Kelompok Pendaftaran</a></li>
                     <li><a href="pendataan">Pendataan Calon Siswa</a></li>
                     <li><a href="penerimaan">Penerimaan Siswa Baru</a></li>
@@ -145,8 +145,8 @@
                     case 'vsetDiskon':
                         require $d.'v_setDiskon.php';
                     break;
-                    case 'vperiode':
-                        require $d.'v_periode.php';
+                    case 'vproses':
+                        require $d.'v_proses.php';
                     break;
                     case 'vkelompok':
                         require $d.'v_kelompok.php';

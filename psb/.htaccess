@@ -11,7 +11,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^set-biaya-calon-siswa/?$   					index.php?page=vsetBiayaCalonSiswa
 	RewriteRule   ^set-angsuran/?$   							index.php?page=vsetAngsuran
 	RewriteRule   ^set-diskon/?$   								index.php?page=vsetDiskon
-	RewriteRule   ^periode/?$  				 					index.php?page=vperiode
+	RewriteRule   ^proses/?$  				 					index.php?page=vproses
 	RewriteRule   ^kelompok/?$				   					index.php?page=vkelompok
 	RewriteRule   ^pendataan/?$				   					index.php?page=vpendataan
 	RewriteRule   ^penerimaan/?$			   					index.php?page=vpenerimaan
