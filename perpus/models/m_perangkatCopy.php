@@ -79,53 +79,23 @@
 		switch ($_POST['aksi']) {
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
-				switch ($_POST['subaksi']) {
-					case 'setting':
-							$sql = 'SELECT ps.nilai
-									FROM pus_detail_setting ps 
-									LEFT JOIN pus_setting2 ps2 ON ps2.replid = ps.kunci
-									WHERE 
-										ps2.kunci= "'.$_POST['kunci'].'"'
-									;
-							// print_r($sql);exit();
-							$query = mysql_query($sql);
-							// $hasil = mysql_fetch_assoc($query);
-							$row = '';
-							while ($hasil = mysql_fetch_assoc($query)) {
-								$row.=$hasil['nilai'].'/';
-							}
-							$out=json_encode(array('status'=>'sukses','row'=>$row));	
-					break;
-	
-					case 'detSetting':
-						// setting
-						$s 	= '	SELECT ps.nilai
+				
+						$sql = 'SELECT ps.nilai
 								FROM pus_detail_setting ps 
 								LEFT JOIN pus_setting2 ps2 ON ps2.replid = ps.kunci
 								WHERE 
-								ps2.kunci= "'.$_POST['kunci'].'"';
-						$e   = mysql_query($s);
+									ps2.kunci= "'.$_POST['kunci'].'"'
+								;
+						// print_r($sql);exit();
+						$query = mysql_query($sql);
+						// $hasil = mysql_fetch_assoc($query);
 						$row = '';
-						while ($r = mysql_fetch_assoc($s)) {
+						while ($hasil = mysql_fetch_assoc($query)) {
 							$row.=$hasil['nilai'].'/';
 						}
+						$out=json_encode(array('status'=>'sukses','row'=>$row));	
 
-						// detail setting
-						$s2   = 'SELECT * 
-								FROM pus_detail_setting 
-								WHERE 
-									kunci= "'.$_POST['kunci'].'"';
-						$e2   = mysql_query($s2);
-						$row2 = array();
-						while ($r = mysql_fetch_assoc($e2)) {
-							$row2[]= $r;
-						}
-						$out=json_encode(array(
-								'status' =>'sukses',
-								'data'   =>$row2
-							));	
-					break;
-				}
+
 			break; 
 			// tampil ---------------------------------------------------------------------
 
