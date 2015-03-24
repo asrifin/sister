@@ -10,7 +10,7 @@ var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR +='<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+        contentFR +='<form style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
                         +'<input name="angkatanH"  id="angkatanH" type="hidden">' 
@@ -104,7 +104,7 @@ var contentFR ='';
         });
     }); 
 // end of main function ---
-// 
+
 // combo departemen ---
     function cmbdepartemen(typ,idkat){
         $.ajax({
