@@ -64,23 +64,23 @@
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="transaksi">Transaksi</a></li>
                     <li><a href="modul-pembayaran">Modul Pembayaran</a></li>
-                    <li><a href="pembayaran-pendaftaran">Pembayaran Pendaftaran</a></li>
-                    <li><a href="pembayaran-uang-pangkal">Pembayaran Uang Pangkal</a></li>
-                    <li><a href="pembayaran-uang-sekolah">Pembayaran Uang Sekolah</a></li>
+                    <li><a href="pembayaran">Pembayaran</a></li>
+                    <!-- <li><a href="pembayaran-pendaftaran">Pembayaran Pendaftaran</a></li> -->
+                    <!-- <li><a href="pembayaran-uang-pangkal">Pembayaran Uang Pangkal</a></li> -->
+                    <!-- <li><a href="pembayaran-uang-sekolah">Pembayaran Uang Sekolah</a></li> -->
                     <li><a href="inventory">Inventory</a></li>                
                 </ul>
             </div>
             <div class="element">
                 <a class="dropdown-toggle" href="#">Referensi</a>
                 <ul class="dropdown-menu" data-role="dropdown">
-                    <!-- <li><a href="sub-rekening">Sub Rekening</a></li> -->
-                    <!-- <li><a href="status-rekening">Status Rekening</a></li> -->
                     <li><a href="tahun-buku">Tahun Buku</a></li>
                     <li><a href="kategori-rekening">Kategori Rekening</a></li>
                     <li><a href="detil-rekening">Rekening</a></li>
                     <li><a href="saldo-rekening">Saldo Rekening</a></li>
                     <li><a href="set-anggaran">Set Anggaran</a></li>
                     <li><a href="anggaran-tahunan">Anggaran Tahunan</a></li>
+                    <li><a href="kategori-modul">Ketegori Modul Pembayaran</a></li>
                 </ul>
             </div>
              
@@ -116,12 +116,6 @@
             }else{
                 switch ($_GET['page']) {
                     // referensi
-                    // case 'statusrekening':
-                    //     require $d.'v_statusrekening.php';
-                    // break;
-                    // case 'subrekening':
-                    //     require $d.'v_subrekening.php';
-                    // break;
                     case 'kategorirekening':
                         require $d.'v_kategorirekening.php';
                     break;
@@ -144,23 +138,28 @@
                         require $d.'v_anggarantahunan.php';
                     break;
 
-
                     // transaksi
                     case 'transaksi':
                         require $d.'v_transaksi.php';
                     break;
+                    case 'katmodulpembayaran':
+                        require $d.'v_katmodulpembayaran.php';
+                    break;
+                    case 'modulpembayaran':
+                        require $d.'v_modulpembayaran.php';
+                    break;
                     case 'pembayaran':
                         require $d.'v_pembayaran.php';
                     break;
-                    case 'pembayaran_pendaftaran':
-                        require $d.'v_pembayaran_pendaftaran.php';
-                    break;
-                    case 'uang_pangkal':
-                        require $d.'v_uang_pangkal.php';
-                    break;
-                    case 'uang_sekolah':
-                        require $d.'v_uang_sekolah.php';
-                    break;
+                    // case 'pembayaran_pendaftaran':
+                    //     require $d.'v_pembayaran_pendaftaran.php';
+                    // break;
+                    // case 'uang_pangkal':
+                    //     require $d.'v_uang_pangkal.php';
+                    // break;
+                    // case 'uang_sekolah':
+                    //     require $d.'v_uang_sekolah.php';
+                    // break;
                     case 'inventory':
                         require $d.'v_inventory.php';
                     break;

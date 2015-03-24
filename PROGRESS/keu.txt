@@ -11,8 +11,9 @@ _________________________  transact  ___________________________
 
 * transaksi (P)
 	+ submenu : jurnal_umum 
-	- lainnya (^_^)V
+	- lainnya 
 * modul pembayaran(P)
+	- kode rekening (perlu dibuatkan tabel detilmodulpembayaran kah=> rekening multi (pendatpaan, kas, piutang) )
 * pembayaran pendaftaran(P)
 * pembayaran uang pangkal(P)
 * pembayaran uang sekolah(P)
@@ -26,15 +27,16 @@ ________________________   master  ____________________________
 	- delete : trigger -> hapus data saldo rekening @tahun
 * kategori rekening (C)
 	+ CRUD
-* detil rekening (P)
-	- view : tidak tampil 
-	- filtering : combo rekening tidak tampil
-	- dll 
-* anggaran (P)
+* detil rekening (C)
+	+ view : tidak tampil 
+	+ filtering : combo rekening tidak tampil
+	+ dll 
+* anggaran (C)
 	+ view : tidak tampil 
 	+ filtering : combo rekening tidak tampil
 * detil anggaran (P)
-	- CRUDP 
+	+ CRUD
+	- P 
 * sub rekening (C)
 	+ CRUD 
 * status rekening (C)

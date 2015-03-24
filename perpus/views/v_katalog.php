@@ -268,7 +268,7 @@
 
                               <div class="input-control text size3">
                                   <input type="hidden" name="klasifikasi_selectH" id="klasifikasi_selectH">
-                                  <input type="text" placeholder="Klasifikasi" name="klasifikasi_selectTB" id="klasifikasi_selectTB">
+                                  <input required type="text" placeholder="Klasifikasi" name="klasifikasi_selectTB" id="klasifikasi_selectTB">
                                   <button class="btn-clear"></button>
                               </div>                            
                               <a href="#" data-hint="Tambah Kalsifikasi" id="klasifikasiBC" class="button"><span class="icon-plus-2"></span> </a>
@@ -276,7 +276,7 @@
                               <label>Pengarang :</label>
                               <div class="input-control text size4">
                                   <input type="hidden" name="pengarang_autoH" id="pengarang_autoH">
-                                  <input type="text" placeholder="Pengarang" name="pengarangTB" id="pengarangTB">
+                                  <input required type="text" placeholder="Pengarang" name="pengarangTB" id="pengarangTB">
                                   <button class="btn-clear"></button>
                               </div>      
                                   <a href="#" data-hint="Tambah Pengarang" xclass="large" id="pengarangBC" class="button"><span class="icon-plus-2"></span> </a>
@@ -302,7 +302,7 @@
                               <label>Penerbit</label>
                               <div class="input-control text size4">
                                   <input type="hidden" name="penerbit_autoH" id="penerbit_autoH">
-                                  <input type="text" placeholder="Penerbit" name="penerbitTB" id="penerbitTB">
+                                  <input required type="text" placeholder="Penerbit" name="penerbitTB" id="penerbitTB">
                                   <button class="btn-clear"></button>
                               </div>
                               <a href="#" class="button" data-hint="Tambah Penerbit" xclass="large" id="penerbitBC"><span class="icon-plus-2"></span> </a>

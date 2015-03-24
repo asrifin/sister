@@ -216,8 +216,6 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
         $('#k_viewFR').toggle('slow');
         // $('#katalogFR').toggle('slow');
         $('#katalogTBL').toggle('slow');
-        $('#tambahBC').toggle('slow');
-        $('#cariBC').toggle('slow');
     }
 
 // main function ---
@@ -354,12 +352,13 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         +'</div>'
                         +'<label>ID Buku</label>' 
                         +'<div class="input-control text">'
-                            +'<input disabled="disabled" required type="text" name="idbukuTB" id="idbukuTB">'
+                            +'<input  id="idbukuH" type="hidden">'
+                            +'<input readonly required type="text" name="idbukuTB" id="idbukuTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Barcode</label>'
                         +'<div class="input-control text size3">'
-                            +'<input disabled="disabled" required type="text" name="barcodeTB" id="barcodeTB">'
+                            +'<input readonly required type="text" name="barcodeTB" id="barcodeTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Sumber</label>'
@@ -384,73 +383,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         +'<div>'
                         +'<label>Harga</label>'
                         +'<div class="input-control text size3">'
-                            +'<input disabled="disabled" required type="text" name="hargaTB" id="hargaTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        +'<label>Tanggal Diperoleh</label>'
-                        +'<div class="input-control text size2" data-role="datepicker"'
-                            +'data-format="yyyy-mm-dd"'
-                            +'data-effect="slide">'
-                            +'<input id="tglTB" name="tglTB" type="text">'
-                            +'<button class="btn-date"></button>'
-                        +'</div>'
-                        +'<label><b>Alokasi Lokasi</b></label>' 
-                        +'<label>Lokasi</label>' 
-                        +'<div class="input-control select size4">'
-                            +'<select id="lokasiTB" name="lokasiTB">'
-                              +'</select>'
-                        +'</div>'
-                        +'<label>Tingkat</label>' 
-                        +'<div class="input-control select size4">'
-                            +'<select id="tingkatTB" name="tingkatTB">'
-                              +'</select>'
-                        +'</div>'
-                        +'<div class="form-actions">' 
-                            +'<button class="button primary">simpan</button>&nbsp;'
-                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-                        +'</div>'
-                    +'</form>';
-
-        dua_koleksi_contentFR += '<form autocomplete="off" onsubmit="dua_koleksiSV(this);return false;" id="dua_koleksiFR">' 
-                        +'<input  id="dua_koleksiH" type="hidden">'
-                            +'<tr>'
-                                +'<td>Judul</td>'
-                                +'<td>: <span id="judul_koleksiTD"></span></td>'
-                            +'</tr>'
-
-                        +'<label>ID Buku</label>' 
-                        +'<div class="input-control text">'
-                            +'<input disabled="disabled" required type="text" name="idbukuTB" id="idbukuTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        +'<label>Barcode</label>'
-                        +'<div class="input-control text size3">'
-                            +'<input disabled="disabled" required type="text" name="barcodeTB" id="barcodeTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        +'<label>Sumber</label>'
-                        +'<div>'
-                            +'<div class="input-control radio margin3" >'
-                                +'<label>'
-                                    +'<input value="0" required type="radio" name="sumberTB" />'
-                                    +'<span class="check"></span>'
-                                    +'Beli'
-                                +'</label>'
-                            +'</div>'
-                        +'</div>'
-                        +'<div>'
-                            +'<div class="input-control radio margin3" >'
-                                +'<label>'
-                                    +'<input  value="1" required type="radio" name="sumberTB"/>'
-                                    +'<span class="check"></span>'
-                                    +'Pemberian'
-                                +'</label>'
-                            +'</div>'
-                        +'</div>'
-                        +'<div>'
-                        +'<label>Harga</label>'
-                        +'<div class="input-control text size3">'
-                            +'<input disabled="disabled" required type="text" name="hargaTB" id="hargaTB">'
+                            +'<input readonly required type="text" name="hargaTB" id="hargaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Tanggal Diperoleh</label>'
@@ -1138,6 +1071,8 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                             $('#jumlahTD').html(dt.data.halaman);
                             $('#edisiTD').html(dt.data.edisi);
                             $('#sinopsisTD').html(dt.data.deskripsi);
+
+                            cmblokasi('filter','');
                             
                             var tbl='';
                             $.each(dt.data.barangArr,function(id,item){
@@ -1163,8 +1098,9 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                                     +'</tr>';
                             });
                             $('#k_viewtbody').html(tbl);
+                            $('#katalogTBL').attr('style','display:none;');
+                            // $('#katalogTBL').removeAttr('style');
                             $('#k_viewFR').toggle('slow');
-                            $('#katalogFR').toggle('slow');
                         }
                     } //end else
                 });
@@ -1176,6 +1112,23 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
         }  
 
     
+// form ---
+    function kode_gen(id){
+                    titlex='<span class="icon-pencil"></span> Tambah';
+                    $.ajax({
+                        url:dir,
+                        data:'aksi=codeGen&subaksi=trans&kunci='+id,
+                        type:'post',
+                        dataType:'json',
+                        success:function(dt){
+                            $('#idbukuTB').val(dt.kode);
+
+                        }
+                    });
+               
+    }
+// end of form ---
+
 
 // form ---
     function koleksiFR(id){
@@ -1237,6 +1190,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                             $('#lokasiTB').val(dt.lokasi);
                             $('#tingkatTB').val(dt.tingkatbuku);
                             
+                            kode_gen('idfmt');
                             cmblokasi(dt.lokasi);
                             cmbtingkatbuku(dt.tingkatbuku);
 
@@ -1305,7 +1259,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
             });
         }
 
-        function cmblokasi (lokasi) {
+        function cmblokasi (typ,lokasi) {
             // alert(lokasi);return false;
             $.ajax({
                 url:dir5,   
@@ -1318,14 +1272,18 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         notif(dt.status,'red');
                         opt+='<option value="">'+dt.status+'</option>'
                     }else{
-                        // alert(id);return false;
                         var opt = '';
                         $.each(dt.lokasi,function(id,item){
                             if(lokasi==item.replid)
                                 opt+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>'
                             else
                                 opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
-                        });$('#lokasiTB').html('<option value="">Pilih Lokasi ..</option>'+opt);
+                        });
+                        if (typ=='filter') {
+                            $('#lokasiS').html(opt);
+                        }else{
+                            $('#lokasiTB').html('<option value="">Pilih Lokasi ..</option>'+opt);
+                        }
                     }
                 },
             });
@@ -1464,6 +1422,40 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
         });
     }
 //end of del process ---
+    
+function jumupdate (e) {
+    $('#b_jumbarangTB').val($(e).val());
+    if($('#b_idformH').val()!='') //edit
+        kodegenerate($('#b_idformH').val());
+    else //add
+        kodegenerate('');
+}
+
+// form :: generate barcode & kode ----------------- 
+    function kodegenerate (idform) {
+        var tempat  = $('#b_tempatTB').val();
+        var jum     = $('#b_jumbarangTB').val();
+        var katalog = $('#b_katalogH2').val();
+
+        $.ajax({
+            url:dir,
+            type:'post',
+            dataType:'json',
+            data:'aksi=kodegenerate&tempat='+tempat+'&katalog='+katalog+'&replid='+idform,
+            success:function(dt){
+                var kode;
+                if(jum>1){
+                    kode = '[auto]';
+                }else{
+                    kode = dt.data.barkode;
+                }$('#b_urutH').val(dt.data.urut);
+                $('#b_barkodeTB').val(kode);
+                $('#b_kodeTB').val(dt.data.lokasi+'/'+dt.data.grup+'/'+dt.data.tempat+'/'+dt.data.katalog+'/'+kode);
+            },
+        });
+    }
+// end of form :: generate barcode & kode ----------------- 
+
     
 // notifikasi
 function notif(cont,clr) {

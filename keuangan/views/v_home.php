@@ -13,7 +13,7 @@
     </a>
     <!--end of  Transaksi -->
 
-    <!-- Pembayaran -->
+    <!--modul Pembayaran -->
     <a href="modul-pembayaran" class="tile double bg-lightRed" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-book"></span>
@@ -22,10 +22,21 @@
             <div class="label">Modul Pembayaran</div>
         </div>
     </a>
+    <!--end of modul  Pembayaran  -->
+
+    <!-- Pembayaran -->
+    <a href="pembayaran" class="tile double bg-brown" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-book"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Pembayaran</div>
+        </div>
+    </a>
     <!--end of  Pembayaran  -->
 
     <!-- Pembayaran Pendaftaran -->
-    <a href="pembayaran-pendaftaran" class="tile double bg-green" data-click="transform">
+<!--     <a href="pembayaran-pendaftaran" class="tile double bg-green" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-pencil"></span>
         </div>
@@ -33,10 +44,10 @@
             <div class="label">Pembayaran Pendaftaran</div>
         </div>
     </a>
-    <!--end of  Pembayaran Pendaftaran -->
+ -->    <!--end of  Pembayaran Pendaftaran -->
 
     <!-- Pembayaran Uang Pangkal -->
-    <a href="pembayaran-uang-pangkal" class="tile double bg-lightOrange" data-click="transform">
+<!--     <a href="pembayaran-uang-pangkal" class="tile double bg-lightOrange" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-pencil"></span>
         </div>
@@ -44,17 +55,17 @@
             <div class="label">Pembayaran Uang Pangkal</div>
         </div>
     </a>
-    <!--end of  Pembayaran Uang Pangkal -->
+ -->    <!--end of  Pembayaran Uang Pangkal -->
 
     <!-- Pembayaran Uang Sekolah -->
-    <a href="pembayaran-uang-sekolah" class="tile double bg-violet" data-click="transform">
+    <!-- <a href="pembayaran-uang-sekolah" class="tile double bg-violet" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-pencil"></span>
         </div>
         <div class="brand">
             <div class="label">Pembayaran Uang Sekolah</div>
         </div>
-    </a>
+    </a> -->
     <!--end of  Pembayaran Uang Sekolah -->
 
     <!-- Inventory  -->
@@ -84,28 +95,6 @@
         </div>
     </a>
     <!--end of  Tahun Buku -->
-
-    <!-- Status rekening -->
-    <!-- <a href="status-rekening" class="tile bg-red" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-copy"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Status Rekening</div>
-        </div>
-    </a> -->
-    <!--end of  sub rekening -->
-
-    <!-- sub rekening -->
-    <!-- <a href="sub-rekening" class="tile bg-lightRed" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-copy"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Sub Rekening</div>
-        </div>
-    </a> -->
-    <!--end of  sub rekening -->
 
     <!-- kategori  Rekening -->
     <a href="kategori-rekening" class="tile bg-orange" data-click="transform">
@@ -162,5 +151,14 @@
     </a>
     <!-- end of Anggaran Tahunan-->
 
-    
+    <!--  kategori modul pembayaran -->
+    <a href="kategori-modul" class="tile bg-lightGreen" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Kategori Modul</div>
+        </div>
+    </a>
+    <!-- end of Anggaran Tahunan-->
 </div> <!-- End group 2-->

@@ -3,8 +3,8 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$tb = 'aka_angkatan';
-	// $out=array();
+	$mnu = 'angkatan';
+	$tb  = 'aka_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
@@ -149,7 +149,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','angkatan'=>$dt);
+						}$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;

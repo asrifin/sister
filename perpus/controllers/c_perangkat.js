@@ -7,7 +7,7 @@ var dir2      ='models/m_'+mnu2+'.php';
 var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
 
     function switchPN(){
-        $('#cetaklabelTBL').toggle('slow');
+        $('#cetak').toggle('slow');
         $('#labelcetak').toggle('slow');
         $('#cetaklabel').toggle('slow');
     }
@@ -17,10 +17,8 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
     $(document).ready(function(){
 
             //Dialog ID
-                     
-
                 id_contentFR    +='<div style="overflow:scroll;height:600px;">'
-                               +'<form autocomplete="off" onsubmit="simpan();return false;" id="idFR">' 
+                               +'<form autocomplete="off" onsubmit="idSV();return false;" id="idFR">' 
                                 +'<input id="id_formH" type="hidden">' 
                                         +'<table width="700px" class="table hovered bordered striped">'
                                             +'<thead>'
@@ -29,7 +27,7 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
                                                     +'<th width="450" class="text-left">Keterangan</th>'
                                                 +'</tr>'
                                             +'</thead>'     
-                                            +'<tbody id="barangTBL">'
+                                            +'<tbody id="idTBL">'
                                                 +'<tr>'
                                                     +'<td class="text-justify">[nomorauto(.panjang digit)]</td>'
                                                     +'<td class="text-justify">'
@@ -55,7 +53,7 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
                                                 +'</tr>'
                                                 +'<tr>'
                                                     +'<td class="text-justify">[sumber]</td>'
-                                                    +'<td class="text-justify">Sumber item'
+                                                    +'<td class="text-justify">Sumber item '
                                                     +'Sumber dari pembelian berkode B. <br>Sumber dari hibah/pemberian berkode H.'
                                                     +'</td>'
                                                 +'</tr>'
@@ -67,13 +65,13 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
                                     
                                     +'<label>Format</label>'
                                     +'<div class="input-control text size6">'
-                                        +'<input  required type="text" name="formatTB" id="formatTB">'
+                                        +'<input  required type="text" name="f_idTB" id="f_idTB">'
                                         +'<button class="btn-clear"></button>'
                                     +'</div><br>'
                                     +'<div class="input-control checkbox">'
                                         +'<label>'
                                             +'<input type="checkbox" />'
-                                            +'<span class="check"></span>'
+                                            +'<span class="checked"></span>'
                                             +'Update nomor ID item ke format baru'
                                         +'</label>'
                                     +'</div>'
@@ -85,7 +83,7 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
                         //End div
 
                 barkode_contentFR    +='<div style="overflow:scroll;height:600px;">'
-                               +'<form autocomplete="off" onsubmit="simpan();return false;" id="barkodeFR">' 
+                               +'<form autocomplete="off" onsubmit="barkodeSV();return false;" id="barkodeFR">' 
                                 +'<input id="barkode_formH" type="hidden">' 
                                         +'<table width="700px" class="table hovered bordered striped">'
                                             +'<thead>'
@@ -94,7 +92,7 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
                                                     +'<th width="450" class="text-left">Keterangan</th>'
                                                 +'</tr>'
                                             +'</thead>'     
-                                            +'<tbody id="barangTBL">'
+                                            +'<tbody id="barkodeTBL">'
                                                 +'<tr>'
                                                     +'<td class="text-justify">[nomorauto(.panjang digit)]</td>'
                                                     +'<td class="text-justify">'
@@ -132,13 +130,13 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
                                     
                                     +'<label>Format</label>'
                                     +'<div class="input-control text size6">'
-                                        +'<input  required type="text" name="formatTB" id="formatTB">'
+                                        +'<input  required type="text" name="f_barkodeTB" id="f_barkodeTB">'
                                         +'<button class="btn-clear"></button>'
                                     +'</div><br>'
                                     +'<div class="input-control checkbox">'
                                         +'<label>'
                                             +'<input type="checkbox" />'
-                                            +'<span class="check"></span>'
+                                            +'<span class="checked"></span>'
                                             +'Update barkode item ke format baru'
                                         +'</label>'
                                     +'</div>'
@@ -199,7 +197,6 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
                                 +'</form>';
 
 
-        cmblokasi();
 
     // button action
         //add ---
@@ -212,43 +209,10 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
         $("#infoBC").on('click', function(){ 
             infoFR('');
         });
-        $("#cetakBC").on('click', function(){ 
+        $("#cetaklabel").on('click', function(){ 
             switchPN();
+            cmblokasi();
         });
-        //print ---
-        $('#ju_cetakBC').on('click',function(){
-            printPDF('grup');
-        });
-
-        //search ---
-        $('#memberS').keydown(function (e){
-            if(e.keyCode == 13)
-                sirkulasiVW();
-        });
-        $('#barcodeS').keydown(function (e){
-            if(e.keyCode == 13)
-                sirkulasiVW();
-        });$('#judulS').keydown(function (e){
-            if(e.keyCode == 13)
-                sirkulasiVW();
-        });$('#s_judulS').keydown(function (e){
-            if(e.keyCode == 13)
-                statistikVW();
-        });$('#klasifikasiS').keydown(function (e){
-            if(e.keyCode == 13)
-                statistikVW();
-        });
-
-        // set default this month
-        $('#tgl1TB').val(getFirstDate());
-        $('#tgl2TB').val(getLastDate());
-
-        $('#s_tgl1TB').val(getFirstDate());
-        $('#s_tgl2TB').val(getLastDate());
-        // jurnal umum :: tampilkan detail jurnal
-        // $('#ju_detiljurnalCB').on('click',function(){
-        //     $('.uraianCOL').toggle();
-        // });
 
         // search button
         $('#cari_sirkulasiBC').on('click',function(){
@@ -265,8 +229,12 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
             $('#penerbitS').val('');
         });
 
-        // default tampilkan jurnal umum 
-        sirkulasiVW();
+        // default view
+        viewID();
+        viewBarkode();
+        viewJudul();
+        viewDeskripsi();
+        // cmblokasi();
     }); 
 // end of main function ---------
 
@@ -345,13 +313,6 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
                        $('#'+id).val(item);
                     });
                 }
-                // if(rekN>0){// detail form
-                //     setTimeout(function(){
-                //         $('#ju_rekTBL').append(rekTR(rekN));
-                //         autosuggest(pre,rekN);
-                //         // autosuggest(cgArr);
-                //     },500);
-                // }
             }
         });
     }
@@ -363,7 +324,7 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
         }else{ // add  mode
             var titl   ='<i class="icon-plus-2"></i> Edit Format Nomor ID ';
             var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
-            loadFR(titl,id_contentFR,inpArr);
+            loadFR(titl,id_contentFR);
         }
 
     }
@@ -371,6 +332,16 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
 /* form Barkode (add & edit) */
     function barkodeFR(id){
         if(id!=''){ // edit mode
+                    $.ajax({
+                        url:dir,
+                        data:'aksi=ambiledit&subaksi=barkode&replid='+id,
+                        type:'post',
+                        dataType:'json',
+                        success:function(dt){
+                            $('#barkode_formH').val(id);
+                            $('#f_barkodeTB').val(dt.nilai);
+                        }
+                    });        
             
         }else{ // add  mode
             var titl   ='<i class="icon-plus-2"></i> Edit Format Barkode item ';
@@ -391,42 +362,47 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
     }
 
 /*view*/
-    // Sirkulasi ---
-        function sirkulasiVW(){  
-            var aksi ='aksi=tampil&subaksi=sirkulasi';
-            var cari ='&memberS='+$('#memberS').val()
-                     +'&barcodeS='+$('#barcodeS').val();
-                     +'&judulS='+$('#judulS').val();
+        function viewID(){  
+            var aksi ='aksi=tampil&subaksi=id';
             $.ajax({
                 url : dir,
                 type: 'post',
-                data: aksi+cari,
-                beforeSend:function(){
-                    $('#sirkulasi_tbody').html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr></center>');
-                },success:function(dt){
-                    setTimeout(function(){
-                        $('#sirkulasi_tbody').html(dt).fadeIn();
-                    },1000);
+                data: aksi,
+                success:function(dt){
+                        $('#idTB').val(dt);
                 }
             });
         }
-
-        function statistikVW(){  
-            var aksi ='aksi=tampil&subaksi=statistik';
-            var cari ='&s_judulS='+$('#s_judulS').val()
-                     +'&klasifikasiS='+$('#klasifikasiS').val();
-                     +'&pengarangS='+$('#pengarangS').val();
-                     +'&penerbitS='+$('#penerbitS').val();
+        function viewBarkode(){  
+            var aksi ='aksi=tampil&subaksi=barkode';
             $.ajax({
                 url : dir,
                 type: 'post',
-                data: aksi+cari,
-                beforeSend:function(){
-                    $('#statistik_tbody').html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr></center>');
-                },success:function(dt){
-                    setTimeout(function(){
-                        $('#statistik_tbody').html(dt).fadeIn();
-                    },1000);
+                data: aksi,
+                success:function(dt){
+                        $('#barkodeTB').val(dt);
+                }
+            });
+        }
+        function viewJudul(){  
+            var aksi ='aksi=tampil&subaksi=judul';
+            $.ajax({
+                url : dir,
+                type: 'post',
+                data: aksi,
+                success:function(dt){
+                        $('#judulTB').val(dt);
+                }
+            });
+        }
+        function viewDeskripsi(){  
+            var aksi ='aksi=tampil&subaksi=deskripsi';
+            $.ajax({
+                url : dir,
+                type: 'post',
+                data: aksi,
+                success:function(dt){
+                        $('#deskripsiTB').val(dt);
                 }
             });
         }
@@ -440,70 +416,6 @@ var id_contentFR = barkode_contentFR = info_contentFR = cetak_contentFR ='';
             data:d
         });
     }
-
-/*save (insert & update)*/
-    //jurnal umum  ---
-    function juSV(e){
-        var url  = dir;
-        var data = $(e).serialize()+'&aksi=simpan&subaksi=ju';
-        // edit mode
-        if($('#ju_idformH').val()!='')
-            url += '&replid='+$('#ju_idformH').val();
-        // alert(ajaxFC(url,'post','json',data));
-        var exec = ajaxFC(url,'post','json',data);
-        alert();
-        // if(exec){
-        //     res=exec.status;
-        // }else{
-        //     notif()
-        // }            
-
-        
-        // $.ajax({
-        //     url:dir,
-        //     cache:false,
-        //     type:'post',
-        //     dataType:'json',
-        //     data:$('form').serialize()+urlx,
-        //     success:function(dt){
-        //         if(dt.status!='sukses'){
-        //             cont = 'Gagal menyimpan data';
-        //             clr  = 'red';
-        //         }else{
-        //             $.Dialog.close();
-        //             gkosongkan();
-        //             vwGrup($('#g_lokasiS').val());
-        //             cont = 'Berhasil menyimpan data';
-        //             clr  = 'green';
-        //         }notif(cont,clr);
-        //     }
-        // });
-        // return false;
-    }
-
-
-/*delete*/
-    //jurnal umum   ---
-        function juDel(id){
-            if(confirm('melanjutkan untuk menghapus data?'))
-            $.ajax({
-                url:dir,
-                type:'post',
-                data:'aksi=hapus&subaksi=grup&replid='+id,
-                dataType:'json',
-                success:function(dt){
-                    var cont,clr;
-                    if(dt.status!='sukses'){
-                        cont = '..Gagal Menghapus '+dt.terhapus+' ..';
-                        clr  ='red';
-                    }else{
-                        vwGrup($('#g_lokasiS').val());
-                        cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
-                        clr  ='green';
-                    }notif(cont,clr);
-                }
-            });
-        }
 
 
 // input uang --------------------------

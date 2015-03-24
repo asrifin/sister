@@ -25,12 +25,16 @@ ____________________________________________________
 	- Combogrid SQL pada models gimana kalau beda field??  (+)	
 	- Tambah koleksi untuk Lihat Katalog belum bisa (+)
 	- Edit Informasi Katalog pada View Katalog (+) --> ditambahkan ajax yang sama pada edit katalog
-	- combo lokasi pada view katalog
 	- pencarian judul pas jumlahnya 2 hasilnya ikut 2 (+) --> menggunakan SQL Group By
 	- cara looping data koleksi buku pada view katalog (+) --> salah SQLnya
 	- data katalog berhasil di insert tapi di searching ga nampil (+) --> di SQL tampil pakai JOIN seharusnya LEFT JOIN
 	- cara memasukkan replid pada textbox klasifikasi,pengarang, penerbit (+) -->ditambahkan id hidden pada masing2 inputan
-	- pas edit katalog nyimpan klasifikasi,pengarang, penerbit tidak bisa
+	- pas edit katalog nyimpan klasifikasi,pengarang, penerbit tidak bisa (+) --> SQL ditambahkan select replid pada tabel
+	- combo lokasi pada view katalog (+) --> tambah filter pada cmblokasi
+	- pas tambah koleksi jumlah dan sumber ga nampil --> ARRAY disamakan namanya
+	- simpan koleksi belum bisa 
+	- pas tambah katalog form edit katalog juga muncul
+	- cara generate id buku( dan barcode (lokasi,tingkatbuku, tahun, urut pd pus_buku)
 * data anggota (P)
 	- view siswa, pegawai dan member lain hanya bisa menampilkan yang sudah pinjam aja
 	-
@@ -43,6 +47,7 @@ ____________________________________________________
 	- Cara Membuat menunya Gimana karena buka tab baru??
 ____________________________________________________
 * perangkat (P)
+	- cara edit dan simpan di perangkat
 * lokasi (C)
 * daftar penerbit (C)
 * daftar pengarang (C)

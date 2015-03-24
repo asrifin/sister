@@ -122,10 +122,10 @@
 								pn.nama as penerbit,
 								 (SELECT count(*) from pus_buku where katalog=pkat.replid)jum
 								FROM pus_katalog pkat 
-								JOIN pus_klasifikasi pkas ON pkat.klasifikasi = pkas.replid 
-								JOIN pus_pengarang pg ON pkat.pengarang = pg.replid
-								JOIN pus_penerbit pn ON pkat.penerbit = pn.replid
-								JOIN pus_buku pb ON pb.katalog = pkat.replid	
+								LEFT JOIN pus_klasifikasi pkas ON pkat.klasifikasi = pkas.replid 
+								LEFT JOIN pus_pengarang pg ON pkat.pengarang = pg.replid
+								LEFT JOIN pus_penerbit pn ON pkat.penerbit = pn.replid
+								LEFT JOIN pus_buku pb ON pb.katalog = pkat.replid	
 						WHERE 
 							pkat.judul like "%'.$judul.'%" and
 							pkas.nama like "%'.$kode_klasifikasi.'%" and					
@@ -265,20 +265,36 @@
 
 					case 'koleksi':
 						$s 		= 'pus_buku set 	
-												judul   = "'.filter($_POST['judul_jenisTB']).'",
-												jumlah  = "'.filter($_POST['jml_jenisTB']).'",
-												idbuku  = "'.filter($_POST['idbukuTB']).'",
-												barkode = "'.filter($_POST['barcodeTB']).'",
-												sumber  = "'.filter($_POST['sumberTB']).'",
-												harga   = "'.filter($_POST['hargaTB']).'",
-												tanggal = "'.filter($_POST['tglTB']).'",
-												lokasi  = "'.filter($_POST['lokasiTB']).'",
-												tingkat = "'.filter($_POST['tingkatTB']).'"';
-						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						// var_dump($s2);exit();
-						$e 		= mysql_query($s2);
-						$stat 	= ($e)?'sukses':'gagal';
-						$out 	= json_encode(array('status'=>$stat));
+												katalog      = "'.filter($_POST['idbukuH']).'",
+												idbuku      = "'.filter($_POST['idbukuTB']).'",
+												barkode     = "'.filter($_POST['barcodeTB']).'",
+												sumber      = "'.filter($_POST['sumberTB']).'",
+												harga       = "'.filter($_POST['hargaTB']).'",
+												tanggal     = "'.filter($_POST['tglTB']).'",
+												lokasi      = "'.filter($_POST['lokasiTB']).'",
+												tingkatbuku = "'.filter($_POST['tingkatTB']).'"';
+						$stat = true;
+						if(!isset($_POST['replid'])){ //add
+							if(isset($_POST['jml_koleksiTB']) and $_POST['jml_koleksiTB']>1){ //  lebih dr 1 unit barang
+								for($i=0; $i<($_POST['jml_koleksiTB']); $i++) { // iterasi sbnyak jum barang 
+									$s2 ='INSERT INTO '.$s.', urut='.($_POST['idbukuH']+$i);
+									// var_dump($s2);exit();
+									$e  = mysql_query($s2);
+									if(!$e)$stat=false;
+								}
+							}else{ // 1 unit barang
+								$s2='INSERT INTO '.$s.', urut='.$_POST['idbukuH'];
+								// var_dump($s2);exit();
+								$e=mysql_query($s2);
+								if(!$e)$stat=false;  
+							// var_dump($e);exit();
+							}
+						}else{ //edit
+							$s2 = 'UPDATE '.$s.', urut='.$_POST['idbukuH'].' WHERE replid='.$_POST['replid'];
+							// var_dump($s2);exit();
+							$e  = mysql_query($s2);
+							if(!$e)$stat=false;  
+						}
 					break;
 
 					case 'katalog':
@@ -542,8 +558,7 @@
 										'deskripsi'   =>$r['deskripsi'],		
 										'barangArr'   =>$barangArr
 								)));					
-					break;
-					
+					break;							
 
 					case 'koleksi':
 						$s 		= ' SELECT
@@ -555,7 +570,8 @@
 										  pb.tanggal,
 										  pb.lokasi,
 										  pb.tingkatbuku,
-										  if(pb.sumber=0,"Beli","Pemberian") as sumber,
+										  pb.sumber,
+										  --if(pb.sumber=0,"Beli","Pemberian") as sumber,
 										  pj.nama jenisbuku,
 				                          kg.callnumber,
 				                          kg.dimensi,
@@ -578,7 +594,7 @@
 						$out    = json_encode(array(
 									'status'      =>$stat,
 									'judul'       =>$r['judul'],
-									'jumlah'      =>$r['jum'],
+									'jum'      =>$r['jum'],
 									'kode'        =>$r['kode'],
 									'barkode'     =>$r['barkode'],
 									'sumber'      =>$r['sumber'],
@@ -593,6 +609,66 @@
 			break;
 			// ambiledit -----------------------------------------------------------------
 			
+					// generate kode
+			case 'codeGen':
+						switch ($_POST['subaksi']) {
+							case'trans':
+								$r = 'SELECT kunci, nilai 
+										FROM pus_setting
+										WHERE kunci = "'.$_POST['kunci'].'"';
+								$sql =mysql_query($r);
+								$query = mysql_fetch_assoc($sql);
+								$pisah = explode('/',$query['nilai']);
+								$jmlauto = (substr($pisah[0],11,1));
+
+					$s='SELECT
+						tb1.lokasi,
+						tb1.grup,
+						tb1.tempat,
+						tb1.katalog,
+						tb2.barang,
+						LPAD(tb2.barang,$jmlauto,0)barkode	
+					FROM (
+						SELECT
+							l.kode lokasi,
+							g.kode grup,
+							t.kode tempat,
+							k.kode katalog
+						FROM
+							sar_lokasi l 
+							JOIN sar_grup g on g.lokasi = l.replid
+							JOIN sar_katalog k on k.grup= g.replid
+							JOIN sar_tempat t on t.lokasi = l.replid
+						WHERE	
+							t.replid = '.$_POST['tempat'].' 
+							and k.replid = '.$_POST['katalog'].'
+						)tb1,';
+
+				if($_POST['replid']!=''){//edit
+					$s.= '(SELECT urut AS barang FROM sar_barang WHERE replid='.$_POST['replid'].')tb2';
+				}else{ //add 
+					$s.= '(SELECT (MAX(urut) + 1) AS barang FROM sar_barang )tb2';
+				}
+
+				// print_r($s);exit();
+				$e    = mysql_query($s);
+				$r    = mysql_fetch_assoc($e);
+				$stat = !$e?'gagal':'sukses';
+				$out  = json_encode(array(
+							'status' =>$stat,
+							'data'   =>array(
+										'urut'    =>$r['barang'],
+										'lokasi'  =>$r['lokasi'],
+										'grup'    =>$r['grup'],
+										'tempat'  =>$r['tempat'],
+										'katalog' =>$r['katalog'],
+										'barang'  =>$r['barang'],
+										'barkode' =>$r['barkode']
+						)));
+							break;
+						}
+			break;
+					// generate kode
 
 			// aktifkan -----------------------------------------------------------------
 			case 'aktifkan':

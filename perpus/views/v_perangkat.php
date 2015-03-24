@@ -7,7 +7,7 @@
 <h4 style="color:white;">Perangkat</h4>
 <!-- <div id="loadarea"></div> -->
         <!-- <div class="span15" style="color:white;">  -->
-            <div style="overflow:scroll;height::;0px;" >
+            <div style="overflow:scroll;height:550px;" >
                        <legend style="color:white;">Pengaturan Nomor Item</legend>
                             <label style="color:white;">Format nomor ID (Identitas) :</label>
                             <div class="input-control text size5">
@@ -15,15 +15,16 @@
                                 <button class="btn-clear"></button>
                             </div>
                                 <button data-hint="Edit Format ID" xclass="large" id="idBC"><span class="icon-pencil"></span> </button>
-                            <label style="color:white;">Contoh :</label><br>
+                            <label style="color:white;">Contoh :</label>
 
                             <label style="color:white;">Format barkode :</label>
                             <div class="input-control text size5">
-                                <input id="barkodeTB">
+                                <input type="text" id="barkodeTB" name="barkodeTB">
                                 <button class="btn-clear"></button>
                             </div>
-                                <button data-hint="Edit Barkode" xclass="large" id="barkodeBC"><span class="icon-pencil"></span> </button>
-                            <label style="color:white;">Contoh :</label><br>
+                            <a href="#" data-hint="Edit Barkode" id="barkodeBC" class="button"><span class="icon-pencil"></span> </a>
+                                <!-- <button data-hint="Edit Barkode" xclass="large" id="barkodeBC"><span class="icon-pencil"></span> </button> -->
+                            <label style="color:white;">Contoh :</label>
         <!-- </div> -->
         <!-- <div class="span15" style="color:white;">  -->
                        <legend style="color:white;">Cetak Label</legend>
@@ -45,81 +46,50 @@
                         </div>        
         <!-- </div> -->
 
-<!--                             <div class="grid" id="labelcetak" style="display:none;">
-                            <legend>Data Peminjaman</legend>
-                                <form enctype="multipart/form-data" class="span12" autocomplete="off" onsubmit="pinjamSV(); return false;"> 
-                                    <input id="idformH" type="hidden"> 
-                                    <div class="row">
-                                        <div class="span5"> 
-                                            <label>Peminjam</label>
-                                            <div class="input-control select span4">
-                                                <select  name="memberTB" id="memberTB"></select>
-                                            </div>
-                                            <div class="input-control text size4">
-                                                <input placeholder="ID atau Nama Peminjam" id="peminjamTB">
-                                                <button class="btn-clear"></button>
-                                            </div>
-                                                <img id="b_photoIMG" src="../img/no_image.jpg" width="100" class="shadow" align="center">
-                                        </div>
-                                        <div class="span5">
-                                            <label><b>Waktu Peminjaman</b></label>
-                                            <label>Tanggal Peminjaman</label>
-                                            <div class="input-control text size3" data-role="datepicker"
-                                                // data-date="2014-10-23"
-                                                data-format="yyyy-mm-dd"
-                                                data-effect="slide">
-                                                <input required="required"  id="tgl_pinjamTB" name="tgl_pinjamTB" type="text">
-                                                <button class="btn-date"></button>
-                                            </div>
-                                        </div>
-                                        <!-- end span -->
-                                    <!-- </div>  -->
-                                    <!-- end row -->
-                                    
-                            <!-- </div> -->
-                                <!-- //End Grid   -->
-<!--         <div class="panel" id="labelcetak" style="display:none;">
-            <div class="panel-header bg-lightBlue fg-white">
-            ...
-            </div>
-                <div class="panel-content">
-                    <div class="grid">
-                        <div class="row">
-                            <div class="span8">
-                                            <div class="input-control text size4">
-                                                <input placeholder="ID atau Nama Peminjam" id="peminjamTB">
-                                                <button class="btn-clear"></button>
-                                            </div>
-                                
-                            </div>
-                            <div class="span8">
-                                            <div class="input-control text size4">
-                                                <input placeholder="ID atau Nama Peminjam" id="peminjamTB">
-                                                <button class="btn-clear"></button>
-                                            </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="panel" id="cetak" style="display:none;">
+    <div class="panel-content">
+    <div class="grid">
+        <div class="row">
+            <div class="span6">
+                <label><b>Daftar label item yang dicetak :</b></label>
+                <div class="input-control select span3">
+                    <select data-hint="lokasi" name="lokasiS" id="lokasiS"></select>
                 </div>
-        </div>
- -->           
-<table class="table hovered bordered striped" id="cetaklabelTBL" style="display:none;">
-    <thead>
-        <tr style="color:white;"class="info">
-            <th class="text-left">Barkode</th>
-            <th class="text-left">Callnumber</th>
-            <th class="text-left">Judul</th>
-            <th class="text-left">Aksi</th>
-        </tr>
-    </thead>
+                <div class="input-control text size5">
+                    <input placeholder="barkode atau judul item" type="text" name="labelTB" id="labelTB">
+                </div>
 
-    <tbody id="tbody">
+                <table class="table hovered bordered striped" id="cetaklabelTBL">
+                    <thead>
+                        <tr style="color:white;"class="info">
+                            <th class="text-left">Barkode</th>
+                            <th class="text-left">Callnumber</th>
+                            <th class="text-left">Judul</th>
+                            <th class="text-left">Aksi</th>
+                        </tr>
+                    </thead>
 
-    </tbody>
-    <tfoot>
-        
-    </tfoot>
-</table>
+                    <tbody id="tbody">
+
+                    </tbody>
+
+                    <tfoot>
+                        
+                    </tfoot>
+                </table>
+
+            </div> <!-- end span -->
+
+            <div class="span6">
+                
+            </div>
+
+        </div> <!-- end row -->
+    </div> <!-- end grid -->
+
+    </div>
+</div> <!-- end panel -->
+
 
 
 </div>
