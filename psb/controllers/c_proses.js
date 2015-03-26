@@ -1,4 +1,5 @@
-var mnu       = 'periode';
+// var mnu       = 'periode';
+var mnu       = 'proses';
 var mnu2      = 'departemen';
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='../akademik/models/m_'+mnu2+'.php';

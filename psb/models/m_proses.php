@@ -196,8 +196,10 @@
 				}else{
 					if(isset($_POST[$mnu])){
 						$w='where'.$mnu.'='.$_POST[$mnu];
-					}elseif (isset($_POST['tahunajaran'])) {
-						$w='where tahunajaran='.$_POST['tahunajaran'];
+					}elseif (isset($_POST['angkatan'])) {
+						$w='where angkatan='.$_POST['angkatan'];
+					}else{
+						$w='where departemen ='.$_POST['departemen'];
 					}
 				}
 				
@@ -214,7 +216,7 @@
 					$ar = array('status'=>'error');
 				}else{
 					if($n==0){ // kosong 
-						var_dump($n);exit();
+						// var_dump($n);exit();
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
 						if(!isset($_POST['replid'])){
@@ -223,7 +225,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','periode'=>$dt);
+						}$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}
 				// print_r($n);exit();

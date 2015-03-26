@@ -1,4 +1,5 @@
-<script src="controllers/c_periode.js"></script>
+<!-- <script src="controllers/c_periode.js"></script> -->
+<script src="controllers/c_proses.js"></script>
 
 <h4 style="color:white;">Periode Penerimaan</h4>
 <div id="loadarea"></div>

@@ -15,15 +15,15 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
     $(document).ready(function(){
         // default tampilkan jurnal umum 
         cmbdepartemen('filter','');
-        // switchPN();
+        // switchPN('pendaftaran');
+
         $('#departemenS').on('change',function(){
-            switchPN('');
+            switchPN();
         });
 
-        $('.tabs li a').on('click',function(){
-            switchPN($(this).attr('href'));
-            // alert(999999);
-        });
+        // $('.tabs li a').on('click',function(){
+        //     switchPN($(this).attr('href'));
+        // });
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });
@@ -118,9 +118,17 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
 // end of main function ---------
     
     function switchPN (par) {
+        // alert(par+' ok '); return false;
+        if(par==''){
+            cmbproses('filter','');
+        }else{
+
+        }
+        // alert(par);
         // var tabs = ['pembayaran','dpp','spp'];
-        alert(par);
-        // viewTB(curTab());
+        // alert(par);
+        // alert(curTab());
+        
     }
 
     function curTab(par){
@@ -637,10 +645,10 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
 //end of combo angkatan---
 
 // combo proses ---
-    function cmbproses(typ,ang){
+    function cmbproses(typ,dep){
         $.ajax({
             url:dir4,
-            data:'aksi=cmb'+mnu4,
+            data:'aksi=cmb'+mnu4+'&departemen='+dep,
             dataType:'json',
             type:'post',
             success:function(dt){
