@@ -105,8 +105,8 @@
             }else{
                 switch ($_GET['page']) {
                     // referensi
-                    case 'vdepartemen':
-                        require $d.'v_departemen.php';
+                    case 'vrpp':
+                        require $d.'v_rpp2.php';
                     break;
                     case 'vangkatan':
                         require $d.'v_angkatan.php';
@@ -130,36 +130,7 @@
                         require $d.'v_tahunlulus.php';
                     break;
 
-                    // guru dan pelajaran
-                    case 'vguru':
-                        require $d.'v_guru.php';
-                    break;
-                    case 'vpelajaran':
-                        require $d.'v_pelajaran.php';
-                    break;
-                    case 'vjadwal':
-                        require $d.'v_jadwal.php';
-                    break;
-                    case 'vabsenguru':
-                        require $d.'v_absenguru.php';
-                    break;
-                    case 'vkegiatan':
-                        require $d.'v_kegiatan.php';
-                    break;
-                    case 'vmutasi':
-                        require $d.'v_mutasi.php';
-                    break;
-                    case 'valumni':
-                        require $d.'v_alumni.php';
-                    break;
-                    case 'vni':
-                        require $d.'v_ni.php';
-                    break;
-                    case 'vpresensisiswa':
-                        // echo 'asem';
-                        require $d.'v_presensisiswa.php';
-                    break;
-
+                    
                     default:
                         require $d.'v_home.php';
                     break;

@@ -16,16 +16,13 @@
     <select data-hint="Tingkat" name="tingkatS" id="tingkatS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Kelas" name="kelasS" id="kelasS"></select>
-</div>
-<div class="input-control select span3">
-    <select data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
-</div>
-<div class="input-control select span3">
     <select data-hint="Semester" name="semesterS" id="semesterS"></select>
 </div>
 <div class="input-control select span3">
     <select data-hint="Pelajaran" name="pelajaranS" id="pelajaranS"></select>
+</div>
+<div class="input-control select span3">
+    <select data-hint="Sub Tingkat" name="subtingkatS" id="subtingkatS"></select>
 </div>
 
 <table class="table hovered bordered striped">

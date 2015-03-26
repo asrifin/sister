@@ -94,6 +94,7 @@
                     <li><a href="jenis-mutasi">Jenis Mutasi</a></li>
                     <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
                     <li><a href="tahun-lulus">Tahun Lulus</a></li>
+                    <li><a href="subtingkat">Sub Tingkat</a></li>
                 </ul>
             </div>
              
@@ -176,8 +177,8 @@
                     case 'valumni':
                         require $d.'v_alumni.php';
                     break;
-                    case 'vni':
-                        require $d.'v_ni.php';
+                    case 'vsubtingkat':
+                        require $d.'v_subtingkat.php';
                     break;
                     case 'vpresensisiswa':
                         // echo 'asem';

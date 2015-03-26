@@ -32,8 +32,8 @@
 						WHERE 
 							tahunajaran like "%'.$tahunajaran.'%" and
 							tingkat like "%'.$tingkat.'%" and
-							pelajaran like "%'.$pelajaran.'%"
-							kelas like "%'.$kelas.'%"
+							pelajaran like "%'.$pelajaran.'%" and
+							kelas like "%'.$kelas.'%" and
 							pelajaran like "%'.$pelajaran.'%"
 						ORDER 
 							BY replid asc';

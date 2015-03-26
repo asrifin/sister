@@ -206,5 +206,15 @@
         </div>
     </a>
     <!--end of  Tahun Lulus -->
+    <!-- Tahun Lulus -->
+    <a href="subtingkat" class="tile bg-brown" data-click="transform">
+        <div class="tile-content icon">
+            <span class="icon-copy"></span>
+        </div>
+        <div class="brand">
+            <div class="label">Sub Tingkat</div>
+        </div>
+    </a>
+    <!--end of  Tahun Lulus -->
 
 </div> <!-- End group -->
