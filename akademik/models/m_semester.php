@@ -128,6 +128,44 @@
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
+			// cmbsemester -----------------------------------------------------------------
+			case 'cmbsemester':
+				$w='';
+				if(isset($_POST['replid'])){
+					$w='where replid ='.$_POST['replid'];
+				}else{
+					if(isset($_POST[$mnu])){
+						$w='where '.$mnu.'='.$_POST[$mnu];
+					}
+				}
+				
+				$s	= ' SELECT *
+						from '.$tb.'
+						'.$w.'		
+						ORDER  BY replid asc';
+
+				$e  = mysql_query($s);
+				$n  = mysql_num_rows($e);
+				$ar =$dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error'.mysql_error());
+				}else{
+					if($n=0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}
+						$ar = array('status'=>'sukses','nama'=>$dt);
+					}
+				}$out=json_encode($ar);
+			break;
+			// cmbsemester -----------------------------------------------------------------
 		}
 	}echo $out;
 

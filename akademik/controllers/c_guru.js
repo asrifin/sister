@@ -49,7 +49,7 @@ var contentFR = '';
                 +'</div>';
 
         // combo departemen
-        cmbdepartemen('');
+        cmbdepartemen();
         // cmbdepartemen(false,'');
 
         //add form
@@ -83,7 +83,7 @@ var contentFR = '';
 // end of save process ---
 
 // combo departemen ---
-    function cmbdepartemen(dep){
+    function cmbdepartemen(){
         $.ajax({
             url:dir2,
             data:'aksi=cmbdepartemen',

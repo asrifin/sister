@@ -15,26 +15,26 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
-				$tingkat   = isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
-				$pelajaran = isset($_POST['pelajaranS'])?filter(trim($_POST['pelajaranS'])):'';
-				$kelas = isset($_POST['kelasS'])?filter(trim($_POST['kelasS'])):'';
-				$semester = isset($_POST['semesterS'])?filter(trim($_POST['semesterS'])):'';
 				$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
+				$semester = isset($_POST['semesterS'])?filter(trim($_POST['semesterS'])):'';
+				$tingkat   = isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
+				$subtingkat = isset($_POST['subtingkatS'])?filter(trim($_POST['subtingkatS'])):'';
+				$pelajaran = isset($_POST['pelajaranS'])?filter(trim($_POST['pelajaranS'])):'';
 				$sql = 'SELECT *
 						FROM aka_rpp2 r
-						LEFT JOIN aka_guru g ON g.replid=r.guru
-						LEFT JOIN aka_pelajaran p ON p.replid=g.pelajaran
-						LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
-						LEFT JOIN aka_departemen d ON d.replid=t.departemen
-						LEFT JOIN aka_semester s ON s.tahunajaran=t.replid
-						LEFT JOIN aka_kelas k ON k.tahunajaran=t.replid
+						LEFT JOIN aka_pelajaran p ON p.replid=r.pelajaran
+						LEFT JOIN aka_semester s ON s.replid=r.semester
+						LEFT JOIN aka_subtingkat st ON st.replid=r.subtingkat
+						LEFT JOIN aka_tahunajaran t ON t.replid=s.tahunajaran
+						LEFT JOIN departemen d ON d.replid=t.departemen
 						WHERE 
 							tahunajaran like "%'.$tahunajaran.'%" and
+							departemen like "%'.$departemen.'%" and
 							tingkat like "%'.$tingkat.'%" and
 							pelajaran like "%'.$pelajaran.'%" and
-							kelas like "%'.$kelas.'%" and
-							pelajaran like "%'.$pelajaran.'%"
+							semester like "%'.$semester.'%" and
+							subtingkat like "%'.$subtingkat.'%"
 						ORDER 
 							BY replid asc';
 				// print_r($sql);exit();
@@ -67,11 +67,10 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									<td>'.tgl_indo($res['tanggal']).'</td>
-									<td>'.$res['nisn'].'</td>
-									<td>'.$res['nama'].'</td>
-									<td>'.$res['jenismutasi'].'</td>
-									<td>'.$res['keterangan'].'</td>
+									
+									<td>'.$res['kode'].'</td>
+									<td>'.$res['unit'].'</td>
+									<td>'.$res['deskripsi'].'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -148,54 +147,12 @@
 			break;
 			// aktifkan -----------------------------------------------------------------
 
-			// cmbtingkat -----------------------------------------------------------------
-			case 'cmb'.$mnu:
-				$w='';
-				if(isset($_POST['replid'])){
-					$w='where replid ='.$_POST['replid'];
-				}else{
-					if(isset($_POST[$mnu])){
-						$w='where'.$mnu.'='.$_POST[$mnu];
-					}elseif (isset($_POST['tahunajaran'])) {
-						$w='where tahunajaran='.$_POST['tahunajaran'];
-					}
-				}
-				
-				$s	= ' SELECT *
-						from '.$tb.'
-						'.$w.'		
-						ORDER  BY '.$mnu.' asc';
-				// var_dump($s);exit();
-				$e  = mysql_query($s);
-				$n  = mysql_num_rows($e);
-				$ar = $dt=array();
-
-				if(!$e){ //error
-					$ar = array('status'=>'error');
-				}else{
-					if($n==0){ // kosong 
-						var_dump($n);exit();
-						$ar = array('status'=>'kosong');
-					}else{ // ada data
-						if(!isset($_POST['replid'])){
-							while ($r=mysql_fetch_assoc($e)) {
-								$dt[]=$r;
-							}
-						}else{
-							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','tingkat'=>$dt);
-					}
-				}
-				// print_r($n);exit();
-				$out=json_encode($ar);
-			break;
-			// cmbtingkat -----------------------------------------------------------------
-
+			
 		}
 	}
 	echo $out;
 
 	// ---------------------- //
-	// -- created by epiii -- //
+	// -- created by rovi -- //
 	// ---------------------- //
 ?>
