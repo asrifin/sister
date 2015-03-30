@@ -4,7 +4,7 @@ var mnu2      ='lokasi';
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
 
-var pinjam_contentFR = k_contentFR = b_contentFR ='';
+var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
 // main function load first 
     $(document).ready(function(){
         $('#optionBC').on('click',function(){
@@ -18,9 +18,32 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
             $('#tgl2TB').val(getLastDate());
         });
 
+        kembalikan_content +='<form autocomplete="off" onsubmit="kembalikanSV();return false;">'
+                                +'<input  id="kembalikanH" name="kembalikanH">'
+                                +'<table>'
+                                +'<tr>'
+                                      +'<td colspan="2">Kembalikan item berikut ini?</td>'
+                                      +'<td></td>'
+                                +'</tr>'
+                                +'<tr>'
+                                      +'<td>Judul</td>'
+                                      +'<td>:<span id="judulTD"></span></td>'
+                                +'</tr>'
+                                +'<tr>'
+                                      +'<td>Barkode</td>'
+                                      +'<td>:<span id="barkodeTD"></span></td>'
+                                +'</tr>'
+                                +'</table>'
+                                +'<div class="form-actions">' 
+                                    +'<button class="button primary">simpan</button>&nbsp;'
+                                    +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                                +'</div>'
+                           +'</form>'
+
             //Dialog Pinjam
-        pinjam_contentFR +='<div style="overflow:scroll;height:500px;">'
-                       +'<legend>Daftar item yang dipinjam</legend>'
+        pinjam_contentFR +=
+                           +'<div style="overflow:scroll;height:500px;">'
+                           +'<legend>Daftar item yang dipinjam</legend>'
                             +'<label>Lokasi</label>'
                             +'<div class="input-control select span4">'
                                 +'<select  name="lokasiTB" id="lokasiTB"></select>'
@@ -46,7 +69,7 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
 
                             +'<div class="grid">'
                             +'<legend>Data Peminjaman</legend>'
-                                +'<form enctype="multipart/form-data" class="span12" autocomplete="off" onsubmit="pinjamSV(); return false;">' 
+                            +'<form enctype="multipart/form-data" class="span12" autocomplete="off" onsubmit="pinjamSV(); return false;">' 
                                     +'<input id="idformH" type="hidden">' 
                                     // lokasi , keterangan
                                     +'<div class="row">'
@@ -144,12 +167,46 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
                         +'</div>';
                          //End div
 
+        kembali_contentFR +=
+                           '<div style="overflow:scroll;height:500px;">'
+                           +'<form  class="span12" autocomplete="off" onsubmit="pinjamSV(); return false;">' 
+                           +'<legend>Daftar item yang dikembalikan</legend>'
+                            +'<label>Lokasi</label>'
+                            +'<div class="input-control select span4">'
+                                +'<select  name="k_lokasiTB" id="k_lokasiTB"></select>'
+                            +'</div><br>'
+                            +'<div class="input-control text size4">'
+                                +'<input placeholder="Barcode atau Judul item" id="k_judulTB">'
+                                +'<button class="btn-clear"></button>'
+                            +'</div>'
+                            +'<table width="500" class="table hovered bordered striped">'
+                                +'<thead>'
+                                    +'<tr style="color:white;"class="info">'
+                                        +'<th width="200" class="text-center">Barcode</th>'
+                                        +'<th width="200" class="text-center">Judul</th>'
+                                        +'<th width="100"class="text-center">Aksi</th>'
+                                    +'</tr>'
+                                +'</thead>'
+                                +'<tbody id="kembaliTBL">'
+
+                                +'</tbody>'
+                                +'<tfoot>'
+                                +'</tfoot>'
+                            +'</table>'
+
+                        +'</div>'
+                        +'</form>';
+                         //End div
+
         cmblokasi();
 
     // button action
         //add ---
         $("#peminjamanBC").on('click', function(){ 
             pinjamFR('');
+        });
+        $("#pengembalianBC").on('click', function(){ 
+            kembaliFR('');
         });
         //print ---
         $('#ju_cetakBC').on('click',function(){
@@ -165,7 +222,7 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
             if(e.keyCode == 13)
                 sirkulasiVW();
         });
-        $('#barcodeS').keydown(function (e){
+        $('#barkodeS').keydown(function (e){
             if(e.keyCode == 13)
                 sirkulasiVW();
         });$('#judulS').keydown(function (e){
@@ -202,7 +259,7 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
         $('#cari_sirkulasiBC').on('click',function(){
             $('#cari_sirkulasiTR').toggle('slow');
             $('#memberS').val('');
-            $('#barcodeS').val('');
+            $('#barkodeS').val('');
             $('#judulS').val('');
         });
         $('#cari_statistikBC').on('click',function(){
@@ -264,13 +321,13 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
                     // out+='<option value="1">'+Judulyangpalingseringdipinjam+'</option>';
                     // out+='<option value="2">'+Member dengan peminjaman terbanyak+'</option>';
 
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.statistik, function(id,item){
-                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                }
+                // if(dt.status!='sukses'){
+                //     out+='<option value="">'+dt.status+'</option>';
+                // }else{
+                //     $.each(dt.statistik, function(id,item){
+                //         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                //     });
+                // }
                 $('#statistikS').html(out);
                 // statistikVW();
             }
@@ -316,13 +373,31 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
                        $('#'+id).val(item);
                     });
                 }
-                // if(rekN>0){// detail form
-                //     setTimeout(function(){
-                //         $('#ju_rekTBL').append(rekTR(rekN));
-                //         autosuggest(pre,rekN);
-                //         // autosuggest(cgArr);
-                //     },500);
-                // }
+            }
+        });
+    }
+
+//Dialog (add/edit)
+//fungsi pengembalian  ---
+    function kembalikan(id){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: 500,
+            padding: 10,
+            onShow: function(){
+                var titl,cont;
+                if(id!=''){ //form mode : belum diterima 
+                    cont= kembalikan_content;
+                    titl= 'Pengembalian';
+                    var res = sjax(dir,'aksi=ambiledit&subaksi=kembalikan&replid='+id);
+                    setTimeout(function(){
+                            $('#judulTD').html(res.data.judul);
+                            $('#barkodeTD').html(res.data.barkode);
+                    },100);
+                }$.Dialog.title(titl);
+                $.Dialog.content(cont);
             }
         });
     }
@@ -353,7 +428,7 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
                     'width':'40',
                     'label':'Judul'
                 }],
-            url: dir+'?aksi=autocomp&subaksi=judul',
+            url: dir+'?aksi=autocomp&subaksi=tersedia',
             select: function( event, ui ) { // event setelah data terpilih 
                 barangAdd(ui.item.replid,ui.item.barkode,ui.item.judul);
                 $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=judul&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
@@ -403,6 +478,84 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
                 y.push($(this).attr('val'));
             });return y;
         }
+    // end peminjaman
+
+
+    function kembaliFR(id){
+        if(id!=''){ // edit mode
+            
+        }else{ // add  mode
+            var titl   ='<i class="icon-plus-2"></i> Tambah ';
+            var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
+            loadFR(titl,kembali_contentFR,inpArr);
+        }
+
+        //autocomplete
+        $("#k_judulTB").combogrid({
+            debug:true,
+            width:'400px',
+            colModel: [{
+                    'align':'left',
+                    'columnName':'barkode',
+                    'hide':true,
+                    'width':'55',
+                    // 'width':'8',
+                    'label':'Barkode'
+                },{   
+                    'columnName':'judul',
+                    'width':'40',
+                    'label':'Judul'
+                }],
+            url: dir+'?aksi=autocomp&subaksi=dipinjam',
+            select: function( event, ui ) { // event setelah data terpilih 
+                kembaliAdd(ui.item.replid,ui.item.barkode,ui.item.judul);
+                $('#k_judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=dipinjam&lokasi='+$('#lokasiS').val()+'&kembali='+kembaliArr() );
+                return false;
+            }
+        }); //End autocomplete
+
+    }
+
+    // hapus barang terpilih
+        function kembaliDel(id){
+            $('#kembaliTR_'+id).fadeOut('slow',function(){
+                $('#kembaliTR_'+id).remove();
+                // kembaliExist();
+            });
+        }
+    //Barang record kosong --
+        function kembaliExist(){
+            // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
+            alert('jumlah tr: '+$('#kembaligTBL','.kembaliTR').length);return false;
+            var tr ='<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih Judul Buku ..</td></tr>';
+            if($('#kembaligTBL').html()=='')
+                $('#kembaligTBL').html(tr);
+            else
+                $('#kembaligTBL').html('');
+        }
+    //end of kembali record kosong --
+
+    // pilih barang yg akan dipinjam ---
+        function kembaliAdd (id,barkode,judul) {
+            var tr ='<tr val="'+id+'" class="kembaliTR" id="kembaliTR_'+id+'">'
+                        +'<td>'+barkode+'</td>'
+                        +'<td>'+judul+'</td>'
+                        +'<td><button onclick="kembaliDel('+id+');"><i class="icon-remove"></button></i></td>'
+                    +'</tr>';
+            $('#kembaligTBL').append(tr); 
+            kembaliArr();
+            // $('#kembaliTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&kembali='+kembaliArr() );
+
+            // kembaliExist();
+        }
+        
+    //himpun array kembali terpilih
+        function kembaliArr(){
+            var y=[];
+            $('.kembaliTR').each(function(id,item){
+                y.push($(this).attr('val'));
+            });return y;
+        }
     // end autocomplete
 
 /*view*/
@@ -410,7 +563,7 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
         function sirkulasiVW(){  
             var aksi ='aksi=tampil&subaksi=sirkulasi';
             var cari ='&memberS='+$('#memberS').val()
-                     +'&barcodeS='+$('#barcodeS').val();
+                     +'&barkodeS='+$('#barkodeS').val();
                      +'&judulS='+$('#judulS').val();
             $.ajax({
                 url : dir,
@@ -457,69 +610,7 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
     }
 
 /*save (insert & update)*/
-    //jurnal umum  ---
-    function juSV(e){
-        var url  = dir;
-        var data = $(e).serialize()+'&aksi=simpan&subaksi=ju';
-        // edit mode
-        if($('#ju_idformH').val()!='')
-            url += '&replid='+$('#ju_idformH').val();
-        // alert(ajaxFC(url,'post','json',data));
-        var exec = ajaxFC(url,'post','json',data);
-        alert();
-        // if(exec){
-        //     res=exec.status;
-        // }else{
-        //     notif()
-        // }            
-
-        
-        // $.ajax({
-        //     url:dir,
-        //     cache:false,
-        //     type:'post',
-        //     dataType:'json',
-        //     data:$('form').serialize()+urlx,
-        //     success:function(dt){
-        //         if(dt.status!='sukses'){
-        //             cont = 'Gagal menyimpan data';
-        //             clr  = 'red';
-        //         }else{
-        //             $.Dialog.close();
-        //             gkosongkan();
-        //             vwGrup($('#g_lokasiS').val());
-        //             cont = 'Berhasil menyimpan data';
-        //             clr  = 'green';
-        //         }notif(cont,clr);
-        //     }
-        // });
-        // return false;
-    }
-
-
-/*delete*/
-    //jurnal umum   ---
-        function juDel(id){
-            if(confirm('melanjutkan untuk menghapus data?'))
-            $.ajax({
-                url:dir,
-                type:'post',
-                data:'aksi=hapus&subaksi=grup&replid='+id,
-                dataType:'json',
-                success:function(dt){
-                    var cont,clr;
-                    if(dt.status!='sukses'){
-                        cont = '..Gagal Menghapus '+dt.terhapus+' ..';
-                        clr  ='red';
-                    }else{
-                        vwGrup($('#g_lokasiS').val());
-                        cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
-                        clr  ='green';
-                    }notif(cont,clr);
-                }
-            });
-        }
-
+  
 
 // input uang --------------------------
     function inputuang(e) {
@@ -639,5 +730,25 @@ var pinjam_contentFR = k_contentFR = b_contentFR ='';
         var dd = lastDate(mm,yyyy);
         return dateFormatx('id',dd,monthFormat(mm),yyyy);
     }
+// ajax jquery (mode : asyncronous) ---
+    function ajax(u,d){
+        return $.ajax({
+            url:u,
+            data:d,
+            type:'post',
+            dataType:'json'
+        });
+    }
 
-        
+// ajax jquery (mode : syncronous) -----
+    function sjax(u,d) {
+        var ret;
+        $.ajax({
+            url:u,
+            data:d,
+            async:false,
+            type:'post',
+            dataType:'json',
+            success:function(res){ret = res;}
+        });return ret;
+    }

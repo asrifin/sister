@@ -622,49 +622,43 @@
 								$jmlauto = (substr($query['nilai'],10,1));
 					//select kode generate
 					$s='SELECT
-						tb1.lokasi,
-						tb1.grup,
-						tb1.tempat,
-						tb1.katalog,
-						tb2.barang,
-						LPAD(tb2.barang,$jmlauto,0)barkode	
-					FROM (
-						SELECT
-							l.kode lokasi,
-							g.kode grup,
-							t.kode tempat,
-							k.kode katalog
-						FROM
-							sar_lokasi l 
-							JOIN sar_grup g on g.lokasi = l.replid
-							JOIN sar_katalog k on k.grup= g.replid
-							JOIN sar_tempat t on t.lokasi = l.replid
-						WHERE	
-							t.replid = '.$_POST['tempat'].' 
-							and k.replid = '.$_POST['katalog'].'
-						)tb1,';
+							tb1.lokasi,
+							LPAD(tb2.idbuku,5,0)idbuku,
+							YEAR(CURDATE())tahun,
+							tb3.kode tingkatbuku
+						FROM (
+							SELECT
+								l.kode lokasi
+							FROM
+								pus_lokasi l 
+							WHERE	
+								l.replid = 3
+							)tb1,(
+								SELECT (MAX(urut) + 1) AS idbuku FROM pus_buku
+							)tb2,(
+								SELECT kode
+								from pus_tingkatbuku 
+								where replid = 1
+							)tb3, ';
 
 				if($_POST['replid']!=''){//edit
-					$s.= '(SELECT urut AS barang FROM sar_barang WHERE replid='.$_POST['replid'].')tb2';
+					$s.= '(SELECT urut FROM pus_buku WHERE replid='.$_POST['replid'].')tb2';
 				}else{ //add 
-					$s.= '(SELECT (MAX(urut) + 1) AS barang FROM sar_barang )tb2';
+					$s.= '(SELECT (MAX(urut) + 1) AS urut FROM pus_buku )tb2';
 				}
 
 				// print_r($s);exit();
-				$sumber = $_POST['sumberTB'] == 0?"B":"H";
+				// $sumber = $_POST['sumberTB'] == 0?"B":"H";
 				$id = 
-				$e    = mysql_query($s);
+				$e    = mysql_query($s) or die(mysql_error());
 				$r    = mysql_fetch_assoc($e);
 				$stat = !$e?'gagal':'sukses';
 				$out  = json_encode(array(
 							'status' =>$stat,
 							'data'   =>array(
-										'urut'    =>$r['barang'],
+										'urut'    =>$r['urut'],
 										'lokasi'  =>$r['lokasi'],
-										'grup'    =>$r['grup'],
-										'tempat'  =>$r['tempat'],
 										'katalog' =>$r['katalog'],
-										'barang'  =>$r['barang'],
 										'barkode' =>$r['barkode']
 						)));
 							break;
