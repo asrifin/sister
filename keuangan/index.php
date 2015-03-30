@@ -1,6 +1,9 @@
 <?php
     require_once '../lib/func.php';
-    sessionCheck('keuangan');
+    isModul('keuangan');
+    echo '<pre>';
+    print_r($_SESSION['grupmodulS']);
+    echo'</pre>';
     // if(!isset($_SESSION['loginS'])){
     //     header('location:../');
     // }else{
@@ -59,15 +62,13 @@
                 Keuangan
             </a>
             <span class="element-divider"></span>
+            
             <div class="element">
                 <a class="dropdown-toggle" href="#">Transaksi Keuangan</a>
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="transaksi">Transaksi</a></li>
                     <li><a href="modul-pembayaran">Modul Pembayaran</a></li>
                     <li><a href="pembayaran">Pembayaran</a></li>
-                    <!-- <li><a href="pembayaran-pendaftaran">Pembayaran Pendaftaran</a></li> -->
-                    <!-- <li><a href="pembayaran-uang-pangkal">Pembayaran Uang Pangkal</a></li> -->
-                    <!-- <li><a href="pembayaran-uang-sekolah">Pembayaran Uang Sekolah</a></li> -->
                     <li><a href="inventory">Inventory</a></li>                
                 </ul>
             </div>

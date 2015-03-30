@@ -11,7 +11,7 @@
 	}function getFileName(){
 		$x=pathinfo(__FILE__, PATHINFO_FILENAME);
 		return $x;
-	}function sessionCheck($mod){
+	}function isModul($mod){
 	    // $x = __FILE__;
 		// $x=preg_replace('/\.php$/', '', __FILE__);
 		// $x=pathinfo(__FILE__, PATHINFO_FILENAME);

@@ -1,3 +1,43 @@
+<?php 
+    $out='';
+    // looping grup menu
+    foreach ($_SESSION['grupmodulS'][''] as $i => $v) {
+        $out.='<div class="tile-group '.$v['size'].'">
+                <div class="tile-group-title">'.$v['grupmenu'].'</div>';
+
+        // looping menu item
+        // foreach ($v['modul'] as $ii => $vv) {
+        //     $out.='<a id="mod-'.$vv['kode'].'" 
+        //             '.($vv['statmod']==0?' onclick="alert(\'Maaf anda tidak berhak akses modul ~'.$vv['modul'].'~ \');"':'').' 
+        //             href="'.($vv['statmod']!=0?$vv['kode']:'#').'" class="tile '.$vv['size'].' 
+        //             bg-'.($vv['statmod']!=0?$vv['warna']:'grey').' live" data-role="live-tile" 
+        //             '.($vv['statmod']!=0?'data-effect="slideUp"':'').' 
+        //             data-click="transform">
+        //             <div style="align:center;" class="tile-content email">
+        //                 <center>
+        //                     <img src="images/'.$vv['icon'].'.png">
+        //                 </center>
+        //             </div>
+        //             <div class="tile-content email">
+        //                 <div class="email-data-text">Keterangan :</div>
+        //                 <div class="email-data-text">'.$vv['keterangan'].'</div>
+        //             </div>
+        //             <div class="brand">
+        //                 <div class="label">
+        //                     <h4 class="no-margin fg-white">
+        //                         '.$vv['modul'].'
+        //                     </h4>
+        //                 </div>
+        //                 <div class="badge">3</div>
+        //             </div>
+        //         </a>';
+        // } //end of looping modul
+        $out.='</div>';
+    } ///end of looping grup modul
+    echo $out;
+    exit();
+    // if($_SESSION[''])
+?>
 
 <div class="tile-group four">
     <div class="tile-group-title">Transaksi Keuangan</div>
