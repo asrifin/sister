@@ -1,8 +1,9 @@
 <?php
-    session_start();
-    if(!isset($_SESSION['loginS'])){
-        header('location:../');
-    }else{
+    require_once '../lib/func.php';
+    sessionCheck('keuangan');
+    // if(!isset($_SESSION['loginS'])){
+    //     header('location:../');
+    // }else{
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +22,7 @@
     <!-- Load JavaScript Libraries -->
     <script src="../js/jquery/jquery.min.js"></script>
     <script src="../js/jquery/jquery.widget.min.js"></script>
-    <script src="../js/jquery/jquery.mousewheel.js"></script>
+    <script src="../js/jquery/jquery.mousewheel.js"></script>   
     <script src="../js/prettify/prettify.js"></script>
 
     <!-- Metro UI CSS JavaScript plugins -->
@@ -40,7 +41,6 @@
     <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
     <script type="text/javascript" language="javascript" src="js/shCore.js"></script>
     <link rel="stylesheet" type="text/css" href="css/shCore.css">-->
-
 
     <title>.:SISTER:.</title>
 </head>
@@ -177,4 +177,6 @@
 </body>
 </html>
 
-<?php } ?>
+<?php 
+// } 
+?>

@@ -28,6 +28,9 @@
         <script src="js/github.info.js"></script>
         <script src="js/start-screen.js"></script>
 
+        <script src="js/main.js"></script>
+        <script src="js/hitua.js"></script>
+
         <!-- <title>Metro UI CSS : Metro Bootstrap CSS Library</title> -->
         <title>SISTER</title>
     </head>
@@ -37,7 +40,6 @@
         <div class="tile-area tile-area-dark" id="tile-module">
         <div class="container">
             <!-- <h1 class="tile-area-title fg-white">Start</h1> -->
-            <!-- <h1 class="tile-area-title fg-white">S!5T3R n635oT - 4L@Y</h1> -->
             <h1 class="tile-area-title fg-white">SISTER</h1>
             <div class="user-id">
                 <div class="user-id-image">
@@ -51,57 +53,95 @@
                 </div>
                 <button class="button inverse" onclick="logout();">logout</button>
             </div>
+            
+            <?php 
+                $out='';
+                // looping grup modul
+                foreach ($_SESSION['grupmodulS'] as $i => $v) {
+                    $out.='<div class="tile-group '.$v['size'].'">';
+                    // looping modul
+                    foreach ($v['modul'] as $ii => $vv) {
+                        $out.='<a id="mod-'.$vv['kode'].'" 
+                                '.($vv['statmod']==0?' onclick="alert(\'Maaf anda tidak berhak akses modul ~'.$vv['modul'].'~ \');"':'').' 
+                                href="'.($vv['statmod']!=0?$vv['kode']:'#').'" class="tile '.$vv['size'].' 
+                                bg-'.($vv['statmod']!=0?$vv['warna']:'grey').' live" data-role="live-tile" 
+                                '.($vv['statmod']!=0?'data-effect="slideUp"':'').' 
+                                data-click="transform">
+                                <div style="align:center;" class="tile-content email">
+                                    <center>
+                                        <img src="images/'.$vv['icon'].'.png">
+                                    </center>
+                                </div>
+                                <div class="tile-content email">
+                                    <div class="email-data-text">Keterangan :</div>
+                                    <div class="email-data-text">'.$vv['keterangan'].'</div>
+                                </div>
+                                <div class="brand">
+                                    <div class="label">
+                                        <h4 class="no-margin fg-white">
+                                            '.$vv['modul'].'
+                                        </h4>
+                                    </div>
+                                    <div class="badge">3</div>
+                                </div>
+                            </a>';
+                    } //end of looping modul
+                    $out.='</div>';
+                } ///end of looping grup modul
+                echo $out;
+                // exit();
+                // if($_SESSION[''])
+            ?>
 
-            <!-- group 1-->
-            <div class="tile-group four">
+            <!-- <div class="tile-group four"> -->
                 <!-- <div class="tile-group-title">Menu Utama</div> -->
                 <!-- AKA -->
                 <!-- <a id="mod-aka" href="akademik" class="tile double selected live" data-role="live-tile" data-effect="slideUp" data-click="transform"> -->
-                <a id="mod-aka" href="akademik" class="tile double bg-blue live" data-role="live-tile" data-effect="slideUp" data-click="transform">
-                    <div style="align:center;" class="tile-content email">
-                        <center>
-                            <img src="images/akademik.png">
-                        </center>
-                    </div>
-                    <div class="tile-content email">
-                        <div class="email-data-text">Keterangan :</div>
-                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disini ... </div>
-                    </div>
-                    <div class="brand">
-                        <div class="label">
-                            <h4 class="no-margin fg-white">
-                                Akademik<!-- <span class="icon-mail"></span> -->
-                            </h4>
-                        </div>
-                        <div class="badge">3</div>
-                    </div>
-                </a> 
+                <!-- <a id="mod-aka" href="akademik" class="tile double bg-blue live" data-role="live-tile" data-effect="slideUp" data-click="transform">
+                     <div style="align:center;" class="tile-content email">
+                         <center>
+                             <img src="images/akademik.png">
+                         </center>
+                     </div>
+                     <div class="tile-content email">
+                         <div class="email-data-text">Keterangan :</div>
+                         <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disini ... </div>
+                     </div>
+                     <div class="brand">
+                         <div class="label">
+                             <h4 class="no-margin fg-white">
+                                 Akademik
+                             </h4>
+                         </div>
+                         <div class="badge">3</div>
+                     </div>
+                 </a> --> 
                 <!-- END OF AKA -->     
 
-                <!-- PSB -->
-                <a href="psb" class="tile double bg-yellow live" data-role="live-tile" data-effect="slideRight" data-click="transform">
-                    <div style="align:center;" class="tile-content email">
-                        <center>
-                            <img src="images/psb.png">
-                        </center>
-                    </div>
-                    <div class="tile-content email">
-                        <div class="email-data-text">Keterangan :</div>
-                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan penerimaan siswa baru ada disini.... </div>
-                    </div>
-                    <div class="brand">
-                        <div class="label">
-                            <h4 class="no-margin fg-white">
-                                Penerimaan Siswa Baru<!-- <span class="icon-mail"></span> -->
-                            </h4>
-                        </div>
-                        <div class="badge">3</div>
-                    </div>
-                </a> 
+            <!-- PSB -->
+                <!-- <a href="psb" class="tile double bg-yellow live" data-role="live-tile" data-effect="slideRight" data-click="transform">
+                     <div style="align:center;" class="tile-content email">
+                         <center>
+                             <img src="images/psb.png">
+                         </center>
+                     </div>
+                     <div class="tile-content email">
+                         <div class="email-data-text">Keterangan :</div>
+                         <div class="email-data-text">Segala kegiatan yang berkaitan dengan penerimaan siswa baru ada disini.... </div>
+                     </div>
+                     <div class="brand">
+                         <div class="label">
+                             <h4 class="no-margin fg-white">
+                                 Penerimaan Siswa Baru<span class="icon-mail"></span>
+                             </h4>
+                         </div>
+                         <div class="badge">3</div>
+                     </div>
+                 </a> --> 
                 <!-- END OF PSB -->
 
                 <!-- HRD -->
-                <a href="hrd" class="tile double double-vertical bg-steel" data-click="transform">
+                <!-- <a href="hrd" class="tile double double-vertical bg-steel" data-click="transform">
                     <div class="tile-content bg-orange">
                         <div class="padding10">
                             <center>
@@ -111,11 +151,11 @@
                             <p class="tertiary-text fg-white">Segala tentang kepegawaian ada disini.....</p>
                         </div>
                     </div>
-                </a>
-                <!--END OF  HRD -->
+                </a> -->
+                <!--E ND OF  HRD -->
 
                 <!-- KEU -->
-                <a href="keuangan" class="tile double double-vertical bg-steel" data-click="transform">
+                <!-- <a href="keuangan" class="tile double double-vertical bg-steel" data-click="transform">
                     <div class="tile-content bg-grey">
                         <div class="padding10">
                             <center>
@@ -126,14 +166,15 @@
                             <p class="tertiary-text fg-white">Segala tentang keuangan ada disini.....</p>
                         </div>
                     </div>
-                </a>
+                </a> -->
                 <!-- END OF KEU -->
-            </div> <!-- End group 1 -->
+            <!-- </div>  -->
+            <!-- End group 1 -->
 
             <!-- group 2 -->
-            <div class="tile-group four">
+            <!-- <div class="tile-group four"> -->
                 <!-- PERPUS -->
-                <a href="perpus" class="tile double double-vertical bg-steel" data-click="transform">
+                <!-- <a href="perpus" class="tile double double-vertical bg-steel" data-click="transform">
                     <div class="tile-content bg-brown">
                         <div class="padding10">
                             <center>
@@ -143,11 +184,11 @@
                             <p class="tertiary-text fg-white">Segala tentang Koleksi buku ada disini.....</p>
                         </div>
                     </div>
-                </a>
+                </a> -->
                 <!-- END OF PERPUS -->
 
                 <!-- SARPRAS -->
-                <a href="sarpras" class="tile double double-vertical bg-steel" data-click="transform">
+                <!-- <a href="sarpras" class="tile double double-vertical bg-steel" data-click="transform">
                     <div class="tile-content bg-violet">
                         <div class="padding10">
                             <center>
@@ -157,11 +198,11 @@
                             <p class="tertiary-text fg-white">Segala tentang Sarana Prasarana ada disini.....</p>
                         </div>
                     </div>
-                </a>
+                </a> -->
                 <!-- END OF SARPRAS -->
                 
-                <!-- REPO -->
-                <a class="tile double bg-red live" data-role="live-tile" data-effect="slideLeft" data-click="transform">
+                <!-- student services -->
+                <!-- <a id="mod-stu" href="student" class="tile double bg-red live" data-role="live-tile" data-effect="slideLeft" data-click="transform">
                     <div style="align:center;" class="tile-content email">
                         <center>
                             <img src="images/repo.png">
@@ -169,21 +210,21 @@
                     </div>
                     <div class="tile-content email">
                         <div class="email-data-text">Keterangan :</div>
-                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan akademik ada disini ... </div>
+                        <div class="email-data-text">Segala kegiatan yang berkaitan dengan Student services ... </div>
                     </div>
                     <div class="brand">
                         <div class="label">
                             <h4 class="no-margin fg-white">
-                                Repository<!-- <span class="icon-mail"></span> -->
+                                Student Services <span class="icon-mail"></span>
                             </h4>
                         </div>
                         <div class="badge">3</div>
                     </div>
-                </a> 
-                <!-- END OF REPO -->
+                </a> --> 
+                <!-- END OF student services -->
 
                 <!-- MAN -->
-                <a class="tile double bg-green live" data-role="live-tile" data-effect="slideDown" data-click="transform">
+                <!-- <a class="tile double bg-green live" data-role="live-tile" data-effect="slideDown" data-click="transform">
                     <div style="align:center;" class="tile-content email">
                         <center>
                             <img src="images/report.png">
@@ -196,21 +237,19 @@
                     <div class="brand">
                         <div class="label">
                             <h4 class="no-margin fg-white">
-                                Manajemen<!-- <span class="icon-mail"></span> -->
+                                Manajemen
                             </h4>
                         </div>
                         <div class="badge">3</div>
                     </div>
-                </a> 
+                </a> --> 
                 <!-- END OF MAN -->
-            </div> 
+            <!-- </div>  -->
 
             <!-- group 3-->
-            <div class="tile-group one">
-                <!-- <div class="tile-group-title">Menu Utama</div> -->
+            <!-- <div class="tile-group one"> -->
                 <!-- AKA -->
-                <!-- <a id="mod-aka" href="akademik" class="tile double selected live" data-role="live-tile" data-effect="slideUp" data-click="transform"> -->
-                <a id="mod-guru" href="guru" class="tile double bg-blue live" data-role="live-tile" data-effect="slideUp" data-click="transform">
+                <!-- <a id="mod-guru" href="guru" class="tile double bg-blue live" data-role="live-tile" data-effect="slideUp" data-click="transform">
                     <div style="align:center;" class="tile-content email">
                         <center>
                             <img src="images/akademik.png">
@@ -223,18 +262,18 @@
                     <div class="brand">
                         <div class="label">
                             <h4 class="no-margin fg-white">
-                                Guru<!-- <span class="icon-mail"></span> -->
+                                Guru
                             </h4>
                         </div>
                         <div class="badge">3</div>
                     </div>
-                </a> 
+                </a> --> 
                 <!-- END OF AKA -->
-            </div>
+            <!-- </div> -->
 
         </div>
     </div>
-        <script src="js/main.js"></script>
-        <script src="js/hitua.js"></script>
+        <!--<script src="js/main.js"></script>
+        <script src="js/hitua.js"></script>-->
     </body>
 </html>

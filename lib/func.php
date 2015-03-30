@@ -8,6 +8,26 @@
 		$new = array('','','');
 		$x   = str_replace($old,$new, $str);
 		return $x;
+	}function getFileName(){
+		$x=pathinfo(__FILE__, PATHINFO_FILENAME);
+		return $x;
+	}function sessionCheck($mod){
+	    // $x = __FILE__;
+		// $x=preg_replace('/\.php$/', '', __FILE__);
+		// $x=pathinfo(__FILE__, PATHINFO_FILENAME);
+        // $x = pathinfo(__FILE__, PATHINFO_FILENAME);
+		session_start();
+	    $out  =0; 
+	    foreach ($_SESSION['grupmodulS'] as $i => $v) {
+	        foreach ($v['modul'] as $i2 => $v2) {
+	            if($v2['modul']==$mod and $v2['statmod']==1) {
+	                $out+=1;
+	            }
+	        }
+	    }
+	    if($out==0){
+	        header('location:../');
+	    }
 	}
 
 /*keuangan*/

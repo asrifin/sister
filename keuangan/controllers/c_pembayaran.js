@@ -120,7 +120,7 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
     function switchPN (par) {
         // alert(par+' ok '); return false;
         if(par==''){
-            cmbproses('filter','');
+            cmbproses('filter',$('#departemenS').val());
         }else{
 
         }
@@ -131,16 +131,17 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
         
     }
 
-    function curTab(par){
-        var str3 = '';
-        if(par!=''){
+    function curTab(){
+        // var str3 = '';
+        // if(!=''){
             var str = $('.tabs').find('li.active a').attr('href');
             var str2 = str.replace('TAB','');
             var str3 = str2.replace('#','');
-        }else{
-            var str2 = par.replace('TAB','');
-            var str3 = str2.replace('#','');
-        }return str3;
+        // }else{
+        //     var str2 = par.replace('TAB','');
+        //     var str3 = str2.replace('#','');
+        // }
+        return str3;
     }
 
 //paging ---
@@ -657,10 +658,10 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.proses, function(id,item){
-                        if(ang==item.replid)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
+                        if(item.aktif=='1')   
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.proses+' (aktif)</option>';
                         else
-                            out+='<option value="'+item.replid+'"> '+item.nama+'</option>';
+                            out+='<option value="'+item.replid+'"> '+item.proses+'</option>';
                     });
                     if(typ=='filter'){
                         $('#prosesS').html(out);
@@ -675,10 +676,10 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
 //end of combo proses---
 
 // combo kelompok ---
-    function cmbkelompok(typ,kel){
+    function cmbkelompok(typ,pros){
         $.ajax({
             url:dir5,
-            data:'aksi=cmb'+mnu5,
+            data:'aksi=cmb'+mnu5+'&proses='+pros,
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -687,14 +688,11 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.kelompok, function(id,item){
-                        if(kel==item.replid)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
-                        else
-                            out+='<option value="'+item.replid+'"> '+item.nama+'</option>';
+                        out+='<option value="'+item.replid+'"> '+item.kelompok+'</option>';
                     });
                     if(typ=='filter'){
                         $('#kelompokS').html(out);
-                        cmbkelompok('filter',dt.kelompok[0].replid,'');
+                        viewTB(curTab());
                     }else{
                         $('#kelompokTB').html(out);
                     }

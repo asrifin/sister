@@ -1,0 +1,30 @@
+------------------------------------------------
+*project (sister)
+-url  : http://sisterngesot.hol.es/
+-user : admin
+-pass : admin
+
+------------------------------------------------
+*email
+-user : sist3rngesot@gmail.com
+-pass ; 1tambah1=2
+
+------------------------------------------------
+*hosting 
+-host : www.idhostinger.com
+-user : sist3rngesot@gmail.com
+-pass : 1tambah1=2
+
+------------------------------------------------
+*database
+-host : mysql.idhostinger.com
+-db   : u481900298_db 
+-user : u481900298_db 
+-pass : 1tambah1=2  
+
+------------------------------------------------
+*ftp/download (via filezilla)
+-host : 185.28.20.222 
+-user : u481900298
+-pass : 1tambah1=2  
+
