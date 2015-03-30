@@ -1,3 +1,5 @@
 * tabel pada database tidak menggunakan database innodb
    JADI ketika data master dihapus data transaksi ga ikut kehapus
 * Ketika Update jangan ada yang yang input data dulu dikarenakan bisa ada perubahan struktur data tabel
+
+//tes
