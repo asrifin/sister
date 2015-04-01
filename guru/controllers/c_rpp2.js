@@ -197,7 +197,8 @@ var contentFR = '';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.nama, function(id,item){
-                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                        out+='<option value="'+item.replid+'">'+item.subtingkat+'</option>'; /*epiii */
+                        // out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
                     $('#subtingkatS').html(out);
                 }
@@ -221,7 +222,8 @@ var contentFR = '';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.pelajaran, function(id,item){
-                        out+='<option value="'+item.replid+'">'+item.pelajaran+'</option>';
+                        out+='<option value="'+item.replid+'">'+item.nama+'</option>'; /*epiii */
+                        // out+='<option value="'+item.replid+'">'+item.pelajaran+'</option>';
                     });
                     $('#pelajaranS').html(out);
                 }
