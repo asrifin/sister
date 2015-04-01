@@ -195,10 +195,6 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
 
         // default view
         loadView('','');
-        // viewBarkode();
-        // viewJudul();
-        // viewDeskripsi();
-        // cmblokasi();
     }); 
 // end of main function ---------
 
@@ -237,27 +233,6 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
     }
 //end of paging ---
 
-// combo departemen ---
-    // function cmblokasi(){
-    //     $.ajax({
-    //         url:dir2,
-    //         data:'aksi=cmblokasi',
-    //         dataType:'json',
-    //         type:'post',
-    //         success:function(dt){
-    //             var out='';
-    //             if(dt.status!='sukses'){
-    //                 out+='<option value="">'+dt.status+'</option>';
-    //             }else{
-    //                 $.each(dt.lokasi, function(id,item){
-    //                     out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
-    //                 });(dt.lokasi[0].replid);
-    //                 // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+dt.lokasi[0].replid);
-    //             }$('#lokasiS').html(out);
-    //         }
-    //     });
-    // }
-//end of combo departemen ---
 
 // load form (all)
     function loadFR(titl,cont,inpArr){        

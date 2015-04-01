@@ -3,7 +3,10 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	
+		//Note
+	// pus_buku
+	// status = 0 Dipinjam, 1 tersedia 
+
 	// $tb   = 'pus_lokasi';
 	$tb2  = 'pus_buku';
 	// $tb3  = 'pus_katalog';
@@ -131,29 +134,6 @@
 
 			// // ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-						// $s 		= ' SELECT
-				  //                         pb.replid as replid,
-				  //                         kg.judul,
-						// 				  LPAD(pb.idbuku,18,0)as kode,
-						// 				  pb.barkode,
-						// 				  pb.harga,
-						// 				  pb.tanggal,
-						// 				  pb.lokasi,
-						// 				  pb.tingkatbuku,
-						// 				  if(pb.sumber=0,"Beli","Pemberian") as sumber,
-						// 				  pj.nama jenisbuku,
-				  //                         kg.callnumber,
-				  //                         kg.dimensi,
-				  //                         kg.deskripsi, 
-				  //                         (SELECT count(*) from pus_buku where katalog=kg.replid) as jum
-				  //                       FROM
-				  //                         pus_katalog kg
-				  //                         LEFT JOIN pus_buku pb ON pb.replid = kg.pengarang
-				  //                         LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
-				  //                         LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
-				  //                         LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
-				  //                       order BY
-				  //                         pb.replid asc';
 						$s 		= ' SELECT
 				                          kg.replid as replid,
 				                          kg.judul,

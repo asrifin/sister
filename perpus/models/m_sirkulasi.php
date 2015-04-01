@@ -4,22 +4,15 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	// note :
-	// ju : jurnal umum
-	// in : pemasukkan
-	// out : pengeluaran
+	//Note
+	// pus_peminjaman
+	// status = 1 Dipinjam, 0 tersedia 
+	// mtipe  = 1 siswa, 2 guru, 3 member luar
+
 
 	$mnu  = 'katalog';
-	// $mnu2 = 'rekening';
-	// $mnu3 = 'katalog';
-	// $mnu4 = 'barang';
-	// $mnu5 = 'jenis';
 	
 	$tb   = 'pus_'.$mnu;
-	// $tb2  = 'keu_'.$mnu2;
-	// $tb3  = 'keu_'.$mnu3;
-	// $tb4  = 'keu_'.$mnu4;
-	// $tb5  = 'keu_'.$mnu5;
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
@@ -31,6 +24,8 @@
 
 				if(!$sidx) 
 					$sidx =1;
+				if(isset($_GET['subaksi']) && $_GET['subaksi']=='tersedia'){
+
 				$ss='SELECT *
 						FROM(SELECT
 									pus_katalog.replid,
@@ -39,10 +34,25 @@
 							FROM pus_katalog
 							LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
 							LEFT JOIN pus_lokasi ON pus_lokasi.replid = pus_buku.lokasi
-							WHERE pus_lokasi.replid
+							WHERE pus_buku.status = 1
 							)tb
 							WHERE	tb.barkode  LIKE "%'.$searchTerm.'%"
 									OR tb.judul LIKE "%'.$searchTerm.'%"';
+				}if(isset($_GET['subaksi']) && $_GET['subaksi']=='dipinjam'){
+				$ss='SELECT *
+						FROM(SELECT
+										    pj.replid,
+                                            pb.barkode barkode,                          
+										    pk.judul judul
+										FROM pus_peminjaman pj
+										LEFT JOIN pus_buku pb ON pb.replid = pj.buku
+										LEFT JOIN pus_katalog pk ON pk.replid = pb.katalog
+									WHERE pj.status = 1
+							)tb
+							WHERE	tb.barkode  LIKE "%'.$searchTerm.'%"
+									OR tb.judul LIKE "%'.$searchTerm.'%"';
+
+				}
 				// print_r($ss);exit();
 				$result = mysql_query($ss) or die(mysql_error());
 				$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -84,16 +94,37 @@
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
-					case 'ju':
+					case 'sirkulasi':
 						$member  = isset($_POST['memberS'])?filter(trim($_POST['memberS'])):'';
-						$barcode = isset($_POST['barcodeS'])?filter(trim($_POST['barcodeS'])):'';
+						$barkode = isset($_POST['barkodeS'])?filter(trim($_POST['barkodeS'])):'';
 						$judul   = isset($_POST['judulS'])?filter(trim($_POST['judulS'])):'';
+						// $tgl1   = isset($_POST['tgl1TB'])?filter(trim($_POST['tgl1TB'])):'';
+						// $tgl2   = isset($_POST['tgl2TB'])?filter(trim($_POST['tgl2TB'])):'';
 
-						$sql       = 'SELECT * 
-									from '.$tb.' 
+						$sql       = 'SELECT
+											tanggal1 tgl_pinjam,
+										    tanggal2 pengembalian,
+										    tanggal3 dikembalikan,
+										    pb.barkode,
+										    pk.judul,
+										    a.nis nis,
+										    a.nama siswa,
+										    hk.nip,
+										    hk.nama pegawai,
+										    pm.nid idmember,
+										    pm.nama member,
+										    if(pj.status = 1,"Dipinjam", "Dikembalikan") status
+										FROM pus_peminjaman pj
+										LEFT JOIN aka_siswa a ON a.replid = pj.mtipe
+										LEFT JOIN aka_guru ag ON ag.replid = pj.mtipe 
+										LEFT JOIN hrd_karyawan hk ON hk.id = ag.pegawai
+										LEFT JOIN pus_member pm ON pm.replid = pj.mtipe 
+										LEFT JOIN pus_buku pb ON pb.replid = pj.buku
+										LEFT JOIN pus_katalog pk ON pk.replid = pb.katalog
 									WHERE 
-										(nomer like "%'.$ju_no.'%" OR nomer like "%'.$ju_no.'%" ) AND
-										uraian like "%'.$ju_uraian.'%"';
+										member like "%'.$member.'%" AND
+										judul like "%'.$judul.'%" AND
+										barkode like "%'.$barkode.'%"';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -103,7 +134,7 @@
 
 						$recpage = 5;//jumlah data per halaman
 						$aksi    ='tampil';
-						$subaksi ='ju';
+						$subaksi ='sirkulasi';
 						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 						$result  = $obj->result;
 
@@ -113,36 +144,57 @@
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_array($result)){	
-								$btn ='<td>
-											<button data-hint="ubah"  class="button" onclick="juFR('.$res['replid'].');">
-												<i class="icon-pencil on-left"></i>
+								$tipe = isset($res['mtipe']);
+								if ($tipe==1) {
+									$anggota = $res['siswa'].'<br>NIS :'.$res['nis'];
+								}elseif ($tipe==2) {
+									$anggota = $res['pegawai'].'<br>NIP :'.$res['nip'];
+								}else{
+									$anggota = $res['pegawai'].'<br>No ID :'.$res['idmember'];
+								}
+								$tgl2 = isset($res['tanggal2']);
+								$tgl3 = isset($res['tanggal3']);
+						
+								//tgl pengembalian
+								$tgl_pengembalian=fftgl($tgl2); 
+
+								if($res['status']!=0){
+									$lewat=diffDay($res['tanggal2']);
+									if($lewat<0 && $res['status']!=0){
+										$tgl_pengembalian='<span style="color:red">'.$tgl_pengembalian.'</span>';
+									}
+								} else {
+									$telat=diffDay($tgl3,$tgl2);
+									// if($telat>0)$telat='<br/><span style="color:#ff9000">Terlambat: '.$telat.' hari</span>';
+									// else $telat="";
+								}
+								// //tgl dikembalikan
+								if(isset($res['telat'])>0){
+									$tgl_dikembalikan='<span style="color:red">'.fftgl($tgl3).'</span>';
+								} else {
+									$tgl_dikembalikan=fftgl($tgl3);
+								}
+
+								// if ($res['status']==1) {
+									$btn = '<td>
+											<button data-hint="ubah"  class="button" onclick="kembalikan('.isset($res['replid']).');">
+												<i class="icon-enter on-left"></i>
 											</button>
-											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
-												<i class="icon-remove on-left"></i>
-										 </td>';
-								$s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
-										from keu_jurnal j,keu_rekening r 
-										where 
-											j.transaksi ='.$res['replid'].' AND 
-											j.rek=r.replid
-										ORDER BY kredit  ASC';
-								$e2 = mysql_query($s2);
-								$tb2='';
-								if(mysql_num_rows($e2)!=0){
-	   								$tb2.='<table class="bordered striped lightBlue" width="100%">';
-		   							while($r2=mysql_fetch_assoc($e2)){
-		   								$tb2.='<tr>
-		   										<td>'.$r2['nama'].'</td>
-		   										<td>'.$r2['kode'].'</td>
-		   										<td>Rp. '.number_format($r2['debet']).',-</td>
-		   										<td>Rp. '.number_format($r2['kredit']).',-</td>
-		   									</tr>';
-		   							}$tb2.='</table>';
-								}$out.= '<tr>
-											<td>'.tgl_indo($res['tanggal']).'</td>
-											<td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
-											<td>'.$res['uraian'].'</td>
-											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
+											</td>';
+								// }else{
+								// 	$btn ='<td>&nbsp</td>';
+								// }
+								$terlambat = isset($res['telat']);
+								$out.= '<tr>
+											<td>'.tgl_indo($res['tgl_pinjam']).'</td>
+											<td>'.$anggota.'</td>
+											<td>'.$res['barkode'].'</td>
+											<td>'.$res['judul'].'</td>
+											<td>'.tgl_indo($tgl_pengembalian).'</td>
+											<td>'.$res['status'].'</td>
+											<td>'.tgl_indo($tgl_dikembalikan).'</td>
+											<td>'.($terlambat==0?'-':$res['telat'].' hari').'</td> 
+											<td>&nbsp</td>
 											'.$btn.'
 										</tr>';
 							}
@@ -154,41 +206,92 @@
 						#link paging
 						$out.= '<tr class="info"><td colspan=10>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=10>'.$obj->total.'</td></tr>';
+											// <td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
+											// '.$btn.'
 					break;
-					// grup barang
-				}
+
+					case 'statistik':
+						$judul       = isset($_POST['judulS'])?filter(trim($_POST['judulS'])):'';
+						$klasifikasi = isset($_POST['klasifikasiS'])?filter(trim($_POST['klasifikasiS'])):'';
+						$pengarang   = isset($_POST['pengarangS'])?filter(trim($_POST['pengarangS'])):'';
+						$penerbit    = isset($_POST['penerbitS'])?filter(trim($_POST['penerbitS'])):'';
+						$tgl2        = isset($_POST['s_tgl1TB'])?filter(trim($_POST['s_tgl1TB'])):'';
+						$tgl2        = isset($_POST['s_tgl2TB'])?filter(trim($_POST['s_tgl2TB'])):'';
+						$lokasi      = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
+
+						$sql       = 'SELECT 
+			       							pj.replid as replid,
+											k.judul AS judul,
+											l.nama AS klasifikasi, 
+											r.nama AS penerbit, 
+											p.nama2 AS pengarang,
+											(SELECT count(*) FROM pus_peminjaman WHERE buku=b.replid) status
+									FROM pus_peminjaman pj
+                                    LEFT JOIN pus_buku b ON b.replid=pj.buku
+                                    LEFT JOIN pus_lokasi pl ON pl.replid = b.lokasi
+									LEFT JOIN pus_katalog k on k.replid=b.katalog
+									LEFT JOIN pus_tingkatbuku t on t.replid=b.tingkatbuku
+									LEFT JOIN pus_klasifikasi l on l.replid=k.klasifikasi
+									LEFT JOIN pus_pengarang p on p.replid=k.pengarang
+									LEFT JOIN pus_penerbit r on r.replid=k.penerbit
+									LEFT JOIN pus_jenisbuku u on u.replid=k.jenisbuku
+
+									WHERE 
+										pj.tanggal1 >= "%'.$tgl1.'" AND
+										pj.tanggal2 <= "%'.$tgl2.'" AND
+										pl.nama <= "%'.$lokasi.'" AND
+										k.judul like "%'.$judul.'%" OR
+										r.nama like "%'.$penerbit.'%" OR
+										p.nama like "%'.$pengarang.'%" OR
+										l.nama like "%'.$klasifikasi.'%"';
+						// print_r($sql);exit(); 	
+						if(isset($_POST['starting'])){ //nilai awal halaman
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
+
+						$recpage = 5;//jumlah data per halaman
+						$aksi    ='tampil';
+						$subaksi ='statistik';
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+
+						#ada data
+						$jum = mysql_num_rows($result);
+						$out ='';$totaset=0;
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_array($result)){	
+								// $btn ='<td>
+								// 			<button data-hint="ubah"  class="button" onclick="juFR('.$res['replid'].');">
+								// 				<i class="icon-pencil on-left"></i>
+								// 			</button>
+								// 			<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
+								// 				<i class="icon-remove on-left"></i>
+								// 		 </td>';
+								
+								$out.= '<tr>
+											<td>'.$res['judul'].'</td>
+											<td>'.$res['klasifikasi'].'</td>
+											<td>'.$res['pengarang'].'</td>
+											<td>'.$res['penerbit'].'</td>
+											<td>'.$res['status'].'</td>
+										</tr>';
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan=10 ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan=10>'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan=10>'.$obj->total.'</td></tr>';
+											// <td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
+											// '.$btn.'
+					break;				}
 			break; 
 			// tampil ---------------------------------------------------------------------
-
-			// generate kode
-			case 'codeGen':
-				switch ($_POST['subaksi']) {
-					case'transNo':
-						switch($_POST['tipe']){
-							case 'ju':
-								$pre='MMJ';
-							break;
-							case 'in':
-								$pre='BKM';
-							break;
-							case 'out':
-								$pre='BKK';
-							break;
-						}
-						$s    ='SELECT max(ct)ct from keu_transaksi ';
-						$e    =mysql_query($s);
-						$stat =!$e?'gagal_'.mysql_error():'sukses';
-						if(mysql_num_rows($e)>0){
-							$r  =mysql_fetch_assoc($e);
-							$in =$r['ct']+1;
-						}else{
-							$in=1;
-						}$kode=$pre.'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
-						$out=json_encode(array('status'=>$stat,'kode'=>$kode));
-					break;
-				}
-			break;
-			// generate kode
 
 			// head info ------------------------------------------------------------------
 			case 'headinfo':
@@ -219,62 +322,6 @@
 								));
 					break;
 
-					case 'barang':
-						$s = '	SELECT
-									g.replid,
-									g.nama as grup,(
-										SELECT nama
-										from sar_lokasi 
-										where replid = g.lokasi
-									)as lokasi,
-									IFNULL(tbjum.totbarang,0)totbarang,
-									tbjum.susut,
-									tbjum.nama as katalog,
-									tbjum.totaset,
-									tbjum.photo2
-								from 
-									sar_grup g
-									LEFT JOIN (
-										SELECT 
-											k.replid,
-											k.grup,
-											k.susut,
-											k.nama,
-											k.photo2,
-											count(*)totbarang,
-											sum(b.harga)totaset
-										from 
-											sar_katalog k,
-											sar_barang b
-										WHERE
-											k.replid = b.katalog AND
-											k.replid = '.$_POST['katalog'].'
-									)tbjum on tbjum.grup = g.replid
-								where 
-									tbjum.replid= '.$_POST['katalog'];
-						// var_dump($s);exit();
-						$e = mysql_query($s) or die(mysql_error());
-						$r = mysql_fetch_assoc($e);
-						if(!$e){
-							$stat='gagal';
-						}else{
-							$stat ='sukses';
-							$dt   = array(
-										'idkatalog' =>$r['replid'],
-										'katalog'   =>$r['katalog'],
-										'grup'      =>$r['grup'],
-										'photo2'    =>$r['photo2'],
-										'lokasi'    =>$r['lokasi'],
-										'susut'     =>$r['susut'],
-										'totbarang' =>$r['totbarang'],
-										'totaset'   =>number_format($r['totaset'])
-									);
-						}
-						$out  = json_encode(array(
-									'status' =>$stat,
-									'data'   =>$dt
-								));
-					break;
 				}
 			break;
 			// head info ------------------------------------------------------------------
@@ -288,7 +335,7 @@
 												uraian  = "'.filter($_POST['ju_uraianTB']).'",
 												tanggal = "'.tgl_indo6($_POST['ju_tanggalTB']).'"';
 						$s  = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						// var_dump($s);exit();
+						var_dump($s);exit();
 						// $e  = mysql_query($s);
 						// $id =mysql_insert_id();
 						// if(!$e){
@@ -296,7 +343,7 @@
 						// }else{
 							if(isset($_POST['ju_rekTB'])){
 								// var_dump(count($_POST['ju_rekTB']));
-								var_dump($_POST['ju_rekTB']);
+								// var_dump($_POST['ju_rekTB']);
 								// $s2	= 'keu_jurnal set 	transaksi = '.$id.',
 								// 						rek       = '.$_POST['ju_rekTB'].',
 								// 						debet     = '.$_POST['ju_debetTB'].',
@@ -378,8 +425,30 @@
 			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
-					case 'ju';
-						$s = 'SELECT * FROM '.$tb.'  WHERE replid='.$_POST['replid'];
+					case 'kembalikan';
+						$s = 'SELECT
+											pj.replid,
+											tanggal1 tgl_pinjam,
+										    tanggal2 pengembalian,
+										    tanggal3 dikembalikan,
+										    pb.barkode,
+										    pk.judul,
+										    a.nis nis,
+										    a.nama siswa,
+										    hk.nip,
+										    hk.nama pegawai,
+										    pm.nid idmember,
+										    pm.nama member,
+										    if(pj.status = 1,"Dipinjam", "Dikembalikan") status
+										FROM pus_peminjaman pj
+										LEFT JOIN aka_siswa a ON a.replid = pj.mtipe
+										LEFT JOIN aka_guru ag ON ag.replid = pj.mtipe 
+										LEFT JOIN hrd_karyawan hk ON hk.id = ag.pegawai
+										LEFT JOIN pus_member pm ON pm.replid = pj.mtipe 
+										LEFT JOIN pus_buku pb ON pb.replid = pj.buku
+										LEFT JOIN pus_katalog pk ON pk.replid = pb.katalog
+									WHERE 
+										pj.replid';
 						// var_dump($s);exit();
 						$e 		= mysql_query($s);
 						$r 		= mysql_fetch_assoc($e);
@@ -387,9 +456,8 @@
 						$out 	= json_encode(array(
 									'status' =>$stat,
 									'datax'  =>array(
-										'nomer'   =>$r['nomer'],
-										'tanggal' =>$r['tanggal'],
-										'uraian'  =>$r['uraian']
+										'judul'   =>$r['judul'],
+										'barkode' =>$r['barkode']
 								)));					
 					break;
 

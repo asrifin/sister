@@ -124,11 +124,11 @@
         </div>
     </div>
     <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="tgl1TB">
+        <input type="text" id="tgl1TB" name="tgl1TB">
         <button class="btn-date"></button>
     </div> s/d
     <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="tgl2TB">
+        <input type="text" id="tgl2TB" name="tgl2TB">
         <button class="btn-date"></button>
     </div> 
     <button data-hint="Tampilkan" class="bg-blue fg-white" style="font-weight:bold;" id="tampilkanBC">Tampilkan >> </button>
@@ -149,7 +149,7 @@
                             <th class="text-left">Tgl Pengembalian</th>
                             <th class="text-left">Status</th>
                             <th class="text-left">Tgl Dikembalikan</th>
-                            <th class="text-left">Telat</th>
+                            <th class="text-left">Terlambat</th>
                             <th class="text-left">Keterangan</th>
                             <!-- <th style="display:visible;"class="text-left  uraianCOL">Detil Jurnal</th> -->
                             <th class="text-left">Aksi</th>
@@ -157,7 +157,7 @@
                         <tr style="display:none;" id="cari_sirkulasiTR">
                             <th class="text-left"></th>
                             <th class="text-left"><input placeholder="Id Member atau Nama" id="memberS" name="memberS"></th>
-                            <th class="text-left"><input placeholder="Barcode" id="barcodeS" name="barcodeS"></th>
+                            <th class="text-left"><input placeholder="Barkode" id="barkodeS" name="barkodeS"></th>
                             <th class="text-left"><input placeholder="Judul" id="judulS" name="judulS"></th>
                             <th class="text-left"></th>
                             <th class="text-left"></th>
@@ -180,8 +180,11 @@
         <div class="frame" id="statistik">
             <!-- <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button> -->
             <button data-hint="Field Pencarian" xclass="large" id="cari_statistikBC"><span class="icon-search"></span> </button>
-            <div class="input-control select span3">
-                <select data-hint="Statistik" name="statistikS" id="statistikS"></select>
+            <div class="input-control select span4">
+                <select data-hint="Statistik" name="statistikS" id="statistikS">
+                    <option value="0">Judul yang paling sering dipinjam</option>
+                    <option value="1">Member dengan peminjaman terbanyak</option>
+                </select>
             </div>
             <div class="input-control select span3">
                 <select data-hint="Lokasi" name="lokasiS" id="lokasiS"></select>
@@ -189,11 +192,11 @@
             <br>
     <label>Periode :</label>
     <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="s_tgl1TB">
+        <input type="text" id="s_tgl1TB" name="s_tgl1TB">
         <button class="btn-date"></button>
     </div> s/d
     <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="s_tgl2TB">
+        <input type="text" id="s_tgl2TB" name="s_tgl2TB">
         <button class="btn-date"></button>
     </div> 
     

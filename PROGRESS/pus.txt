@@ -18,7 +18,6 @@ ____________________________________________________
 
 	- sorting : all column (belum ada lib/contoh) 
 * katalog (P)
-	- edit field yang belum ( jenis buku, bahasa dan tahun)	(+)
 	- Insert (foto) dan semua data  (+)
 	- Tambah Koleksi menampilkan hasil yang sama meskipun pilih koleksi yang lain (+)
 	- Lihat katalog sql belum bisa nampil data koleksi (+)	
@@ -26,7 +25,6 @@ ____________________________________________________
 	- Tambah koleksi untuk Lihat Katalog belum bisa (+)
 	- Edit Informasi Katalog pada View Katalog (+) --> ditambahkan ajax yang sama pada edit katalog
 	- pencarian judul pas jumlahnya 2 hasilnya ikut 2 (+) --> menggunakan SQL Group By
-	- cara looping data koleksi buku pada view katalog (+) --> salah SQLnya
 	- data katalog berhasil di insert tapi di searching ga nampil (+) --> di SQL tampil pakai JOIN seharusnya LEFT JOIN
 	- cara memasukkan replid pada textbox klasifikasi,pengarang, penerbit (+) -->ditambahkan id hidden pada masing2 inputan
 	- pas edit katalog nyimpan klasifikasi,pengarang, penerbit tidak bisa (+) --> SQL ditambahkan select replid pada tabel
@@ -35,13 +33,20 @@ ____________________________________________________
 	- simpan koleksi belum bisa 
 	- pas tambah katalog form edit katalog juga muncul
 	- cara generate id buku( dan barcode (lokasi,tingkatbuku, tahun, urut pd pus_buku)
+	- Ketika kode barcode pd perangkat di update otomatis kode barcode pd koleksi berubah
 * data anggota (P)
-	- view siswa, pegawai dan member lain hanya bisa menampilkan yang sudah pinjam aja
+	- view siswa, pegawai dan member lain hanya bisa menampilkan yang sudah pinjam aja (SQL)
 	-
 * sirkulasi (P)
-	- Peminjaman -> pencarian judul buku pas dipilih Object elemen html (+)
-	- Peminjaman  -> pencarian data peminjam menggunakan open dialog dan tab??
 	- Peminjaman  -> cara menampilkan tanggal pengembalian
+	- view sirkulasi -> field peminjam, Tgl Pengembalian, Tgl dikembalikan dan terlambat tidak tampil (sudah buat fungsi selisih tgl)
+	- view sirkulasi - field aksi -> tombol aksi kalau dipinjam muncul kalau dikembalikan tidak
+	- view sirkulasi - filter checkbox blm bisa
+	- cara sinkron status peminjaman pada tabel pus_peminjaman dan pus_buku ?
+	*statistik
+	- menampilkan jumlah yang dipinjam (filter tanggal)
+	- cmb statistik
+	
 
 * OPAC (P)
 	- Cara Membuat menunya Gimana karena buka tab baru??

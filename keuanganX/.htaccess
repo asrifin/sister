@@ -1,0 +1,30 @@
+#php_flag display_errors off
+Options -Indexes
+#indexIgnore *
+
+RewriteEngine On
+#ErrorDocument 404 /404.html
+ErrorDocument 404 Maaf-halaman-tidak-ditemukan
+
+	#RewriteRule   ^sub-rekening/?$   							index.php?page=subrekening
+	#RewriteRule   ^status-rekening/?$   						index.php?page=statusrekening
+
+	#refrensi
+	RewriteRule   ^home/?$   									index.php?page=vhome
+	RewriteRule   ^tahun-buku/?$   								index.php?page=tahunbuku
+	RewriteRule   ^kategori-rekening/?$   						index.php?page=kategorirekening
+	RewriteRule   ^detil-rekening/?$   							index.php?page=detilrekening
+	RewriteRule   ^saldo-rekening/?$   							index.php?page=saldorekening
+	RewriteRule   ^set-anggaran/?$   							index.php?page=anggaran
+	RewriteRule   ^anggaran-tahunan/?$   						index.php?page=anggarantahunan
+	
+	#transaksi keuangan
+	RewriteRule   ^transaksi/?$			   						index.php?page=transaksi
+	RewriteRule   ^kategori-modul/?$			   				index.php?page=katmodulpembayaran
+	RewriteRule   ^modul-pembayaran/?$			   				index.php?page=modulpembayaran
+	RewriteRule   ^pembayaran/?$			   					index.php?page=pembayaran
+	
+	RewriteRule   ^keluar/?$ 									index.php?page=logout 
+
+# Send all blocked request to homepage with 403 Forbidden error!
+#RewriteRule ^(.*)$ index.php [F,L]

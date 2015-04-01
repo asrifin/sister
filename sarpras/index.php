@@ -1,12 +1,14 @@
 <?php
-    session_start();
+    require_once '../lib/func.php';
+    isModul('sarpras');
+    // session_start();
     // echo '<pre>';
     //     print_r($_SESSION);exit();
     // echo '</pre>';
 
-    if(!isset($_SESSION['loginS'])){
-        header('location:../');
-    }else{
+    // if(!isset($_SESSION['loginS'])){
+    //     header('location:../');
+    // }else{
         // echo 'ada';
 ?>
 <!DOCTYPE html>
@@ -185,4 +187,6 @@
 </body>
 </html>
 
-<?php } ?>
+<?php 
+// }
+ ?>
