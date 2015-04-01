@@ -1,13 +1,8 @@
 <?php
+    session_start();
     require_once '../lib/func.php';
-    $modul = 'keuangan';
+    $modul = basename(dirname(__FILE__));
     isModul($modul);
-    // echo '<pre>';
-    // print_r($_SESSION['grupmodulS']);
-    // echo'</pre>';
-    // if(!isset($_SESSION['loginS'])){
-    //     header('location:../');
-    // }else{
 ?>
 <!DOCTYPE html>
 <html>
@@ -55,60 +50,17 @@
         <nav class="navigation-bar-content">
             <a class="element brand" href="../">
                 <span class="icon-grid-view"></span>  
-                Start Menu
+                Menu Utama
             </a>
             <span class="element-divider"></span>
             <a class="element brand" href="./">
                 <span class="icon-home"></span>  
-                Keuangan
+                <?php echo $modul;?>
             </a>
             <span class="element-divider"></span>
             <?php
-                $out='';
-                // looping grup menu
-                foreach ($_SESSION['grupmodulS']as $i => $v) {
-                    foreach ($v['modul'] as $i2 => $v2) {
-                        if($v2['modul']==$modul and $v2['statmod']==1) {
-                            foreach ($v2['grupmenu'] as $i3 => $v3) {
-                                $out.='<div class="element">                
-                                        <a class="dropdown-toggle" href="#">'.$v3['grupmenu'].'</a>
-                                        <ul class="dropdown-menu" data-role="dropdown">';
-                                foreach ($v3['menu'] as $i4 => $v4) {
-                                    $out.='<li '.($v4['statmenu']==0?'class="disabled"':'').'> 
-                                                <a href="'.($v4['statmenu']!=0?$v4['link']:'#').'">'.$v4['menu'].'</a>
-                                            </li>';
-                                }// end of menu looping
-                                $out.='</ul>
-                                    </div>';
-                            } // end of grupmenu looping
-                        } // end of modul checking
-                    } // end of  modul looping
-                } // grup grupmodul looping 
-                echo $out;
-                // exit();
+                topMenu($modul);
             ?>
-            <!-- <div class="element">
-                <a class="dropdown-toggle" href="#">Transaksi Keuangan</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="transaksi">Transaksi</a></li>
-                    <li><a href="modul-pembayaran">Modul Pembayaran</a></li>
-                    <li><a href="pembayaran">Pembayaran</a></li>
-                    <li><a href="inventory">Inventory</a></li>                
-                </ul>
-            </div>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Referensi</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="tahun-buku">Tahun Buku</a></li>
-                    <li><a href="kategori-rekening">Kategori Rekening</a></li>
-                    <li><a href="detil-rekening">Rekening</a></li>
-                    <li><a href="saldo-rekening">Saldo Rekening</a></li>
-                    <li><a href="set-anggaran">Set Anggaran</a></li>
-                    <li><a href="anggaran-tahunan">Anggaran Tahunan</a></li>
-                    <li><a href="kategori-modul">Ketegori Modul Pembayaran</a></li>
-                </ul>
-            </div> -->
-             
             <span class="element-divider place-right"></span>
             <div class="element place-right">
                 <a class="dropdown-toggle" href="#">
@@ -201,7 +153,3 @@
 
 </body>
 </html>
-
-<?php 
-// } 
-?>

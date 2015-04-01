@@ -5,6 +5,7 @@
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 	$mnu  = 'detilrekening';
+	$menu = 'COA';
 	$tb   = 'keu_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -57,10 +58,10 @@
 									</tr>';
 						}else{
 							$btn ='<td>
-										<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
+										<button data-hint="ubah" '.(getAksi($menu,'u')==false?'disabled':'').' class="button" onclick="viewFR('.$res['replid'].');">
 											<i class="icon-pencil on-left"></i>
 										</button>
-										<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+										<button data-hint="hapus" '.(getAksi($menu,'d')==false?'disabled':'').'  class="button" onclick="del('.$res['replid'].');">
 											<i class="icon-remove on-left"></i>
 									 </td>';
 							$out.= '<tr>
