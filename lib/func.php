@@ -12,12 +12,13 @@
 		$x=pathinfo(__FILE__, PATHINFO_FILENAME);
 		return $x;
 	}function isModul($mod){
+	    // $w = array_pop(explode("/", $x));;
 	    // $x = __FILE__;
 		// $x=preg_replace('/\.php$/', '', __FILE__);
 		// $x=pathinfo(__FILE__, PATHINFO_FILENAME);
         // $x = pathinfo(__FILE__, PATHINFO_FILENAME);
 		session_start();
-	    $out  =0; 
+	    $out=0; 
 	    foreach ($_SESSION['grupmodulS'] as $i => $v) {
 	        foreach ($v['modul'] as $i2 => $v2) {
 	            if($v2['modul']==$mod and $v2['statmod']==1) {
@@ -25,7 +26,7 @@
 	            }
 	        }
 	    }
-	    if($out==0){
+	    if($out==0 OR $_SESSION['loginS']==''){
 	        header('location:../');
 	    }
 	}

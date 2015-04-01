@@ -8,8 +8,8 @@
 	// authentication login 
 	$s1   = 'SELECT lg.*,lv.keterangan as level 
 			from 
-				login lg,
-				level lv
+				kon_login lg,
+				kon_level lv
 			where
 				lg.id_level = lv.id_level 
 				and lg.username = "'.$user.'" 
@@ -20,7 +20,7 @@
 	if($n!=0){
 		$r1 = mysql_fetch_assoc($e1);
 		// loop grup modul
-		$s2 = 'SELECT * from grupmodul';
+		$s2 = 'SELECT * from kon_grupmodul';
 		$e2 = mysql_query($s2);
 		
 		$grupmodulArr = array();
@@ -41,17 +41,17 @@
 								0
 						END AS statmod
 					FROM
-						modul md
-						left join warna w on w.id_warna = md.warna
-						left join icon i on i.id_icon = md.icon
+						kon_modul md
+						left join kon_warna w on w.id_warna = md.warna
+						left join kon_icon i on i.id_icon = md.icon
 						LEFT JOIN (
 							SELECT
 								md.id_modul
 							FROM
-								modul md
-								LEFT JOIN grupmenu gm ON gm.id_modul = md.id_modul
-								LEFT JOIN menu mn ON mn.id_grupmenu = gm.id_grupmenu
-								LEFT JOIN privillege p ON p.id_menu = mn.id_menu
+								kon_modul md
+								LEFT JOIN kon_grupmenu gm ON gm.id_modul = md.id_modul
+								LEFT JOIN kon_menu mn ON mn.id_grupmenu = gm.id_grupmenu
+								LEFT JOIN kon_privillege p ON p.id_menu = mn.id_menu
 							WHERE	
 								p.id_login = '.$r1['id_login'].'
 							GROUP BY
@@ -66,12 +66,13 @@
 				// loop grup menu
 				$s4 = 'SELECT
 							gm.id_grupmenu,
+							gm.size,
 							gm.grupmenu
 						FROM
-							modul md
-							LEFT JOIN grupmenu gm ON gm.id_modul = md.id_modul
-							LEFT JOIN menu mn ON mn.id_grupmenu = gm.id_grupmenu
-							LEFT JOIN privillege p ON p.id_menu = mn.id_menu
+							kon_modul md
+							LEFT JOIN kon_grupmenu gm ON gm.id_modul = md.id_modul
+							LEFT JOIN kon_menu mn ON mn.id_grupmenu = gm.id_grupmenu
+							LEFT JOIN kon_privillege p ON p.id_menu = mn.id_menu
 						WHERE	
 							p.id_login = '.$r1['id_login'].' and
 							gm.id_modul = '.$r3['id_modul'].'
@@ -81,18 +82,32 @@
 				$e4          = mysql_query($s4);
 				$grupmenuArr = array();
 				while ($r4=mysql_fetch_assoc($e4)) {
+					// loop menu
 					$s5 	 = 'SELECT
-									mn.*
+									mn.id_menu,
+									mn.menu,
+									mn.link,
+									mn.size,
+									w.warna,
+									i.icon,
+									IF(tbmnu.id_menu is NOT NULL,1,0)statmenu
 								FROM
-									modul md
-									LEFT JOIN grupmenu gm ON gm.id_modul = md.id_modul
-									LEFT JOIN menu mn ON mn.id_grupmenu = gm.id_grupmenu
-									LEFT JOIN privillege p ON p.id_menu = mn.id_menu
-								WHERE	
-									p.id_login     = '.$r1['id_login'].' and
-									mn.id_grupmenu = '.$r4['id_grupmenu'].'
-								GROUP BY
-									gm.id_grupmenu';
+									kon_menu mn 
+									LEFT JOIN kon_icon i ON i.id_icon = mn.icon
+									LEFT JOIN kon_warna w ON w.id_warna = mn.warna
+									LEFT JOIN kon_grupmenu gm ON gm.id_grupmenu= mn.id_grupmenu
+									LEFT JOIN (
+										SELECT
+											id_menu
+										FROM
+											kon_privillege
+										WHERE
+											id_login = '.$r1['id_login'].'
+									)tbmnu on tbmnu.id_menu = mn.id_menu
+								WHERE
+									mn.id_grupmenu = '.$r4['id_grupmenu'];
+					
+					// var_dump($s5);exit();
 					$e5      = mysql_query($s5);
 					$menuArr = array();
 					while ($r5=mysql_fetch_assoc($e5)) {
@@ -100,6 +115,7 @@
 					}
 					$grupmenuArr[]=array(
 						'grupmenu' =>$r4['grupmenu'],
+						'size'     =>$r4['size'],
 						'menu'     =>$menuArr
 					);
 				}
