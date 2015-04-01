@@ -61,21 +61,17 @@ var contentFR = '';
 
         //search action
         $('#tahunajaranS').on('change',function (){
-            viewTB();
+            cmbsemester($(this).val());
         });$('#departemenS').on('change',function(){
             cmbtahunajaran($(this).val());
         });$('#tingkatS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
+            cmbtahunajaran('filter',$(this).val(),'');
         });$('#subtingkatS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
+            cmbtingkat('filter',$(this).val(),'');
         });$('#semesterS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
+            cmbtahunajaran('filter',$(this).val(),'');
         });$('#pelajaranS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
+            viewTB();
         });
 
         // search button
@@ -207,6 +203,30 @@ var contentFR = '';
                 }
                 // cmbsubsubtingkat(dt.subtingkat[0].replid);
                 $('#subtingkatS').html(out);
+                 cmbpelajaran(dt.nama[0].replid,false,null);
+            }
+        });
+    }
+//end of combo subtingkat ---
+// combo pelajaran ---
+    function cmbpelajaran(thn){
+        $.ajax({
+            url:dir7,
+            data:'aksi=cmbpelajaran&tahunajaran='+thn,
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.pelajaran, function(id,item){
+                        out+='<option value="'+item.replid+'">'+item.pelajaran+'</option>';
+                    });
+                    $('#pelajaranS').html(out);
+                }
+                // cmbsubpelajaran(dt.pelajaran[0].replid);
+                $('#pelajaranS').html(out);
                 viewTB();
             }
         });
