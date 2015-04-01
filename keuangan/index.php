@@ -1,9 +1,10 @@
 <?php
     require_once '../lib/func.php';
-    isModul('keuangan');
-    echo '<pre>';
-    print_r($_SESSION['grupmodulS']);
-    echo'</pre>';
+    $modul = 'keuangan';
+    isModul($modul);
+    // echo '<pre>';
+    // print_r($_SESSION['grupmodulS']);
+    // echo'</pre>';
     // if(!isset($_SESSION['loginS'])){
     //     header('location:../');
     // }else{
@@ -62,8 +63,31 @@
                 Keuangan
             </a>
             <span class="element-divider"></span>
-            
-            <div class="element">
+            <?php
+                $out='';
+                // looping grup menu
+                foreach ($_SESSION['grupmodulS']as $i => $v) {
+                    foreach ($v['modul'] as $i2 => $v2) {
+                        if($v2['modul']==$modul and $v2['statmod']==1) {
+                            foreach ($v2['grupmenu'] as $i3 => $v3) {
+                                $out.='<div class="element">                
+                                        <a class="dropdown-toggle" href="#">'.$v3['grupmenu'].'</a>
+                                        <ul class="dropdown-menu" data-role="dropdown">';
+                                foreach ($v3['menu'] as $i4 => $v4) {
+                                    $out.='<li '.($v4['statmenu']==0?'class="disabled"':'').'> 
+                                                <a href="'.($v4['statmenu']!=0?$v4['link']:'#').'">'.$v4['menu'].'</a>
+                                            </li>';
+                                }// end of menu looping
+                                $out.='</ul>
+                                    </div>';
+                            } // end of grupmenu looping
+                        } // end of modul checking
+                    } // end of  modul looping
+                } // grup grupmodul looping 
+                echo $out;
+                // exit();
+            ?>
+            <!-- <div class="element">
                 <a class="dropdown-toggle" href="#">Transaksi Keuangan</a>
                 <ul class="dropdown-menu" data-role="dropdown">
                     <li><a href="transaksi">Transaksi</a></li>
@@ -83,7 +107,7 @@
                     <li><a href="anggaran-tahunan">Anggaran Tahunan</a></li>
                     <li><a href="kategori-modul">Ketegori Modul Pembayaran</a></li>
                 </ul>
-            </div>
+            </div> -->
              
             <span class="element-divider place-right"></span>
             <div class="element place-right">
