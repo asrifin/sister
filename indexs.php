@@ -78,8 +78,8 @@
                     foreach ($v['modul'] as $ii => $vv) {
                                 // <div style="align:center;" class="tile-content email">
                                 // '.($vv['statmod']==0?'<span class="icon-locked-2"></span>':'<img src="images/'.$vv['icon'].'png">').'
-                        $out.='<a id="mod-'.$vv['kode'].'" 
-                                '.($vv['statmod']==0?' onclick="warning(\''.$vv['modul'].'\');"':' href="'.$vv['kode'].'"').' class="tile '.$vv['size'].' 
+                        $out.='<a id="mod-'.$vv['link'].'" 
+                                '.($vv['statmod']==0?' onclick="warning(\''.$vv['modul'].'\');"':' href="'.$vv['link'].'"').' class="tile '.$vv['size'].' 
                                 bg-'.($vv['statmod']!=0?$vv['warna']:'grey').' live" data-role="live-tile" 
                                 '.($vv['statmod']!=0?'data-effect="slideUp"':'').' 
                                 data-click="transform">
@@ -106,7 +106,6 @@
                 } ///end of looping grup modul
                 echo $out;
             ?>
-
         </div>
         <!--<script src="js/main.js"></script>
         <script src="js/hitua.js"></script>-->
