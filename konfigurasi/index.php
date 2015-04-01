@@ -1,13 +1,8 @@
 <?php
+    session_start();
     require_once '../lib/func.php';
     $modul = basename(dirname(__FILE__));
     isModul($modul);
-    // echo '<pre>';
-    // print_r($_SESSION['grupmodulS']);
-    // echo'</pre>';
-    // if(!isset($_SESSION['loginS'])){
-    //     header('location:../');
-    // }else{
 ?>
 <!DOCTYPE html>
 <html>
@@ -162,7 +157,3 @@
 
 </body>
 </html>
-
-<?php 
-// } 
-?>
