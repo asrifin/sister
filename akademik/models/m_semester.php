@@ -136,7 +136,9 @@
 				}else{
 					if(isset($_POST[$mnu])){
 						$w='where '.$mnu.'='.$_POST[$mnu];
-					}
+					}else{ /*epiii*/
+						$w='where tahunajaran ='.$_POST['tahunajaran']; /*epiii*/
+					} /*epiii*/
 				}
 				
 				$s	= ' SELECT *
