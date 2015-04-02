@@ -1,12 +1,8 @@
 <?php
+    session_start();
     require_once '../lib/func.php';
-    isModul('keuangan');
-    echo '<pre>';
-    print_r($_SESSION['grupmodulS']);
-    echo'</pre>';
-    // if(!isset($_SESSION['loginS'])){
-    //     header('location:../');
-    // }else{
+    $modul = basename(dirname(__FILE__));
+    isModul($modul);
 ?>
 <!DOCTYPE html>
 <html>
@@ -54,37 +50,17 @@
         <nav class="navigation-bar-content">
             <a class="element brand" href="../">
                 <span class="icon-grid-view"></span>  
-                Start Menu
+                Menu Utama
             </a>
             <span class="element-divider"></span>
             <a class="element brand" href="./">
                 <span class="icon-home"></span>  
-                Keuangan
+                <?php echo $modul;?>
             </a>
             <span class="element-divider"></span>
-            
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Transaksi Keuangan</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="transaksi">Transaksi</a></li>
-                    <li><a href="modul-pembayaran">Modul Pembayaran</a></li>
-                    <li><a href="pembayaran">Pembayaran</a></li>
-                    <li><a href="inventory">Inventory</a></li>                
-                </ul>
-            </div>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Referensi</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="tahun-buku">Tahun Buku</a></li>
-                    <li><a href="kategori-rekening">Kategori Rekening</a></li>
-                    <li><a href="detil-rekening">Rekening</a></li>
-                    <li><a href="saldo-rekening">Saldo Rekening</a></li>
-                    <li><a href="set-anggaran">Set Anggaran</a></li>
-                    <li><a href="anggaran-tahunan">Anggaran Tahunan</a></li>
-                    <li><a href="kategori-modul">Ketegori Modul Pembayaran</a></li>
-                </ul>
-            </div>
-             
+            <?php
+                topMenu($modul);
+            ?>
             <span class="element-divider place-right"></span>
             <div class="element place-right">
                 <a class="dropdown-toggle" href="#">
@@ -177,7 +153,3 @@
 
 </body>
 </html>
-
-<?php 
-// } 
-?>
