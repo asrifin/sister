@@ -1,21 +1,15 @@
 var mnu       = 'level';
 var dir       = 'models/m_'+mnu+'.php';
-var contentFR = '';
+var aksiFR = levelFR = contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
-                        +'<input id="idformH" type="hidden">' 
+        levelFR += '<form autocomplete="off" id="levelFR" onsubmit="simpan(\'level\');return false;" >' 
+                        +'<input id="idformlevelH" type="hidden">' 
 
                         +'<label>'+mnu+'</label>'
                         +'<div class="input-control text">'
                             +'<input required placeholder="'+mnu+'" name="'+mnu+'TB" id="'+mnu+'TB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-
-                        +'<label>action</label>'
-                        +'<div class="input-control text">'
-                            +'<input required placeholder="action" name="actionTB" id="actionTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -29,11 +23,31 @@ var contentFR = '';
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
+        aksiFR += '<form autocomplete="off" id="levelaksiFR" onsubmit="simpan(\'levelaksi\'); return false;">' 
+                        +'<input id="idformlevelaksiH" type="hidden">' 
+                        +'<table>'
+                            +'<tr>'
+                                +'<td><b>Level</b></td>'
+                                +'<td id="levelTD"></td>'
+                            +'</tr>'
+                        +'</table>'
+                        //detail Aksi per kategori menu 
+                        +'<legend></legend>'
+                        +'<div style="overflow:scroll;height:250px;">'
+                           +'<ul id="katgrupmenuDV" class="treeview" data-role="treeview">'
+                           +'</ul>'
+                        +'</div>'               
+
+                        +'<div class="form-actions">' 
+                            +'<button class="button primary">simpan</button>&nbsp;'
+                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                        +'</div>'
+                    +'</form>';
         viewTB();
 
         //add form
         $("#tambahBC").on('click', function(){
-            viewFR('');
+            viewFR('level','');
         });
 
         //search action
@@ -51,36 +65,81 @@ var contentFR = '';
 // end of save process ---
 
 //save process ---
-    function simpan(){
-        var urlx ='&aksi=simpan';
-        if($('#idformH').val()!='') urlx += '&id_'+mnu+'='+$('#idformH').val();
+    function simpan(subaksi){
+        // var x = $('#'+subaksi+'FR').serialize();
+        var urlx ='&aksi=simpan&subaksi='+subaksi;
+        if($('#idform'+subaksi+'H').val()!='') 
+           urlx += '&id_'+mnu+'='+$('#idform'+subaksi+'H').val();
 
+        // alert(urlx);return false;
         $.ajax({
             url:dir,
             cache:false,
             type:'post',
             dataType:'json',
-            data:$('form').serialize()+urlx,
+            data:$('#'+subaksi+'FR').serialize()+urlx,
             success:function(dt){
                 if(dt.status!='sukses'){
                     cont = 'Gagal menyimpan data';
                     clr  = 'red';
                 }else{
-                    $.Dialog.close();
                     kosongkan();
-                    viewTB($('#departemenS').val());
+                    if(subaksi=='level'){ //level 
+                        $.Dialog.close();
+                        viewTB($('#departemenS').val());
+                    }else{ // levelaksi
+                        viewFR('levelaksi',$('#idform2H').val());
+                    }
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
-                }
-                notif(cont,clr);
+                }notif(cont,clr);
             }
         });
     }
 //end of save process ---
+    
+    function levelAksiVW (level) {
+        $.ajax({
+            url:dir,
+            data:'aksi=tampil&subaksi=levelaksi&id_level='+level,
+            type:'post',
+            dataType:'json',
+            success:function(dt){
+                // alert(dt);return false;
+                console.log(dt);
+                if(dt.status!='sukses'){
+                    notif(dt.status,'red');
+                }else{
+                    alert(level);
+                    $('#idformlevelaksiH').val(dt.data.level);
+                    $('#levelTD').html(': '+dt.data.keterangan+'('+dt.data.level+')');
+                    // return false;
+                    // data detail barang
+                    // var tbl='';
+                    // $.each(dt.data.barangArr,function(id,item){
+                    //     var btn;
+                    //     tbl+='<tr>'
+                    //         +'<td><input '+(item.status==3||item.status==4?'disabled':'')+' type="checkbox" dp="'+item.iddpeminjaman+'" brg="'+item.idbarang+'" /></td>'
+                    //         +'<td>'+item.kode+'</td>'
+                    //         +'<td>'+item.barang+'</td>'
+                    //         +'<td>'+item.tgl_kembali2+'</td>'
+                    //         +'<td>'
+                    //             +'<button style="background-color:'+item.color+'" '
+                    //                 +(item.status==3||item.status==4?'onclick="alert(\'sudah dikembalikan\')"':'onclick="kembalikanFC('+item.iddpeminjaman+','+item.idbarang+')"')+'>'
+                    //                 +'<i style="color:white;" class="icon-undo"></i>'
+                    //             +'</button>'
+                    //         +'</td>'
+                    //     +'</tr>';
+                    // });$('#barangTBL2').html(tbl);
+                }
+            }
+        });
+        // contentFR=contentDetail;
+    }
 
 // view table ---
     function viewTB(){
-        var aksi ='aksi=tampil';
+        var aksi ='aksi=tampil&subaksi=level';
         var cari ='&'+mnu+'S='+$('#'+mnu+'S').val()
                 +'&actionS='+$('#actionS').val()
                 +'&keteranganS='+$('#keteranganS').val();
@@ -100,32 +159,72 @@ var contentFR = '';
 // end of view table ---
 
 // form ---
-    function viewFR(id){
+    function viewFR(menu,idlevel){
+        // alert(menu+','+idlevel);return false;
         $.Dialog({
             shadow: true,
             overlay: true,
             draggable: true,
             width: 500,
+            // heigth:200,
             padding: 10,
             onShow: function(){
-                var titlex;
-                if(id==''){  //add mode
-                    titlex='<span class="icon-plus-2"></span> Tambah ';
+                var titlex=contentFR='';
+                if(idlevel==''){  //add mode
+                    alert('masuk levelaksi - add');
+                    // titlex='<span class="icon-plus-2"></span> Tambah ';
+                    // contentFR = levelFR;
                 }else{ // edit mode
-                    titlex='<span class="icon-pencil"></span> Ubah';
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=ambiledit&id_'+mnu+'='+id,
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#idformH').val(id);
-                            $('#'+mnu+'TB').val(dt.level);
-                            $('#actionTB').val(dt.action);
-                            $('#keteranganTB').val(dt.keterangan);
-                        }
-                    });
-                }$.Dialog.title(titlex+' '+mnu);
+                    if(menu=='levelaksi'){ // aksi
+                        titlex='<span class="icon-search"></span> Detail Aksi ';
+                        $.ajax({
+                            url:dir,
+                            data:'aksi=tampil&subaksi=levelaksi&id_level='+idlevel,
+                            type:'post',
+                            dataType:'json',
+                            success:function(dt){
+                                if(dt.status!='sukses'){
+                                    notif(dt.status,'red');
+                                }else{
+                                    $('#idformlevelaksiH').val(idlevel);
+                                    $('#levelTD').html(': '+dt.data.keterangan+'('+dt.data.level+')');
+                                    var out='';
+                                    $.each(dt.data.katgrupmenuArr,function(id,item){
+                                        out+='<li class="node">'
+                                                +'<a href="#"><span class="node-toggle"></span>'+item.keterangan+'</a>'
+                                                    +'<ul>'
+                                            $.each(item.aksiArr, function (id,item) {
+                                                out+='<li style="padding-left:20px;">'
+                                                        +'<label>'
+                                                            +'<input value="'+item.id_aksi+'" id="aksi'+item.id_levelaksi+'_TB" name="aksiTB['+item.id_katgrupmenu+'][]" '+(item.stataksi==1?'checked':'')+' type="checkbox"  /> '
+                                                                +item.keterangan+''
+                                                        +'</label>'
+                                                    +'</li>';
+                                            }); out+='</ul>'
+                                            +'</li>';
+                                    });$('#katgrupmenuDV').html(out);
+                                }
+                            }
+                        });
+                        contentFR += aksiFR;
+                    }else{ // level
+                        alert('masuk level - edit');
+
+                        // $.ajax({
+                        //     url:dir,
+                        //     data:'aksi=ambiledit&id_'+mnu+'='+idlevel,
+                        //     type:'post',
+                        //     dataType:'json',
+                        //     success:function(dt){
+                        //         $('#idformH').val(id);
+                        //         $('#'+mnu+'TB').val(dt.level);
+                        //         $('#actionTB').val(dt.action);
+                        //         $('#keteranganTB').val(dt.keterangan);
+                        //     }
+                        // });contentFR = levelFR;
+                    }
+                }
+                $.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
             }
         });
