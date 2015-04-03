@@ -151,21 +151,31 @@
 						delete levelaksi by id_levelkatgrupmenu
 						insert levelaksi set id_levelkatgrupmenu & id_aksi*/
 						
-						// // $c = count($_POST['aksiTB']);
-						// var_dump($_POST['aksiTB'][0][1]);
-						// // exit();
-						$stat2=true;
+						// $c = count($_POST['aksiTB']);
+						// var_dump($_POST['aksiTB'][1]);
+							// var_dump($_POST['id_level']);
+						$stat2 = true;
+							var_dump($_POST['aksiTB']);exit();
 						foreach ($_POST['aksiTB'] as $i => $v) {
-							$s1    = 'SELECT id_levelkatgrupmenu FROM kon_levelkatgrupmenu WHERE id_katgrupmenu ='.$v.' AND id_level='.$_POST['id_level'];
-							$e1    = mysql_query($s1);
-							$r1    = mysql_fetch_assoc($e1);
+							// get id_levelkatgrupmenu
+							// $xx.=$v.
+							// $s1 = 'SELECT id_levelkatgrupmenu FROM kon_levelkatgrupmenu WHERE id_katgrupmenu ='.$i.' AND id_level='.$_POST['id_level'];
+							// $e1 = mysql_query($s1) or die('gagal_pilih_idlevelkatgrupmenu_'.mysql_error());
+							// $r1 = mysql_fetch_assoc($e1);
 							
-							$stat2 = !$e1?false:true;
-							foreach ($v as $i2 => $v2) {
-								$s2 = 'INSERT INTO kon_levelaksi SET id_aksi='.$v.', id_levelkatgrupmenu ='.$r1['id_levelkatgrupmenu'];
-								$e2 = mysql_query($s2);
-								$stat2 = !$e2?false:true;
-							}
+							// // delete levelaksi by id_leveljatgrupmenu
+							// $s2 = 'DELETE FROM kon_levelaksi WHERE id_levelkatgrupmenu='.$r1['id_levelkatgrupmenu']; 
+							// $e2 = mysql_query($s2) or die('gagal_hapus_levelaksi_ke_'.$i);
+
+							// $stat2 = !$e1?false:true;
+							// foreach ($v as $i2 => $v2) {
+							// 	// insert new levelaksi by idlevelkatgrupmenu
+							// 	$s3 = 'INSERT INTO kon_levelaksi SET id_aksi='.$v2x.', id_levelkatgrupmenu ='.$r1['id_levelkatgrupmenu'];
+							// 	$e3 = mysql_query($s3);
+							// 	// var_dump($r1);
+							// 	// exit();
+							// 	$stat2 = !$e3?false:true;
+							// }
 						}$stat=!$stat2?'gagal':'sukses';
 						$out=json_encode(array('status'=>$stat));
 					break;
