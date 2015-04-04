@@ -36,7 +36,7 @@
         } // grup grupmodul looping 
         echo $out;
 	}
-	function getAksi($mn,$ak){
+	function isAksi($mn,$ak){
 	    $aksi=false;
 	    foreach ($_SESSION['grupmodulS']as $i => $v) {
 	        foreach ($v['modul'] as $i2 => $v2) {
@@ -53,6 +53,8 @@
 	    } // grup grupmodul looping 
 	    // return 'asem';
 	    return $aksi;
+	}function isDisabled($mn,$ak){
+		return (isAksi($mn,$ak)==false?'disabled':'');
 	}function isModul($mod){
 	    // $w = array_pop(explode("/", $x));;
 	    // $x = __FILE__;

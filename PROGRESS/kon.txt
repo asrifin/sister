@@ -1,0 +1,29 @@
+ _________________
+| NOTE  	  	  |	
+|  + : solved 	  |
+|  - : error/bug  |
+|  C : completed  |
+|  P : progress	  |
+|_________________|  
+|  * : menu	      |
+|_________________|
+_________________________  Sistem  ___________________________
+
+* Warna (C)
+* Icon(C)
+________________________   User  ____________________________
+
+* level (P)
+	- detail (aksi-level): update/insert 
+* user (P)
+	- CRUD
+* grup modul (P)
+	* grup-modul 
+		- CUD 
+	* modul 
+		- CUD 
+	* grup menu 
+		- CUD 
+	* menu 
+		- CRUD 
+_____________________________________________________

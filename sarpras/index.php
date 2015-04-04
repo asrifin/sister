@@ -1,6 +1,6 @@
 <?php
     require_once '../lib/func.php';
-    isModul('sarpras');
+    // isModul('sarpras');
     // session_start();
     // echo '<pre>';
     //     print_r($_SESSION);exit();

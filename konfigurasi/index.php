@@ -144,6 +144,9 @@
                     case 'user':
                         require $d.'v_user.php';
                     break;
+                    case 'grupmodul':
+                        require $d.'v_grupmodul.php';
+                    break;
 
                     default:
                         require $d.'v_home.php';
