@@ -91,7 +91,7 @@ var contentAdd=contentEdit='';
                         +'</div>'
                         +'</form>'
 
-        cmbdepartemen('filter','');
+        cmbdepartemen();
         // cmbdepartemen(false,'');
 
         //add form
@@ -150,7 +150,7 @@ var contentAdd=contentEdit='';
                     //panggil fungsi viewTB() ==> tampilkan tabel 
                     viewTB(dt.departemen[0].replid); 
                 }$('#departemenS').html(out);
-                cmbtahunajaran(dt.departemen[0].replid,false,null);
+                cmbtahunajaran(dt.departemen[0].replid);
             }
         });
     }
@@ -178,9 +178,9 @@ var contentAdd=contentEdit='';
                                 out+='<option value="'+item.replid+'">'+item.tahunajaran+'</option>';
                         });
                     }    
+                $('#tahunajaranS').html(out);
+                cmbtingkat(dt.tahunajaran[0].replid);
                 }
-                    $('#tahunajaranS').html(out);
-                cmbtingkat(dt.tahunajaran[0].replid,false,null);
                 
             }
         });
@@ -208,9 +208,9 @@ var contentAdd=contentEdit='';
                                 out+='<option value="'+item.replid+'">'+item.tingkat+'</option>';
                         });
                     }    
-                }
                     $('#tingkatS').html(out);
-                cmbsubtingkat(dt.tingkat[0].replid,false,null);
+                cmbsubtingkat(dt.tingkat[0].replid);
+                }
                 
             }
         });
@@ -237,10 +237,10 @@ var contentAdd=contentEdit='';
                             else
                                 out+='<option value="'+item.replid+'">'+item.subtingkat+'</option>';
                         });
+                        $('#subtingkatS').html(out);
+                        cmbkelas(dt.nama[0].replid);
                     }    
                 }
-                    $('#subtingkatS').html(out);
-                cmbkelas(dt.nama[0].replid,false,null);
                 
             }
         });
@@ -318,6 +318,7 @@ var contentAdd=contentEdit='';
         var cari = '&tahunajaranS='+$('#tahunajaranS').val()
                     +'&departemenS='+$('#departemenS').val()
                     +'&tingkatS='+$('#tingkatS').val()
+                    +'&subtingkatS='+$('#subtingkatS').val()
                     +'&kelasS='+$('#kelasS').val()
                     +'&nisnS='+$('#nisnS').val()
                     +'&namaS='+$('#namaS').val();
