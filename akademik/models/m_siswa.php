@@ -69,30 +69,34 @@
 			switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				// $tahunlulus =  ($_POST['tahunlulusS']!='')?' AND a.tahunlulus='.$_POST['tahunlulusS']:'';
 				$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
-				// $ket = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
+				$tingkat = isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
+				$subtingkat = isset($_POST['subtingkatS'])?filter(trim($_POST['subtingkatS'])):'';
+				$kelas = isset($_POST['kelasS'])?filter(trim($_POST['kelasS'])):'';
 				$nama = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
 				$nisn = isset($_POST['nisnS'])?filter(trim($_POST['nisnS'])):'';
 				// var_dump($nisn);exit();
-				// $tahunlus = isset($_POST['tahunlusS'])?filter(trim($_POST['tahunlusS'])):'';
-				$sql = 'SELECT *.s
-						 FROM aka_siswa s 
-						 LEFT JOIN aka_kelas k ON k.replid=s.kelas
-						 LEFT JOIN aka_tingkat g ON g.replid= s.angkatan
-						 LEFT JOIN aka_tahunajaran t ON t.replid= g.tahunajaran
-						 LEFT JOIN departemen d ON d.replid= g.angkatan
-
-						 WHERE 
-						 g.departemen = '.$departemen.'
-						 g.tahunajaran ='.$tahunajaran.'
-						 g.tahunajaran ='.$tahunajaran.'
-
-						 AND s.nisn LIKE "%'.$nisn.'%"
-						 AND s.nama LIKE "%'.$nama.'%"
-						 AND a.keterangan LIKE "%'.$ket.'%"';
-						 // '.($_POST['tahunlulusS']!=''?'and a.tahunlulus = '.$_POST['tahunlulus']:'').'
-
+						 // AND s.kelas ="%'.$kelas.'%"
+				$sql = 'SELECT
+							s.*
+						FROM
+							aka_siswa s
+							LEFT JOIN aka_siswa_kelas k ON k.siswa = s.replid
+							LEFT JOIN aka_angkatan a ON a.replid = s.angkatan
+							LEFT JOIN aka_kelas l ON l.replid = k.kelas
+							LEFT JOIN aka_subtingkat g ON g.replid = l.subtingkat
+							LEFT JOIN aka_tingkat t ON t.replid = l.tingkat
+							LEFT JOIN aka_tahunajaran j ON j.replid = t.tahunajaran
+							LEFT JOIN departemen d ON d.replid = j.departemen
+						WHERE
+							j.departemen = '.$departemen.'
+							AND a.departemen = '.$departemen.'
+							AND l.tahunajaran = '.$tahunajaran.'
+							AND l.tingkat = '.$tingkat.'
+							AND l.subtingkat = '.$subtingkat.'
+							AND k.kelas = '.$kelas.'
+							AND s.aktif = 1';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -118,9 +122,10 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
+									<td>'.$res['nis'].'</td>
 									<td>'.$res['nisn'].'</td>
-									<td>'.$res['nsiswa'].'</td>
-									<td>'.$res['ket'].'</td>
+									<td>'.$res['nama'].'</td>
+									<td>'.$res['tmplahir'].', '.tgl_indo($res['tgllahir']).'</td>
 									'.$btn.'
 								</tr>';
 									// <td>'.$res['tahunlulus'].'</td>

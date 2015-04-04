@@ -2,12 +2,14 @@ var mnu       = 'siswa';
 var mnu2      = 'departemen';
 var mnu3      = 'tahunajaran';
 var mnu4      = 'tingkat';
-var mnu5      = 'kelas';
+var mnu5      = 'subtingkat';
+var mnu6      = 'kelas';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = 'models/m_'+mnu2+'.php';
 var dir3      = 'models/m_'+mnu3+'.php';
 var dir4      = 'models/m_'+mnu4+'.php';
 var dir5      = 'models/m_'+mnu5+'.php';
+var dir6      = 'models/m_'+mnu6+'.php';
 var contentAdd=contentEdit='';
 
 // main function ---
@@ -99,9 +101,18 @@ var contentAdd=contentEdit='';
 
         //search action
         $('#departemenS').on('change',function(){
-            cmbtahunlulus2('filter',$(this).val(),'');
+            cmbtahunajaran($(this).val());
         });
-        $('#tahunlulusS').on('change',function (){
+        $('#tahunajaranS').on('change',function (){
+            cmbtingkat($(this).val());
+        });
+        $('#tingkatS').on('change',function (){
+            cmbsubtingkat($(this).val());
+        });
+        $('#subtingkatS').on('change',function (){
+            cmbkelas($(this).val());
+        });
+        $('#kelasS').on('change',function (){
             viewTB();
         });
         $('#cariBC').on('click',function(){
@@ -199,17 +210,47 @@ var contentAdd=contentEdit='';
                     }    
                 }
                     $('#tingkatS').html(out);
-                cmbkelas(dt.tingkat[0].replid,false,null);
+                cmbsubtingkat(dt.tingkat[0].replid,false,null);
+                
+            }
+        });
+    }
+//end of combo tingkat ----
+// combo subtingkat ---
+    function cmbsubtingkat(tkt){
+        $.ajax({
+            url:dir5,
+            data:'aksi=cmbsubtingkat&tingkat='+tkt,
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    if(dt.nama.length==0)
+                        out+='<option value="">kosong</option>';
+                    else{
+                        $.each(dt.nama, function(id,item){
+                            if(item.replid)
+                                out+='<option selected="selected" value="'+item.replid+'">'+item.subtingkat+'</option>';
+                            else
+                                out+='<option value="'+item.replid+'">'+item.subtingkat+'</option>';
+                        });
+                    }    
+                }
+                    $('#subtingkatS').html(out);
+                cmbkelas(dt.nama[0].replid,false,null);
                 
             }
         });
     }
 //end of combo tingkat ----
 // combo kelas ---
-    function cmbkelas(tkt){
+    function cmbkelas(stkt){
         $.ajax({
-            url:dir5,
-            data:'aksi=cmbkelas&kelas='+tkt,
+            url:dir6,
+            data:'aksi=cmbkelas&subtingkat='+stkt,
             dataType:'json',
             type:'post',
             success:function(dt){

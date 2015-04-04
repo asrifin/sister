@@ -23,6 +23,9 @@
     <select data-hint="Tingkat" name="tingkatS" id="tingkatS"></select>
 </div>
 <div class="input-control select span3">
+    <select data-hint="Sub Tingkat" name="subtingkatS" id="subtingkatS"></select>
+</div>
+<div class="input-control select span3">
     <select data-hint="Kelas" name="kelasS" id="kelasS"></select>
 </div>
 
