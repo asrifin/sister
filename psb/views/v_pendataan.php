@@ -11,15 +11,14 @@
 
 <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
-<button data-hint="Import Data" xclass="large" id="importBC">Import</button>
 <div class="input-control select span3">
-    <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
+    <select class="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
+    <select class="cari" data-hint="Tahun Ajaran" name="prosesS" id="prosesS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
+    <select class="cari" data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
 </div>
 
 <table id="pendataanTBL" style="display:visible;" class="table hovered bordered striped panelx" >
@@ -42,9 +41,9 @@
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <!-- <th class="text-left"></th> -->
-            <th class="text-left"><input placeholder="no pendaftaran" id="nopendaftaranS" name="nopendaftaranS"></th>
+            <th class="text-left"><input class="cari" placeholder="no pendaftaran" id="nopendaftaranS" name="nopendaftaranS"></th>
             <!-- <th class="text-left"><input placeholder="tglpendaftaran" id="tglpendaftaranS" name="tglpendaftaranS"></th> -->
-            <th class="text-left"><input placeholder="nama" id="namaS" name="namaS"></th>
+            <th class="text-left"><input class="cari" placeholder="nama" id="namaS" name="namaS"></th>
             <th class="text-left"></th>
             <th class="text-left"></th>
             <th class="text-left"></th>
@@ -64,45 +63,9 @@
     </tfoot>
 </table>
 
-<div class="table hovered bordered panelx" id="importFR" style="display:none;" >
-<!--           <div style="overflow:scroll;height:600px;" >
- -->                  <form autocomplete="off" enctype="multipart/form-data" onsubmit="importSV();return false;"> 
-                        <input id="import_idformH" type="hidden"> 
-                        <!-- Panel -->
-                        <div class="panel">
-                          <div class="panel-header bg-lightBlue fg-white">
-                          Import Data Siswa
-                          </div>
-                          <div class="panel-content">
-
-                          <div class="grid">     
-                            <div class="row">
-                              <div placeholder="choose a file" class="input-control file size3">
-                                  <input type="file" />
-                                  <button class="btn-file"></button>
-                              </div>
-                          
-                            </div>
-                          </div>
-                                <!-- End Grid-->
-                        </div>
-                        <div class="form-actions"> &nbsp;
-                            <button class="button primary">simpan</button>&nbsp;
-                            <a class="button" href="#" onclick="switchPN2(); return false;" >Batal</a> 
-                            <!-- <button class="button" type="button" onclick="$.Dialog.close()">Batal</button>  -->
-                        </div>
-
-                    </div>
-                            <!-- End Panel -->
-
-                       
-                    </form>
-        </div>
-        <!-- End panel Import -->
-
       <div class="table hovered bordered striped panelx" id="pendataanFR" style="display:none;" >
           <div style="overflow:scroll;height:600px;" >
-                  <form autocomplete="off" onsubmit="siswaSV();return false;"> 
+                  <form autocomplete="off" enctype="multipart/form-data" onsubmit="siswaSV();return false;" id="form"> 
                         <input id="idformH" type="hidden"> 
                         <!-- Panel -->
                         <div class="panel">
@@ -233,7 +196,7 @@
                           <div class="span6">
 
                         <label>Nomor Pendaftaran</label>
-                        <div class="input-control text3">
+                        <div class="input-control text size4">
                             <input placeholder="No Pendaftaran" type="text" name="nopendaftaranTB" id="nopendaftaranTB">
                         </div>
                         
@@ -261,7 +224,7 @@
                         </div>
 
                         <label>Tempat Lahir</label>
-                        <div class="input-control text3">
+                        <div class="input-control text size3">
                             <input placeholder="Tempat Lahir" type="text" name="tempatlahirTB" id="tempatlahirTB">
                         </div>
 
@@ -287,7 +250,7 @@
                         </div>
 
                         <label>Nomor telpon</label>
-                        <div class="input-control text3">
+                        <div class="input-control text size4">
                             <input placeholder="Nomor telpon" type="text" name="telpsiswaTB" id="telpsiswaTB">
                         </div>
 
@@ -328,7 +291,7 @@
                         </div>
 
                         <label>Nomor telpon :</label>
-                        <div class="input-control text3">
+                        <div class="input-control text size4">
                             <input placeholder="Nomor telpon" type="text" name="telpayahTB" id="telpayahTB">
                         </div>
 
@@ -374,7 +337,7 @@
                         </div>
 
                         <label>Nomor telpon :</label>
-                        <div class="input-control text3">
+                        <div class="input-control text size4">
                             <input placeholder="Nomor telpon" type="text" name="telpibuTB" id="telpibuTB">
                         </div>
 

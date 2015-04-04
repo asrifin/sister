@@ -3,7 +3,7 @@
     <div class="tile-group-title">Menu Utama</div>
 
     <!-- kriteria calon siswa -->
-    <a href="periode" class="tile double bg-lightBlue" data-click="transform">
+    <a href="proses" class="tile double bg-lightBlue" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-cog"></span>
         </div>

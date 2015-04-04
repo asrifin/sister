@@ -13,23 +13,24 @@ ____________________________________________________
 	- delete : all & per-record
 	- searching : all column, tidak ngefek ke "tabel" (C)
 	- filtering > combo :  jenis_buku & tingkat_buku , tidak ngefek ke "table"  (C)
-	- form (edit_mode) : tidak tampil		(+)
+	+ form (edit_mode) : tidak tampil		(+)
 	- SQL Where pengarang, penerbit, klasifikasi belum bisa
+	- paging -> SQl
 
 	- sorting : all column (belum ada lib/contoh) 
 * katalog (P)
-	- Insert (foto) dan semua data  (+)
-	- Tambah Koleksi menampilkan hasil yang sama meskipun pilih koleksi yang lain (+)
-	- Lihat katalog sql belum bisa nampil data koleksi (+)	
-	- Combogrid SQL pada models gimana kalau beda field??  (+)	
-	- Tambah koleksi untuk Lihat Katalog belum bisa (+)
-	- Edit Informasi Katalog pada View Katalog (+) --> ditambahkan ajax yang sama pada edit katalog
-	- pencarian judul pas jumlahnya 2 hasilnya ikut 2 (+) --> menggunakan SQL Group By
-	- data katalog berhasil di insert tapi di searching ga nampil (+) --> di SQL tampil pakai JOIN seharusnya LEFT JOIN
-	- cara memasukkan replid pada textbox klasifikasi,pengarang, penerbit (+) -->ditambahkan id hidden pada masing2 inputan
-	- pas edit katalog nyimpan klasifikasi,pengarang, penerbit tidak bisa (+) --> SQL ditambahkan select replid pada tabel
-	- combo lokasi pada view katalog (+) --> tambah filter pada cmblokasi
-	- pas tambah koleksi jumlah dan sumber ga nampil --> ARRAY disamakan namanya
+	+ Insert (foto) dan semua data  
+	+ Tambah Koleksi menampilkan hasil yang sama meskipun pilih koleksi yang lain 
+	+ Lihat katalog sql belum bisa nampil data koleksi (+)	
+	+ Combogrid SQL pada models gimana kalau beda field??  (+)	
+	+ Tambah koleksi untuk Lihat Katalog belum bisa (+)
+	+ Edit Informasi Katalog pada View Katalog (+) --> ditambahkan ajax yang sama pada edit katalog
+	+ pencarian judul pas jumlahnya 2 hasilnya ikut 2 (+) --> menggunakan SQL Group By
+	+ data katalog berhasil di insert tapi di searching ga nampil (+) --> di SQL tampil pakai JOIN seharusnya LEFT JOIN
+	+ cara memasukkan replid pada textbox klasifikasi,pengarang, penerbit (+) -->ditambahkan id hidden pada masing2 inputan
+	+ pas edit katalog nyimpan klasifikasi,pengarang, penerbit tidak bisa (+) --> SQL ditambahkan select replid pada tabel
+	+ combo lokasi pada view katalog (+) --> tambah filter pada cmblokasi
+	+ pas tambah koleksi jumlah dan sumber ga nampil --> ARRAY disamakan namanya
 	- simpan koleksi belum bisa 
 	- pas tambah katalog form edit katalog juga muncul
 	- cara generate id buku( dan barcode (lokasi,tingkatbuku, tahun, urut pd pus_buku)
@@ -38,12 +39,13 @@ ____________________________________________________
 	- view siswa, pegawai dan member lain hanya bisa menampilkan yang sudah pinjam aja (SQL)
 	-
 * sirkulasi (P)
-	- Peminjaman  -> cara menampilkan tanggal pengembalian
+	- Peminjaman  -> cara mengatur waktu pengembalian
 	- view sirkulasi -> field peminjam, Tgl Pengembalian, Tgl dikembalikan dan terlambat tidak tampil (sudah buat fungsi selisih tgl)
 	- view sirkulasi - field aksi -> tombol aksi kalau dipinjam muncul kalau dikembalikan tidak
 	- view sirkulasi - filter checkbox blm bisa
 	- cara sinkron status peminjaman pada tabel pus_peminjaman dan pus_buku ?
-	*statistik
+	
+	* statistik
 	- menampilkan jumlah yang dipinjam (filter tanggal)
 	- cmb statistik
 	
