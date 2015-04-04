@@ -11,11 +11,10 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^warna/?$	   									index.php?page=warna
 	RewriteRule   ^icon/?$	   									index.php?page=icon
 	
-	RewriteRule   ^kategori-rekening/?$   						index.php?page=kategorirekening
-	
 	#User
 	RewriteRule   ^level/?$				   						index.php?page=level
 	RewriteRule   ^user/?$					   					index.php?page=user
+	RewriteRule   ^grup-modul/?$			   					index.php?page=grupmodul
 	
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 

@@ -191,22 +191,23 @@
 						$w='where'.$mnu.'='.$_POST[$mnu];
 					}elseif (isset($_POST['tahunajaran'])) {
 						$w='where tahunajaran='.$_POST['tahunajaran'];
+					}elseif(isset($_POST['proses'])){
+						$w='where proses='.$_POST['proses'];
 					}
 				}
 				
-				$s	= ' SELECT
-							k.replid,k.kelompok
-						FROM
-							psb_kelompok k,
-							psb_proses p,
-							aka_tahunajaran t
-						WHERE
-							k.proses = p.replid
-						AND t.replid = p.tahunajaran
-						AND t.replid = '.$_POST['tahunajaran'].'
+				$s	= ' SELECT *
+						FROM '.$tb.' '.$w.'
 						ORDER BY
-							k.kelompok ASC';
-				// print_r($s);e xit();
+							kelompok ASC';
+							// psb_kelompok k,
+							// psb_proses p,
+							// aka_tahunajaran t
+						// WHERE
+						// 	k.proses = p.replid
+						// AND t.replid = p.tahunajaran
+						// AND t.replid = '.$_POST['tahunajaran'].'
+				// print_r($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar = $dt=array();

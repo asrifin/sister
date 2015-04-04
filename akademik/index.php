@@ -68,7 +68,7 @@
                     <li><a href="pendataan-siswa">Pendataan Siswa</a></li>
                     <li><a href="presensi-siswa">Presensi Siswa</a></li>
                     <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
-                    <li><a href="ni">ni</a></li>
+                    <!-- <li><a href="ni">ni</a></li> -->
                     <li><a href="mutasi">Pendataan Mutasi Siswa</a></li>
                 </ul>
             </div>
@@ -176,6 +176,9 @@
                     break;
                     case 'valumni':
                         require $d.'v_alumni.php';
+                    break;
+                    case 'vsiswa':
+                        require $d.'v_siswa.php';
                     break;
                     case 'vsubtingkat':
                         require $d.'v_subtingkat.php';
