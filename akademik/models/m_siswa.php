@@ -91,7 +91,6 @@
 							LEFT JOIN departemen d ON d.replid = j.departemen
 						WHERE
 							j.departemen = '.$departemen.'
-							AND a.departemen = '.$departemen.'
 							AND l.tahunajaran = '.$tahunajaran.'
 							AND l.tingkat = '.$tingkat.'
 							AND l.subtingkat = '.$subtingkat.'

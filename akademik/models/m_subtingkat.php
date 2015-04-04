@@ -120,12 +120,16 @@
 					if(isset($_POST[$mnu])){
 						$w='where '.$mnu.'='.$_POST[$mnu];
 					}
+					else{
+						$w='where tingkat='.$_POST['tingkat'];
+					}
 				}
 				
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
 						ORDER  BY replid asc';
+				// print_r($s);exit();
 
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
