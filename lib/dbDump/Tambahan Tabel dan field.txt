@@ -1,0 +1,16 @@
+* PSb calon siswa ->
+	- tambah -> field set biaya formulir pendaftaran tidak konek ke pendataan calon siswa
+	- hapus -> field yang ada di psb_calonsiswa sumpokok, sumnet, joiningf, sppbulan
+	- hapus -> field yang ada di psb_kelompok biaya
+	- hapus -> field yang ada di psb_setbiaya proses
+	- edit  -> tabel psb_calonkeluarga field ada yang dirubah
+	- tambah -> insert psb kelompok -> insert set biaya(otomatis,nominal = 0) 
+	- tambah -> field setbiaya di tabel psb_calonsiswa
+	- tambah -> field nama di tabel psb_disctunai
+* Keuangan
+	- Tambah tabel kon_
+	- 
+
+* Perpustakaan
+	- edit	-> tabel pus_katalog ada yang dirubah
+	

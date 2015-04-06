@@ -62,7 +62,7 @@
 					WHERE
 						md.id_grupmodul = '.$r2['id_grupmodul'];
 			// print_r($s3);exit();	
-			$e3       = mysql_query($s3);	
+			$e3       = mysql_query($s3) or die(mysql_error());	
 			$modulArr = array(); 
 			while ($r3 = mysql_fetch_assoc($e3)) {
 				// loop grup menu
