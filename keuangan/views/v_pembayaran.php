@@ -19,9 +19,10 @@
 
 <!-- tab -->
     <!-- keterangan :
-        - pendaftaranTAB : jurnal umum
-        - dppTAB : buku besar
-        - sppTAB : neraca saldo -->
+        - pendaftaranTAB : formulir n joining fee
+        - dppTAB : uang gedung
+        - sppTAB : spp semesteran 
+    -->
     <div  data-effect="fade" class="tab-control" data-role="tab-control">
         <ul class="tabs">
             <li onclick="switchPN('pendaftaran');" class="active"><a href="#pendaftaranTAB">Formulir Pendaftaran </a></li>
@@ -29,6 +30,7 @@
             <li onclick="switchPN('spp');"><a href="#sppTAB">SPP</a></li>
         </ul>
         <div class="frames">
+
             <!-- 1st content -->
             <div class="frame" id="pendaftaranTAB">    
                 <button id="juBC" data-hint="Pencarian" data-hint-position="top">
@@ -53,9 +55,9 @@
                             <th class="text-center">Aksi</th>
                         </tr>
                         <tr style="display:none;" id="pendaftaranTR" class="info">
-                            <th class="text-left"><input placeholder="pendaftaran_nopendaftaranS" id="pendaftaran_ju_nopendaftaranS" class="pendaftaran_cari"></th>
+                            <th class="text-left"><input placeholder="pendaftaran_nopendaftaranS" id="pendaftaran_nopendaftaranS" class="pendaftaran_cari"></th>
                             <th class="text-left"><input placeholder="pendaftaran_namaS" id="pendaftaran_namaS" class="pendaftaran_cari"></th>
-                            <th class="text-leftx"><input placeholder="pendaftaran_namaS" id="pendaftaran_namaS" class="pendaftaran_cari"></th>
+                            <th class="text-leftx"><input placeholder="pendaftaran_biayaS" id="pendaftaran_biayaS" class="pendaftaran_cari"></th>
                             <th class="text-left"></th>
                         </tr>
                     </thead>
@@ -67,6 +69,7 @@
                 </table>
             </div>
             <!-- end of 1st content -->
+
             <div class="frame" id="dppTAB">
                 Tampilkan Akun : 
                 <div class="input-control select span3">
@@ -95,25 +98,36 @@
                     <tfoot>
                     </tfoot>
                 </table>
-
             </div>
+
             <div class="frame" id="sppTAB">
+                <div class="input-control select span3">
+                    <select data-hint="Tahun Ajaran" class="spp_cari" name="spp_tahunajaranS" id="tahunajaranS"></select>
+                </div>
+                <div class="input-control select span3">
+                    <select data-hint="Tingkat" class="spp_cari" name="spp_tingkatS" id="tingkatS"></select>
+                </div>
+                <div class="input-control select span3">
+                    <select data-hint="Sub Tingkat" class="spp_cari" name="spp_subtingkatS" id="subtingkatS"></select>
+                </div>
+                <div class="input-control select span3">
+                    <select data-hint="Kelas" class="spp_cari" name="spp_kelasS" id="kelasS"></select>
+                </div>
+
                 <table class="table hovered bordered striped">
                     <thead>
                         <tr style="color:white;"class="info">
-                            <th class="text-center">Tanggal </th>
-                            <th class="text-center">No. Jurnal/Jenis Bukti/No.Bukti</th>
-                            <th class="text-center">Uraian</th>
-                            <th style="display:visible;"class="text-center  uraianCOL">Detil Jurnal</th>
+                            <th class="text-center">nis </th>
+                            <th class="text-center">nama</th>
+                            <th class="text-center">tunggakan</th>
                             <th class="text-center">Aksi</th>
                         </tr>
-                        <!-- <tr style="display:none;" id="sppTR" class="info">
+                        <tr style="display:none;" id="sppTR" class="info">
+                            <th class="text-left"><input placeholder="nis" id="spp_nisS" class="spp_cari"></th>
+                            <th class="text-left"><input placeholder="nama" id="spp_namaS" class="spp_cari"></th>
+                            <th class="text-left"><input placeholder="tunggakan" id="spp_tunggakanS" class="spp_cari"></th>
                             <th class="text-left"></th>
-                            <th class="text-left"><input onkeyup="inputuang(this);" placeholder="nomor jurnal" id="ju_noS" class="ju_cari"></th>
-                            <th class="text-left"><input placeholder="uraian" id="ju_uraianS" class="ju_cari"></th>
-                            <th style="display:visible;"class="text-left uraianCOL"></th>
-                            <th class="text-left"></th>
-                        </tr> -->
+                        </tr>
                     </thead>
 
                     <tbody id="spp_tbody">

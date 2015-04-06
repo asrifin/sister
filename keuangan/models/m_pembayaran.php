@@ -69,21 +69,23 @@
 				);
 			$out=json_encode($response);
 		}else{
-			$out=json_encode(array('status'=>'invalid_no_post'));	
+			$out=json_encode(array('status'=>'invalid_no_post'));
 		}
 	}else{
 		switch ($_POST['aksi']) {
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
-					case 'ju':
-						$ju_no     = isset($_POST['ju_noS'])?filter(trim($_POST['ju_noS'])):'';
-						$ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
-						$sql       = 'SELECT * 
-									from '.$tb.' 
-									WHERE 
-										(nomer like "%'.$ju_no.'%" OR nomer like "%'.$ju_no.'%" ) AND
-										uraian like "%'.$ju_uraian.'%"';
+					// pendaftaran 
+					case 'pendaftaran':
+						$pendaftaran_nama          = isset($_POST['pendaftaran_namaS'])?filter(trim($_POST['pendaftaran_namaS'])):'';
+						$pendaftaran_biaya         = isset($_POST['pendaftaran_biayaS'])?filter(trim($_POST['pendaftaran_biayaS'])):'';
+						$pendaftaran_nopendaftaran = isset($_POST['pendaftaran_nopendaftaranS'])?filter(trim($_POST['pendaftaran_nopendaftaranS'])):'';
+						$sql       = '	SELECT * 
+										FROM '.$tb.' 
+										WHERE 
+											(nomer like "%'.$ju_no.'%" OR nomer like "%'.$ju_no.'%" ) AND
+											uraian like "%'.$ju_uraian.'%"';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -93,7 +95,7 @@
 
 						$recpage = 5;//jumlah data per halaman
 						$aksi    ='tampil';
-						$subaksi ='ju';
+						$subaksi ='pendaftaran';
 						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 						$result  = $obj->result;
 
@@ -145,7 +147,71 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-					// grup barang
+					// pendaftaran 
+
+					// spp 
+					case 'spp':
+						$kelas = isset($_POST['kelasS'])?filter(trim($_POST['kelasS'])):'';
+						$nis   = isset($_POST['nisS'])?filter(trim($_POST['nisS'])):'';
+						$nama  = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
+						$biaya = isset($_POST['biayaS'])?filter(trim($_POST['biayaS'])):'';
+
+						$sql       = 'SELECT
+											s.nis,
+											s.nama,
+											p.lunas
+										FROM
+											aka_siswa_kelas sk
+											LEFT JOIN aka_siswa s on s.replid = sk.siswa
+											LEFT JOIN keu_pembayaran p on p.siswa= s.replid
+											LEFT JOIN keu_modulpembayaran m on m.replid = p.modul
+											LEFT JOIN keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
+										WHERE	
+											k.nama 		= "spp" and 
+											sk.kelas 	='.$kelas;
+						// print_r($sql);exit(); 	
+						if(isset($_POST['starting'])){ //nilai awal halaman
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
+
+						$recpage = 5;//jumlah data per halaman
+						$aksi    ='tampil';
+						$subaksi ='spp';
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+
+						#ada data
+						$jum = mysql_num_rows($result);
+						$out ='';$totaset=0;
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_assoc($result)){	
+								$btn ='<td>
+											<button data-hint="ubah"  class="button" onclick="juFR('.$res['replid'].');">
+												<i class="icon-pencil on-left"></i>
+											</button>
+											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
+												<i class="icon-remove on-left"></i>
+										 </td>';
+								 $out.= '<tr>
+											<td>'.$res['nis'].'</td>
+											<td>'.$res['nama'].'</td>
+											<td>'.$res['lunas'].'</td>
+											'.$btn.'
+										</tr>';
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan=9 ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+					break;
+					// spp 
 				}
 			break; 
 			// tampil ---------------------------------------------------------------------
