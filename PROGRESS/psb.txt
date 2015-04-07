@@ -9,19 +9,19 @@ ______________________________________________________
 
 PSB V2.0
 * periode penerimaan (P)
-	- view > warna table header	+
+	+ view > warna table header	
   	- form : 
-     		-title form : "undefined periode"	-
-	     	-angkatan : combo tidak ter-select  +
+     		-title form : "undefined periode"	
+	     	+ angkatan : combo tidak ter-select  
   	- search > belum ada	( tanpa Search)	
 
 * Kelompok Pendaftaran (P)
-	- paging > Menampilkan syntax query (klik next)	-
+	- paging > Menampilkan syntax query (klik next)	
 	- filtering > Combo "Tahun-Ajaran", table tidak tampil (onchange)	
 
 * Pendataan calon siswa (P)
 	- filtering >  combo "kelompok", table tidak ngefek (query)
-	- Form > scroll (view)
+	+ Form > scroll (view)
 	- paging > undefined (query)
 	
 * penerimaan siswa baru (P)
@@ -29,34 +29,34 @@ PSB V2.0
 ____________________________________________________
 
 * golongan calon siswa (C)
-	- view > 
-		- table header (theme) +
-		- form (dark backgound >theme)  
-		- button add (theme) 
-		- paging > ...
-	- searching :
-		- button search +
-		- event onkeydown (enter) +
+	+ view > 
+		+ table header (theme) 
+		+ form (dark backgound >theme)  
+		+ button add (theme) 
+		+ paging > ...
+	+ searching :
+		+ button search 
+		+ event onkeydown (enter) 
 	
 * kriteria calon siswa (C)
-	- view :
-		- table header (theme) +
-		- form (dark backgound >theme)  
-		- button add (theme)
-	- paging > ...
-	- searching :
-		- button search 	+
-		- event onkeydown (enter)  +
+	+ view :
+		+ table header (theme) 
+		+ form (dark backgound >theme)  
+		+ button add (theme)
+	+ paging > ...
+	+ searching :
+		+ button search 	
+		+ event onkeydown (enter)  
 
 * Set Biaya Calon Siswa (P)
-	- view gk tampil
+	- Belum
 
 * set angsuran (C)
-	- view :
-		- table header (theme)  +
-		- form (dark backgound >theme)  
-		- button add (theme)
-	- paging > ...
-	- searching :
-		- button search  +
-		- event onkeydown (enter)  +
+	+ view :
+		+ table header (theme)  +
+		+ form (dark backgound >theme)  
+		+ button add (theme)
+	+ paging > ...
+	+ searching :
+		+ button search  
+		+ event onkeydown (enter) 

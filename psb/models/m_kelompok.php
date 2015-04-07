@@ -32,7 +32,7 @@
 									psb_calonsiswa
 								WHERE
 									kelompok = k.replid
-								AND `status` = 0
+								AND status = 0
 							) calonsiswa,
 							(
 								SELECT
@@ -41,7 +41,7 @@
 									psb_calonsiswa
 								WHERE
 									kelompok = k.replid
-								AND `status` != 0
+								AND status != 0
 							) siswaditerima,
 							k.keterangan
 						FROM
@@ -52,7 +52,7 @@
 							k.proses = p.replid AND
 							p.tahunajaran = t.replid AND
 							t.replid = '.$tahunajaran;
-				print_r($sql);exit();
+				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -191,22 +191,23 @@
 						$w='where'.$mnu.'='.$_POST[$mnu];
 					}elseif (isset($_POST['tahunajaran'])) {
 						$w='where tahunajaran='.$_POST['tahunajaran'];
+					}elseif(isset($_POST['proses'])){
+						$w='where proses='.$_POST['proses'];
 					}
 				}
 				
-				$s	= ' SELECT
-							k.replid,k.kelompok
-						FROM
-							psb_kelompok k,
-							psb_proses p,
-							aka_tahunajaran t
-						WHERE
-							k.proses = p.replid
-						AND t.replid = p.tahunajaran
-						AND t.replid = '.$_POST['tahunajaran'].'
+				$s	= ' SELECT *
+						FROM '.$tb.' '.$w.'
 						ORDER BY
-							k.kelompok ASC';
-				// print_r($s);e xit();
+							kelompok ASC';
+							// psb_kelompok k,
+							// psb_proses p,
+							// aka_tahunajaran t
+						// WHERE
+						// 	k.proses = p.replid
+						// AND t.replid = p.tahunajaran
+						// AND t.replid = '.$_POST['tahunajaran'].'
+				// print_r($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar = $dt=array();

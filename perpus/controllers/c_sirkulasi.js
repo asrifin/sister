@@ -27,13 +27,14 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
                                 +'</tr>'
                                 +'<tr>'
                                       +'<td>Judul</td>'
-                                      +'<td>:<span id="judulTD"></span></td>'
+                                      +'<td>: <span id="judulTD"></span></td>'
                                 +'</tr>'
                                 +'<tr>'
                                       +'<td>Barkode</td>'
-                                      +'<td>:<span id="barkodeTD"></span></td>'
+                                      +'<td>: <span id="barkodeTD"></span></td>'
                                 +'</tr>'
                                 +'</table>'
+                                +'<br>'
                                 +'<div class="form-actions">' 
                                     +'<button class="button primary">simpan</button>&nbsp;'
                                     +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -169,7 +170,7 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
 
         kembali_contentFR +=
                            '<div style="overflow:scroll;height:500px;">'
-                           +'<form  class="span12" autocomplete="off" onsubmit="pinjamSV(); return false;">' 
+                           // +'<form  class="span12" autocomplete="off" onsubmit="pinjamSV(); return false;">' 
                            +'<legend>Daftar item yang dikembalikan</legend>'
                             +'<label>Lokasi</label>'
                             +'<div class="input-control select span4">'
@@ -194,8 +195,8 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
                                 +'</tfoot>'
                             +'</table>'
 
-                        +'</div>'
-                        +'</form>';
+                        +'</div>';
+                        // +'</form>';
                          //End div
 
         cmblokasi();
@@ -387,16 +388,34 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
             width: 500,
             padding: 10,
             onShow: function(){
+                    // $.ajax({
+                    //     url:dir,
+                    //     data:'aksi=ambiledit&replid='+id,
+                    //     type:'post',
+                    //     dataType:'json',
+                    //     success:function(dt){
+                    //         $('#idformH').val(id);
+                    //         $('#lokasiH').val($('#lokasiS').val());
+                    //         $('#kodeTB').val(dt.kode);
+                    //         $('#namaTB').val(dt.nama);
+                    //         $('#alamatTB').val(dt.alamat);
+                    //         $('#keteranganTB').val(dt.keterangan);
+                    //     }
+                    // });
+
                 var titl,cont;
-                if(id!=''){ //form mode : belum diterima 
+                if(id!=''){ 
                     cont= kembalikan_content;
                     titl= 'Pengembalian';
                     var res = sjax(dir,'aksi=ambiledit&subaksi=kembalikan&replid='+id);
                     setTimeout(function(){
-                            $('#judulTD').html(res.data.judul);
-                            $('#barkodeTD').html(res.data.barkode);
+                            // $('#judulTD').html(judul);
+                            // $('#barkodeTD').html(barkode);
+                            $('#judulTD').html(res.datax.judul);
+                            $('#barkodeTD').html(res.datax.barkode);
                     },100);
-                }$.Dialog.title(titl);
+                }
+                $.Dialog.title(titl);
                 $.Dialog.content(cont);
             }
         });

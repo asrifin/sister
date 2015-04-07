@@ -47,7 +47,6 @@
 					$nox 	= $starting+1;
 					$curKat = '';
 					while($res = mysql_fetch_assoc($result)){
-						// print_r($res);exit();	
 						if($res['kategorirekening']!=$curKat){
 							$ss = 'SELECT replid,nama,RPAD(kode,6,0)kode from keu_kategorirekening where replid='.$res['kategorirekening'];	
 							$ee = mysql_query($ss);
@@ -58,10 +57,10 @@
 									</tr>';
 						}else{
 							$btn ='<td>
-										<button data-hint="ubah" '.(getAksi($menu,'u')==false?'disabled':'').' class="button" onclick="viewFR('.$res['replid'].');">
+										<button data-hint="ubah" '.isDisabled($menu,'u').' class="button" onclick="viewFR('.$res['replid'].');">
 											<i class="icon-pencil on-left"></i>
 										</button>
-										<button data-hint="hapus" '.(getAksi($menu,'d')==false?'disabled':'').'  class="button" onclick="del('.$res['replid'].');">
+										<button data-hint="hapus" '.isDisabled($menu,'d').'  class="button" onclick="del('.$res['replid'].');">
 											<i class="icon-remove on-left"></i>
 									 </td>';
 							$out.= '<tr>

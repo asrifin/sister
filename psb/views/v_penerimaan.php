@@ -10,13 +10,13 @@
 <!-- <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button> -->
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 <div class="input-control select span3">
-    <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
+    <select data-hint="Departemen" class="cari" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
+    <select data-hint="Tahun Ajaran" class="cari" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
+    <select data-hint="Kelompok" class="cari" name="kelompokS" id="kelompokS"></select>
 </div>
 
 <table class="table hovered bordered striped">
@@ -30,8 +30,8 @@
             <th class="text-left">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-left"><input placeholder="No Pendaftaran" id="no_pendaftaranS" name="no_pendaftaranS"></th>
-            <th class="text-left"><input placeholder="nama" id="namaS" name="namaS"></th>
+            <th class="text-left"><input class="cari" placeholder="No Pendaftaran" id="no_pendaftaranS" name="no_pendaftaranS"></th>
+            <th class="text-left"><input class="cari" placeholder="nama" id="namaS" name="namaS"></th>
             <th class="text-left"></th>
             <th class="text-left"></th>
             <th class="text-left"></th>

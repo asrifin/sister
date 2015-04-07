@@ -5,8 +5,8 @@
 <h4 style="color:white;">Detil Rekening</h4>
 <div id="loadarea"></div>
 
-<button <?php $dis=getAksi('COA','c')==false?'disabled':'';echo $dis; ?> data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
-<button  <?php $dis=getAksi('COA','s')==false?'disabled':'';echo $dis; ?> data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
+<button <?php isDisabled('COA','c'); ?> data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<button  <?php isDisabled('COA','s'); ?> data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
 <div class="input-control select span3">
     <select data-hint="Kategori Rekening" class="cari" name="kategorirekeningS" id="kategorirekeningS"></select>

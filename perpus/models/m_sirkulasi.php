@@ -427,7 +427,7 @@
 				switch ($_POST['subaksi']) {
 					case 'kembalikan';
 						$s = 'SELECT
-											pj.replid,
+											pj.replid as replid,
 											tanggal1 tgl_pinjam,
 										    tanggal2 pengembalian,
 										    tanggal3 dikembalikan,
@@ -448,7 +448,7 @@
 										LEFT JOIN pus_buku pb ON pb.replid = pj.buku
 										LEFT JOIN pus_katalog pk ON pk.replid = pb.katalog
 									WHERE 
-										pj.replid';
+										pj.replid ';
 						// var_dump($s);exit();
 						$e 		= mysql_query($s);
 						$r 		= mysql_fetch_assoc($e);
