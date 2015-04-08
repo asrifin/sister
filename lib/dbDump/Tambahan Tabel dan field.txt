@@ -1,16 +1,23 @@
-* PSb calon siswa ->
+	- tambah -> insert psb kelompok -> insert set biaya(otomatis,nominal = 0) 
 	- tambah -> field set biaya formulir pendaftaran tidak konek ke pendataan calon siswa
+
+PENAMBAHAN TABEL atau PENAMBAHAN FIELD
+* PSb calon siswa ->
 	- hapus -> field yang ada di psb_calonsiswa sumpokok, sumnet, joiningf, sppbulan
 	- hapus -> field yang ada di psb_kelompok biaya
 	- hapus -> field yang ada di psb_setbiaya proses
-	- edit  -> tabel psb_calonkeluarga field ada yang dirubah
-	- tambah -> insert psb kelompok -> insert set biaya(otomatis,nominal = 0) 
-	- tambah -> field setbiaya di tabel psb_calonsiswa
-	- tambah -> field nama di tabel psb_disctunai
+	- edit  -> tabel psb_calonkeluarga field ada yang dirubah (tanda hubung diganti underscore) 
+	- tambah -> field setbiaya(int 10 -> not null) di tabel psb_calonsiswa
+	- tambah -> field nama(varchar 50 -> not null) di tabel psb_disctunai
+	- tambah -> Pendataan Calon Siswa -> field photo2(longtext) di tabel psb_calonsiswa
 * Keuangan
-	- Tambah tabel kon_
-	- 
+	- Tambah tabel kon_ -> Folder 20150402
+	- Tambah tabel keu_anggarantahunan, keu_detailanggaran, keu_kategorianggaran
+	- keu_koderekening, keu_detailrekening, keu_saldorekening 
 
 * Perpustakaan
-	- edit	-> tabel pus_katalog ada yang dirubah
+	- edit	-> tabel pus_katalog yang dirubah klasifikasi-kode diganti klasifikasi_kode
 	
+* Akademik
+	- tambah -> aka_kelas -> field subtingkat
+	- tambah -> tabel aka_subtingkat
