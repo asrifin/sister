@@ -21,3 +21,4 @@ PENAMBAHAN TABEL atau PENAMBAHAN FIELD
 * Akademik
 	- tambah -> aka_kelas -> field subtingkat
 	- tambah -> tabel aka_subtingkat
+	- tambah -> field setbiaya(int 10 -> not null) di tabel aka_siswa
