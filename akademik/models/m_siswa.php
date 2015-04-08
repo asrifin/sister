@@ -114,9 +114,9 @@
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
 						$btn ='<td>
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
-										<i class="icon-pencil on-left"></i>
-									</button>
+									<button data-hint="detail"  class="button" onclick="viewFR('.$res['replid'].');">
+												<i class="icon-zoom-in"></i>
+											</button>
 									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 								 </td>';

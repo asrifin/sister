@@ -4,83 +4,39 @@ var mnu3      = 'tahunajaran';
 var mnu4      = 'tingkat';
 var mnu5      = 'subtingkat';
 var mnu6      = 'kelas';
+var mnu7      = 'angkatan';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = 'models/m_'+mnu2+'.php';
 var dir3      = 'models/m_'+mnu3+'.php';
 var dir4      = 'models/m_'+mnu4+'.php';
 var dir5      = 'models/m_'+mnu5+'.php';
 var dir6      = 'models/m_'+mnu6+'.php';
+var dir7      = 'models/m_'+mnu7+'.php';
 var contentAdd=contentEdit='';
 
 // main function ---
-    $(document).ready(function(){
-            contentAdd+='<div style="overflow:scroll;height:500px;"  class="">'
-                   +'<legend>Data Siswa</legend>'
+   $(document).ready(function(){
+        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+                        +'<input id="idformH" type="hidden">' 
+                        +'<label>Angkatan</label>'
+                            +'<div class="input-control select">'
+                                +'<select required name="angkatanTB" id="angkatanTB"></select>'
+                            +'</div>'
+                        +'<label>Nama Lokasi</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="nisn/nama siswa" id="siswaTB">'
+                            +'<input  placeholder="lokasi" required type="text" name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<table class="table hovered bordered striped">'
-                            +'<thead>'
-                                +'<tr style="color:white;"class="info">'
-                                    +'<th class="text-center">nisn</th>'
-                                    +'<th class="text-center">siswa</th>'
-                                    +'<th class="text-center">Aksi</th>'
-                                +'</tr>'
-                            +'</thead>'
-                            +'<tbody id="siswaTBL">'
-                            +'</tbody>'
-                                // +'<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih siswa.. </td></tr>'
-                            +'<tfoot>'
-                            +'</tfoot>'
-                        +'</table>'
-
-                    +'<legend>Data Peminjaman</legend>'
-                    +'<form onsubmit="simpan();return false;" autocomplete="off"><input id="idformH" type="hidden">' 
-                        +'<label>Departemen</label>'
-                        +'<div class="input-control select">'
-                            +'<select onchange="cmbtahunlulus2(\'form\',this.value,\'\');" name="departemenTB" id="departemenTB"></select>'
-                        +'</div>'
-
-                        +'<label>Tahun Lulus</label>'
-                        +'<div class="input-control select span3">'
-                            +'<select  name="tahunlulusTB" id="tahunlulusTB"></select>'
-                        +'</div>'
-                        
-                        // +'<label>Keterangan</label>'
-                        // +'<div class="input-control textarea">'
-                        //     +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
-                        // +'</div>'
-
-                        +'<div class="form-actions">' 
-                            +'<button class="button primary">simpan</button>&nbsp;'
-                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-                        +'</div>'
-
-                    +'</form>'
-                +'</div>';
-                contentEdit+='<div style="overflow:scroll;height:500px;"  class="">'
-                        +'<legend>Data Peminjaman</legend>'
-                        +'<form onsubmit="simpan();return false;" autocomplete="off"><input id="idformH" type="hidden">' 
-                        +'<label>NISN</label>'
+                        +'<label>Alamat</label>'
                         +'<div class="input-control text">'
-                            +'<input disabled id="nisnTB" name="nisnTB">'
-                            // +'<input  type="hidden" name="nisnH" id="nisnH" >'
+                            +'<input  placeholder="alamat" required type="text" name="alamatTB" id="alamatTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        
-                        +'<label>Nama Siswa</label>'
+                        +'<label>Kontak</label>'
                         +'<div class="input-control text">'
-                            +'<input disabled id="siswa2TB" name="siswa2TB">'
-                            +'<input  type="hidden" name="siswaH" id="siswaH" >'
+                            +'<input  placeholder="kontak / no telp" required type="text" name="kontakTB" id="kontakTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>Tahun Lulus</label>'
-                        +'<div class="input-control select span3">'
-                            +'<input disabled name="tahunlulusTB" id="tahunlulusTB"></select>'
-                            +'<input  type="hidden" name="tahunlulusH" id="tahunlulusH" >'
-                        +'</div>'
-
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
@@ -89,7 +45,7 @@ var contentAdd=contentEdit='';
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
-                        +'</form>'
+                    +'</form>';
 
         cmbdepartemen();
         // cmbdepartemen(false,'');
@@ -132,6 +88,29 @@ var contentAdd=contentEdit='';
     }); 
 // end of save process ---
 
+// combo angkatan
+    function cmbangkatan(){
+        $.ajax({
+            url:dir7,
+            data:'aksi=cmbangkatan',
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.angkatan, function(id,item){
+                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                    });
+                    //panggil fungsi viewTB() ==> tampilkan tabel 
+                    viewTB(dt.angkatan[0].replid); 
+                }$('#angkatanS').html(out);
+                viewFR();
+            }
+        });
+    }
+// end combo angkatan
 // combo departemen ---
     function cmbdepartemen(){
         $.ajax({
@@ -172,9 +151,9 @@ var contentAdd=contentEdit='';
                         out+='<option value="">kosong</option>';
                     else{
                         $.each(dt.tahunajaran, function(id,item){
-                            if(item.replid)
-                                out+='<option selected="selected" value="'+item.replid+'">'+item.tahunajaran+'</option>';
-                            else
+                            // if(item.replid)
+                            //     out+='<option selected="selected" value="'+item.replid+'">'+item.tahunajaran+'</option>';
+                            // else
                                 out+='<option value="'+item.replid+'">'+item.tahunajaran+'</option>';
                         });
                     }    
@@ -202,9 +181,9 @@ var contentAdd=contentEdit='';
                         out+='<option value="">kosong</option>';
                     else{
                         $.each(dt.tingkat, function(id,item){
-                            if(item.replid)
-                                out+='<option selected="selected" value="'+item.replid+'">'+item.tingkat+'</option>';
-                            else
+                            // if(item.replid)
+                            //     out+='<option selected="selected" value="'+item.replid+'">'+item.tingkat+'</option>';
+                            // else
                                 out+='<option value="'+item.replid+'">'+item.tingkat+'</option>';
                         });
                     }    
@@ -232,9 +211,7 @@ var contentAdd=contentEdit='';
                         out+='<option value="">kosong</option>';
                     else{
                         $.each(dt.nama, function(id,item){
-                            if(item.replid)
-                                out+='<option selected="selected" value="'+item.replid+'">'+item.subtingkat+'</option>';
-                            else
+                            
                                 out+='<option value="'+item.replid+'">'+item.subtingkat+'</option>';
                         });
                         $('#subtingkatS').html(out);
@@ -262,9 +239,9 @@ var contentAdd=contentEdit='';
                         out+='<option value="">kosong</option>';
                     else{
                         $.each(dt.kelas, function(id,item){
-                            if(item.replid)
-                                out+='<option selected="selected" value="'+item.replid+'">'+item.kelas+'</option>';
-                            else
+                            // if(item.replid)
+                            //     out+='<option selected="selected" value="'+item.replid+'">'+item.kelas+'</option>';
+                            // else
                                 out+='<option value="'+item.replid+'">'+item.kelas+'</option>';
                         });
                     }    
