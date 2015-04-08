@@ -21,14 +21,26 @@ var dir9 ='../akademik/models/m_'+mnu9+'.php';
 var pembayaran_contentFR = k_contentFR = b_contentFR ='';
 // main function load first 
     $(document).ready(function(){
-        // default tampilkan jurnal umum 
         cmbdepartemen('filter','');
         // switchPN('pendaftaran');
 
+        // event  filter : departemen 
         $('#departemenS').on('change',function(){
             switchPN();
         });
-
+        // event filter : pendaftaran
+        $('#prosesS').on('change',function(){
+            cmbkelompok('filter',$(this).val());
+        });$('#tahunajaranS').on('change',function(){
+            cmbtingkat('filter',$(this).val());
+        });$('#kelompokS').on('change',function(){
+            viewTB('pendaftaran');
+        });
+        // event filter : dpp 
+        $('#angkatanS').on('change',function(){
+            viewTB('dpp');
+        });        
+        // event filter : spp
         $('#tahunajaranS').on('change',function(){
             cmbtingkat('filter',$(this).val());
         });
@@ -41,9 +53,7 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
         $('#kelasS').on('change',function(){
             viewTB(curTab());
         });
-        // $('.tabs li a').on('click',function(){
-        //     switchPN($(this).attr('href'));
-        // });
+        // event : button click
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });
@@ -134,6 +144,12 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
         $('#ju_detiljurnalCB').on('click',function(){
             $('.uraianCOL').toggle();
         });
+
+    // useless
+        // $('.tabs li a').on('click',function(){
+        //     switchPN($(this).attr('href'));
+        // });
+
     }); 
 // end of main function ---------
     
@@ -826,7 +842,6 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
                     });
                     if(typ=='filter'){
                         $('#kelompokS').html('<option value="">-SEMUA-</option>'+out);
-                        // alert(curTab());
                         viewTB(curTab());
                     }else{
                         $('#kelompokTB').html(out);

@@ -31,7 +31,7 @@
         </ul>
         <div class="frames">
 
-            <!-- 1st content -->
+            <!-- pendaftaran  -->
             <div class="frame" id="pendaftaranTAB">    
                 <button id="juBC" data-hint="Pencarian" data-hint-position="top">
                     <i class="icon-search" ></i>
@@ -62,7 +62,7 @@
                         </tr>
                     </thead>
 
-                    <tbody id="ju_tbody">
+                    <tbody id="pendaftaran_tbody">
                     </tbody>
                     <tfoot>
                     </tfoot>
@@ -102,16 +102,16 @@
 
             <div class="frame" id="sppTAB">
                 <div class="input-control select span3">
-                    <select data-hint="Tahun Ajaran" class="spp_cari" name="spp_tahunajaranS" id="tahunajaranS"></select>
+                    <select data-hint="Tahun Ajaran" class="spp_cari" name="tahunajaranS" id="tahunajaranS"></select>
                 </div>
                 <div class="input-control select span3">
-                    <select data-hint="Tingkat" class="spp_cari" name="spp_tingkatS" id="tingkatS"></select>
+                    <select data-hint="Tingkat" class="spp_cari" name="tingkatS" id="tingkatS"></select>
                 </div>
                 <div class="input-control select span3">
-                    <select data-hint="Sub Tingkat" class="spp_cari" name="spp_subtingkatS" id="subtingkatS"></select>
+                    <select data-hint="Sub Tingkat" class="spp_cari" name="subtingkatS" id="subtingkatS"></select>
                 </div>
                 <div class="input-control select span3">
-                    <select data-hint="Kelas" class="spp_cari" name="spp_kelasS" id="kelasS"></select>
+                    <select data-hint="Kelas" class="spp_cari" name="kelasS" id="kelasS"></select>
                 </div>
 
                 <table class="table hovered bordered striped">
