@@ -45,11 +45,11 @@ var content_stat = content_det = '';
                             +'</tr>'
                         +'</table>'
                         
-                        +'<input id="idformH" type="hidden">' 
+                        +'<input id="idformH" name="idformH" type="text">' 
                         +'<legend>Silahkan lengkapi data berikut:</legend>'
                         +'<label>No Induk</label>'
                         +'<div class="input-control text size2">'
-                            +'<input required type="text" name="no_indukTB" id="no_indukTB">'
+                            +'<input required type="text" name="nisTB" id="nisTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -356,7 +356,7 @@ var content_stat = content_det = '';
     }
 
 //load  dialog form  ---
-    function loadModal(typ,id){
+    function loadModal(typ,calon){
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -366,10 +366,12 @@ var content_stat = content_det = '';
             onShow: function(){
                 var titl,cont;
                 if(typ=='belum'){ //form mode : belum diterima 
+                    // alert(calon);
                     cont= content_stat;
                     titl= 'Calon Siswa (belum dikonfirmasi)';
-                    var res = sjax(dir,'aksi=ambiledit&subaksi=status&replid='+id);
+                    var res = sjax(dir,'aksi=ambiledit&subaksi=status&replid='+calon);
                     setTimeout(function(){
+                    $('#idformH').val(calon);
                         $('#namaTD').html(res.data.nama);
                         $('#nopendaftaranTD').html(res.data.nopendaftaran);
                         $('#departemenTD').html(res.data.departemen);
@@ -378,7 +380,7 @@ var content_stat = content_det = '';
                 }else if(typ='sudah'){ // form mode : sudah diterima
                     cont= content_det;
                     titl= 'Batalkan Penerimaan Siswa';
-                    ajax(dir,'aksi=ambiledit&subaksi=batal&replid='+id).done(function(res){
+                    ajax(dir,'aksi=ambiledit&subaksi=batal&replid='+calon).done(function(res){
                         $('#nama_batalTD').html(res.data.nama_batal);
                     });
                 }else{ // form mode : detail calon siswa

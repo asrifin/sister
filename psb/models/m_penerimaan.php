@@ -110,30 +110,68 @@
 			// edit -----------------------------------------------------------------
 			case 'simpan':
 				switch ($_POST['subaksi']) {
-					case 'status':
-						$s1 = 'UPDATE psb_calonsiswa set status  = 1 WHERE replid='.$_POST['replid'];
+					case 'penerimaan':
+						$s = 'SELECT * 
+								FROM 
+								psb_calonsiswa
+								WHERE replid = '.$_POST['idformH'];
+						$e = mysql_query($s);
+						$r = mysql_fetch_assoc($e);
+
+
+						$s2  ='INSERT INTO '. $tb.' set 	kriteria 		= "'.$r['kriteria'].'",
+												golongan      = "'.$r['golongan'].'",
+												nis           = "'.filter($_POST['nisTB']).'",
+												nisn          = "'.filter($_POST['nisnTB']).'",
+												setbiaya      = "'.$r['setbiaya'].'",
+												sumpokok      = "'.$r['sumpokok'].'",
+												sumnet        = "'.$r['sumnet'].'",
+												sppbulan      = "'.$r['sppbulan'].'",
+												jmlangsur     = "'.$r['jmlangsur'].'",
+												angsuran      = "'.$r['angsuran'].'",
+												disctb        = "'.$r['disctb'].'",
+												disctb        = "'.$r['disctb'].'",
+												disctunai     = "'.$r['disctunai'].'",
+												disctotal     = "'.$r['disctotal'].'",
+												nopendaftaran = "'.$r['nopendaftaran'].'",
+												nama          = "'.$r['nama'].'",
+												kelamin       = "'.$r['kelamin'].'",
+												tmplahir      = "'.$r['tmplahir'].'",
+												tgllahir      = "'.$r['tgllahir'].'",
+												agama         = "'.$r['agama'].'",
+												alamat        = "'.$r['alamat'].'",
+												telpon        = "'.$r['telpon'].'",
+												sekolahasal   = "'.$r['sekolahasal'].'",
+												darah         = "'.$r['darah'].'",
+												kesehatan     = "'.$r['kesehatan'].'",
+												ketkesehatan  = "'.$r['ketkesehatan'].'"
+												';
+												var_dump($s2);exit();
+						$e2 =  mysql_query($s2);
+						if ($e2) {
+							$s3 = 'UPDATE psb_calonsiswa set status  = 1 WHERE replid='.$_POST['idformH'];
+							$e3 =  mysql_query($s3);
+							if ($e3) {
+								# code...
+							$stat = 'sukses';
+							}else{
+							$stat = 'gagal_update_calon_siswa';
+								
+							}
+						}else{
+							$stat = 'gagal_insert_aka_siswa';
+						}
 						
-						$s2 = $tb.' set nis           = '.$_POST['nisTB'].',
-										nisn          = '.$_POST['nisnTB'].',
-										nopendaftaran = '.$_POST['nopendaftaran'].',
-										nama          = '.$_POST['nama'].',
-										angkatan      = '.$_POST['angkatanTB'].',
-										proses        = '.$_POST['prosesTB'].',
-										kelompok      = '.$_POST['kelompokTB'].',
-										kriteria      = '.$_POST['kriteriaTB'].',
-										golongan      = '.$_POST['golonganTB'].',
-										status        = '.$_POST['statusTB'].',
-										kelamin       = '.$_POST['kelaminTB'].',
-										';
-						$x = mysql_fetch_assoc(mysql_query('select * from psb_calonsiswa where replid= '.$_POST['replid']));
+						
+						// $x = mysql_fetch_assoc(mysql_query('select * from psb_calonsiswa where replid= '.$_POST['replid']));
 						// var_dump($x);exit();
 						// $s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 						// $e2 = mysql_query($s2) or die(mysql_error());
 						// if(!$e2){
 						// 	$stat = 'gagal menyimpan';
 						// }else{
-						// 	$stat = 'sukses';
-						// }$out  = json_encode(array('status'=>$stat));
+						// }
+						$out  = json_encode(array('status'=>$stat));
 					break;
 
 					/*case 'status':
