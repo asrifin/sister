@@ -169,7 +169,7 @@
 										WHERE	
 											k.nama 		= "spp" and 
 											sk.kelas 	='.$kelas;
-						// print_r($sql);exit(); 	
+						// print_r($sql);exit(); 		
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{

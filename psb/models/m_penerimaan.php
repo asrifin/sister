@@ -59,8 +59,8 @@
 						}
 
 						$btn ='<td>
-									<button data-hint="ubah"  onclick="loadModal(\'sudah\','.$res['replid'].');">
-										<i class="icon-search on-left"></i>
+									<button data-hint="Lihat detail siswa"  onclick="loadModal(\'sudah\','.$res['replid'].');">
+										<i class="icon-zoom-in on-left"></i>
 									</button>
 								 </td>';
 						//Tombol Status								 
@@ -77,11 +77,20 @@
 										</button>
 									 </td>';						
 						}
+								//Jika sudah diterima tampilkan nisn
+								if($res['idsiswa']!=0){
+									$ts=mysql_query("SELECT nis,nisn FROM aka_siswa WHERE replid='".$res['idsiswa']."'");
+									$rs=mysql_fetch_array($ts);
+									$res['nis']=$rs['nis'];
+									$res['nisn']=$rs['nisn'];
+								}
+							// $xtable->td($r['nis']==''?'-':$r['nis'],100);
+
 						$out.= '<tr>
 									<td>'.$res['nopendaftaran'].'</td>
 									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
-									<td>-</td>
-									<td>-</td>
+									<td>'.(isset($res['nis'])==''?'-':$res['nis']).'</td>
+									<td>'.(isset($res['nisn'])==''?'-':$res['nisn']).'</td>
 									'.$btn_terima.'
 									'.$btn.'
 								</tr>';
@@ -117,7 +126,7 @@
 										kelamin       = '.$_POST['kelaminTB'].',
 										';
 						$x = mysql_fetch_assoc(mysql_query('select * from psb_calonsiswa where replid= '.$_POST['replid']));
-						var_dump($x);exit();
+						// var_dump($x);exit();
 						// $s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 						// $e2 = mysql_query($s2) or die(mysql_error());
 						// if(!$e2){
@@ -180,19 +189,20 @@
 								)));					
 					break;
 
-					case 'penerimaan':
-						$s 		= ' SELECT *
-							from '.$tb.'
-							WHERE 
-								replid='.$_POST['replid'];
+					case 'batal':
+						$s 		= ' SELECT replid,
+										   nama nama_batal	
+									from '.$tb.'
+									WHERE 
+										replid='.$_POST['replid'];
 						// print_r($s);exit();
 						$e 		= mysql_query($s);
 						$r 		= mysql_fetch_assoc($e);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array(
 							'status'     =>$stat,
-							'nama'   	=>$r['nama'],
-							'nopendaftaran' =>$r['nopendaftaran'],
+							'nama_batal' =>$r['nama_batal'],
+							// 'nopendaftaran' =>$r['nopendaftaran'],
 						));
 					break;
 				}

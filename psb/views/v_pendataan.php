@@ -114,7 +114,7 @@
                                   </select>
                               </div>
                               <label>Angusuran per Bulan</label>
-                              <div class="input-control text size3">
+                              <div class="input-control text size2">
                                   <input type="text" name="angsuranbulanTB" id="angsuranbulanTB">
                                   <button class="btn-clear"></button>
                               </div>

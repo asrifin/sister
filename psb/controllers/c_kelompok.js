@@ -1,9 +1,9 @@
 var mnu       = 'kelompok';
 var mnu2      = 'departemen';
-var mnu3      = 'tahunajaran';
+var mnu3      = 'proses';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
-var dir3      = '../akademik/models/m_'+mnu3+'.php';
+var dir3      = 'models/m_'+mnu3+'.php';
 var contentFR = '';
 
 // main function ---
@@ -19,7 +19,7 @@ var contentFR = '';
                         +'</div>'
                         
                         +'<label>Tahun Ajaran</label>'
-                        +'<div class="input-control text size2">'
+                        +'<div class="input-control text size3">'
                             +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
                             +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
                             +'<button class="btn-clear"></button>'
@@ -27,7 +27,7 @@ var contentFR = '';
                         
                         +'<label>Kelompok</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="Kelompok" oninvalid="this.setCustomValidity(\'isi dulu gan\');" required type="text" name="kelompokTB" id="kelompokTB">'
+                            +'<input placeholder="Kelompok" oninvalid="this.setCustomValidity(\'Mohon isi dulu\');" required type="text" name="kelompokTB" id="kelompokTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
@@ -51,7 +51,7 @@ var contentFR = '';
 
                         +'<label>Biaya Pendaftaran</label>'
                         +'<div class="input-control text size2">'
-                            +'<input placeholder="Biaya Pendaftaran" oninvalid="this.setCustomValidity(\'isi dulu gan\');" required type="text" name="biaya_pendaftaranTB" id="biaya_pendaftaranTB">'
+                            +'<input placeholder="Biaya Pendaftaran" oninvalid="this.setCustomValidity(\'Mohon isi dulu\');" required type="text" name="biaya_pendaftaranTB" id="biaya_pendaftaranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -76,12 +76,12 @@ var contentFR = '';
         });
 
         //search action
-        $('#tahunajaranS').on('change',function (){
+        $('#prosesS').on('change',function (){
             viewTB();
-            // cmbtahunajaran($('#departemenS').val());
+            // cmbproses($('#departemenS').val());
             // alert('p');
         });$('#departemenS').on('change',function(){
-            cmbtahunajaran($(this).val());
+            cmbproses($(this).val());
         });
         // $('#kelompokS').keydown(function(e){
         //     if(e.keyCode==13)
@@ -117,18 +117,17 @@ var contentFR = '';
                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
                     $('#departemenS').html(out);
-                }cmbtahunajaran(dt.departemen[0].replid);
+                }cmbproses(dt.departemen[0].replid);
             }
         });
     }
 //end of combo departemen ---
 
 // combo tahunajaran ---
-    function cmbtahunajaran(dep){
-        // alert(dep);
+    function cmbproses(dep){
         $.ajax({
             url:dir3,
-            data:'aksi=cmbtahunajaran&departemen='+dep,
+            data:'aksi=cmbproses&departemen='+dep,
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -136,16 +135,17 @@ var contentFR = '';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    $.each(dt.tahunajaran, function(id,item){
+                    $.each(dt.proses, function(id,item){
                         if(item.aktif=='1'){
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.tahunajaran+' (aktif)</option>';
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.proses+' (aktif)</option>';
                         }else{
-                            out+='<option value="'+item.replid+'">'+item.tahunajaran+'</option>';
+                            out+='<option value="'+item.replid+'">'+item.proses+'</option>';
                         }
                     });
-                    // viewTB(dep,dt.tahunajaran[0].replid); 
+                    // viewTB(dep,dt.proses[0].replid); 
                 }
-                $('#tahunajaranS').html(out);
+                $('#prosesS').html(out);
+                // cmbkelompok(dt.proses[0].replid);
                 viewTB(); 
             }
         });
@@ -186,7 +186,7 @@ var contentFR = '';
 // view table ---
     function viewTB(){
         var aksi ='aksi=tampil';
-        var cari = '&tahunajaranS='+$('#tahunajaranS').val()
+        var cari = '&prosesS='+$('#prosesS').val()
                     // +'&kelompokS='+$('#kelompokS').val()
                      +'&departemenS='+$('#departemenS').val();
         // alert(cari);        
@@ -223,7 +223,7 @@ var contentFR = '';
                         dataType:'json',
                         success:function(dt){
                             $('#departemenH').val($('#departemenS').val());
-                            $('#tahunajaranH').val($('#tahunajaranS').val());
+                            $('#tahunajaranH').val($('#prosesS').val());
                             var out;
                             if(dt.status!='sukses'){
                                 out=dt.status;
@@ -233,7 +233,7 @@ var contentFR = '';
                         // form :: tahun ajaran (disabled field) --------------
                             $.ajax({
                                 url:dir3,
-                                data:'aksi=cmbtahunajaran&departemen='+$('#departemenS').val()+'&replid='+$('#tahunajaranS').val(),
+                                data:'aksi=cmbproses&departemen='+$('#departemenS').val()+'&replid='+$('#prosesS').val(),
                                 dataType:'json',
                                 type:'post',
                                 success:function(dt2){
@@ -241,7 +241,7 @@ var contentFR = '';
                                     if(dt.status!='sukses'){
                                         out2=dt2.status;
                                     }else{
-                                        out2=dt2.tahunajaran[0].tahunajaran;
+                                        out2=dt2.proses[0].proses;
                                     }$('#tahunajaranTB').val(out2);
                                     
                                     if (id!='') { // edit mode

@@ -15,29 +15,32 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tingkat     = trim($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
-				$kelas       = trim($_POST['kelasS'])?filter($_POST['kelasS']):'';
-				$wali        = trim($_POST['waliS'])?filter($_POST['waliS']):'';
+				$kelompok  = isset($_POST['kelompokS'])?filter(trim($_POST['kelompokS'])):'';
 
-				$sql ='SELECT 
+			/*	$sql ='SELECT 
 							k.replid,
-							k.kelas,
-							p.nama as wali,
-							k.kapasitas,
-							k.keterangan
+							k.joiningf,
+							krit as kriteria,
+							gol golongan,
 						FROM 
-							aka_kelas k,
-							aka_guru g,
-							hrd_pegawai p
+							psb_setbiaya ps,
+							LEFT JOIN psb_kriteria pk ON k.replid = ps.krit
+							LEFT JOIN psb_golongan pb ON pk.replid = ps.gol
+							LEFT JOIN psb_kelompok pkel ON pkel.replid = ps.kel
 						WHERE
-							k.tingkat LIKE "%'.$tingkat.'%"
-							AND k.kelas LIKE "%'.$kelas.'%"
-							AND p.nama LIKE "%'.$wali.'%"
-							and k.wali    = g.replid
-							and g.pegawai = p.replid
-						ORDER BY
-							k.kelas ASC';
+							ps.kel = '.$kelompok ;
+							*/
+				$sql1 ='SELECT * FROM psb_kriteria';
+				$qry1 = mysql_query($sql1);
 				// print_r($sql);exit();
+				while ($res= mysql_fetch_array($qry1)) {
+					$sql2 = 'SELECT * FROM psb_golongan';
+					$qry2 = mysql_query($sql2);
+					$num = mysql_num_rows($qry2);
+
+					$colkriteria = '<tr>
+									<td>'.$res['kriteria'].'</td>';
+				}
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -54,18 +57,6 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
-						if($res['aktif']=1){
-							$dis  = 'disabled';
-							$ico  = 'checkmark';
-							$hint = 'telah Aktif';
-							$func = '';
-						}else{
-							$dis  = '';
-							$ico  = 'blocked';
-							$hint = 'Aktifkan';
-							$func = 'onclick="aktifkan('.$res['replid'].');"';
-						}
-
 						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -74,9 +65,9 @@
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
-						$out.= '<tr>
-									<td>'.$nox.'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelas'].'</td>
+						$out.= '
+									<td>&nbsp</td>
+									<td>&nbsp</td>
 									<td>'.$res['wali'].'</td>
 									<td>'.$res['kapasitas'].'</td>
 									<td>-</td>
