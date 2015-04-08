@@ -22,8 +22,10 @@
         <tr style="color:white;"class="info">
             <th class="text-left">Kriteria </th>
             <th class="text-left">Golongan</th>
-            <th class="text-left">Besar Uang Pangkal</th>
-            <th class="text-left">Besar Uang Sekolah</th>
+            <th class="text-left">Biaya Pendaftaran</th>
+            <th class="text-left">Uang Pangkal</th>
+            <th class="text-left">SPP</th>
+            <th class="text-left">Joining Fee</th>
             <!-- <th class="text-left">Keterangan</th> -->
             <th class="text-left">Aksi</th>
         </tr>

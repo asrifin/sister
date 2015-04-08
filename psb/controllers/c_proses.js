@@ -1,8 +1,10 @@
 // var mnu       = 'periode';
 var mnu       = 'proses';
 var mnu2      = 'departemen';
+var mnu3      = 'angkatan';
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='../akademik/models/m_'+mnu2+'.php';
+var dir3      ='../akademik/models/m_'+mnu3+'.php';
 var contentFR='';
 
 // main function ---
@@ -21,14 +23,19 @@ var contentFR='';
                             +'<input required type="text" name="periodeTB" id="periodeTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+                        +'<label>Angkatan</label>' 
+                        +'<div class="input-control select size2">'
+                            +'<select id="angkatanTB" name="angkatanTB">'
+                              +'</select>'
+                        +'</div>'
                         +'<label>Kode Awalan</label>'
                         +'<div class="input-control text size2">'
                             +'<input required type="text" name="kode_awalanTB" id="kode_awalanTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        +'<label>Angkatan</label>' 
+                        +'<label>Aktif</label>' 
                         +'<div class="input-control select size2">'
-                            +'<select id="angkatanTB" name="angkatanTB">'
+                            +'<select id="aktifTB" name="aktifTB">'
                             +'<option value="0">Ditutup</option>'
                             +'<option value="1">Dibuka</option>'
                               +'</select>'
@@ -58,6 +65,7 @@ var contentFR='';
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
+            cmbangkatan($('#departemenS').val(),'');
         });
 
         // search
@@ -108,6 +116,37 @@ var contentFR='';
         });
     }
 //end of combo departemen ---
+
+        function cmbangkatan (dep,angkatan) {
+            // alert(1);return false;
+            $.ajax({
+                url:dir3,   
+                type:'post',
+                dataType:'json',
+                data:'aksi=cmb'+mnu3+'&departemen='+dep,
+                success:function(dt){
+                    var opt='';
+                    if (dt.status!='sukses') {
+                        notif(dt.status,'red');
+                        opt+='<option value="">'+dt.status+'</option>'
+                    }else{
+                        // alert(id);return false;
+                        var opt = '';
+                        $.each(dt.angkatan,function(id,item){
+                            if(angkatan==item.replid)
+                                opt+='<option selected="selected" value="'+item.replid+'">'+item.angkatan+'</option>'
+                            else{
+                                if (item.urutan=='3') 
+                                opt+='<option selected="selected" value="'+item.replid+'">'+item.angkatan+'</option>'
+                            else 
+                                opt+='<option value="'+item.replid+'">'+item.angkatan+'</option>'
+                            }
+                        });$('#angkatanTB').html('<option value="">Pilih Angkatan ..</option>'+opt);
+                    }
+                },
+            });
+        }
+
 
 //save process ---
     function simpan(){
@@ -263,9 +302,10 @@ var contentFR='';
                                             $('#departemenTB').val(dt.nama);
                                             $('#periodeTB').val(dt.proses);
                                             $('#kode_awalanTB').val(dt.kodeawalan);
-                                            $('#angkatanTB').val(dt.angkatan);
+                                            $('#aktifTB').val(dt.aktif);
                                             $('#kapasitasTB').val(dt.kapasitas);                            
                                             $('#keteranganTB').val(dt.keterangan);
+                                            cmbangkatan(dt.iddepartemen,dt.angkatan);
                                             }
                                         });
                                     // end of form :: edit :: tampilkan data 

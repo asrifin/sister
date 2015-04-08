@@ -19,7 +19,7 @@
 				// $tahunajaran = trim($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				// $kelompok    = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
-				$sql = 'SELECT
+				/*$sql = 'SELECT
 							p.replid,
 							p.kodeawalan,
 							p.proses,
@@ -36,7 +36,6 @@
 								p.aktif=1,"Dibuka","Ditutup"
 							)status,
 							p.keterangan
-							
 						FROM
 							psb_proses p,
 							aka_angkatan a,
@@ -45,12 +44,23 @@
 							a.departemen = '.$departemen.' and
 							p.angkatan = a.replid and
 							a.departemen = d.replid';
-				// $departemen = trim($_POST['departemenS'])?filter($_POST['departemenS']):'';
-				// $periode    = trim($_POST['periodeS'])?filter($_POST['periodeS']):'';
-				// $keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
-					// var_dump($sql);
-							// keterangan like "%'.$keterangan.'%"
-					// 	kelompok like "%'.$kelompok.'%" and
+							// print_r($sql);exit();*/
+				$sql='SELECT 
+					       p.replid, 
+					       p.kodeawalan, 
+					       p.proses, 
+					       a.angkatan, 
+					       p.kapasitas,
+					       ( SELECT count(*) from psb_calonsiswa where proses = p.replid and `status`=0 )calonsiswa,
+					       ( SELECT count(*) from psb_calonsiswa where proses = p.replid and `status`!=0 )siswaditerima,
+					       p.aktif statusx, 
+					       	p.keterangan 
+					FROM psb_proses p
+					     LEFT JOIN aka_angkatan a ON a.replid = p.angkatan
+					     LEFT JOIN departemen d ON d.replid = a.departemen
+					WHERE 
+					      a.departemen ='.$departemen;
+
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -99,10 +109,11 @@
 									<td>'.$res['kapasitas'].'</td>
 									<td>'.$res['calonsiswa'].'</td>
 									<td>'.$res['siswaditerima'].'</td>
-									<td>'.($res['aktif']=='1'?'<span style="color:#00A000"><b>Dibuka</b></span>':'Ditutup').'</td>
+									<td>'.($res['statusx']=='1'?'<span style="color:#00A000"><b>Dibuka</b></span>':'Ditutup').'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
+									// <td>'.$res['statusx'].'</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -119,10 +130,12 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$s = $tb.' set 	proses 		= "'.filter($_POST['periodeTB']).'",
+								departemen 	= "'.filter($_POST['departemenH']).'",
 								kodeawalan 	= "'.filter($_POST['kode_awalanTB']).'",
-								angkatan  	= "'.filter($_POST['angkatanTB']).'",
-								kapasitas   = "'.filter($_POST['kapasitasTB']).'",
-								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
+								angkatan   = "'.filter($_POST['angkatanTB']).'",
+								aktif      = "'.filter($_POST['aktifTB']).'",
+								kapasitas  = "'.filter($_POST['kapasitasTB']).'",
+								keterangan = "'.filter($_POST['keteranganTB']).'"';
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2 = mysql_query($s2);
@@ -156,13 +169,15 @@
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'nama'     =>$r['nama'],
-							'proses'     =>$r['proses'],
-							'kodeawalan' =>$r['kodeawalan'],
-							'angkatan'   =>$r['angkatan'],
-							'kapasitas'   =>$r['kapasitas'],
-							'keterangan' =>$r['keterangan'],
+							'status'       =>$stat,
+							'nama'         =>$r['nama'],
+							'iddepartemen' =>$r['departemen'],
+							'proses'       =>$r['proses'],
+							'kodeawalan'   =>$r['kodeawalan'],
+							'angkatan'     =>$r['angkatan'],
+							'aktif'        =>$r['aktif'],
+							'kapasitas'    =>$r['kapasitas'],
+							'keterangan'   =>$r['keterangan'],
 						));
 						// var_dump($s);exit(); 
 				// $e=mysql_query();

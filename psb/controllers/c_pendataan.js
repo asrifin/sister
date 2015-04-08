@@ -40,7 +40,7 @@ var contentFR = '';
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Proses Penerimaan</td>'
-                                +'<td>: <span id="periodeTD"></span></td>'
+                                +'<td>: <span id="prosesTD"></span></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Kelompok calon siswa</td>'
@@ -54,7 +54,6 @@ var contentFR = '';
                                 +'<td>Status</td>'
                                 +'<td>: <span id="statusTD"></span></td>'
                             +'</tr>'
-                            // +'</div>'
                         +'</table>'
                             +'</div>'
                             //Data Siswa
@@ -65,7 +64,10 @@ var contentFR = '';
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Nama</td>'
-                                +'<td>: <span id="nama_siswaTD"></span></td>'
+                                +'<td class="span3">: <span id="nama_siswaTD"></span></td>'
+                                +'<td><span id="previmg2"></span></td>'
+                                +'<input type="hidden" id="photo2H"/>'
+                                // +'<input onchange="PreviewImage2(this);" id="photoTD" name="photoTD" type="file">'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Jenis kelamin</td>'
@@ -121,7 +123,7 @@ var contentFR = '';
                             +'</tr>'
                             +'<tr>'
                                 +'<td>&nbsp;</td>'
-                                +'<td class="span4">Ayah</td>'
+                                +'<td class="span4">&nbsp&nbspAyah</td>'
                                 +'<td>Ibu</td>'
                             +'</tr>'
                             +'<tr>'
@@ -189,16 +191,29 @@ var contentFR = '';
                                 +'<td>&nbsp</td>'
                                 +'<td>&nbsp</td>'
                             +'</tr>'
-                            //Nomor yang dapat dihubungi
+                            //Saudara Siswa
                             +'<tr>'
                                 +'<td colspan="2"><b>Saudara Siswa :</b></td>'
                             +'</tr>'
+                            +'<tr>'
+                                +'<td>Nama Saudara</td>'
+                                +'<td>: <span id="nama_saudaraTD"></span></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Tanggal lahir Saudara</td>'
+                                +'<td>: <span id="tgl_lahir_saudaraTD"></span></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Sekolah Saudara</td>'
+                                +'<td>: <span id="sekolah_saudaraTD"></span></td>'
+                            +'</tr>'
+                            //Nomor yang dapat dihubungi
                             +'<tr>'
                                 +'<td colspan="2"><b>Dalam Kondisi Mendesak, orang yang dapat dihubungi (selain orang tua) :</b></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Nama</td>'
-                                +'<td>: <span id="nama_saudaraTD"></span></td>'
+                                +'<td>: <span id="nama_daruratTD"></span></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Hubungan</td>'
@@ -206,7 +221,7 @@ var contentFR = '';
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Nomor yang dapat dihubungi</td>'
-                                +'<td>: <span id="nomor_saudaraTD"></span></td>'
+                                +'<td>: <span id="nomor_daruratTD"></span></td>'
                             +'</tr>'
                         +'</table>'
                         +'</div>'
@@ -234,6 +249,14 @@ var contentFR = '';
         });$('#kelompokS').on('change',function (){
             viewTB(); 
         })
+        $('#nopendaftaranS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });$('#namaS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });
+
 
         // search button
         $('#cariBC').on('click',function(){
@@ -252,6 +275,121 @@ var contentFR = '';
     }); 
 
 // end of save process ---
+
+        // //preview image sebelum upload -------
+            function PreviewImage(e){
+                var typex   = e.files[0].type;
+                var sizex   = e.files[0].size;
+                var namex   = e.files[0].name;
+                
+                if(typex =='image/png'||typex =='image/jpg'||typex =='image/jpeg'|| typex =='image/gif'){ //validasi format
+                    if(sizex>(900*900)){ //validasi size
+                        notif('ukuran max 1 MB','red');
+                        $(e).val('');
+                        return false;   
+                    }else{ 
+                        $('#previmg2').attr('src','../img/w8loader.gif');
+                        var reader = new FileReader();
+                        reader.readAsDataURL(e.files[0]);
+            
+                        reader.onload = function (oFREvent){
+                            var urlx  = oFREvent.target.result;
+                            setTimeout(function(){
+                                $('#previmg2').attr('src',urlx);//.removeAttr('style');
+                            },1000);
+                        };
+                    }
+                }else{ // format salah
+                    $('#previmg2').attr('src','<img src="../img/loader.gif">');
+                    $(e).val('');
+                    notif('hanya format gambar(jpeg,jpg,png)','red');
+                    return false;
+                }
+            };
+        //end of preview image sebelum upload -------
+
+// // submit katalog ---------------------------
+            function katalogSV () {
+                //add image
+                var files =new Array();
+                $("input:file").each(function() {
+                    files.push($(this).get(0).files[0]); 
+                });
+                 
+                // Create a formdata object and add the files
+                var filesAdd = new FormData();
+                $.each(files, function(key, value){
+                    filesAdd.append(key, value);
+                });
+
+                if($('#k_photoTB').val()=='')//upload
+                    katalogDb('');
+                else// ga upload
+                    katalogUp(filesAdd);
+            }
+        //end of submit katalog ---------------------------
+
+        // // upload image
+            function katalogUp(dataAdd){
+                $.ajax({
+                    url: dir+'?upload',
+                    type: 'POST',
+                    data: dataAdd,
+                    cache: false,
+                    dataType: 'json',
+                    processData: false,// Don't process the files
+                    contentType: false,//Set content type to false as jq 'll tell the server its a query string request
+                    success: function(data, textStatus, jqXHR){
+                        if(data.status == 'sukses'){ //gak error
+                            katalogDb(data);
+                        }else{ //error
+                            notif(data.status,'red');
+                        }
+                    },error: function(jqXHR, textStatus, errorThrown){
+                        notif('error'+textStatus,'red');// $('#loadarea').html('<img src="../img/loader.gif"> ').fadeOut();
+                    }
+                });
+            }
+        //end of upload image
+
+        // simpan ke database
+            function katalogDb(filex){
+                var formData = $('#katalog_form').serialize();
+                if($('#idformH').val()!=''){
+                    formData +='&replid='+$('#idformH').val();
+                }
+
+                if(filex!=''){// ada upload file nya
+                    formData +='&file='+filex.file ;    
+                    if($('#k_photoH').val()!=''){
+                        formData+='&photo_asal='+$('#k_photoH').val();
+                    }
+                }
+                // alert(formData);return false;
+                $.ajax({
+                    // url: dir+'?aksi=simpan&subaksi=katalog',
+                    url: dir,
+                    type:'POST',
+                    data:formData+'&aksi=simpan&subaksi=katalog',
+                    // data:'aksi=simpan&subaksi=katalog'+formData,
+                    // data:'aksi=simpan&subaksi=katalog'+formData+$('#katalog_form').serialize(),
+                    cache:false,
+                    dataType: 'json',
+                    success: function(data, textStatus, jqXHR){
+                        if(data.status != 'sukses'){
+                            // alert('Gagal');
+                           notif(data.status,'red');
+                        }else{
+                            // alert('suksessh');
+                            // notif(data.status,'green'); 
+                            k_view(data.id);
+                        }
+                    },error: function(jqXHR, textStatus, errorThrown){
+                        console.log('ERRORS savedata2: ' + textStatus);
+                    }
+                });
+            }
+        // // end of simpan ke database
 
 // combo departemen ---
     function cmbdepartemen(dep){
@@ -373,6 +511,9 @@ var contentFR = '';
     function viewTB(){
         var aksi ='aksi=tampil';
         var cari = '&namaS='+$('#namaS').val()
+                    +'&departemenS='+$('#departemenS').val()
+                    +'&prosesS='+$('#prosesS').val()
+                    +'&kelompokS='+$('#kelompokS').val()
                     +'&nopendaftaranS='+$('#nopendaftaranS').val();
         $.ajax({
             url : dir,
@@ -436,6 +577,9 @@ var contentFR = '';
                         $('#nama_kontakTB').val(dt.namalain);
                         $('#hubunganTB').val(dt.hubungan);
                         $('#nomorTB').val(dt.telponlain);
+
+                        $('#kakekTB').val(dt.kakek);
+                        $('#nenekTB').val(dt.nenek);
 
                         // $('#kakekTB').val(dt.kakek-nama);
                         // $('#nenekTB').val(dt.nenek-nama);
@@ -655,6 +799,11 @@ var contentFR = '';
                     titl= 'Data Calon Siswa';
                     // var res = ajax(dir,'aksi=detail&replid='+id);  // <-- hapus lagi comment nya gan  (epiii) 
                     ajax(dir,'aksi=detail&replid='+id).done(function(res){
+                        $('#departemenTD').html(res.data.departemen);
+                        $('#prosesTD').html(res.data.proses);
+                        $('#kelompokTD').html(res.data.kelompok);
+                        $('#nopendaftaranTD').html(res.data.nopendaftaran);
+                        $('#statusTD').html(res.data.statusx);
                         $('#nama_siswaTD').html(res.data.nama_siswa);
                         $('#jkTD').html(res.data.jk);
                         $('#temp_lahirTD').html(res.data.temp_lahir);
@@ -665,13 +814,42 @@ var contentFR = '';
                         $('#goldarahTD').html(res.data.goldarah);
                         $('#penyakitTD').html(res.data.penyakit);
                         $('#alergiTD').html(res.data.alergi);
+                        var img;
+                        if(res.data.photo2!='' && res.data.photo2!=null){//ada gambar
+                            img='../img/upload/'+res.data.photo2;
+                        }else{
+                            img='../img/no_image.jpg';
+                        }
+                        $('#previmg2').attr('src',img);
+                        $('#photo2H').html(res.data.photo2); 
+                    //Saudara Siswa                       
+                        $('#nama_saudaraTD').html(res.data.nama_saudara);
+                        $('#tgl_lahir_saudaraTD').html(res.data.tgl_lahir_saudara);
+                        $('#sekolah_saudaraTD').html(res.data.sekolah_saudara);
                     // data ayah
                         $('#nama_ayahTD').html(res.data.nama_ayah);
-                        $('#kebangsaan_ayahTD').html(res.data.nama_ayah);
-                        $('#temp_lahir_ayahTD').html(res.data.nama_ayah);
-                        $('#tgl_lahir_ayahTD').html(res.data.nama_ayah);
-                        $('#telepon_ayahTD').html(res.data.nama_ayah);
-                        $('#pinbb_ayahTD').html(res.data.nama_ayah);
+                        $('#kebangsaan_ayahTD').html(res.data.kebangsaan_ayah);
+                        $('#temp_lahir_ayahTD').html(res.data.temp_lahir_ayah);
+                        $('#tgl_lahir_ayahTD').html(res.data.tgl_lahir_ayah);
+                        $('#telepon_ayahTD').html(res.data.telepon_ayah);
+                        $('#pinbb_ayahTD').html(res.data.pinbb_ayah);
+                        $('#pinbb_ayahTD').html(res.data.email_ayah);
+                    //Data Ibu
+                        $('#nama_ibuTD').html(res.data.nama_ibu);
+                        $('#kebangsaan_ibuTD').html(res.data.kebangsaan_ibu);
+                        $('#temp_lahir_ibuTD').html(res.data.temp_lahir_ibu);
+                        $('#tgl_lahir_ibuTD').html(res.data.tgl_lahir_ibu);
+                        $('#telepon_ibuTD').html(res.data.telepon_ibu);
+                        $('#pinbb_ibuTD').html(res.data.pinbb_ibu);
+                        $('#pinbb_ibuTD').html(res.data.email_ibu);
+                    //Data Saudara
+                        $('#tgl_perkawinanTD').html(res.data.tgl_perkawinan);
+                        $('#kakekTD').html(res.data.kakek);
+                        $('#nenekTD').html(res.data.nenek);
+                    //Data Kontak Darurat
+                        $('#nama_daruratTD').html(res.data.nama_darurat);
+                        $('#hubunganTD').html(res.data.hubungan);
+                        $('#nomor_daruratTD').html(res.data.nomor_darurat);
                     });
 
                     // ajax(dir,'aksi=detail&replid='+id);  // <-- hapus lagi comment nya gan  (epiii) 
@@ -690,7 +868,6 @@ var contentFR = '';
                     // // data ayah
                     //     $('#nama_ayahTD').html(res.data.nama_ayah);
                     // data ibu
-                        $('#nama_ibuTD').html(res.data.nama_ibu);
                     // },100);
                 $.Dialog.title(titl);
                 $.Dialog.content(cont);

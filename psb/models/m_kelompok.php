@@ -16,7 +16,7 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 					$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
+				$tahunajaran = isset($_POST['prosesS'])?filter($_POST['prosesS']):'';
 				$kelompok    = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
 				$sql = 'SELECT
@@ -44,14 +44,10 @@
 								AND status != 0
 							) siswaditerima,
 							k.keterangan
-						FROM
-							psb_kelompok k,
-							psb_proses p,
-							aka_tahunajaran t
-						WHERE
-							k.proses = p.replid AND
-							p.tahunajaran = t.replid AND
-							t.replid = '.$tahunajaran;
+						FROM psb_kelompok k 
+						LEFT JOIN psb_proses p ON p.replid = k.proses
+						WHERE 
+						k.proses = '.$tahunajaran;
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -189,8 +185,8 @@
 				}else{
 					if(isset($_POST[$mnu])){
 						$w='where'.$mnu.'='.$_POST[$mnu];
-					}elseif (isset($_POST['tahunajaran'])) {
-						$w='where tahunajaran='.$_POST['tahunajaran'];
+					}elseif (isset($_POST['proses'])) {
+						$w='where proses='.$_POST['proses'];
 					}elseif(isset($_POST['proses'])){
 						$w='where proses='.$_POST['proses'];
 					}
@@ -231,13 +227,10 @@
 				// print_r($n);exit();
 				$out=json_encode($ar);
 			break;
-			// cmbtingkat -----------------------------------------------------------------
+			// cmbkelompok -----------------------------------------------------------------
 
 		}
 	}
 	echo $out;
 
-	// ---------------------- //
-	// -- created by epiii -- //
-	// ---------------------- //
 ?>
