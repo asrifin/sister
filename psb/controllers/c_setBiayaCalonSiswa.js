@@ -66,7 +66,7 @@ var contentFR = '';
                     +'</form>';
 
         // combo departemen
-        cmbdepartemen('');
+        cmbdepartemenS('');
         // cmbdepartemen(false,'');
 
         //add form
@@ -76,17 +76,11 @@ var contentFR = '';
 
         //search action
         $('#departemenS').on('change',function(){
-            cmbtahunajaran($(this).val());
-        });$('#tahunajaranS').on('change',function (){
+            cmbprosesS($(this).val());
+        });$('#prosesS').on('change',function (){
+            cmbkelompokS($(this).val());
+        });$('#kelompokS').on('change',function (){
             viewTB();
-        });$('#tingkatS').on('change',function (){
-            viewTB();
-        });$('#kelasS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
-        });$('#waliS').keydown(function(e){
-            if(e.keyCode==13)
-                viewTB();
         });
 
         // search button
@@ -175,9 +169,11 @@ var contentFR = '';
 
 //save process ---
     function simpan(){
-        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
+        alert($('.daftar').val());
+return false;        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
         var urlx ='&aksi=simpan';
         // edit mode
+        
         if($('#idformH').val()!=''){
             urlx += '&replid='+$('#idformH').val();
         }

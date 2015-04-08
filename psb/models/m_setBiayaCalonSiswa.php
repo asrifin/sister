@@ -30,17 +30,22 @@
 						WHERE
 							ps.kel = '.$kelompok ;
 							*/
-				$sql1 ='SELECT * FROM psb_kriteria';
-				$qry1 = mysql_query($sql1);
-				// print_r($sql);exit();
-				while ($res= mysql_fetch_array($qry1)) {
-					$sql2 = 'SELECT * FROM psb_golongan';
-					$qry2 = mysql_query($sql2);
-					$num = mysql_num_rows($qry2);
 
-					$colkriteria = '<tr>
-									<td>'.$res['kriteria'].'</td>';
-				}
+				// }
+				$sql ='SELECT 
+						k.*, 
+						(SELECT count(*)
+						FROM psb_golongan) jumgol
+						FROM 
+						psb_setbiaya b
+						LEFT JOIN psb_kriteria k ON k.replid = b.krit
+						WHERE
+							b.kel = '.$kelompok.'
+						GROUP by
+						k.replid';
+						// print_r($sql);exit();
+				// $qry1 = mysql_query($sql1);
+
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -48,33 +53,57 @@
 				}
 
 				$recpage= 5;//jumlah data per halaman
-				$obj 	= new pagination_class($sql,$starting,$recpage);
+				$aksi	= 'tampil';
+				$subaksi = '';
+				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result =$obj->result;
 
 				#ada data
 				$jum	= mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
+				
+				// print_r($sql);exit();
+				// while ($res= mysql_fetch_array($qry1)) {
+
+					// $btn ='<td>
+					// 			<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+					// 				<i class="icon-pencil on-left"></i>
+					// 			</button>
+					// 			<button data-hint="hapus" onclick="del('.$res['replid'].');">
+					// 				<i class="icon-remove on-left"></i>
+					// 			</button>
+					// 		 </td>';
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
-						$btn ='<td>
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
-										<i class="icon-pencil on-left"></i>
-									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
-										<i class="icon-remove on-left"></i>
-									</button>
-								 </td>';
-						$out.= '
-									<td>&nbsp</td>
-									<td>&nbsp</td>
-									<td>'.$res['wali'].'</td>
-									<td>'.$res['kapasitas'].'</td>
-									<td>-</td>
-									<td>'.$res['keterangan'].'</td>
-									'.$btn.'
-								</tr>';
-								// <td>'.$res['terisi'].'</td>
+						$out.= '<tr>
+									<td valign="middle" rowspan="'.($res['jumgol']+1).'">'.$res['kriteria'].'</td>';
+
+						$sql2 = 'SELECT * 
+								FROM 
+								psb_setbiaya ps
+								LEFT JOIN psb_kriteria pk ON pk.replid = ps.krit
+								LEFT JOIN psb_golongan g ON g.replid = ps.gol
+								WHERE
+								pk.replid = '.$res['replid'].'
+								GROUP by
+								ps.gol';
+						$qry2 = mysql_query($sql2);
+						$num = mysql_num_rows($qry2);
+						// print_r($sql2);exit();
+
+						while ($r2=mysql_fetch_assoc($qry2)) {
+							$out.= '<tr>
+								<td>'.$r2['golongan'].'  <input name="biaya[]" type="text"></td> 
+
+
+								<td align="right"><input type="text" name="daftarTB_'.$r2['replid'].'" class="daftar" value="Rp. '.number_format($r2['daftar']).'"  ></td> 
+								<td align="right"><input type="text" name="dpp" value="'.$r2['nilai'].'"  ></td> 
+								<td align="right"><input type="text" name="spp" value="'.$r2['spp'].'"  ></td> 
+								<td align="right"><input type="text" name="joiningf" value="'.$r2['joiningf'].'"  ></td> 
+							</tr>';
+						}
+						$out.= '</tr>';
 						$nox++;
 					}
 				}else{ #kosong

@@ -26,6 +26,8 @@ var contentFR = '';
         $('#pendataanTBL').toggle('slow');
     }
 
+
+
 // main function ---
     $(document).ready(function(){
         cmbdepartemen('');
@@ -65,8 +67,8 @@ var contentFR = '';
                             +'<tr>'
                                 +'<td>Nama</td>'
                                 +'<td class="span3">: <span id="nama_siswaTD"></span></td>'
-                                +'<td><span id="previmg2"></span></td>'
                                 +'<input type="hidden" id="photo2H"/>'
+                                +'<td rowspan="6"> <img width="150" id="previmg" src="../img/no_image.jpg" ><br></td>'
                                 // +'<input onchange="PreviewImage2(this);" id="photoTD" name="photoTD" type="file">'
                             +'</tr>'
                             +'<tr>'
