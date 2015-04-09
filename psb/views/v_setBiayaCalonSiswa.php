@@ -6,7 +6,6 @@
 <div id="loadarea"></div>
 
 <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
-<button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 <div class="input-control select span3">
     <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
@@ -17,10 +16,9 @@
     <select data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
 </div>
 
-
 <div  style="overflow:scroll;height:600px;" >
     <form autocomplete="off" onsubmit="simpan();return false;"> 
-        <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
+        <button data-hint="Simpan" id="simpanBC"><span class="icon-checkmark"></span> </button>
         <table class="table hovered bordered striped">
         <thead>
             <tr style="color:white;"class="info">
