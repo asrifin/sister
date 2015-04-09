@@ -14,38 +14,33 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				
-				$tingkat = isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
-
-				$sql = 'SELECT *
-						FROM  aka_subtingkat
-						WHERE 
-						tingkat Like '.$tingkat.'
-						ORDER 
-							BY replid asc';
+				$tingkat = isset($_POST['tingkatS'])?$_POST['tingkatS']:'';
+				$sql     = 'SELECT *
+							FROM  aka_subtingkat
+							WHERE 
+								tingkat = '.$tingkat.'
+							ORDER 
+								BY replid asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
 
+				$recpage = 5;//jumlah data per halaman
 				$aksi    ='tampil';
 				$subaksi ='';
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
-				$result =$obj->result;
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+				$result  =$obj->result;
 
 				#ada data
 				$jum	= mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
-					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
-						$btn ='<td>
+					// $nox 	= $starting+1;
+					while($res = mysql_fetch_assoc($result)){	
+						$btn ='<td align="center">
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
@@ -54,12 +49,10 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
-									
-									<td>'.$res['subtingkat'].'</td>
+									<td align="center">'.$res['subtingkat'].'</td>
 									'.$btn.'
 								</tr>';
-						$nox++;
+						// $nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -74,8 +67,8 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	nama 	= "'.filter($_POST['namaTB']).'"';
-
+				$s = $tb.' set 	tingkat 	= "'.filter($_POST['tingkatH']).'",
+								subtingkat 	= "'.filter($_POST['subtingkatTB']).'"';
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2 = mysql_query($s2);
 				if(!$e2){
@@ -92,22 +85,30 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT *
-							from '.$tb.'
+				$s 		= ' SELECT 
+								st.replid,
+								st.subtingkat,
+								st.tingkat,
+								t.tahunajaran
+							from '.$tb.' st 
+								LEFT JOIN aka_tingkat t on t.replid = st.tingkat
 							WHERE 
-								replid='.$_POST['replid'];
+								st.replid='.$_POST['replid'];
+				// print_r($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'nama'   =>$r['nama'],
+							'status'      =>$stat,
+							'tingkat'     =>$r['tingkat'],
+							'subtingkat'  =>$r['subtingkat'],
+							'tahunajaran' =>$r['tahunajaran']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
