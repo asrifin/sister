@@ -28,7 +28,7 @@
 					$starting=0;
 				}
 
-				$recpage = 5;//jumlah data per halaman
+				$recpage = 10;//jumlah data per halaman
 				$aksi    ='tampil';
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);

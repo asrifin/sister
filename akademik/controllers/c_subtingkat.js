@@ -55,10 +55,11 @@ var contentFR = '';
 
         //search action
         $('#departemenS').on('change',function (){
-            cmbtahunajaran($(this).val());
+            // alert($(this).val());
+            cmbtahunajaran('filter',$(this).val(),'');
         });
         $('#tahunajaranS').on('change',function (){
-            cmbtingkat($(this).val());
+            cmbtingkat('filter',$(this).val(),'');
         });
         $('#tingkatS').on('change',function (){
             viewTB();
@@ -139,7 +140,6 @@ var contentFR = '';
 
 // combo tingkat ---
     function cmbtingkat(typ,thn,id){
-        // alert(id);return false;
         var replid = id!=''?'&replid='+id:'';
         $.ajax({
             url:dir2,
@@ -147,6 +147,7 @@ var contentFR = '';
             dataType:'json',
             type:'post',
             success:function(dt){
+                // alert(dt.tingkat.length); return false;
                 var out='';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
