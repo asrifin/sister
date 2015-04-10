@@ -365,7 +365,6 @@ var contentFR = '';
 // end of form ---
 
 //paging ---
-    // function pagination(page,aksix,menux){
      function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
         var cari ='';

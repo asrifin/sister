@@ -155,29 +155,25 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-					// grup barang
+					// kategori anggaran 
 
-					// katalog
+					// detil anggaran 
 					case 'detilanggaran':
 						$d_kategorianggaran = isset($_POST['d_kategorianggaranH'])?filter(trim($_POST['d_kategorianggaranH'])):'';
-						$d_departemen       = isset($_POST['d_departemenS'])&& $_POST['d_departemenS']!=''?' da.departemen ='.$_POST['d_departemenS'].' AND ':'';
+						$d_tingkat          = isset($_POST['d_tingkatS'])&& $_POST['d_tingkatS']!=''?' tingkat ='.$_POST['d_tingkatS'].' AND ':'';
 						$d_nama             = isset($_POST['d_namaS'])?filter(trim($_POST['d_namaS'])):'';
-						$d_rekening         = isset($_POST['d_rekeningS'])?filter(trim($_POST['d_rekeningS'])):'';
 						$d_keterangan       = isset($_POST['d_keteranganS'])?filter(trim($_POST['d_keteranganS'])):'';
 
 						$sql = 'SELECT 
-									da.replid,
-									da.nama,
-									da.keterangan,
-									concat(dr.kode," - ",dr.nama) rekening
-								FROM '.$tb2.' da 
-									LEFT JOIN keu_detilrekening dr on dr.replid = da.rekening
+									replid,
+									nama,
+									keterangan
+								FROM '.$tb2.'
 								WHERE 
-									da.kategorianggaran ='.$d_kategorianggaran.' and 
-									'.$d_departemen.'
-									da.nama LIKE"%'.$d_nama.'%" AND
-									(dr.nama LIKE"%'.$d_rekening.'%" OR dr.kode LIKE "%'.$d_rekening.'%" )AND
-									da.keterangan LIKE"%'.$d_keterangan.'%"';
+									kategorianggaran ='.$d_kategorianggaran.' and 
+									'.$d_tingkat.'
+									nama LIKE"%'.$d_nama.'%" AND 
+									keterangan LIKE"%'.$d_keterangan.'%"';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -210,8 +206,6 @@
 											<td >'.$res['keterangan'].'</td>
 											'.$btn.'
 										</tr>';
-										// <td>'.$res['rekening'].'</td>
-								// $totaset+=$res['nominal'];
 								$nox++;
 							}
 						}else{ #kosong
@@ -224,7 +218,7 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-					// katalog
+					// detil anggaran
 
 					// barang
 					case 'barang':
