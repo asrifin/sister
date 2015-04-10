@@ -5,6 +5,7 @@ var mnu4      = 'tingkat';
 var mnu5      = 'subtingkat';
 var mnu6      = 'kelas';
 var mnu7      = 'angkatan';
+
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = 'models/m_'+mnu2+'.php';
 var dir3      = 'models/m_'+mnu3+'.php';
@@ -12,42 +13,52 @@ var dir4      = 'models/m_'+mnu4+'.php';
 var dir5      = 'models/m_'+mnu5+'.php';
 var dir6      = 'models/m_'+mnu6+'.php';
 var dir7      = 'models/m_'+mnu7+'.php';
-var contentFR =  contentAdd=contentEdit='';
+var contentFR ='';
 
 // main function ---
    $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-                        +'<label>Angkatan</label>'
-                            +'<div class="input-control select">'
-                                +'<select required name="angkatanTB" id="angkatanTB"></select>'
-                            +'</div>'
-                        +'<label>Nama Lokasi</label>'
+                        
+                        +'<label>Departemen</label>'
                         +'<div class="input-control text">'
-                            +'<input  placeholder="lokasi" required type="text" name="namaTB" id="namaTB">'
-                            +'<button class="btn-clear"></button>'
+                            +'<input disabled type="text" name="departemenTB" id="departemenTB">'
                         +'</div>'
-                        +'<label>Alamat</label>'
+                        
+                        +'<label>Angkatan </label>'
                         +'<div class="input-control text">'
-                            +'<input  placeholder="alamat" required type="text" name="alamatTB" id="alamatTB">'
-                            +'<button class="btn-clear"></button>'
+                            +'<input disabled type="text" name="angkatanTB" id="angkatanTB">'
                         +'</div>'
-                        +'<label>Kontak</label>'
-                        +'<div class="input-control text">'
-                            +'<input  placeholder="kontak / no telp" required type="text" name="kontakTB" id="kontakTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        +'<label>Keterangan</label>'
-                        +'<div class="input-control textarea">'
-                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
-                        +'</div>'
+                        
+                        +'<table class="table hovered bordered striped">'
+                            +'<thead>'
+                                +'<tr style="color:white;"class="info">'
+                                    +'<th class="text-center">'
+                                        // +'<div class="input-control checkbox">'
+                                            +'<input id="kembalikanCB" type="checkbox"><span class="check"></span>'
+                                        // +'</div>'
+                                    +'</th>'
+                                    +'<th class="text-center">NIS</th>'
+                                    +'<th class="text-center">Nama</th>'
+                                    +'<th class="text-center">Aksi</th>'
+                                +'</tr>'
+                                +'<tr style="display:none;" id="cariTR" class="selected">'
+                                    +'<th></th>'
+                                    +'<th class="text-center"><input  class="belum_cari" placeholder="NIS" id="nisS" name="nisS"></th>'
+                                    +'<th class="text-center"><input  class="belum_cari" placeholder="Nama" id="namaS" name="namaS"></th>'
+                                    +'<th></th>'
+                                +'</tr>'
+
+                            +'</thead>'
+                            +'<tbody id="belum_tbody"></tbody>'
+                        +'</table>'
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
 
-        cmbdepartemen();
+        cmbdepartemen('filter');
         // cmbdepartemen(false,'');
 
         //add form
@@ -69,7 +80,7 @@ var contentFR =  contentAdd=contentEdit='';
             cmbkelas($(this).val());
         });
         $('#kelasS').on('change',function (){
-            viewTB();
+            viewTB('aktif');
         });
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
@@ -89,10 +100,10 @@ var contentFR =  contentAdd=contentEdit='';
 // end of save process ---
 
 // combo angkatan
-    function cmbangkatan(){
+    function cmbangkatan(dep){
         $.ajax({
             url:dir7,
-            data:'aksi=cmbangkatan',
+            data:'aksi=cmb'+mnu7+'&departemen='+dep,
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -100,20 +111,21 @@ var contentFR =  contentAdd=contentEdit='';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    $.each(dt.angkatan, function(id,item){
-                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                    //panggil fungsi viewTB() ==> tampilkan tabel 
-                    viewTB(dt.angkatan[0].replid); 
-                }$('#angkatanS').html(out);
-                viewFR();
+                    if(dt.angkatan.length==0){
+                        out+='<option value="">kosong</option>';
+                    }else{
+                        $.each(dt.angkatan, function(id,item){
+                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                        });
+                    }$('#angkatanTB').html(out);
+                }viewTB('belum'); 
             }
         });
     }
 // end combo angkatan
 
 // combo departemen ---
-    function cmbdepartemen(){
+    function cmbdepartemen(typ){
         $.ajax({
             url:dir2,
             data:'aksi=cmb'+mnu2,
@@ -130,8 +142,15 @@ var contentFR =  contentAdd=contentEdit='';
                         $.each(dt.departemen, function(id,item){
                             out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                         });
-                    }$('#departemenS').html(out);
-                }cmbtahunajaran(dt.departemen[0].replid);
+                    }
+                }
+                if(typ=='filter'){ // filter
+                    $('#departemenS').html(out);
+                    cmbtahunajaran(dt.departemen[0].replid);
+                }else{ // form
+                    $('#departemenTB').html(dt.departemen[0].nama);
+                    cmbangkatan(dt.departemen[0].replid);
+                }
             }
         });
     }
@@ -232,7 +251,7 @@ var contentFR =  contentAdd=contentEdit='';
                             out+='<option value="'+item.replid+'">'+item.kelas+'</option>';
                         });
                     }$('#kelasS').html(out);
-                }viewTB();
+                }viewTB('aktif');
             }
         });
     }
@@ -274,118 +293,80 @@ var contentFR =  contentAdd=contentEdit='';
 //end of save process ---
 
 // view table ---
-    function viewTB(){
+    function viewTB(subaksi){
         var aksi ='aksi=tampil';
-        var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&departemenS='+$('#departemenS').val()
-                    +'&tingkatS='+$('#tingkatS').val()
-                    +'&subtingkatS='+$('#subtingkatS').val()
-                    +'&kelasS='+$('#kelasS').val()
-                    +'&nisnS='+$('#nisnS').val()
-                    +'&namaS='+$('#namaS').val();
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
+        }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
         $.ajax({
             url : dir,
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
     }
-// end of view table ---
+// end of view table
 
-// form ---
-
+//load  dialog form  ---
     function viewFR(id){
-        var pel=$('#tahunlulusS').val();
         $.Dialog({
-            shadow:true,
-            overlay:true,
-            draggable:true,
-            height:'auto',
-            width:'35%',
-            padding:20,
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: 500,
+            height: 600,
+            padding: 10,
             onShow: function(){
-                var titlex;
-                var contentFR;
-                $('#departemenH').val($('#departemenS').val());
-                $('#tahunlulusH').val($('#tahunlulusS').val());
-                if (id!='') { // edit mode
-                    // alert('masuk edit'); return false;
-                    titlex='<span class="icon-pencil"></span> Ubah ';
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=ambiledit&replid='+id,
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#idformH').val(id);
-                            // $('#departemenTB').val(dt.departemen);
-                            $('#nisnTB').val(dt.nisn); 
-                            $('#tahunlulusTB').val(dt.tahunlulus); 
-                            $('#tahunlulusH').val(dt.idtahunlulus); 
-                            $('#siswa2TB').val(dt.siswa); 
-                            $('#siswaH').val(dt.siswak); 
-                            $('#keteranganTB').val(dt.ket);
-                            // cmbdepartemen('form',$('#departemenS').val());
-                            // cmbtahunlulus2('form',dt.iddepartemen,dt.idtahunlulus);
-                        }
-                    });contentFR=contentEdit;
-                }else{ //add mode
-                   titlex='<span class="icon-plus-2"></span> Tambah ';
-                    $.ajax({
-                        url:dir2,
-                        data:'aksi=cmbdepartemen',
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            cmbdepartemen('form',$('#departemenS').val());
-                            cmbtahunlulus2('form',$('#tahunlulusS').val());
-                        }
+                var titl,cont;
+                if(id!=''){ //form mode : edit 
+                    titl= 'Ubah '+mnu;
+                    var res = ajax(dir,'aksi=ambiledit&replid='+id);
+                    res.done(function(r){
+                        $('#idformH').val(id);
+                        // cmbdepartemen('form',$('#departemenS').val());
+                        // cmbtahunajaran('form',$('#departemenS').val(),r.tahunajaran);
+                        // cmbtingkat('form',$('#tahunajaranS').val(),r.tingkat);
+                        // $('#subtingkatTB').val(r.subtingkat);
                     });
-                    contentFR=contentAdd;
-                }
-                $.Dialog.title(titlex+' '+mnu);
+                }else{ // form mode : add  
+                    titl='Tambah '+mnu;
+                    cmbdepartemen('form');
+                    viewTB('belum');
+                    // cmbtahunajaran('form',$('#departemenS').val(),$('#tahunajaranS').val());
+                    // cmbtingkat('form',$('#tahunajaranS').val(),$('#tingkatS').val());
+                }$.Dialog.title(titl);
                 $.Dialog.content(contentFR);
-
-                $("#siswaTB").combogrid({
-                    debug:true,
-                    width:'400px',
-                    colModel: [{
-                            'align':'left',
-                            'columnName':'nisn',
-                            'hide':true,
-                            'width':'55',
-                            'label':'NISN'
-                        },{   
-                            'columnName':'nama',
-                            'width':'40',
-                            'label':'NAMA'
-                        }],
-                    // url: dir+'?aksi=autocomp',
-                    url: dir+'?aksi=autocomp&tahunlulus='+pel,
-                    select: function( event, ui ) { // event setelah data terpilih 
-                        // $('#gruruH').val(ui.item.replid);
-                        
-                        siswaAdd(ui.item.replid,ui.item.nisn,ui.item.nama);
-                        // alert(ui.item.replid);
-                        
-                        // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&tahunlulus='+pel+'&siswa='+siswaArr() );
-                        // $(this).combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
-                            // $('#siswaTB').combogrid( "option", "url", dir+'?aksi=autocomp');
-                        return false;
-                    }
-                    
-                });
-
+                // $('#tingkatH').val($('#tingkatS').val());
             }
         });
-}
-// pilih barang yg akan dipinjam ---
+    }
+// end of dialog form ---
+
+
+// // pilih barang yg akan dipinjam ---
     function siswaAdd (id,nisn,nama) {
         //         $('#siswaTBL').html('<tr><td>gjkasfdlkjsadklfjslkdj</td></tr>')
         // return false;

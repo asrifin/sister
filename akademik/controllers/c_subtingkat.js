@@ -201,41 +201,42 @@ var contentFR = '';
 //end of save process ---
 
 // view table ---
-        function viewTB(subaksi){
-            var aksi ='aksi=tampil';
-            if(typeof subaksi!=='undefined'){
-                aksi+='&subaksi='+subaksi;
-            }
-            var cari ='';
-            var el,el2;
-
-            if(typeof subaksi!=='undefined'){ // multi paging
-                el  = '.'+subaksi+'_cari';
-                el2 = '#'+subaksi+'_tbody';
-            }else{ // single paging
-                el  = '.cari';
-                el2 = '#tbody';
-            }
-
-            $(el).each(function(){
-                var p = $(this).attr('id');
-                var v = $(this).val();
-                cari+='&'+p+'='+v;
-            });
-
-            $.ajax({
-                url : dir,
-                type: 'post',
-                data: aksi+cari,
-                beforeSend:function(){
-                    $(el2).html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
-                },success:function(dt){
-                    setTimeout(function(){
-                        $(el2).html(dt).fadeIn();
-                    },1000);
-                }
-            });
+    function viewTB(subaksi){
+        var aksi ='aksi=tampil';
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
         }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
+        $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi+cari,
+            beforeSend:function(){
+                $(el2).html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                setTimeout(function(){
+                    $(el2).html(dt).fadeIn();
+                },1000);
+            }
+        });
+    }
+// end of view table
 
 //load  dialog form  ---
     function viewFR(id){
