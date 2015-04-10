@@ -91,6 +91,7 @@
 				switch ($_POST['subaksi']) {
 					// kategori anggaran
 					case 'anggaran':
+						$a_departemen = isset($_POST['a_departemenS'])&& $_POST['a_departemenS']!=''?' a.departemen ='.$_POST['a_departemenS'].' AND ':'';
 						$a_nama       = isset($_POST['a_namaS'])?filter(trim($_POST['a_namaS'])):'';
 						$a_rekening   = isset($_POST['a_rekeningS'])?filter(trim($_POST['a_rekeningS'])):'';
 						$a_keterangan = isset($_POST['a_keteranganS'])?filter(trim($_POST['a_keteranganS'])):'';
@@ -104,6 +105,7 @@
 								FROM '.$tb.' a
 									LEFT JOIN keu_detilrekening d on d.replid = a.rekening
 								WHERE
+									'.$a_departemen.'
 									a.rekening like "%'.$a_rekening.'%" and
 									a.nama like "%'.$a_nama.'%" and
 									a.keterangan like "%'.$a_keterangan.'%" 

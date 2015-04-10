@@ -77,8 +77,8 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 		                            +'</div>'
                                 +'</form>'
                         +'</div>';
-
-			viewTB('anggaran');
+            cmbdepartemen('filter','');
+			// viewTB('anggaran');
 
         // button action
             //add---------
@@ -123,15 +123,15 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 
         //search action 
             // kategori anggaran
+            $('#a_departemenS').on('change',function(){
+                viewTB('anggaran');
+            });
             $('#a_namaS,#a_keteranganS').on('keydown',function (e){ // kode grup
                 if(e.keyCode == 13) vwAnggaran();
             });
 
             // detil anggaran 
             /*combo*/ 
-            $('#d_departemenS').on('change',function(){
-                cmbtahunajaran('filter',$(this).val());
-            });
             $('#d_tahunajaranS').on('change',function(){
                 cmbtingkat('filter',$(this).val());
             });
@@ -580,7 +580,7 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                         $('#d_kategorianggaranDV').html(dt.nama);
                         $('#d_keteranganDV').html(dt.keterangan);
                         $('#d_kategorianggaranH').val(id);
-		        		cmbdepartemen('filter','');
+		        		cmbtahunajaran('filter',$('#a_departemenS').val());
                         switchPN(2);
                     }
                 },
@@ -724,12 +724,13 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                         });
                     }
                     if(tipe=='form'){
-                    	$('#d_departemenTB').html(out);
-    	                $('#d_kategorianggaranH2').val($('#d_kategorianggaranH').val());
-    	                $('#d_kategorianggaranTB').val($('#d_kategorianggaranDV').html());
+                    	$('#a_departemenTB').html(out);
+    	                $('#a_kategorianggaranH2').val($('#a_kategorianggaranH').val());
+    	                $('#a_kategorianggaranTB').val($('#a_kategorianggaranDV').html());
                     }else{
-                        $('#d_departemenS').html(out);
-                        cmbtahunajaran('filter',dt.departemen[0].replid );
+                        $('#a_departemenS').html(out);
+                        viewTB('anggaran');
+                        // cmbtahunajaran('filter',dt.departemen[0].replid );
                     }
                 }
             });

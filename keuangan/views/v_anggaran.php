@@ -18,6 +18,9 @@
     <button data-hint="Tambah Data" id="a_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="a_cariBC"><span class="icon-search"></span> </button>
     <button data-hint="Cetak" id="a_cetakBC"><span class="icon-printer"></span> </button>
+    <div class="input-control select size3">
+        <select data-hint="Departemen" class="anggaran_cari" name="a_departemenS" id="a_departemenS" data-hint="Departemen" ></select>
+    </div> 
 
     <table class="table hovered bordered striped">
         <thead>
@@ -59,12 +62,6 @@
         <div class="row">
             <span class="span3">Keterangan:</span>
             <span id="d_keteranganDV"></span>
-        </div>
-        <div class="row">
-            <div class="span3" >Departemen :</div>
-            <div class="input-control select size3">
-                <select class="detilanggaran_cari" name="d_departemenS" id="d_departemenS" data-hint="Departemen" ></select>
-            </div> 
         </div>
         <div class="row">
             <div class="span3" >Tahun Ajaran  :</div>
