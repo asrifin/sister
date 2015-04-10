@@ -92,15 +92,23 @@
 					// kategori anggaran
 					case 'anggaran':
 						$a_nama       = isset($_POST['a_namaS'])?filter(trim($_POST['a_namaS'])):'';
+						$a_rekening   = isset($_POST['a_rekeningS'])?filter(trim($_POST['a_rekeningS'])):'';
 						$a_keterangan = isset($_POST['a_keteranganS'])?filter(trim($_POST['a_keteranganS'])):'';
 
-						$sql = 'SELECT *
-								FROM '.$tb.'
+						$sql = 'SELECT 
+									a.replid,
+									a.nama,
+									a.keterangan,
+									d.nama namarek,
+									d.kode koderek
+								FROM '.$tb.' a
+									LEFT JOIN keu_detilrekening d on d.replid = a.rekening
 								WHERE
-									nama like "%'.$a_nama.'%" and
-									keterangan like "%'.$a_keterangan.'%" 
+									a.rekening like "%'.$a_rekening.'%" and
+									a.nama like "%'.$a_nama.'%" and
+									a.keterangan like "%'.$a_keterangan.'%" 
 								ORDER BY
-									replid asc';
+									a.replid asc';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -132,6 +140,7 @@
 										 </td>';
 								$out.= '<tr>
 											<td>'.$res['nama'].'</td>
+											<td>'.$res['koderek'].' - '.$res['namarek'].'</td>
 											<td>'.$res['keterangan'].'</td>
 											'.$btn.'
 										</tr>';
@@ -198,10 +207,10 @@
 										 </td>';
 								$out.= '<tr>
 											<td>'.$res['nama'].'</td>
-											<td>'.$res['rekening'].'</td>
 											<td >'.$res['keterangan'].'</td>
 											'.$btn.'
 										</tr>';
+										// <td>'.$res['rekening'].'</td>
 								// $totaset+=$res['nominal'];
 								$nox++;
 							}
@@ -408,6 +417,7 @@
 				switch ($_POST['subaksi']) {
 					case 'anggaran':
 						$s 		= $tb.' set nama       = "'.filter($_POST['a_namaTB']).'",
+											rekening   = "'.filter($_POST['a_rekeningH']).'",
 											keterangan = "'.filter($_POST['a_keteranganTB']).'"';
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 						$e 		= mysql_query($s2);
@@ -419,8 +429,8 @@
 						$s 	= 'keu_detilanggaran  set 	kategorianggaran = "'.$_POST['d_kategorianggaranH2'].'",
 														departemen       = "'.filter($_POST['d_departemenTB']).'",
 														nama             = "'.filter($_POST['d_namaTB']).'",
-														rekening         = "'.$_POST['d_rekeningH'].'",
 														keterangan       = "'.filter($_POST['d_keteranganTB']).'"';
+														// rekening         = "'.$_POST['d_rekeningH'].'",
 						$s2 = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 						$e  = mysql_query($s2);
 						$id = mysql_insert_id();
@@ -545,9 +555,16 @@
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
 					case 'anggaran';
-						$s = 	'SELECT *
-								FROM '.$tb.'
-								WHERE replid='.$_POST['replid'];
+						$s = 	'SELECT 
+									a.replid,
+									a.nama,
+									a.keterangan,
+									d.replid idrekening,
+									concat(d.kode," - ",d.nama)rekening
+								FROM '.$tb.' a
+									LEFT JOIN keu_detilrekening d on d.replid = a.rekening
+								WHERE
+									a.replid ='.$_POST['replid'];
 						// print_r($s);exit();
 						$e 		= mysql_query($s);
 						$r 		= mysql_fetch_assoc($e);
@@ -555,6 +572,8 @@
 						$out 	= json_encode(array(
 									'status'     =>$stat,
 									'nama'       =>$r['nama'],
+									'idrekening' =>$r['idrekening'],
+									'rekening'   =>$r['rekening'],
 									'keterangan' =>$r['keterangan']
 								));					
 					break;

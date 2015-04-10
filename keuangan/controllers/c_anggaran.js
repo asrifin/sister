@@ -29,6 +29,13 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
 
+                            +'<label>Rekening</label>'
+                            +'<div class="input-control text">'
+                                +'<input type="hidden" required id="a_rekeningH" name="a_rekeningH" />'
+                                +'<input  placeholder="Rekening" required type="text" name="a_rekeningTB" id="a_rekeningTB">'
+                                +'<button class="btn-clear"></button>'
+                            +'</div>'
+
                             +'<label>Keterangan</label>'
                             +'<div class="input-control textarea">'
                                 +'<textarea placeholder="keterangan" name="a_keteranganTB" id="a_keteranganTB"></textarea>'
@@ -62,12 +69,12 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 		                                +'<button class="btn-clear"></button>'
 		                            +'</div>'
 		                            
-		                            +'<label>Rekening</label>'
-		                            +'<div class="input-control text">'
-		                            	+'<input type="hidden" required id="d_rekeningH" name="d_rekeningH" />'
-		                                +'<input  placeholder="Rekening" required type="text" name="d_rekeningTB" id="d_rekeningTB">'
-		                                +'<button class="btn-clear"></button>'
-		                            +'</div>'
+		                            // +'<label>Rekening</label>'
+		                            // +'<div class="input-control text">'
+		                            // 	+'<input type="hidden" required id="d_rekeningH" name="d_rekeningH" />'
+		                            //     +'<input  placeholder="Rekening" required type="text" name="d_rekeningTB" id="d_rekeningTB">'
+		                            //     +'<button class="btn-clear"></button>'
+		                            // +'</div>'
 
 		                            +'<label>Keterangan</label>'
 		                            +'<div class="input-control textarea">'
@@ -264,7 +271,7 @@ var a_contentFR = d_contentFR = b_contentFR ='';
         function vwDetilAnggaran(id) {
             var aksi ='aksi=tampil&subaksi=detilanggaran&d_kategorianggaranH='+id;
             var cari ='&d_namaS='+$('#d_namaS').val()
-                    +'&d_rekeningS='+$('#d_rekeningS').val()
+                    // +'&d_rekeningS='+$('#d_rekeningS').val()
                     +'&d_departemenS='+$('#d_departemenS').val()
                     +'&d_keteranganS='+$('#d_keteranganS').val();
             $.ajax({
@@ -640,11 +647,47 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                             success:function(dt){
                                 $('#a_idformH').val(id);
                                 $('#a_namaTB').val(dt.nama);
+                                $('#a_rekeningH').val(dt.idrekening);
+                                $('#a_rekeningTB').val(dt.rekening);
                                 $('#a_keteranganTB').val(dt.keterangan);
                             }
                         });//end of  data grup--------------------------
                     }$.Dialog.title(titlex+' '+mnu); // edit by epiii
                     $.Dialog.content(a_contentFR);
+                }
+            });
+            $("#a_rekeningTB").combogrid({
+                debug:true,
+                width:'600px',
+                colModel: [{
+                        // 'align':'left',
+                        'columnName':'kode',
+                        // 'hide':true,
+                        'width':'15',
+                        'label':'KODE'
+                    },{   
+                        'align':'left',
+                        'columnName':'nama',
+                        'width':'85',
+                        'label':'NAMA'
+                }],
+                url: dir+'?aksi=autocomp',
+                select: function( event, ui ) {
+                    $('#a_rekeningH').val(ui.item.replid);
+                    $(this).val(ui.item.nama);
+                    
+                    // validasi input (tidak sesuai data dr server)
+                        $(this).on('keyup', function(e){
+                            var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+                            var keyCode = $.ui.keyCode;
+                            if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
+                                if($('#a_rekeningH').val()!=''){
+                                    $('#a_rekeningH').val('');
+                                    $('#a_rekeningTB').val('');
+                                }
+                            }
+                        });
+                    return false;
                 }
             });
         }
@@ -684,40 +727,40 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                 	$.Dialog.content(d_contentFR);
 	            }
 	        });
-	        $("#d_rekeningTB").combogrid({
-	            debug:true,
-	            width:'600px',
-	            colModel: [{
-	                    // 'align':'left',
-	                    'columnName':'kode',
-	                    // 'hide':true,
-	                    'width':'15',
-	                    'label':'KODE'
-	                },{   
-	                    'align':'left',
-	                    'columnName':'nama',
-	                    'width':'85',
-	                    'label':'NAMA'
-	                }],
-	            url: dir+'?aksi=autocomp',
-	            select: function( event, ui ) {
-	                $('#d_rekeningH').val(ui.item.replid);
-	                $(this).val(ui.item.nama);
+	     //    $("#d_rekeningTB").combogrid({
+	     //        debug:true,
+	     //        width:'600px',
+	     //        colModel: [{
+	     //                // 'align':'left',
+	     //                'columnName':'kode',
+	     //                // 'hide':true,
+	     //                'width':'15',
+	     //                'label':'KODE'
+	     //            },{   
+	     //                'align':'left',
+	     //                'columnName':'nama',
+	     //                'width':'85',
+	     //                'label':'NAMA'
+	     //            }],
+	     //        url: dir+'?aksi=autocomp',
+	     //        select: function( event, ui ) {
+	     //            $('#d_rekeningH').val(ui.item.replid);
+	     //            $(this).val(ui.item.nama);
 	                
-	                // validasi input (tidak sesuai data dr server)
-		                $(this).on('keyup', function(e){
-							var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-							var keyCode = $.ui.keyCode;
-							if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
-	                			if($('#d_rekeningH').val()!=''){
-									$('#d_rekeningH').val('');
-									$('#d_rekeningTB').val('');
-								}
-							}
-						});
-	               	return false;
-	            }
-	        });
+	     //            // validasi input (tidak sesuai data dr server)
+		    //             $(this).on('keyup', function(e){
+						// 	var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+						// 	var keyCode = $.ui.keyCode;
+						// 	if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
+	     //            			if($('#d_rekeningH').val()!=''){
+						// 			$('#d_rekeningH').val('');
+						// 			$('#d_rekeningTB').val('');
+						// 		}
+						// 	}
+						// });
+	     //           	return false;
+	     //        }
+	     //    });
         }
     // end of form katalog---
 
@@ -810,57 +853,57 @@ var a_contentFR = d_contentFR = b_contentFR ='';
     // end of form katalog---
 
     // form barang---
-        function barangFR(id){
-            kkosongkan();
-            $.Dialog({
-                shadow: true,
-                overlay: true,
-                draggable: true,
-                width: 500,
-                padding: 10,
-                onShow: function(){
-                    var titlex;
-                    if(id==''){  //add mode
-                        titlex='<span class="icon-plus-2"></span> Tambah ';
-                        cmbkondisi('form','');
-                        cmbtempat('');
-                        vwHeadBarang($('#b_katalogS').val());
-                    }else{ // edit mode
-                        bkosongkan();
-                        titlex='<span class="icon-pencil"></span> Ubah';
-                        // fetch katalog's data ------------------ 
-                        $.ajax({
-                            url:dir,
-                            data:'aksi=ambiledit&subaksi=barang&replid='+id,
-                            type:'post',
-                            dataType:'json',
-                            success:function(dt){
-                                if(dt.status!='sukses'){
-                                    notif(dt.status,'red');
-                                }else{
-                                    // $('#b_tempatTB').focus();
-                                    $('#b_katalogTB').val($('#b_katalogDV').html());
-                                    $('.jumbarang').attr('style','display:none;');
-                                    $('#b_idformH').val(id);
-                                    $('#b_urutH').val(dt.data.urut);
-                                    $('#b_katalogH2').val($('#b_katalogS').val());
-                                    $('#b_barkodeTB').val(dt.data.barkode);
-                                    $('#b_kodeTB').val(dt.data.kode);
-                                    $('#b_hargaTB').val(dt.data.harga);
-                                    $('#b_keteranganTB').val(dt.data.keterangan);
-                                    $.each($('input[name="b_sumberTB"]'),function(){
-                                        if(dt.data.sumber==$(this).val())
-                                            $(this).attr('checked',true);
-                                    });cmbkondisi('form',dt.data.kondisi);
-                                    cmbtempat(dt.data.tempat);
-                                }
-                            }
-                        });// end of fetch katalog's data ------------------ 
-                    }$.Dialog.title(titlex+' '+mnu5);
-                    $.Dialog.content(b_contentFR);
-                }
-            });
-        }
+        // function barangFR(id){
+        //     kkosongkan();
+        //     $.Dialog({
+        //         shadow: true,
+        //         overlay: true,
+        //         draggable: true,
+        //         width: 500,
+        //         padding: 10,
+        //         onShow: function(){
+        //             var titlex;
+        //             if(id==''){  //add mode
+        //                 titlex='<span class="icon-plus-2"></span> Tambah ';
+        //                 cmbkondisi('form','');
+        //                 cmbtempat('');
+        //                 vwHeadBarang($('#b_katalogS').val());
+        //             }else{ // edit mode
+        //                 bkosongkan();
+        //                 titlex='<span class="icon-pencil"></span> Ubah';
+        //                 // fetch katalog's data ------------------ 
+        //                 $.ajax({
+        //                     url:dir,
+        //                     data:'aksi=ambiledit&subaksi=barang&replid='+id,
+        //                     type:'post',
+        //                     dataType:'json',
+        //                     success:function(dt){
+        //                         if(dt.status!='sukses'){
+        //                             notif(dt.status,'red');
+        //                         }else{
+        //                             // $('#b_tempatTB').focus();
+        //                             $('#b_katalogTB').val($('#b_katalogDV').html());
+        //                             $('.jumbarang').attr('style','display:none;');
+        //                             $('#b_idformH').val(id);
+        //                             $('#b_urutH').val(dt.data.urut);
+        //                             $('#b_katalogH2').val($('#b_katalogS').val());
+        //                             $('#b_barkodeTB').val(dt.data.barkode);
+        //                             $('#b_kodeTB').val(dt.data.kode);
+        //                             $('#b_hargaTB').val(dt.data.harga);
+        //                             $('#b_keteranganTB').val(dt.data.keterangan);
+        //                             $.each($('input[name="b_sumberTB"]'),function(){
+        //                                 if(dt.data.sumber==$(this).val())
+        //                                     $(this).attr('checked',true);
+        //                             });cmbkondisi('form',dt.data.kondisi);
+        //                             cmbtempat(dt.data.tempat);
+        //                         }
+        //                     }
+        //                 });// end of fetch katalog's data ------------------ 
+        //             }$.Dialog.title(titlex+' '+mnu5);
+        //             $.Dialog.content(b_contentFR);
+        //         }
+        //     });
+        // }
     // end of form barang---
 
 /*headinfo*/
