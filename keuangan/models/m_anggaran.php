@@ -413,6 +413,7 @@
 				switch ($_POST['subaksi']) {
 					case 'anggaran':
 						$s 		= $tb.' set nama       = "'.filter($_POST['a_namaTB']).'",
+											departemen = "'.filter($_POST['a_departemenH']).'",
 											rekening   = "'.filter($_POST['a_rekeningH']).'",
 											keterangan = "'.filter($_POST['a_keteranganTB']).'"';
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
