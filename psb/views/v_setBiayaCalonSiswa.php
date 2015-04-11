@@ -18,7 +18,7 @@
 
 <div  style="overflow:scroll;height:600px;" >
     <form autocomplete="off" onsubmit="simpan();return false;"> 
-        <button data-hint="Simpan" id="simpanBC"><span class="icon-checkmark"></span> </button>
+        <button data-hint="Simpan" id="simpanBC"><span class="icon-floppy"></span> </button>
         <table class="table hovered bordered striped">
         <thead>
             <tr style="color:white;"class="info">
