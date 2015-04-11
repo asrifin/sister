@@ -65,7 +65,7 @@
 
       <div class="table hovered bordered striped panelx" id="pendataanFR" style="display:none;" >
           <div style="overflow:scroll;height:600px;" >
-                  <form autocomplete="off" enctype="multipart/form-data" onsubmit="siswaSV();return false;" id="form"> 
+                  <form autocomplete="off" enctype="multipart/form-data" onsubmit="siswaSV();return false;" id="siswa_form"> 
                         <input id="idformH" type="hidden"> 
                         <!-- Panel -->
                         <div class="panel">
@@ -95,7 +95,8 @@
                               <label><b>Sumbangan :</b></label>
                               <label>Uang Pangkal</label>
                               <div class="input-control text size3">
-                                  <input type="text" onclick="inputuang(this);" name="uang_pangkalTB" id="uang_pangkalTB">
+                                  <!-- <input type="text" onclick="inputuang(this);" name="uang_pangkalTB" id="uang_pangkalTB"> -->
+                                  <input type="text" name="uang_pangkalTB" id="uang_pangkalTB">
                                   <button class="btn-clear"></button>
                               </div>
                               
@@ -103,6 +104,12 @@
                               <div class="input-control text size3">
                                   <input type="hidden" onclick="inputuang(this);" name="uang_pangkalnetH" id="uang_pangkalnetH">
                                   <input type="text" name="uang_pangkalnetTB" id="uang_pangkalnetTB">
+                                  <button class="btn-clear"></button>
+                              </div>
+                              <label>Joining Fee</label>
+                              <div class="input-control text size3">
+                                  <input type="hidden" onclick="inputuang(this);" name="joiningH" id="joiningH">
+                                  <input type="text" name="joiningTB" id="joiningTB">
                                   <button class="btn-clear"></button>
                               </div>
 
@@ -133,13 +140,13 @@
                                 <label><b>Discount:</b></label>
                                 <label>Discount Subsidi :</label>
                                 <div class="input-control text size3">
-                                    <input type="text" onclick="inputuang(this);" placeholder="Diskon Subsidi" name="diskon_subsidiTB" id="diskon_subsidiTB">
+                                    <input type="text" placeholder="Diskon Subsidi" name="diskon_subsidiTB" id="diskon_subsidiTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
                                 <label>Discount Saudara :</label>
                                 <div class="input-control text size3">
-                                    <input type="text" onclick="inputuang(this);" placeholder="Diskon Saudara" name="diskon_saudaraTB" id="diskon_saudaraTB">
+                                    <input type="text" placeholder="Diskon Saudara" name="diskon_saudaraTB" id="diskon_saudaraTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
@@ -407,6 +414,12 @@
 
                         <label>Nomor yang dapat dihubungi :</label>
                         <div class="input-control text size5">
+                            <input placeholder="Nomor" type="text" name="nomorTB" id="nomorTB">
+                        </div>
+                        <label>Data Saudara :</label>
+                            <a href="#" data-hint="Tambah Saudara" id="saudaraBC" class="button"><span class="icon-plus-2"></span> Tambah Saudara</a>
+                        <div class="input-control text size5">
+
                             <input placeholder="Nomor" type="text" name="nomorTB" id="nomorTB">
                         </div>
                         
