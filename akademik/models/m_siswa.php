@@ -69,75 +69,125 @@
 			switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
-				$tingkat = isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
-				$subtingkat = isset($_POST['subtingkatS'])?filter(trim($_POST['subtingkatS'])):'';
-				$kelas = isset($_POST['kelasS'])?filter(trim($_POST['kelasS'])):'';
-				$nama = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
-				$nisn = isset($_POST['nisnS'])?filter(trim($_POST['nisnS'])):'';
-				// var_dump($nisn);exit();
-						 // AND s.kelas ="%'.$kelas.'%"
-				$sql = 'SELECT
-							s.*
-						FROM
-							aka_siswa s
-							LEFT JOIN aka_siswa_kelas k ON k.siswa = s.replid
-							LEFT JOIN aka_angkatan a ON a.replid = s.angkatan
-							LEFT JOIN aka_kelas l ON l.replid = k.kelas
-							LEFT JOIN aka_subtingkat g ON g.replid = l.subtingkat
-							LEFT JOIN aka_tingkat t ON t.replid = l.tingkat
-							LEFT JOIN aka_tahunajaran j ON j.replid = t.tahunajaran
-							LEFT JOIN departemen d ON d.replid = j.departemen
-						WHERE
-							j.departemen = '.$departemen.'
-							AND l.tahunajaran = '.$tahunajaran.'
-							AND l.tingkat = '.$tingkat.'
-							AND l.subtingkat = '.$subtingkat.'
-							AND k.kelas = '.$kelas.'
-							AND s.aktif = 1';
-				// print_r($sql);exit();
-				if(isset($_POST['starting'])){ //nilai awal halaman
-					$starting=$_POST['starting'];
-				}else{
-					$starting=0;
-				}
+				switch ($_POST['subaksi']) {
+					case 'aktif':
+						$kelas    = isset($_POST['kelasS'])?filter($_POST['kelasS']):'';
+						$nama     = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+						$nisn     = isset($_POST['nisnS'])?filter($_POST['nisnS']):'';
+						$nis      = isset($_POST['nisS'])?filter($_POST['nisS']):'';
+						$tmplahir = isset($_POST['tmplahirS'])?filter($_POST['tmplahirS']):'';
+						$tgllahir = isset($_POST['tgllahirS'])?filter($_POST['tgllahirS']):'';
 
-				$recpage= 5;//jumlah data per halaman
-				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
-				$result =$obj->result;
+						$sql = 'SELECT
+									s.replid,
+									s.nis,
+									s.nisn,
+									s.nama,
+									s.tmplahir,
+									s.tgllahir
+								FROM
+									aka_siswa s
+									JOIN aka_siswa_kelas sk ON sk.siswa = s.replid
+								WHERE
+									sk.kelas = '.$kelas.' AND
+									s.nama LIKE "%'.$nama.'%" AND
+									s.nis LIKE "%'.$nis.'%" AND
+									s.nisn LIKE "%'.$nisn.'%" AND
+									s.tmplahir LIKE "%'.$tmplahir.'%" and
+									s.tgllahir LIKE "%'.$tgllahir.'%"';
+						// print_r($sql);exit();
+						if(isset($_POST['starting'])){ //nilai awal halaman
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
 
-				#ada data
-				$jum	= mysql_num_rows($result);
-				$out ='';
-				if($jum!=0){	
-					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
-						$btn ='<td>
-									<button data-hint="detail"  class="button" onclick="viewFR('.$res['replid'].');">
-												<i class="icon-zoom-in"></i>
+						$recpage = 5;//jumlah data per halaman
+						$obj     = new pagination_class($sql,$starting,$recpage,'tampil','');
+						$result  =$obj->result;
+						$jum     = mysql_num_rows($result);
+						$out     ='';
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_assoc($result)){	
+								$btn ='<td>
+											<button data-hint="detail"  class="button" onclick="viewFR('.$res['replid'].');">
+														<i class="icon-zoom-in"></i>
+													</button>
+											<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+												<i class="icon-remove on-left"></i>
 											</button>
-									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
-										<i class="icon-remove on-left"></i>
-								 </td>';
-						$out.= '<tr>
-									<td>'.$res['nis'].'</td>
-									<td>'.$res['nisn'].'</td>
-									<td>'.$res['nama'].'</td>
-									<td>'.$res['tmplahir'].', '.tgl_indo($res['tgllahir']).'</td>
-									'.$btn.'
-								</tr>';
-									// <td>'.$res['tahunlulus'].'</td>
-						$nox++;
-					}
-				}else{ #kosong
-					$out.= '<tr align="center">
-							<td  colspan=9 ><span style="color:red;text-align:center;">
-							... data tidak ditemukan...</span></td></tr>';
-				}
-				#link paging
-				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+										 </td>';
+								$out.= '<tr>
+											<td>'.$res['nis'].'</td>
+											<td>'.$res['nisn'].'</td>
+											<td>'.$res['nama'].'</td>
+											<td>'.$res['tmplahir'].', '.($res['tgllahir']=='0000-00-00'?'-':tgl_indo($res['tgllahir'])).'</td>
+											'.$btn.'
+										</tr>';
+								$nox++;
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan=9 ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+					break;
+
+					case 'belum':
+						$angkatan = isset($_POST['angkatanS'])?filter($_POST['angkatanS']):'';
+						$nama     = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+						$nis      = isset($_POST['nisS'])?filter($_POST['nisS']):'';
+
+						$sql = 'SELECT *
+								FROM '.$tb.' s	
+								WHERE
+									s.nama LIKE "%'.$nama.'%" AND
+									s.nis LIKE "%'.$nis.'%"';
+						// print_r($sql);exit();
+						if(isset($_POST['starting'])){ //nilai awal halaman
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
+
+						$recpage = 5;//jumlah data per halaman
+						$aksi    ='tampil';
+						$subaksi ='belum';
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+
+						$jum     = mysql_num_rows($result);
+						$out     ='';
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_assoc($result)){	
+								$btn ='<td>
+											<button data-hint="pilih"  class="button" onclick="pilih('.$res['replid'].');">
+												<i class="icon-remove on-left"></i>
+											</button>
+										 </td>';
+								$out.= '<tr>
+											<td></td>
+											<td>'.$res['nis'].'</td>
+											<td>'.$res['nama'].'</td>
+											'.$btn.'
+										</tr>';
+								$nox++;
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan=9 ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+					break;
+				}		
 			break;  
 			// view -----------------------------------------------------------------
 

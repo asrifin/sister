@@ -123,7 +123,7 @@
             <span class="element-divider place-right"></span>
             <div class="element place-right">
                 <a class="dropdown-toggle" href="#">
-                    <?php echo $_SESSION['namaS'].' ('.$_SESSION['levelS'].')';?>
+                    <!-- <?php echo $_SESSION['namaS'].' ('.$_SESSION['levelS'].')';?> -->
                     <i class="icon-user"></i>
                 </a>
                 <ul class="dropdown-menu place-right" data-role="dropdown">
