@@ -217,56 +217,6 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
 //end of paging ---
 
 /*view*/
-    // ju ---
-        // function juVW(){  
-        //     var aksi ='aksi=tampil&subaksi=ju';
-        //     var cari ='&ju_noS='+$('#ju_noS').val()
-        //              +'&ju_uraianS='+$('#ju_uraianS').val();
-        //     $.ajax({
-        //         url : dir,
-        //         type: 'post',
-        //         data: aksi+cari,
-        //         beforeSend:function(){
-        //             $('#ju_tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
-        //         },success:function(dt){
-        //             setTimeout(function(){
-        //                 $('#ju_tbody').html(dt).fadeIn();
-        //             },1000);
-        //         }
-        //     });
-        // }
-        function viewTB(subaksi){
-            var aksi ='aksi=tampil&subaksi='+subaksi;
-            var cari ='';
-            var el,el2;
-
-            if(subaksi!=''){ // multi paging 
-                el  = '.'+subaksi+'_cari';
-                el2 = '#'+subaksi+'_tbody';
-            }else{ // single paging
-                el  = '.cari';
-                el2 = '#tbody';
-            }
-
-            $(el).each(function(){
-                var p = $(this).attr('id');
-                var v = $(this).val();
-                cari+='&'+p+'='+v;
-            });
-
-            $.ajax({
-                url : dir,
-                type: 'post',
-                data: aksi+cari,
-                beforeSend:function(){
-                    $('#'+subaksi+'_tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
-                },success:function(dt){
-                    setTimeout(function(){
-                        $('#'+subaksi+'_tbody').html(dt).fadeIn();
-                    },1000);
-                }
-            });
-        }
 
 // fungsi AJAX : asyncronous
     function ajaxFC (u,d) {
@@ -640,12 +590,12 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
                     $.each(dt.departemen, function(id,item){
                         out+='<option value="'+item.replid+'"> '+item.nama+'</option>';
                     });
-                    if(typ=='filter'){
-                        $('#departemenS').html(out);
-                        switchPN('');
-                    }else{
-                        $('#departemenTB').html(out);
-                    }
+                }
+                if(typ=='filter'){
+                    $('#departemenS').html(out);
+                    switchPN('');
+                }else{
+                    $('#departemenTB').html(out);
                 }
             }
         });
@@ -811,14 +761,14 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
                         else
                             out+='<option value="'+item.replid+'"> '+item.proses+'</option>';
                     });
-                    if(typ=='filter'){
-                        // alert('masuk filter ');
-                        $('#prosesS').html(out);
-                        cmbkelompok('filter',dt.proses[0].replid);
-                    }else{
-                        // alert('masuk form');
-                        $('#prosesTB').html(out);
-                    }
+                }
+                if(typ=='filter'){
+                    // alert('masuk filter ');
+                    $('#prosesS').html(out);
+                    cmbkelompok('filter',dt.proses[0].replid);
+                }else{
+                    // alert('masuk form');
+                    $('#prosesTB').html(out);
                 }
             }
         });
