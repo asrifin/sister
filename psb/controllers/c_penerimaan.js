@@ -19,7 +19,7 @@ var content_stat = content_det = '';
         cmbdepartemenS();
 
         //form terima
-        content_stat += '<form autocomplete="off" onsubmit="simpan(this);return false;" id="'+mnu+'FR">' 
+        content_stat += '<form autocomplete="off" onsubmit="terima(this);return false;" id="'+mnu+'FR">' 
                         +'<table>'
                             +'<tr>'
                                 +'<td colspan="2">Terima calon siswa berikut ini </td>'
@@ -45,7 +45,7 @@ var content_stat = content_det = '';
                             +'</tr>'
                         +'</table>'
                         
-                        +'<input id="idformH" name="idformH" type="text">' 
+                        +'<input id="idformH_terima" name="idformH_terima" type="text">' 
                         +'<legend>Silahkan lengkapi data berikut:</legend>'
                         +'<label>No Induk</label>'
                         +'<div class="input-control text size2">'
@@ -66,8 +66,8 @@ var content_stat = content_det = '';
                     +'</form>';
 
         //form batal terima
-        content_det += '<form autocomplete="off" onsubmit="terima();return false;" id="'+mnu+'FR">' 
-                        +'<input id="idformH_batal" type="hidden">' 
+        content_det += '<form autocomplete="off" onsubmit="tolak(this);return false;" id="'+mnu+'FR">' 
+                        +'<input id="idformH_batal" name="idformH_batal" type="hidden">' 
 
                         +'<label>Pembatalan penerimaan siswa ini juga menghapus data siswa aktif.</label>'
                         +'<label>Apakah anda yakin untuk membatalkan penerimaan siswa:</label>'
@@ -272,40 +272,35 @@ var content_stat = content_det = '';
 //end of combo tingkat ---
 
 //save process ---
-    function simpan(e){
+    function terima(e){
         var datax = $(e).serialize()+'&aksi=simpan&subaksi=penerimaan';
         ajax(dir,datax).done(function(res){
-                alert(res.status);
+                    viewTB();
+                    if(res.status == "gagal"){
+                        clr = "red";
+                    }else{
+                        clr = "green"
+                    }
+                notif(res.status,clr);
+                // alert(res.status);
         });
     }
     
 //save process ---
-    function terima(){ //Tombol Terima
-        var urlx ='&aksi=terima&subaksi=tidak_terima';
-        // edit mode
-        if($('#idformH_terima').val()!=''){
-            urlx += '&replid='+$('#idformH_terima').val();
-        }
-        $.ajax({
-            url:dir,
-            cache:false,
-            type:'post',
-            dataType:'json',
-            data:$('form').serialize()+urlx,
-            success:function(dt){
-                if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
-                    clr  = 'red';
-                }else{
-                    $.Dialog.close();
-                    kosongkan();
-                    viewTB($('#departemenS').val());
-                    cont = 'Berhasil menyimpan data';
-                    clr  = 'green';
-                }
-                notif(cont,clr);
-            }
-        });
+    function tolak(e){ //Tombol Terima
+        // var urlx ='&aksi=terima&subaksi=tidak_terima';
+        var datax = $(e).serialize()+'&aksi=simpan&subaksi=tidak_terima';
+// alert(datax); return false;
+        ajax(dir,datax).done(function(res){
+                    viewTB();
+                    if(res.status == "gagal"){
+                        clr = "red";
+                    }else{
+                        clr = "green"
+                    }
+                notif(res.status,clr);
+                // alert(res.status);
+        });       
     }
 //end of save process ---
 
@@ -371,7 +366,7 @@ var content_stat = content_det = '';
                     titl= 'Calon Siswa (belum dikonfirmasi)';
                     var res = sjax(dir,'aksi=ambiledit&subaksi=status&replid='+calon);
                     setTimeout(function(){
-                    $('#idformH').val(calon);
+                    $('#idformH_terima').val(calon);
                         $('#namaTD').html(res.data.nama);
                         $('#nopendaftaranTD').html(res.data.nopendaftaran);
                         $('#departemenTD').html(res.data.departemen);
@@ -381,7 +376,8 @@ var content_stat = content_det = '';
                     cont= content_det;
                     titl= 'Batalkan Penerimaan Siswa';
                     ajax(dir,'aksi=ambiledit&subaksi=batal&replid='+calon).done(function(res){
-                        $('#nama_batalTD').html(res.data.nama_batal);
+                        $('#idformH_batal').val(calon);
+                        $('#nama_batalTD').html(res.nama_batal);
                     });
                 }else{ // form mode : detail calon siswa
 

@@ -11,59 +11,59 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-        // contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
-        //                 +'<input id="idformH" type="hidden">' 
+        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+                        +'<input id="idformH" type="hidden">' 
                         
-        //                 +'<label>Departemen</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input type="hidden" name="departemenH" id="departemenH">'
-        //                     +'<input disabled type="text" name="departemenTB" id="departemenTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
+                        +'<label>Departemen</label>'
+                        +'<div class="input-control text">'
+                            +'<input type="hidden" name="departemenH" id="departemenH">'
+                            +'<input disabled type="text" name="departemenTB" id="departemenTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
                         
-        //                 +'<label>Tahun Ajaran</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
-        //                     +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
+                        +'<label>Tahun Ajaran</label>'
+                        +'<div class="input-control text">'
+                            +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
+                            +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
                         
-        //                 // +'<label>Tingkat</label>'
-        //                 // +'<div class="input-control text">'
-        //                 //     +'<input disabled placeholder="tingkat" required type="text" name="tingkatTB" id="tingkatTB">'
-        //                 //     +'<button class="btn-clear"></button>'
-        //                 // +'</div>'
+                        // +'<label>Tingkat</label>'
+                        // +'<div class="input-control text">'
+                        //     +'<input disabled placeholder="tingkat" required type="text" name="tingkatTB" id="tingkatTB">'
+                        //     +'<button class="btn-clear"></button>'
+                        // +'</div>'
                         
-        //                 +'<label>Kapasitas</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input class="span1" placeholder="kapasitas" required type="text" name="kapasitasTB" id="kapasitasTB">'
-        //                     +'<button class="btn-clear"></button> siswa'
-        //                 +'</div>'
+                        +'<label>Kapasitas</label>'
+                        +'<div class="input-control text">'
+                            +'<input class="span1" placeholder="kapasitas" required type="text" name="kapasitasTB" id="kapasitasTB">'
+                            +'<button class="btn-clear"></button> siswa'
+                        +'</div>'
 
-        //                 +'<label>Kelas</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input class="span2" placeholder="kelas" required type="text" name="kelasTB" id="kelasTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
+                        +'<label>Kelas</label>'
+                        +'<div class="input-control text">'
+                            +'<input class="span2" placeholder="kelas" required type="text" name="kelasTB" id="kelasTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
 
-        //                 +'<label>Wali Kelas</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input disabled class="span2" placeholder="NIP" required name="nipTB" id="nipTB">'
-        //                     +' <input class="span4" placeholder="wali kelas" required type="text" name="waliTB" id="waliTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
+                        +'<label>Wali Kelas</label>'
+                        +'<div class="input-control text">'
+                            +'<input disabled class="span2" placeholder="NIP" required name="nipTB" id="nipTB">'
+                            +' <input class="span4" placeholder="wali kelas" required type="text" name="waliTB" id="waliTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
 
-        //                 // oninvalid="this.setCustomValidity(\'isi dulu gan\');"
-        //                 +'<label>Keterangan</label>'
-        //                 +'<div class="input-control textarea">'
-        //                     +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
-        //                 +'</div>'
+                        // oninvalid="this.setCustomValidity(\'isi dulu gan\');"
+                        +'<label>Keterangan</label>'
+                        +'<div class="input-control textarea">'
+                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
+                        +'</div>'
                         
-        //                 +'<div class="form-actions">' 
-        //                     +'<button class="button primary">simpan</button>&nbsp;'
-        //                     +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-        //                 +'</div>'
-        //             +'</form>';
+                        +'<div class="form-actions">' 
+                            +'<button class="button primary">simpan</button>&nbsp;'
+                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                        +'</div>'
+                    +'</form>';
 
         // combo departemen
         cmbdepartemenS('');
@@ -169,21 +169,21 @@ var contentFR = '';
 
 //save process ---
     function simpan(){
+        alert($('.daftar').val());
+return false;        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
         var urlx ='&aksi=simpan';
+        // edit mode
+
+        if($('#idformH').val()!=''){
+            urlx += '&replid='+$('#idformH').val();
+        }
         $.ajax({
             url:dir,
             cache:false,
             type:'post',
             dataType:'json',
             data:$('form').serialize()+urlx,
-            beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7">'
-                        +'<img src="../img/w8loader.gif">'
-                    +'</td></tr>'
-                    +'<tr><td colspan="7" align="center">'
-                        +'<span style="color:white;background-color:green;">Mohon Sabar menunggu proses simpan data</span>'
-                    +'</td></tr>');
-            },success:function(dt){
+            success:function(dt){
                 if(dt.status!='sukses'){
                     cont = 'Gagal menyimpan data';
                     clr  = 'red';
@@ -211,12 +211,7 @@ var contentFR = '';
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7">'
-                    +'<img src="../img/w8loader.gif">'
-                +'</td></tr>'
-                +'<tr><td colspan="7" align="center">'
-                    +'<span style="color:white;padding:5px;background-color:orange;">Memuat Data</span>'
-                +'</td></tr>');
+                $('#tbody').html('<tr><td align="center" colspan="7"><img src="../img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -225,7 +220,7 @@ var contentFR = '';
         });
     }
 // end of view table ---
-    
+
 // form ---
     function viewFR(id){
         // $.Dialog({
@@ -420,21 +415,6 @@ function notif(cont,clr) {
         });
     }
 //end of aktifkan process ---
-
-
-// input uang --------------------------
-    function inputuang(e) {
-        $(e).maskMoney({
-            precision:0,
-            prefix:'Rp. ', 
-            // allowNegative: true, 
-            thousands:'.', 
-            // decimal:',', 
-            affixesStay: true
-        });
-    }
-// end of input uang --------------------------
-
 
     // ---------------------- //
     // -- created by epiii -- //

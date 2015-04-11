@@ -29,7 +29,7 @@ var contentAdd=contentEdit='';
                             +'</tfoot>'
                         +'</table>'
 
-                    +'<legend>Data Peminjaman</legend>'
+                    // +'<legend>Data Peminjaman</legend>'
                     +'<form onsubmit="simpan();return false;" autocomplete="off"><input id="idformH" type="hidden">' 
                         +'<label>Departemen</label>'
                         +'<div class="input-control select">'
@@ -54,7 +54,7 @@ var contentAdd=contentEdit='';
                     +'</form>'
                 +'</div>';
                 contentEdit+='<div style="overflow:scroll;height:500px;"  class="">'
-                        +'<legend>Data Peminjaman</legend>'
+                        +'<legend>Data Alumni</legend>'
                         +'<form onsubmit="simpan();return false;" autocomplete="off"><input id="idformH" type="hidden">' 
                         +'<label>NISN</label>'
                         +'<div class="input-control text">'
