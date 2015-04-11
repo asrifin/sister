@@ -20,14 +20,21 @@
 				$nopendaftaran = isset($_POST['no_pendaftaranS'])?filter($_POST['no_pendaftaranS']):'';
 				$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-				$sql = 'SELECT *
-						FROM '.$tb.'
+				$sql = 'SELECT c.nama,
+								c.replid,
+								c.nopendaftaran,
+								c.kelompok,
+								c.status,
+								s.nis,
+								s.nisn
+						FROM '.$tb.' c 
+						LEFT JOIN aka_siswa s ON s.nopendaftaran = c.nopendaftaran
 						WHERE 
-							nopendaftaran like "%'.$nopendaftaran.'%" and
-							nama like "%'.$nama.'%" and
-							kelompok = '.$kelompok.'
+							c.nopendaftaran like "%'.$nopendaftaran.'%" and
+							c.nama like "%'.$nama.'%" and
+							c.kelompok = '.$kelompok.'
 						ORDER 
-							BY nopendaftaran asc';
+							BY c.nopendaftaran asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -78,19 +85,19 @@
 									 </td>';						
 						}
 								//Jika sudah diterima tampilkan nisn
-								if($res['idsiswa']!=0){
-									$ts=mysql_query("SELECT nis,nisn FROM aka_siswa WHERE replid='".$res['idsiswa']."'");
-									$rs=mysql_fetch_array($ts);
-									$res['nis']=$rs['nis'];
-									$res['nisn']=$rs['nisn'];
-								}
+								// if($res['replid']!=0){
+								// 	$ts=mysql_query("SELECT nis,nisn FROM aka_siswa WHERE replid='".$res['replid']."'");
+								// 	$rs=mysql_fetch_array($ts);
+								// 	$res['nis']=$rs['nis'];
+								// 	$res['nisn']=$rs['nisn'];
+								// }
 							// $xtable->td($r['nis']==''?'-':$r['nis'],100);
 
 						$out.= '<tr>
 									<td>'.$res['nopendaftaran'].'</td>
 									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
-									<td>'.(isset($res['nis'])==''?'-':$res['nis']).'</td>
-									<td>'.(isset($res['nisn'])==''?'-':$res['nisn']).'</td>
+									<td>'.($res['nis']==''?'-':$res['nis']).'</td>
+									<td>'.($res['nisn']==''?'-':$res['nisn']).'</td>
 									'.$btn_terima.'
 									'.$btn.'
 								</tr>';
@@ -114,12 +121,12 @@
 						$s = 'SELECT * 
 								FROM 
 								psb_calonsiswa
-								WHERE replid = '.$_POST['idformH'];
+								WHERE replid = '.$_POST['idformH_terima'];
 						$e = mysql_query($s);
 						$r = mysql_fetch_assoc($e);
 
 
-						$s2  ='INSERT INTO '. $tb.' set 	kriteria 		= "'.$r['kriteria'].'",
+						$s2  ='INSERT INTO '. $tb2.' set 	kriteria 		= "'.$r['kriteria'].'",
 												golongan      = "'.$r['golongan'].'",
 												nis           = "'.filter($_POST['nisTB']).'",
 												nisn          = "'.filter($_POST['nisnTB']).'",
@@ -130,7 +137,7 @@
 												jmlangsur     = "'.$r['jmlangsur'].'",
 												angsuran      = "'.$r['angsuran'].'",
 												disctb        = "'.$r['disctb'].'",
-												disctb        = "'.$r['disctb'].'",
+												discsaudara       = "'.$r['discsaudara'].'",
 												disctunai     = "'.$r['disctunai'].'",
 												disctotal     = "'.$r['disctotal'].'",
 												nopendaftaran = "'.$r['nopendaftaran'].'",
@@ -146,10 +153,10 @@
 												kesehatan     = "'.$r['kesehatan'].'",
 												ketkesehatan  = "'.$r['ketkesehatan'].'"
 												';
-												var_dump($s2);exit();
+												// var_dump($s2);exit();
 						$e2 =  mysql_query($s2);
 						if ($e2) {
-							$s3 = 'UPDATE psb_calonsiswa set status  = 1 WHERE replid='.$_POST['idformH'];
+							$s3 = 'UPDATE psb_calonsiswa set status  = 1 WHERE replid='.$_POST['idformH_terima'];
 							$e3 =  mysql_query($s3);
 							if ($e3) {
 								# code...
@@ -174,6 +181,35 @@
 						$out  = json_encode(array('status'=>$stat));
 					break;
 
+					case 'tidak_terima':
+						$s = 'SELECT * 
+								FROM 
+								psb_calonsiswa
+								WHERE replid = '.$_POST['idformH_batal'];
+						$e = mysql_query($s);
+						$r = mysql_fetch_assoc($e);
+
+
+						$s2  ='DELETE FROM '. $tb2.' WHERE nopendaftaran = "'.$r['nopendaftaran'].'"'  ;
+												
+												// var_dump($s2);exit();
+						$e2 =  mysql_query($s2);
+						if ($e2) {
+							$s3 = 'UPDATE psb_calonsiswa set status  = 0 WHERE replid='.$_POST['idformH_batal'];
+							$e3 =  mysql_query($s3);
+							if ($e3) {
+								# code...
+							$stat = 'sukses';
+							}else{
+							$stat = 'gagal_update_calon_siswa';
+								
+							}
+						}else{
+							$stat = 'gagal_delete_aka_siswa';
+						}
+						
+						$out  = json_encode(array('status'=>$stat));
+					break;
 					/*case 'status':
 						$s    = $tb.' set 	nama = "'.filter($_POST['namaTB']).'",';
 						$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;

@@ -173,7 +173,7 @@ var contentFR = '';
 return false;        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
         var urlx ='&aksi=simpan';
         // edit mode
-        
+
         if($('#idformH').val()!=''){
             urlx += '&replid='+$('#idformH').val();
         }
@@ -211,7 +211,7 @@ return false;        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').v
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="7"><img src="../img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -333,7 +333,7 @@ return false;        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').v
             type:"post",
             data: datax+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="7"><img src="../img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();

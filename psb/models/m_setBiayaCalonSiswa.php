@@ -97,10 +97,10 @@
 								<td>'.$r2['golongan'].'  <input name="biaya[]" type="text"></td> 
 
 
-								<td align="right"><input type="text" name="daftarTB_'.$r2['replid'].'" class="daftar" value="Rp. '.number_format($r2['daftar']).'"  ></td> 
-								<td align="right"><input type="text" name="dpp" value="'.$r2['nilai'].'"  ></td> 
-								<td align="right"><input type="text" name="spp" value="'.$r2['spp'].'"  ></td> 
-								<td align="right"><input type="text" name="joiningf" value="'.$r2['joiningf'].'"  ></td> 
+								<td valign="right"><input type="text" name="daftarTB_'.$r2['replid'].'" class="daftar" value="Rp. '.number_format($r2['daftar']).'"  ></td> 
+								<td align="right"><input type="text" name="dpp" value="Rp. '.number_format($r2['nilai']).'"  ></td> 
+								<td align="right"><input type="text" name="spp" value="Rp. '.number_format($r2['spp']).'"  ></td> 
+								<td align="right"><input type="text" name="joiningf" value="Rp. '.number_format($r2['joiningf']).'"  ></td> 
 							</tr>';
 						}
 						$out.= '</tr>';
