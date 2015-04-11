@@ -154,12 +154,13 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
 // end of main function ---------
     
     function switchPN (par) {
-        // alert(par+' ok '); return false;
-        if(par==''){
+        if(par==''){ // default : pendaftaran
             cmbproses('filter',$('#departemenS').val());
-        }else if(par=='spp'){
+        }else if(par=='spp'){ // spp
             cmbtahunajaran('filter',$('#departemenS').val());
             // alert('spp bos');
+        }else{ // dpp (uang pangkal)
+
         }
         // alert(par);
         // var tabs = ['pembayaran','dpp','spp'];
@@ -763,11 +764,9 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
                     });
                 }
                 if(typ=='filter'){
-                    // alert('masuk filter ');
                     $('#prosesS').html(out);
                     cmbkelompok('filter',dt.proses[0].replid);
                 }else{
-                    // alert('masuk form');
                     $('#prosesTB').html(out);
                 }
             }
@@ -790,15 +789,54 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
                     $.each(dt.kelompok, function(id,item){
                         out+='<option value="'+item.replid+'"> '+item.kelompok+'</option>';
                     });
-                    if(typ=='filter'){
-                        $('#kelompokS').html('<option value="">-SEMUA-</option>'+out);
-                        viewTB(curTab());
-                    }else{
-                        $('#kelompokTB').html(out);
-                    }
+                }
+                if(typ=='filter'){
+                    $('#kelompokS').html(out);
+                    // $('#kelompokS').html('<option value="">-SEMUA-</option>'+out);
+                    viewTB(curTab());
+                }else{
+                    $('#kelompokTB').html(out);
                 }
             }
         });
     }
 //end of combo kelompok---
+
+// view table ---
+    function viewTB(subaksi){
+        var aksi ='aksi=tampil';
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
+        }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
+        $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi+cari,
+            beforeSend:function(){
+                $(el2).html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                setTimeout(function(){
+                    $(el2).html(dt).fadeIn();
+                },1000);
+            }
+        });
+    }
+// end of view table
 
