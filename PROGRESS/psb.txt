@@ -27,7 +27,7 @@ PSB V2.0
 	- Insert > Belum Cara insert ke multiple tabel
 	- view   > 
 	  + Combo Kelompok ga sesuai
-	  - menampilkan foto siswa pada view detail siswa
+	  + menampilkan foto siswa pada view detail siswa
 				
 	
 
