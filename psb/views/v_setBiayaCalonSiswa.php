@@ -28,8 +28,6 @@
                 <th class="text-left">Uang Pangkal</th>
                 <th class="text-left">SPP</th>
                 <th class="text-left">Joining Fee</th>
-                <!-- <th class="text-left">Keterangan</th> -->
-                <!-- <th class="text-left">Aksi</th> -->
             </tr>
             </thead>
 

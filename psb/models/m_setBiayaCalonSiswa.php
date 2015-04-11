@@ -66,14 +66,6 @@
 						$qry2 = mysql_query($sql2);
 						$num  = mysql_num_rows($qry2);
 						// print_r($sql2);exit();
-							// 	<td>'.$r2['golongan'].'  <input name="biaya[]" type="text"></td> 
-
-
-							// 	<td valign="right"><input type="text" name="daftarTB_'.$r2['replid'].'" class="daftar" value="Rp. '.number_format($r2['daftar']).'"  ></td> 
-							// 	<td align="right"><input type="text" name="dpp" value="Rp. '.number_format($r2['nilai']).'"  ></td> 
-							// 	<td align="right"><input type="text" name="spp" value="Rp. '.number_format($r2['spp']).'"  ></td> 
-							// 	<td align="right"><input type="text" name="joiningf" value="Rp. '.number_format($r2['joiningf']).'"  ></td> 
-							// </tr>';
 
 						while ($r2=mysql_fetch_assoc($qry2)) {
 							$out.= '<tr>
