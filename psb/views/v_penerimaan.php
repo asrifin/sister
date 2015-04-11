@@ -13,7 +13,7 @@
     <select data-hint="Departemen" class="cari" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Tahun Ajaran" class="cari" name="tahunajaranS" id="tahunajaranS"></select>
+    <select data-hint="Tahun Ajaran" class="cari" name="prosesS" id="prosesS"></select>
 </div>
 <div class="input-control select span3">
     <select data-hint="Kelompok" class="cari" name="kelompokS" id="kelompokS"></select>

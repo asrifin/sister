@@ -4,9 +4,8 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'kelas';
-	$tb  = 'aka_'.$mnu;
-	// $out=array();
+	$mnu = 'setbiaya';
+	$tb  = 'psb_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
@@ -15,75 +14,69 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tingkat     = trim($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
-				$kelas       = trim($_POST['kelasS'])?filter($_POST['kelasS']):'';
-				$wali        = trim($_POST['waliS'])?filter($_POST['waliS']):'';
-
+				$kelompok  = isset($_POST['kelompokS'])?filter(trim($_POST['kelompokS'])):'';
 				$sql ='SELECT 
-							k.replid,
-							k.kelas,
-							p.nama as wali,
-							k.kapasitas,
-							k.keterangan
+							k.*,(
+								SELECT count(*)
+								FROM psb_golongan
+							) jumgol
 						FROM 
-							aka_kelas k,
-							aka_guru g,
-							hrd_pegawai p
+							psb_setbiaya b
+							LEFT JOIN psb_kriteria k ON k.replid = b.krit
 						WHERE
-							k.tingkat LIKE "%'.$tingkat.'%"
-							AND k.kelas LIKE "%'.$kelas.'%"
-							AND p.nama LIKE "%'.$wali.'%"
-							and k.wali    = g.replid
-							and g.pegawai = p.replid
-						ORDER BY
-							k.kelas ASC';
+							b.kel = '.$kelompok.'
+						GROUP by
+							k.replid';
 				// print_r($sql);exit();
-				if(isset($_POST['starting'])){ //nilai awal halaman
+				if(isset($_POST['starting'])){
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
 
-				$recpage= 5;//jumlah data per halaman
-				$obj 	= new pagination_class($sql,$starting,$recpage);
-				$result =$obj->result;
+				$recpage = 16;//jumlah data per halaman
+				$aksi    = 'tampil';
+				$subaksi = '';
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$result  =$obj->result;
 
 				#ada data
-				$jum	= mysql_num_rows($result);
+				$jum = mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
-						if($res['aktif']=1){
-							$dis  = 'disabled';
-							$ico  = 'checkmark';
-							$hint = 'telah Aktif';
-							$func = '';
-						}else{
-							$dis  = '';
-							$ico  = 'blocked';
-							$hint = 'Aktifkan';
-							$func = 'onclick="aktifkan('.$res['replid'].');"';
-						}
+					while($res = mysql_fetch_assoc($result)){	
+						$out.= '<tr><td valign="middle" rowspan="'.($res['jumgol']+1).'">'.$nox.'. '.$res['kriteria'].'</td>';
+						$sql2= 'SELECT 
+									ps.replid, 
+									ps.daftar, 
+									ps.spp, 
+									ps.nilai dpp, 
+									ps.joiningf,	
+									g.golongan, 
+									g.keterangan 
+								FROM 
+									psb_setbiaya ps
+									LEFT JOIN psb_kriteria pk ON pk.replid = ps.krit
+									LEFT JOIN psb_golongan g ON g.replid = ps.gol
+								WHERE
+									pk.replid = '.$res['replid'].'
+								GROUP by
+									ps.gol';
+						$qry2 = mysql_query($sql2);
+						$num  = mysql_num_rows($qry2);
+						// print_r($sql2);exit();
 
-						$btn ='<td>
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
-										<i class="icon-pencil on-left"></i>
-									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
-										<i class="icon-remove on-left"></i>
-									</button>
-								 </td>';
-						$out.= '<tr>
-									<td>'.$nox.'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelas'].'</td>
-									<td>'.$res['wali'].'</td>
-									<td>'.$res['kapasitas'].'</td>
-									<td>-</td>
-									<td>'.$res['keterangan'].'</td>
-									'.$btn.'
-								</tr>';
-								// <td>'.$res['terisi'].'</td>
+						while ($r2=mysql_fetch_assoc($qry2)) {
+							$out.= '<tr>
+										<td>'.$r2['golongan'].' ('.$r2['golongan'].')<input name="biaya['.$r2['replid'].']" type="hidden"></td> 
+										<td align="right"><input value="Rp. '.number_format($r2['daftar']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="daftarTB_'.$r2['replid'].'"></td> 
+										<td align="right"><input value="Rp. '.number_format($r2['dpp']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="dppTB_'.$r2['replid'].'"></td> 
+										<td align="right"><input value="Rp. '.number_format($r2['spp']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="sppTB_'.$r2['replid'].'"></td> 
+										<td align="right"><input value="Rp. '.number_format($r2['joiningf']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="joiningfTB_'.$r2['replid'].'"></td> 
+									</tr>';
+						}
+						$out.= '</tr>';
 						$nox++;
 					}
 				}else{ #kosong
@@ -99,17 +92,19 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
-								tingkat    	= "'.filter($_POST['tingkatTB']).'",
-								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-
-				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e2 = mysql_query($s2);
-				if(!$e2){
-					$stat = 'gagal menyimpan';
-				}else{
-					$stat = 'sukses';
-				}$out  = json_encode(array('status'=>$stat));
+				// print_r($_POST['biaya']);exit();
+				$stat2= true;
+				foreach ($_POST['biaya'] as $i => $v) {
+					$s = 'UPDATE '.$tb.' set 	daftar 	 = '.filter(getuang($_POST['daftarTB_'.$i])).',
+												spp      = '.filter(getuang($_POST['sppTB_'.$i])).',
+												joiningf = '.filter(getuang($_POST['joiningfTB_'.$i])).',
+												nilai    = '.filter(getuang($_POST['dppTB_'.$i])).'
+										WHERE 	replid 	 = '.$i;
+					// print_r($s);exit();
+					$e     = mysql_query($s);
+					$stat2 = $e?true:false;
+				}$stat = $stat2?'sukses':'gagal';
+				$out = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			

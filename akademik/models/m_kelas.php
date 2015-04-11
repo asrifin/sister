@@ -201,10 +201,21 @@
 
 		// cmbkelas ---------------------------------------------------------
 			case 'cmbkelas':
-				$s	= ' SELECT *
+				$w='';
+				if(isset($_POST['replid'])){
+					$w.='where replid ='.$_POST['replid'];
+				}else{
+					if(isset($_POST[$mnu])){
+						$w.='where '.$mnu.'='.$_POST[$mnu];
+					}elseif(isset($_POST['subtingkat'])){
+						$w.='where subtingkat ='.$_POST['subtingkat'];
+					}
+				}
+
+				$s	= 'SELECT *
 						from '.$tb.'
-						'.(isset($_POST['replid'])?'where replid ='.$_POST['replid']:'').'
-						ORDER  BY replid asc';
+						'.$w.'		
+						ORDER  BY '.$mnu.' asc';
 				$e  = mysql_query($s);
 				// var_dump($s);
 				$n  = mysql_num_rows($e);

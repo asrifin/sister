@@ -15,26 +15,25 @@
 
 <!-- panel 1 -->
 <div title="Kategori Anggaran" class="panelx" id="panel1" style="display:none;">
-<!--     <div class="input-control select span3">
-        <select class="anggaran_cari" name="a_tahunbukuS" id="a_tahunbukuS" data-hint="Tahun Buku" ></select>
-    </div> -->
-<!--     <div class="input-control select span3">
-        <select class="anggaran_cari" name="a_departemenS" id="a_departemenS" data-hint="Departemen" ></select>
-    </div> -->
     <button data-hint="Tambah Data" id="a_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="a_cariBC"><span class="icon-search"></span> </button>
     <button data-hint="Cetak" id="a_cetakBC"><span class="icon-printer"></span> </button>
+    <div class="input-control select size3">
+        <select data-hint="Departemen" class="anggaran_cari" name="a_departemenS" id="a_departemenS" data-hint="Departemen" ></select>
+    </div> 
 
     <table class="table hovered bordered striped">
         <thead>
             <tr style="color:white;"class="info">
                 <th class="text-center">Kategori Anggaran </th>
+                <th class="text-center">Rekening</th>
                 <th class="text-center">Keterangan</th>
                 <th class="text-center">Aksi</th>
             </tr>
             <tr style="display:none;" id="a_cariTR" class="info">
                 <th class="text-center"><input placeholder="nama" id="a_namaS" class="anggaran_cari" class="span1"></th>
                 <th class="text-center"><input placeholder="keterangan" id="a_keteranganS" class="anggaran_cari"></th>
+                <th class="text-center"><input placeholder="rekening" id="a_rekeningS" class="anggaran_cari"></th>
                 <th class="text-center"></th>
             </tr>
         </thead>
@@ -65,9 +64,15 @@
             <span id="d_keteranganDV"></span>
         </div>
         <div class="row">
-            <div class="span3" >Departemen :</div>
+            <div class="span3" >Tahun Ajaran  :</div>
+            <div class="input-control select size3">
+                <select class="detilanggaran_cari" name="d_tahunajaranS" id="d_tahunajaranS" data-hint="Tahun Ajaran" ></select>
+            </div> 
+        </div>
+        <div class="row">
+            <div class="span3" >Tingkat  :</div>
 			<div class="input-control select size3">
-				<select class="detilanggaran_cari" name="d_departemenS" id="d_departemenS" data-hint="Departemen" ></select>
+				<select class="detilanggaran_cari" name="d_tingkatS" id="d_tingkatS" data-hint="Tingkat" ></select>
 			</div> 
         </div>
     </div>
@@ -76,13 +81,13 @@
         <thead>
             <tr style="color:white;"class="info">
                 <th class="text-center">Anggaran </th>
-                <th class="text-center">Rekening</th>
+                <!-- <th class="text-center">Rekening</th> -->
                 <th class="text-center">Keterangan</th>
                 <th class="text-center">Aksi</th>
             </tr>
             <tr style="display:none;" id="k_cariTR" class="info">
                 <th class="text-left"><input placeholder="Anggaran" id="d_namaS"  class="detilanggaran_cari" class="span1"></th>
-                <th class="text-left"><input placeholder="Rekening" id="d_rekeningS"  class="detilanggaran_cari" class="span1"></th>
+                <!-- <th class="text-left"><input placeholder="Rekening" id="d_rekeningS"  class="detilanggaran_cari" class="span1"></th> -->
                 <th class="text-left"><input placeholder="Keterangan" id="d_keteranganS" class="detilanggaran_cari"></th>
                 <th class="text-center"></th>
             </tr>

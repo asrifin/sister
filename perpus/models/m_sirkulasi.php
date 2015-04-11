@@ -215,7 +215,7 @@
 						$klasifikasi = isset($_POST['klasifikasiS'])?filter(trim($_POST['klasifikasiS'])):'';
 						$pengarang   = isset($_POST['pengarangS'])?filter(trim($_POST['pengarangS'])):'';
 						$penerbit    = isset($_POST['penerbitS'])?filter(trim($_POST['penerbitS'])):'';
-						$tgl2        = isset($_POST['s_tgl1TB'])?filter(trim($_POST['s_tgl1TB'])):'';
+						$tgl1        = isset($_POST['s_tgl1TB'])?filter(trim($_POST['s_tgl1TB'])):'';
 						$tgl2        = isset($_POST['s_tgl2TB'])?filter(trim($_POST['s_tgl2TB'])):'';
 						$lokasi      = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
 

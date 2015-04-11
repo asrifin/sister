@@ -91,16 +91,26 @@
 				switch ($_POST['subaksi']) {
 					// kategori anggaran
 					case 'anggaran':
+						$a_departemen = isset($_POST['a_departemenS'])&& $_POST['a_departemenS']!=''?' a.departemen ='.$_POST['a_departemenS'].' AND ':'';
 						$a_nama       = isset($_POST['a_namaS'])?filter(trim($_POST['a_namaS'])):'';
+						$a_rekening   = isset($_POST['a_rekeningS'])?filter(trim($_POST['a_rekeningS'])):'';
 						$a_keterangan = isset($_POST['a_keteranganS'])?filter(trim($_POST['a_keteranganS'])):'';
 
-						$sql = 'SELECT *
-								FROM '.$tb.'
+						$sql = 'SELECT 
+									a.replid,
+									a.nama,
+									a.keterangan,
+									d.nama namarek,
+									d.kode koderek
+								FROM '.$tb.' a
+									LEFT JOIN keu_detilrekening d on d.replid = a.rekening
 								WHERE
-									nama like "%'.$a_nama.'%" and
-									keterangan like "%'.$a_keterangan.'%" 
+									'.$a_departemen.'
+									a.rekening like "%'.$a_rekening.'%" and
+									a.nama like "%'.$a_nama.'%" and
+									a.keterangan like "%'.$a_keterangan.'%" 
 								ORDER BY
-									replid asc';
+									a.replid asc';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -132,6 +142,7 @@
 										 </td>';
 								$out.= '<tr>
 											<td>'.$res['nama'].'</td>
+											<td>'.$res['koderek'].' - '.$res['namarek'].'</td>
 											<td>'.$res['keterangan'].'</td>
 											'.$btn.'
 										</tr>';
@@ -146,29 +157,25 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-					// grup barang
+					// kategori anggaran 
 
-					// katalog
+					// detil anggaran 
 					case 'detilanggaran':
 						$d_kategorianggaran = isset($_POST['d_kategorianggaranH'])?filter(trim($_POST['d_kategorianggaranH'])):'';
-						$d_departemen       = isset($_POST['d_departemenS'])&& $_POST['d_departemenS']!=''?' da.departemen ='.$_POST['d_departemenS'].' AND ':'';
+						$d_tingkat          = isset($_POST['d_tingkatS'])&& $_POST['d_tingkatS']!=''?' tingkat ='.$_POST['d_tingkatS'].' AND ':'';
 						$d_nama             = isset($_POST['d_namaS'])?filter(trim($_POST['d_namaS'])):'';
-						$d_rekening         = isset($_POST['d_rekeningS'])?filter(trim($_POST['d_rekeningS'])):'';
 						$d_keterangan       = isset($_POST['d_keteranganS'])?filter(trim($_POST['d_keteranganS'])):'';
 
 						$sql = 'SELECT 
-									da.replid,
-									da.nama,
-									da.keterangan,
-									concat(dr.kode," - ",dr.nama) rekening
-								FROM '.$tb2.' da 
-									LEFT JOIN keu_detilrekening dr on dr.replid = da.rekening
+									replid,
+									nama,
+									keterangan
+								FROM '.$tb2.'
 								WHERE 
-									da.kategorianggaran ='.$d_kategorianggaran.' and 
-									'.$d_departemen.'
-									da.nama LIKE"%'.$d_nama.'%" AND
-									(dr.nama LIKE"%'.$d_rekening.'%" OR dr.kode LIKE "%'.$d_rekening.'%" )AND
-									da.keterangan LIKE"%'.$d_keterangan.'%"';
+									kategorianggaran ='.$d_kategorianggaran.' and 
+									'.$d_tingkat.'
+									nama LIKE"%'.$d_nama.'%" AND 
+									keterangan LIKE"%'.$d_keterangan.'%"';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -198,11 +205,9 @@
 										 </td>';
 								$out.= '<tr>
 											<td>'.$res['nama'].'</td>
-											<td>'.$res['rekening'].'</td>
 											<td >'.$res['keterangan'].'</td>
 											'.$btn.'
 										</tr>';
-								// $totaset+=$res['nominal'];
 								$nox++;
 							}
 						}else{ #kosong
@@ -215,7 +220,7 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-					// katalog
+					// detil anggaran
 
 					// barang
 					case 'barang':
@@ -408,6 +413,8 @@
 				switch ($_POST['subaksi']) {
 					case 'anggaran':
 						$s 		= $tb.' set nama       = "'.filter($_POST['a_namaTB']).'",
+											departemen = "'.filter($_POST['a_departemenH']).'",
+											rekening   = "'.filter($_POST['a_rekeningH']).'",
 											keterangan = "'.filter($_POST['a_keteranganTB']).'"';
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 						$e 		= mysql_query($s2);
@@ -419,8 +426,8 @@
 						$s 	= 'keu_detilanggaran  set 	kategorianggaran = "'.$_POST['d_kategorianggaranH2'].'",
 														departemen       = "'.filter($_POST['d_departemenTB']).'",
 														nama             = "'.filter($_POST['d_namaTB']).'",
-														rekening         = "'.$_POST['d_rekeningH'].'",
 														keterangan       = "'.filter($_POST['d_keteranganTB']).'"';
+														// rekening         = "'.$_POST['d_rekeningH'].'",
 						$s2 = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 						$e  = mysql_query($s2);
 						$id = mysql_insert_id();
@@ -545,9 +552,16 @@
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
 					case 'anggaran';
-						$s = 	'SELECT *
-								FROM '.$tb.'
-								WHERE replid='.$_POST['replid'];
+						$s = 	'SELECT 
+									a.replid,
+									a.nama,
+									a.keterangan,
+									d.replid idrekening,
+									concat(d.kode," - ",d.nama)rekening
+								FROM '.$tb.' a
+									LEFT JOIN keu_detilrekening d on d.replid = a.rekening
+								WHERE
+									a.replid ='.$_POST['replid'];
 						// print_r($s);exit();
 						$e 		= mysql_query($s);
 						$r 		= mysql_fetch_assoc($e);
@@ -555,6 +569,8 @@
 						$out 	= json_encode(array(
 									'status'     =>$stat,
 									'nama'       =>$r['nama'],
+									'idrekening' =>$r['idrekening'],
+									'rekening'   =>$r['rekening'],
 									'keterangan' =>$r['keterangan']
 								));					
 					break;

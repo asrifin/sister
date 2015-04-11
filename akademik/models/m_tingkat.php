@@ -173,7 +173,7 @@
 					$ar = array('status'=>'error');
 				}else{
 					if($n==0){ // kosong 
-						var_dump($n);exit();
+						// var_dump($n);exit();
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
 						if(!isset($_POST['replid'])){
@@ -182,8 +182,9 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','tingkat'=>$dt);
+						}
 					}
+					$ar = array('status'=>'sukses','tingkat'=>$dt);
 				}
 				// print_r($n);exit();
 				$out=json_encode($ar);

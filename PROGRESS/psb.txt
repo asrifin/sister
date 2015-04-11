@@ -13,19 +13,30 @@ PSB V2.0
   	- form : 
      		-title form : "undefined periode"	
 	     	+ angkatan : combo tidak ter-select  
-  	- search > belum ada	( tanpa Search)	
+  	+ search > belum ada	( tanpa Search)	
 
-* Kelompok Pendaftaran (P)
-	- paging > Menampilkan syntax query (klik next)	
-	- filtering > Combo "Tahun-Ajaran", table tidak tampil (onchange)	
+* Kelompok Pendaftaran (C)
+	+ paging > Menampilkan syntax query (klik next)	
+	+ filtering > Combo "Tahun-Ajaran", table tidak tampil (onchange)	
 
 * Pendataan calon siswa (P)
-	- filtering >  combo "kelompok", table tidak ngefek (query)
+	+ filtering >  combo "kelompok", table tidak ngefek (query)
+			+ combo tahun ajaran pas ngeload pertama kelompoknya hanya ngeload gelombang1 
 	+ Form > scroll (view)
-	- paging > undefined (query)
+	+ paging > undefined (query)
+	- Insert > Belum Cara insert ke multiple tabel
+	- view   > 
+	  + Combo Kelompok ga sesuai
+	  + menampilkan foto siswa pada view detail siswa
+				
 	
+
 * penerimaan siswa baru (P)
-	- paging > klik next, table tidak tampil
+	+ paging > klik next, table tidak tampil
+	- simpan > proses menyimpan ketika tombol Belum Diterima dari tabel psb_calonsiswa ke tabel aka_siswa
+	- view   > 
+			- Dialog pada Tombol Diterima res data undefined  
+			+ Combo kelompok ditampilkan semua 
 ____________________________________________________
 
 * golongan calon siswa (C)
@@ -53,7 +64,7 @@ ____________________________________________________
 
 * set angsuran (C)
 	+ view :
-		+ table header (theme)  +
+		+ table header (theme)  
 		+ form (dark backgound >theme)  
 		+ button add (theme)
 	+ paging > ...

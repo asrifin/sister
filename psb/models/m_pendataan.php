@@ -34,18 +34,18 @@
 				$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
 				$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-				$sql = 'SELECT *
+				$sql = 'SELECT pc.*
 						FROM psb_calonsiswa pc
 						LEFT JOIN psb_kelompok pk ON pk.replid = pc.kelompok
 						LEFT JOIN psb_proses pp ON pp.replid = pk.proses
 						LEFT JOIN departemen d ON d.replid = pp.departemen
 						WHERE
-]						pc.kelompok ='.$kelompok.' AND
+						pc.kelompok = '.$kelompok.' AND
 						pc.nopendaftaran LIKE "'.$nopendaftaran.'%" AND
-						pc.nama LIKE "'.$nama.'%" AND
+						pc.nama LIKE "'.$nama.'%"
 							ORDER 
 							BY nopendaftaran asc';
-				print_r($sql);exit();
+				// print_r($sql);exit();	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -82,7 +82,7 @@
 						
 						$btn ='<td>
 									<button data-hint="ubah"  onclick="Modal('.$res['replid'].');">
-										<i class="icon-search on-left"></i>
+										<i class="icon-zoom-in on-left"></i>
 									</button>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -117,6 +117,50 @@
 			break; 
 			// view -----------------------------------------------------------------
 
+			case 'getbiaya':
+				$s 		='SELECT 
+							*
+						FROM 
+							psb_setbiaya
+						WHERE
+							kel = '.$_POST['kelompok'].' AND
+							krit = '.$_POST['kriteria'].' AND
+							gol = '.$_POST['golongan'] 
+							;
+
+									// print_r($s);exit();
+				$e 		= mysql_query($s) or die(mysql_error());
+				$r 		= mysql_fetch_assoc($e);
+				$stat 	= ($e)?'sukses':'gagal';
+				$out    = json_encode(array(
+							'status'          =>$stat,
+							'spp'        =>$r['spp'],
+							'joiningf'        =>$r['joiningf'],
+							'nilai'          =>$r['nilai']
+						));				
+			break;
+
+			case 'getdiskon':
+				$s 		='SELECT 
+							*
+						FROM 
+							psb_disctunai
+						WHERE
+							nilai = '.$_POST['replid']
+							;
+
+									// print_r($s);exit();
+				$e 		= mysql_query($s) or die(mysql_error());
+				$r 		= mysql_fetch_assoc($e);
+				$stat 	= ($e)?'sukses':'gagal';
+				$out    = json_encode(array(
+							'status'          =>$stat,
+							'spp'        =>$r['spp'],
+							'joiningf'        =>$r['joiningf'],
+							'nilai'          =>$r['nilai']
+						));				
+			break;
+
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				switch ($_POST['subaksi']) {
@@ -145,12 +189,37 @@
 												kesehatan     = "'.filter($_POST['penyakitTB']).'",
 												ketkesehatan  = "'.filter($_POST['catatan_kesehatanTB']).'"';
 												// var_dump($siswa);exit();
+						$ayah    = $tb_ayah.' set 	nama 	  = "'.filter($_POST['ayahTB']).'",
+													tgllahir  = "'.filter($_POST['templatlahir_ayahTB']).'",
+													tgllahir  = "'.filter($_POST['tgllahir_ayahTB']).'",
+													warga     = "'.filter($_POST['kebangsaan_ayahTB']).'",
+													pekerjaan = "'.filter($_POST['pekerjaan_ayahTB']).'",
+													telpon    = "'.filter($_POST['telpayahTB']).'",
+													pinbb     = "'.filter($_POST['pinbb_ayahTB']).'",
+													email     = "'.filter($_POST['email_ayahTB']).'" ';
+
+						$ibu    = $tb_ibu.' set 	nama 	  = "'.filter($_POST['ibuTB']).'",
+													tgllahir  = "'.filter($_POST['templatlahir_ibuTB']).'",
+													tgllahir  = "'.filter($_POST['tgllahir_ibuTB']).'",
+													warga     = "'.filter($_POST['kebangsaan_ibuTB']).'",
+													pekerjaan = "'.filter($_POST['pekerjaan_ibuTB']).'",
+													telpon    = "'.filter($_POST['telpibuTB']).'",
+													pinbb     = "'.filter($_POST['pinbb_ibuTB']).'",
+													email     = "'.filter($_POST['email_ibuTB']).'" ';
+						
+						$ibu    = $tb_ibu.' set 	nama 	  = "'.filter($_POST['nama_kontakTB']).'",
+													hubungan  = "'.filter($_POST['hubunganTB']).'",
+													telpon    = "'.filter($_POST['nomorTB']).'" ';
+						
+						$ibu    = $tb_ibu.' set 	kakek_nama 	  = "'.filter($_POST['nama_kontakTB']).'",
+													nenek_nama    = "'.filter($_POST['nomorTB']).'" ';
 												
 						if (!isset($_POST['replid'])){ //add
 						// if ($jumc==0){
 							$tipex ='add';
 							$siswa = 'INSERT INTO '.$siswa;
-							// $sqayah = 'INSERT INTO '.$tb_ayah.' set '.$ayah;
+							$sqayah = 'INSERT INTO  '.$ayah;
+
 							// $sqibu = 'INSERT INTO '.$tb_ibu.' set '.$ibu;
 							// $sqdar = 'INSERT INTO '.$tb_kontakdarurat.' set '.$dar;
 							// $sqkel = 'INSERT INTO '.$tb_keluarga.' set '.$keluarga;
@@ -178,9 +247,20 @@
 							if (!isset($_POST['replid'])) { //add
 							// if ($jumc==0) { //add
 								$sqayah.=', calonsiswa 	= '.$ida;
+
 								$sqibu.=', calonsiswa 	= '.$ida;
 								$sqdar.=', calonsiswa 	= '.$ida;
 								$sqkel.=', calonsiswa 	= '.$ida;
+
+								if (isset($_POST['saudara'])) {
+									foreach ($_POST['saudara'] as $i => $v) {
+									$sqkel = 'INSERT INTO '.$tb_saudara.' set calonsiswa = '.$ida.',
+																				 nama 	 ='.$v['nama'].', 
+																				 tgllahir 	 ='.$v['tgllahir'] ;
+										
+									}
+								}
+
 							}
 							// else{
 								$exayah= mysql_query($sqayah);
@@ -247,16 +327,19 @@
 								ti.telpon as telpon_ibu,
 								ti.pinbb as pinbb_ibu,
 								ti.email as email_ibu,
+								tset.joiningf as joining,
 								tk.nama as namalain,
 								tk.hubungan as hubungan,
 								tk.telpon as telponlain,
-								tkel.*
+								tkel.kakek_nama kakek,
+								tkel.nenek_nama nenek
 							from 
 								'.$tb.' t
-								JOIN '.$tb_ayah.' ta ON ta.calonsiswa = t.replid
-								JOIN '.$tb_ibu.' ti ON ti.calonsiswa = t.replid
-								JOIN '.$tb_kontakdarurat.' tk ON tk.calonsiswa = t.replid
-								JOIN '.$tb_keluarga.' tkel ON tkel.calonsiswa = t.replid
+								LEFT JOIN '.$tb_ayah.' ta ON ta.calonsiswa = t.replid
+								LEFT JOIN '.$tb_ibu.' ti ON ti.calonsiswa = t.replid
+								LEFT JOIN '.$tb_kontakdarurat.' tk ON tk.calonsiswa = t.replid
+								LEFT JOIN '.$tb_keluarga.' tkel ON tkel.calonsiswa = t.replid
+								LEFT JOIN psb_setbiaya pset ON pset.replid = t.setbiaya
 							WHERE 
 								t.replid='.$_POST['replid'];
 
@@ -313,8 +396,8 @@
 							'hubungan'        =>$r['hubungan'],
 							'telpon'          =>$r['telponlain'],
 
-							'kakek-nama'      =>$r['kakek-nama'],
-							'nenek-nama'      =>$r['nenek-nama']
+							'kakek_nama'      =>$r['kakek'],
+							'nenek_nama'      =>$r['nenek']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
@@ -331,6 +414,11 @@
 				$s 		= ' SELECT 
 								-- t.*,
 								t.replid,
+								d.nama departemen,
+								p.proses proses,
+								k.kelompok kelompok,
+								t.nopendaftaran nopendaftaran,
+								t.status statusx,
 								t.nama as nama_siswa,
 								if(t.kelamin="L","Laki-Laki","Perempuan") jk,
 								t.tmplahir temp_lahir,
@@ -341,6 +429,7 @@
 								t.darah goldarah,
 								t.kesehatan penyakit,
 								t.ketkesehatan alergi,
+								t.photo2 photo2,
 								/* Data Ortu*/
 								ta.nama as nama_ayah,
 								ta.warga as kebangsaan_ayah,
@@ -352,16 +441,24 @@
 								ta.email as email_ayah,
 								ti.nama as nama_ibu,
 								ti.warga as kebangsaan_ibu,
-								ti.tmplahir as tmp_lahir_ibu,
+								ti.tmplahir as temp_lahir_ibu,
 								ti.tgllahir as tgl_lahir_ibu,
 								ti.pekerjaan as pekerjaan_ibu,
 								ti.telpon as telepon_ibu,
 								ti.pinbb as pinbb_ibu,
 								ti.email as email_ibu,
-								tk.nama as namalain,
+								/*Keluarga Siswa */
+								tkel.kakek_nama kakek,
+								tkel.nenek_nama nenek,
+								tkel.tglnikah tgl_perkawinan,
+								/*Saudara Siswa*/
+								ts.nama nama_saudara,
+								ts.tgllahir tgl_lahir_saudara,
+								ts.sekolah sekolah_saudara,
+								/*Kontak Darurat Siswa */
+								tk.nama as nama_darurat,
 								tk.hubungan as hubungan,
-								tk.telpon as telponlain,
-								tkel.*
+								tk.telpon as nomor_darurat
 							from 
 								'.$tb.' t
 								LEFT JOIN mst_agama pa ON t.agama = pa.replid
@@ -369,6 +466,10 @@
 								LEFT JOIN '.$tb_ibu.' ti ON ti.calonsiswa = t.replid
 								LEFT JOIN '.$tb_kontakdarurat.' tk ON tk.calonsiswa = t.replid
 								LEFT JOIN '.$tb_keluarga.' tkel ON tkel.calonsiswa = t.replid
+								LEFT JOIN '.$tb_saudara.' ts ON tkel.calonsiswa = t.replid
+								LEFT JOIN psb_kelompok k ON k.replid = t.kelompok
+								LEFT JOIN psb_proses p ON p.replid = k.proses
+								LEFT JOIN departemen d ON d.replid = p.departemen
 							WHERE 
 								t.replid='.$_POST['replid'];
 						// print_r($s);exit();
@@ -379,17 +480,22 @@
 							'status' =>$stat,
 							'data'   =>array( // tambahi node array ('data')
 							// data siswa 
-								'nama_siswa' =>$r['nama_siswa'],
-								'jk'         =>$r['jk'],
-								//kalau ditampilkan res undefined
-								'temp_lahir' =>$r['temp_lahir'],
-								'tgl_lahir'  =>tgl_indo($r['tgl_lahir']),
-								'agama'      =>$r['agama'],
-								'alamat'     =>$r['alamat'],
-								'telepon'    =>$r['telepon'],
-								'goldarah'   =>$r['goldarah'],
-								'penyakit'   =>$r['penyakit'],
-								'alergi'     =>$r['alergi'],
+								'departemen'    =>$r['departemen'],
+								'proses'        =>$r['proses'],
+								'kelompok'      =>$r['kelompok'],
+								'nopendaftaran' =>$r['nopendaftaran'],
+								'statusx'       =>($r['statusx']=='1'?'<span style="color:#00A000"><b>Diterima</b></span>':'Belum Diterima'),
+								'nama_siswa'    =>$r['nama_siswa'],
+								'jk'            =>$r['jk'],
+								'temp_lahir'    =>$r['temp_lahir'],
+								'tgl_lahir'     =>tgl_indo($r['tgl_lahir']),
+								'agama'         =>$r['agama'],
+								'alamat'        =>$r['alamat'],
+								'telepon'       =>$r['telepon'],
+								'goldarah'      =>$r['goldarah'],
+								'penyakit'      =>$r['penyakit'],
+								'alergi'        =>$r['alergi'],
+								'photo2'        =>$r['photo2'],
 								// 'kriteria'        =>$r['kriteria'],
 								// 'golongan'        =>$r['golongan'],
 								// 'sumpokok'        =>$r['sumpokok'],
@@ -404,32 +510,39 @@
 								// 'nopendaftaran'   =>$r['nopendaftaran'],
 								// 'sekolahasal'     =>$r['sekolahasal'],
 								// 'photo'           =>$r['photo'],
-							
+								
 							// data ayah calon siswa	
 								'nama_ayah'       =>$r['nama_ayah'],
 								'kebangsaan_ayah' =>$r['kebangsaan_ayah'],
-                                'temp_lahir_ayah'  =>$r['temp_lahir_ayah'],
-                                'tgl_lahir_ayah'   =>$r['tgl_lahir_ayah'],
+								'temp_lahir_ayah' =>$r['temp_lahir_ayah'],
+								'tgl_lahir_ayah'  =>tgl_indo($r['tgl_lahir_ayah']),
 								'pekerjaan_ayah'  =>$r['pekerjaan_ayah'],
-								'telpon_ayah'     =>$r['telpon_ayah'],
+								'telepon_ayah'    =>$r['telepon_ayah'],
 								'pinbb_ayah'      =>$r['pinbb_ayah'],
 								'email_ayah'      =>$r['email_ayah'],
-							
-							// data ibu calon siswa	
-								'nama_ibu'        =>$r['nama_ibu'],
-								// 	// 'kebangsaan_ibu'  =>$r['kebangsaan'],
-								// 	// 'templahir_ibu'   =>$r['templahir'],
-								// 'tgllahir_ibu'    =>$r['tgllahir'],
-								// 'pekerjaan_ibu'   =>$r['pekerjaan'],
-								// 'telpon_ibu'      =>$r['telpon'],
-								// 'pinbb_ibu'       =>$r['pinbb'],
-								// 'email_ibu'       =>$r['email'],
 								
-								// 'nama_dar'        =>$r['nama'],
-								// 'hubungan'        =>$r['hubungan'],
-								// 'telpon'          =>$r['telpon'],
-								// 'kakek-nama'      =>$r['kakek-nama'],
-								// 'nenek-nama'      =>$r['nenek-nama']
+							// data ibu calon siswa	
+								'nama_ibu'       =>$r['nama_ibu'],
+								'kebangsaan_ibu' =>$r['kebangsaan_ibu'],
+								'temp_lahir_ibu' =>$r['temp_lahir_ibu'],
+								'tgl_lahir_ibu'  =>tgl_indo($r['tgl_lahir_ibu']),
+								'pekerjaan_ibu'  =>$r['pekerjaan_ibu'],
+								'telepon_ibu'    =>$r['telepon_ibu'],
+								'pinbb_ibu'      =>$r['pinbb_ibu'],
+								'email_ibu'      =>$r['email_ibu'],
+							//Data Saudara siswa
+								'nama_saudara'      =>$r['nama_saudara'],
+								'tgl_lahir_saudara' =>$r['tgl_lahir_saudara'],
+								'sekolah_saudara'   =>$r['sekolah_saudara'],
+
+							//Data Keluarga	
+								'tgl_perkawinan' =>$r['tgl_perkawinan'],
+								'kakek'          =>$r['kakek'],
+								'nenek'          =>$r['nenek'],
+							//Data Darurat	
+								'nama_darurat'  =>$r['nama_darurat'],
+								'hubungan'      =>$r['hubungan'],
+								'nomor_darurat' =>$r['nomor_darurat']
 						)));
 		 // console.log(res);  alert(res); //epiii : console dan alert hanya untuk di javascript 
 			break;

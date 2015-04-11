@@ -76,24 +76,38 @@
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
-					// pendaftaran 
 					case 'pendaftaran':
-						$pendaftaran_nama          = isset($_POST['pendaftaran_namaS'])?filter(trim($_POST['pendaftaran_namaS'])):'';
-						$pendaftaran_biaya         = isset($_POST['pendaftaran_biayaS'])?filter(trim($_POST['pendaftaran_biayaS'])):'';
-						$pendaftaran_nopendaftaran = isset($_POST['pendaftaran_nopendaftaranS'])?filter(trim($_POST['pendaftaran_nopendaftaranS'])):'';
-						$sql       = '	SELECT * 
-										FROM '.$tb.' 
-										WHERE 
-											(nomer like "%'.$ju_no.'%" OR nomer like "%'.$ju_no.'%" ) AND
-											uraian like "%'.$ju_uraian.'%"';
-						// print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ //nilai awal halaman
+						// $kelompok      = isset($_POST['kelompokS'])&& $_POST['kelompokS']!=''?' c.kelompok ='.$_POST['kelompokS'].' AND ':'';
+						$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
+						$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+						$daftar        = isset($_POST['daftarS'])?filter($_POST['daftarS']):'';
+						$joiningf      = isset($_POST['joiningfS'])?filter($_POST['joiningfS']):'';
+						$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
+						$sql = 'SELECT
+									c.replid,	
+									c.nopendaftaran,	
+									c.nama,	
+									b.daftar,	
+									b.joiningf,
+									t.tanggal
+								FROM
+									psb_calonsiswa c
+									LEFT JOIN psb_setbiaya b on b.replid = c.setbiaya
+									LEFT JOIN keu_pembayaran p on p.siswa = c.replid
+									LEFT JOIN keu_transaksi t on t.pembayaran = p.replid
+								WHERE	
+									c.kelompok='.$kelompok.' AND
+									c.nama LIKE "%'.$nama.'%" AND
+									b.daftar LIKE "%'.$daftar.'%" AND
+									b.joiningf LIKE "%'.$joiningf.'%"';
+						print_r($sql);exit(); 	
+						if(isset($_POST['starting'])){ 
 							$starting=$_POST['starting'];
 						}else{
 							$starting=0;
 						}
 
-						$recpage = 5;//jumlah data per halaman
+						$recpage = 5;
 						$aksi    ='tampil';
 						$subaksi ='pendaftaran';
 						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
@@ -104,37 +118,21 @@
 						$out ='';$totaset=0;
 						if($jum!=0){	
 							$nox = $starting+1;
-							while($res = mysql_fetch_array($result)){	
-								$btn ='<td>
+							while($res = mysql_fetch_assoc($result)){	
+								$btn ='<td align="center">
 											<button data-hint="ubah"  class="button" onclick="juFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
 											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
+											</button>
 										 </td>';
-								$s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
-										from keu_jurnal j,keu_rekening r 
-										where 
-											j.transaksi ='.$res['replid'].' AND 
-											j.rek=r.replid
-										ORDER BY kredit  ASC';
-								$e2 = mysql_query($s2);
-								$tb2='';
-								if(mysql_num_rows($e2)!=0){
-	   								$tb2.='<table class="bordered striped lightBlue" width="100%">';
-		   							while($r2=mysql_fetch_assoc($e2)){
-		   								$tb2.='<tr>
-		   										<td>'.$r2['nama'].'</td>
-		   										<td>'.$r2['kode'].'</td>
-		   										<td>Rp. '.number_format($r2['debet']).',-</td>
-		   										<td>Rp. '.number_format($r2['kredit']).',-</td>
-		   									</tr>';
-		   							}$tb2.='</table>';
-								}$out.= '<tr>
-											<td>'.tgl_indo($res['tanggal']).'</td>
-											<td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
-											<td>'.$res['uraian'].'</td>
-											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
+							 	$out.= '<tr>
+											<td>'.$res['nopendaftaran'].'</td>
+											<td>'.$res['nama'].'</td>
+											<td>'.$res['daftar'].'</td>
+											<td>'.$res['joiningf'].'</td>
+											<td>'.tgl_indo5($res['tanggal']).'</td>
 											'.$btn.'
 										</tr>';
 							}

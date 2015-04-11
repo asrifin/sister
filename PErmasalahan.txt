@@ -1,5 +1,18 @@
+SIADU
 * tabel pada database tidak menggunakan database innodb
    JADI ketika data master dihapus data transaksi ga ikut kehapus
 * Ketika Update jangan ada yang yang input data dulu dikarenakan bisa ada perubahan struktur data tabel
+* Pembayaran Pendaftaran Uang formulir tidak langsung ditampilkan dari master set biaya
 
-//tes
+DATABASE
+* tabel yang ga bisa di import
+	aka_angkatan
+	aka_aspekpenilaian
+	aka_grading
+	aka_guru
+	aka_kelas
+	aka_pelajaran
+	aka_penilaian
+	aka_rpp
+	aka_semester
+	

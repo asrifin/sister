@@ -32,6 +32,11 @@ ________________________   master  ____________________________
 	+ filtering : combo rekening tidak tampil
 	+ dll 
 * anggaran (C)
+	* kategori 
+		+ tambah field : rekening 
+	* detil anggaran 
+		+ tambah field : tingkat
+		+ hapus field : rekening 
 	+ view : tidak tampil 
 	+ filtering : combo rekening tidak tampil
 * detil anggaran (P)

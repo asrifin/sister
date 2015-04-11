@@ -20,14 +20,21 @@
 				$nopendaftaran = isset($_POST['no_pendaftaranS'])?filter($_POST['no_pendaftaranS']):'';
 				$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-				$sql = 'SELECT *
-						FROM '.$tb.'
+				$sql = 'SELECT c.nama,
+								c.replid,
+								c.nopendaftaran,
+								c.kelompok,
+								c.status,
+								s.nis,
+								s.nisn
+						FROM '.$tb.' c 
+						LEFT JOIN aka_siswa s ON s.nopendaftaran = c.nopendaftaran
 						WHERE 
-							nopendaftaran like "%'.$nopendaftaran.'%" and
-							nama like "%'.$nama.'%" and
-							kelompok = '.$kelompok.'
+							c.nopendaftaran like "%'.$nopendaftaran.'%" and
+							c.nama like "%'.$nama.'%" and
+							c.kelompok = '.$kelompok.'
 						ORDER 
-							BY nopendaftaran asc';
+							BY c.nopendaftaran asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -59,8 +66,8 @@
 						}
 
 						$btn ='<td>
-									<button data-hint="ubah"  onclick="loadModal(\'sudah\','.$res['replid'].');">
-										<i class="icon-search on-left"></i>
+									<button data-hint="Lihat detail siswa"  onclick="loadModal(\'sudah\','.$res['replid'].');">
+										<i class="icon-zoom-in on-left"></i>
 									</button>
 								 </td>';
 						//Tombol Status								 
@@ -77,11 +84,20 @@
 										</button>
 									 </td>';						
 						}
+								//Jika sudah diterima tampilkan nisn
+								// if($res['replid']!=0){
+								// 	$ts=mysql_query("SELECT nis,nisn FROM aka_siswa WHERE replid='".$res['replid']."'");
+								// 	$rs=mysql_fetch_array($ts);
+								// 	$res['nis']=$rs['nis'];
+								// 	$res['nisn']=$rs['nisn'];
+								// }
+							// $xtable->td($r['nis']==''?'-':$r['nis'],100);
+
 						$out.= '<tr>
 									<td>'.$res['nopendaftaran'].'</td>
 									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
-									<td>-</td>
-									<td>-</td>
+									<td>'.($res['nis']==''?'-':$res['nis']).'</td>
+									<td>'.($res['nisn']==''?'-':$res['nisn']).'</td>
 									'.$btn_terima.'
 									'.$btn.'
 								</tr>';
@@ -101,32 +117,99 @@
 			// edit -----------------------------------------------------------------
 			case 'simpan':
 				switch ($_POST['subaksi']) {
-					case 'status':
-						$s1 = 'UPDATE psb_calonsiswa set status  = 1 WHERE replid='.$_POST['replid'];
+					case 'penerimaan':
+						$s = 'SELECT * 
+								FROM 
+								psb_calonsiswa
+								WHERE replid = '.$_POST['idformH_terima'];
+						$e = mysql_query($s);
+						$r = mysql_fetch_assoc($e);
+
+
+						$s2  ='INSERT INTO '. $tb2.' set 	kriteria 		= "'.$r['kriteria'].'",
+												golongan      = "'.$r['golongan'].'",
+												nis           = "'.filter($_POST['nisTB']).'",
+												nisn          = "'.filter($_POST['nisnTB']).'",
+												setbiaya      = "'.$r['setbiaya'].'",
+												sumpokok      = "'.$r['sumpokok'].'",
+												sumnet        = "'.$r['sumnet'].'",
+												sppbulan      = "'.$r['sppbulan'].'",
+												jmlangsur     = "'.$r['jmlangsur'].'",
+												angsuran      = "'.$r['angsuran'].'",
+												disctb        = "'.$r['disctb'].'",
+												discsaudara       = "'.$r['discsaudara'].'",
+												disctunai     = "'.$r['disctunai'].'",
+												disctotal     = "'.$r['disctotal'].'",
+												nopendaftaran = "'.$r['nopendaftaran'].'",
+												nama          = "'.$r['nama'].'",
+												kelamin       = "'.$r['kelamin'].'",
+												tmplahir      = "'.$r['tmplahir'].'",
+												tgllahir      = "'.$r['tgllahir'].'",
+												agama         = "'.$r['agama'].'",
+												alamat        = "'.$r['alamat'].'",
+												telpon        = "'.$r['telpon'].'",
+												sekolahasal   = "'.$r['sekolahasal'].'",
+												darah         = "'.$r['darah'].'",
+												kesehatan     = "'.$r['kesehatan'].'",
+												ketkesehatan  = "'.$r['ketkesehatan'].'"
+												';
+												// var_dump($s2);exit();
+						$e2 =  mysql_query($s2);
+						if ($e2) {
+							$s3 = 'UPDATE psb_calonsiswa set status  = 1 WHERE replid='.$_POST['idformH_terima'];
+							$e3 =  mysql_query($s3);
+							if ($e3) {
+								# code...
+							$stat = 'sukses';
+							}else{
+							$stat = 'gagal_update_calon_siswa';
+								
+							}
+						}else{
+							$stat = 'gagal_insert_aka_siswa';
+						}
 						
-						$s2 = $tb.' set nis           = '.$_POST['nisTB'].',
-										nisn          = '.$_POST['nisnTB'].',
-										nopendaftaran = '.$_POST['nopendaftaran'].',
-										nama          = '.$_POST['nama'].',
-										angkatan      = '.$_POST['angkatanTB'].',
-										proses        = '.$_POST['prosesTB'].',
-										kelompok      = '.$_POST['kelompokTB'].',
-										kriteria      = '.$_POST['kriteriaTB'].',
-										golongan      = '.$_POST['golonganTB'].',
-										status        = '.$_POST['statusTB'].',
-										kelamin       = '.$_POST['kelaminTB'].',
-										';
-						$x = mysql_fetch_assoc(mysql_query('select * from psb_calonsiswa where replid= '.$_POST['replid']));
-						var_dump($x);exit();
+						
+						// $x = mysql_fetch_assoc(mysql_query('select * from psb_calonsiswa where replid= '.$_POST['replid']));
+						// var_dump($x);exit();
 						// $s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 						// $e2 = mysql_query($s2) or die(mysql_error());
 						// if(!$e2){
 						// 	$stat = 'gagal menyimpan';
 						// }else{
-						// 	$stat = 'sukses';
-						// }$out  = json_encode(array('status'=>$stat));
+						// }
+						$out  = json_encode(array('status'=>$stat));
 					break;
 
+					case 'tidak_terima':
+						$s = 'SELECT * 
+								FROM 
+								psb_calonsiswa
+								WHERE replid = '.$_POST['idformH_batal'];
+						$e = mysql_query($s);
+						$r = mysql_fetch_assoc($e);
+
+
+						$s2  ='DELETE FROM '. $tb2.' WHERE nopendaftaran = "'.$r['nopendaftaran'].'"'  ;
+												
+												// var_dump($s2);exit();
+						$e2 =  mysql_query($s2);
+						if ($e2) {
+							$s3 = 'UPDATE psb_calonsiswa set status  = 0 WHERE replid='.$_POST['idformH_batal'];
+							$e3 =  mysql_query($s3);
+							if ($e3) {
+								# code...
+							$stat = 'sukses';
+							}else{
+							$stat = 'gagal_update_calon_siswa';
+								
+							}
+						}else{
+							$stat = 'gagal_delete_aka_siswa';
+						}
+						
+						$out  = json_encode(array('status'=>$stat));
+					break;
 					/*case 'status':
 						$s    = $tb.' set 	nama = "'.filter($_POST['namaTB']).'",';
 						$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
@@ -180,19 +263,20 @@
 								)));					
 					break;
 
-					case 'penerimaan':
-						$s 		= ' SELECT *
-							from '.$tb.'
-							WHERE 
-								replid='.$_POST['replid'];
+					case 'batal':
+						$s 		= ' SELECT replid,
+										   nama nama_batal	
+									from '.$tb.'
+									WHERE 
+										replid='.$_POST['replid'];
 						// print_r($s);exit();
 						$e 		= mysql_query($s);
 						$r 		= mysql_fetch_assoc($e);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array(
 							'status'     =>$stat,
-							'nama'   	=>$r['nama'],
-							'nopendaftaran' =>$r['nopendaftaran'],
+							'nama_batal' =>$r['nama_batal'],
+							// 'nopendaftaran' =>$r['nopendaftaran'],
 						));
 					break;
 				}

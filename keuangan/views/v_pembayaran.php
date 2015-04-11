@@ -37,10 +37,10 @@
                     <i class="icon-search" ></i>
                 </button>
                 <div class="input-control select span3">
-                    <select data-hint="Periode Pendaftaran" class="cari" name="prosesS" id="prosesS"></select>
+                    <select data-hint="Periode Pendaftaran" name="prosesS" id="prosesS"></select>
                 </div>
                 <div class="input-control select span3">
-                    <select data-hint="Kelompok Pendaftaran" class="cari" name="kelompokS" id="kelompokS"></select>
+                    <select data-hint="Kelompok Pendaftaran" class="pendaftaran_cari" name="kelompokS" id="kelompokS"></select>
                 </div>
 
                 <table class="table hovered bordered striped">
@@ -48,16 +48,17 @@
                         <tr style="color:white;"class="info">
                             <th class="text-center">No. Pendaftaran</th>
                             <th class="text-center">Nama</th>
-                            <th class="text-center">Biaya</th>
-                            <th class="text-center">Biaya Terbayar</th>
+                            <th class="text-center">Formulir</th>
+                            <th class="text-center">Joining Fee</th>
                             <th class="text-center">Tanggal</th>
                             <th class="text-center">Status</th>
-                            <th class="text-center">Aksi</th>
                         </tr>
                         <tr style="display:none;" id="pendaftaranTR" class="info">
-                            <th class="text-left"><input placeholder="pendaftaran_nopendaftaranS" id="pendaftaran_nopendaftaranS" class="pendaftaran_cari"></th>
-                            <th class="text-left"><input placeholder="pendaftaran_namaS" id="pendaftaran_namaS" class="pendaftaran_cari"></th>
-                            <th class="text-leftx"><input placeholder="pendaftaran_biayaS" id="pendaftaran_biayaS" class="pendaftaran_cari"></th>
+                            <th class="text-left"><input placeholder="nopendaftaranS" id="nopendaftaranS" class="pendaftaran_cari"></th>
+                            <th class="text-left"><input placeholder="namaS" id="namaS" class="pendaftaran_cari"></th>
+                            <th class="text-leftx"><input placeholder="daftarS" id="daftarS" class="pendaftaran_cari"></th>
+                            <th class="text-leftx"><input placeholder="joiningfS" id="joiningfS" class="pendaftaran_cari"></th>
+                            <th class="text-leftx"></th>
                             <th class="text-left"></th>
                         </tr>
                     </thead>

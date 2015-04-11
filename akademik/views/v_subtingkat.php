@@ -19,18 +19,22 @@
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
 <div class="input-control select span3">
-    <select  class="tingkat_cari" data-hint="tingkat" name="tingkatTB" id="tingkatS"></select>
+    <select  class="cari" data-hint="departemen" name="departemenS" id="departemenS"></select>
+</div>
+<div class="input-control select span3">
+    <select  class="cari" data-hint="tahunajaran" name="tahunajaranS" id="tahunajaranS"></select>
+</div>
+<div class="input-control select span3">
+    <select  class="cari" data-hint="tingkat" name="tingkatS" id="tingkatS"></select>
 </div>
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
-            <th class="text-center">No </th>
-            <th class="text-center">Subtingkat</th>
+            <th class="text-center">Subtingkat (Kelas)</th>
             <th class="text-left">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="info">
-            <th></th>
-            <th class="text-left"><input class="subtingkat_cari" placeholder="subtingkat" id="subtingkatS"></th>
+            <th class="text-left"><input class="cari" placeholder="subtingkat" id="subtingkatS"></th>
             <th></th>
         </tr>
     </thead>
