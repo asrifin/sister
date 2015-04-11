@@ -76,7 +76,6 @@
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
-					// pendaftaran 
 					case 'pendaftaran':
 						// $kelompok      = isset($_POST['kelompokS'])&& $_POST['kelompokS']!=''?' c.kelompok ='.$_POST['kelompokS'].' AND ':'';
 						$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
@@ -90,7 +89,7 @@
 									c.nama,	
 									b.daftar,	
 									b.joiningf,
-									p.tanggal
+									t.tanggal
 								FROM
 									psb_calonsiswa c
 									LEFT JOIN psb_setbiaya b on b.replid = c.setbiaya
@@ -102,13 +101,13 @@
 									b.daftar LIKE "%'.$daftar.'%" AND
 									b.joiningf LIKE "%'.$joiningf.'%"';
 						print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ //nilai awal halaman
+						if(isset($_POST['starting'])){ 
 							$starting=$_POST['starting'];
 						}else{
 							$starting=0;
 						}
 
-						$recpage = 5;//jumlah data per halaman
+						$recpage = 5;
 						$aksi    ='tampil';
 						$subaksi ='pendaftaran';
 						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
@@ -119,8 +118,8 @@
 						$out ='';$totaset=0;
 						if($jum!=0){	
 							$nox = $starting+1;
-							while($res = mysql_fetch_array($result)){	
-								$btn ='<td>
+							while($res = mysql_fetch_assoc($result)){	
+								$btn ='<td align="center">
 											<button data-hint="ubah"  class="button" onclick="juFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
