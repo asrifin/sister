@@ -75,9 +75,26 @@
 	    }
 	}
 
+/*psb*/
+	function getBiaya($typ,$siswa){
+		$s = 'SELECT '.($typ=='pendaftaran'?'(b.daftar + b.joiningf)'.$typ:$typ).'
+			  FROM psb_setbiaya b
+			  LEFT JOIN psb_calonsiswa c on c.setbiaya = b.replid
+			  WHERE c.replid ='.$siswa;
+			  // print_r($s);exit();
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r[$typ];
+	}
+	
 /*keuangan*/
 	// transaksi
-	function transKode($jt=0){
+	function getTahunBuku($x){
+		$s = 'SELECT '.$x.' FROM keu_tahunbuku WHERE replid =1';
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r[$x];
+	}function transKode($jt=0){
 		$kode=array(0=>'MMJ',3=>'BKM',4=>'BKK');
 		return $kode[$jt];
 	}function jtrans($i1,$i2,$i3){
@@ -140,5 +157,39 @@
 			'.($bukti!=''?$bukti:'');
 		return $ret;
 	}
+
+	function getJenisTrans($id){
+		$s='SELECT * FROM keu_jenistrans WHERE replid='.$id;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['nama'];
+	}function getBuktiTrans($id){
+		$s='SELECT * FROM keu_detjenistrans WHERE kode="'.$id.'"';
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['bukti'];
+	}function getDetJenisTrans($id){
+		$s='SELECT * FROM keu_detjenistrans WHERE replid='.$id;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['nama'];
+	}function getNoTrans($typ){
+		$s = 'SELECT LPAD(max(replid),4,0)replid from keu_transaksi';
+		$e = mysql_query($s);
+		$stat =!$e?'gagal_'.mysql_error():'sukses';
+		if(mysql_num_rows($e)>0){
+			$r  =mysql_fetch_assoc($e);
+			$in =$r['replid']+1;
+		}else{
+			$in=1;
+		}$kode=getBuktiTrans($typ).'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
+		return $kode;
+	}function getRekening($id){
+		$s='SELECT concat(kode," - ",nama)rekening FROM keu_detilrekening WHERE replid='.$id;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['rekening'];
+	}
+
 
 ?>
