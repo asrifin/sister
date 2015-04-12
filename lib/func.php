@@ -76,6 +76,23 @@
 	}
 
 /*psb*/
+	function getPeriode($id){
+		$s = 'SELECT proses
+			  FROM psb_proses
+			  WHERE replid ='.$id;
+			  // print_r($s);exit();
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r['proses'];
+	}function getKelompok($id){
+		$s = 'SELECT kelompok
+			  FROM psb_kelompok
+			  WHERE replid ='.$id;
+			  // print_r($s);exit();
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r['kelompok'];
+	}
 	function getBiaya($typ,$siswa){
 		$s = 'SELECT '.($typ=='pendaftaran'?'(b.daftar + b.joiningf)'.$typ:$typ).'
 			  FROM psb_setbiaya b
