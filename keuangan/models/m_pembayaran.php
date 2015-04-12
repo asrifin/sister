@@ -109,6 +109,7 @@
 									)tbx on tbx.siswa = c.replid
 								WHERE
 									c.kelompok='.$kelompok.' AND
+									c.nopendaftaran LIKE "%'.$nopendaftaran.'%" AND
 									c.nama LIKE "%'.$nama.'%" AND
 									b.daftar LIKE "%'.$daftar.'%" AND
 									b.joiningf LIKE "%'.$joiningf.'%"';

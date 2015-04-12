@@ -109,63 +109,6 @@ var contentFR ='';
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
-pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="juSV(this); return false;" id="'+mnu+'FR">'
-                        +'<input id="ju_idformH" type="hidden">' 
-
-                        +'<label>No. Jurnal</label>'
-                        +'<div class="input-control size4 text">'
-                            +'<input readonly name="ju_nomerTB" id="ju_nomerTB" >'
-                        +'</div>'
-                        
-                        +'<label>No. Bukti </label>'
-                        +'<div class="input-control size4 text">'
-                            +'<input placeholder="no bukti" name="ju_nobuktiTB" id="ju_nobuktiTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        
-                        +'<label>Tanggal</label>'
-                        +'<div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">'
-                            +'<input required type="text" id="ju_tanggalTB" name="ju_tanggalTB">'
-                            +'<button class="btn-date"></button>'
-                        +'</div>'
-
-                        +'<div input-control checkbox" >'
-                            +'<label>'
-                                // +'<input onclick="$(\'#uraianDV\').toggle();" type="checkbox" />'
-                                +'<span class="check"></span>'
-                                +' Uraian' 
-                            +'</label>'
-                        +'</div>'
-                        // +'<label>Uraian</label>'
-                        +'<div xstyle="display:none;" id="uraianDV" class="input-control textarea">'
-                            +'<textarea required placeholder="uraian" name="ju_uraianTB" id="ju_uraianTB"></textarea>'
-                        +'</div>'
-
-                        //rek. perkiraan 
-                        +'<legend >Rekening :' 
-                            +'<a onclick="addRekTR(\'ju_rekTBL\');return false;" href="#" class="button" >'
-                            +'<i class="icon-plus"></i></a>'
-                        +'</legend>'
-                        +'<table class="table hovered bordered striped">'
-                            +'<thead>'
-                                +'<tr style="color:white;"class="info">'
-                                    +'<th class="text-center">Rek Perkiraan</th>'
-                                    +'<th class="text-center">Debet</th>'
-                                    +'<th class="text-center">Kredit</th>'
-                                    +'<th class="text-center"></th>'
-                                +'</tr>'
-                            +'</thead>'
-                            +'<tbody id="ju_rekTBL">'
-                            +'</tbody>'
-                            +'<tfoot id="legendDet">'
-                            +'</tfoot>'
-                        +'</table>'
-
-                        +'<div class="form-actions">' 
-                            +'<button class="button primary">simpan</button>&nbsp;'
-                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-                        +'</div>'
-                    +'</form>';
 
     // button action
         //add ---
@@ -173,12 +116,20 @@ pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomple
             juFR('');
         });
         //print ---
-        $('#ju_cetakBC').on('click',function(){
-            printPDF('grup');
+        $('#pendaftaran_cetakBC').on('click',function(){
+            printPDF('pendaftaran');
         });
-        //search ---
-        $('#ju_noS,#ju_uraianS').on('keydown',function (e){ // kode grup
-            if(e.keyCode == 13) juVW();
+        //toggle search --- 
+        $('#pendaftaran_cariBC').on('click',function(){
+            $('#pendaftaranTR').toggle('slow');
+            $('#nopendaftaranS').val('');
+            $('#daftarS').val('');
+            $('#joiningfS').val('');
+        });
+
+        //textbox search ---
+        $('#nopendaftaranS,#namaS,#daftarS,#joiningfS').on('keydown',function (e){ // kode grup
+            if(e.keyCode == 13) viewTB('pendaftaran');
         });
 
         // set default this month
@@ -210,7 +161,6 @@ pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomple
         // var tabs = ['pembayaran','dpp','spp'];
         // alert(par);
         // alert(curTab());
-        
     }
 
     function curTab(){
@@ -261,7 +211,43 @@ pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomple
     }
 //end of paging ---
 
-/*view*/
+// view table ---
+    function viewTB(subaksi){
+        var aksi ='aksi=tampil';
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
+        }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
+        $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi+cari,
+            beforeSend:function(){
+                $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                setTimeout(function(){
+                    $(el2).html(dt).fadeIn();
+                },1000);
+            }
+        });
+    }
+// end of view table
 
 // fungsi AJAX : asyncronous
     function ajax(u,d) {
@@ -326,8 +312,6 @@ pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomple
                 }
             });
         }
-    
-
 
 // remove TR rekening
     function delRekTR (e) {
@@ -347,6 +331,7 @@ pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomple
             autosuggest();
         },500);
     }
+
 /* form jurnal umum (add & edit) */
     function juFR(id){
         if(id!=''){ // edit mode
@@ -410,9 +395,10 @@ pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomple
                 $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nCalon Siswa : '+dt.datax.siswa+' \nNo. Pendaftaran : '+dt.datax.nopendaftaran);
                 $('#nominalTB').val(dt.datax.nominal);
             }
-        });loadModal('Pembayaran Pendaftaran',contentFR);
+        });loadModal('Pendaftaran',contentFR);
     }
 
+    // form pop up
     function loadModal(titl,cont){
         $.Dialog({
             shadow: true,
@@ -508,7 +494,9 @@ pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomple
     }
 // end of notifikasi
 
-//end of  print to PDF -------
+
+
+// print to PDF -------
     function printPDF(mn){
         var par='',tok='',p,v;
         $('.'+mn+'_cari').each(function(){
@@ -824,42 +812,3 @@ pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomple
         });
     }
 //end of combo kelompok---
-
-// view table ---
-    function viewTB(subaksi){
-        var aksi ='aksi=tampil';
-        if(typeof subaksi!=='undefined'){
-            aksi+='&subaksi='+subaksi;
-        }
-        var cari ='';
-        var el,el2;
-
-        if(typeof subaksi!=='undefined'){ // multi paging
-            el  = '.'+subaksi+'_cari';
-            el2 = '#'+subaksi+'_tbody';
-        }else{ // single paging
-            el  = '.cari';
-            el2 = '#tbody';
-        }
-
-        $(el).each(function(){
-            var p = $(this).attr('id');
-            var v = $(this).val();
-            cari+='&'+p+'='+v;
-        });
-
-        $.ajax({
-            url : dir,
-            type: 'post',
-            data: aksi+cari,
-            beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                setTimeout(function(){
-                    $(el2).html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }
-// end of view table
-

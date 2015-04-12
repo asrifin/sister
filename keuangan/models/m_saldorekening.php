@@ -124,6 +124,7 @@
 				$s    = $tb.' set 	nominal 	= "'.getuang(filter($_POST['nominalTB'])).'", 
 									nominal2 	= "'.getuang(filter($_POST['nominalTB'])).'"';
 				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				// print_r($s2);exit();
 				$e    = mysql_query($s2);
 				$stat = ($e)?'sukses':'gagal';
 				$out  = json_encode(array('status'=>$stat));
