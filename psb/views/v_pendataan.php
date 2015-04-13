@@ -80,6 +80,8 @@
                               <!-- <label><b>Kriteria Calon :</b></label> -->
                               <label>Kriteria calon :</label>
                               <div class="input-control select size3">
+                                  <!-- <input type="hidden" name="setbiayaH" id="setbiayaH"> -->
+                                  <!-- <input type="hidden" name="kriteriaH" id="kriteriaH"> -->
                                   <select id="kriteriaTB" name="kriteriaTB">
                                     <!-- <option>Value 1</option> -->
                                   </select>
@@ -87,6 +89,7 @@
 
                               <label>Golongan :</label>
                               <div class="input-control select size3">
+                                  <!-- <input type="text" name="golonganH" id="golonganH"> -->
                                   <select id="golonganTB" name="golonganTB">
                                     <!-- <option>Value 1</option> -->
                                   </select>
@@ -116,6 +119,7 @@
                               <label><b>Angsuran :</b></label>
                               <label>Lama Angsuran :</label>
                               <div class="input-control select size3">
+                                  <input type="hidden" name="angsuranH" id="angsuranH">
                                   <select id="angsuranTB" name="angsuranTB">
                                     <!-- <option>Value 1</option> -->
                                   </select>
@@ -152,6 +156,7 @@
 
                                 <label>Discount tunai :</label>
                                 <div class="input-control select size2">
+                                  <input type="hidden" name="diskon_tunaiH" id="diskon_tunaiH">
                                   <select id="diskon_tunai" name="diskon_tunai">
                                   </select>
                               </div>
@@ -238,6 +243,7 @@
 
                         <label>Agama</label>
                         <div class="input-control select size3">
+                            <input type="hidden" name="agamaH" id="agamaH">
                             <select id="agamaTB" name="agamaTB">
                               <!-- <option>Kristen</option> -->
                             </select>
@@ -353,12 +359,12 @@
                         <label><b>Data Keluarga (Opsional) :</b></label>
                         <label>Nama Kakek :</label>
                         <div class="input-control text size5">
-                            <input placeholder="Email" type="text" name="kakekTB" id="kakekTB">
+                            <input placeholder="Kakek" type="text" name="kakekTB" id="kakekTB">
                         </div>
 
                         <label>Nama Nenek :</label>
                         <div class="input-control text size5">
-                            <input placeholder="Email" type="text" name="nenekTB" id="nenekTB">
+                            <input placeholder="Nenek" type="text" name="nenekTB" id="nenekTB">
                         </div>
 
                         </div>
@@ -409,12 +415,56 @@
                             <input placeholder="Nomor" type="text" name="nomorTB" id="nomorTB">
                         </div>
                         <label>Data Saudara :</label>
-                            <a href="#" data-hint="Tambah Saudara" id="saudaraBC" class="button"><span class="icon-plus-2"></span> Tambah Saudara</a>
-                        <div class="input-control text size5">
+                            <!-- <a href="#" data-hint="Tambah Saudara" id="saudaraBC" class="button"><span class="icon-plus-2"></span> Tambah Saudara</a> -->
+                        <div class="form-actions" id="tambahsdr" style="display:visible;"> 
+                            <button data-hint="Tambah Saudara" xclass="large" id="tambahsdrBC">Tambah Saudara</button>
+                        </div>        
+                        <div class="panel" id="cetak" style="display:none;">
+                            <div class="panel-content">
+                            <div class="grid">
+                                <div class="row">
+                                        <div class="input-control radio">
+                                        <label>
+                                            <input value="0" type="radio" name="saudaraTB" id="saudaraTB" />
+                                            <span class="check"></span>
+                                            Satu Sekolah
+                                        </label>
+                                        </div>
+                                        <div class="input-control radio">
+                                        <label>
+                                            <input value="1" type="radio" name="saudaraTB" id="saudaraTB" />
+                                            <span class="check"></span>
+                                            Luar Sekolah
+                                        </label>
+                                        </div>
+                                        <label></label>
+                                        <div class="input-control text size5">
+                                            <input placeholder="Nama Saudara" type="text" name="nama_saudaraTB" id="nama_saudaraTB">
+                                        </div>
 
-                            <input placeholder="Nomor" type="text" name="nomorTB" id="nomorTB">
-                        </div>
-                        
+                                        <table class="table hovered bordered striped" id="saudaraTBL">
+                                            <thead>
+                                                <tr style="color:white;"class="info">
+                                                    <th class="text-left">Nama</th>
+                                                    <th class="text-left">Sekolah</th>
+                                                    <th class="text-left">Aksi</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody id="tbody">
+
+                                            </tbody>
+
+                                            <tfoot>
+                                                
+                                            </tfoot>
+                                        </table>
+                                </div> <!-- end row -->
+                            </div> <!-- end grid -->
+
+                            </div>
+                        </div> <!-- end panel -->
+
                       </div>
                     </div>
                           <!-- End Grid -->

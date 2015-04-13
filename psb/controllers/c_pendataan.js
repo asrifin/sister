@@ -240,11 +240,13 @@ var contentFR = '';
             cmbagama('');
             cmbangsuran('');
             cmbdiskon('');
-            // getuang('');
-            // inputuang('');
+            // kodeTrans($('#nopendaftaranTB').val());
         // $('#').on('click',switchPN);
     });$("#importBC").on('click',function(){
             switchPN2();             
+        });
+        $("#tambahsdrBC").on('click',function(){
+                $('#cetak').toggle('slow');
         });
         
     //search action
@@ -422,7 +424,7 @@ var contentFR = '';
                     // url: dir+'?aksi=simpan&subaksi=siswa',
                     url: dir,
                     type:'POST',
-                    data:formData+'&aksi=simpan&subaksi=siswa',
+                    data:formData+'&aksi=simpan',
                     // data:'aksi=simpan&subaksi=siswa'+formData,
                     // data:'aksi=simpan&subaksi=siswa'+formData+$('#siswa_form').serialize(),
                     cache:false,
@@ -849,6 +851,7 @@ var contentFR = '';
             var pangkalnet    = $("#uang_pangkalnetTB").val();
             var disc_subsidi  = parseInt($("#diskon_subsidiTB").val());
             var disc_saudara  = parseInt($("#diskon_saudaraTB").val());
+            var diskon_total  = parseInt($("#diskon_totalTB").val());
 
             var persen    = parseInt($("#diskon_tunai").val());
             var tunai    = parseInt($("#diskon_tunaiTB").val());
@@ -860,7 +863,7 @@ var contentFR = '';
                 $("#diskon_totalTB").val(total_diskon);
             // alert(diskon_tunaiTB); 
             // return false;
-                var total_dpp    = parseInt(pangkalnet)-parseInt(total_diskon);
+                var total_dpp    = parseInt(pangkalnet)-parseInt(diskon_total);
                 //Hitung Total DPP
                 $("#uang_pangkalnetTB").val(total_dpp);
 
@@ -1053,6 +1056,22 @@ var contentFR = '';
     // }
 // end of get uang --------------------------
 
+   function kodeTrans(typ){
+        var ret;
+        $.ajax({
+            url:dir,
+            type:'post',
+            async:false,
+            dataType:'json',
+            data :'aksi=codeGen&subaksi=transNo&tipe='+typ,
+            success:function(dt){
+                if(dt.status!='sukses')
+                    ret=dt.status;
+                else
+                    ret=dt.kode;
+            }
+        });return ret;
+    }
     
 // notifikasi
 function notif(cont,clr) {
