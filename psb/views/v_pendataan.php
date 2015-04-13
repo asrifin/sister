@@ -80,6 +80,8 @@
                               <!-- <label><b>Kriteria Calon :</b></label> -->
                               <label>Kriteria calon :</label>
                               <div class="input-control select size3">
+                                  <!-- <input type="hidden" name="setbiayaH" id="setbiayaH"> -->
+                                  <!-- <input type="hidden" name="kriteriaH" id="kriteriaH"> -->
                                   <select id="kriteriaTB" name="kriteriaTB">
                                     <!-- <option>Value 1</option> -->
                                   </select>
@@ -87,6 +89,7 @@
 
                               <label>Golongan :</label>
                               <div class="input-control select size3">
+                                  <!-- <input type="text" name="golonganH" id="golonganH"> -->
                                   <select id="golonganTB" name="golonganTB">
                                     <!-- <option>Value 1</option> -->
                                   </select>
@@ -96,26 +99,27 @@
                               <label>Uang Pangkal</label>
                               <div class="input-control text size3">
                                   <!-- <input type="text" onclick="inputuang(this);" name="uang_pangkalTB" id="uang_pangkalTB"> -->
-                                  <input type="text" name="uang_pangkalTB" id="uang_pangkalTB">
+                                  <input readonly type="text" name="uang_pangkalTB" id="uang_pangkalTB">
                                   <button class="btn-clear"></button>
                               </div>
                               
                               <label>Uang Pangkal net</label>
                               <div class="input-control text size3">
                                   <input type="hidden" onclick="inputuang(this);" name="uang_pangkalnetH" id="uang_pangkalnetH">
-                                  <input type="text" name="uang_pangkalnetTB" id="uang_pangkalnetTB">
+                                  <input readonly type="text" name="uang_pangkalnetTB" id="uang_pangkalnetTB">
                                   <button class="btn-clear"></button>
                               </div>
                               <label>Joining Fee</label>
                               <div class="input-control text size3">
                                   <input type="hidden" onclick="inputuang(this);" name="joiningH" id="joiningH">
-                                  <input type="text" name="joiningTB" id="joiningTB">
+                                  <input readonly type="text" name="joiningTB" id="joiningTB">
                                   <button class="btn-clear"></button>
                               </div>
 
                               <label><b>Angsuran :</b></label>
                               <label>Lama Angsuran :</label>
                               <div class="input-control select size3">
+                                  <input type="hidden" name="angsuranH" id="angsuranH">
                                   <select id="angsuranTB" name="angsuranTB">
                                     <!-- <option>Value 1</option> -->
                                   </select>
@@ -129,7 +133,7 @@
                               <label><b>Uang Sekolah :</b></label>
                               <label>Uang Sekolah per Bulan</label>
                               <div class="input-control text size3">
-                                  <input type="text" name="sppTB" id="sppTB">
+                                  <input readonly type="text" name="sppTB" id="sppTB">
                                   <button class="btn-clear"></button>
                               </div>
 
@@ -152,25 +156,18 @@
 
                                 <label>Discount tunai :</label>
                                 <div class="input-control select size2">
+                                  <input type="hidden" name="diskon_tunaiH" id="diskon_tunaiH">
                                   <select id="diskon_tunai" name="diskon_tunai">
-                                    <option>5%</option>
-                                    <option>10%</option>
-                                    <option>15%</option>
-                                    <option>20%</option>
-                                    <option>25%</option>
-                                    <option>40%</option>
-                                    <option>50%</option>
-                                    <option>80%</option>
                                   </select>
                               </div>
                                 <div class="input-control text size3">
-                                    <input type="text" name="diskon_tunaiTB" id="diskon_tunaiTB">
+                                    <input readonly type="text" name="diskon_tunaiTB" id="diskon_tunaiTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
                                 <label><b>Total Discount :</b></label>
                                 <div class="input-control text size3">
-                                    <input type="text" name="diskon_totalTB" id="diskon_totalTB">
+                                    <input readonly type="text" name="diskon_totalTB" id="diskon_totalTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
@@ -246,6 +243,7 @@
 
                         <label>Agama</label>
                         <div class="input-control select size3">
+                            <input type="hidden" name="agamaH" id="agamaH">
                             <select id="agamaTB" name="agamaTB">
                               <!-- <option>Kristen</option> -->
                             </select>
@@ -361,12 +359,12 @@
                         <label><b>Data Keluarga (Opsional) :</b></label>
                         <label>Nama Kakek :</label>
                         <div class="input-control text size5">
-                            <input placeholder="Email" type="text" name="kakekTB" id="kakekTB">
+                            <input placeholder="Kakek" type="text" name="kakekTB" id="kakekTB">
                         </div>
 
                         <label>Nama Nenek :</label>
                         <div class="input-control text size5">
-                            <input placeholder="Email" type="text" name="nenekTB" id="nenekTB">
+                            <input placeholder="Nenek" type="text" name="nenekTB" id="nenekTB">
                         </div>
 
                         </div>
@@ -417,12 +415,56 @@
                             <input placeholder="Nomor" type="text" name="nomorTB" id="nomorTB">
                         </div>
                         <label>Data Saudara :</label>
-                            <a href="#" data-hint="Tambah Saudara" id="saudaraBC" class="button"><span class="icon-plus-2"></span> Tambah Saudara</a>
-                        <div class="input-control text size5">
+                            <!-- <a href="#" data-hint="Tambah Saudara" id="saudaraBC" class="button"><span class="icon-plus-2"></span> Tambah Saudara</a> -->
+                        <div class="form-actions" id="tambahsdr" style="display:visible;"> 
+                            <button data-hint="Tambah Saudara" xclass="large" id="tambahsdrBC">Tambah Saudara</button>
+                        </div>        
+                        <div class="panel" id="cetak" style="display:none;">
+                            <div class="panel-content">
+                            <div class="grid">
+                                <div class="row">
+                                        <div class="input-control radio">
+                                        <label>
+                                            <input value="0" type="radio" name="saudaraTB" id="saudaraTB" />
+                                            <span class="check"></span>
+                                            Satu Sekolah
+                                        </label>
+                                        </div>
+                                        <div class="input-control radio">
+                                        <label>
+                                            <input value="1" type="radio" name="saudaraTB" id="saudaraTB" />
+                                            <span class="check"></span>
+                                            Luar Sekolah
+                                        </label>
+                                        </div>
+                                        <label></label>
+                                        <div class="input-control text size5">
+                                            <input placeholder="Nama Saudara" type="text" name="nama_saudaraTB" id="nama_saudaraTB">
+                                        </div>
 
-                            <input placeholder="Nomor" type="text" name="nomorTB" id="nomorTB">
-                        </div>
-                        
+                                        <table class="table hovered bordered striped" id="saudaraTBL">
+                                            <thead>
+                                                <tr style="color:white;"class="info">
+                                                    <th class="text-left">Nama</th>
+                                                    <th class="text-left">Sekolah</th>
+                                                    <th class="text-left">Aksi</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody id="tbody">
+
+                                            </tbody>
+
+                                            <tfoot>
+                                                
+                                            </tfoot>
+                                        </table>
+                                </div> <!-- end row -->
+                            </div> <!-- end grid -->
+
+                            </div>
+                        </div> <!-- end panel -->
+
                       </div>
                     </div>
                           <!-- End Grid -->
