@@ -5,6 +5,7 @@ var mnu3      = 'proses';
 var mnu4      = 'kriteriaCalonSiswa';
 var mnu5      = 'golonganCalonSiswa';
 var mnu6      = 'setAngsuran'; 
+var mnu7      = 'setDiskon';
 var mnu_kel   = 'kelompok';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
@@ -13,6 +14,7 @@ var dir_kel   = 'models/m_'+mnu_kel+'.php';
 var dir4      = 'models/m_'+mnu4+'.php';
 var dir5      = 'models/m_'+mnu5+'.php';
 var dir6      = 'models/m_'+mnu6+'.php';
+var dir7      = 'models/m_'+mnu7+'.php';
 var contentFR = '';
 
 //epiii : switch panel (form<=>table)
@@ -237,6 +239,7 @@ var contentFR = '';
             cmbgolongan('');
             cmbagama('');
             cmbangsuran('');
+            cmbdiskon('');
             // getuang('');
             // inputuang('');
         // $('#').on('click',switchPN);
@@ -276,13 +279,17 @@ var contentFR = '';
         // // $("#diskon_subsidiTB").keydown(function(){
              hitung_diskon();
         }); $("#diskon_tunai").change(function(){
+            setdiskon();
             hitung_diskon();
         });
         $("#kriteriaTB,#golonganTB").change(function(){
             getbiaya();
         });
-        $("#diskon_tunai").change(function(){
-            setdiskon();
+        // $("#diskon_tunai").change(function(){
+        // });
+        $("#angsuranTB").change(function(){
+            setangsuran();
+            hitung_angsuran();
         });
 
     }); 
@@ -601,6 +608,14 @@ var contentFR = '';
                         $('#alamatsiswaTB').val(dt.alamat);
                         $('#telpsiswaTB').val(dt.telpon);
                         $('#asalsekolahTB').val(dt.sekolahasal);
+                        var img;
+                        if(dt.photo2!='' && dt.photo2!=null){//ada gambar
+                            img='../img/upload/'+dt.photo2;
+                        }else{
+                            img='../img/no_image.jpg';
+                        }
+                        $('#previmg').attr('src',img);
+                        $('#photoH').val(dt.photo2);
                         //Orangtua
                         $('#ayahTB').val(dt.nama_ayah);
                         $('#kebangsaan_ayahTB').val(dt.kebangsaan_ayah);
@@ -633,6 +648,7 @@ var contentFR = '';
                         cmbgolongan(dt.golongan);
                         cmbagama(dt.agama);
                         cmbangsuran(dt.jmlangsur);
+                        cmbdiskon(dt.nilai);
                     }
                 });
             }else{ 
@@ -751,10 +767,31 @@ var contentFR = '';
             });
         }
 
-        function hitung(){
-            var angsuran      = $("#angsuranTB").val();
-            var angsuranbulan = $("#angsuranbulanTB").val();
-        }
+        function cmbdiskon (nilai) {
+            // alert(1);return false;
+            $.ajax({
+                url:dir7,   
+                type:'post',
+                dataType:'json',
+                data:'aksi=cmb'+mnu7,
+                success:function(dt){
+                    var opt='';
+                    if (dt.status!='sukses') {
+                        notif(dt.status,'red');
+                        opt+='<option value="">'+dt.status+'</option>'
+                    }else{
+                        // alert(id);return false;
+                        var opt = '';
+                        $.each(dt.nilai,function(id,item){
+                            if(nilai==item.replid)
+                                opt+='<option selected="selected" value="'+item.replid+'">'+item.nilai+'</option>'
+                            else
+                                opt+='<option value="'+item.replid+'">'+item.nilai+'</option>'
+                        });$('#diskon_tunai').html('<option value="">Pilih Diskon..</option>'+opt);
+                    }
+                },
+            });
+        }        
 
         function getbiaya(){
                 $.ajax({
@@ -781,9 +818,31 @@ var contentFR = '';
         }
         function setdiskon(){
             getdiskon().done(function(dt){
-                alert(dt);
+                // alert(dt);
                 }
             );
+        }
+        function getangsuran(){
+                return  $.ajax({
+                    url : dir,
+                    type: 'post',
+                    data:'aksi=getangsuran&replid='+$('#angsuranTB').val(),
+                    dataType:'json',
+                });            
+        }        
+         function setangsuran(){
+            getangsuran().done(function(dt){
+                // alert(dt);
+                }
+            );
+        }       
+        function hitung_angsuran(){
+            // var pangkal       = $("#uang_pangkalTB").val();
+            var pangkalnet    = $("#uang_pangkalnetTB").val();
+            var angsuran  = parseInt($("#angsuranTB").val());
+            var hasil_angsuran = parseInt(pangkalnet)/parseInt(angsuran);
+            $("#angsuranbulanTB").val(parseInt(hasil_angsuran));
+            
         }
         function hitung_diskon(){
             var pangkal       = $("#uang_pangkalTB").val();
@@ -791,16 +850,21 @@ var contentFR = '';
             var disc_subsidi  = parseInt($("#diskon_subsidiTB").val());
             var disc_saudara  = parseInt($("#diskon_saudaraTB").val());
 
-            var persen    = parseInt($("#disc_tunai").val());
-            var nilai    = parseInt($("#disc_tunaiTB").val());
-            var total_diskon_tunai = parseInt(persen)/100*parseInt(nilai);
+            var persen    = parseInt($("#diskon_tunai").val());
+            var tunai    = parseInt($("#diskon_tunaiTB").val());
+            var total_diskon_tunai = (parseInt(persen)/100)*parseInt(pangkal);
+            $("#diskon_tunaiTB").val(total_diskon_tunai);
 
-            // if(disc_subsidi>0 && disc_saudara>0 && disc_tunaiTB>0){
-            // alert(disc_tunaiTB); 
-            // return false;
-                var total_diskon = disc_subsidi+disc_saudara+total_diskon_tunai;
-                // var total_diskon = disc_tunaiTB;
+                var total_diskon = parseInt(disc_subsidi)+parseInt(disc_saudara)+parseInt(total_diskon_tunai);
+                //Hitung Total Diskon
                 $("#diskon_totalTB").val(total_diskon);
+            // alert(diskon_tunaiTB); 
+            // return false;
+                var total_dpp    = parseInt(pangkalnet)-parseInt(total_diskon);
+                //Hitung Total DPP
+                $("#uang_pangkalnetTB").val(total_dpp);
+
+
             // }
         }
 

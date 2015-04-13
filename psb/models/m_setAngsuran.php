@@ -104,7 +104,7 @@
 			break;
 			// ambiledit -----------------------------------------------------------------
 
-						case 'cmb'.$mnu:
+			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
 					$w.='where replid ='.$_POST['replid'];

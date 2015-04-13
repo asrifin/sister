@@ -25,7 +25,8 @@ PSB V2.0
 	+ Form > scroll (view)
 	+ paging > undefined (query)
 	- Insert > Belum Cara insert ke multiple tabel
-	- view   > 
+	+ menjumlahkan angsuran dan total uang pangkal net
+	+ view   > 
 	  + Combo Kelompok ga sesuai
 	  + menampilkan foto siswa pada view detail siswa
 				

@@ -133,10 +133,10 @@
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out    = json_encode(array(
-							'status'          =>$stat,
-							'spp'        =>$r['spp'],
-							'joiningf'        =>$r['joiningf'],
-							'nilai'          =>$r['nilai']
+							'status'   =>$stat,
+							'spp'      =>$r['spp'],
+							'joiningf' =>$r['joiningf'],
+							'nilai'    =>$r['nilai']
 						));				
 			break;
 
@@ -155,9 +155,26 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out    = json_encode(array(
 							'status'          =>$stat,
-							'spp'        =>$r['spp'],
-							'joiningf'        =>$r['joiningf'],
 							'nilai'          =>$r['nilai']
+						));				
+			break;
+
+			case 'getangsuran':
+				$s 		='SELECT 
+							*
+						FROM 
+							psb_angsuran
+						WHERE
+							cicilan = '.$_POST['replid']
+							;
+
+									// print_r($s);exit();
+				$e 		= mysql_query($s) or die(mysql_error());
+				$r 		= mysql_fetch_assoc($e);
+				$stat 	= ($e)?'sukses':'gagal';
+				$out    = json_encode(array(
+							'status'          =>$stat,
+							'cicilan'         =>$r['cicilan']
 						));				
 			break;
 
@@ -328,6 +345,8 @@
 								ti.pinbb as pinbb_ibu,
 								ti.email as email_ibu,
 								tset.joiningf as joining,
+								tset.spp spp,
+								tset.nilai dpp,
 								tk.nama as namalain,
 								tk.hubungan as hubungan,
 								tk.telpon as telponlain,
@@ -353,15 +372,16 @@
 							'golongan'        =>$r['golongan'],
 							'sumpokok'        =>'Rp. '.number_format($r['sumpokok']),
 							'sumnet'          =>$r['sumnet'],
-							'sppbulan'        =>$r['sppbulan'],
+							'spp'             =>$r['spp'],
 							'jmlangsur'       =>$r['jmlangsur'],
 							'angsuran'        =>$r['angsuran'],
 							'disctb'          =>$r['disctb'],
 							'discsaudara'     =>$r['discsaudara'],
 							'disctunai'       =>$r['disctunai'],
 							'disctotal'       =>$r['disctotal'],
+							'joining'         =>$r['joining'],
 							'nopendaftaran'   =>$r['nopendaftaran'],
-							'siswa'            =>$r['siswa'],
+							'siswa'           =>$r['siswa'],
 							'kelamin'         =>$r['kelamin'],
 							'tmplahir'        =>$r['tmplahir'],
 							'tgllahir'        =>$r['tgllahir'],
@@ -372,7 +392,8 @@
 							'darah'           =>$r['darah'],
 							'kesehatan'       =>$r['kesehatan'],
 							'ketkesehatan'    =>$r['ketkesehatan'],
-							'photo'           =>$r['photo'],
+							// 'photo'           =>$r['photo'],
+							'photo2'           =>$r['photo2'],
 							
 							'nama_ayah'       =>$r['nama_ayah'],
 							'kebangsaan_ayah' =>$r['kebangsaan_ayah'],

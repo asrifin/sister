@@ -96,20 +96,20 @@
                               <label>Uang Pangkal</label>
                               <div class="input-control text size3">
                                   <!-- <input type="text" onclick="inputuang(this);" name="uang_pangkalTB" id="uang_pangkalTB"> -->
-                                  <input type="text" name="uang_pangkalTB" id="uang_pangkalTB">
+                                  <input readonly type="text" name="uang_pangkalTB" id="uang_pangkalTB">
                                   <button class="btn-clear"></button>
                               </div>
                               
                               <label>Uang Pangkal net</label>
                               <div class="input-control text size3">
                                   <input type="hidden" onclick="inputuang(this);" name="uang_pangkalnetH" id="uang_pangkalnetH">
-                                  <input type="text" name="uang_pangkalnetTB" id="uang_pangkalnetTB">
+                                  <input readonly type="text" name="uang_pangkalnetTB" id="uang_pangkalnetTB">
                                   <button class="btn-clear"></button>
                               </div>
                               <label>Joining Fee</label>
                               <div class="input-control text size3">
                                   <input type="hidden" onclick="inputuang(this);" name="joiningH" id="joiningH">
-                                  <input type="text" name="joiningTB" id="joiningTB">
+                                  <input readonly type="text" name="joiningTB" id="joiningTB">
                                   <button class="btn-clear"></button>
                               </div>
 
@@ -129,7 +129,7 @@
                               <label><b>Uang Sekolah :</b></label>
                               <label>Uang Sekolah per Bulan</label>
                               <div class="input-control text size3">
-                                  <input type="text" name="sppTB" id="sppTB">
+                                  <input readonly type="text" name="sppTB" id="sppTB">
                                   <button class="btn-clear"></button>
                               </div>
 
@@ -153,24 +153,16 @@
                                 <label>Discount tunai :</label>
                                 <div class="input-control select size2">
                                   <select id="diskon_tunai" name="diskon_tunai">
-                                    <option>5%</option>
-                                    <option>10%</option>
-                                    <option>15%</option>
-                                    <option>20%</option>
-                                    <option>25%</option>
-                                    <option>40%</option>
-                                    <option>50%</option>
-                                    <option>80%</option>
                                   </select>
                               </div>
                                 <div class="input-control text size3">
-                                    <input type="text" name="diskon_tunaiTB" id="diskon_tunaiTB">
+                                    <input readonly type="text" name="diskon_tunaiTB" id="diskon_tunaiTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
                                 <label><b>Total Discount :</b></label>
                                 <div class="input-control text size3">
-                                    <input type="text" name="diskon_totalTB" id="diskon_totalTB">
+                                    <input readonly type="text" name="diskon_totalTB" id="diskon_totalTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
