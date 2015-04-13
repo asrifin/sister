@@ -35,8 +35,8 @@
                   c.nama,
                   b.daftar, 
                   b.joiningf,
-                  tbx.tanggal,
-                  IF(tbx.idpembayaran IS NULL,0,1)status
+                  IFNULL(tbx.tanggal,"-")tanggal,
+                  IF(tbx.idpembayaran IS NULL,"Belum Lunas","Lunas")status
                 FROM
                   psb_calonsiswa c
                   LEFT JOIN psb_setbiaya b on b.replid = c.setbiaya
@@ -72,11 +72,16 @@
           $r1 = mysql_fetch_assoc($e1) or die (mysql_error());
 
           $out.='<body>
-                  <p align="center">
-                    <b>
-                      Pembayaran Pendaftaran<br>
-                    </b>
-                  </p>';
+                    <table width="100%">
+                      <tr>
+                        <td width="39%">
+                          <img width="100" src="../../images/logo.png" alt="" />
+                        </td>
+                        <td>
+                          <b>Pembayaran Pendaftaran</b>
+                        </td>
+                      </tr>
+                    </table><br />';
 
           $out.='<table width="100%">
                   <tr>
@@ -102,6 +107,7 @@
                     <td align="center">Nama</td>
                     <td align="center">Formulir</td>
                     <td align="center">Joining Fee</td>
+                    <td align="center">Status</td>
                     <td align="center">Tanggal Bayar</td>
                   </tr>';
             $nox = 1;
@@ -119,7 +125,8 @@
                           <td>'.$r2['nama'].'</td>
                           <td align="right">Rp. '.number_format($r2['daftar']).',-</td>
                           <td align="right">Rp. '.number_format($r2['joiningf']).',-</td>
-                          <td>'.tgl_indo5($r2['tanggal']).'</td>
+                          <td>'.$r2['status'].'</td>
+                          <td align="center">'.($r['tanggal']=='-'?'-':tgl_indo5($r2['tanggal'])).'</td>
                     </tr>';
                 $nox++;
               }

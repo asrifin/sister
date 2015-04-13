@@ -26,7 +26,8 @@ var contentFR ='';
 
         // event  filter : departemen 
         $('#departemenS').on('change',function(){
-            switchPN();
+            // alert(curTab());
+            switchPN(curTab());
         });
         // event filter : pendaftaran
         $('#prosesS').on('change',function(){
@@ -41,18 +42,18 @@ var contentFR ='';
             viewTB('dpp');
         });        
         // event filter : spp
-        $('#tahunajaranS').on('change',function(){
-            cmbtingkat('filter',$(this).val());
-        });
-        $('#tingkatS').on('change',function(){
-            cmbsubtingkat('filter',$(this).val());
-        });        
-        $('#subtingkatS').on('change',function(){
-            cmbkelas('filter',$(this).val());
-        });
-        $('#kelasS').on('change',function(){
-            viewTB(curTab());
-        });
+        // $('#tahunajaranS').on('change',function(){
+        //     cmbtingkat('filter',$(this).val());
+        // });
+        // $('#tingkatS').on('change',function(){
+        //     cmbsubtingkat('filter',$(this).val());
+        // });        
+        // $('#subtingkatS').on('change',function(){
+        //     cmbkelas('filter',$(this).val());
+        // });
+        // $('#kelasS').on('change',function(){
+        //     viewTB(curTab());
+        // });
         // event : button click
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
@@ -149,7 +150,7 @@ var contentFR ='';
 // end of main function ---------
     
     function switchPN (par) {
-        if(par==''){ // default : pendaftaran
+        if(par=='' || par=='pendaftaran'){ // default : pendaftaran
             cmbproses('filter',$('#departemenS').val());
         }else if(par=='spp'){ // spp
             cmbtahunajaran('filter',$('#departemenS').val());
@@ -280,7 +281,7 @@ var contentFR ='';
 /*save (insert & update)*/
     function pembayaranSV(e){
         var url  = dir;
-        var data = $(e).serialize()+'&aksi=simpan';
+        var data = $(e).serialize()+'&aksi=simpan&subaksi=pendaftaran';
         ajax(url,data).done(function (dt) {
             notif(dt.status,(dt.status=='sukses'?'green':'red'));
             if (dt.status=='sukses') {

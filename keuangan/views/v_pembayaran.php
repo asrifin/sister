@@ -13,10 +13,6 @@
 <div id="loadarea"></div>
 <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
 
-<div class="input-control select span3">
-    <select data-hint="Departemen" class="cari" name="departemenS" id="departemenS"></select>
-</div>
-
 <!-- tab -->
     <!-- keterangan :
         - pendaftaranTAB : formulir n joining fee
@@ -28,6 +24,11 @@
             <li onclick="switchPN('pendaftaran');" class="active"><a href="#pendaftaranTAB">Pendaftaran </a></li>
             <li onclick="switchPN('dpp');"><a href="#dppTAB">DPP</a></li>
             <li onclick="switchPN('spp');"><a href="#sppTAB">SPP</a></li>
+            <li class="place-right">
+                <div class="input-control select">
+                    <select data-hint="Departemen" class="cari" name="departemenS" id="departemenS"></select>
+                </div>
+            </li>
         </ul>
         <div class="frames">
 

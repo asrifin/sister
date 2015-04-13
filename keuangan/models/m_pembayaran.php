@@ -327,13 +327,13 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				// simpan pembayaran
-				$s 	= 'INSERT INTO '.$tb.' set 	modul = '.$_POST['idmodulH'].',siswa = '.$_POST['idsiswaH'];
+				$s 	= 'INSERT INTO '.$tb.' set modul = '.$_POST['idmodulH'].',siswa = '.$_POST['idsiswaH'];
 				$e  = mysql_query($s);
 				$id = mysql_insert_id();
 				if(!$e) $stat='gagal_insert_pembayaran';
 				else{
 					// simpan transaksi
-					$nominal = getBiaya('pendaftaran',$_POST['idsiswaH']);
+					$nominal = getBiaya($_POST['subaksi'],$_POST['idsiswaH']);
 					$s2 = 'INSERT INTO keu_transaksi SET 	tahunbuku  ='.getTahunBuku('replid').',
 															pembayaran ='.$id.',
 															nominal    ='.$nominal.',
@@ -352,7 +352,12 @@
 						$s4 = 'INSERT INTO ke_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekitemH'].', kredit ='.$nominal;
 						$e3 = mysql_query($s3);
 						$e4 = mysql_query($s4);
-						$stat = ($e3 OR $e4)?'gagal_insert_jurnal':'sukses';
+						// $stat = ($e3 OR $e4)?'gagal_insert_jurnal':'sukses';
+						// to do : tambah / krangi saldo awal rekening
+						if(!$e3 OR !$e4) $stat = 'gagal_insert_jurnal';
+						else{
+							$s5 = 'UPDATE keu_saldorekening SET nominal2 =nominal2'.$opt.' '.$nominal.' WHERE replid ='.$_POST['rekkasH'];
+						}
 					}
 				}$out = json_encode(array('status'=>$stat));
 			break;
