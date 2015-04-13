@@ -18,7 +18,7 @@ var dir7 ='../akademik/models/m_'+mnu7+'.php';
 var dir8 ='../akademik/models/m_'+mnu8+'.php';
 var dir9 ='../akademik/models/m_'+mnu9+'.php';
 
-var pembayaran_contentFR = k_contentFR = b_contentFR ='';
+var contentFR ='';
 // main function load first 
     $(document).ready(function(){
         cmbdepartemen('filter','');
@@ -65,7 +65,51 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
             $('#tgl2TB').val(getLastDate());
         });
     //form content
-        pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="juSV(this); return false;" id="'+mnu+'FR">'
+        contentFR+= '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="pembayaranSV(this); return false;" id="'+mnu+'FR">'
+                        +'<input id="ju_idformH" type="hidden">' 
+                        
+                        +'<input id="idsiswaH" name="idsiswaH" type="hidden">' 
+                        +'<input id="idmodulH" name="idmodulH" type="hidden">' 
+                        +'<input id="rekkasH" name="rekkasH" type="hidden">' 
+                        +'<input id="rekitemH" name="rekitemH" type="hidden">' 
+
+                        +'<label><b>Nomor</b></label>'
+                        +'<div class="input-control text">'
+                            +'<input type="text" readonly name="nomerTB" id="nomerTB" >'
+                        +'</div>'
+                        
+                        +'<label>Tanggal </label>'
+                        +'<div class="input-control text">'
+                            +'<input readonly type="text" name="tanggalTB" id="tanggalTB">'
+                        +'</div>'
+                        
+                        +'<label>Rekening Kas / Bank</label>'
+                        +'<div class="input-control text">'
+                            +'<input readonly type="text" id="rek1TB" name="rek1TB">'
+                        +'</div>'
+
+                        +'<label ><b>Pada :</b></label>'
+                        +'<label>Rekening Perkiraan</label>'
+                        +'<div class="input-control text">'
+                            +'<input readonly type="text" id="rek2TB" name="rek2TB">'
+                        +'</div>'
+
+                        +'<label>Uraian</label>'
+                        +'<div class="input-control textarea">'
+                            +'<textarea readonly name="uraianTB" id="uraianTB"></textarea>'
+                        +'</div>'
+
+                        +'<label>Nominal</label>'
+                        +'<div class="input-control text">'
+                            +'<input readonly type="text" id="nominalTB" name="nominalTB">'
+                        +'</div>'
+
+                        +'<div class="form-actions">' 
+                            +'<button class="button primary">Bayar <span class="icon-floppy"></span></button>&nbsp;'
+                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                        +'</div>'
+                    +'</form>';
+pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="juSV(this); return false;" id="'+mnu+'FR">'
                         +'<input id="ju_idformH" type="hidden">' 
 
                         +'<label>No. Jurnal</label>'
@@ -220,7 +264,7 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
 /*view*/
 
 // fungsi AJAX : asyncronous
-    function ajaxFC (u,d) {
+    function ajax(u,d) {
         return $.ajax({
             url:u,
             type:'post',
@@ -248,43 +292,16 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
     }
 
 /*save (insert & update)*/
-    //jurnal umum  ---
-    function juSV(e){
+    function pembayaranSV(e){
         var url  = dir;
-        var data = $(e).serialize()+'&aksi=simpan&subaksi=ju';
-        // edit mode
-        if($('#ju_idformH').val()!='')
-            url += '&replid='+$('#ju_idformH').val();
-        // alert(ajaxFC(url,'post','json',data));
-        var exec = ajaxFC(url,'post','json',data);
-        alert();
-        // if(exec){
-        //     res=exec.status;
-        // }else{
-        //     notif()
-        // }            
-
-        
-        // $.ajax({
-        //     url:dir,
-        //     cache:false,
-        //     type:'post',
-        //     dataType:'json',
-        //     data:$('form').serialize()+urlx,
-        //     success:function(dt){
-        //         if(dt.status!='sukses'){
-        //             cont = 'Gagal menyimpan data';
-        //             clr  = 'red';
-        //         }else{
-        //             $.Dialog.close();
-        //             gkosongkan();
-        //             vwGrup($('#g_lokasiS').val());
-        //             cont = 'Berhasil menyimpan data';
-        //             clr  = 'green';
-        //         }notif(cont,clr);
-        //     }
-        // });
-        // return false;
+        var data = $(e).serialize()+'&aksi=simpan';
+        ajax(url,data).done(function (dt) {
+            notif(dt.status,(dt.status=='sukses'?'green':'red'));
+            if (dt.status=='sukses') {
+                $.Dialog.close();
+                viewTB('pendaftaran');
+            }
+        });
     }
 
 /*delete*/
@@ -374,9 +391,29 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
         return ret;
     }
 
-// load form (all)
-    // function loadFR(titl,cont,cgArr,inpArr,rekN){
-    function loadFR(titl,cont,inpArr,rekN,pre){
+// form pembayaran 
+    // pendaftaran
+    function pendaftaranFR (siswa) {
+        ajax(dir,'aksi=ambiledit&subaksi=pendaftaran&replid='+siswa).done(function(dt){
+            if(dt.status!=='sukses') notif('gagal menampilkan data','red');
+            else{
+                // hidden
+                $('#idsiswaH').val(dt.datax.idsiswa);
+                $('#idmodulH').val(dt.datax.idmodul);
+                $('#rekkasH').val(dt.datax.rekkas);
+                $('#rekitemH').val(dt.datax.rekitem);
+                // display
+                $('#tanggalTB').val(dt.datax.tanggal);
+                $('#nomerTB').val(dt.datax.nomer);
+                $('#rek1TB').val(dt.datax.rek1);
+                $('#rek2TB').val(dt.datax.rek2);
+                $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nCalon Siswa : '+dt.datax.siswa+' \nNo. Pendaftaran : '+dt.datax.nopendaftaran);
+                $('#nominalTB').val(dt.datax.nominal);
+            }
+        });loadModal('Pembayaran Pendaftaran',contentFR);
+    }
+
+    function loadModal(titl,cont){
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -386,20 +423,6 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
             onShow: function(){
                 $.Dialog.title(titl+' '+mnu); 
                 $.Dialog.content(cont);
-                  
-                if(inpArr!=null){ // main form : set value fields 
-                    $.each(inpArr,function (id,item) {
-                       $('#'+id).val(item);
-                    });
-                // }if(cgArr!=null){// detail form
-                // }if(!isNaN(rekN) && rekN>0){// detail form
-                }if(rekN>0){// detail form
-                    setTimeout(function(){
-                        $('#ju_rekTBL').append(rekTR(rekN));
-                        autosuggest(pre,rekN);
-                        // autosuggest(cgArr);
-                    },500);
-                }
             }
         });
     }
@@ -791,7 +814,7 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
                     });
                 }
                 if(typ=='filter'){
-                    $('#kelompokS').html(out);
+                    $('#kelompokS').html(out);  
                     // $('#kelompokS').html('<option value="">-SEMUA-</option>'+out);
                     viewTB(curTab());
                 }else{

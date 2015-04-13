@@ -25,7 +25,7 @@
     -->
     <div  data-effect="fade" class="tab-control" data-role="tab-control">
         <ul class="tabs">
-            <li onclick="switchPN('pendaftaran');" class="active"><a href="#pendaftaranTAB">Formulir Pendaftaran </a></li>
+            <li onclick="switchPN('pendaftaran');" class="active"><a href="#pendaftaranTAB">Pendaftaran </a></li>
             <li onclick="switchPN('dpp');"><a href="#dppTAB">DPP</a></li>
             <li onclick="switchPN('spp');"><a href="#sppTAB">SPP</a></li>
         </ul>
