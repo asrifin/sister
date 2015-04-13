@@ -107,12 +107,15 @@
                     <td align="center">Nama</td>
                     <td align="center">Formulir</td>
                     <td align="center">Joining Fee</td>
+                    <td align="center">Jumlah</td>
                     <td align="center">Status</td>
                     <td align="center">Tanggal Bayar</td>
                   </tr>';
             $nox = 1;
+            $totbayar = 0;
             if($n==0){
               $out.='<tr>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
@@ -125,14 +128,21 @@
                           <td>'.$r2['nama'].'</td>
                           <td align="right">Rp. '.number_format($r2['daftar']).',-</td>
                           <td align="right">Rp. '.number_format($r2['joiningf']).',-</td>
+                          <td align="right">Rp. '.number_format($r2['joiningf']+$r2['joiningf']).',-</td>
                           <td>'.$r2['status'].'</td>
                           <td align="center">'.($r['tanggal']=='-'?'-':tgl_indo5($r2['tanggal'])).'</td>
                     </tr>';
                 $nox++;
+                $totbayar+=($r2['daftar']+$r2['joiningf']);
               }
             }
-            $out.='</table>
-              </body>';
+            $out.='<tr>
+              <td colspan="4"></td>
+              <td align="right">Rp. '.number_format($totbayar).',-</td>
+              <td colspan="2"></td>
+            </tr>';
+            $out.='</table>';
+            $out.='</body>';
             echo $out;
   
         #generate html -> PDF ------------

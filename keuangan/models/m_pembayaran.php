@@ -326,6 +326,7 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
+				// print_r($_POST);exit();
 				// simpan pembayaran
 				$s 	= 'INSERT INTO '.$tb.' set modul = '.$_POST['idmodulH'].',siswa = '.$_POST['idsiswaH'];
 				$e  = mysql_query($s);
@@ -342,21 +343,27 @@
 															uraian     ="'.$_POST['uraianTB'].'",
 															rekkas     ='.$_POST['rekkasH'].',
 															rekitem    ='.$_POST['rekitemH'];
-					// print_r($s2);exit();
 					$e2  = mysql_query($s2);
 					$id2 = mysql_insert_id();
 					if(!$e2) $stat='gagal_insert_transaksi';
 					else{
 						// simpan jurnal
-						$s3 = 'INSERT INTO ke_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekkasH'].', debet ='.$nominal;
-						$s4 = 'INSERT INTO ke_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekitemH'].', kredit ='.$nominal;
+						$s3 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekkasH'].', debet ='.$nominal;
+						$s4 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekitemH'].', kredit ='.$nominal;
 						$e3 = mysql_query($s3);
 						$e4 = mysql_query($s4);
-						// $stat = ($e3 OR $e4)?'gagal_insert_jurnal':'sukses';
-						// to do : tambah / krangi saldo awal rekening
+
 						if(!$e3 OR !$e4) $stat = 'gagal_insert_jurnal';
 						else{
-							$s5 = 'UPDATE keu_saldorekening SET nominal2 =nominal2'.$opt.' '.$nominal.' WHERE replid ='.$_POST['rekkasH'];
+							// update saldo rekening
+							if($nominal!='0'){
+								$s5   = 'UPDATE keu_saldorekening SET nominal2 =nominal2 '.getOperator($_POST['rekkasH']).' '.$nominal.' WHERE rekening ='.$_POST['rekkasH'].' AND tahunbuku='.getTahunBuku('replid');
+								$s6   = 'UPDATE keu_saldorekening SET nominal2 =nominal2 '.getOperator($_POST['rekitemH']).' '.$nominal.' WHERE rekening ='.$_POST['rekitemH'].' AND tahunbuku='.getTahunBuku('replid');
+								$e5   = mysql_query($s5);
+								$e6   = mysql_query($s6);
+								// var_dump($s5);exit();
+								$stat = ($e5 OR $e6)?'gagal_update_saldorekening':'sukses';
+							}else $stat = 'sukses';
 						}
 					}
 				}$out = json_encode(array('status'=>$stat));
