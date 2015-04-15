@@ -286,6 +286,8 @@ var contentFR = '';
         });
         $("#kriteriaTB,#golonganTB").change(function(){
             getbiaya();
+            // setangsuran();
+            // hitung_angsuran();
         });
         // $("#diskon_tunai").change(function(){
         // });
@@ -759,6 +761,14 @@ var contentFR = '';
                         // alert(id);return false;
                         var opt = '';
                         $.each(dt.cicilan,function(id,item){
+                            // if(cicilan==item.replid)
+                            //     opt+='<option selected="selected" value="'+item.replid+'">'+item.cicilan+'</option>'
+                            // else{
+                            //     if (item.replid=='1') 
+                            //     opt+='<option selected="selected" value="'+item.replid+'">'+item.cicilan+'</option>'
+                            // else 
+                            //     opt+='<option value="'+item.replid+'">'+item.cicilan+'</option>'
+                            // }
                             if(cicilan==item.replid)
                                 opt+='<option selected="selected" value="'+item.replid+'">'+item.cicilan+'</option>'
                             else

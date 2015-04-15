@@ -211,16 +211,16 @@
 
 												// var_dump($siswa);exit();
 						$ayah    = $tb_ayah.' set 	nama 	  = "'.filter($_POST['ayahTB']).'",
-													tgllahir  = "'.filter($_POST['tempatlahir_ayahTB']).'",
-													tgllahir  = "'.filter($_POST['tgllahir_ayahTB']).'",
 													warga     = "'.filter($_POST['kebangsaan_ayahTB']).'",
+													tmplahir  = "'.filter($_POST['tempatlahir_ayahTB']).'",
+													tgllahir  = "'.filter($_POST['tgllahir_ayahTB']).'",
 													pekerjaan = "'.filter($_POST['pekerjaan_ayahTB']).'",
 													telpon    = "'.filter($_POST['telpayahTB']).'",
 													pinbb     = "'.filter($_POST['pinbb_ayahTB']).'",
 													email     = "'.filter($_POST['email_ayahTB']).'" ';
 
 						$ibu    = $tb_ibu.' set 	nama 	  = "'.filter($_POST['ibuTB']).'",
-													tgllahir  = "'.filter($_POST['tempatlahir_ibuTB']).'",
+													tmplahir  = "'.filter($_POST['tempatlahir_ibuTB']).'",
 													tgllahir  = "'.filter($_POST['tgllahir_ibuTB']).'",
 													warga     = "'.filter($_POST['kebangsaan_ibuTB']).'",
 													pekerjaan = "'.filter($_POST['pekerjaan_ibuTB']).'",
@@ -250,24 +250,24 @@
 							// $sqsaudara = 'INSERT INTO '.$saudara;
 						}else{ //edit
 							$tipex ='edit';
-							// $s=mysql_fetch_assoc(mysql_query('SELECT calonsiswa from psb_calonsiswa'));
-							// $calonsiswa=$s['calonsiswa'];
-							// $siswa = 'UPDATE '.$tb.' set '.$siswa.' WHERE calonsiswa='.$calonsiswa;
-							// $sqayah = 'UPDATE '.$tb_ayah.' set '.$ayah.' WHERE calonsiswa='.$calonsiswa;
-							// $sqibu = 'UPDATE '.$tb_ibu.' set '.$ibu.' WHERE calonsiswa='.$calonsiswa;
-							// $sqdar = 'UPDATE '.$tb_kontakdarurat.' set '.$dar.' WHERE calonsiswa='.$calonsiswa;
-							// $sqkel = 'UPDATE '.$tb_keluarga.' set '.$keluarga.' WHERE calonsiswa='.$calonsiswa;
-
+							$s=mysql_fetch_assoc(mysql_query('SELECT calonsiswa from psb_calonsiswa'));
+							$calonsiswa=$s['calonsiswa'];
+							$siswa  = 'UPDATE '.$tb.' set '.$siswa.' WHERE calonsiswa='.$calonsiswa;
+							$sqayah = 'UPDATE '.$tb_ayah.' set '.$ayah.' WHERE calonsiswa='.$calonsiswa;
+							$sqibu  = 'UPDATE '.$tb_ibu.' set '.$ibu.' WHERE calonsiswa='.$calonsiswa;
+							$sqdar  = 'UPDATE '.$tb_kontakdarurat.' set '.$dar.' WHERE calonsiswa='.$calonsiswa;
+							$sqkel  = 'UPDATE '.$tb_keluarga.' set '.$keluarga.' WHERE calonsiswa='.$calonsiswa;
+							$sqsaud = 'UPDATE '.$tb_saudara.' set '.$keluarga.' WHERE calonsiswa='.$calonsiswa;
 						}									
 
 						// $jumc= mysql_num_rows(mysql_query('SELECT * from psb_calonsiswa'));
-						var_dump($siswa);exit();
+						// var_dump($sqsiswa);exit();
 						$exa = mysql_query($sqsiswa);
 						$ida =  mysql_insert_id();
 						if(!$exa){
 							$out = '{"status":"gagal insert siswa"}';
 						}else{
-							$out = '{"status":"OK"}';
+							// $out = '{"status":"OK"}';
 								// $siswa.=', calonsiswa 	= '.$ida;
 							if (!isset($_POST['replid'])) { //add
 							// if ($jumc==0) { //add
@@ -277,43 +277,55 @@
 								$sqdar.=', calonsiswa 	= '.$ida;
 								$sqkel.=', calonsiswa 	= '.$ida;
 
+								$stat2=true;
 								if (isset($_POST['saudara'])) {
 									foreach ($_POST['saudara'] as $i => $v) {
-									$sqkel = 'INSERT INTO '.$tb_saudara.' set calonsiswa = '.$ida.',
+									$sqsaud = 'INSERT INTO '.$tb_saudara.' set calonsiswa = '.$ida.',
 																				 nama 	 ='.$v['nama'].', 
 																				 tgllahir 	 ='.$v['tgllahir'] ;
+										$esaud = mysql_query($sqsaud);
+										$stat = $esaud?true:false;
 									}
 								}
 
 							}
 							// else{
+								// var_dump($sqayah);exit();
 								$exayah= mysql_query($sqayah);
 								if (!$exayah) {
-									$out='{"status":"gagal ayah"}';
+									$stat='{"status":"gagal ayah"}';
 								} else {
 									$exibu= mysql_query($sqibu);
 									if (!$exibu) {
-										$out='{"status":"gagal ibu"}';
+										$stat='{"status":"gagal ibu"}';
 									} else {
 										$exdar= mysql_query($sqdar);
 										if (!$exdar) {
-											$out='{"status":"gagal kontak darurat"}';
+											$stat='{"status":"gagal kontak darurat"}';
 										} else {
 											$exkel= mysql_query($sqkel);
 											if (!$exkel) {
 												// var_dump($sqas);exit();
-												$out='{"status":"gagal keluarga"}';
+												$stat='{"status":"gagal keluarga"}';
 											} else {
-												$out='{
-														"status":"sukses"
-													  }';
+												if (!$stat2){
+													$stat = 'gagal_saudara';
+												}else{
+													$stat = 'sukses';
+												}
+
+												// $stat='{
+												// 		"status":"sukses"
+												// 	  }';
+												// }
 											} //keluarga
 										}//kon darurat
 									} //else ibu
 								}//else ayah
 							}//calon siswa
 
-						echo $out;
+						$out=json_encode(array('status' =>$stat));
+						// echo $out;
 					// break;
 
 				// 	}
@@ -354,9 +366,9 @@
 								ti.telpon as telpon_ibu,
 								ti.pinbb as pinbb_ibu,
 								ti.email as email_ibu,
-								tset.joiningf as joining,
-								tset.spp spp,
-								tset.nilai dpp,
+								pset.joiningf as joining,
+								pset.spp spp,
+								pset.nilai dpp,
 								tk.nama as namalain,
 								tk.hubungan as hubungan,
 								tk.telpon as telponlain,

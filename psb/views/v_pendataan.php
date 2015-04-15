@@ -375,7 +375,7 @@
                                <img width="150" id="previmg" src="../img/no_image.jpg" >
                              <div class="input-control file info-state" data-role="input-control" >
                                <input type="hidden" id="photoH"/>
-                               <div id="photoDV" class="input-control file" data-role="input-control">
+                               <div id="photoDV" class="input-control file size5" data-role="input-control">
                                <input onchange="PreviewImage(this);" id="photoTB" name="photoTB" type="file">
                                <button class="btn-file"></button>
                             </div>
