@@ -120,6 +120,8 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
+                <td>-</td>
+                <td>-</td>
               </tr>';
             }else{
               while ($r2=mysql_fetch_assoc($e2)) {
@@ -137,7 +139,7 @@
               }
             }
             $out.='<tr>
-              <td colspan="4"></td>
+              <td colspan="4" align="right"><b>Total : </b></td>
               <td align="right">Rp. '.number_format($totbayar).',-</td>
               <td colspan="2"></td>
             </tr>';

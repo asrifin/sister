@@ -127,10 +127,18 @@ var contentFR ='';
             $('#daftarS').val('');
             $('#joiningfS').val('');
         });
+        $('#dpp_cariBC').on('click',function(){
+            $('#dppTR').toggle('slow');
+            $('#nisS').val('');
+            $('#nilaiS').val('');
+        });
 
         //textbox search ---
         $('#nopendaftaranS,#namaS,#daftarS,#joiningfS').on('keydown',function (e){ // kode grup
             if(e.keyCode == 13) viewTB('pendaftaran');
+        });
+        $('#nisS,#namaS,#nilaiS,#kuranganS').on('keydown',function (e){ // kode grup
+            if(e.keyCode == 13) viewTB('dpp');
         });
 
         // set default this month
@@ -154,9 +162,8 @@ var contentFR ='';
             cmbproses('filter',$('#departemenS').val());
         }else if(par=='spp'){ // spp
             cmbtahunajaran('filter',$('#departemenS').val());
-            // alert('spp bos');
         }else{ // dpp (uang pangkal)
-
+            cmbangkatan('filter',$('#departemenS').val());
         }
         // alert(par);
         // var tabs = ['pembayaran','dpp','spp'];
@@ -379,24 +386,41 @@ var contentFR ='';
 
 // form pembayaran 
     // pendaftaran
-    function pendaftaranFR (siswa) {
-        ajax(dir,'aksi=ambiledit&subaksi=pendaftaran&replid='+siswa).done(function(dt){
+    function pembayaranFR (typ,sis) {
+        ajax(dir,'aksi=ambiledit&subaksi='+typ+'&replid='+sis).done(function(dt){
             if(dt.status!=='sukses') notif('gagal menampilkan data','red');
             else{
-                // hidden
-                $('#idsiswaH').val(dt.datax.idsiswa);
-                $('#idmodulH').val(dt.datax.idmodul);
-                $('#rekkasH').val(dt.datax.rekkas);
-                $('#rekitemH').val(dt.datax.rekitem);
-                // display
-                $('#tanggalTB').val(dt.datax.tanggal);
-                $('#nomerTB').val(dt.datax.nomer);
-                $('#rek1TB').val(dt.datax.rek1);
-                $('#rek2TB').val(dt.datax.rek2);
-                $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nCalon Siswa : '+dt.datax.siswa+' \nNo. Pendaftaran : '+dt.datax.nopendaftaran);
-                $('#nominalTB').val(dt.datax.nominal);
+                if(typ=='pendaftaran'){ // pendaftaran (formulir)
+                    // hidden
+                    $('#idsiswaH').val(dt.datax.idsiswa);
+                    $('#idmodulH').val(dt.datax.idmodul);
+                    $('#rekkasH').val(dt.datax.rekkas);
+                    $('#rekitemH').val(dt.datax.rekitem);
+                    // display
+                    $('#tanggalTB').val(dt.datax.tanggal);
+                    $('#nomerTB').val(dt.datax.nomer);
+                    $('#rek1TB').val(dt.datax.rek1);
+                    $('#rek2TB').val(dt.datax.rek2);
+                    $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nCalon Siswa : '+dt.datax.siswa+' \nNo. Pendaftaran : '+dt.datax.nopendaftaran);
+                    $('#nominalTB').val(dt.datax.nominal);
+                }else if(typ=='dpp'){ // dpp (uang gedung)
+                    // hidden
+                    $('#idsiswaH').val(dt.datax.idsiswa);
+                    $('#idmodulH').val(dt.datax.idmodul);
+                    $('#rekkasH').val(dt.datax.rekkas);
+                    $('#rekitemH').val(dt.datax.rekitem);
+                    // display
+                    $('#tanggalTB').val(dt.datax.tanggal);
+                    $('#nomerTB').val(dt.datax.nomer);
+                    $('#rek1TB').val(dt.datax.rek1);
+                    $('#rek2TB').val(dt.datax.rek2);
+                    $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nSiswa : '+dt.datax.siswa+' \nNIS : '+dt.datax.nis);
+                    $('#nominalTB').val(dt.datax.nominal);
+                }else{ //spp
+
+                }
             }
-        });loadModal('Pendaftaran',contentFR);
+        });loadModal(typ,contentFR);
     }
 
     // form pop up
@@ -727,10 +751,10 @@ var contentFR ='';
 //end of combo angkatan---
 
 // combo angkatan ---
-    function cmbangkatan(typ,ang){
+    function cmbangkatan(typ,dep){
         $.ajax({
             url:dir3,
-            data:'aksi=cmb'+mnu3,
+            data:'aksi=cmb'+mnu3+'&departemen='+dep,
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -739,14 +763,11 @@ var contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.angkatan, function(id,item){
-                        if(ang==item.replid)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
-                        else
-                            out+='<option value="'+item.replid+'"> '+item.nama+'</option>';
+                        out+='<option value="'+item.replid+'"> '+item.angkatan+'</option>';
                     });
                     if(typ=='filter'){
                         $('#angkatanS').html(out);
-                        cmbproses('filter',dt.angkatan[0].replid,'');
+                        viewTB('dpp');
                     }else{
                         $('#angkatanTB').html(out);
                     }

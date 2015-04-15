@@ -30,7 +30,7 @@
                 </div>
             </li>
         </ul>
-        <div class="frames">
+        <div style="background-color:white;" class="frames">
 
             <!-- pendaftaran  -->
             <div class="frame" id="pendaftaranTAB">
@@ -77,6 +77,9 @@
 
             <!-- uang gedung -->
             <div class="frame" id="dppTAB">
+                <button id="dpp_cariBC" data-hint="Pencarian" data-hint-position="top">
+                    <i class="icon-search" ></i>
+                </button>
                 <div class="input-control select span3">
                     <select data-hint="Angkatan" class="dpp_cari" name="angkatanS" id="angkatanS"></select>
                 </div>
@@ -85,16 +88,18 @@
                         <tr style="color:white;"class="info">
                             <th class="text-center">NIS </th>
                             <th class="text-center">Nama</th>
-                            <th class="text-center">Uraian</th>
-                            <th style="display:visible;"class="text-center  uraianCOL">Detil Jurnal</th>
-                            <th class="text-center">Aksi</th>
+                            <th class="text-center">Nominal</th>
+                            <th class="text-center">Kurang</th>
+                            <th class="text-center">Tanggal</th>
+                            <th class="text-center">Status</th>
                         </tr>
-                        <tr style="display:none;" id="juTR" class="info">
-                            <th class="text-left"></th>
-                            <th class="text-left"><input onkeyup="inputuang(this);" placeholder="nomor jurnal" id="ju_noS" class="ju_cari"></th>
-                            <th class="text-left"><input placeholder="uraian" id="ju_uraianS" class="ju_cari"></th>
-                            <th style="display:visible;"class="text-left uraianCOL"></th>
-                            <th class="text-left"></th>
+                        <tr style="display:none;" id="dppTR" class="info">
+                            <th class="text-center"><input placeholder="NIS" id="nisS" class="dpp_cari"></th>
+                            <th class="text-center"><input placeholder="Nama" id="namaS" class="dpp_cari"></th>
+                            <th class="text-center"><input onkeyup="inputuang(this);" placeholder="nominal" id="nilaiS" class="dpp_cari"></th>
+                            <th class="text-center"><input placeholder="kurangan" id="kuranganS" class="dpp_cari"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
                         </tr>
                     </thead>
 
