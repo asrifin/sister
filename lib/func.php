@@ -76,7 +76,15 @@
 	}
 
 /*psb*/
-	function getPeriode($id){
+	function getAngkatan($typ,$id){
+		$s = 'SELECT '.$typ.'
+			  FROM aka_angkatan
+			  WHERE replid ='.$id;
+			  // print_r($s);exit();
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r[$typ];
+	}function getPeriode($id){
 		$s = 'SELECT proses
 			  FROM psb_proses
 			  WHERE replid ='.$id;
