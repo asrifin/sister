@@ -231,7 +231,7 @@
 							$nox = $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
 								// print_r($res);exit();
-								if($res['dpp']==0){ // belum
+								if($res['terbayar']==0){ // belum
 									$clr  = 'red';
 									$icon = 'empty';
 									$hint = 'belum bayar';
@@ -508,6 +508,13 @@
 			break;
 			// delete ---------------------------------------------------------------------
 
+			case 'cmbakanbayar':
+				$out=json_encode(array(
+					'status' =>(akanBayarOpt($_POST['idsiswa'])==null?'gagal':'sukses'),
+					'datax'  =>akanBayarOpt($_POST['idsiswa'])
+				));
+			break;
+
 			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
@@ -572,17 +579,26 @@
 						// get angkatan by : siswa -> kelompok -> angkatan
 						$s1 = 'SELECT
 									p.angkatan,
+									b.nilai nominal,
 									c.nis,
 									c.replid idsiswa,
 									c.nama siswa,
-									b.nilai nominal,
-									c.jmlangsur
+									c.jmlangsur,
+									a.cicilan,
+									c.discsaudara,
+									c.disctb,
+									d.nilai disctunaipers,
+									(b.nilai * IFNULL(d.nilai,0)/100)disctunairp,
+									(c.discsaudara + c.disctb + (b.nilai * IFNULL(d.nilai,0)/100))disctotal,
+									(b.nilai -(c.discsaudara + c.disctb + (b.nilai * IFNULL(d.nilai,0)/100)))nominalnet
+
 								FROM
 									psb_calonsiswa c
 									LEFT JOIN psb_setbiaya b ON b.replid = c.setbiaya
 									LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
 									LEFT JOIN psb_proses p ON p.replid = k.proses
 									LEFT JOIN psb_angsuran a on a.replid = c.jmlangsur
+									LEFT JOIN psb_disctunai d on d.replid = c.disctunai
 								WHERE
 									c.replid ='.$_POST['replid'];
 									// print_r($s1);exit(); 
@@ -604,29 +620,54 @@
 								WHERE
 									m.angkatan = '.$r1['angkatan'].' AND 
 									k.nama = "dpp"';
-							// print_r($s2);exit();
+						// print_r($s2);exit();
 						$e2   = mysql_query($s2);
 						$r2   = mysql_fetch_assoc($e2);
+
+						// get data : pembayaran (cicilan)
+						$s3 = 'SELECT
+									SUM(cicilan) terbayar
+								FROM
+									keu_pembayaran p
+								WHERE
+									p.modul = '.$r2['idmodul'].'
+								AND p.siswa = '.$r1['idsiswa'].'
+								GROUP BY
+									p.siswa';
+						$e3 = mysql_query($s3);
+						$r3 = mysql_fetch_assoc($e3);
+
 						$stat = ($e2)?'sukses':'gagal';
 						$out  = json_encode(array(
 									'status' =>$stat,
 									'datax'  =>array(
 										//data siswa 
-										'nis'       =>$r1['nis'],
-										'idsiswa'   =>$r1['idsiswa'],
-										'siswa'     =>$r1['siswa'],
-										'jmlangsur' =>$r1['jmlangsur'],
-										//data pembayaran
-										'nomer'     =>getNoTrans('in_siswa'),
-										'tanggal'   =>tgl_indo5(date('Y-m-d')),
-										'rekkas'    =>$r2['rek1'],
-										'rekitem'   =>$r2['rek2'],
-										'rek1'      =>getRekening($r2['rek1']),
-										'rek2'      =>getRekening($r2['rek2']),
-										'rek3'      =>getRekening($r2['rek3']),
-										'modul'     =>$r2['modul'],
-										'idmodul'   =>$r2['idmodul'],
-										'nominal'   =>$r1['nominal']
+										'nis'           =>$r1['nis'],
+										'idsiswa'       =>$r1['idsiswa'],
+										'siswa'         =>$r1['siswa'],
+										
+										//info pembayaran
+										'nomer'         =>getNoTrans('in_siswa'),
+										'tanggal'       =>tgl_indo5(date('Y-m-d')),
+										'rekkas'        =>$r2['rek1'],		// id rek. KAS
+										'rekitem'       =>$r2['rek2'],		// id rek. ITEM 
+										'rek1'          =>getRekening($r2['rek1']), // rek.KAS
+										'rek2'          =>getRekening($r2['rek2']), // rek.ITEM
+										'rek3'          =>getRekening($r2['rek3']), // rek.TAMBAHAN
+										'modul'         =>$r2['modul'],
+										'idmodul'       =>$r2['idmodul'],
+										// data nominal dll (syarat)
+										'nominal'       =>'Rp. '.number_format($r1['nominal']), 	// dpp
+										'nominalnet'    =>'Rp. '.number_format($r1['nominalnet']), 	// dpp net
+										'discsubsidi'   =>'Rp. '.number_format($r1['disctb']), 		// disc subsidi (Rp.)
+										'discsaudara'   =>'Rp. '.number_format($r1['discsaudara']),	// disc saudara (Rp.)
+										'disctunaipers' =>$r1['disctunaipers'], 					// disc tunai (%)  
+										'disctunairp'   =>'Rp. '.number_format($r1['disctunairp']),	// disc tunai (Rp.) 
+										'disctotal' 	=>'Rp. '.number_format($r1['disctotal']), 	// disc total (Rp.)  
+										'jmlangsur'     =>$r1['cicilan'],							// angsuran (berapa x ) 
+										'angsuran'     	=>'Rp. '.number_format($r1['nominalnet']/$r1['cicilan']),		// angsuran (Rp. ) 
+										// data nominal (terbayar)
+										'terbayar'     	=>'Rp. '.number_format($r3['terbayar'])
 								)));					
 					break;
 				}

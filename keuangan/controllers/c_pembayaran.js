@@ -67,6 +67,11 @@ var contentFR ='';
         });
     //form content
         contentFR+= '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="pembayaranSV(this); return false;" id="'+mnu+'FR">'
+                        +'<div class="form-actions">' 
+                            +'<button class="button primary">Bayar <span class="icon-floppy"></span></button>&nbsp;'
+                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                        +'</div>'
+
                         +'<input id="ju_idformH" type="hidden">' 
                         
                         +'<input id="idsiswaH" name="idsiswaH" type="hidden">' 
@@ -74,37 +79,86 @@ var contentFR ='';
                         +'<input id="rekkasH" name="rekkasH" type="hidden">' 
                         +'<input id="rekitemH" name="rekitemH" type="hidden">' 
 
-                        +'<label><b>Nomor</b></label>'
-                        +'<div class="input-control text">'
-                            +'<input type="text" readonly name="nomerTB" id="nomerTB" >'
+                        +'<legend>Keterangan </legend>'
+                        +'<div class="balloon bottom">'
+                            +'<div class="padding20">'
+                                +'<label><b>Nomor</b></label>'
+                                +'<div class="input-control text">'
+                                    +'<input type="text" readonly name="nomerTB" id="nomerTB" >'
+                                +'</div>'
+                                
+                                +'<label>Tanggal </label>'
+                                +'<div class="input-control text">'
+                                    +'<input readonly type="text" name="tanggalTB" id="tanggalTB">'
+                                +'</div>'
+                                
+                                +'<label>Rekening Kas / Bank</label>'
+                                +'<div class="input-control text">'
+                                    +'<input readonly type="text" id="rek1TB" name="rek1TB">'
+                                +'</div>'
+
+                                +'<label ><b>Pada :</b></label>'
+                                +'<label>Rekening Perkiraan</label>'
+                                +'<div class="input-control text">'
+                                    +'<input readonly type="text" id="rek2TB" name="rek2TB">'
+                                +'</div>'
+
+                                +'<label>Uraian</label>'
+                                +'<div class="input-control textarea">'
+                                    +'<textarea readonly name="uraianTB" id="uraianTB"></textarea>'
+                                +'</div>'
+                            +'</div>'
+                        +'</div>'
+
+                        +'<legend>Rincian Biaya</legend>'
+                        +'<div class="balloon bottom">'
+                            +'<div class="padding20">'
+                                // ALL
+                                +'<label>Nominal</label>'
+                                +'<div class="input-control text">'
+                                    +'<input readonly type="text" id="nominalTB" name="nominalTB">'
+                                +'</div>'
+
+                                // DPP grup
+                                +'<div class="dppgrup" style="display:none;">'
+                                    +'<label>Total Diskon</label>'
+                                    +'<div class="input-control text">'
+                                        +'<input readonly type="text" id="disctotalTB" name="disctotalTB">'
+                                    +'</div>'
+
+                                    +'<label>Nominal Net(setelah dipotong diskon)</label>'
+                                    +'<div class="input-control text warning-state">'
+                                        +'<input readonly class="bg-orange" type="text" id="nominalnetTB" name="nominalnetTB">'
+                                    +'</div>'
+
+                                    +'<label>Angsuran </label>'
+                                    +'<div class="input-control text">'
+                                        +'<input readonly type="text" id="jmlangsurTB" name="jmlangsurTB">'
+                                    +'</div>'
+                                +'</div>'
+                                //end of untuk DPP grup
+
+                            +'</div>'
+                        +'</div>'
+
+                        +'<legend>Pembayaran</legend>'
+                        +'<div class="balloon bottom">'
+                            +'<div class="padding20">'
+                                // DPP
+                                +'<label>Sudah Dibayar </label>'
+                                +'<div class="input-control text">'
+                                    +'<input readonly type="text"  class="bg-cyan" id="terbayarTB" name="terbayarTB">'
+                                +'</div>'
+
+                                // DPP
+                                +'<label>Akan Dibayar </label>'
+                                +'<div class="input-control select">'
+                                    +'<select name="akanbayarTB" id="akanbayarTB"></select>'
+                                    // +'<input readonly type="text" class="bg-lime" id="akanbayarTB" name="akanbayarTB">'
+                                +'</div>'
+                            +'</div>'
                         +'</div>'
                         
-                        +'<label>Tanggal </label>'
-                        +'<div class="input-control text">'
-                            +'<input readonly type="text" name="tanggalTB" id="tanggalTB">'
-                        +'</div>'
-                        
-                        +'<label>Rekening Kas / Bank</label>'
-                        +'<div class="input-control text">'
-                            +'<input readonly type="text" id="rek1TB" name="rek1TB">'
-                        +'</div>'
-
-                        +'<label ><b>Pada :</b></label>'
-                        +'<label>Rekening Perkiraan</label>'
-                        +'<div class="input-control text">'
-                            +'<input readonly type="text" id="rek2TB" name="rek2TB">'
-                        +'</div>'
-
-                        +'<label>Uraian</label>'
-                        +'<div class="input-control textarea">'
-                            +'<textarea readonly name="uraianTB" id="uraianTB"></textarea>'
-                        +'</div>'
-
-                        +'<label>Nominal</label>'
-                        +'<div class="input-control text">'
-                            +'<input readonly type="text" id="nominalTB" name="nominalTB">'
-                        +'</div>'
-
                         +'<div class="form-actions">' 
                             +'<button class="button primary">Bayar <span class="icon-floppy"></span></button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -288,12 +342,12 @@ var contentFR ='';
 /*save (insert & update)*/
     function pembayaranSV(e){
         var url  = dir;
-        var data = $(e).serialize()+'&aksi=simpan&subaksi=pendaftaran';
+        var data = $(e).serialize()+'&aksi=simpan&subaksi='+curTab();
         ajax(url,data).done(function (dt) {
             notif(dt.status,(dt.status=='sukses'?'green':'red'));
             if (dt.status=='sukses') {
                 $.Dialog.close();
-                viewTB('pendaftaran');
+                viewTB(curTab());
             }
         });
     }
@@ -410,12 +464,23 @@ var contentFR ='';
                     $('#rekkasH').val(dt.datax.rekkas);
                     $('#rekitemH').val(dt.datax.rekitem);
                     // display
-                    $('#tanggalTB').val(dt.datax.tanggal);
-                    $('#nomerTB').val(dt.datax.nomer);
-                    $('#rek1TB').val(dt.datax.rek1);
-                    $('#rek2TB').val(dt.datax.rek2);
-                    $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nSiswa : '+dt.datax.siswa+' \nNIS : '+dt.datax.nis);
-                    $('#nominalTB').val(dt.datax.nominal);
+                        // info pembayaran 
+                        $('#tanggalTB').val(dt.datax.tanggal);
+                        $('#nomerTB').val(dt.datax.nomer);
+                        $('#rek1TB').val(dt.datax.rek1);
+                        $('#rek2TB').val(dt.datax.rek2);
+                        $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nSiswa : '+dt.datax.siswa+' \nNIS : '+dt.datax.nis);
+                        // detail pembayaran (nominal dll)
+                        $('#nominalTB').val(dt.datax.nominal);
+                        $('#nominalnetTB').val(dt.datax.nominalnet);
+                        $('#disctotalTB').val(dt.datax.disctotal);
+                        $('#jmlangsurTB').val(dt.datax.jmlangsur+' x '+dt.datax.angsuran);
+                        // data sudah terbayar 
+                        $('#terbayarTB').val(dt.datax.terbayar);
+                        // data akan dibayar
+                        // $('#akanbayarTB').val(dt.datax.angsuran);
+                        cmbakanbayar(dt.datax.idsiswa);
+                    $('.dppgrup').toggle('slow');
                 }else{ //spp
 
                 }
@@ -423,6 +488,11 @@ var contentFR ='';
         });loadModal(typ,contentFR);
     }
 
+    function cmbakanbayar(sis){
+        ajax(dir,'aksi=cmbakanbayar&siswa='+sis).done(function(dt){
+
+        });
+    }
     // form pop up
     function loadModal(titl,cont){
         $.Dialog({

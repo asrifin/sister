@@ -100,9 +100,62 @@
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r['kelompok'];
+	}function getSiswaBy($f,$w){
+		$s='SELECT '.$f.' FROM psb_calonsiswa WHERE replid ='.$w;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		// var_dump($s);exit();
+		return $r[$f];
 	}
-	function getBiaya($typ,$siswa){
-		$s = 'SELECT '.($typ=='pendaftaran'?'(b.daftar + b.joiningf)'.$typ:$typ).'
+	
+/*keuangan*/
+	// transact
+	/*pembayaran*/
+	function getAngsur($id){
+		$s='SELECT * FROM psb_angsuran WHERE replid='.$id;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		// return $r[];	
+	}function akanBayarOpt($siswa){
+		$angsur = getSiswaBy('jmlangsur',$siswa);
+		// $s   = 'SELECT * FROM ';
+		$ret = array();
+		for ($i=0; $i<$angsur; $i++) {
+			$ret[] = array(
+				'idAngsur'      =>$i,
+				// 'nominalAngsur' =>
+			);
+		}
+		var_dump($ret);exit();
+		return $ret;
+	}
+	function getPembayaran($typ,$siswa){ // to get : nominal yg telah terbayar
+		$s ='SELECT
+				SUM(p.cicilan) terbayar
+			FROM
+				keu_pembayaran p 
+				LEFT JOIN keu_modulpembayaran m on m.replid = p.modul
+				LEFT JOIN keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
+			WHERE
+				k.nama = "'.$typ.'"
+				AND p.siswa = '.$siswa.'
+			GROUP BY
+				p.siswa';
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		$rr = $r['terbayar']!=null?$r['terbayar']:0;
+		return $rr;
+	}function getBiaya($typ,$siswa){ // to get : nominal yg harus dibayar
+		if($typ=='pendaftaran'){ // formulir + joining fee
+			$f = '(b.daftar + b.joiningf)';
+		}elseif($typ=='dpp'){ // dpp
+			$terbayar = getPembayaran($typ,$siswa);
+			$f = '(b.nilai - '.$terbayar.')';
+		}else{ // spp
+			//code
+		}
+			
+		$s = 'SELECT '.$f.' as '.$typ.'
 			  FROM psb_setbiaya b
 			  LEFT JOIN psb_calonsiswa c on c.setbiaya = b.replid
 			  WHERE c.replid ='.$siswa;
@@ -110,12 +163,7 @@
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r[$typ];
-	}
-	
-/*keuangan*/
-	// transact
-	/*pembayaran*/
-	function getOperator($id){
+	}function getOperator($id){
 		$s = '	SELECT k.jenis 
 				FROM keu_detilrekening d
 					LEFT JOIN keu_kategorirekening k on k.replid = d.kategorirekening  
