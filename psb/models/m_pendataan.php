@@ -20,8 +20,73 @@
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
-		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
+		if(isset($_GET['upload'])){
+			$tipex    = substr($_FILES[0]['type'],6);
+			$namaAwal = $_FILES[0]['name'];
+			$namaSkrg = $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
+			$src      = $_FILES[0]['tmp_name'];
+			$destix   = '../img/upload/'.basename($namaSkrg);
+
+			if(move_uploaded_file($src, $destix))
+				$o=array('status'=>'sukses','file'=>$namaSkrg);
+			else
+				$o=array('status'=>'gagal');
+
+			$out=json_encode($o);
+		}elseif(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
+			$page       = $_GET['page']; // get the requested page
+			$limit      = $_GET['rows']; // get how many rows we want to have into the grid
+			$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
+			$sord       = $_GET['sord']; // get the direction
+			$searchTerm = $_GET['searchTerm'];
+
+			if(!$sidx) 
+				$sidx =1;
+
+				// FROM
+				// 	'.$table.'
+			$ss='SELECT *
+					FROM (SELECT * FROM aka_siswa
+						)tb
+				WHERE
+						tb.nama LIKE "%'.$searchTerm.'%"
+						OR tb.nis LIKE "%'.$searchTerm.'%"';
+			// print_r($ss);exit();
+			$result = mysql_query($ss) or die(mysql_error());
+			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
+			$count  = mysql_num_rows($result);
+
+			if( $count >0 ) {
+				$total_pages = ceil($count/$limit);
+			} else {
+				$total_pages = 0;
+			}
+			if ($page > $total_pages) $page=$total_pages;
+			$start 	= $limit*$page - $limit; // do not put $limit*($page - 1)
+			if($total_pages!=0) {
+				$ss.='ORDER BY '.$sidx.' '.$sord.' LIMIT '.$start.','.$limit;
+			}else {
+				$ss.='ORDER BY '.$sidx.' '.$sord;
+			}
+
+			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
+			$rows 	= array();
+			while($row = mysql_fetch_assoc($result)) {
+				// $kode = (isset($_GET['subaksi']) and $_GET['subaksi']=='klasifikasi')?$row['kode']:'';
+				$rows[]= array(
+					'replid' =>$row['replid'], 
+					'nis'	 =>$row['nis'],
+					'nama'   =>$row['nama'] 
+				);
+			}$response=array(
+				'page'    =>$page,
+				'total'   =>$total_pages,
+				'records' =>$count,
+				'rows'    =>$rows,
+			);$out=json_encode($response);
+		}else{
+			$out=json_encode(array('status'=>'invalid_no_post'));	
+		}	
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
@@ -245,19 +310,25 @@
 							
 							$sqibu     = 'INSERT INTO '.$ibu;
 							$sqkel     = 'INSERT INTO '.$keluarga;
-							$sqkel     = 'INSERT INTO '.$keluarga;
 							$sqdar     = 'INSERT INTO '.$kontakdarurat;
 							// $sqsaudara = 'INSERT INTO '.$saudara;
 						}else{ //edit
 							$tipex ='edit';
-							$s=mysql_fetch_assoc(mysql_query('SELECT calonsiswa from psb_calonsiswa'));
-							$calonsiswa=$s['calonsiswa'];
-							$siswa  = 'UPDATE '.$tb.' set '.$siswa.' WHERE calonsiswa='.$calonsiswa;
-							$sqayah = 'UPDATE '.$tb_ayah.' set '.$ayah.' WHERE calonsiswa='.$calonsiswa;
-							$sqibu  = 'UPDATE '.$tb_ibu.' set '.$ibu.' WHERE calonsiswa='.$calonsiswa;
-							$sqdar  = 'UPDATE '.$tb_kontakdarurat.' set '.$dar.' WHERE calonsiswa='.$calonsiswa;
-							$sqkel  = 'UPDATE '.$tb_keluarga.' set '.$keluarga.' WHERE calonsiswa='.$calonsiswa;
-							$sqsaud = 'UPDATE '.$tb_saudara.' set '.$keluarga.' WHERE calonsiswa='.$calonsiswa;
+							$s=mysql_fetch_assoc(mysql_query('SELECT replid from psb_calonsiswa'));
+							$calonsiswa=$s['replid'];
+							if(isset($_POST['photo_asal'])){ //change image
+								$img='../img/upload/'.$_POST['photo_asal'];
+								if(file_exists($img)){ //checking image is exist
+									$delimg = unlink($img);
+									$statgb  = !$delimg?false:true;
+								}
+							}
+							$sqsiswa = 'UPDATE '.$siswa.' WHERE replid='.$calonsiswa;
+							$sqayah  = 'UPDATE '.$ayah.' WHERE calonsiswa='.$calonsiswa;
+							$sqibu   = 'UPDATE '.$ibu.' WHERE calonsiswa='.$calonsiswa;
+							$sqdar   = 'UPDATE '.$kontakdarurat.' WHERE calonsiswa='.$calonsiswa;
+							$sqkel   = 'UPDATE '.$keluarga.' WHERE calonsiswa='.$calonsiswa;
+							// $sqsaud = 'UPDATE '.$tb_saudara.' set '.$keluarga.' WHERE calonsiswa='.$calonsiswa;
 						}									
 
 						// $jumc= mysql_num_rows(mysql_query('SELECT * from psb_calonsiswa'));
@@ -265,7 +336,8 @@
 						$exa = mysql_query($sqsiswa);
 						$ida =  mysql_insert_id();
 						if(!$exa){
-							$out = '{"status":"gagal insert siswa"}';
+							// $out = '{"status":"gagal insert siswa"}';
+							$stat = 'gagal_insert_siswa_'.mysql_error();
 						}else{
 							// $out = '{"status":"OK"}';
 								// $siswa.=', calonsiswa 	= '.$ida;

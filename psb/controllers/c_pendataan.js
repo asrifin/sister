@@ -22,7 +22,75 @@ var contentFR = '';
         $('#pendataanFR').toggle('slow');
         // $('#importFR').toggle('slow');
         $('#pendataanTBL').toggle('slow');
+
+        $("#nama_saudaraTB").combogrid({
+            debug:true,
+            width:'400px',
+            colModel: [{
+                    'align':'left',
+                    'columnName':'nis',
+                    'hide':true,
+                    'width':'55',
+                    // 'width':'8',
+                    'label':'NIS'
+                },{   
+                    'columnName':'nama',
+                    'width':'40',
+                    'label':'Nama'
+                }],
+            url: dir+'?aksi=autocomp',
+            select: function( event, ui ) { // event setelah data terpilih 
+                saudaraAdd(ui.item.replid,ui.item.nis,ui.item.nama);
+                // $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
+                $('#nama_saudaraTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&saudara='+saudaraArr() );
+                return false;
+            }
+        }); //End autocomplete
+
+    // hapus saudara terpilih
+        function saudaraDel(id){
+            $('#saudaraTR_'+id).fadeOut('slow',function(){
+                $('#saudaraTR_'+id).remove();
+                // saudaraExist();
+            });
+        }
+    //saudara record kosong --
+        function saudaraExist(){
+            // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
+            alert('jumlah tr: '+$('#saudaraTBL','.saudaraTR').length);return false;
+            var tr ='<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih Nama Siswa ..</td></tr>';
+            if($('#saudaraTBL').html()=='')
+                $('#saudaraTBL').html(tr);
+            else
+                $('#saudaraTBL').html('');
+        }
+    //end of saudara record kosong --  
+
+    // pilih saudara yg akan dipinjam ---
+        function saudaraAdd (id,nis,nama) {
+            var tr ='<tr val="'+id+'" class="saudaraTR" id="saudaraTR_'+id+'">'
+                        +'<td>'+nis+'</td>'
+                        +'<td>'+nama+'</td>'
+                        +'<td><button onclick="saudaraDel('+id+');"><i class="icon-remove"></button></i></td>'
+                    +'</tr>';
+            $('#saudaraTBL').append(tr); 
+            saudaraArr();
+            // $('#saudaraTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&saudara='+saudaraArr() );
+
+            // saudaraExist();
+        }
+        
+    //himpun array saudara terpilih
+        function saudaraArr(){
+            var y=[];
+            $('.saudaraTR').each(function(id,item){
+                y.push($(this).attr('val'));
+            });return y;
+        }
+    // end saudara
+
     }
+
     function switchPN2(){
         $('#importFR').toggle('slow');
         $('#pendataanTBL').toggle('slow');
@@ -247,6 +315,10 @@ var contentFR = '';
         });
         $("#tambahsdrBC").on('click',function(){
                 $('#cetak').toggle('slow');
+        });
+        $("#saudara2TB").on('click',function(){
+                $('#saudara2').toggle('slow');
+                $('#saudara').toggle('slow');
         });
         
     //search action
@@ -608,6 +680,7 @@ var contentFR = '';
                         $('#nopendaftaranTB').val(dt.nopendaftaran);
                         $('#namaTB').val(dt.siswa);
                         $('#tempatlahirTB').val(dt.tmplahir);
+                        $('#jkTB').val(dt.kelamin);
                         $('#tgllahiranakTB').val(dt.tgllahir);
                         $('#alamatsiswaTB').val(dt.alamat);
                         $('#telpsiswaTB').val(dt.telpon);
@@ -1099,13 +1172,50 @@ function notif(cont,clr) {
 
 //reset form ---
     function kosongkan(){
-        $('#idformTB').val('');
-        // $('#kelompokTB').val('');
-        // $('#tglmulaiTB').val('');
-        // $('#tglakhirTB').val('');
-        // $('#biaya_pendaftaranTB').val('');
-        // $('#kelompokTB').val('');
-        // $('#keteranganTB').val('');
+        // $('#idformTB').val('');
+        $('#uang_pangkalTB').val('');
+        $('#uang_pangkalnetTB').val('');
+        $('#angsuranTB').val('');
+        $('#sppTB').val('');
+        $('#diskon_subsidiTB').val('');
+        $('#diskon_saudaraTB').val('');
+        $('#diskon_tunaiTB').val('');
+        $('#diskon_totalTB').val('');
+        $('#joiningTB').val('');
+        $('#nopendaftaranTB').val('');
+        $('#namaTB').val('');
+        // $('#tempatlahirTB').val(dt.tmplahir);
+        $('#tgllahiranakTB').val('');
+        $('#alamatsiswaTB').val('');
+        $('#telpsiswaTB').val('');
+        $('#asalsekolahTB').val('');
+        // $('#photoH').val(dt.photo2);
+        //Orangtua
+        $('#ayahTB').val('');
+        $('#kebangsaan_ayahTB').val('');
+        $('#tempatlahir_ayahTB').val('');
+        // $('#tgllahir_ayahTB').val('');
+        $('#pekerjaan_ayahTB').val('');
+        $('#telpayahTB').val('');
+        $('#pinbb_ayahTB').val('');
+        $('#email_ayahTB').val('');
+
+        $('#ibuTB').val('');
+        $('#kebangsaan_ibuTB').val('');
+        // $('#tempatlahir_ibuTB').val(dt.temp_lahir_ibu);
+        $('#tgllahir_ibuTB').val('');
+        $('#pekerjaan_ibuTB').val('');
+        $('#telpibuTB').val('');
+        $('#pinbb_ibuTB').val('');
+        $('#email_ibuTB').val('');
+
+        $('#nama_kontakTB').val('');
+        $('#hubunganTB').val('');
+        $('#nomorTB').val('');
+
+        $('#kakekTB').val('');
+        $('#nenekTB').val('');
+
     }
 //end of reset form ---
 
