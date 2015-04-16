@@ -1,5 +1,5 @@
-<?php
-	// session_start();
+<?php	
+// session_start();
 /* common*/
 	function filter($str){
 		$str = mysql_real_escape_string(htmlentities($str));
@@ -272,6 +272,11 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['nama'];
+	}function getBuktiTrans2($id){
+		$s='SELECT * FROM keu_detjenistrans WHERE kode="'.$id.'"';
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['bukti'];
 	}function getBuktiTrans($id){
 		$s='SELECT * FROM keu_detjenistrans WHERE replid="'.$id.'"';
 		$e=mysql_query($s);
@@ -288,9 +293,7 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['detjenistrans'];
-	}
-
-	function getNoTrans($typ){
+	}function getNoTrans2($typ){
 		$s = 'SELECT LPAD(max(replid),4,0)replid from keu_transaksi';
 		$e = mysql_query($s);
 		$stat =!$e?'gagal_'.mysql_error():'sukses';
@@ -300,9 +303,19 @@
 		}else{
 			$in=1;
 		}
-
-		// var_dump(getKatModulPemb($typ));exit();
-		$kode=getBuktiTrans(getKatModulPemb($typ)).'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
+		// var_dump(getBuktiTrans2($typ));exit();
+		$kode=getBuktiTrans2($typ).'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
+		return $kode;
+	}function getNoTrans($typ){
+		$s = 'SELECT LPAD(max(replid),4,0)replid from keu_transaksi';
+		$e = mysql_query($s);
+		$stat =!$e?'gagal_'.mysql_error():'sukses';
+		if(mysql_num_rows($e)>0){
+			$r  =mysql_fetch_assoc($e);
+			$in =$r['replid']+1;
+		}else{
+			$in=1;
+		}$kode=getBuktiTrans(getKatModulPemb($typ)).'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
 		return $kode;
 	}function getRekening($id){
 		$s='SELECT concat(kode," - ",nama)rekening FROM keu_detilrekening WHERE replid='.$id;

@@ -152,7 +152,7 @@
 
 			// generate kode
 			case 'codeGen':
-				switch ($_POST['subaksi']) {
+				/*switch ($_POST['subaksi']) {
 					case'transNo':
 						switch($_POST['tipe']){
 							case 'ju':
@@ -176,9 +176,22 @@
 						}$kode=$pre.'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
 						$out=json_encode(array('status'=>$stat,'kode'=>$kode));
 					break;
-				}
+				}*/
+				$kode = getNoTrans2($_POST['subaksi']);
+				$out  = json_encode(array(
+					'status' =>($kode!=null?'sukses':'gagal'),
+					'kode'   =>$kode
+				));
 			break;
 			// generate kode
+
+			// case 'cmbakanbayar':
+			// 	$out=json_encode(array(
+			// 		'status' =>(akanBayarOpt($_POST['subaksi'],$_POST['siswa'])==null?'gagal':'sukses'),
+			// 		'datax'  =>akanBayarOpt($_POST['subaksi'],$_POST['siswa'])
+			// 	));
+			// break;
+
 
 			// head info ------------------------------------------------------------------
 			case 'headinfo':

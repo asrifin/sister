@@ -576,7 +576,8 @@
 										'idsiswa'       =>$r1['idsiswa'],
 										'siswa'         =>$r1['siswa'],
 										//data pembayaran
-										'nomer'         =>getNoTrans('in_calonsiswa'),
+										// 'nomer'         =>getNoTrans('in_calonsiswa'),
+										'nomer'         =>getNoTrans($_POST['subaksi']),
 										'tanggal'       =>tgl_indo5(date('Y-m-d')),
 										'rekkas'        =>$r2['rek1'],
 										'rekitem'       =>$r2['rek2'],

@@ -52,19 +52,43 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
 
                         //rek. perkiraan 
                         +'<legend >Rekening :' 
-                            +'<a onclick="addRekTR(\'ju_rekTBL\');return false;" href="#" class="button" >'
-                            +'<i class="icon-plus"></i></a>'
+                            // +'<a onclick="addRekTR(\'ju_rekTBL\');return false;" href="#" class="button" >'
+                            // +'<i class="icon-plus"></i></a>'
                         +'</legend>'
                         +'<table class="table hovered bordered striped">'
                             +'<thead>'
                                 +'<tr style="color:white;"class="info">'
                                     +'<th class="text-center">Rek Perkiraan</th>'
-                                    +'<th class="text-center">Debet</th>'
-                                    +'<th class="text-center">Kredit</th>'
-                                    +'<th class="text-center"></th>'
+                                    +'<th class="text-center">Tipe</th>'
+                                    +'<th class="text-center">Nominal</th>'
+                                    // +'<th class="text-center"></th>'
                                 +'</tr>'
                             +'</thead>'
                             +'<tbody id="ju_rekTBL">'
+                                //1
+                                +'<tr>'
+                                    +'<td>'
+                                        +'<input id="ju_rek1H" name="ju_rek1H[]" type="hidden" />'
+                                        +'<span class="input-control text">'
+                                            +'<input id="ju_rek1TB" name="ju_rek1TB" placeholder="rekening" type="text" />'
+                                            +'<button class="btn-clear"></button>'
+                                        +'</span>'
+                                    +'</td>'
+                                    +'<td><input disabled name="ju_jenis1TB" id="ju_jenis1TB"type="text"/></td>'
+                                    +'<td><input onfocus="inputuang(this);" onclick="inputuang(this);"  name="ju_nominal1TB" type="text"  placeholder="nominal"/></td>'
+                                +'</tr>'
+                                //2
+                                +'<tr>'
+                                    +'<td>'
+                                        +'<input id="ju_rek2H" name="ju_rek2H[]" type="hidden" />'
+                                        +'<span class="input-control text">'
+                                            +'<input id="ju_rek2TB" name="ju_rek2TB" placeholder="rekening" type="text" />'
+                                            +'<button class="btn-clear"></button>'
+                                        +'</span>'
+                                    +'</td>'
+                                    +'<td><input disabled name="ju_jenis2TB" id="ju_jenis2TB"type="text"/></td>'
+                                    +'<td><input onfocus="inputuang(this);" onclick="inputuang(this);"  name="ju_nominal2TB" type="text"  placeholder="nominal"/></td>'
+                                +'</tr>'
                             +'</tbody>'
                             +'<tfoot id="legendDet">'
                             +'</tfoot>'
@@ -158,7 +182,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         }
 
 // fungsi AJAX : asyncronous
-    function ajaxFC (u,d) {
+    function ajax(u,d) {
         return $.ajax({
             url:u,
             type:'post',
@@ -169,20 +193,15 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
 
 // generate kode transaksi form (jurnal umum/income/outcome) : syncronous
     function kodeTrans(typ){
-        var ret;
-        $.ajax({
-            url:dir,
-            type:'post',
-            async:false,
-            dataType:'json',
-            data :'aksi=codeGen&subaksi=transNo&tipe='+typ,
-            success:function(dt){
-                if(dt.status!='sukses')
-                    ret=dt.status;
-                else
-                    ret=dt.kode;
-            }
-        });return ret;
+        var url  = dir;
+        var data = 'aksi=codeGen&subaksi='+typ;
+        ajax(url,data).done(function (dt) {
+            if(dt.status!='sukses') ret=dt.status;
+            else {
+                $('#'+typ+'_nomerTB').val(dt.kode);
+                $('#'+typ+'_tanggalTB').val(getToday());
+            } 
+        });
     }
 
 /*save (insert & update)*/
@@ -268,16 +287,35 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             autosuggest();
         },500);
     }
+
+// load form (all)
+    // function loadFR(titl,cont,cgArr,inpArr,rekN){
+    // loadFR(titl,ju_contentFR);
+    function loadFR(typ,titl,cont){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: 600,
+            padding: 10,
+            onShow: function(){
+                kodeTrans(typ);
+                // alert(getToday());
+                // $('#'+typ+'_tanggalTB').val('okoko');
+                // $('#'+typ+'_tanggalTB').val(getToday());
+                $.Dialog.title(titl+' '+mnu); 
+                $.Dialog.content(cont);
+            }
+        });
+    }
+
 /* form jurnal umum (add & edit) */
     function juFR(id){
         if(id!=''){ // edit mode
             
         }else{ // add  mode
-            // var cgArr  =['ju_rek1','ju_rek2','ju_rek3','ju_rek4'];
-            // loadFR(titl,ju_contentFR,cgArr,inpArr,2);
-            var titl   ='<i class="icon-plus-2"></i> Tambah ';
-            var inpArr ={"ju_tanggalTB":getToday(),"ju_nomerTB":kodeTrans('ju')};
-            loadFR(titl,ju_contentFR,inpArr,2,'ju');
+            var titl ='<i class="icon-plus-2"></i> Tambah ';
+            loadFR('ju',titl,ju_contentFR);
         }
     }
 
@@ -312,35 +350,6 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         return ret;
     }
 
-// load form (all)
-    // function loadFR(titl,cont,cgArr,inpArr,rekN){
-    function loadFR(titl,cont,inpArr,rekN,pre){
-        $.Dialog({
-            shadow: true,
-            overlay: true,
-            draggable: true,
-            width: 500,
-            padding: 10,
-            onShow: function(){
-                $.Dialog.title(titl+' '+mnu); 
-                $.Dialog.content(cont);
-                  
-                if(inpArr!=null){ // main form : set value fields 
-                    $.each(inpArr,function (id,item) {
-                       $('#'+id).val(item);
-                    });
-                // }if(cgArr!=null){// detail form
-                // }if(!isNaN(rekN) && rekN>0){// detail form
-                }if(rekN>0){// detail form
-                    setTimeout(function(){
-                        $('#ju_rekTBL').append(rekTR(rekN));
-                        autosuggest(pre,rekN);
-                        // autosuggest(cgArr);
-                    },500);
-                }
-            }
-        });
-    }
 
 // autosuggest (all)
     // function autosuggest(id){
@@ -378,6 +387,42 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         }
         // });
     }
+
+
+            // $("#a_rekeningTB").combogrid({
+            //     debug:true,
+            //     width:'600px',
+            //     colModel: [{
+            //             // 'align':'left',
+            //             'columnName':'kode',
+            //             // 'hide':true,
+            //             'width':'15',
+            //             'label':'KODE'
+            //         },{   
+            //             'align':'left',
+            //             'columnName':'nama',
+            //             'width':'85',
+            //             'label':'NAMA'
+            //     }],
+            //     url: dir+'?aksi=autocomp',
+            //     select: function( event, ui ) {
+            //         $('#a_rekeningH').val(ui.item.replid);
+            //         $(this).val(ui.item.nama);
+                    
+            //         // validasi input (tidak sesuai data dr server)
+            //             $(this).on('keyup', function(e){
+            //                 var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+            //                 var keyCode = $.ui.keyCode;
+            //                 if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
+            //                     if($('#a_rekeningH').val()!=''){
+            //                         $('#a_rekeningH').val('');
+            //                         $('#a_rekeningTB').val('');
+            //                     }
+            //                 }
+            //             });
+            //         return false;
+            //     }
+            // });
 
 /*reset form*/
     //jurnal umm   ---

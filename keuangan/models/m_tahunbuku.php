@@ -110,7 +110,7 @@
 						$stat='sukses';
 					}else{
 						
-						$sr = 'SELECT * from keu_rekening';
+						$sr = 'SELECT * from keu_detilrekening';
 						$er = mysql_query($sr);
 						$stat2 = true;
 						if(mysql_num_rows($er)>0){ // ada rekening
