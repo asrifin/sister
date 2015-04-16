@@ -13,10 +13,6 @@
 <div id="loadarea"></div>
 <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
 
-<div class="input-control select span3">
-    <select data-hint="Departemen" class="cari" name="departemenS" id="departemenS"></select>
-</div>
-
 <!-- tab -->
     <!-- keterangan :
         - pendaftaranTAB : formulir n joining fee
@@ -25,16 +21,24 @@
     -->
     <div  data-effect="fade" class="tab-control" data-role="tab-control">
         <ul class="tabs">
-            <li onclick="switchPN('pendaftaran');" class="active"><a href="#pendaftaranTAB">Formulir Pendaftaran </a></li>
+            <li onclick="switchPN('pendaftaran');" class="active"><a href="#pendaftaranTAB">Pendaftaran </a></li>
             <li onclick="switchPN('dpp');"><a href="#dppTAB">DPP</a></li>
             <li onclick="switchPN('spp');"><a href="#sppTAB">SPP</a></li>
+            <li class="place-right">
+                <div class="input-control select">
+                    <select data-hint="Departemen" class="cari" name="departemenS" id="departemenS"></select>
+                </div>
+            </li>
         </ul>
-        <div class="frames">
+        <div style="background-color:white;" class="frames">
 
             <!-- pendaftaran  -->
-            <div class="frame" id="pendaftaranTAB">    
-                <button id="juBC" data-hint="Pencarian" data-hint-position="top">
+            <div class="frame" id="pendaftaranTAB">
+                <button id="pendaftaran_cariBC" data-hint="Pencarian" data-hint-position="top">
                     <i class="icon-search" ></i>
+                </button>
+                <button id="pendaftaran_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <i class="icon-printer" ></i>
                 </button>
                 <div class="input-control select span3">
                     <select data-hint="Periode Pendaftaran" name="prosesS" id="prosesS"></select>
@@ -54,10 +58,10 @@
                             <th class="text-center">Status</th>
                         </tr>
                         <tr style="display:none;" id="pendaftaranTR" class="info">
-                            <th class="text-left"><input placeholder="nopendaftaranS" id="nopendaftaranS" class="pendaftaran_cari"></th>
-                            <th class="text-left"><input placeholder="namaS" id="namaS" class="pendaftaran_cari"></th>
-                            <th class="text-leftx"><input placeholder="daftarS" id="daftarS" class="pendaftaran_cari"></th>
-                            <th class="text-leftx"><input placeholder="joiningfS" id="joiningfS" class="pendaftaran_cari"></th>
+                            <th class="text-left"><input placeholder="nomor pendaftaran" id="nopendaftaranS" class="pendaftaran_cari"></th>
+                            <th class="text-left"><input placeholder="nama siswa" id="namaS" class="pendaftaran_cari"></th>
+                            <th class="text-leftx"><input placeholder="formulir" id="daftarS" class="pendaftaran_cari"></th>
+                            <th class="text-leftx"><input placeholder="joining fee " id="joiningfS" class="pendaftaran_cari"></th>
                             <th class="text-leftx"></th>
                             <th class="text-left"></th>
                         </tr>
@@ -71,27 +75,37 @@
             </div>
             <!-- end of 1st content -->
 
+            <!-- uang gedung -->
             <div class="frame" id="dppTAB">
-                Tampilkan Akun : 
+                <button id="dpp_cariBC" data-hint="Pencarian" data-hint-position="top">
+                    <i class="icon-search" ></i>
+                </button>
+                <button id="dpp_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <i class="icon-printer" ></i>
+                </button>
                 <div class="input-control select span3">
-                    <select id="bbS"></select>
+                    <select data-hint="Angkatan" class="dpp_cari" name="angkatanS" id="angkatanS"></select>
                 </div>
                 <table class="table hovered bordered striped">
                     <thead>
                         <tr style="color:white;"class="info">
-                            <th class="text-center">Tanggal </th>
-                            <th class="text-center">No. Jurnal/Jenis Bukti/No.Bukti</th>
-                            <th class="text-center">Uraian</th>
-                            <th style="display:visible;"class="text-center  uraianCOL">Detil Jurnal</th>
-                            <th class="text-center">Aksi</th>
+                            <th class="text-center">NIS </th>
+                            <th class="text-center">Nama</th>
+                            <th class="text-center">Nominal</th>
+                            <th class="text-center">Kurang</th>
+                            <th class="text-center">Tanggal</th>
+                            <th class="text-center">Status</th>
                         </tr>
-                        <!-- <tr style="display:none;" id="juTR" class="info">
-                            <th class="text-left"></th>
-                            <th class="text-left"><input onkeyup="inputuang(this);" placeholder="nomor jurnal" id="ju_noS" class="ju_cari"></th>
-                            <th class="text-left"><input placeholder="uraian" id="ju_uraianS" class="ju_cari"></th>
-                            <th style="display:visible;"class="text-left uraianCOL"></th>
-                            <th class="text-left"></th>
-                        </tr> -->
+                        <tr style="display:none;" id="dppTR" class="info">
+                            <th class="text-center"><input placeholder="NIS" id="nisS" class="dpp_cari"></th>
+                            <th class="text-center"><input placeholder="Nama" id="namaS" class="dpp_cari"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <!-- <th class="text-center"><input onkeyup="inputuang(this);" placeholder="nominal" id="nilaiS" class="dpp_cari"></th> -->
+                            <!-- <th class="text-center"><input placeholder="kurangan" id="kuranganS" class="dpp_cari"></th> -->
+                        </tr>
                     </thead>
 
                     <tbody id="dpp_tbody">
@@ -102,6 +116,12 @@
             </div>
 
             <div class="frame" id="sppTAB">
+                <button id="spp_cariBC" data-hint="Pencarian" data-hint-position="top">
+                    <i class="icon-search" ></i>
+                </button>
+                <button id="spp_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <i class="icon-printer" ></i>
+                </button>
                 <div class="input-control select span3">
                     <select data-hint="Tahun Ajaran" class="spp_cari" name="tahunajaranS" id="tahunajaranS"></select>
                 </div>

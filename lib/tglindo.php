@@ -18,14 +18,13 @@
 			$tanggal 	= substr($tgl,3,2);
 			$tahun 		= substr($tgl,6,4);
 			return $tahun.'-'.$bulan.'-'.$tanggal;		 
-	}function tgl_indo4($tgl){ //2012-01-29 
-			$tahun 		= substr($tgl,0,4);
+	}function tgl_indo4($tgl){ //29 sep 09
+			$tahun 		= substr($tgl,2,2);
 			$bulan		= substr($tgl,5,2);
 			$tanggal 	= substr($tgl,8,2);
 			return $bulan.'/'.$tanggal.'/'.$tahun;		 
-	}function tgl_indo5($tgl){ //2012-01-29 
+	}function tgl_indo5($tgl){ //29 sep 2009 
 			$tahun 		= substr($tgl,0,4);
-			$tahun 		= substr($tgl,2,2);
 			$bulan 		= getBulan(substr($tgl,5,2));
 			$bulan		= substr($bulan,0,3);
 			$tanggal 	= substr($tgl,8,2);

@@ -5,6 +5,7 @@ var mnu3      = 'proses';
 var mnu4      = 'kriteriaCalonSiswa';
 var mnu5      = 'golonganCalonSiswa';
 var mnu6      = 'setAngsuran'; 
+var mnu7      = 'setDiskon';
 var mnu_kel   = 'kelompok';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
@@ -13,6 +14,7 @@ var dir_kel   = 'models/m_'+mnu_kel+'.php';
 var dir4      = 'models/m_'+mnu4+'.php';
 var dir5      = 'models/m_'+mnu5+'.php';
 var dir6      = 'models/m_'+mnu6+'.php';
+var dir7      = 'models/m_'+mnu7+'.php';
 var contentFR = '';
 
 //epiii : switch panel (form<=>table)
@@ -20,7 +22,75 @@ var contentFR = '';
         $('#pendataanFR').toggle('slow');
         // $('#importFR').toggle('slow');
         $('#pendataanTBL').toggle('slow');
+
+        $("#nama_saudaraTB").combogrid({
+            debug:true,
+            width:'400px',
+            colModel: [{
+                    'align':'left',
+                    'columnName':'nis',
+                    'hide':true,
+                    'width':'55',
+                    // 'width':'8',
+                    'label':'NIS'
+                },{   
+                    'columnName':'nama',
+                    'width':'40',
+                    'label':'Nama'
+                }],
+            url: dir+'?aksi=autocomp',
+            select: function( event, ui ) { // event setelah data terpilih 
+                saudaraAdd(ui.item.replid,ui.item.nis,ui.item.nama);
+                // $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
+                $('#nama_saudaraTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&saudara='+saudaraArr() );
+                return false;
+            }
+        }); //End autocomplete
+
+    // hapus saudara terpilih
+        function saudaraDel(id){
+            $('#saudaraTR_'+id).fadeOut('slow',function(){
+                $('#saudaraTR_'+id).remove();
+                // saudaraExist();
+            });
+        }
+    //saudara record kosong --
+        function saudaraExist(){
+            // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
+            alert('jumlah tr: '+$('#saudaraTBL','.saudaraTR').length);return false;
+            var tr ='<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih Nama Siswa ..</td></tr>';
+            if($('#saudaraTBL').html()=='')
+                $('#saudaraTBL').html(tr);
+            else
+                $('#saudaraTBL').html('');
+        }
+    //end of saudara record kosong --  
+
+    // pilih saudara yg akan dipinjam ---
+        function saudaraAdd (id,nis,nama) {
+            var tr ='<tr val="'+id+'" class="saudaraTR" id="saudaraTR_'+id+'">'
+                        +'<td>'+nis+'</td>'
+                        +'<td>'+nama+'</td>'
+                        +'<td><button onclick="saudaraDel('+id+');"><i class="icon-remove"></button></i></td>'
+                    +'</tr>';
+            $('#saudaraTBL').append(tr); 
+            saudaraArr();
+            // $('#saudaraTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&saudara='+saudaraArr() );
+
+            // saudaraExist();
+        }
+        
+    //himpun array saudara terpilih
+        function saudaraArr(){
+            var y=[];
+            $('.saudaraTR').each(function(id,item){
+                y.push($(this).attr('val'));
+            });return y;
+        }
+    // end saudara
+
     }
+
     function switchPN2(){
         $('#importFR').toggle('slow');
         $('#pendataanTBL').toggle('slow');
@@ -237,11 +307,18 @@ var contentFR = '';
             cmbgolongan('');
             cmbagama('');
             cmbangsuran('');
-            // getuang('');
-            // inputuang('');
+            cmbdiskon('');
+            // kodeTrans($('#nopendaftaranTB').val());
         // $('#').on('click',switchPN);
     });$("#importBC").on('click',function(){
             switchPN2();             
+        });
+        $("#tambahsdrBC").on('click',function(){
+                $('#cetak').toggle('slow');
+        });
+        $("#saudara2TB").on('click',function(){
+                $('#saudara2').toggle('slow');
+                $('#saudara').toggle('slow');
         });
         
     //search action
@@ -276,13 +353,19 @@ var contentFR = '';
         // // $("#diskon_subsidiTB").keydown(function(){
              hitung_diskon();
         }); $("#diskon_tunai").change(function(){
+            setdiskon();
             hitung_diskon();
         });
         $("#kriteriaTB,#golonganTB").change(function(){
             getbiaya();
+            // setangsuran();
+            // hitung_angsuran();
         });
-        $("#diskon_tunai").change(function(){
-            setdiskon();
+        // $("#diskon_tunai").change(function(){
+        // });
+        $("#angsuranTB").change(function(){
+            setangsuran();
+            hitung_angsuran();
         });
 
     }); 
@@ -415,7 +498,7 @@ var contentFR = '';
                     // url: dir+'?aksi=simpan&subaksi=siswa',
                     url: dir,
                     type:'POST',
-                    data:formData+'&aksi=simpan&subaksi=siswa',
+                    data:formData+'&aksi=simpan',
                     // data:'aksi=simpan&subaksi=siswa'+formData,
                     // data:'aksi=simpan&subaksi=siswa'+formData+$('#siswa_form').serialize(),
                     cache:false,
@@ -597,10 +680,19 @@ var contentFR = '';
                         $('#nopendaftaranTB').val(dt.nopendaftaran);
                         $('#namaTB').val(dt.siswa);
                         $('#tempatlahirTB').val(dt.tmplahir);
+                        $('#jkTB').val(dt.kelamin);
                         $('#tgllahiranakTB').val(dt.tgllahir);
                         $('#alamatsiswaTB').val(dt.alamat);
                         $('#telpsiswaTB').val(dt.telpon);
                         $('#asalsekolahTB').val(dt.sekolahasal);
+                        var img;
+                        if(dt.photo2!='' && dt.photo2!=null){//ada gambar
+                            img='../img/upload/'+dt.photo2;
+                        }else{
+                            img='../img/no_image.jpg';
+                        }
+                        $('#previmg').attr('src',img);
+                        $('#photoH').val(dt.photo2);
                         //Orangtua
                         $('#ayahTB').val(dt.nama_ayah);
                         $('#kebangsaan_ayahTB').val(dt.kebangsaan_ayah);
@@ -633,6 +725,7 @@ var contentFR = '';
                         cmbgolongan(dt.golongan);
                         cmbagama(dt.agama);
                         cmbangsuran(dt.jmlangsur);
+                        cmbdiskon(dt.nilai);
                     }
                 });
             }else{ 
@@ -741,6 +834,14 @@ var contentFR = '';
                         // alert(id);return false;
                         var opt = '';
                         $.each(dt.cicilan,function(id,item){
+                            // if(cicilan==item.replid)
+                            //     opt+='<option selected="selected" value="'+item.replid+'">'+item.cicilan+'</option>'
+                            // else{
+                            //     if (item.replid=='1') 
+                            //     opt+='<option selected="selected" value="'+item.replid+'">'+item.cicilan+'</option>'
+                            // else 
+                            //     opt+='<option value="'+item.replid+'">'+item.cicilan+'</option>'
+                            // }
                             if(cicilan==item.replid)
                                 opt+='<option selected="selected" value="'+item.replid+'">'+item.cicilan+'</option>'
                             else
@@ -751,10 +852,31 @@ var contentFR = '';
             });
         }
 
-        function hitung(){
-            var angsuran      = $("#angsuranTB").val();
-            var angsuranbulan = $("#angsuranbulanTB").val();
-        }
+        function cmbdiskon (nilai) {
+            // alert(1);return false;
+            $.ajax({
+                url:dir7,   
+                type:'post',
+                dataType:'json',
+                data:'aksi=cmb'+mnu7,
+                success:function(dt){
+                    var opt='';
+                    if (dt.status!='sukses') {
+                        notif(dt.status,'red');
+                        opt+='<option value="">'+dt.status+'</option>'
+                    }else{
+                        // alert(id);return false;
+                        var opt = '';
+                        $.each(dt.nilai,function(id,item){
+                            if(nilai==item.replid)
+                                opt+='<option selected="selected" value="'+item.replid+'">'+item.nilai+'</option>'
+                            else
+                                opt+='<option value="'+item.replid+'">'+item.nilai+'</option>'
+                        });$('#diskon_tunai').html('<option value="">Pilih Diskon..</option>'+opt);
+                    }
+                },
+            });
+        }        
 
         function getbiaya(){
                 $.ajax({
@@ -781,26 +903,54 @@ var contentFR = '';
         }
         function setdiskon(){
             getdiskon().done(function(dt){
-                alert(dt);
+                // alert(dt);
                 }
             );
+        }
+        function getangsuran(){
+                return  $.ajax({
+                    url : dir,
+                    type: 'post',
+                    data:'aksi=getangsuran&replid='+$('#angsuranTB').val(),
+                    dataType:'json',
+                });            
+        }        
+         function setangsuran(){
+            getangsuran().done(function(dt){
+                // alert(dt);
+                }
+            );
+        }       
+        function hitung_angsuran(){
+            // var pangkal       = $("#uang_pangkalTB").val();
+            var pangkalnet    = $("#uang_pangkalnetTB").val();
+            var angsuran  = parseInt($("#angsuranTB").val());
+            var hasil_angsuran = parseInt(pangkalnet)/parseInt(angsuran);
+            $("#angsuranbulanTB").val(parseInt(hasil_angsuran));
+            
         }
         function hitung_diskon(){
             var pangkal       = $("#uang_pangkalTB").val();
             var pangkalnet    = $("#uang_pangkalnetTB").val();
             var disc_subsidi  = parseInt($("#diskon_subsidiTB").val());
             var disc_saudara  = parseInt($("#diskon_saudaraTB").val());
+            var diskon_total  = parseInt($("#diskon_totalTB").val());
 
-            var persen    = parseInt($("#disc_tunai").val());
-            var nilai    = parseInt($("#disc_tunaiTB").val());
-            var total_diskon_tunai = parseInt(persen)/100*parseInt(nilai);
+            var persen    = parseInt($("#diskon_tunai").val());
+            var tunai    = parseInt($("#diskon_tunaiTB").val());
+            var total_diskon_tunai = (parseInt(persen)/100)*parseInt(pangkal);
+            $("#diskon_tunaiTB").val(total_diskon_tunai);
 
-            // if(disc_subsidi>0 && disc_saudara>0 && disc_tunaiTB>0){
-            // alert(disc_tunaiTB); 
-            // return false;
-                var total_diskon = disc_subsidi+disc_saudara+total_diskon_tunai;
-                // var total_diskon = disc_tunaiTB;
+                var total_diskon = parseInt(disc_subsidi)+parseInt(disc_saudara)+parseInt(total_diskon_tunai);
+                //Hitung Total Diskon
                 $("#diskon_totalTB").val(total_diskon);
+            // alert(diskon_tunaiTB); 
+            // return false;
+                var total_dpp    = parseInt(pangkalnet)-parseInt(diskon_total);
+                //Hitung Total DPP
+                $("#uang_pangkalnetTB").val(total_dpp);
+
+
             // }
         }
 
@@ -989,6 +1139,22 @@ var contentFR = '';
     // }
 // end of get uang --------------------------
 
+   function kodeTrans(typ){
+        var ret;
+        $.ajax({
+            url:dir,
+            type:'post',
+            async:false,
+            dataType:'json',
+            data :'aksi=codeGen&subaksi=transNo&tipe='+typ,
+            success:function(dt){
+                if(dt.status!='sukses')
+                    ret=dt.status;
+                else
+                    ret=dt.kode;
+            }
+        });return ret;
+    }
     
 // notifikasi
 function notif(cont,clr) {
@@ -1006,13 +1172,50 @@ function notif(cont,clr) {
 
 //reset form ---
     function kosongkan(){
-        $('#idformTB').val('');
-        // $('#kelompokTB').val('');
-        // $('#tglmulaiTB').val('');
-        // $('#tglakhirTB').val('');
-        // $('#biaya_pendaftaranTB').val('');
-        // $('#kelompokTB').val('');
-        // $('#keteranganTB').val('');
+        // $('#idformTB').val('');
+        $('#uang_pangkalTB').val('');
+        $('#uang_pangkalnetTB').val('');
+        $('#angsuranTB').val('');
+        $('#sppTB').val('');
+        $('#diskon_subsidiTB').val('');
+        $('#diskon_saudaraTB').val('');
+        $('#diskon_tunaiTB').val('');
+        $('#diskon_totalTB').val('');
+        $('#joiningTB').val('');
+        $('#nopendaftaranTB').val('');
+        $('#namaTB').val('');
+        // $('#tempatlahirTB').val(dt.tmplahir);
+        $('#tgllahiranakTB').val('');
+        $('#alamatsiswaTB').val('');
+        $('#telpsiswaTB').val('');
+        $('#asalsekolahTB').val('');
+        // $('#photoH').val(dt.photo2);
+        //Orangtua
+        $('#ayahTB').val('');
+        $('#kebangsaan_ayahTB').val('');
+        $('#tempatlahir_ayahTB').val('');
+        // $('#tgllahir_ayahTB').val('');
+        $('#pekerjaan_ayahTB').val('');
+        $('#telpayahTB').val('');
+        $('#pinbb_ayahTB').val('');
+        $('#email_ayahTB').val('');
+
+        $('#ibuTB').val('');
+        $('#kebangsaan_ibuTB').val('');
+        // $('#tempatlahir_ibuTB').val(dt.temp_lahir_ibu);
+        $('#tgllahir_ibuTB').val('');
+        $('#pekerjaan_ibuTB').val('');
+        $('#telpibuTB').val('');
+        $('#pinbb_ibuTB').val('');
+        $('#email_ibuTB').val('');
+
+        $('#nama_kontakTB').val('');
+        $('#hubunganTB').val('');
+        $('#nomorTB').val('');
+
+        $('#kakekTB').val('');
+        $('#nenekTB').val('');
+
     }
 //end of reset form ---
 

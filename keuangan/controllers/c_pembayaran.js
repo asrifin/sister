@@ -18,7 +18,7 @@ var dir7 ='../akademik/models/m_'+mnu7+'.php';
 var dir8 ='../akademik/models/m_'+mnu8+'.php';
 var dir9 ='../akademik/models/m_'+mnu9+'.php';
 
-var pembayaran_contentFR = k_contentFR = b_contentFR ='';
+var contentFR ='';
 // main function load first 
     $(document).ready(function(){
         cmbdepartemen('filter','');
@@ -26,7 +26,8 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
 
         // event  filter : departemen 
         $('#departemenS').on('change',function(){
-            switchPN();
+            // alert(curTab());
+            switchPN(curTab());
         });
         // event filter : pendaftaran
         $('#prosesS').on('change',function(){
@@ -41,18 +42,18 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
             viewTB('dpp');
         });        
         // event filter : spp
-        $('#tahunajaranS').on('change',function(){
-            cmbtingkat('filter',$(this).val());
-        });
-        $('#tingkatS').on('change',function(){
-            cmbsubtingkat('filter',$(this).val());
-        });        
-        $('#subtingkatS').on('change',function(){
-            cmbkelas('filter',$(this).val());
-        });
-        $('#kelasS').on('change',function(){
-            viewTB(curTab());
-        });
+        // $('#tahunajaranS').on('change',function(){
+        //     cmbtingkat('filter',$(this).val());
+        // });
+        // $('#tingkatS').on('change',function(){
+        //     cmbsubtingkat('filter',$(this).val());
+        // });        
+        // $('#subtingkatS').on('change',function(){
+        //     cmbkelas('filter',$(this).val());
+        // });
+        // $('#kelasS').on('change',function(){
+        //     viewTB(curTab());
+        // });
         // event : button click
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
@@ -65,60 +66,101 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
             $('#tgl2TB').val(getLastDate());
         });
     //form content
-        pembayaran_contentFR += '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="juSV(this); return false;" id="'+mnu+'FR">'
-                        +'<input id="ju_idformH" type="hidden">' 
-
-                        +'<label>No. Jurnal</label>'
-                        +'<div class="input-control size4 text">'
-                            +'<input readonly name="ju_nomerTB" id="ju_nomerTB" >'
-                        +'</div>'
-                        
-                        +'<label>No. Bukti </label>'
-                        +'<div class="input-control size4 text">'
-                            +'<input placeholder="no bukti" name="ju_nobuktiTB" id="ju_nobuktiTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        
-                        +'<label>Tanggal</label>'
-                        +'<div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">'
-                            +'<input required type="text" id="ju_tanggalTB" name="ju_tanggalTB">'
-                            +'<button class="btn-date"></button>'
-                        +'</div>'
-
-                        +'<div input-control checkbox" >'
-                            +'<label>'
-                                // +'<input onclick="$(\'#uraianDV\').toggle();" type="checkbox" />'
-                                +'<span class="check"></span>'
-                                +' Uraian' 
-                            +'</label>'
-                        +'</div>'
-                        // +'<label>Uraian</label>'
-                        +'<div xstyle="display:none;" id="uraianDV" class="input-control textarea">'
-                            +'<textarea required placeholder="uraian" name="ju_uraianTB" id="ju_uraianTB"></textarea>'
-                        +'</div>'
-
-                        //rek. perkiraan 
-                        +'<legend >Rekening :' 
-                            +'<a onclick="addRekTR(\'ju_rekTBL\');return false;" href="#" class="button" >'
-                            +'<i class="icon-plus"></i></a>'
-                        +'</legend>'
-                        +'<table class="table hovered bordered striped">'
-                            +'<thead>'
-                                +'<tr style="color:white;"class="info">'
-                                    +'<th class="text-center">Rek Perkiraan</th>'
-                                    +'<th class="text-center">Debet</th>'
-                                    +'<th class="text-center">Kredit</th>'
-                                    +'<th class="text-center"></th>'
-                                +'</tr>'
-                            +'</thead>'
-                            +'<tbody id="ju_rekTBL">'
-                            +'</tbody>'
-                            +'<tfoot id="legendDet">'
-                            +'</tfoot>'
-                        +'</table>'
-
+        contentFR+= '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="pembayaranSV(this); return false;" id="'+mnu+'FR">'
                         +'<div class="form-actions">' 
-                            +'<button class="button primary">simpan</button>&nbsp;'
+                            +'<button class="button primary simpanBC">Bayar <span class="icon-floppy"></span></button>&nbsp;'
+                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                        +'</div>'
+
+                        +'<input id="ju_idformH" type="hidden">' 
+                        
+                        +'<input id="idsiswaH" name="idsiswaH" type="hidden">' 
+                        +'<input id="idmodulH" name="idmodulH" type="hidden">' 
+                        +'<input id="rekkasH" name="rekkasH" type="hidden">' 
+                        +'<input id="rekitemH" name="rekitemH" type="hidden">' 
+
+                        +'<legend>Keterangan </legend>'
+                        +'<div class="balloon bottom">'
+                            +'<div class="padding20">'
+                                +'<label><b>Nomor</b></label>'
+                                +'<div class="input-control text">'
+                                    +'<input disatype="text" disabled name="nomerTB" id="nomerTB" >'
+                                +'</div>'
+                                
+                                +'<label>Tanggal </label>'
+                                +'<div class="input-control text">'
+                                    +'<input disabled type="text" name="tanggalTB" id="tanggalTB">'
+                                +'</div>'
+                                
+                                +'<label>Rekening Kas / Bank</label>'
+                                +'<div class="input-control text">'
+                                    +'<input disabled type="text" id="rek1TB" name="rek1TB">'
+                                +'</div>'
+
+                                +'<label ><b>Pada :</b></label>'
+                                +'<label>Rekening Perkiraan</label>'
+                                +'<div class="input-control text">'
+                                    +'<input disabled type="text" id="rek2TB" name="rek2TB">'
+                                +'</div>'
+
+                                +'<label>Uraian</label>'
+                                +'<div class="input-control textarea">'
+                                    +'<textarea readonly name="uraianTB" id="uraianTB"></textarea>'
+                                +'</div>'
+                            +'</div>'
+                        +'</div>'
+
+                        +'<legend>Rincian Biaya</legend>'
+                        +'<div class="balloon bottom">'
+                            +'<div class="padding20">'
+                                // ALL
+                                +'<label>Nominal</label>'
+                                +'<div class="input-control text">'
+                                    +'<input disabled type="text" id="nominalTB" name="nominalTB">'
+                                +'</div>'
+
+                                // DPP grup
+                                +'<div class="dppgrup" style="display:none;">'
+                                    +'<label>Total Diskon</label>'
+                                    +'<div class="input-control text">'
+                                        +'<input disabled type="text" id="disctotalTB" name="disctotalTB">'
+                                    +'</div>'
+
+                                    +'<label>Nominal Net(setelah dipotong diskon)</label>'
+                                    +'<div class="input-control text warning-state">'
+                                        +'<input disabled class="bg-orange" type="text" id="nominalnetTB" name="nominalnetTB">'
+                                    +'</div>'
+
+                                    +'<label>Angsuran </label>'
+                                    +'<div class="input-control text">'
+                                        +'<input disabled type="text" id="jmlangsurTB" name="jmlangsurTB">'
+                                    +'</div>'
+                                +'</div>'
+                                //end of untuk DPP grup
+
+                            +'</div>'
+                        +'</div>'
+
+                        +'<legend style="display:none;">Pembayaran</legend>'
+                        +'<div class="balloon bottom dppgrup" style="display:none;">'
+                            +'<div class="padding20">'
+                                // DPP
+                                +'<label>Sudah Dibayar </label>'
+                                +'<div class="input-control text">'
+                                    +'<input disabled type="text"  class="bg-cyan" id="terbayarTB" name="terbayarTB">'
+                                +'</div>'
+
+                                // DPP
+                                +'<label>Akan Dibayar </label>'
+                                +'<div class="input-control select">'
+                                    +'<select class="bg-lime" name="akanbayarTB" id="akanbayarTB"></select>'
+                                    // +'<input readonly type="text" class="bg-lime" id="akanbayarTB" name="akanbayarTB">'
+                                +'</div>'
+                            +'</div>'
+                        +'</div>'
+                        
+                        +'<div class="form-actions">' 
+                            +'<button class="button primary simpanBC">Bayar <span class="icon-floppy"></span></button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
@@ -129,12 +171,31 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
             juFR('');
         });
         //print ---
-        $('#ju_cetakBC').on('click',function(){
-            printPDF('grup');
+        $('#pendaftaran_cetakBC').on('click',function(){
+            printPDF('pendaftaran');
         });
-        //search ---
-        $('#ju_noS,#ju_uraianS').on('keydown',function (e){ // kode grup
-            if(e.keyCode == 13) juVW();
+        $('#dpp_cetakBC').on('click',function(){
+            printPDF('dpp');
+        });
+        //toggle search --- 
+        $('#pendaftaran_cariBC').on('click',function(){
+            $('#pendaftaranTR').toggle('slow');
+            $('#nopendaftaranS').val('');
+            $('#daftarS').val('');
+            $('#joiningfS').val('');
+        });
+        $('#dpp_cariBC').on('click',function(){
+            $('#dppTR').toggle('slow');
+            $('#nisS').val('');
+            $('#nilaiS').val('');
+        });
+
+        //textbox search ---
+        $('#nopendaftaranS,#namaS,#daftarS,#joiningfS').on('keydown',function (e){ // kode grup
+            if(e.keyCode == 13) viewTB('pendaftaran');
+        });
+        $('#nisS,#namaS,#nilaiS,#kuranganS').on('keydown',function (e){ // kode grup
+            if(e.keyCode == 13) viewTB('dpp');
         });
 
         // set default this month
@@ -154,19 +215,17 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
 // end of main function ---------
     
     function switchPN (par) {
-        if(par==''){ // default : pendaftaran
+        if(par=='' || par=='pendaftaran'){ // default : pendaftaran
             cmbproses('filter',$('#departemenS').val());
         }else if(par=='spp'){ // spp
             cmbtahunajaran('filter',$('#departemenS').val());
-            // alert('spp bos');
         }else{ // dpp (uang pangkal)
-
+            cmbangkatan('filter',$('#departemenS').val());
         }
         // alert(par);
         // var tabs = ['pembayaran','dpp','spp'];
         // alert(par);
         // alert(curTab());
-        
     }
 
     function curTab(){
@@ -217,10 +276,46 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
     }
 //end of paging ---
 
-/*view*/
+// view table ---
+    function viewTB(subaksi){
+        var aksi ='aksi=tampil';
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
+        }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
+        $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi+cari,
+            beforeSend:function(){
+                $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                setTimeout(function(){
+                    $(el2).html(dt).fadeIn();
+                },1000);
+            }
+        });
+    }
+// end of view table
 
 // fungsi AJAX : asyncronous
-    function ajaxFC (u,d) {
+    function ajax(u,d) {
         return $.ajax({
             url:u,
             type:'post',
@@ -248,43 +343,16 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
     }
 
 /*save (insert & update)*/
-    //jurnal umum  ---
-    function juSV(e){
+    function pembayaranSV(e){
         var url  = dir;
-        var data = $(e).serialize()+'&aksi=simpan&subaksi=ju';
-        // edit mode
-        if($('#ju_idformH').val()!='')
-            url += '&replid='+$('#ju_idformH').val();
-        // alert(ajaxFC(url,'post','json',data));
-        var exec = ajaxFC(url,'post','json',data);
-        alert();
-        // if(exec){
-        //     res=exec.status;
-        // }else{
-        //     notif()
-        // }            
-
-        
-        // $.ajax({
-        //     url:dir,
-        //     cache:false,
-        //     type:'post',
-        //     dataType:'json',
-        //     data:$('form').serialize()+urlx,
-        //     success:function(dt){
-        //         if(dt.status!='sukses'){
-        //             cont = 'Gagal menyimpan data';
-        //             clr  = 'red';
-        //         }else{
-        //             $.Dialog.close();
-        //             gkosongkan();
-        //             vwGrup($('#g_lokasiS').val());
-        //             cont = 'Berhasil menyimpan data';
-        //             clr  = 'green';
-        //         }notif(cont,clr);
-        //     }
-        // });
-        // return false;
+        var data = $(e).serialize()+'&aksi=simpan&subaksi='+curTab();
+        ajax(url,data).done(function (dt) {
+            notif(dt.status,(dt.status=='sukses'?'green':'red'));
+            if (dt.status=='sukses') {
+                $.Dialog.close();
+                viewTB(curTab());
+            }
+        });
     }
 
 /*delete*/
@@ -309,8 +377,6 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
                 }
             });
         }
-    
-
 
 // remove TR rekening
     function delRekTR (e) {
@@ -330,6 +396,7 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
             autosuggest();
         },500);
     }
+
 /* form jurnal umum (add & edit) */
     function juFR(id){
         if(id!=''){ // edit mode
@@ -374,9 +441,75 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
         return ret;
     }
 
-// load form (all)
-    // function loadFR(titl,cont,cgArr,inpArr,rekN){
-    function loadFR(titl,cont,inpArr,rekN,pre){
+// form pembayaran 
+    // pendaftaran
+    function pembayaranFR (typ,sis) {
+        ajax(dir,'aksi=ambiledit&subaksi='+typ+'&replid='+sis).done(function(dt){
+            if(dt.status!=='sukses') notif('gagal menampilkan data','red');
+            else{
+                if(typ=='pendaftaran'){ // pendaftaran (formulir)
+                    // hidden
+                    $('#idsiswaH').val(dt.datax.idsiswa);
+                    $('#idmodulH').val(dt.datax.idmodul);
+                    $('#rekkasH').val(dt.datax.rekkas);
+                    $('#rekitemH').val(dt.datax.rekitem);
+                    // display
+                    $('#tanggalTB').val(dt.datax.tanggal);
+                    $('#nomerTB').val(dt.datax.nomer);
+                    $('#rek1TB').val(dt.datax.rek1);
+                    $('#rek2TB').val(dt.datax.rek2);
+                    $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nCalon Siswa : '+dt.datax.siswa+' \nNo. Pendaftaran : '+dt.datax.nopendaftaran);
+                    $('#nominalTB').val(dt.datax.nominal);
+                }else if(typ=='dpp'){ // dpp (uang gedung)
+                    // hidden
+                    $('#idsiswaH').val(dt.datax.idsiswa);
+                    $('#idmodulH').val(dt.datax.idmodul);
+                    $('#rekkasH').val(dt.datax.rekkas);
+                    $('#rekitemH').val(dt.datax.rekitem);
+                    // display
+                        // info pembayaran 
+                        $('#tanggalTB').val(dt.datax.tanggal);
+                        $('#nomerTB').val(dt.datax.nomer);
+                        $('#rek1TB').val(dt.datax.rek1);
+                        $('#rek2TB').val(dt.datax.rek2);
+                        $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nSiswa : '+dt.datax.siswa+' \nNIS : '+dt.datax.nis);
+                        // detail pembayaran (nominal dll)
+                        $('#nominalTB').val(dt.datax.nominal);
+                        $('#nominalnetTB').val(dt.datax.nominalnet);
+                        $('#disctotalTB').val(dt.datax.disctotal);
+                        $('#jmlangsurTB').val(dt.datax.jmlangsur+' x '+dt.datax.angsuran);
+                        // data sudah terbayar 
+                        $('#terbayarTB').val(dt.datax.terbayar);
+                        // data akan dibayar
+                        // $('#akanbayarTB').val(dt.datax.angsuran);
+                        cmbakanbayar('dpp',dt.datax.idsiswa);
+                    $('.dppgrup').toggle('slow');
+                }else{ //spp
+
+                }
+            }
+        });loadModal(typ,contentFR);
+    }
+
+    function cmbakanbayar(typ,sis){
+        var url  = dir;
+        var data = 'aksi=cmbakanbayar&siswa='+sis+'&subaksi='+typ;
+        ajax(url,data).done(function (dt) {
+            var out='';
+            if (dt.status=='sukses') {
+                $.each(dt.datax, function(id,item){
+                    out+='<option value="'+item.idAngsur+'"> '+item.nomAngsur+'</option>';
+                });
+            }else{
+                out+='<option value="">0</option>';
+                console.log(dt.status);
+                $('.simpanBC').attr('style','display:none;');
+            }$('#akanbayarTB').html(out);
+        });
+    }
+
+    // form pop up
+    function loadModal(titl,cont){
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -386,20 +519,6 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
             onShow: function(){
                 $.Dialog.title(titl+' '+mnu); 
                 $.Dialog.content(cont);
-                  
-                if(inpArr!=null){ // main form : set value fields 
-                    $.each(inpArr,function (id,item) {
-                       $('#'+id).val(item);
-                    });
-                // }if(cgArr!=null){// detail form
-                // }if(!isNaN(rekN) && rekN>0){// detail form
-                }if(rekN>0){// detail form
-                    setTimeout(function(){
-                        $('#ju_rekTBL').append(rekTR(rekN));
-                        autosuggest(pre,rekN);
-                        // autosuggest(cgArr);
-                    },500);
-                }
             }
         });
     }
@@ -485,7 +604,7 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
     }
 // end of notifikasi
 
-//end of  print to PDF -------
+// print to PDF -------
     function printPDF(mn){
         var par='',tok='',p,v;
         $('.'+mn+'_cari').each(function(){
@@ -715,10 +834,10 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
 //end of combo angkatan---
 
 // combo angkatan ---
-    function cmbangkatan(typ,ang){
+    function cmbangkatan(typ,dep){
         $.ajax({
             url:dir3,
-            data:'aksi=cmb'+mnu3,
+            data:'aksi=cmb'+mnu3+'&departemen='+dep,
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -727,14 +846,11 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.angkatan, function(id,item){
-                        if(ang==item.replid)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+'</option>';
-                        else
-                            out+='<option value="'+item.replid+'"> '+item.nama+'</option>';
+                        out+='<option value="'+item.replid+'"> '+item.angkatan+'</option>';
                     });
                     if(typ=='filter'){
                         $('#angkatanS').html(out);
-                        cmbproses('filter',dt.angkatan[0].replid,'');
+                        viewTB('dpp');
                     }else{
                         $('#angkatanTB').html(out);
                     }
@@ -791,7 +907,7 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
                     });
                 }
                 if(typ=='filter'){
-                    $('#kelompokS').html(out);
+                    $('#kelompokS').html(out);  
                     // $('#kelompokS').html('<option value="">-SEMUA-</option>'+out);
                     viewTB(curTab());
                 }else{
@@ -801,42 +917,3 @@ var pembayaran_contentFR = k_contentFR = b_contentFR ='';
         });
     }
 //end of combo kelompok---
-
-// view table ---
-    function viewTB(subaksi){
-        var aksi ='aksi=tampil';
-        if(typeof subaksi!=='undefined'){
-            aksi+='&subaksi='+subaksi;
-        }
-        var cari ='';
-        var el,el2;
-
-        if(typeof subaksi!=='undefined'){ // multi paging
-            el  = '.'+subaksi+'_cari';
-            el2 = '#'+subaksi+'_tbody';
-        }else{ // single paging
-            el  = '.cari';
-            el2 = '#tbody';
-        }
-
-        $(el).each(function(){
-            var p = $(this).attr('id');
-            var v = $(this).val();
-            cari+='&'+p+'='+v;
-        });
-
-        $.ajax({
-            url : dir,
-            type: 'post',
-            data: aksi+cari,
-            beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                setTimeout(function(){
-                    $(el2).html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }
-// end of view table
-

@@ -9,7 +9,7 @@
 	// in : pemasukkan
 	// out : pengeluaran
 
-	$mnu  = 'transaksi';
+	$mnu  = 'pembayaran';
 	$mnu2 = 'rekening';
 	$mnu3 = 'katalog';
 	$mnu4 = 'barang';
@@ -76,6 +76,7 @@
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
+					// pendaftaran
 					case 'pendaftaran':
 						// $kelompok      = isset($_POST['kelompokS'])&& $_POST['kelompokS']!=''?' c.kelompok ='.$_POST['kelompokS'].' AND ':'';
 						$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
@@ -85,29 +86,42 @@
 						$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
 						$sql = 'SELECT
 									c.replid,	
-									c.nopendaftaran,	
-									c.nama,	
+									c.nopendaftaran,
+									c.nama,
 									b.daftar,	
 									b.joiningf,
-									t.tanggal
+									tbx.tanggal,
+									IF(tbx.idpembayaran IS NULL,0,1)status
 								FROM
 									psb_calonsiswa c
 									LEFT JOIN psb_setbiaya b on b.replid = c.setbiaya
-									LEFT JOIN keu_pembayaran p on p.siswa = c.replid
-									LEFT JOIN keu_transaksi t on t.pembayaran = p.replid
-								WHERE	
+									LEFT JOIN (
+										SELECT
+											p.replid idpembayaran,
+											p.siswa,
+											t.tanggal
+										FROM
+											keu_pembayaran p
+										LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
+										LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+										LEFT JOIN keu_transaksi t ON t.pembayaran = p.replid
+										WHERE
+											k.nama = "pendaftaran"
+									)tbx on tbx.siswa = c.replid
+								WHERE
 									c.kelompok='.$kelompok.' AND
+									c.nopendaftaran LIKE "%'.$nopendaftaran.'%" AND
 									c.nama LIKE "%'.$nama.'%" AND
 									b.daftar LIKE "%'.$daftar.'%" AND
 									b.joiningf LIKE "%'.$joiningf.'%"';
-						print_r($sql);exit(); 	
+						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ 
 							$starting=$_POST['starting'];
 						}else{
 							$starting=0;
 						}
 
-						$recpage = 5;
+						$recpage = 10;
 						$aksi    ='tampil';
 						$subaksi ='pendaftaran';
 						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
@@ -119,22 +133,32 @@
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
+								if($res['status']=='1'){ // lunas
+									$clr  = 'success';
+									$icon = 'checkmark';
+									$hint = 'lunas';
+									$func = '';
+								}else{ // belum lunas
+									$clr  = '';
+									$icon = 'history';
+									$hint = 'belum lunas';
+									$func = 'onclick="pembayaranFR(\'pendaftaran\','.$res['replid'].');"';
+								}
 								$btn ='<td align="center">
-											<button data-hint="ubah"  class="button" onclick="juFR('.$res['replid'].');">
-												<i class="icon-pencil on-left"></i>
-											</button>
-											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
-												<i class="icon-remove on-left"></i>
+											<button data-hint="'.$hint.'" class="'.$clr.'"   '.$func.'>
+												<i class="icon-'.$icon.'"></i>
 											</button>
 										 </td>';
 							 	$out.= '<tr>
 											<td>'.$res['nopendaftaran'].'</td>
 											<td>'.$res['nama'].'</td>
-											<td>'.$res['daftar'].'</td>
-											<td>'.$res['joiningf'].'</td>
-											<td>'.tgl_indo5($res['tanggal']).'</td>
+											<td align="right">Rp. '.number_format(getBiaya('daftar',$res['replid'])).'</td>
+											<td align="right">Rp. '.number_format(getBiaya('joiningf',$res['replid'])).'</td>
+											<td  align="center">'.(($res['tanggal']=='0000-00-00' OR $res['tanggal']==null)?'-':tgl_indo5($res['tanggal'])).'</td>
 											'.$btn.'
 										</tr>';
+										// <td align="right">Rp. '.number_format($res['daftar']).'</td>
+										// <td align="right">Rp. '.number_format($res['joiningf']).'</td>
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
@@ -146,6 +170,117 @@
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
 					// pendaftaran 
+
+					// dpp
+					case 'dpp':
+						// $kelompok      = isset($_POST['kelompokS'])&& $_POST['kelompokS']!=''?' c.kelompok ='.$_POST['kelompokS'].' AND ':'';
+						$angkatan = isset($_POST['angkatanS'])?filter($_POST['angkatanS']):'';
+						$nama     = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+						$nis      = isset($_POST['nisS'])?filter($_POST['nisS']):'';
+						// $nilai    = isset($_POST['nilaiS'])?filter($_POST['nilaiS']):'';
+						$sql = 'SELECT
+									c.replid,
+									c.nis,
+									c.nama,
+									tbyr.tanggal,
+									b.nilai dpp,
+									SUM(IFNULL(tbyr.cicilan,0))terbayar,
+									(b.nilai - SUM(IFNULL(tbyr.cicilan,0)))kurangan
+								FROM
+									psb_calonsiswa c
+									LEFT JOIN psb_setbiaya b ON b.replid = c.setbiaya
+									LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
+									LEFT JOIN psb_proses p ON p.replid = k.proses 
+									LEFT JOIN (
+										SELECT
+											p.siswa,
+											p.cicilan,
+											t.tanggal
+										FROM
+											keu_pembayaran p
+											LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
+											LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+											LEFT JOIN keu_transaksi t ON t.pembayaran = p.replid
+										WHERE
+											k.nama = "dpp"
+									)tbyr on tbyr.siswa = c.replid
+								WHERE
+									p.angkatan = '.$angkatan.'
+									AND c.nis LIKE "%'.$nis.'%"
+									AND c.nama LIKE "%'.$nama.'%"
+								GROUP BY
+									c.replid
+								ORDER BY
+									c.nama asc';
+									// AND b.nilai LIKE "%'.$nilai.'%"
+						// print_r($sql);exit();
+						if(isset($_POST['starting'])){ 
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
+
+						$recpage = 10;
+						$aksi    ='tampil';
+						$subaksi ='dpp';
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+
+						#ada data
+						$jum = mysql_num_rows($result);
+						$out ='';$totaset=0;
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_assoc($result)){	
+								$status = getStatusBayar('dpp',$res['replid']);
+								// var_dump($status);exit();
+								// if($res['terbayar']==0){ // belum
+								if($status=='belum'){ // belum
+									$clr  = 'red';
+									$icon = 'empty';
+									$hint = 'belum bayar';
+									$func = 'onclick="pembayaranFR(\'dpp\','.$res['replid'].');"';
+								}else{
+								 	if($status=='lunas'){ // lunas
+										$clr  = 'green';
+										$icon = 'full';
+										$hint = 'lunas';
+										$func = 'onclick="pembayaranFR(\'dpp\','.$res['replid'].');"';
+									}else{ // kurang
+										$clr  = 'yellow';
+										$icon = 'half';
+										$hint = 'kurang';
+										$func = 'onclick="pembayaranFR(\'dpp\','.$res['replid'].');"';
+									}
+								}
+								$btn ='<td align="center">
+									<button data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"   '.$func.'>
+										<i class="icon-battery-'.$icon.'"></i>
+									</button>
+								</td>';
+								$dpp      = getBiaya('dpp',$res['replid'])-getDiscTotal('dpp',$res['replid']);
+								$kurangan = $dpp-getTerbayar('dpp',$res['replid']);
+							 	$out.= '<tr>
+									<td>'.$res['nis'].'</td>
+									<td>'.$res['nama'].'</td>
+									<td align="right">Rp. '.number_format($dpp).'</td>
+									<td align="right">Rp. '.number_format($kurangan).'</td>
+									<td  align="center">'.(($res['tanggal']=='0000-00-00' OR $res['tanggal']==null)?'-':tgl_indo5($res['tanggal'])).'</td>
+									'.$btn.'
+								</tr>';
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+								<td  colspan=9 ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span>
+								</td>
+							</tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
+						$out.= '<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+					break;
+					// dpp 
 
 					// spp 
 					case 'spp':
@@ -213,36 +348,6 @@
 				}
 			break; 
 			// tampil ---------------------------------------------------------------------
-
-			// generate kode
-			case 'codeGen':
-				switch ($_POST['subaksi']) {
-					case'transNo':
-						switch($_POST['tipe']){
-							case 'ju':
-								$pre='MMJ';
-							break;
-							case 'in':
-								$pre='BKM';
-							break;
-							case 'out':
-								$pre='BKK';
-							break;
-						}
-						$s    ='SELECT max(ct)ct from keu_transaksi ';
-						$e    =mysql_query($s);
-						$stat =!$e?'gagal_'.mysql_error():'sukses';
-						if(mysql_num_rows($e)>0){
-							$r  =mysql_fetch_assoc($e);
-							$in =$r['ct']+1;
-						}else{
-							$in=1;
-						}$kode=$pre.'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
-						$out=json_encode(array('status'=>$stat,'kode'=>$kode));
-					break;
-				}
-			break;
-			// generate kode
 
 			// head info ------------------------------------------------------------------
 			case 'headinfo':
@@ -335,65 +440,53 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				switch ($_POST['subaksi']) {
-					case 'ju':
-						$s 		= $tb.' set 	nomer   = "'.$_POST['ju_nomerTB'].'",
-												nobukti = "'.filter($_POST['ju_nobuktiTB']).'",
-												uraian  = "'.filter($_POST['ju_uraianTB']).'",
-												tanggal = "'.tgl_indo6($_POST['ju_tanggalTB']).'"';
-						$s  = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						// var_dump($s);exit();
-						// $e  = mysql_query($s);
-						// $id =mysql_insert_id();
-						// if(!$e){
-						// 	$stat='gagal_'.mysql_error();
-						// }else{
-							if(isset($_POST['ju_rekTB'])){
-								// var_dump(count($_POST['ju_rekTB']));
-								var_dump($_POST['ju_rekTB']);
-								// $s2	= 'keu_jurnal set 	transaksi = '.$id.',
-								// 						rek       = '.$_POST['ju_rekTB'].',
-								// 						debet     = '.$_POST['ju_debetTB'].',
-								// 						kredit    = '.$_POST['ju_kreditTB'];
-								// $s2 = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-							}
-						// }
-						// $stat 	= ($e)?'sukses':'gagal';
-						// $out 	= json_encode(array('status'=>$stat));
-					break;
-
-					case 'barang':
-						$s 		= $tb4.' set 	katalog    = "'.$_POST['b_katalogH2'].'",
-												tempat     = "'.$_POST['b_tempatTB'].'",
-												sumber     = "'.$_POST['b_sumberTB'].'",
-												harga      = "'.getuang($_POST['b_hargaTB']).'",
-												kondisi    = "'.$_POST['b_kondisiTB'].'",
-												keterangan = "'.filter($_POST['b_keteranganTB']).'"';
-						$stat = true;
-						if(!isset($_POST['replid'])){ //add
-							if(isset($_POST['b_jumbarangTB']) and $_POST['b_jumbarangTB']>1){ //  lebih dr 1 unit barang
-								for($i=0; $i<($_POST['b_jumbarangTB']); $i++) { // iterasi sbnyak jum barang 
-									$s2 ='INSERT INTO '.$s.', urut='.($_POST['b_urutH']+$i);
-									// var_dump($s2);exit();
-									$e  = mysql_query($s2);
-									if(!$e)$stat=false;
-								}
-							}else{ // 1 unit barang
-								$s2='INSERT INTO '.$s.', urut='.$_POST['b_urutH'];
-								// var_dump($s2);exit();
-								$e=mysql_query($s2);
-								if(!$e)$stat=false;  
-							// var_dump($e);exit();
-							}
-						}else{ //edit
-							$s2 = 'UPDATE '.$s.', urut='.$_POST['b_urutH'].' WHERE replid='.$_POST['replid'];
-							// var_dump($s2);exit();
-							$e  = mysql_query($s2);
-							if(!$e)$stat=false;  
-						}
-						$out 	= json_encode(array('status'=>($stat?'sukses':'gagal')));
-					break;
+				// 1. simpan pembayaran
+				if($_POST['subaksi']=='pendaftaran'){ //pendaftaran
+					$nominal = getBiaya($_POST['subaksi'],$_POST['idsiswaH']);
+				}else{ // dpp & spp
+					$nominal = $_POST['akanbayarTB'] * getAngsurNom($_POST['subaksi'],$_POST['idsiswaH']);
 				}
+				$s 	= 'INSERT INTO '.$tb.' set  modul   = '.$_POST['idmodulH'].',
+												cicilan = '.$nominal.',
+												siswa   = '.$_POST['idsiswaH'];
+				$e  = mysql_query($s);
+				$id = mysql_insert_id();
+				if(!$e) $stat='gagal_insert_pembayaran';
+				else{
+					// 2. simpan transaksi
+															// nomer      ="'.$_POST['nomerTB'].'",
+					$s2 = 'INSERT INTO keu_transaksi SET 	tahunbuku  ='.getTahunBuku('replid').',
+															pembayaran ='.$id.',
+															nominal    ='.$nominal.',
+															nomer      ="'.getNoTrans($_POST['subaksi']).'",
+															tanggal    ="'.date('Y-m-d').'",
+															uraian     ="'.$_POST['uraianTB'].'",
+															rekkas     ='.$_POST['rekkasH'].',
+															rekitem    ='.$_POST['rekitemH'];
+					$e2  = mysql_query($s2);
+					$id2 = mysql_insert_id();
+					if(!$e2) $stat='gagal_insert_transaksi';
+					else{
+						// 3. simpan jurnal
+						$s3 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekkasH'].', debet ='.$nominal;
+						$s4 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekitemH'].', kredit ='.$nominal;
+						$e3 = mysql_query($s3);
+						$e4 = mysql_query($s4);
+
+						if(!$e3 OR !$e4) $stat = 'gagal_insert_jurnal';
+						else{
+							// 4. update saldo rekening
+							if($nominal!='0'){
+								$s5   = 'UPDATE keu_saldorekening SET nominal2 =nominal2 '.getOperator($_POST['rekkasH']).' '.$nominal.' WHERE rekening ='.$_POST['rekkasH'].' AND tahunbuku='.getTahunBuku('replid');
+								$s6   = 'UPDATE keu_saldorekening SET nominal2 =nominal2 '.getOperator($_POST['rekitemH']).' '.$nominal.' WHERE rekening ='.$_POST['rekitemH'].' AND tahunbuku='.getTahunBuku('replid');
+								// var_dump($s6);exit();
+								$e5   = mysql_query($s5);
+								$e6   = mysql_query($s6);
+								$stat = ($e5 OR $e6)?'sukses':'gagal_update_saldorekening';
+							}else $stat = 'sukses';
+						}
+					}
+				}$out = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -429,114 +522,167 @@
 			break;
 			// delete ---------------------------------------------------------------------
 
+			case 'cmbakanbayar':
+				$out=json_encode(array(
+					'status' =>(akanBayarOpt($_POST['subaksi'],$_POST['siswa'])==null?'gagal':'sukses'),
+					'datax'  =>akanBayarOpt($_POST['subaksi'],$_POST['siswa'])
+				));
+			break;
+
 			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
-					case 'ju';
-						$s = 'SELECT * FROM '.$tb.'  WHERE replid='.$_POST['replid'];
-						// var_dump($s);exit();
-						$e 		= mysql_query($s);
-						$r 		= mysql_fetch_assoc($e);
-						$stat 	= ($e)?'sukses':'gagal';
-						$out 	= json_encode(array(
+					case 'pendaftaran';
+						// get angkatan by : siswa -> kelompok -> angkatan
+						$s1 = 'SELECT
+									p.angkatan,
+									c.nopendaftaran,	
+									c.replid idsiswa,	
+									c.nama siswa,	
+									b.daftar nominal
+								FROM
+									psb_calonsiswa c 
+									LEFT JOIN psb_setbiaya b on b.replid = c.setbiaya
+									LEFT JOIN psb_kelompok k on k.replid = c.kelompok
+									LEFT JOIN psb_proses p on p.replid = k.proses
+								WHERE
+									c.replid ='.$_POST['replid']; 
+						$e1 = mysql_query($s1);
+						$r1 = mysql_fetch_assoc($e1);
+
+						// get data : modul pembayaran (untuk form) 
+						$s2   = 'SELECT
+									m.replid,
+									m.rek1,	
+									m.rek2,	
+									m.rek3,	
+									m.nama modul,
+									m.replid idmodul
+								FROM
+									keu_modulpembayaran m
+									LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+								WHERE
+									m.angkatan = '.$r1['angkatan'].' AND 
+									k.nama = "pendaftaran"';
+							// print_r($s2);exit();
+						$e2   = mysql_query($s2);
+						$r2   = mysql_fetch_assoc($e2);
+						$stat = ($e2)?'sukses':'gagal';
+						$out  = json_encode(array(
 									'status' =>$stat,
 									'datax'  =>array(
-										'nomer'   =>$r['nomer'],
-										'tanggal' =>$r['tanggal'],
-										'uraian'  =>$r['uraian']
+										//data siswa 
+										'nopendaftaran' =>$r1['nopendaftaran'],
+										'idsiswa'       =>$r1['idsiswa'],
+										'siswa'         =>$r1['siswa'],
+										//data pembayaran
+										'nomer'         =>getNoTrans('in_calonsiswa'),
+										'tanggal'       =>tgl_indo5(date('Y-m-d')),
+										'rekkas'        =>$r2['rek1'],
+										'rekitem'       =>$r2['rek2'],
+										'rek1'          =>getRekening($r2['rek1']),
+										'rek2'          =>getRekening($r2['rek2']),
+										'rek3'          =>getRekening($r2['rek3']),
+										'modul'         =>$r2['modul'],
+										'idmodul'       =>$r2['idmodul'],
+										'nominal'       =>'Rp. '.number_format(getBiaya('pendaftaran',$r1['idsiswa']))
 								)));					
-					break;
+					break;					
 
-					case 'katalog';
-						$s = '	SELECT
-									k.kode,
-									k.nama,
-									k.jenis,
-									k.photo2,
-									k.susut,
-									k.keterangan,
-									l.nama as lokasi, 
-									g.nama as grup
-								FROM 
-									'.$tb3.' k,
-									 '.$tb2.' l,
-									 '.$tb.' g
-								WHERE 
-									g.replid = k.grup and 
-									l.replid = g.lokasi and 
-									k.replid ='.$_POST['replid'];
-						$e 		= mysql_query($s);
-						$r 		= mysql_fetch_assoc($e);
-						$stat 	= ($e)?'sukses':'gagal';
-						if(!$e){
-							$stat ='gagal';
-						}else{
-							$stat ='sukses';
-							$dt   =array(
-										'kode'       =>$r['kode'],
-										'nama'       =>$r['nama'],
-										'susut'      =>$r['susut'],
-										'lokasi'     =>$r['lokasi'],
-										'grup'       =>$r['grup'],
-										'photo2'     =>$r['photo2'],
-										'jenis'      =>$r['jenis'],
-										'keterangan' =>$r['keterangan']
-									);						
-						}$out 	= json_encode(array(
-									'status' =>$stat,
-									'data'   =>$dt
-								));					
-					break;
+					case 'dpp';
+						// get angkatan by : siswa -> kelompok -> angkatan
+						$s1 = 'SELECT
+									p.angkatan,
+									b.nilai nominal,
+									c.nis,
+									c.replid idsiswa,
+									c.nama siswa,
+									c.jmlangsur,
+									a.cicilan,
+									c.discsaudara,
+									c.disctb,
+									d.nilai disctunaipers,
+									(b.nilai * IFNULL(d.nilai,0)/100)disctunairp,
+									(c.discsaudara + c.disctb + (b.nilai * IFNULL(d.nilai,0)/100))disctotal,
+									(b.nilai -(c.discsaudara + c.disctb + (b.nilai * IFNULL(d.nilai,0)/100)))nominalnet
 
-					case 'barang';
-						$s ='SELECT
-								b.tempat,
-								LPAD(b.urut,5,0) as barkode,(
-									SELECT 
-										CONCAT(ll.kode,"/",gg.kode,"/",tt.kode,"/",kk.kode,"/",LPAD(b.urut,5,0))
-									from 
-										sar_katalog kk,
-										sar_grup gg,
-										sar_tempat tt,
-										sar_lokasi ll
-									where 
-										kk.replid = b.katalog AND
-										kk.grup   = gg.replid AND
-										b.tempat  = tt.replid AND
-										tt.lokasi = ll.replid
-								)as kode,
-								b.harga,
-								b.urut,
-								b.kondisi,
-								b.sumber,
-								b.keterangan
-							FROM
-								sar_barang b, sar_kondisi k
-							WHERE
-								b.kondisi = k.replid and
-								b.replid  = '.$_POST['replid'];
-						// print_r($s);exit();
-						$e 		= mysql_query($s);
-						$r 		= mysql_fetch_assoc($e);
-						$stat 	= ($e)?'sukses':'gagal';
-						if(!$e){
-							$stat ='gagal';
-						}else{
-							$stat ='sukses';
-							$dt   =array(
-										'tempat'     =>$r['tempat'],
-										'barkode'    =>$r['barkode'],
-										'urut'       =>$r['urut'],
-										'kode'       =>$r['kode'],
-										'harga'      =>$r['harga'],
-										'kondisi'    =>$r['kondisi'],
-										'sumber'     =>$r['sumber'],
-										'keterangan' =>$r['keterangan']
-									);						
-						}$out 	= json_encode(array(
+								FROM
+									psb_calonsiswa c
+									LEFT JOIN psb_setbiaya b ON b.replid = c.setbiaya
+									LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
+									LEFT JOIN psb_proses p ON p.replid = k.proses
+									LEFT JOIN psb_angsuran a on a.replid = c.jmlangsur
+									LEFT JOIN psb_disctunai d on d.replid = c.disctunai
+								WHERE
+									c.replid ='.$_POST['replid'];
+									// print_r($s1);exit(); 
+						$e1 = mysql_query($s1);
+						$r1 = mysql_fetch_assoc($e1);
+
+						// get data : modul pembayaran (untuk form) 
+						$s2   = 'SELECT
+									m.replid,
+									m.rek1,	
+									m.rek2,	
+									m.rek3,	
+									m.nama modul,
+									m.replid idmodul
+								FROM
+									keu_modulpembayaran m
+									LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+									LEFT JOIN keu_pembayaran p ON p.modul = m.replid
+								WHERE
+									m.angkatan = '.$r1['angkatan'].' AND 
+									k.nama = "dpp"';
+						// print_r($s2);exit();
+						$e2   = mysql_query($s2);
+						$r2   = mysql_fetch_assoc($e2);
+
+						// get data : pembayaran (cicilan)
+						$s3 = 'SELECT
+									SUM(cicilan) terbayar
+								FROM
+									keu_pembayaran p
+								WHERE
+									p.modul = '.$r2['idmodul'].'
+								AND p.siswa = '.$r1['idsiswa'].'
+								GROUP BY
+									p.siswa';
+						$e3 = mysql_query($s3);
+						$r3 = mysql_fetch_assoc($e3);
+
+						$stat = ($e2)?'sukses':'gagal';
+						$out  = json_encode(array(
 									'status' =>$stat,
-									'data'   =>$dt
-								));					
+									'datax'  =>array(
+										//data siswa 
+										'nis'           =>$r1['nis'],
+										'idsiswa'       =>$r1['idsiswa'],
+										'siswa'         =>$r1['siswa'],
+										
+										//info pembayaran
+										'nomer'         =>getNoTrans($_POST['subaksi']),
+										'tanggal'       =>tgl_indo5(date('Y-m-d')),
+										'rekkas'        =>$r2['rek1'],		// id rek. KAS
+										'rekitem'       =>$r2['rek2'],		// id rek. ITEM 
+										'rek1'          =>getRekening($r2['rek1']), // rek.KAS
+										'rek2'          =>getRekening($r2['rek2']), // rek.ITEM
+										'rek3'          =>getRekening($r2['rek3']), // rek.TAMBAHAN
+										'modul'         =>$r2['modul'],
+										'idmodul'       =>$r2['idmodul'],
+										// data nominal dll (syarat)
+										'nominal'       =>'Rp. '.number_format($r1['nominal']), 	// dpp
+										'nominalnet'    =>'Rp. '.number_format($r1['nominalnet']), 	// dpp net
+										'discsubsidi'   =>'Rp. '.number_format($r1['disctb']), 		// disc subsidi (Rp.)
+										'discsaudara'   =>'Rp. '.number_format($r1['discsaudara']),	// disc saudara (Rp.)
+										'disctunaipers' =>$r1['disctunaipers'], 					// disc tunai (%)  
+										'disctunairp'   =>'Rp. '.number_format($r1['disctunairp']),	// disc tunai (Rp.) 
+										'disctotal' 	=>'Rp. '.number_format($r1['disctotal']), 	// disc total (Rp.)  
+										'jmlangsur'     =>$r1['cicilan'],							// angsuran (berapa x ) 
+										'angsuran'     	=>'Rp. '.number_format($r1['nominalnet']/$r1['cicilan']),		// angsuran (Rp. ) 
+										// data nominal (terbayar)
+										'terbayar'     	=>'Rp. '.number_format($r3['terbayar'])
+								)));					
 					break;
 				}
 			break;
