@@ -80,6 +80,9 @@
                 <button id="dpp_cariBC" data-hint="Pencarian" data-hint-position="top">
                     <i class="icon-search" ></i>
                 </button>
+                <button id="dpp_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <i class="icon-printer" ></i>
+                </button>
                 <div class="input-control select span3">
                     <select data-hint="Angkatan" class="dpp_cari" name="angkatanS" id="angkatanS"></select>
                 </div>
@@ -96,10 +99,12 @@
                         <tr style="display:none;" id="dppTR" class="info">
                             <th class="text-center"><input placeholder="NIS" id="nisS" class="dpp_cari"></th>
                             <th class="text-center"><input placeholder="Nama" id="namaS" class="dpp_cari"></th>
-                            <th class="text-center"><input onkeyup="inputuang(this);" placeholder="nominal" id="nilaiS" class="dpp_cari"></th>
-                            <th class="text-center"><input placeholder="kurangan" id="kuranganS" class="dpp_cari"></th>
                             <th class="text-center"></th>
                             <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <!-- <th class="text-center"><input onkeyup="inputuang(this);" placeholder="nominal" id="nilaiS" class="dpp_cari"></th> -->
+                            <!-- <th class="text-center"><input placeholder="kurangan" id="kuranganS" class="dpp_cari"></th> -->
                         </tr>
                     </thead>
 
@@ -111,6 +116,12 @@
             </div>
 
             <div class="frame" id="sppTAB">
+                <button id="spp_cariBC" data-hint="Pencarian" data-hint-position="top">
+                    <i class="icon-search" ></i>
+                </button>
+                <button id="spp_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <i class="icon-printer" ></i>
+                </button>
                 <div class="input-control select span3">
                     <select data-hint="Tahun Ajaran" class="spp_cari" name="tahunajaranS" id="tahunajaranS"></select>
                 </div>

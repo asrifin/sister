@@ -130,7 +130,7 @@
                           <td>'.$r2['nama'].'</td>
                           <td align="right">Rp. '.number_format($r2['daftar']).',-</td>
                           <td align="right">Rp. '.number_format($r2['joiningf']).',-</td>
-                          <td align="right">Rp. '.number_format($r2['joiningf']+$r2['joiningf']).',-</td>
+                          <td align="right">Rp. '.number_format($r2['joiningf']+$r2['daftar']).',-</td>
                           <td>'.$r2['status'].'</td>
                           <td align="center">'.($r['tanggal']=='-'?'-':tgl_indo5($r2['tanggal'])).'</td>
                     </tr>';

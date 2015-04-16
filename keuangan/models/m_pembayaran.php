@@ -152,11 +152,13 @@
 							 	$out.= '<tr>
 											<td>'.$res['nopendaftaran'].'</td>
 											<td>'.$res['nama'].'</td>
-											<td align="right">Rp. '.number_format($res['daftar']).'</td>
-											<td align="right">Rp. '.number_format($res['joiningf']).'</td>
+											<td align="right">Rp. '.number_format(getBiaya('daftar',$res['replid'])).'</td>
+											<td align="right">Rp. '.number_format(getBiaya('joiningf',$res['replid'])).'</td>
 											<td  align="center">'.(($res['tanggal']=='0000-00-00' OR $res['tanggal']==null)?'-':tgl_indo5($res['tanggal'])).'</td>
 											'.$btn.'
 										</tr>';
+										// <td align="right">Rp. '.number_format($res['daftar']).'</td>
+										// <td align="right">Rp. '.number_format($res['joiningf']).'</td>
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
@@ -174,8 +176,8 @@
 						// $kelompok      = isset($_POST['kelompokS'])&& $_POST['kelompokS']!=''?' c.kelompok ='.$_POST['kelompokS'].' AND ':'';
 						$angkatan = isset($_POST['angkatanS'])?filter($_POST['angkatanS']):'';
 						$nama     = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-						$nilai    = isset($_POST['nilaiS'])?filter($_POST['nilaiS']):'';
 						$nis      = isset($_POST['nisS'])?filter($_POST['nisS']):'';
+						// $nilai    = isset($_POST['nilaiS'])?filter($_POST['nilaiS']):'';
 						$sql = 'SELECT
 									c.replid,
 									c.nis,
@@ -204,13 +206,13 @@
 									)tbyr on tbyr.siswa = c.replid
 								WHERE
 									p.angkatan = '.$angkatan.'
-									AND b.nilai LIKE "%'.$nilai.'%"
 									AND c.nis LIKE "%'.$nis.'%"
 									AND c.nama LIKE "%'.$nama.'%"
 								GROUP BY
 									c.replid
 								ORDER BY
 									c.nama asc';
+									// AND b.nilai LIKE "%'.$nilai.'%"
 						// print_r($sql);exit();
 						if(isset($_POST['starting'])){ 
 							$starting=$_POST['starting'];
@@ -230,14 +232,16 @@
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
-								// print_r($res);exit();
-								if($res['terbayar']==0){ // belum
+								$status = getStatusBayar('dpp',$res['replid']);
+								// var_dump($status);exit();
+								// if($res['terbayar']==0){ // belum
+								if($status=='belum'){ // belum
 									$clr  = 'red';
 									$icon = 'empty';
 									$hint = 'belum bayar';
 									$func = 'onclick="pembayaranFR(\'dpp\','.$res['replid'].');"';
 								}else{
-								 	if($res['terbayar']==$res['kurangan']){ // lunas
+								 	if($status=='lunas'){ // lunas
 										$clr  = 'green';
 										$icon = 'full';
 										$hint = 'lunas';
@@ -254,11 +258,13 @@
 										<i class="icon-battery-'.$icon.'"></i>
 									</button>
 								</td>';
+								$dpp      = getBiaya('dpp',$res['replid'])-getDiscTotal('dpp',$res['replid']);
+								$kurangan = $dpp-getTerbayar('dpp',$res['replid']);
 							 	$out.= '<tr>
 									<td>'.$res['nis'].'</td>
 									<td>'.$res['nama'].'</td>
-									<td align="right">Rp. '.number_format($res['dpp']).'</td>
-									<td align="right">Rp. '.number_format($res['kurangan']).'</td>
+									<td align="right">Rp. '.number_format($dpp).'</td>
+									<td align="right">Rp. '.number_format($kurangan).'</td>
 									<td  align="center">'.(($res['tanggal']=='0000-00-00' OR $res['tanggal']==null)?'-':tgl_indo5($res['tanggal'])).'</td>
 									'.$btn.'
 								</tr>';
@@ -435,17 +441,24 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				// 1. simpan pembayaran
-				$s 	= 'INSERT INTO '.$tb.' set modul = '.$_POST['idmodulH'].',siswa = '.$_POST['idsiswaH'];
+				if($_POST['subaksi']=='pendaftaran'){ //pendaftaran
+					$nominal = getBiaya($_POST['subaksi'],$_POST['idsiswaH']);
+				}else{ // dpp & spp
+					$nominal = $_POST['akanbayarTB'] * getAngsurNom($_POST['subaksi'],$_POST['idsiswaH']);
+				}
+				$s 	= 'INSERT INTO '.$tb.' set  modul   = '.$_POST['idmodulH'].',
+												cicilan = '.$nominal.',
+												siswa   = '.$_POST['idsiswaH'];
 				$e  = mysql_query($s);
 				$id = mysql_insert_id();
 				if(!$e) $stat='gagal_insert_pembayaran';
 				else{
 					// 2. simpan transaksi
-					$nominal = getBiaya($_POST['subaksi'],$_POST['idsiswaH']);
+															// nomer      ="'.$_POST['nomerTB'].'",
 					$s2 = 'INSERT INTO keu_transaksi SET 	tahunbuku  ='.getTahunBuku('replid').',
 															pembayaran ='.$id.',
 															nominal    ='.$nominal.',
-															nomer      ="'.$_POST['nomerTB'].'",
+															nomer      ="'.getNoTrans($_POST['subaksi']).'",
 															tanggal    ="'.date('Y-m-d').'",
 															uraian     ="'.$_POST['uraianTB'].'",
 															rekkas     ='.$_POST['rekkasH'].',
@@ -466,9 +479,10 @@
 							if($nominal!='0'){
 								$s5   = 'UPDATE keu_saldorekening SET nominal2 =nominal2 '.getOperator($_POST['rekkasH']).' '.$nominal.' WHERE rekening ='.$_POST['rekkasH'].' AND tahunbuku='.getTahunBuku('replid');
 								$s6   = 'UPDATE keu_saldorekening SET nominal2 =nominal2 '.getOperator($_POST['rekitemH']).' '.$nominal.' WHERE rekening ='.$_POST['rekitemH'].' AND tahunbuku='.getTahunBuku('replid');
+								// var_dump($s6);exit();
 								$e5   = mysql_query($s5);
 								$e6   = mysql_query($s6);
-								$stat = ($e5 OR $e6)?'gagal_update_saldorekening':'sukses';
+								$stat = ($e5 OR $e6)?'sukses':'gagal_update_saldorekening';
 							}else $stat = 'sukses';
 						}
 					}
@@ -510,8 +524,8 @@
 
 			case 'cmbakanbayar':
 				$out=json_encode(array(
-					'status' =>(akanBayarOpt($_POST['idsiswa'])==null?'gagal':'sukses'),
-					'datax'  =>akanBayarOpt($_POST['idsiswa'])
+					'status' =>(akanBayarOpt($_POST['subaksi'],$_POST['siswa'])==null?'gagal':'sukses'),
+					'datax'  =>akanBayarOpt($_POST['subaksi'],$_POST['siswa'])
 				));
 			break;
 
@@ -571,7 +585,7 @@
 										'rek3'          =>getRekening($r2['rek3']),
 										'modul'         =>$r2['modul'],
 										'idmodul'       =>$r2['idmodul'],
-										'nominal'       =>$r1['nominal']
+										'nominal'       =>'Rp. '.number_format(getBiaya('pendaftaran',$r1['idsiswa']))
 								)));					
 					break;					
 
@@ -647,7 +661,7 @@
 										'siswa'         =>$r1['siswa'],
 										
 										//info pembayaran
-										'nomer'         =>getNoTrans('in_siswa'),
+										'nomer'         =>getNoTrans($_POST['subaksi']),
 										'tanggal'       =>tgl_indo5(date('Y-m-d')),
 										'rekkas'        =>$r2['rek1'],		// id rek. KAS
 										'rekitem'       =>$r2['rek2'],		// id rek. ITEM 

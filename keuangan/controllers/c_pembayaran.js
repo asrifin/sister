@@ -68,7 +68,7 @@ var contentFR ='';
     //form content
         contentFR+= '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="pembayaranSV(this); return false;" id="'+mnu+'FR">'
                         +'<div class="form-actions">' 
-                            +'<button class="button primary">Bayar <span class="icon-floppy"></span></button>&nbsp;'
+                            +'<button class="button primary simpanBC">Bayar <span class="icon-floppy"></span></button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
 
@@ -84,23 +84,23 @@ var contentFR ='';
                             +'<div class="padding20">'
                                 +'<label><b>Nomor</b></label>'
                                 +'<div class="input-control text">'
-                                    +'<input type="text" readonly name="nomerTB" id="nomerTB" >'
+                                    +'<input disatype="text" disabled name="nomerTB" id="nomerTB" >'
                                 +'</div>'
                                 
                                 +'<label>Tanggal </label>'
                                 +'<div class="input-control text">'
-                                    +'<input readonly type="text" name="tanggalTB" id="tanggalTB">'
+                                    +'<input disabled type="text" name="tanggalTB" id="tanggalTB">'
                                 +'</div>'
                                 
                                 +'<label>Rekening Kas / Bank</label>'
                                 +'<div class="input-control text">'
-                                    +'<input readonly type="text" id="rek1TB" name="rek1TB">'
+                                    +'<input disabled type="text" id="rek1TB" name="rek1TB">'
                                 +'</div>'
 
                                 +'<label ><b>Pada :</b></label>'
                                 +'<label>Rekening Perkiraan</label>'
                                 +'<div class="input-control text">'
-                                    +'<input readonly type="text" id="rek2TB" name="rek2TB">'
+                                    +'<input disabled type="text" id="rek2TB" name="rek2TB">'
                                 +'</div>'
 
                                 +'<label>Uraian</label>'
@@ -116,24 +116,24 @@ var contentFR ='';
                                 // ALL
                                 +'<label>Nominal</label>'
                                 +'<div class="input-control text">'
-                                    +'<input readonly type="text" id="nominalTB" name="nominalTB">'
+                                    +'<input disabled type="text" id="nominalTB" name="nominalTB">'
                                 +'</div>'
 
                                 // DPP grup
                                 +'<div class="dppgrup" style="display:none;">'
                                     +'<label>Total Diskon</label>'
                                     +'<div class="input-control text">'
-                                        +'<input readonly type="text" id="disctotalTB" name="disctotalTB">'
+                                        +'<input disabled type="text" id="disctotalTB" name="disctotalTB">'
                                     +'</div>'
 
                                     +'<label>Nominal Net(setelah dipotong diskon)</label>'
                                     +'<div class="input-control text warning-state">'
-                                        +'<input readonly class="bg-orange" type="text" id="nominalnetTB" name="nominalnetTB">'
+                                        +'<input disabled class="bg-orange" type="text" id="nominalnetTB" name="nominalnetTB">'
                                     +'</div>'
 
                                     +'<label>Angsuran </label>'
                                     +'<div class="input-control text">'
-                                        +'<input readonly type="text" id="jmlangsurTB" name="jmlangsurTB">'
+                                        +'<input disabled type="text" id="jmlangsurTB" name="jmlangsurTB">'
                                     +'</div>'
                                 +'</div>'
                                 //end of untuk DPP grup
@@ -141,26 +141,26 @@ var contentFR ='';
                             +'</div>'
                         +'</div>'
 
-                        +'<legend>Pembayaran</legend>'
-                        +'<div class="balloon bottom">'
+                        +'<legend style="display:none;">Pembayaran</legend>'
+                        +'<div class="balloon bottom dppgrup" style="display:none;">'
                             +'<div class="padding20">'
                                 // DPP
                                 +'<label>Sudah Dibayar </label>'
                                 +'<div class="input-control text">'
-                                    +'<input readonly type="text"  class="bg-cyan" id="terbayarTB" name="terbayarTB">'
+                                    +'<input disabled type="text"  class="bg-cyan" id="terbayarTB" name="terbayarTB">'
                                 +'</div>'
 
                                 // DPP
                                 +'<label>Akan Dibayar </label>'
                                 +'<div class="input-control select">'
-                                    +'<select name="akanbayarTB" id="akanbayarTB"></select>'
+                                    +'<select class="bg-lime" name="akanbayarTB" id="akanbayarTB"></select>'
                                     // +'<input readonly type="text" class="bg-lime" id="akanbayarTB" name="akanbayarTB">'
                                 +'</div>'
                             +'</div>'
                         +'</div>'
                         
                         +'<div class="form-actions">' 
-                            +'<button class="button primary">Bayar <span class="icon-floppy"></span></button>&nbsp;'
+                            +'<button class="button primary simpanBC">Bayar <span class="icon-floppy"></span></button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
@@ -173,6 +173,9 @@ var contentFR ='';
         //print ---
         $('#pendaftaran_cetakBC').on('click',function(){
             printPDF('pendaftaran');
+        });
+        $('#dpp_cetakBC').on('click',function(){
+            printPDF('dpp');
         });
         //toggle search --- 
         $('#pendaftaran_cariBC').on('click',function(){
@@ -479,7 +482,7 @@ var contentFR ='';
                         $('#terbayarTB').val(dt.datax.terbayar);
                         // data akan dibayar
                         // $('#akanbayarTB').val(dt.datax.angsuran);
-                        cmbakanbayar(dt.datax.idsiswa);
+                        cmbakanbayar('dpp',dt.datax.idsiswa);
                     $('.dppgrup').toggle('slow');
                 }else{ //spp
 
@@ -488,11 +491,23 @@ var contentFR ='';
         });loadModal(typ,contentFR);
     }
 
-    function cmbakanbayar(sis){
-        ajax(dir,'aksi=cmbakanbayar&siswa='+sis).done(function(dt){
-
+    function cmbakanbayar(typ,sis){
+        var url  = dir;
+        var data = 'aksi=cmbakanbayar&siswa='+sis+'&subaksi='+typ;
+        ajax(url,data).done(function (dt) {
+            var out='';
+            if (dt.status=='sukses') {
+                $.each(dt.datax, function(id,item){
+                    out+='<option value="'+item.idAngsur+'"> '+item.nomAngsur+'</option>';
+                });
+            }else{
+                out+='<option value="">0</option>';
+                console.log(dt.status);
+                $('.simpanBC').attr('style','display:none;');
+            }$('#akanbayarTB').html(out);
         });
     }
+
     // form pop up
     function loadModal(titl,cont){
         $.Dialog({
@@ -588,8 +603,6 @@ var contentFR ='';
         });
     }
 // end of notifikasi
-
-
 
 // print to PDF -------
     function printPDF(mn){
