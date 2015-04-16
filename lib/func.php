@@ -108,28 +108,99 @@
 		return $r[$f];
 	}
 	
+/*akademik*/
+	function getDepartemen($id){
+		$s='SELECT * FROM departemen WHERE replid='.$id;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['nama'];
+	}
+	// function getAngkatan($f,$id){
+	// 	$s='SELECT * FROM aka_angkatan WHERE replid='.$id;
+	// 	$e=mysql_query($s);
+	// 	$r=mysql_fetch_assoc($e);
+	// 	return $r[$f];
+	// }
 /*keuangan*/
 	// transact
 	/*pembayaran*/
+	function getPembayaran($siswa,$modul){
+		$s ='SELECT max(replid) modul
+			FROM keu_pembayaran
+			WHERE
+				siswa = '.$siswa.' AND 
+				modul = '.$modul;
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		// return $
+	}
+	function getTglTrans($f){
+		$s='SELECT tanggal
+			FROM keu_transaksi
+			WHERE pembayaran ='.$
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		// return $r[];	
+	}
 	function getAngsur($id){
 		$s='SELECT * FROM psb_angsuran WHERE replid='.$id;
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		// return $r[];	
-	}function akanBayarOpt($siswa){
-		$angsur = getSiswaBy('jmlangsur',$siswa);
-		// $s   = 'SELECT * FROM ';
-		$ret = array();
-		for ($i=0; $i<$angsur; $i++) {
+	}
+	function getBiayaNet($typ,$siswa){
+		$biaya = $biayaKotor - $diskonTotal; 		
+	}
+	function getStatusBayar($typ,$siswa){
+		$biayaKotor = getBiaya($typ,$siswa);
+		$diskonTotal= getDiscTotal($typ,$siswa);
+		
+		$biaya      = $biayaKotor - $diskonTotal; 		// 14.100.000
+		$terbayar   = getTerbayar($typ,$siswa);			//  4.700.000
+		// var_dump($terbayar);exit();
+		// if($biaya==$terbayar){
+		if($terbayar<=0){
+			$status = 'belum';
+		}else{
+			if($terbayar==$biaya){
+				$status = 'lunas';
+			}else{ 
+				$status = 'kurang';
+			}
+		}
+
+		return $status;
+	}
+	function getAngsurNom($typ,$siswa){
+		$biayaKotor = getBiaya($typ,$siswa);			
+		$diskonTotal= getDiscTotal($typ,$siswa);
+		$biaya      = $biayaKotor - $diskonTotal; 		
+		$angsurkali = getSiswaBy('jmlangsur',$siswa);
+		$ret = $biaya/$angsurkali;
+		return $ret;
+	}function akanBayarOpt($typ,$siswa){
+		$biayaKotor = getBiaya($typ,$siswa);			// 15.000.000
+		$diskonTotal= getDiscTotal($typ,$siswa); 		// 	  900.000
+														// __________ -
+		$biaya      = $biayaKotor - $diskonTotal; 		// 14.100.000
+		$angsurkali = getSiswaBy('jmlangsur',$siswa);	// 3 x  		use
+		$terbayar   = getTerbayar($typ,$siswa);			//  4.700.000
+		$angsurnom 	= $biaya/$angsurkali;				// @4.700.000	use
+		$sisabayar 	= $biaya-$terbayar;					//  9.400.000
+		// var_dump($diskonTotal);exit();
+		$ret     = array();
+		$nominal = 0;
+		$count = $sisabayar/$angsurnom; 				// 1 x  
+		for ($i=1; $i<=$count; $i++) {
+			$nominal+=$angsurnom;
 			$ret[] = array(
-				'idAngsur'      =>$i,
-				// 'nominalAngsur' =>
+				'idAngsur'  => $i,
+				'nomAngsur' =>'Rp. '.number_format($nominal)
 			);
 		}
-		var_dump($ret);exit();
 		return $ret;
 	}
-	function getPembayaran($typ,$siswa){ // to get : nominal yg telah terbayar
+	function getTerbayar($typ,$siswa){ // to get : nominal yg telah terbayar
 		$s ='SELECT
 				SUM(p.cicilan) terbayar
 			FROM
@@ -148,9 +219,12 @@
 	}function getBiaya($typ,$siswa){ // to get : nominal yg harus dibayar
 		if($typ=='pendaftaran'){ // formulir + joining fee
 			$f = '(b.daftar + b.joiningf)';
+		}elseif($typ=='daftar'){ // formulir
+			$f = 'b.daftar';
+		}elseif($typ=='joiningf'){ // dpp
+			$f = 'b.joiningf';
 		}elseif($typ=='dpp'){ // dpp
-			$terbayar = getPembayaran($typ,$siswa);
-			$f = '(b.nilai - '.$terbayar.')';
+			$f = 'b.nilai';
 		}else{ // spp
 			//code
 		}
@@ -163,6 +237,21 @@
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r[$typ];
+	}function getDiscTunai($typ,$siswa){
+		$s     = 'SELECT nilai FROM psb_disctunai WHERE replid ='.getSiswaBy('disctunai',$siswa);
+		// var_dump($s);exit();
+		$e     = mysql_query($s);
+		$r     = mysql_fetch_assoc($e);
+		$biaya = getBiaya($typ,$siswa);
+		$ret   = $r['nilai'] * $biaya / 100;
+		return $ret;
+	}function getDiscTotal($typ,$siswa){
+		// var_dump(getSiswaBy('discsaudara',$siswa));exit(); 	150.000
+		// var_dump(getSiswaBy('disctb',$siswa));exit(); 		0
+		// var_dump(getDiscTunai($typ,$siswa));exit();			750.000
+		$ret = getDiscTunai($typ,$siswa)+getSiswaBy('disctb',$siswa)+getSiswaBy('discsaudara',$siswa);
+		// var_dump($ret);exit();
+		return $ret;
 	}function getOperator($id){
 		$s = '	SELECT k.jenis 
 				FROM keu_detilrekening d
@@ -184,7 +273,7 @@
 		$r=mysql_fetch_assoc($e);
 		return $r['nama'];
 	}function getBuktiTrans($id){
-		$s='SELECT * FROM keu_detjenistrans WHERE kode="'.$id.'"';
+		$s='SELECT * FROM keu_detjenistrans WHERE replid="'.$id.'"';
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['bukti'];
@@ -193,7 +282,15 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['nama'];
-	}function getNoTrans($typ){
+	}function getKatModulPemb($nama){
+		$s='SELECT * FROM keu_katmodulpembayaran WHERE nama="'.$nama.'"';
+		// var_dump($s);exit();
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['detjenistrans'];
+	}
+
+	function getNoTrans($typ){
 		$s = 'SELECT LPAD(max(replid),4,0)replid from keu_transaksi';
 		$e = mysql_query($s);
 		$stat =!$e?'gagal_'.mysql_error():'sukses';
@@ -202,7 +299,10 @@
 			$in =$r['replid']+1;
 		}else{
 			$in=1;
-		}$kode=getBuktiTrans($typ).'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
+		}
+
+		// var_dump(getKatModulPemb($typ));exit();
+		$kode=getBuktiTrans(getKatModulPemb($typ)).'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
 		return $kode;
 	}function getRekening($id){
 		$s='SELECT concat(kode," - ",nama)rekening FROM keu_detilrekening WHERE replid='.$id;
