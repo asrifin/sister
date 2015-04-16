@@ -10,11 +10,13 @@ PENAMBAHAN TABEL atau PENAMBAHAN FIELD
 	- tambah -> field setbiaya(int 10 -> not null) di tabel psb_calonsiswa
 	- tambah -> field nama(varchar 50 -> not null) di tabel psb_disctunai
 	- tambah -> Pendataan Calon Siswa -> field photo2(longtext) di tabel psb_calonsiswa
+	- ubah	 -> Perubahan tabel psb_calonsiswa, dll -> Folder 20150412
 * Keuangan
-	- Tambah tabel kon_ -> Folder 20150402
-	- Tambah tabel keu_anggarantahunan, keu_detailanggaran, keu_kategorianggaran
-	- keu_koderekening, keu_detailrekening, keu_saldorekening 
-
+	- Tambah -> tabel kon_ -> Folder 20150402
+	- Tambah -> tabel keu_anggarantahunan, keu_detailanggaran, keu_kategorianggaran
+	  keu_koderekening, keu_detailrekening, keu_saldorekening 
+	- Tambah -> keu_katmodulpembayaran, keu_modulpembayaran -> Folder 20150411
+	- Tambah -> keu_saldorekening
 * Perpustakaan
 	- edit	-> tabel pus_katalog yang dirubah klasifikasi-kode diganti klasifikasi_kode
 	

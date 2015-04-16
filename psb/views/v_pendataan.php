@@ -66,7 +66,7 @@
       <div class="table hovered bordered striped panelx" id="pendataanFR" style="display:none;" >
           <div style="overflow:scroll;height:600px;" >
                   <form autocomplete="off" enctype="multipart/form-data" onsubmit="siswaSV();return false;" id="siswa_form"> 
-                        <input id="idformH" type="hidden"> 
+                        <input id="idformH" type="text"> 
                         <!-- Panel -->
                         <div class="panel">
                           <div class="panel-header bg-lightBlue fg-white">
@@ -213,7 +213,7 @@
                         <label>Jenis Kelamin</label>
                         <div class="input-control radio">
                         <label>
-                            <input value="0" type="radio" name="jkTB" id="jkTB" />
+                            <input type="radio" name="jkTB" id="jkTB" />
                             <span class="check"></span>
                             Laki-Laki
                         </label>
@@ -221,7 +221,7 @@
 
                         <div class="input-control radio">
                         <label>
-                            <input value="1" type="radio" name="jkTB" id="jkTB" />
+                            <input type="radio" name="jkTB" id="jkTB" />
                             <span class="check"></span>
                             Perempuan
                         </label>
@@ -370,10 +370,10 @@
                         </div>
                         <!-- End span -->
 
-                        <div class="span8">
+                        <div class="span6">
                             <label><b>Foto Siswa :</b></label>
                                <img width="150" id="previmg" src="../img/no_image.jpg" >
-                             <div class="input-control file info-state" data-role="input-control" >
+                             <div class="input-control file info-state size5" data-role="input-control" >
                                <input type="hidden" id="photoH"/>
                                <div id="photoDV" class="input-control file" data-role="input-control">
                                <input onchange="PreviewImage(this);" id="photoTB" name="photoTB" type="file">
@@ -385,7 +385,11 @@
                         <label>Golongan Darah :</label>
                         <div class="input-control select size2">
                             <select id="goldarahTB" name="goldarahTB">
-                              <option>-</option>
+                              <option value="-">-</option>
+                              <option value="O">O</option>
+                              <option value="A">A</option>
+                              <option value="B">B</option>
+                              <option value="AB">AB</option>
                             </select>
                         </div>
 
@@ -431,18 +435,21 @@
                                         </label>
                                         </div>
                                         <div class="input-control radio">
-                                        <label>
-                                            <input value="1" type="radio" name="saudaraTB" id="saudaraTB" />
+                                        <label style="display:visible;">
+                                            <input value="1" type="radio" name="saudaraTB" id="saudara2TB" />
                                             <span class="check"></span>
                                             Luar Sekolah
                                         </label>
                                         </div>
                                         <label></label>
-                                        <div class="input-control text size5">
-                                            <input placeholder="Nama Saudara" type="text" name="nama_saudaraTB" id="nama_saudaraTB">
+                                        <div class="input-control text size5" id="saudara">
+                                            <input placeholder="Saudara Satu Sekolah" type="text" name="nama_saudaraTB" id="nama_saudaraTB">
+                                        </div>
+                                        <div class="input-control text size5" style="display:none;" id="saudara2">
+                                            <input placeholder="Saudara Luar Sekolah" type="text" name="nama_saudara2TB" id="nama_saudara2TB">
                                         </div>
 
-                                        <table class="table hovered bordered striped" id="saudaraTBL">
+                                        <table class="table hovered bordered striped">
                                             <thead>
                                                 <tr style="color:white;"class="info">
                                                     <th class="text-left">Nama</th>
@@ -451,7 +458,7 @@
                                                 </tr>
                                             </thead>
 
-                                            <tbody id="tbody">
+                                            <tbody id="saudaraTBL">
 
                                             </tbody>
 
