@@ -1,4 +1,5 @@
 <?php
+
 	session_start();
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';

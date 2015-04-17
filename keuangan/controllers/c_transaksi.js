@@ -1,3 +1,4 @@
+
 var mnu       ='transaksi'; 
 var mnu2      ='lokasi'; 
 
