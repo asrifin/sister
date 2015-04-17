@@ -123,6 +123,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         });
         // default tampilkan jurnal umum 
         juVW();
+        nsVW();
     }); 
 // end of main function ---------
 
@@ -180,6 +181,25 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                 }
             });
         }
+
+        function nsVW(){  
+            var aksi ='aksi=tampil&subaksi=ns';
+            var cari ='&ns_kodeS='+$('#ns_kodeS').val()
+                     +'&ns_namaS='+$('#ns_namaS').val();
+            $.ajax({
+                url : dir,
+                type: 'post',
+                data: aksi+cari,
+                beforeSend:function(){
+                    $('#ns_tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
+                },success:function(dt){
+                    setTimeout(function(){
+                        $('#ns_tbody').html(dt).fadeIn();
+                    },1000);
+                }
+            });
+        }
+
 
 // fungsi AJAX : asyncronous
     function ajax(u,d) {
