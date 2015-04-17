@@ -15,7 +15,6 @@
 
 <div class="toolbar">
     <div class="toolbar-group fg-white transparent ">
-        <!-- <button id="testBC" class="bg-black" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></button> -->
         <button id="ju_addBC" class="bg-blue" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></button>
         <button id="inBC"class="bg-green" data-hint="Pemasukkan"><i class="icon-download-2"></i></button>
         <button id="out_BC"class="bg-red" data-hint="Pengeluaran"><i class="icon-upload-3"></i></button>
@@ -41,14 +40,14 @@
             <div class="row">
                 <div class="span3 input-control checkbox" >
                     <label>
-                        <input checked="checked" type="checkbox" />
+                        <input class="cari"  name="jenisCB[]" value="8" checked="checked" type="checkbox" />
                         <span class="check"></span>
                         Jurnal Umum 
                     </label>
                 </div>
                 <div class="span4 input-control checkbox" >
                     <label>
-                        <input checked="checked" type="checkbox" />
+                        <input  class="cari"  name="jenisCB[]" value="1"  checked="checked" type="checkbox" />
                         <span class="check"></span>
                         Transaksi Pemasukkan dari Siswa
                     </label>
@@ -59,14 +58,14 @@
             <div class="row">
                 <div class="span3 input-control checkbox" >
                     <label>
-                        <input checked="checked" type="checkbox" />
+                        <input  class="cari"  name="jenisCB[]" value="4"  checked="checked" type="checkbox" />
                         <span class="check"></span>
                         Transaksi Pemasukkan 
                     </label>
                 </div>
                 <div class="span4 input-control checkbox" >
                     <label>
-                        <input checked="checked" type="checkbox" />
+                        <input  class="cari"  name="jenisCB[]" value="2"  checked="checked" type="checkbox" />
                         <span class="check"></span>
                         Transaksi Pemasukkan dari calon Siswa
                     </label>
@@ -77,14 +76,14 @@
             <div class="row">
                 <div class="span3 input-control checkbox" >
                     <label>
-                        <input checked="checked" type="checkbox" />
+                        <input  class="cari"  name="jenisCB[]" value="7"  checked="checked" type="checkbox" />
                         <span class="check"></span>
                         Transaksi Pengeluaran 
                     </label>
                 </div>
                 <div class="span4 input-control checkbox" >
                     <label>
-                        <input checked="checked" type="checkbox" />
+                        <input  class="cari"  name="jenisCB[]" value="5"  checked="checked" type="checkbox" />
                         <span class="check"></span>
                         Transaksi Penerimaan Barang
                     </label>
@@ -93,11 +92,11 @@
             <!--end of row 1 -->
         </div>
     </div>
-    <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
+    <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
         <input type="text" id="tgl1TB">
         <button class="btn-date"></button>
     </div> s/d
-    <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
+    <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
         <input type="text" id="tgl2TB">
         <button class="btn-date"></button>
     </div> 
@@ -133,6 +132,10 @@
                 <button id="juBC" data-hint="Pencarian" data-hint-position="top">
                     <i class="icon-search" ></i>
                 </button>
+                <button id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <i class="icon-printer" ></i>
+                </button>
+
                 <div class="span3 place-right input-control checkbox" >
                     <label>
                         <input checked="checked" id="ju_detiljurnalCB" type="checkbox" />

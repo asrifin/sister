@@ -58,7 +58,7 @@
                 <table width="100%">
                   <tr>
                     <td>Tahun Buku </td>
-                    <td>: '.$r1['tahunbuku'].'</td>
+                    <td>: '.getTahunBuku('nama').'</td>
                     <td></td>
                   </tr>
                   <tr>
