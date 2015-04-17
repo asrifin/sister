@@ -266,6 +266,7 @@
 		$s = 'SELECT '.$x.' FROM keu_tahunbuku WHERE aktif =1';
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
+		// var_dump($s);exit();
 		return $r[$x];
 	}function getJenisTrans($id){
 		$s='SELECT * FROM keu_jenistrans WHERE replid='.$id;

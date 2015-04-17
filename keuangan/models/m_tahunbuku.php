@@ -85,6 +85,7 @@
 				$s = $tb.' set 	nama       = "'.filter($_POST['namaTB']).'",
 								tanggal1   = "'.filter($_POST['tanggal1TB']).'",
 								keterangan = "'.filter($_POST['keteranganTB']).'"';
+				$thBukuLama = getTahunBuku('replid');
 				
 				if(!isset($_POST['replid'])){ //add
 					if(mysql_num_rows(mysql_query('SELECT * from '.$tb))>0){
@@ -95,22 +96,26 @@
 					$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
 				}
 
+				// var_dump($thBukuLama);exit();
 				$ssr = 'SELECT max(replid) from keu_tahunbuku';
 				$esr = mysql_query($ssr);
 				$rsr = mysql_fetch_assoc($esr);
 
 
 				$e2 = mysql_query($s2);
-				$id = mysql_insert_id();
-				// var_dump($id);exit();
+				$idth = mysql_insert_id();
+				// var_dump($idth);exit();
 				if(!$e2){ // gagal simpan
 					$stat = 'gagal menyimpan';
 				}else{// berhasil simpan 
-					if($id='' or $id=null){ // add mode
+					if($idth='' or $idth=null){ // add mode
 						$stat='sukses';
 					}else{
-						
-						$sr = 'SELECT * from keu_detilrekening';
+						$sr = ' SELECT * 
+								FROM keu_detilrekening d 
+								LEFT JOIN keu_saldorekening s on s.rekening = d.replid
+								WHERE tahunbuku='.$thBukuLama;
+							// var_dump($sr);exit();
 						$er = mysql_query($sr);
 						$stat2 = true;
 						if(mysql_num_rows($er)>0){ // ada rekening
@@ -119,8 +124,8 @@
 								$nominal = $rc['nominal2']!=0?',nominal='.$rc['nominal2'].',nominal2='.$rc['nominal2']:'';
 								$si = 'INSERT INTO keu_saldorekening 
 										SET rekening  = '.$rc['replid'].',
-											tahunbuku = '.$id.$nominal;
-											var_dump($id);exit();
+											tahunbuku = '.$idth.$nominal;
+											var_dump($si);exit();
 								$ei   = mysql_query($si);
 								$stat2 =!$ei?false:true;						
 							} //end of rekap saldo rekening
