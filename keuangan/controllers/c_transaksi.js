@@ -18,7 +18,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             $('#tgl2TB').val(getLastDate());
         });
     //form content
-        ju_contentFR += '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="juSV(this); return false;" id="'+mnu+'FR">'
+        ju_contentFR += '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="transSV(this); return false;" id="ju">'
                         +'<input id="ju_idformH" type="hidden">' 
 
                         +'<label>No. Jurnal</label>'
@@ -68,13 +68,13 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                                 //1
                                 +'<tr>'
                                     +'<td>'
-                                        +'<input id="ju_rek1H" name="ju_rek1H[]" type="hidden" />'
+                                        +'<input id="ju_rek1H" name="ju_rek1H" type="hidden" />'
                                         +'<span class="input-control text">'
                                             +'<input id="ju_rek1TB" name="ju_rek1TB" placeholder="rekening" type="text" />'
                                             +'<button class="btn-clear"></button>'
                                         +'</span>'
                                     +'</td>'
-                                    +'<td><input disabled name="ju_jenis1TB" id="ju_jenis1TB"type="text"/></td>'
+                                    +'<td><input value="debit" disabled name="ju_jenis1TB" id="ju_jenis1TB"type="text"/></td>'
                                     +'<td><input onfocus="inputuang(this);" onclick="inputuang(this);"  name="ju_nominal1TB" type="text"  placeholder="nominal"/></td>'
                                 +'</tr>'
                                 //2
@@ -86,7 +86,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                                             +'<button class="btn-clear"></button>'
                                         +'</span>'
                                     +'</td>'
-                                    +'<td><input disabled name="ju_jenis2TB" id="ju_jenis2TB"type="text"/></td>'
+                                    +'<td><input value="kredit" disabled name="ju_jenis2TB" id="ju_jenis2TB"type="text"/></td>'
                                     +'<td><input onfocus="inputuang(this);" onclick="inputuang(this);"  name="ju_nominal2TB" type="text"  placeholder="nominal"/></td>'
                                 +'</tr>'
                             +'</tbody>'
@@ -122,7 +122,8 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             $('.uraianCOL').toggle();
         });
         // default tampilkan jurnal umum 
-        juVW();
+        viewTB('ju');
+        // juVW();
     }); 
 // end of main function ---------
 
@@ -162,24 +163,62 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
 //end of paging ---
 
 /*view*/
-    // ju ---
-        function juVW(){  
-            var aksi ='aksi=tampil&subaksi=ju';
-            var cari ='&ju_noS='+$('#ju_noS').val()
-                     +'&ju_uraianS='+$('#ju_uraianS').val();
-            $.ajax({
-                url : dir,
-                type: 'post',
-                data: aksi+cari,
-                beforeSend:function(){
-                    $('#ju_tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
-                },success:function(dt){
-                    setTimeout(function(){
-                        $('#ju_tbody').html(dt).fadeIn();
-                    },1000);
-                }
-            });
+    // view table ---
+    function viewTB(subaksi){
+        var aksi ='aksi=tampil';
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
         }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
+        $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi+cari,
+            beforeSend:function(){
+                $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                setTimeout(function(){
+                    $(el2).html(dt).fadeIn();
+                },1000);
+            }
+        });
+    }
+// end of view table
+
+        // function juVW(){  
+        //     var aksi ='aksi=tampil&subaksi=ju';
+        //     var cari ='&ju_noS='+$('#ju_noS').val()
+        //              +'&ju_uraianS='+$('#ju_uraianS').val();
+        //     $.ajax({
+        //         url : dir,
+        //         type: 'post',
+        //         data: aksi+cari,
+        //         beforeSend:function(){
+        //             $('#ju_tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+        //         },success:function(dt){
+        //             setTimeout(function(){
+        //                 $('#ju_tbody').html(dt).fadeIn();
+        //             },1000);
+        //         }
+        //     });
+        // }
 
 // fungsi AJAX : asyncronous
     function ajax(u,d) {
@@ -206,7 +245,18 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
 
 /*save (insert & update)*/
     //jurnal umum  ---
-    function juSV(e){
+    // function juSV(e){
+    function transSV(e){
+        var url  = dir;
+        var data = $(e).serialize()+'&aksi=simpan&subaksi='+$(e).attr('id');
+        ajax(url,data).done(function (dt) {
+            if(dt.status!='sukses') notif(dt.status,'red');
+            else {
+                $('#'+typ+'_nomerTB').val(dt.kode);
+                $('#'+typ+'_tanggalTB').val(getToday());
+            } 
+        });
+
         var url  = dir;
         var data = $(e).serialize()+'&aksi=simpan&subaksi=ju';
         // edit mode
@@ -300,6 +350,8 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             padding: 10,
             onShow: function(){
                 kodeTrans(typ);
+                comboSuggest('ju_rek1TB','ju_rek1H','debit');
+                comboSuggest('ju_rek2TB','ju_rek2H','kredit');
                 // alert(getToday());
                 // $('#'+typ+'_tanggalTB').val('okoko');
                 // $('#'+typ+'_tanggalTB').val(getToday());
@@ -307,8 +359,44 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                 $.Dialog.content(cont);
             }
         });
-    }
 
+    }
+    function comboSuggest(x,y,typ){ // hidden , display
+        return $('#'+x).combogrid({
+            debug:true,
+            width:'600px',
+            colModel: [{
+                    // 'align':'left',
+                    'columnName':'kode',
+                    // 'hide':true,
+                    'width':'15',
+                    'label':'KODE'
+                },{   
+                    'align':'left',
+                    'columnName':'nama',
+                    'width':'85',
+                    'label':'NAMA'
+            }],
+            url: dir+'?aksi=autocomp&jenis='+typ,
+            select: function( event, ui ) {
+                $('#'+y).val(ui.item.replid);
+                $(this).val(ui.item.nama);
+                
+                // validasi input (tidak sesuai data dr server)
+                    $(this).on('keyup', function(e){
+                        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+                        var keyCode = $.ui.keyCode;
+                        if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
+                            if($('#'+y).val()!=''){
+                                $('#'+y).val('');
+                                $('#'+x).val('');
+                            }
+                        }
+                    });
+                return false;
+            }
+        }); 
+    }
 /* form jurnal umum (add & edit) */
     function juFR(id){
         if(id!=''){ // edit mode
@@ -388,41 +476,6 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         // });
     }
 
-
-            // $("#a_rekeningTB").combogrid({
-            //     debug:true,
-            //     width:'600px',
-            //     colModel: [{
-            //             // 'align':'left',
-            //             'columnName':'kode',
-            //             // 'hide':true,
-            //             'width':'15',
-            //             'label':'KODE'
-            //         },{   
-            //             'align':'left',
-            //             'columnName':'nama',
-            //             'width':'85',
-            //             'label':'NAMA'
-            //     }],
-            //     url: dir+'?aksi=autocomp',
-            //     select: function( event, ui ) {
-            //         $('#a_rekeningH').val(ui.item.replid);
-            //         $(this).val(ui.item.nama);
-                    
-            //         // validasi input (tidak sesuai data dr server)
-            //             $(this).on('keyup', function(e){
-            //                 var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-            //                 var keyCode = $.ui.keyCode;
-            //                 if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
-            //                     if($('#a_rekeningH').val()!=''){
-            //                         $('#a_rekeningH').val('');
-            //                         $('#a_rekeningTB').val('');
-            //                     }
-            //                 }
-            //             });
-            //         return false;
-            //     }
-            // });
 
 /*reset form*/
     //jurnal umm   ---

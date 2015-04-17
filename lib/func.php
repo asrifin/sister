@@ -263,7 +263,7 @@
 		$operator = ($r['jenis']=='debit' OR $r['jenis']=='debit_kredit')?'+':'-';
 		return $operator; 
 	}function getTahunBuku($x){
-		$s = 'SELECT '.$x.' FROM keu_tahunbuku WHERE replid =1';
+		$s = 'SELECT '.$x.' FROM keu_tahunbuku WHERE aktif =1';
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r[$x];

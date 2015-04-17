@@ -31,10 +31,17 @@
 
 				if(!$sidx) 
 					$sidx =1;
-				$ss='SELECT *
-					FROM '.$tb2.' 
-					WHERE	kode  LIKE "%'.$searchTerm.'%"
-							OR nama LIKE "%'.$searchTerm.'%"';
+				$ss='SELECT
+						d.*,
+						k.jenis
+					FROM
+						keu_detilrekening d 
+						LEFT JOIN keu_kategorirekening k on k.replid = d.kategorirekening
+					WHERE
+						k.jenis="'.$_GET['jenis'].'" AND (
+							d.kode LIKE "%'.$searchTerm.'%"
+							OR d.nama LIKE "%'.$searchTerm.'%"
+						)';
 				// print_r($ss);exit();
 				$result = mysql_query($ss);
 				$row    = mysql_fetch_array($result,MYSQL_ASSOC);
