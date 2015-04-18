@@ -70,9 +70,9 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen     	= isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
-				$tingkat       		= isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
-				$tahunajaran        = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
+				$subtingkat = isset($_POST['subtingkatS'])?filter($_POST['subtingkatS']):'';
+				$kelas      = isset($_POST['kelasS'])?filter($_POST['kelasS']):'';
+				$wali       = isset($_POST['waliS'])?filter($_POST['waliS']):'';
 
 				$sql ='SELECT 
 							k.replid,
@@ -86,10 +86,9 @@
 							LEFT JOIN departemen d ON d.replid=t.departemen
 							LEFT JOIN aka_tingkat g ON g.replid=k.tingkat
 						WHERE
-							k.tahunajaran='.$tahunajaran.' AND
-							k.tingkat='.$tingkat.' AND 
-							t.departemen ='.$departemen.'
-
+							k.subtingkat='.$subtingkat.' AND 
+							p.nama LIKE"%'.$wali.'%" AND
+							k.kelas LIKE"%'.$kelas.'%"
 						ORDER BY
 							k.kelas ASC';
 							// t.replid ='.$tahunajaran.$tingkat.'
@@ -145,16 +144,14 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
-								kelas    	= "'.filter($_POST['kelasTB']).'",
-								kapasitas    	= "'.filter($_POST['kapasitasTB']).'",
-								tingkat    	= "'.filter($_POST['tingkatH']).'",
-								wali    	= "'.filter($_POST['guruH']).'",
-								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
+				$s = $tb.' set 	kelas       = "'.filter($_POST['kelasTB']).'",
+								kapasitas   = "'.filter($_POST['kapasitasTB']).'",
+								subtingkat  = "'.$_POST['subtingkatH'].'",
+								wali        = "'.$_POST['guruH'].'",
+								keterangan  = "'.filter($_POST['keteranganTB']).'"';
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2 = mysql_query($s2);
-								// print_r($e2);exit();
 				if(!$e2){
 					$stat = 'gagal menyimpan';
 				}else{
