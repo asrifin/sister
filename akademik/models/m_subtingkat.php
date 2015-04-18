@@ -14,13 +14,13 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tingkat = isset($_POST['tingkatS'])?$_POST['tingkatS']:'';
-				$sql     = 'SELECT *
-							FROM  aka_subtingkat
-							WHERE 
-								tingkat = '.$tingkat.'
-							ORDER 
-								BY replid asc';
+				$tingkat    = isset($_POST['tingkatS'])?$_POST['tingkatS']:'';
+				$subtingkat = isset($_POST['subtingkatS'])?$_POST['subtingkatS']:'';
+				$sql = 'SELECT *
+						FROM  aka_subtingkat
+						WHERE tingkat = '.$tingkat.' AND
+							 subtingkat LIKE "%'.$subtingkat.'%"
+						ORDER  BY replid asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -120,8 +120,7 @@
 				}else{
 					if(isset($_POST[$mnu])){
 						$w='where '.$mnu.'='.$_POST[$mnu];
-					}
-					else{
+					}else{
 						$w='where tingkat='.$_POST['tingkat'];
 					}
 				}
@@ -149,7 +148,7 @@
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
 						}
-						$ar = array('status'=>'sukses','nama'=>$dt);
+						$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;

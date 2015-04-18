@@ -14,13 +14,16 @@
 <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 <div class="input-control select span3">
-    <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
+    <select  xclass="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
+    <select  xclass="cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Tingkat" name="tingkatS" id="tingkatS"></select>
+    <select  xclass="cari" data-hint="Tingkat" name="tingkatS" id="tingkatS"></select>
+</div>
+<div class="input-control select span3">
+    <select  class="cari" data-hint="Sub Tingkat" name="subtingkatS" id="subtingkatS"></select>
 </div>
 
 <table class="table hovered bordered striped">
@@ -34,15 +37,15 @@
             <th class="text-left">Keterangan</th>
             <th class="text-left">Aksi</th>
         </tr>
-        <!-- <tr style="display:none;" id="cariTR" class="selected">
+        <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-left"></th>
-            <th class="text-left"><input placeholder="kelas" id="kelasS" name="kelasS"></th>
-            <th class="text-left"><input placeholder="wali" id="waliS" name="waliS"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
+            <th class="text-left"><input class="cari" placeholder="kelas" id="kelasS" name="kelasS"></th>
+            <th class="text-left"><input class="cari" placeholder="wali" id="waliS" name="waliS"></th>
             <th class="text-left"></th>
             <th class="text-left"></th>
-        </tr> -->
+            <th class="text-left"></th>
+            <th class="text-left"></th>
+        </tr>
     </thead>
 
     <tbody id="tbody">

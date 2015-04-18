@@ -55,7 +55,6 @@ var contentFR = '';
 
         //search action
         $('#departemenS').on('change',function (){
-            // alert($(this).val());
             cmbtahunajaran('filter',$(this).val(),'');
         });
         $('#tahunajaranS').on('change',function (){
@@ -64,12 +63,14 @@ var contentFR = '';
         $('#tingkatS').on('change',function (){
             viewTB();
         });
+        $('#subtingkatS').on('keydown',function (e){ // kode grup
+            if(e.keyCode == 13) viewTB();
+        });
 
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
-            $('#tingkatS').val('');
-            $('#keteraganS').val('');
+            $('#subtingkatS').val('');
         });
     }); 
 // end of save process ---
