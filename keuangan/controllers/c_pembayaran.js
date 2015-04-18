@@ -23,37 +23,34 @@ var contentFR ='';
     $(document).ready(function(){
         cmbdepartemen('filter','');
         // switchPN('pendaftaran');
-
+    // ---------------------
         // event  filter : departemen 
         $('#departemenS').on('change',function(){
-            // alert(curTab());
             switchPN(curTab());
         });
         // event filter : pendaftaran
         $('#prosesS').on('change',function(){
             cmbkelompok('filter',$(this).val());
-        });$('#tahunajaranS').on('change',function(){
-            cmbtingkat('filter',$(this).val());
         });$('#kelompokS').on('change',function(){
             viewTB('pendaftaran');
         });
+
         // event filter : dpp 
         $('#angkatanS').on('change',function(){
             viewTB('dpp');
-        });        
+        });
+        
         // event filter : spp
-        // $('#tahunajaranS').on('change',function(){
-        //     cmbtingkat('filter',$(this).val());
-        // });
-        // $('#tingkatS').on('change',function(){
-        //     cmbsubtingkat('filter',$(this).val());
-        // });        
-        // $('#subtingkatS').on('change',function(){
-        //     cmbkelas('filter',$(this).val());
-        // });
-        // $('#kelasS').on('change',function(){
-        //     viewTB(curTab());
-        // });
+        $('#tahunajaranS').on('change',function(){
+            cmbtingkat('filter',$(this).val());
+        });$('#tingkatS').on('change',function(){
+            cmbsubtingkat('filter',$(this).val());
+        });$('#subtingkatS').on('change',function(){
+            cmbkelas('filter',$(this).val());
+        });$('#kelasS').on('change',function(){
+            viewTB(curTab());
+        });
+    // --------------------------
         // event : button click
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
@@ -65,6 +62,7 @@ var contentFR ='';
             $('#tgl1TB').val(getFirstDate());
             $('#tgl2TB').val(getLastDate());
         });
+    // --------------------------
     //form content
         contentFR+= '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="pembayaranSV(this); return false;" id="'+mnu+'FR">'
                         +'<div class="form-actions">' 
@@ -735,7 +733,7 @@ var contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.tingkat, function(id,item){
-                        out+='<option value="'+item.replid+'"> '+item.tingkat+'</option>';
+                        out+='<option value="'+item.replid+'"> '+item.keterangan+'</option>';
                     });
                     if(typ=='filter'){
                         $('#tingkatS').html(out);
@@ -761,12 +759,12 @@ var contentFR ='';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    $.each(dt.nama, function(id,item){
+                    $.each(dt.subtingkat, function(id,item){
                         out+='<option value="'+item.replid+'"> '+item.subtingkat+'</option>';
                     });
                     if(typ=='filter'){
                         $('#subtingkatS').html(out);
-                        cmbkelas('filter',dt.nama[0].replid);
+                        cmbkelas('filter',dt.subtingkat[0].replid);
                     }else{
                         $('#subtingkatTB').html(out);
                     }

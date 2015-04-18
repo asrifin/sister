@@ -97,12 +97,12 @@
 				}
 
 				// var_dump($thBukuLama);exit();
-				$ssr = 'SELECT max(replid) from keu_tahunbuku';
-				$esr = mysql_query($ssr);
-				$rsr = mysql_fetch_assoc($esr);
+				// $ssr = 'SELECT max(replid) from keu_tahunbuku';
+				// $esr = mysql_query($ssr);
+				// $rsr = mysql_fetch_assoc($esr);
 
 
-				$e2 = mysql_query($s2);
+				$e2   = mysql_query($s2);
 				$idth = mysql_insert_id();
 				// var_dump($idth);exit();
 				if(!$e2){ // gagal simpan
@@ -111,18 +111,18 @@
 					if($idth='' or $idth=null){ // add mode
 						$stat='sukses';
 					}else{
-						$sr = ' SELECT * 
+						$sr   ='SELECT d.replid,s.nominal,s.nominal2 
 								FROM keu_detilrekening d 
 								LEFT JOIN keu_saldorekening s on s.rekening = d.replid
 								WHERE tahunbuku='.$thBukuLama;
 							// var_dump($sr);exit();
-						$er = mysql_query($sr);
+						$er    = mysql_query($sr);
 						$stat2 = true;
 						if(mysql_num_rows($er)>0){ // ada rekening
 							$stat='ada data';
 							while ($rc=mysql_fetch_assoc($er)) { // rekap saldo rekening untuk tahun x (baru) 
 								$nominal = $rc['nominal2']!=0?',nominal='.$rc['nominal2'].',nominal2='.$rc['nominal2']:'';
-								$si = 'INSERT INTO keu_saldorekening 
+								$si = ' INSERT INTO keu_saldorekening 
 										SET rekening  = '.$rc['replid'].',
 											tahunbuku = '.$idth.$nominal;
 											var_dump($si);exit();
