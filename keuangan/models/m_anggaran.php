@@ -105,13 +105,14 @@
 								FROM '.$tb.' a
 									LEFT JOIN keu_detilrekening d on d.replid = a.rekening
 								WHERE
-									'.$a_departemen.'
-									a.rekening like "%'.$a_rekening.'%" and
-									a.nama like "%'.$a_nama.'%" and
+									'.$a_departemen.'(
+										a.rekening like "%'.$a_rekening.'%" OR
+										d.kode like "%'.$a_rekening.'%" 
+									) AND a.nama like "%'.$a_nama.'%" AND
 									a.keterangan like "%'.$a_keterangan.'%" 
 								ORDER BY
 									a.replid asc';
-						// print_r($sql);exit(); 	
+						print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{

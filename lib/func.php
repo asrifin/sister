@@ -322,8 +322,8 @@
 	}function getRekening($id){
 		$s='SELECT concat(kode," - ",nama)rekening FROM keu_detilrekening WHERE replid='.$id;
 		$e=mysql_query($s);
-		// var_dump($s);exit();
 		$r=mysql_fetch_assoc($e);
+		// var_dump($r);exit();
 		return $r['rekening'];
 	}
 
