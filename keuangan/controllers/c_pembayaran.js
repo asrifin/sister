@@ -503,15 +503,7 @@ var contentFR ='';
                         $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nSiswa : '+dt.datax.siswa+' \nNIS : '+dt.datax.nis);
                         // detail pembayaran (nominal dll)
                         $('#nominalTB').val(dt.datax.nominal);
-                        $('#nominalnetTB').val(dt.datax.nominalnet);
-                        $('#disctotalTB').val(dt.datax.disctotal);
-                        $('#jmlangsurTB').val(dt.datax.jmlangsur+' x '+dt.datax.angsuran);
-                        // data sudah terbayar 
-                        $('#terbayarTB').val(dt.datax.terbayar);
-                        // data akan dibayar
-                        // $('#akanbayarTB').val(dt.datax.angsuran);
-                        cmbakanbayar('dpp',dt.datax.idsiswa);
-                    $('.dppgrup').toggle('slow');               
+                    // $('.dppgrup').toggle('slow');               
                 }
             }
         });loadModal(typ,contentFR);

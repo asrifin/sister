@@ -305,13 +305,13 @@
 									ORDER BY 
 										c.nama asc';
 						// print_r($sql);exit(); 		
-						if(isset($_POST['starting'])){ //nilai awal halaman
+						if(isset($_POST['starting'])){
 							$starting=$_POST['starting'];
 						}else{
 							$starting=0;
 						}
 
-						$recpage = 5;//jumlah data per halaman
+						$recpage = 10;//jumlah data per halaman
 						$aksi    ='tampil';
 						$subaksi ='spp';
 						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
@@ -319,7 +319,8 @@
 
 						#ada data
 						$jum = mysql_num_rows($result);
-						$out ='';$totaset=0;
+						$out ='';
+						$totaset=0;
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
@@ -349,7 +350,7 @@
 									</button>
 								</td>';
 								
-								$spp = 'Rp '.number_format(getBiaya('spp',$res['replid']));
+								$spp = 'Rp '.number_format(getBiaya('spp',$res['siswa']));
 								$out.= '<tr>
 											<td>'.$res['nis'].'</td>
 											<td>'.$res['nama'].'</td>
@@ -463,20 +464,18 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				// 1. simpan pembayaran
-				if($_POST['subaksi']=='pendaftaran'){ //pendaftaran
-					$nominal = getBiaya($_POST['subaksi'],$_POST['idsiswaH']);
-				}else{ // dpp & spp
+				$nominal = getBiaya($_POST['subaksi'],$_POST['idsiswaH']); // pendaftaran & spp
+				if($_POST['subaksi']=='dpp'){ // dpp 
 					$nominal = $_POST['akanbayarTB'] * getAngsurNom($_POST['subaksi'],$_POST['idsiswaH']);
-				}
-				$s 	= 'INSERT INTO '.$tb.' set  modul   = '.$_POST['idmodulH'].',
+				}$s = 'INSERT INTO '.$tb.' set 	modul   = '.$_POST['idmodulH'].',
 												cicilan = '.$nominal.',
 												siswa   = '.$_POST['idsiswaH'];
+				// var_dump($nominal);exit();	
 				$e  = mysql_query($s);
 				$id = mysql_insert_id();
 				if(!$e) $stat='gagal_insert_pembayaran';
 				else{
 					// 2. simpan transaksi
-															// nomer      ="'.$_POST['nomerTB'].'",
 					$s2 = 'INSERT INTO keu_transaksi SET 	tahunbuku  ='.getTahunBuku('replid').',
 															pembayaran ='.$id.',
 															nominal    ='.$nominal.',
@@ -586,9 +585,9 @@
 								WHERE
 									m.angkatan = '.$r1['angkatan'].' AND 
 									k.nama = "pendaftaran"';
-							// print_r($s2);exit();
 						$e2   = mysql_query($s2);
 						$r2   = mysql_fetch_assoc($e2);
+							// print_r($r2);exit();
 						$stat = ($e2)?'sukses':'gagal';
 						$out  = json_encode(array(
 									'status' =>$stat,
@@ -705,6 +704,54 @@
 										'angsuran'     	=>'Rp. '.number_format($r1['nominalnet']/$r1['cicilan']),		// angsuran (Rp. ) 
 										// data nominal (terbayar)
 										'terbayar'     	=>'Rp. '.number_format($r3['terbayar'])
+								)));					
+					break;
+
+					case 'spp';
+						$sis  = $_POST['replid'];			  // 
+						$kel  = getSiswaBy('kelompok',$sis);  // 5
+						$pros = getKelompok('proses',$kel);   // 3
+						$ang  = getAngkatan('replid',$pros);  // 3
+
+						// get data : modul pembayaran (untuk form) 
+						$s2   = 'SELECT
+									m.replid,
+									m.rek1,	
+									m.rek2,	
+									m.rek3,	
+									m.nama modul,
+									m.replid idmodul
+								FROM
+									keu_modulpembayaran m
+									LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+									LEFT JOIN keu_pembayaran p ON p.modul = m.replid
+								WHERE
+									m.angkatan = '.$ang.' AND 
+									k.nama = "spp"';
+									// var_dump($s2);exit();
+						$e2   = mysql_query($s2);
+						// var_dump($s2);exit();
+						$r2   = mysql_fetch_assoc($e2);
+
+						$stat = ($e2)?'sukses':'gagal';
+						$out  = json_encode(array(
+									'status' =>$stat,
+									'datax'  =>array(
+										//data siswa 
+										'nis'           =>getSiswaBy('nis',$sis),
+										'idsiswa'       =>$sis,
+										'siswa'         =>getSiswaBy('nama',$sis),
+										//info pembayaran
+										'nomer'         =>getNoTrans($_POST['subaksi']),
+										'tanggal'       =>tgl_indo5(date('Y-m-d')),
+										'rekkas'        =>$r2['rek1'],		// id rek. KAS
+										'rekitem'       =>$r2['rek2'],		// id rek. ITEM 
+										'rek1'          =>getRekening($r2['rek1']), // rek.KAS
+										'rek2'          =>getRekening($r2['rek2']), // rek.ITEM
+										'rek3'          =>getRekening($r2['rek3']), // rek.TAMBAHAN
+										'modul'         =>$r2['modul'],
+										'idmodul'       =>$r2['idmodul'],
+										'nominal'       =>'Rp. '.number_format(getBiaya('spp',$sis)), 	// spp
 								)));					
 					break;
 				}

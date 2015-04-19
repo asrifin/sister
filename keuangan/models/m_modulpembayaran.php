@@ -88,9 +88,7 @@
 							m.keterangan like "%'.$keterangan.'%" 
 						ORDER BY 
 							m.nama asc';
-							// m.nominal like "%'.$nominal.'%" and
-							// print_r($sql);	
-
+				// var_dump($sql);exit();	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
