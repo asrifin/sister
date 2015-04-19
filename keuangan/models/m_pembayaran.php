@@ -284,24 +284,26 @@
 
 					// spp 
 					case 'spp':
-						$kelas = isset($_POST['kelasS'])?filter(trim($_POST['kelasS'])):'';
-						$nis   = isset($_POST['nisS'])?filter(trim($_POST['nisS'])):'';
-						$nama  = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
-						$biaya = isset($_POST['biayaS'])?filter(trim($_POST['biayaS'])):'';
-
-						$sql       = 'SELECT
-											s.nis,
-											s.nama,
-											p.lunas
-										FROM
-											aka_siswa_kelas sk
-											LEFT JOIN aka_siswa s on s.replid = sk.siswa
-											LEFT JOIN keu_pembayaran p on p.siswa= s.replid
-											LEFT JOIN keu_modulpembayaran m on m.replid = p.modul
-											LEFT JOIN keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
-										WHERE	
-											k.nama 		= "spp" and 
-											sk.kelas 	='.$kelas;
+						$spp_kelas = isset($_POST['spp_kelasS'])?filter(trim($_POST['spp_kelasS'])):'';
+						$spp_nis   = isset($_POST['spp_nisS'])?filter(trim($_POST['spp_nisS'])):'';
+						$spp_nama  = isset($_POST['spp_namaS'])?filter(trim($_POST['spp_namaS'])):'';
+						
+						$sql   = 'SELECT
+										a.replid,
+										a.siswa,
+										c.nis,
+										c.nama,
+										k.kelas
+									FROM
+										aka_siswa_kelas a 
+										LEFT JOIN psb_calonsiswa c on c.replid = a.siswa 
+										LEFT JOIN aka_kelas k on k.replid = a.kelas
+									WHERE 
+										k.replid = '.$spp_kelas.' AND	
+										c.nis LIKE "%'.$spp_nis.'%" AND	
+										c.nama LIKE "%'.$spp_nama.'%" 
+									ORDER BY 
+										c.nama asc';
 						// print_r($sql);exit(); 		
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -321,17 +323,37 @@
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
-								$btn ='<td>
-											<button data-hint="ubah"  class="button" onclick="juFR('.$res['replid'].');">
-												<i class="icon-pencil on-left"></i>
-											</button>
-											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
-												<i class="icon-remove on-left"></i>
-										 </td>';
-								 $out.= '<tr>
+								$status = getStatusBayar('spp',$res['siswa']);
+								// var_dump($status);exit();
+								if($status=='belum'){ // belum
+									$clr  = 'red';
+									$icon = 'empty';
+									$hint = 'belum bayar';
+									$func = 'onclick="pembayaranFR(\'spp\','.$res['siswa'].');"';
+								}else{
+								 	if($status=='lunas'){ // lunas
+										$clr  = 'green';
+										$icon = 'full';
+										$hint = 'lunas';
+										$func = 'onclick="pembayaranFR(\'spp\','.$res['siswa'].');"';
+									}else{ // kurang
+										$clr  = 'yellow';
+										$icon = 'half';
+										$hint = 'kurang';
+										$func = 'onclick="pembayaranFR(\'spp\','.$res['siswa'].');"';
+									}
+								}
+								$btn ='<td align="center">
+									<button data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"   '.$func.'>
+										<i class="icon-battery-'.$icon.'"></i>
+									</button>
+								</td>';
+								
+								$spp = 'Rp '.number_format(getBiaya('spp',$res['replid']));
+								$out.= '<tr>
 											<td>'.$res['nis'].'</td>
 											<td>'.$res['nama'].'</td>
-											<td>'.$res['lunas'].'</td>
+											<td align="right">'.$spp.'</td>
 											'.$btn.'
 										</tr>';
 							}

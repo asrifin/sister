@@ -47,11 +47,11 @@ var contentFR ='';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
-                        +'<label>Nominal</label>'
-                        +'<div class="input-control text">'
-                            +'<input required onclick="inputuang(this);" placeholder="Nominal" name="nominalTB" id="nominalTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
+                        // +'<label>Nominal</label>'
+                        // +'<div class="input-control text">'
+                            // +'<input onclick="inputuang(this);" placeholder="Nominal" name="nominalTB" id="nominalTB">'
+                            // +'<button class="btn-clear"></button>'
+                        // +'</div>'
                         
                         +'<label>Cicilan</label>'
                         +'<div class="input-control text">'
@@ -98,7 +98,8 @@ var contentFR ='';
         });
         //search action // edit by epiii
         $('#departemenS,#katmodulpembayaranS,#angkatanS').on('change',viewTB);
-        $('#nominalS,#namaS,#keteranganS').on('keydown',function (e){ // kode grup
+        // $('#nominalS,#namaS,#keteranganS').on('keydown',function (e){ // kode grup
+        $('#namaS,#keteranganS').on('keydown',function (e){ // kode grup
             if(e.keyCode == 13)
                 viewTB();
         });
@@ -231,7 +232,7 @@ var contentFR ='';
                 +'&departemenS='+$('#departemenS').val()
                 +'&angkatanS='+$('#angkatanS').val()
                 +'&namaS='+$('#namaS').val()
-                +'&nominalS='+$('#nominalS').val()
+                // +'&nominalS='+$('#nominalS').val()
                 +'&namaS='+$('#namaS').val()
                 +'&keteranganS='+$('#keteranganS').val();
         $.ajax({
@@ -271,7 +272,7 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#nominalTB').val(dt.nominal);
+                            // $('#nominalTB').val(dt.nominal);
                             $('#diskonTB').val(dt.diskon);
                             $('#cicilanTB').val(dt.cicilan);
                             $('#biayaadminTB').val(dt.biayaadmin);

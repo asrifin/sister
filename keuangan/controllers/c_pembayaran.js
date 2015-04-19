@@ -34,20 +34,18 @@ var contentFR ='';
         });$('#kelompokS').on('change',function(){
             viewTB('pendaftaran');
         });
-
         // event filter : dpp 
         $('#angkatanS').on('change',function(){
             viewTB('dpp');
         });
-        
         // event filter : spp
-        $('#tahunajaranS').on('change',function(){
+        $('#spp_tahunajaranS').on('change',function(){
             cmbtingkat('filter',$(this).val());
-        });$('#tingkatS').on('change',function(){
+        });$('#spp_tingkatS').on('change',function(){
             cmbsubtingkat('filter',$(this).val());
-        });$('#subtingkatS').on('change',function(){
+        });$('#spp_subtingkatS').on('change',function(){
             cmbkelas('filter',$(this).val());
-        });$('#kelasS').on('change',function(){
+        });$('#spp_kelasS').on('change',function(){
             viewTB(curTab());
         });
     // --------------------------
@@ -187,6 +185,11 @@ var contentFR ='';
             $('#nisS').val('');
             $('#nilaiS').val('');
         });
+        $('#spp_cariBC').on('click',function(){
+            $('#sppTR').toggle('slow');
+            $('#spp_nisS').val('');
+            $('#spp_nilaiS').val('');
+        });
 
         //textbox search ---
         $('#nopendaftaranS,#namaS,#daftarS,#joiningfS').on('keydown',function (e){ // kode grup
@@ -194,6 +197,9 @@ var contentFR ='';
         });
         $('#nisS,#namaS,#nilaiS,#kuranganS').on('keydown',function (e){ // kode grup
             if(e.keyCode == 13) viewTB('dpp');
+        });
+        $('.spp_cari').on('keydown',function (e){ // kode grup
+            if(e.keyCode == 13) viewTB('spp');
         });
 
         // set default this month
@@ -483,7 +489,29 @@ var contentFR ='';
                         cmbakanbayar('dpp',dt.datax.idsiswa);
                     $('.dppgrup').toggle('slow');
                 }else{ //spp
-
+                    // hidden
+                    $('#idsiswaH').val(dt.datax.idsiswa);
+                    $('#idmodulH').val(dt.datax.idmodul);
+                    $('#rekkasH').val(dt.datax.rekkas);
+                    $('#rekitemH').val(dt.datax.rekitem);
+                    // display
+                        // info pembayaran 
+                        $('#tanggalTB').val(dt.datax.tanggal);
+                        $('#nomerTB').val(dt.datax.nomer);
+                        $('#rek1TB').val(dt.datax.rek1);
+                        $('#rek2TB').val(dt.datax.rek2);
+                        $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nSiswa : '+dt.datax.siswa+' \nNIS : '+dt.datax.nis);
+                        // detail pembayaran (nominal dll)
+                        $('#nominalTB').val(dt.datax.nominal);
+                        $('#nominalnetTB').val(dt.datax.nominalnet);
+                        $('#disctotalTB').val(dt.datax.disctotal);
+                        $('#jmlangsurTB').val(dt.datax.jmlangsur+' x '+dt.datax.angsuran);
+                        // data sudah terbayar 
+                        $('#terbayarTB').val(dt.datax.terbayar);
+                        // data akan dibayar
+                        // $('#akanbayarTB').val(dt.datax.angsuran);
+                        cmbakanbayar('dpp',dt.datax.idsiswa);
+                    $('.dppgrup').toggle('slow');               
                 }
             }
         });loadModal(typ,contentFR);
@@ -733,10 +761,10 @@ var contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.tingkat, function(id,item){
-                        out+='<option value="'+item.replid+'"> '+item.keterangan+'</option>';
+                        out+='<option value="'+item.replid+'"> '+item.keterangan+'('+item.tingkat+')</option>';
                     });
                     if(typ=='filter'){
-                        $('#tingkatS').html(out);
+                        $('#spp_tingkatS').html(out);
                         cmbsubtingkat('filter',dt.tingkat[0].replid);
                     }else{
                         $('#subtingkatTB').html(out);
@@ -760,10 +788,10 @@ var contentFR ='';
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
                     $.each(dt.subtingkat, function(id,item){
-                        out+='<option value="'+item.replid+'"> '+item.subtingkat+'</option>';
+                        out+='<option value="'+item.replid+'">Kelas '+item.subtingkat+'</option>';
                     });
                     if(typ=='filter'){
-                        $('#subtingkatS').html(out);
+                        $('#spp_subtingkatS').html(out);
                         cmbkelas('filter',dt.subtingkat[0].replid);
                     }else{
                         $('#subtingkatTB').html(out);
@@ -790,7 +818,7 @@ var contentFR ='';
                         out+='<option value="'+item.replid+'"> '+item.kelas+'</option>';
                     });
                     if(typ=='filter'){
-                        $('#kelasS').html(out);
+                        $('#spp_kelasS').html(out);
                         viewTB('spp');
                     }else{
                         $('#kelasTB').html(out);
@@ -820,7 +848,7 @@ var contentFR ='';
                             out+='<option value="'+item.replid+'"> '+item.tahunajaran+'</option>';
                     });
                     if(typ=='filter'){
-                        $('#tahunajaranS').html(out);
+                        $('#spp_tahunajaranS').html(out);
                         cmbtingkat('filter',dt.tahunajaran[0].replid);
                     }else{
                         $('#tahunajaranTB').html(out);

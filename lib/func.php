@@ -217,6 +217,7 @@
 		$rr = $r['terbayar']!=null?$r['terbayar']:0;
 		return $rr;
 	}function getBiaya($typ,$siswa){ // to get : nominal yg harus dibayar
+		// var_dump($typ.'-'.$siswa);exit();
 		if($typ=='pendaftaran'){ // formulir + joining fee
 			$f = '(b.daftar + b.joiningf)';
 		}elseif($typ=='daftar'){ // formulir
@@ -226,14 +227,14 @@
 		}elseif($typ=='dpp'){ // dpp
 			$f = 'b.nilai';
 		}else{ // spp
-			//code
+			$f = 'b.spp';
 		}
 			
 		$s = 'SELECT '.$f.' as '.$typ.'
 			  FROM psb_setbiaya b
 			  LEFT JOIN psb_calonsiswa c on c.setbiaya = b.replid
 			  WHERE c.replid ='.$siswa;
-			  // print_r($s);exit();
+			  // var_dump($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r[$typ];
