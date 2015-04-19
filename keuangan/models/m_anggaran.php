@@ -91,28 +91,30 @@
 				switch ($_POST['subaksi']) {
 					// kategori anggaran
 					case 'anggaran':
-						$a_departemen = isset($_POST['a_departemenS'])&& $_POST['a_departemenS']!=''?' a.departemen ='.$_POST['a_departemenS'].' AND ':'';
+						$a_departemen = isset($_POST['a_departemenS'])?$_POST['a_departemenS']:'';
 						$a_nama       = isset($_POST['a_namaS'])?filter(trim($_POST['a_namaS'])):'';
 						$a_rekening   = isset($_POST['a_rekeningS'])?filter(trim($_POST['a_rekeningS'])):'';
 						$a_keterangan = isset($_POST['a_keteranganS'])?filter(trim($_POST['a_keteranganS'])):'';
 
-						$sql = 'SELECT 
+						$sql = 'SELECT
 									a.replid,
 									a.nama,
 									a.keterangan,
 									d.nama namarek,
 									d.kode koderek
-								FROM '.$tb.' a
-									LEFT JOIN keu_detilrekening d on d.replid = a.rekening
+								FROM
+									keu_kategorianggaran a
+									LEFT JOIN keu_detilrekening d ON d.replid = a.rekening
 								WHERE
-									'.$a_departemen.'(
-										a.rekening like "%'.$a_rekening.'%" OR
-										d.kode like "%'.$a_rekening.'%" 
-									) AND a.nama like "%'.$a_nama.'%" AND
-									a.keterangan like "%'.$a_keterangan.'%" 
+									a.departemen = '.$a_departemen.'
+									AND a.nama LIKE "%'.$a_nama.'%"
+									AND (
+										d.nama LIKE "%'.$a_rekening.'%"
+										OR d.kode LIKE "%'.$a_rekening.'%"
+									)AND a.keterangan LIKE "%'.$a_keterangan.'%"
 								ORDER BY
-									a.replid asc';
-						print_r($sql);exit(); 	
+									a.replid ASC';
+						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
