@@ -13,7 +13,7 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<div style="overflow:scroll;height:500px;"  class="">'
+        contentFR += '<div style="overflow:scroll;height:600px;"  class="">'
                          + '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
@@ -45,7 +45,7 @@ var contentFR = '';
                             +'<div class="padding20">'
                                 +'<div class="input-control text">'
                                     +'<input placeholder="kode/nama pegawai" id="guruTB">'
-                                    +'<input  type="hidden" name="guruH" id="guruH" >'
+                                    +'<input  type="text" name="guruH" id="guruH" >'
                                     +'<button class="btn-clear"></button>'
                                 +'</div>'
                                 +'<label>NIP</label>'
@@ -93,7 +93,8 @@ var contentFR = '';
             viewFR('');
         });
 
-        //search action
+    /*filtering*/
+        // combo
         $('#departemenS').on('change',function(){
             cmbtahunajaran('filter',$(this).val());
         });$('#tahunajaranS').on('change',function (){
@@ -103,6 +104,18 @@ var contentFR = '';
         });$('#subtingkatS').on('change',function (){
             viewTB(); 
         })
+        //textbox
+        $('#kelasS,#waliS').keydown(function (e){
+            if(e.keyCode == 13) viewTB();
+        });
+
+        // button actions 
+        $('#cariBC').on('click',function(){
+            $('#cariTR').toggle('slow');
+            $('#kelasS').val('');
+            $('#waliS').val('');
+        });
+
 
     }); 
 // end of save process ---
@@ -212,7 +225,8 @@ var contentFR = '';
                     $('#subtingkatS').html(out);
                     viewTB();
                 }else{
-                    $('#subtingkatH').val(dt.subtingkat[0].subtingkat);
+                    // $('#subtingkatH').val($('#subtingkatS').val());
+                    // $('#subtingkatH').val(dt.subtingkat[0].subtingkat);
                     $('#subtingkatTB').val('Kelas '+dt.subtingkat[0].subtingkat);
                 }
             }
@@ -291,7 +305,7 @@ var contentFR = '';
 
 // form ---
     function viewFR(id){
-        var tkt = $('#tingkatS').val();
+        var thn = $('#tahunajaranS').val();
         $.Dialog({
             shadow:true,
             overlay:true,
@@ -301,12 +315,14 @@ var contentFR = '';
             padding:20,
             onShow: function(){
                 var titlex;
-                // alert($('#tahun').val());
+                // alert($('#subtingaktS').val());
                 cmbdepartemen('form',$('#departemenS').val());      
                 cmbtahunajaran('form','',$('#tahunajaranS').val());      
                 cmbtingkat('form','',$('#tingkatS').val());      
                 cmbsubtingkat('form','',$('#subtingkatS').val());      
-
+                setTimeout(function(){
+                    $('#subtingkatH').val($('#subtingkatS').val());
+                },1000);
                 if (id!=''){ // edit
                     $.ajax({
                         url:dir,
@@ -315,12 +331,12 @@ var contentFR = '';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#guruH').val(dt.wali);
-                            $('#kelasTB').val(dt.kelas);
-                            $('#kapasitasTB').val(dt.kapasitas);
-                            $('#waliTB').val(dt.nama);
-                            $('#nipTB').val(dt.nip);
-                            $('#keteranganTB').val(dt.keterangan);
+                            $('#guruH').val(dt.datax.idwali);
+                            $('#kelasTB').val(dt.datax.kelas);
+                            $('#kapasitasTB').val(dt.datax.kapasitas);
+                            $('#waliTB').val(dt.datax.nama);
+                            $('#nipTB').val(dt.datax.nip);
+                            $('#keteranganTB').val(dt.datax.keterangan);
                         }
                     });
                 }
@@ -335,15 +351,16 @@ var contentFR = '';
                     'align':'left',
                     'columnName':'nip',
                     'hide':true,
-                    'width':'55',
+                    'width':'25',
                     // 'width':'8',
-                    'label':'kode'
+                    'label':'NIP'
                 },{   
+                    'align':'left',
                     'columnName':'wali',
                     'width':'40',
-                    'label':'Barang'
+                    'label':'Wali Kelas'
                 }],
-            url: dir+'?aksi=autocomp&tingkat='+tkt,
+            url: dir+'?aksi=autocomp&tahunajaran='+thn,
             // url: dir+'?aksi=autocomp&lokasi='+lok+'&barang='+barangArr(),
             // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
             select: function( event, ui ) {

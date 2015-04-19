@@ -16,22 +16,37 @@
 			$sord       = $_GET['sord']; // get the direction
 			$searchTerm = $_GET['searchTerm'];
 
-
 			if(!$sidx) 
 				$sidx =1;
-			$ss=	'SELECT * 
-					FROM(
-						SELECT p.nama AS wali, p.nip, p.replid
-							
-						FROM hrd_pegawai p
-							LEFT JOIN aka_kelas k ON p.replid = k.wali
-						
-						)tb
-					WHERE	
-						tb.wali LIKE "%'.$searchTerm.'%"
-						OR tb.nip LIKE "%'.$searchTerm.'%"';
-							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
-			//print_r($ss);exit();
+			$ss='SELECT
+					p.nama AS wali,
+					p.nip,
+					p.replid,
+					k.kelas,
+					t.tahunajaran
+				FROM
+					hrd_pegawai p
+					LEFT JOIN aka_kelas k ON k.wali = p.replid
+					LEFT JOIN aka_subtingkat s ON s.replid = k.subtingkat
+					LEFT JOIN aka_tingkat t ON t.replid = s.tingkat
+				WHERE	
+					p.replid not in (
+						SELECT w.replid
+						FROM hrd_pegawai w
+							LEFT JOIN aka_kelas k ON k.wali = w.replid
+							LEFT JOIN aka_subtingkat s ON s.replid = k.subtingkat
+							LEFT JOIN aka_tingkat t ON t.replid = s.tingkat
+						WHERE	
+							t.tahunajaran = '.$_GET['tahunajaran'].'
+						GROUP BY 
+							w.replid
+					)AND (p.nama
+						LIKE "%'.$searchTerm.'%" OR 
+						p.nip LIKE "%'.$searchTerm.'%"
+					)';
+				// ORDER BY	
+				// 	p.nama ASC';
+			// print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -79,21 +94,23 @@
 							k.kelas,
 							p.nama AS wali,
 							k.kapasitas,
-							k.keterangan
+							k.keterangan,(
+								SELECT COUNT(*) 
+								FROM aka_siswa_kelas a
+								WHERE a.kelas=k.replid
+							)terisi
 						FROM aka_kelas k
 							LEFT JOIN hrd_pegawai p ON p.replid = k.wali
 							LEFT JOIN aka_tahunajaran t ON t.replid=k.tahunajaran
 							LEFT JOIN departemen d ON d.replid=t.departemen
 							LEFT JOIN aka_tingkat g ON g.replid=k.tingkat
 						WHERE
-							k.subtingkat='.$subtingkat.' AND 
+							k.subtingkat ='.$subtingkat.' AND 
 							p.nama LIKE"%'.$wali.'%" AND
 							k.kelas LIKE"%'.$kelas.'%"
 						ORDER BY
 							k.kelas ASC';
-							// t.replid ='.$tahunajaran.$tingkat.'
 				// print_r($sql);exit();
-				// var_dump($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -124,7 +141,7 @@
 									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelas'].'</td>
 									<td>'.$res['wali'].'</td>
 									<td>'.$res['kapasitas'].'</td>
-									<td>-</td>
+									<td>'.$res['terisi'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -151,6 +168,7 @@
 								keterangan  = "'.filter($_POST['keteranganTB']).'"';
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				// var_dump($s2);exit();
 				$e2 = mysql_query($s2);
 				if(!$e2){
 					$stat = 'gagal menyimpan';
@@ -172,27 +190,34 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT k.*, p.nip AS nip, p.nama AS nama
-							from aka_kelas k, 
-							hrd_pegawai p
-							WHERE
-								 p.replid =k.wali AND
-								k.replid='.$_POST['replid'];
-
-												// print_r($s);exit();
-				$e 		= mysql_query($s);
-				$r 		= mysql_fetch_assoc($e);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'kelas'      =>$r['kelas'],
-							'wali'      =>$r['wali'],
-							'nip'       =>$r['nip'],
-							'nama'       =>$r['nama'],
-							'kapasitas'  =>$r['kapasitas'],
-							'tahunajaran' =>$r['tahunajaran'],
-							'keterangan' =>$r['keterangan']
-						));
+				$s 	= ' SELECT 
+							k.kelas, 
+							k.keterangan, 
+							k.kapasitas, 
+							k.subtingkat idsubtingkat, 
+							k.wali idwali, 
+							p.nip nip, 
+							p.nama nama
+						FROM  
+							aka_kelas k 
+							LEFT JOIN hrd_pegawai p on p.replid = k.wali
+						WHERE
+							k.replid ='.$_POST['replid'];
+				// print_r($s);exit();
+				$e    = mysql_query($s);
+				$r    = mysql_fetch_assoc($e);
+				$stat = ($e)?'sukses':'gagal';
+				$out  = json_encode(array(
+							'status' =>$stat,
+							'datax'  =>array(
+								'kelas'        =>$r['kelas'],
+								'idwali'       =>$r['idwali'],
+								'idsubtingkat' =>$r['idsubtingkat'],
+								'nip'          =>$r['nip'],
+								'nama'         =>$r['nama'],
+								'kapasitas'    =>$r['kapasitas'],
+								'keterangan'   =>$r['keterangan']
+						)));
 			break;
 			// ambiledit -----------------------------------------------------------------
 
