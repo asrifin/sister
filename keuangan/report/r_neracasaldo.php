@@ -37,6 +37,8 @@
                       WHERE
                         kr.kode like "%'.$ns_kode.'%" and
                       kr.nama like "%'.$ns_nama.'%"
+                      GROUP BY
+                          kr.kode
                       ORDER BY
                           kr.kategorirek,
                       kr.kode';

@@ -165,11 +165,14 @@
 									        kj.debet debet,
 									        kj.kredit kredit
 									    FROM
-									        keu_jurnal kj
+											keu_transaksi kt 
+									        LEFT JOIN keu_jurnal kj ON kt.replid = kj.transaksi 
 									        LEFT JOIN keu_rekening kr ON kr.replid = kj.rek
 									    WHERE
 									    	kr.kode like "%'.$kode.'%" and
 											kr.nama like "%'.$nama.'%"
+										GROUP BY
+											kr.kode
 									    ORDER BY
 									        kr.kategorirek,
 											kr.kode ';
@@ -287,6 +290,7 @@
 						$sql       = 'SELECT 
 											kr.kode kode,
 									        kr.nama nama,
+									        kr.kategorirek kategorirek,
 									        kj.debet debet,
 									        kj.kredit kredit
 									    FROM
@@ -295,6 +299,8 @@
 									    WHERE
 									    	kr.kode like "%'.$kode.'%" and
 											kr.nama like "%'.$nama.'%"
+										GROUP BY
+											kr.kode
 									    ORDER BY
 									        kr.kategorirek,
 											kr.kode ';
@@ -317,22 +323,128 @@
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_array($result)){	
+										// $neracasaldo_debet=0; $neracasaldo_kredit=0;
+										// $labarugi_debet=0; $labarugi_kredit=0;
+										// $neraca_debet=0; $neraca_kredit=0;
+
+								// if($res['kategorirek']==4){
+								// 		$debet_ns =$res['debet'];
+								// 		$kredit_ns ='';
+								// }
 								$out.= '<tr>
 											<td>'.$res['kode'].'</td>
 											<td>'.$res['nama'].'</td>
 											<td>'.$res['debet'].'</td>
 											<td>'.$res['kredit'].'</td>
+											<td>&nbsp</td>
+											<td>&nbsp</td>
+											<td>&nbsp</td>
+											<td>&nbsp</td>
 										</tr>';
 								$nox++;
+											// <td>'.$debet_ns.'</td>
+											// <td>'.$kredit_ns.'</td>
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
-									<td  colspan="4" ><span style="color:red;text-align:center;">
+									<td  colspan="8" ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
 						}
 						#link paging
-						$out.= '<tr class="info"><td colspan="4">'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan="4">'.$obj->total.'</td></tr>';
+						$out.= '<tr class="info"><td colspan="8">'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan="8">'.$obj->total.'</td></tr>';
+					break;
+					//Laba Rugi
+					case 'lr':
+
+						$kode     = isset($_POST['ns_kodeS'])?filter(trim($_POST['ns_kodeS'])):'';
+						$nama	  = isset($_POST['ns_namaS'])?filter(trim($_POST['ns_namaS'])):'';
+						$sql       = 'SELECT 
+											kr.kode kode,
+									        kr.nama nama,
+									        kr.kategorirek kategorirek,
+									        kj.debet debet,
+									        kj.kredit kredit
+									    FROM
+									        keu_jurnal kj
+									        LEFT JOIN keu_rekening kr ON kr.replid = kj.rek
+									    WHERE
+									    	kr.kategorirek BETWEEN 6 AND 7
+										GROUP BY
+											kr.kode
+									    ORDER BY
+									        kr.kategorirek,
+											kr.kode';
+						// print_r($sql);exit(); 	
+						if(isset($_POST['starting'])){ //nilai awal halaman
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
+
+						$recpage = 5;//jumlah data per halaman
+						$aksi    ='tampil';
+						$subaksi ='lr';
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+
+						#ada data
+						$jum = mysql_num_rows($result);
+						$out ='';$totaset=0;
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_array($result)){	
+									$rek=isset($res['rek']);
+									$kategorirek = $res['kategorirek'];
+									$neracasaldo[$rek]=array('debet'=>0,'kredit'=>0,'kode'=>$res['koderek'],'nama'=>$res['nrek'],'kategorirek'=>$kategorirek);
+									$labarugi[$rek]=array('debet'=>0,'kredit'=>0);
+
+									if($debet>=$kredit){
+										$neracasaldo[$rek]['debet']=$selisih;
+									} else {
+										$neracasaldo[$rek]['kredit']=$selisih;
+									}
+									if($kategorirek==6){
+										$rekpendapatan[$rek]=array();
+										if($neracasaldo[$rek]['debet']>$neracasaldo[$rek]['kredit']){
+											$rekpendapatan[$rek]['nominal']=-$neracasaldo[$rek]['debet'];
+										} else {
+											$rekpendapatan[$rek]['nominal']=$neracasaldo[$rek]['kredit'];
+										}
+										$rekpendapatan[$rek]['nama']=$neracasaldo[$rek]['nama'];
+									}
+									if($kategorirek==7){
+										$rekbeban[$rek]=array();
+										if($neracasaldo[$rek]['kredit']>$neracasaldo[$rek]['debet']){
+											$rekbeban[$rek]['nominal']=-$neracasaldo[$rek]['kredit'];
+										} else {
+											$rekbeban[$rek]['nominal']=$neracasaldo[$rek]['debet'];
+										}
+										$rekbeban[$rek]['nama']=$neracasaldo[$rek]['nama'];
+									}									// if($kategorirek==6){
+									// }
+								$out.= '<tr>
+											<td>Pendapatan :</td>
+											<td>&nbsp</td>
+											<td>&nbsp</td>
+										</tr>
+										<tr>
+											<td>'.$rekpendapatan[$rek]['nama'].'</td>
+											<td>'.$rekpendapatan[$rek]['nominal'].'</td>
+											<td>&nbsp</td>
+										</tr>';
+								$nox++;
+											// <td>'.$debet_ns.'</td>
+											// <td>'.$kredit_ns.'</td>
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan="8" ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan="8">'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan="8">'.$obj->total.'</td></tr>';
 					break;
 
 				}
