@@ -156,7 +156,7 @@
                         </tr>
                         <tr style="display:none;" id="juTR" class="info">
                             <th class="text-left"></th>
-                            <th class="text-left"><input onkeyup="inputuang(this);" placeholder="nomor jurnal" id="ju_noS" class="ju_cari"></th>
+                            <th class="text-left"><input placeholder="nomor jurnal" id="ju_noS" class="ju_cari"></th>
                             <th class="text-left"><input placeholder="uraian" id="ju_uraianS" class="ju_cari"></th>
                             <th style="display:visible;"class="text-left uraianCOL"></th>
                             <th class="text-left"></th>
@@ -204,6 +204,9 @@
             <div class="frame" id="nsTAB">
                 <button id="nsBC" data-hint="Pencarian" data-hint-position="top">
                     <i class="icon-search" ></i>
+                </button>
+                <button id="ns_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <i class="icon-printer" ></i>
                 </button>
                 <table class="table hovered bordered striped">
                     <thead>
