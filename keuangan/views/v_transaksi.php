@@ -173,9 +173,10 @@
             <!-- end of 1st content -->
             <div class="frame" id="bbTAB">
                 Tampilkan Akun : 
-                <div class="input-control select span3">
+<!--                 <div class="input-control select span3">
                     <select id="bbS"></select>
-                <table class="table hovered bordered striped">
+                </div>
+ -->                <table class="table hovered bordered striped">
                     <thead>
                         <tr style="color:white;"class="info">
                             <th class="text-center">Tanggal </th>
@@ -200,7 +201,8 @@
                     </tfoot>
                 </table> 
             </div>
-            </div>
+            <!-- </div> -->
+
             <div class="frame" id="nsTAB">
                 <button id="nsBC" data-hint="Pencarian" data-hint-position="top">
                     <i class="icon-search" ></i>
@@ -268,7 +270,30 @@
                     </tfoot>
                 </table>                 
             </div>
-            <div class="frame" id="lrTAB">5</div>
+            <div class="frame" id="lrTAB">
+
+<!--                     <thead>
+                        <tr style="color:white;"class="info">
+                            <th class="text-center">Kode Rekening </th>
+                            <th class="text-center">Nama Rekening</th>
+                            <th class="text-center">Debet</th>
+                            <th class="text-center">Kredit</th>
+                        </tr>
+                        <tr style="display:none;" id="nsTR" class="info">
+                            <th class="text-left"><input placeholder="Kode Rekening" id="ns_kodeS" class="ns_cari"></th>
+                            <th class="text-left"><input placeholder="Nama Rekening" id="ns_namaS" class="ns_cari"></th>
+                            <th class="text-left"></th>
+                            <th class="text-left"></th>
+                        </tr>
+                    </thead>
+ -->
+                    <tbody id="ns_tbody">
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table> 
+
+            </div>
             <div class="frame" id="lnTAB">6</div>
             <div class="frame" id="pkbTAB">
                 <table class="table hovered bordered striped">

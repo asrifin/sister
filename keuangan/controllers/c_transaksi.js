@@ -137,6 +137,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         viewTB('ns');
         viewTB('bb');
         viewTB('nl');
+        viewTB('lr');
         // juVW();
     }); 
 // end of main function ---------
