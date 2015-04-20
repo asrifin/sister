@@ -124,6 +124,7 @@
 											j.transaksi ='.$res['replid'].' AND 
 											j.rek=r.replid
 										ORDER BY kredit  ASC';
+						// print_r($sql);exit(); 	
 								$e2 = mysql_query($s2);
 								$tb2='';
 								if(mysql_num_rows($e2)!=0){
@@ -153,7 +154,7 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-
+					//Neraca Saldo
 					case 'ns':
 
 						$kode     = isset($_POST['ns_kodeS'])?filter(trim($_POST['ns_kodeS'])):'';
@@ -171,7 +172,7 @@
 											kr.nama like "%'.$nama.'%"
 									    ORDER BY
 									        kr.kategorirek,
-											kr.kode  ';
+											kr.kode ';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -208,6 +209,7 @@
 						$out.= '<tr class="info"><td colspan="4">'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan="4">'.$obj->total.'</td></tr>';
 					break;
+					//Buku Besar
 					case 'bb':
 						$ju_no     = isset($_POST['ju_noS'])?filter(trim($_POST['ju_noS'])):'';
 						$ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
@@ -260,7 +262,8 @@
 		   										<td>Rp. '.number_format($r2['kredit']).',-</td>
 		   									</tr>';
 		   							}$tb2.='</table>';
-								}$out.= '<tr>
+								}
+								$out.= '<tr>
 											<td>'.tgl_indo($res['tanggal']).'</td>
 											<td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
 											<td>'.$res['uraian'].'</td>

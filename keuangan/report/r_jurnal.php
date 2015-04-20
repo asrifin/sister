@@ -6,7 +6,7 @@
   require_once '../../lib/func.php';
   $mnu = 'transaksi';
 
-  $x     = $_SESSION['kelompokS'].$_GET['nopendaftaranS'].$_GET['namaS'].$_GET['daftarS'].$_GET['joiningfS'];
+  $x     = $_SESSION['ju_noS'].$_GET['ju_uraianS'];
   $token = base64_encode($x);
 
   if(!isset($_SESSION)){ // belum login  
@@ -29,13 +29,13 @@
           $ju_uraian = isset($_GET['ju_uraianS'])?filter($_GET['ju_uraianS']):'';
       
         // table content
-          $s2 = 'SELECT * 
+          $s1 = 'SELECT * 
                   from keu_transaksi 
                   WHERE 
                     (nomer like "%'.$ju_no.'%" OR nomer like "%'.$ju_no.'%" ) AND
                     uraian like "%'.$ju_uraian.'%"';
-            $e2  = mysql_query($s2) or die(mysql_error());
-            $n   = mysql_num_rows($e2);
+            $e1  = mysql_query($s21) or die(mysql_error());
+            // $n   = mysql_num_rows($e1);
 
           $out.='<body>
                     <table width="100%">
@@ -48,34 +48,6 @@
                         </td>
                       </tr>
                     </table><br />';
-
-              while ($r1=mysql_fetch_array($e1)) {
-                $s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
-                    from keu_jurnal j,keu_rekening r 
-                    where 
-                      j.transaksi ='.$res['replid'].' AND 
-                      j.rek=r.replid
-                    ORDER BY kredit  ASC';
-                $e2 = mysql_query($s2);
-                $tb2='';
-                if(mysql_num_rows($e2)!=0){
-                    $tb2.='<table class="bordered striped lightBlue" width="100%">';
-                    while($r2=mysql_fetch_assoc($e2)){
-                      $tb2.='<tr>
-                          <td>'.$r2['nama'].'</td>
-                          <td>'.$r2['kode'].'</td>
-                          <td>Rp. '.number_format($r2['debet']).',-</td>
-                          <td>Rp. '.number_format($r2['kredit']).',-</td>
-                        </tr>';
-                    }$tb2.='</table>';
-                }$out.= '<tr>
-                      <td>'.tgl_indo($res['tanggal']).'</td>
-                      <td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
-                      <td>'.$res['uraian'].'</td>
-                      <td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
-                      '.$btn.'
-                    </tr>';
-              }
 
             $out.='<table class="isi" width="100%">
                         <tr class="head">
@@ -94,7 +66,7 @@
                 <td>-</td>
               </tr>';
             }else{
-              while ($res=mysql_fetch_array($e2)) {
+              while ($res=mysql_fetch_array($e1)) {
                 $s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
                     from keu_jurnal j,keu_rekening r 
                     where 
