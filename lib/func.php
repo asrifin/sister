@@ -80,26 +80,25 @@
 		$s = 'SELECT '.$typ.'
 			  FROM aka_angkatan
 			  WHERE replid ='.$id;
-			  // print_r($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r[$typ];
-	}function getPeriode($id){
-		$s = 'SELECT proses
+	}function getProses($typ,$id){
+		$s = 'SELECT '.$typ.'
 			  FROM psb_proses
 			  WHERE replid ='.$id;
 			  // print_r($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
-		return $r['proses'];
-	}function getKelompok($id){
-		$s = 'SELECT kelompok
+		return $r[$typ];
+	}function getKelompok($typ,$id){
+		$s = 'SELECT '.$typ.'
 			  FROM psb_kelompok
 			  WHERE replid ='.$id;
 			  // print_r($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
-		return $r['kelompok'];
+		return $r[$typ];
 	}function getSiswaBy($f,$w){
 		$s='SELECT '.$f.' FROM psb_calonsiswa WHERE replid ='.$w;
 		$e=mysql_query($s);
@@ -152,11 +151,12 @@
 		$biaya = $biayaKotor - $diskonTotal; 		
 	}
 	function getStatusBayar($typ,$siswa){
-		$biayaKotor = getBiaya($typ,$siswa);
-		$diskonTotal= getDiscTotal($typ,$siswa);
-		
-		$biaya      = $biayaKotor - $diskonTotal; 		// 14.100.000
-		$terbayar   = getTerbayar($typ,$siswa);			//  4.700.000
+		$biaya = getBiaya($typ,$siswa);
+		if($typ=='dpp'){
+			$diskonTotal= getDiscTotal($typ,$siswa);
+			$biaya =- $diskonTotal; 		// 14.100.000
+		}
+		$terbayar = getTerbayar($typ,$siswa);			//  4.700.000
 		// var_dump($terbayar);exit();
 		// if($biaya==$terbayar){
 		if($terbayar<=0){
@@ -217,6 +217,7 @@
 		$rr = $r['terbayar']!=null?$r['terbayar']:0;
 		return $rr;
 	}function getBiaya($typ,$siswa){ // to get : nominal yg harus dibayar
+		// var_dump($typ.'-'.$siswa);exit();
 		if($typ=='pendaftaran'){ // formulir + joining fee
 			$f = '(b.daftar + b.joiningf)';
 		}elseif($typ=='daftar'){ // formulir
@@ -226,14 +227,14 @@
 		}elseif($typ=='dpp'){ // dpp
 			$f = 'b.nilai';
 		}else{ // spp
-			//code
+			$f = 'b.spp';
 		}
 			
 		$s = 'SELECT '.$f.' as '.$typ.'
 			  FROM psb_setbiaya b
 			  LEFT JOIN psb_calonsiswa c on c.setbiaya = b.replid
 			  WHERE c.replid ='.$siswa;
-			  // print_r($s);exit();
+			  // var_dump($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r[$typ];
@@ -322,6 +323,7 @@
 		$s='SELECT concat(kode," - ",nama)rekening FROM keu_detilrekening WHERE replid='.$id;
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
+		// var_dump($r);exit();
 		return $r['rekening'];
 	}
 

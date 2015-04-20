@@ -68,29 +68,27 @@
 				$katmodulpembayaran = (isset($_POST['katmodulpembayaranS']) AND $_POST['katmodulpembayaranS']!='')?'m.katmodulpembayaran ='.$_POST['katmodulpembayaranS'].' AND ':'';
 				$angkatan           = isset($_POST['angkatanS'])?filter($_POST['angkatanS']):'';
 				$nama               = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-				$nominal            = isset($_POST['nominalS'])?filter($_POST['nominalS']):'';
+				// $nominal            = isset($_POST['nominalS'])?filter($_POST['nominalS']):'';
 				$keterangan         = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				
+				// m.nominal
 				$sql = 'SELECT 
 							m.replid,
 							m.nama,
 							m.keterangan,
 							m.rek1,
 							m.rek2,
-							m.rek3,
-							m.nominal
+							m.rek3
 						FROM '.$tb.' m 
 							left join keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
 						WHERE 
 							'.$katmodulpembayaran.'
 							m.angkatan = '.$angkatan.' and
 							m.nama like "%'.$nama.'%" and
-							m.nominal like "%'.$nominal.'%" and
 							m.keterangan like "%'.$keterangan.'%" 
 						ORDER BY 
 							m.nama asc';
-							// print_r($sql);	
-
+				// var_dump($sql);exit();	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -135,10 +133,10 @@
 						$out.= '<tr>
 									<td>'.$res['nama'].'</td>
 									<td>'.$rekening.'</td>
-									<td align="right">Rp. '.number_format($res['nominal']).'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
+								// <td align="right">Rp. '.number_format($res['nominal']).'</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -160,11 +158,11 @@
 									rek1               = "'.filter($_POST['rek1H']).'",
 									rek2               = "'.filter($_POST['rek2H']).'",
 									rek3               = "'.filter($_POST['rek3H']).'",
-									nominal            = "'.getuang($_POST['nominalTB']).'",
 									cicilan            = "'.getuang($_POST['cicilanTB']).'",
 									diskon             = "'.getuang($_POST['diskonTB']).'",
 									biayaadmin         = "'.getuang($_POST['biayaadminTB']).'",
 									keterangan         = "'.filter($_POST['keteranganTB']).'"';
+									// nominal            = "'.getuang($_POST['nominalTB']).'",
 
 				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e    = mysql_query($s2);
@@ -185,6 +183,7 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
+							// m.nominal,
 				$s = 'SELECT 
 							m.katmodulpembayaran,
 							m.nama,
@@ -192,7 +191,6 @@
 							m.rek1,
 							m.rek2,
 							m.rek3,
-							m.nominal,
 							m.cicilan,
 							m.diskon,
 							m.biayaadmin
@@ -213,11 +211,11 @@
 							'rek1'               =>keuField(array('nama'),$tb2,$r['rek1']),
 							'rek2'               =>keuField(array('nama'),$tb2,$r['rek2']),
 							'rek3'               =>keuField(array('nama'),$tb2,$r['rek3']),
-							'nominal'            =>$r['nominal'],
 							'cicilan'            =>$r['cicilan'],
 							'diskon'             =>$r['diskon'],
 							'biayaadmin'         =>$r['biayaadmin'],
 						));
+							// 'nominal'            =>$r['nominal'],
 			break;
 			// ambiledit -----------------------------------------------------------------
 			

@@ -32,18 +32,17 @@
                 <title>SISTER::Keu - Anggaran</title>
               </head>';
                 $a_departemen = isset($_GET['a_departemenS'])?filter(trim($_GET['a_departemenS'])):'';
-                $a_tahunbuku  = isset($_GET['a_tahunbukuS'])?filter(trim($_GET['a_tahunbukuS'])):'';
                 $a_nama       = isset($_GET['a_namaS'])?filter(trim($_GET['a_namaS'])):'';
-                $a_nominal    = isset($_GET['a_nominalS'])?filter(trim($_GET['a_nominalS'])):'';
+                $a_rekening   = isset($_GET['a_rekeningS'])?filter(trim($_GET['a_rekeningS'])):'';
                 $a_keterangan = isset($_GET['a_keteranganS'])?filter(trim($_GET['a_keteranganS'])):'';
                 
                 $s = 'SELECT * 
-                    from keu_budget 
-                    where departemen = '.$a_departemen.' and
-                          tahunbuku like"%'.$a_tahunbuku.'%" and
-                          nama like"%'.$a_nama.'%" and
-                          nominal like"%'.$a_nominal.'%" and
-                          keterangan like"%'.$a_keterangan.'%"';
+                      FROM keu_kategorianggaran 
+                      WHERE 
+                        departemen = '.$a_departemen.' and
+                        nama like"%'.$a_nama.'%" and
+                        rekening like"%'.$rekening.'%" and
+                        keterangan like"%'.$a_keterangan.'%"';
                 
                 $e = mysql_query($s) or die(mysql_error());
                 $n = mysql_num_rows($e);
@@ -67,13 +66,11 @@
                     <td align="right"> Total :'.$n.' Data</td>
                   </tr>
                 </table>';
-                
 
                 $out.='<table class="isi" width="100%">
                     <tr class="head">
-                      <td align="center">Nama Anggaran</td>
-                      <td align="center">Nominal Anggaran</td>
-                      <td align="center">Status</td>
+                      <td align="center">Nama Kategori</td>
+                      <td align="center">Rekening</td>
                       <td align="center">Keterangan</td>
                     </tr>';
                     $nox = 1;
@@ -82,14 +79,13 @@
                         <td>-</td>
                         <td>-</td>
                         <td>-</td>
-                        <td>-</td>
                       </tr>';
                     }else{
                       while ($r=mysql_fetch_assoc($e)) {
+                        // var_dump(getRekening($r['rekening']));exit();
                         $out.='<tr>
                                   <td>'.$r['nama'].'</td>
-                                  <td align="right">Rp. '.number_format($r['nominal']).',-</td>
-                                  <td>'.$r['status'].'</td>
+                                  <td>'.getRekening($r['rekening']).'</td>
                                   <td>'.$r['keterangan'].'</td>
                             </tr>';
                         $nox++;

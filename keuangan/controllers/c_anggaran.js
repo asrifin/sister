@@ -137,12 +137,14 @@ var a_contentFR = d_contentFR = b_contentFR ='';
             });
 
         //search action 
-            // kategori anggaran
+            /*kategori anggaran*/
+            // filtering : combobox
             $('#a_departemenS').on('change',function(){
                 viewTB('anggaran');
             });
-            $('#a_namaS,#a_keteranganS').on('keydown',function (e){ // kode grup
-                if(e.keyCode == 13) vwAnggaran();
+            // filtering : textbox
+            $('#a_namaS,#a_keteranganS,#a_rekeningS').on('keydown',function (e){ // kode grup
+                if(e.keyCode == 13) viewTB('anggaran');
             });
 
             // detil anggaran 
