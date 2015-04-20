@@ -305,7 +305,6 @@
 		}else{
 			$in=1;
 		}
-		// var_dump(getBuktiTrans2($typ));exit();
 		$kode=getBuktiTrans2($typ).'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
 		return $kode;
 	}function getNoTrans($typ){

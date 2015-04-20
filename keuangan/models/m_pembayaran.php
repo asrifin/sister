@@ -470,7 +470,6 @@
 				}$s = 'INSERT INTO '.$tb.' set 	modul   = '.$_POST['idmodulH'].',
 												cicilan = '.$nominal.',
 												siswa   = '.$_POST['idsiswaH'];
-				// var_dump($nominal);exit();	
 				$e  = mysql_query($s);
 				$id = mysql_insert_id();
 				if(!$e) $stat='gagal_insert_pembayaran';
