@@ -79,7 +79,7 @@
                     <li><a href="detil-rekening">Rekening</a></li>
                     <li><a href="saldo-rekening">Saldo Rekening</a></li>
                     <li><a href="set-anggaran">Set Anggaran</a></li>
-                    <li><a href="anggaran-tahunan">Anggaran Tahunan</a></li>
+                    <!-- <li><a href="anggaran-tahunan">Anggaran Tahunan</a></li> -->
                     <li><a href="kategori-modul">Ketegori Modul Pembayaran</a></li>
                 </ul>
             </div>

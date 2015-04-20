@@ -108,11 +108,21 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         });
         //print ---
         $('#ju_cetakBC').on('click',function(){
-            printPDF('grup');
+            printPDF('jurnal');
+        });
+        $('#ns_cetakBC').on('click',function(){
+            printPDF('neracasaldo');
+        });
+        //search button
+        $('#juBC').on('click',function(){
+            $('#juTR').toggle('slow');
+            $('#ju_noS').val('');
+            $('#ju_uraianS').val('');
         });
         //search ---
         $('#ju_noS,#ju_uraianS').on('keydown',function (e){ // kode grup
-            if(e.keyCode == 13) juVW();
+            if(e.keyCode == 13) //juVW();
+            viewTB('ju');
         });
 
         // set default this month
@@ -124,6 +134,9 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
         });
         // default tampilkan jurnal umum 
         viewTB('ju');
+        viewTB('ns');
+        viewTB('bb');
+        viewTB('nl');
         // juVW();
     }); 
 // end of main function ---------

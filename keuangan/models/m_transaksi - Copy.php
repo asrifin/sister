@@ -145,7 +145,61 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-					// grup barang
+
+					case 'ns':
+
+						$kode     = isset($_POST['ns_kodeS'])?filter(trim($_POST['ns_kodeS'])):'';
+						$nama	  = isset($_POST['ns_namaS'])?filter(trim($_POST['ns_namaS'])):'';
+						$sql       = 'SELECT 
+											kr.kode kode,
+									        kr.nama nama,
+									        kj.debet debet,
+									        kj.kredit kredit
+									    FROM
+									        keu_jurnal kj
+									        LEFT JOIN keu_rekening kr ON kr.replid = kj.rek
+									    WHERE
+									    	kr.kode like "%'.$kode.'%" and
+											kr.nama like "%'.$nama.'%"
+									    ORDER BY
+									        kr.kategorirek,
+											kr.kode  ';
+						// print_r($sql);exit(); 	
+						if(isset($_POST['starting'])){ //nilai awal halaman
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
+
+						$recpage = 5;//jumlah data per halaman
+						$aksi    ='tampil';
+						$subaksi ='ns';
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+
+						#ada data
+						$jum = mysql_num_rows($result);
+						$out ='';$totaset=0;
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_array($result)){	
+								$out.= '<tr>
+											<td>'.$res['kode'].'</td>
+											<td>'.$res['nama'].'</td>
+											<td>'.$res['debet'].'</td>
+											<td>'.$res['kredit'].'</td>
+										</tr>';
+								$nox++;
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan="4" ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan="4">'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan="4">'.$obj->total.'</td></tr>';
+					break;
 				}
 			break; 
 			// tampil ---------------------------------------------------------------------

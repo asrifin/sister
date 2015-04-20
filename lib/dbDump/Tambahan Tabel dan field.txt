@@ -16,7 +16,7 @@ PENAMBAHAN TABEL atau PENAMBAHAN FIELD
 	- Tambah -> tabel keu_anggarantahunan, keu_detailanggaran, keu_kategorianggaran
 	  keu_koderekening, keu_detailrekening, keu_saldorekening 
 	- Tambah -> keu_katmodulpembayaran, keu_modulpembayaran -> Folder 20150411
-	- Tambah -> keu_saldorekening
+	- Tambah -> keu_saldorekening -> Folder 20150413
 * Perpustakaan
 	- edit	-> tabel pus_katalog yang dirubah klasifikasi-kode diganti klasifikasi_kode
 	

@@ -19,12 +19,12 @@ var a_contentFR = d_contentFR = b_contentFR ='';
             a_contentFR += '<form autocomplete="off" onsubmit="anggaranSV();return false;" id="'+mnu+'FR">' 
                             +'<input id="a_idformH" type="hidden">' 
                             
-                            +'<label>Departemen</label>'
-                            +'<div class="input-control text">'
-                                +'<input type="hidden" name="a_departemenH" id="a_departemenH">'
-                                +'<input  placeholder="Departemen" readonly required type="text" name="a_departemenTB" id="a_departemenTB">'
-                                +'<button class="btn-clear"></button>'
-                            +'</div>'
+                            // +'<label>Departemen</label>'
+                            // +'<div class="input-control text">'
+                            //     +'<input type="hidden" name="a_departemenH" id="a_departemenH">'
+                            //     +'<input  placeholder="Departemen" readonly required type="text" name="a_departemenTB" id="a_departemenTB">'
+                            //     +'<button class="btn-clear"></button>'
+                            // +'</div>'
 
                             +'<label>Kategori Anggaran</label>'
                             +'<div class="input-control text">'

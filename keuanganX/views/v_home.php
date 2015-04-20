@@ -141,14 +141,14 @@
     <!-- end of Anggaran -->
 
     <!--  Anggaran Tahunan -->
-    <a href="anggaran-tahunan" class="tile bg-lightBlue" data-click="transform">
+<!--     <a href="anggaran-tahunan" class="tile bg-lightBlue" data-click="transform">
         <div class="tile-content icon">
             <span class="icon-copy"></span>
         </div>
         <div class="brand">
             <div class="label">Anggaran Tahunan</div>
         </div>
-    </a>
+    </a> -->
     <!-- end of Anggaran Tahunan-->
 
     <!--  kategori modul pembayaran -->

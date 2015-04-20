@@ -31,10 +31,17 @@
 
 				if(!$sidx) 
 					$sidx =1;
-				$ss='SELECT *
-					FROM '.$tb2.' 
-					WHERE	kode  LIKE "%'.$searchTerm.'%"
-							OR nama LIKE "%'.$searchTerm.'%"';
+				$ss='SELECT
+						d.*,
+						k.jenis
+					FROM
+						keu_detilrekening d 
+						LEFT JOIN keu_kategorirekening k on k.replid = d.kategorirekening
+					WHERE
+						k.jenis="'.$_GET['jenis'].'" AND (
+							d.kode LIKE "%'.$searchTerm.'%"
+							OR d.nama LIKE "%'.$searchTerm.'%"
+						)';
 				// print_r($ss);exit();
 				$result = mysql_query($ss);
 				$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -152,7 +159,7 @@
 
 			// generate kode
 			case 'codeGen':
-				switch ($_POST['subaksi']) {
+				/*switch ($_POST['subaksi']) {
 					case'transNo':
 						switch($_POST['tipe']){
 							case 'ju':
@@ -176,9 +183,22 @@
 						}$kode=$pre.'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
 						$out=json_encode(array('status'=>$stat,'kode'=>$kode));
 					break;
-				}
+				}*/
+				$kode = getNoTrans2($_POST['subaksi']);
+				$out  = json_encode(array(
+					'status' =>($kode!=null?'sukses':'gagal'),
+					'kode'   =>$kode
+				));
 			break;
 			// generate kode
+
+			// case 'cmbakanbayar':
+			// 	$out=json_encode(array(
+			// 		'status' =>(akanBayarOpt($_POST['subaksi'],$_POST['siswa'])==null?'gagal':'sukses'),
+			// 		'datax'  =>akanBayarOpt($_POST['subaksi'],$_POST['siswa'])
+			// 	));
+			// break;
+
 
 			// head info ------------------------------------------------------------------
 			case 'headinfo':

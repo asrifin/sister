@@ -124,6 +124,7 @@
 											j.transaksi ='.$res['replid'].' AND 
 											j.rek=r.replid
 										ORDER BY kredit  ASC';
+						// print_r($sql);exit(); 	
 								$e2 = mysql_query($s2);
 								$tb2='';
 								if(mysql_num_rows($e2)!=0){
@@ -153,7 +154,187 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-					// grup barang
+					//Neraca Saldo
+					case 'ns':
+
+						$kode     = isset($_POST['ns_kodeS'])?filter(trim($_POST['ns_kodeS'])):'';
+						$nama	  = isset($_POST['ns_namaS'])?filter(trim($_POST['ns_namaS'])):'';
+						$sql       = 'SELECT 
+											kr.kode kode,
+									        kr.nama nama,
+									        kj.debet debet,
+									        kj.kredit kredit
+									    FROM
+									        keu_jurnal kj
+									        LEFT JOIN keu_rekening kr ON kr.replid = kj.rek
+									    WHERE
+									    	kr.kode like "%'.$kode.'%" and
+											kr.nama like "%'.$nama.'%"
+									    ORDER BY
+									        kr.kategorirek,
+											kr.kode ';
+						// print_r($sql);exit(); 	
+						if(isset($_POST['starting'])){ //nilai awal halaman
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
+
+						$recpage = 5;//jumlah data per halaman
+						$aksi    ='tampil';
+						$subaksi ='ns';
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+
+						#ada data
+						$jum = mysql_num_rows($result);
+						$out ='';$totaset=0;
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_array($result)){	
+								$out.= '<tr>
+											<td>'.$res['kode'].'</td>
+											<td>'.$res['nama'].'</td>
+											<td>'.$res['debet'].'</td>
+											<td>'.$res['kredit'].'</td>
+										</tr>';
+								$nox++;
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan="4" ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan="4">'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan="4">'.$obj->total.'</td></tr>';
+					break;
+					//Buku Besar
+					case 'bb':
+						$ju_no     = isset($_POST['ju_noS'])?filter(trim($_POST['ju_noS'])):'';
+						$ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
+						$sql       = 'SELECT * 
+									from '.$tb.' 
+									WHERE 
+										(nomer like "%'.$ju_no.'%" OR nomer like "%'.$ju_no.'%" ) AND
+										uraian like "%'.$ju_uraian.'%"';
+						// print_r($sql);exit(); 	
+						if(isset($_POST['starting'])){ //nilai awal halaman
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
+
+						$recpage = 5;//jumlah data per halaman
+						$aksi    ='tampil';
+						$subaksi ='ju';
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+
+						#ada data
+						$jum = mysql_num_rows($result);
+						$out ='';$totaset=0;
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_array($result)){	
+								$btn ='<td>
+											<button data-hint="ubah"  class="button" onclick="juFR('.$res['replid'].');">
+												<i class="icon-pencil on-left"></i>
+											</button>
+											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
+												<i class="icon-remove on-left"></i>
+										 </td>';
+								$s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
+										from keu_jurnal j,keu_rekening r 
+										where 
+											j.transaksi ='.$res['replid'].' AND 
+											j.rek=r.replid
+										ORDER BY kredit  ASC';
+								$e2 = mysql_query($s2);
+								$tb2='';
+								if(mysql_num_rows($e2)!=0){
+	   								$tb2.='<table class="bordered striped lightBlue" width="100%">';
+		   							while($r2=mysql_fetch_assoc($e2)){
+		   								$tb2.='<tr>
+		   										<td>'.$r2['nama'].'</td>
+		   										<td>'.$r2['kode'].'</td>
+		   										<td>Rp. '.number_format($r2['debet']).',-</td>
+		   										<td>Rp. '.number_format($r2['kredit']).',-</td>
+		   									</tr>';
+		   							}$tb2.='</table>';
+								}
+								$out.= '<tr>
+											<td>'.tgl_indo($res['tanggal']).'</td>
+											<td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
+											<td>'.$res['uraian'].'</td>
+											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
+											'.$btn.'
+										</tr>';
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan=9 ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+					break;
+					case 'nl':
+
+						$kode     = isset($_POST['ns_kodeS'])?filter(trim($_POST['ns_kodeS'])):'';
+						$nama	  = isset($_POST['ns_namaS'])?filter(trim($_POST['ns_namaS'])):'';
+						$sql       = 'SELECT 
+											kr.kode kode,
+									        kr.nama nama,
+									        kj.debet debet,
+									        kj.kredit kredit
+									    FROM
+									        keu_jurnal kj
+									        LEFT JOIN keu_rekening kr ON kr.replid = kj.rek
+									    WHERE
+									    	kr.kode like "%'.$kode.'%" and
+											kr.nama like "%'.$nama.'%"
+									    ORDER BY
+									        kr.kategorirek,
+											kr.kode ';
+						// print_r($sql);exit(); 	
+						if(isset($_POST['starting'])){ //nilai awal halaman
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
+
+						$recpage = 5;//jumlah data per halaman
+						$aksi    ='tampil';
+						$subaksi ='ns';
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+
+						#ada data
+						$jum = mysql_num_rows($result);
+						$out ='';$totaset=0;
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_array($result)){	
+								$out.= '<tr>
+											<td>'.$res['kode'].'</td>
+											<td>'.$res['nama'].'</td>
+											<td>'.$res['debet'].'</td>
+											<td>'.$res['kredit'].'</td>
+										</tr>';
+								$nox++;
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan="4" ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan="4">'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan="4">'.$obj->total.'</td></tr>';
+					break;
+
 				}
 			break; 
 			// tampil ---------------------------------------------------------------------
