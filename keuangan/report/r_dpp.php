@@ -49,8 +49,8 @@
           $n   = mysql_num_rows($e);
 
         // header info 
-          $departemen = getDepartemen(getAngkatan('departemen',$angkatan));
-          $angkatanx  =  getAngkatan('angkatan',$angkatan); 
+          $departemen = getDepartemen('nama',getAngkatan('departemen',$angkatan));
+          $angkatanx  = getAngkatan('angkatan',$angkatan); 
           $out.='<body>
                     <table width="100%">
                       <tr>

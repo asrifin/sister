@@ -32,8 +32,8 @@
             </tr>
             <tr style="display:none;" id="a_cariTR" class="info">
                 <th class="text-center"><input placeholder="nama" id="a_namaS" class="anggaran_cari" class="span1"></th>
-                <th class="text-center"><input placeholder="keterangan" id="a_keteranganS" class="anggaran_cari"></th>
                 <th class="text-center"><input placeholder="rekening" id="a_rekeningS" class="anggaran_cari"></th>
+                <th class="text-center"><input placeholder="keterangan" id="a_keteranganS" class="anggaran_cari"></th>
                 <th class="text-center"></th>
             </tr>
         </thead>
