@@ -280,6 +280,8 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 printPDF('katalog');
             });$('#b_cetakBC').on('click',function(){
                 printPDF('barang');
+            });$('#b_cetakbarcodeBC').on('click',function(){
+                printPDF('barcode_barang');
             });
 
             // search 
@@ -1223,13 +1225,17 @@ function jumupdate (e) {
 
 //end of  print to PDF -------
     function printPDF(mn){
-        var par='',tok='',p,v;
-        $('.'+mn+'_cari').each(function(){
+        var par='',tok='',p,v,menu=mn;
+        if(mn=='barcode_barang'){
+            menu='barang';
+        }
+        $('.'+menu+'_cari').each(function(){
             p=$(this).attr('id');
             v=$(this).val();
             par+='&'+p+'='+v;
             tok+=v;
-        });var x  = $('#id_loginS').val();
+        });
+        var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }

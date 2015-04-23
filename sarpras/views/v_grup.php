@@ -111,6 +111,7 @@
     <button data-hint="Tambah Data" id="b_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="b_cariBC"><span class="icon-search"></span> </button>
     <button data-hint="Cetak" id="b_cetakBC"><span class="icon-printer"></span> </button>
+    <button data-hint="Cetak" id="b_cetakbarcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
 
     <input type="hidden"  class="barang_cari" id="b_katalogS">
     <div class="grid" style="color:white;">
