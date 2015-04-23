@@ -1,7 +1,7 @@
 <?php
   session_start();
   require_once '../../lib/dbcon.php';
-  require_once '../../lib/mpdf/mpdf.php';
+  // require_once '../../lib/mpdf/mpdf.php';
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
   require_once '../../lib/bar128.php';
@@ -50,8 +50,8 @@
       //   $ee = mysql_query($ss) or die(mysql_error());
       //   $rr = mysql_fetch_assoc($ee);
           // var_dump($rr);exit();
-        sleep(1);
-        ob_start(); // digunakan untuk convert php ke html
+        // sleep(1);
+        // ob_start(); // digunakan untuk convert php ke html
         $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
           <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
@@ -59,7 +59,7 @@
               <title>SISTER::Sar - Unit Barang</title>
             </head>
 
-            <body>
+            <body OnLoad="window.print()" OnFocus="window.close()">
               <p align="center">
                 <b>
                   Unit Barang<br>
@@ -183,7 +183,7 @@
                       $out.="<td align='center' style='padding: 5px'>
                               <font face='code128' size='20'>";
                       $out.=$x;
-                      $out."</font><br />
+                      $out.="</font><br />
                             ".$r['kode']."
                         </td>";
                             // ".$x."</font><br />
@@ -199,15 +199,15 @@
         echo $out;
   
         #generate html -> PDF ------------
-          $out2 = ob_get_contents();
-          ob_end_clean(); 
-          $mpdf=new mPDF('c','A4','');   
-          $mpdf->SetDisplayMode('fullpage');   
-          $stylesheet = file_get_contents('../../lib/mpdf/r_cetak.css');
-// var_dump($stylesheet);exit();
-          $mpdf->WriteHTML($stylesheet,1);  // The parameter 1 tells that this is css/style only and no body/html/text
-          $mpdf->WriteHTML($out);
-          $mpdf->Output();
+          // $out2 = ob_get_contents();
+//           ob_end_clean(); 
+//           $mpdf=new mPDF('c','A4','');   
+//           $mpdf->SetDisplayMode('fullpage');   
+//           $stylesheet = file_get_contents('../../lib/mpdf/r_cetak.css');
+// // var_dump($stylesheet);exit();
+//           $mpdf->WriteHTML($stylesheet,1);  // The parameter 1 tells that this is css/style only and no body/html/text
+//           $mpdf->WriteHTML($out);
+//           $mpdf->Output();
     }
 }
   // ---------------------- //

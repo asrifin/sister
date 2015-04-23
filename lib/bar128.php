@@ -1,7 +1,23 @@
+<?php /* version 1.1
+Code By Andrew Jackson
+Adapted From Dan Billeci
+dabilleci@hotmail.com
+	
+USAGE:
+echo bar128( "MyBarCode123" [,Height In Pixels] );	/// PRINTS HTML IMG TABLE OF THE CODE
+Info From: http://www.barcode-1.net/pub/russadam/128code.html
+
+*///Define Constants: height is a constant in div.b128 as height of bars
+?>
+<style>
+div.b128{
+    border-left: 1px black solid;
+	height: 60px;
+}	
+</style>
 
 <?php
 global $char128asc,$char128charWidth;
-// global $char128asc,$char128charWidth;
 $char128asc=' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~';					
 $char128wid = array(
 	'212222','222122','222221','121223','121322','131222','122213','122312','132212','221213', // 0-9 
@@ -28,11 +44,8 @@ function bar128($text) {						// Part 1, make list of widths
 	}					
   $w.= $char128wid[ $sum % 103 ].$char128wid[106];  		//Check Code, then END
 	 					 						//Part 2, Write rows
-  $html='<table cellpadding=0 cellspacing=0><tr>';				
+  $html="<table cellpadding=0 cellspacing=0><tr>";				
   for($x=0;$x<strlen($w);$x+=2)   						// code 128 widths: black border, then white space
-	$html.= '<td><div class=\'b128\' style=\'border-left-width:{$w[$x]};width:{$w[$x+1]}\'></div>';	
-  	$html.='<tr><td  colspan='.strlen($w).' align=center><font family=arial size=2><b>$text</table>';		
-  // return "$html<tr><td  colspan=".strlen($w)." align=center><font family=arial size=2><b>$text</table>";		
-	return $html;
+	$html .= "<td><div class=\"b128\" style=\"border-left-width:{$w[$x]};width:{$w[$x+1]}\"></div>";	
+  return "$html<tr><td  colspan=".strlen($w)." align=center><font family=arial size=2><b>$text</table>";		
 }
-?>

@@ -280,7 +280,8 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 printPDF('katalog');
             });$('#b_cetakBC').on('click',function(){
                 printPDF('barang');
-            });$('#b_cetakbarcodeBC').on('click',function(){
+            });
+            $('#b_cetakbarcodeBC').on('click',function(){
                 printPDF('barcode_barang');
             });
 
@@ -1222,6 +1223,11 @@ function jumupdate (e) {
         });
     }
 // end of notifikasi
+
+// function cetak()  
+//     { 
+//     win=window.open('r_barcode_barang.php','win','width=300, height=400, menubar=0, scrollbars=1, resizable=0, location=0, toolbar=0, status=0'); 
+//     } 
 
 //end of  print to PDF -------
     function printPDF(mn){

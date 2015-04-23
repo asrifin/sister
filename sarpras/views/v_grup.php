@@ -112,6 +112,7 @@
     <button data-hint="Field Pencarian" id="b_cariBC"><span class="icon-search"></span> </button>
     <button data-hint="Cetak" id="b_cetakBC"><span class="icon-printer"></span> </button>
     <button data-hint="Cetak" id="b_cetakbarcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
+    <!-- <button data-hint="Cetak" id="b_cetakbarcodeBC" onclick="cetak()"><span class="icon-printer"></span> Cetak Barcode</button> -->
 
     <input type="hidden"  class="barang_cari" id="b_katalogS">
     <div class="grid" style="color:white;">
