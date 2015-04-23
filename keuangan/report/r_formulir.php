@@ -4,7 +4,7 @@
   require_once '../../lib/mpdf/mpdf.php';
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
-  $mnu = 'pendaftaran';
+  $mnu = 'Formulir';
 
   $x     = $_SESSION['kelompokS'].$_GET['nopendaftaranS'].$_GET['namaS'].$_GET['daftarS'].$_GET['joiningfS'];
   $token = base64_encode($x);
@@ -22,11 +22,12 @@
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>SISTER::Keu - Pembayaran '.$mnu.'</title>
           </head>';
+          $pre='formulir_';
           $kelompok      = isset($_GET['kelompokS'])?filter($_GET['kelompokS']):'';
-          $nopendaftaran = isset($_GET['nopendaftaranS'])?filter($_GET['nopendaftaranS']):'';
-          $nama          = isset($_GET['namaS'])?filter($_GET['namaS']):'';
-          $daftar        = isset($_GET['daftarS'])?filter($_GET['daftarS']):'';
-          $joiningf      = isset($_GET['joiningfS'])?filter($_GET['joiningfS']):'';
+          $nopendaftaran = isset($_GET[$pre.'nopendaftaranS'])?filter($_GET[$pre.'nopendaftaranS']):'';
+          $nama          = isset($_GET[$pre.'namaS'])?filter($_GET[$pre.'namaS']):'';
+          $daftar        = isset($_GET[$pre.'daftarS'])?filter($_GET[$pre.'daftarS']):'';
+          // $joiningf      = isset($_GET['joiningfS'])?filter($_GET['joiningfS']):'';
       
         // table content
           $s2 = 'SELECT
@@ -57,8 +58,8 @@
                   c.kelompok='.$kelompok.' AND
                   c.nopendaftaran LIKE "%'.$nopendaftaran.'%" AND
                   c.nama LIKE "%'.$nama.'%" AND
-                  b.daftar LIKE "%'.$daftar.'%" AND
-                  b.joiningf LIKE "%'.$joiningf.'%"';
+                  b.daftar LIKE "%'.$daftar.'%"';
+                  var_dump($s2);
             $e2  = mysql_query($s2) or die(mysql_error());
             $n   = mysql_num_rows($e2);
 
@@ -78,7 +79,7 @@
                           <img width="100" src="../../images/logo.png" alt="" />
                         </td>
                         <td>
-                          <b>Pembayaran Pendaftaran</b>
+                          <b>Pembayaran '.$mnu.'</b>
                         </td>
                       </tr>
                     </table><br />';
@@ -106,17 +107,15 @@
                     <td align="center">No. Pendaftaran</td>
                     <td align="center">Nama</td>
                     <td align="center">Formulir</td>
-                    <td align="center">Joining Fee</td>
-                    <td align="center">Jumlah</td>
                     <td align="center">Status</td>
                     <td align="center">Tanggal Bayar</td>
                   </tr>';
+                    // <td align="center">Jumlah</td>
+                    // <td align="center">Joining Fee</td>
             $nox = 1;
             $totbayar = 0;
             if($n==0){
               $out.='<tr>
-                <td>-</td>
-                <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
@@ -129,17 +128,18 @@
                           <td>'.$r2['nopendaftaran'].'</td>
                           <td>'.$r2['nama'].'</td>
                           <td align="right">Rp. '.number_format($r2['daftar']).',-</td>
-                          <td align="right">Rp. '.number_format($r2['joiningf']).',-</td>
-                          <td align="right">Rp. '.number_format($r2['joiningf']+$r2['daftar']).',-</td>
                           <td>'.$r2['status'].'</td>
                           <td align="center">'.($r['tanggal']=='-'?'-':tgl_indo5($r2['tanggal'])).'</td>
                     </tr>';
+                          // <td align="right">Rp. '.number_format($r2['joiningf']).',-</td>
+                          // <td align="right">Rp. '.number_format($r2['joiningf']+$r2['daftar']).',-</td>
                 $nox++;
-                $totbayar+=($r2['daftar']+$r2['joiningf']);
+                // $totbayar+=($r2['daftar']+$r2['joiningf']);
+                $totbayar+=$r2['daftar'];
               }
             }
             $out.='<tr>
-              <td colspan="4" align="right"><b>Total : </b></td>
+              <td colspan="2" align="right"><b>Total : </b></td>
               <td align="right">Rp. '.number_format($totbayar).',-</td>
               <td colspan="2"></td>
             </tr>';

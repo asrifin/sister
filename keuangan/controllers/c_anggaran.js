@@ -21,7 +21,7 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                             
                             // +'<label>Departemen</label>'
                             // +'<div class="input-control text">'
-                            //     +'<input type="hidden" name="a_departemenH" id="a_departemenH">'
+                                +'<input type="hidden" name="a_departemenH" id="a_departemenH">'
                             //     +'<input  placeholder="Departemen" readonly required type="text" name="a_departemenTB" id="a_departemenTB">'
                             //     +'<button class="btn-clear"></button>'
                             // +'</div>'
@@ -452,11 +452,11 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                 padding: 10,
                 onShow: function(){
                     var titlex;
+                    setTimeout(function(){
+                        $('#a_departemenH').val($('#a_departemenS').val());
+                    },500);
                     if(id==''){  //add mode
                         titlex='<span class="icon-plus-2"></span> Tambah ';
-                        setTimeout(function(){
-                            $('#a_departemenH').val($('#a_departemenS').val());
-                        },500);
                     }else{ // edit mode
                         titlex='<span class="icon-pencil"></span> Ubah';
                         $.ajax({
@@ -465,7 +465,6 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                             type:'post',
                             dataType:'json',
                             success:function(dt){
-                                $('#a_departemenH').val($('#a_departemenS').val());
                                 $('#a_idformH').val(id);
                                 $('#a_namaTB').val(dt.nama);
                                 $('#a_rekeningH').val(dt.idrekening);

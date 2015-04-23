@@ -108,11 +108,11 @@
 	}
 	
 /*akademik*/
-	function getDepartemen($id){
-		$s='SELECT * FROM departemen WHERE replid='.$id;
+	function getDepartemen($typ,$id){
+		$s='SELECT '.$typ.' FROM departemen WHERE replid='.$id;
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
-		return $r['nama'];
+		return $r[$typ];
 	}
 	// function getAngkatan($f,$id){
 	// 	$s='SELECT * FROM aka_angkatan WHERE replid='.$id;
@@ -133,13 +133,23 @@
 		$r = mysql_fetch_assoc($e);
 		// return $
 	}
-	function getTglTrans($f){
-		$s='SELECT tanggal
-			FROM keu_transaksi
-			WHERE pembayaran ='.$
-		$e=mysql_query($s);
-		$r=mysql_fetch_assoc($e);
-		// return $r[];	
+	function getTglTrans($siswa,$typ){
+		$s='SELECT
+				t.replid,
+				max(t.tanggal)tgl
+			FROM
+				keu_transaksi t
+				LEFT JOIN keu_pembayaran p ON p.replid = t.pembayaran
+				LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
+				LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+			WHERE
+				p.siswa = '.$siswa.' and (
+				k.nama = "'.$typ.'"
+			)';
+		$e   =mysql_query($s);
+		$r   =mysql_fetch_assoc($e);
+		$tgl =$r['tgl']!=NULL?tgl_indo5($r['tgl']):'-' ;	
+		return $tgl;
 	}
 	function getAngsur($id){
 		$s='SELECT * FROM psb_angsuran WHERE replid='.$id;
@@ -208,10 +218,11 @@
 				LEFT JOIN keu_modulpembayaran m on m.replid = p.modul
 				LEFT JOIN keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
 			WHERE
-				k.nama = "'.$typ.'"
-				AND p.siswa = '.$siswa.'
+				k.nama = "'.$typ.'" AND 
+				p.siswa = '.$siswa.'
 			GROUP BY
 				p.siswa';
+			// var_dump($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		$rr = $r['terbayar']!=null?$r['terbayar']:0;
@@ -222,8 +233,9 @@
 			$f = '(b.daftar + b.joiningf)';
 		}elseif($typ=='daftar'){ // formulir
 			$f = 'b.daftar';
-		}elseif($typ=='joiningf'){ // dpp
+		}elseif($typ=='joiningf' || $typ=='joining fee'){ // dpp
 			$f = 'b.joiningf';
+			$typ='joiningf';
 		}elseif($typ=='dpp'){ // dpp
 			$f = 'b.nilai';
 		}else{ // spp
@@ -290,7 +302,7 @@
 		$r=mysql_fetch_assoc($e);
 		return $r['nama'];
 	}function getKatModulPemb($nama){
-		$s='SELECT * FROM keu_katmodulpembayaran WHERE nama="'.$nama.'"';
+		$s='SELECT * FROM keu_katmodulpembayaran WHERE nama="'.($nama=='joiningf' || $nama=='joining fee'?'joining fee':$nama).'"';
 		// var_dump($s);exit();
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);

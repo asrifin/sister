@@ -73,23 +73,47 @@
 		}
 	}else{
 		switch ($_POST['aksi']) {
+			// history bayar
+			case 'histBayar':
+				$s ='SELECT
+						p.replid,
+						p.cicilan,
+						t.tanggal
+					FROM
+						keu_pembayaran p 
+						LEFT JOIN keu_transaksi t on t.pembayaran = p.replid
+						LEFT JOIN keu_modulpembayaran m on m.replid = p.modul
+						LEFT JOIN keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
+					WHERE
+						k.nama = "'.$_POST['subaksi'].'" AND 
+						p.siswa = '.$_POST['siswa'];
+			// var_dump($s);exit();
+				$e   = mysql_query($s);
+				$arr = array();
+				while ($r=mysql_fetch_assoc($e)){
+					$arr[]=array(
+						'replid'  =>$r['replid'],
+						'cicilan' =>'Rp. '.number_format($r['cicilan']),
+						'tanggal' =>tgl_indo5($r['tanggal'])
+					);
+				}$out = json_encode(array('status'=>$e?'sukses':'gagal','datax'=>$arr));
+			break;
+
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
-					// pendaftaran
-					case 'pendaftaran':
-						// $kelompok      = isset($_POST['kelompokS'])&& $_POST['kelompokS']!=''?' c.kelompok ='.$_POST['kelompokS'].' AND ':'';
+					// formulir
+					case 'formulir':
+						$pre = 'formulir';
 						$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
-						$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-						$daftar        = isset($_POST['daftarS'])?filter($_POST['daftarS']):'';
-						$joiningf      = isset($_POST['joiningfS'])?filter($_POST['joiningfS']):'';
-						$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
+						$nama          = isset($_POST[$pre.'_namaS'])?filter($_POST[$pre.'_namaS']):'';
+						$daftar        = isset($_POST[$pre.'_daftarS'])?filter($_POST[$pre.'_daftarS']):'';
+						$nopendaftaran = isset($_POST[$pre.'_nopendaftaranS'])?filter($_POST[$pre.'_nopendaftaranS']):'';
 						$sql = 'SELECT
 									c.replid,	
 									c.nopendaftaran,
 									c.nama,
 									b.daftar,	
-									b.joiningf,
 									tbx.tanggal,
 									IF(tbx.idpembayaran IS NULL,0,1)status
 								FROM
@@ -112,8 +136,7 @@
 									c.kelompok='.$kelompok.' AND
 									c.nopendaftaran LIKE "%'.$nopendaftaran.'%" AND
 									c.nama LIKE "%'.$nama.'%" AND
-									b.daftar LIKE "%'.$daftar.'%" AND
-									b.joiningf LIKE "%'.$joiningf.'%"';
+									b.daftar LIKE "%'.$daftar.'%"';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ 
 							$starting=$_POST['starting'];
@@ -123,7 +146,7 @@
 
 						$recpage = 10;
 						$aksi    ='tampil';
-						$subaksi ='pendaftaran';
+						$subaksi ='formulir';
 						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 						$result  = $obj->result;
 
@@ -142,23 +165,20 @@
 									$clr  = '';
 									$icon = 'history';
 									$hint = 'belum lunas';
-									$func = 'onclick="pembayaranFR(\'pendaftaran\','.$res['replid'].');"';
+									$func = 'onclick="pembayaranFR(\'formulir\','.$res['replid'].');"';
 								}
 								$btn ='<td align="center">
 											<button data-hint="'.$hint.'" class="'.$clr.'"   '.$func.'>
 												<i class="icon-'.$icon.'"></i>
 											</button>
-										 </td>';
+									   </td>';
 							 	$out.= '<tr>
 											<td>'.$res['nopendaftaran'].'</td>
 											<td>'.$res['nama'].'</td>
 											<td align="right">Rp. '.number_format(getBiaya('daftar',$res['replid'])).'</td>
-											<td align="right">Rp. '.number_format(getBiaya('joiningf',$res['replid'])).'</td>
 											<td  align="center">'.(($res['tanggal']=='0000-00-00' OR $res['tanggal']==null)?'-':tgl_indo5($res['tanggal'])).'</td>
 											'.$btn.'
 										</tr>';
-										// <td align="right">Rp. '.number_format($res['daftar']).'</td>
-										// <td align="right">Rp. '.number_format($res['joiningf']).'</td>
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
@@ -169,15 +189,113 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-					// pendaftaran 
+					// formulir 
+					
+					// joiing fee
+					case 'joiningf':
+						$pre = $_POST['subaksi'];
+						$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
+						$nama          = isset($_POST[$pre.'_namaS'])?filter($_POST[$pre.'_namaS']):'';
+						$joiningf      = isset($_POST[$pre.'_joiningfS'])?filter($_POST[$pre.'_joiningfS']):'';
+						$nopendaftaran = isset($_POST[$pre.'_nopendaftaranS'])?filter($_POST[$pre.'_nopendaftaranS']):'';
+						$sql = 'SELECT
+									c.replid,	
+									c.nopendaftaran,
+									c.nama,
+									b.joiningf,	
+									tbx.tanggal,
+									IF(tbx.idpembayaran IS NULL,0,1)status
+								FROM
+									psb_calonsiswa c
+									LEFT JOIN psb_setbiaya b on b.replid = c.setbiaya
+									LEFT JOIN (
+										SELECT
+											p.replid idpembayaran,
+											p.siswa,
+											t.tanggal
+										FROM
+											keu_pembayaran p
+										LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
+										LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+										LEFT JOIN keu_transaksi t ON t.pembayaran = p.replid
+										WHERE
+											k.nama = "pendaftaran"
+									)tbx on tbx.siswa = c.replid
+								WHERE
+									c.kelompok='.$kelompok.' AND
+									c.nopendaftaran LIKE "%'.$nopendaftaran.'%" AND
+									c.nama LIKE "%'.$nama.'%" AND
+									b.joiningf LIKE "%'.$joiningf.'%"';
+						// print_r($sql);exit(); 	
+						if(isset($_POST['starting'])){ 
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
+
+						$recpage = 10;
+						$aksi    ='tampil';
+						$subaksi = $pre;
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+
+						#ada data
+						$jum = mysql_num_rows($result);
+						$out ='';$totaset=0;
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_assoc($result)){	
+								$status = getStatusBayar('joining fee',$res['replid']);
+								if($status=='belum'){ // belum
+									$clr  = 'red';
+									$icon = 'empty';
+									$hint = 'belum bayar';
+									$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
+								}else{
+								 	if($status=='lunas'){ // lunas
+										$clr  = 'green';
+										$icon = 'full';
+										$hint = 'lunas';
+										$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
+									}else{ // kurang
+										$clr  = 'yellow';
+										$icon = 'half';
+										$hint = 'kurang';
+										$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
+									}
+								}
+								$btn ='<td align="center">
+											<button data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"   '.$func.'>
+												<i class="icon-battery-'.$icon.'"></i>
+											</button>
+									   </td>';
+								$biaya    = getBiaya($pre,$res['replid']);
+								$terbayar = getTerbayar('joining fee',$res['replid']);
+							 	$out.= '<tr>
+											<td>'.$res['nopendaftaran'].'</td>
+											<td>'.$res['nama'].'</td>
+											<td align="right">Rp. '.number_format($biaya).'</td>
+											<td align="right">Rp. '.number_format($biaya-$terbayar).'</td>
+											<td  align="center">'.getTglTrans($res['replid'],'joining fee').'</td>
+											'.$btn.'
+										</tr>';
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan=9 ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+					break;
+					// joining fee 
 
 					// dpp
 					case 'dpp':
-						// $kelompok      = isset($_POST['kelompokS'])&& $_POST['kelompokS']!=''?' c.kelompok ='.$_POST['kelompokS'].' AND ':'';
 						$angkatan = isset($_POST['angkatanS'])?filter($_POST['angkatanS']):'';
 						$nama     = isset($_POST['namaS'])?filter($_POST['namaS']):'';
 						$nis      = isset($_POST['nisS'])?filter($_POST['nisS']):'';
-						// $nilai    = isset($_POST['nilaiS'])?filter($_POST['nilaiS']):'';
 						$sql = 'SELECT
 									c.replid,
 									c.nis,
@@ -233,8 +351,6 @@
 							$nox = $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
 								$status = getStatusBayar('dpp',$res['replid']);
-								// var_dump($status);exit();
-								// if($res['terbayar']==0){ // belum
 								if($status=='belum'){ // belum
 									$clr  = 'red';
 									$icon = 'empty';
@@ -464,9 +580,12 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				// 1. simpan pembayaran
-				$nominal = getBiaya($_POST['subaksi'],$_POST['idsiswaH']); // pendaftaran & spp
 				if($_POST['subaksi']=='dpp'){ // dpp 
 					$nominal = $_POST['akanbayarTB'] * getAngsurNom($_POST['subaksi'],$_POST['idsiswaH']);
+				}elseif($_POST['subaksi']=='joiningf'){ //joining fee
+					$nominal = getuang($_POST['akanbayar2TB']);
+				}else{ // spp , formulir
+					$nominal = getBiaya($_POST['subaksi'],$_POST['idsiswaH']); // pendaftaran & spp
 				}$s = 'INSERT INTO '.$tb.' set 	modul   = '.$_POST['idmodulH'].',
 												cicilan = '.$nominal.',
 												siswa   = '.$_POST['idsiswaH'];
@@ -552,7 +671,7 @@
 			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
-					case 'pendaftaran';
+					case 'formulir';
 						// get angkatan by : siswa -> kelompok -> angkatan
 						$s1 = 'SELECT
 									p.angkatan,
@@ -606,7 +725,72 @@
 										'rek3'          =>getRekening($r2['rek3']),
 										'modul'         =>$r2['modul'],
 										'idmodul'       =>$r2['idmodul'],
-										'nominal'       =>'Rp. '.number_format(getBiaya('pendaftaran',$r1['idsiswa']))
+										'nominal'       =>'Rp. '.number_format(getBiaya('formulir',$r1['idsiswa']))
+								)));					
+					break;					
+
+					case 'joiningf';
+						// get angkatan by : siswa -> kelompok -> angkatan
+						$s1 = 'SELECT
+									p.angkatan,
+									c.nopendaftaran,	
+									c.replid idsiswa,	
+									c.nama siswa,	
+									b.joiningf nominal
+								FROM
+									psb_calonsiswa c 
+									LEFT JOIN psb_setbiaya b on b.replid = c.setbiaya
+									LEFT JOIN psb_kelompok k on k.replid = c.kelompok
+									LEFT JOIN psb_proses p on p.replid = k.proses
+								WHERE
+									c.replid ='.$_POST['replid']; 
+						$e1 = mysql_query($s1);
+						$r1 = mysql_fetch_assoc($e1);
+
+						// get data : modul pembayaran (untuk form) 
+						$s2   = 'SELECT
+									m.replid,
+									m.rek1,	
+									m.rek2,	
+									m.rek3,	
+									m.nama modul,
+									m.replid idmodul
+								FROM
+									keu_modulpembayaran m
+									LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+								WHERE
+									m.angkatan = '.$r1['angkatan'].' AND 
+									k.nama = "Joining Fee"';
+						$e2   = mysql_query($s2);
+						$r2   = mysql_fetch_assoc($e2);
+							// print_r($r2);exit();
+						$stat = ($e2)?'sukses':'gagal';
+						$nominal  = getBiaya('joiningf',$r1['idsiswa']);
+						$terbayar = getTerbayar('Joining Fee',$r1['idsiswa']);
+						$maxbayar = getBiaya('joiningf',$r1['idsiswa'])-getTerbayar('Joining Fee',$r1['idsiswa']);
+						$out  = json_encode(array(
+									'status' =>$stat,
+									'datax'  =>array(
+										//data siswa 
+										'nopendaftaran' =>$r1['nopendaftaran'],
+										'idsiswa'       =>$r1['idsiswa'],
+										'siswa'         =>$r1['siswa'],
+										//data pembayaran
+										'nomer'         =>getNoTrans($_POST['subaksi']),
+										'tanggal'       =>tgl_indo5(date('Y-m-d')),
+										'rekkas'        =>$r2['rek1'],
+										'rekitem'       =>$r2['rek2'],
+										'rek1'          =>($r2['rek1']=='0'?'':getRekening($r2['rek1'])),
+										'rek2'          =>($r2['rek2']=='0'?'':getRekening($r2['rek2'])),
+										'rek3'          =>($r2['rek3']=='0'?'':getRekening($r2['rek3'])),
+										'modul'         =>$r2['modul'],
+										'idmodul'       =>$r2['idmodul'],
+										'nominal'       =>$nominal,
+										'nominal2'       =>'Rp. '.number_format($nominal),
+										'terbayar'      =>$terbayar,
+										'terbayar2'     =>'Rp. '.number_format($terbayar),
+										'maxbayar'      =>$maxbayar,
+										'maxbayar2'     =>'Rp. '.number_format($maxbayar)
 								)));					
 					break;					
 

@@ -14,27 +14,16 @@
     if(!isset($_GET['token']) and $token!==$_GET['token']){ //token salah 
       echo 'Token URL tidak sesuai';
     }else{ //token benar
-      $s1 = 'SELECT nama tahunbuku
-              FROM keu_tahunbuku 
-              WHERE replid = '.$_GET['a_tahunbukuS'];
-      $s2 = 'SELECT nama departemen
-              FROM  departemen 
-              WHERE replid = '.$_GET['a_departemenS'];
-      $e1 = mysql_query($s1);
-      $e2 = mysql_query($s2);
-      $r1 = mysql_fetch_assoc($e1);
-      $r2 = mysql_fetch_assoc($e2);
-
-          $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+      $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
             <html xmlns="http://www.w3.org/1999/xhtml">
               <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                 <title>SISTER::Keu - Anggaran</title>
               </head>';
-                $a_departemen = isset($_GET['a_departemenS'])?filter(trim($_GET['a_departemenS'])):'';
-                $a_nama       = isset($_GET['a_namaS'])?filter(trim($_GET['a_namaS'])):'';
-                $a_rekening   = isset($_GET['a_rekeningS'])?filter(trim($_GET['a_rekeningS'])):'';
-                $a_keterangan = isset($_GET['a_keteranganS'])?filter(trim($_GET['a_keteranganS'])):'';
+                $a_departemen = isset($_GET['a_departemenS'])?filter($_GET['a_departemenS']):'';
+                $a_nama       = isset($_GET['a_namaS'])?filter($_GET['a_namaS']):'';
+                $a_rekening   = isset($_GET['a_rekeningS'])?filter($_GET['a_rekeningS']):'';
+                $a_keterangan = isset($_GET['a_keteranganS'])?filter($_GET['a_keteranganS']):'';
                 
                 $s = 'SELECT * 
                       FROM keu_kategorianggaran 
@@ -48,21 +37,25 @@
                 $n = mysql_num_rows($e);
 
               $out.='<body>
-                <p align="center">
-                  <b>
-                    Kategori Anggaran<br>
-                  </b>
-                </p>
-
+                    <table width="100%">
+                      <tr>
+                        <td width="41%">
+                          <img width="100" src="../../images/logo.png" alt="" />
+                        </td>
+                        <td>
+                          <b>Kategori Anggaran</b>
+                        </td>
+                      </tr>
+                    </table><br />
                 <table width="100%">
                   <tr>
-                    <td>Tahun Buku </td>
+                    <td width="10%">Tahun Buku </td>
                     <td>: '.getTahunBuku('nama').'</td>
                     <td></td>
                   </tr>
                   <tr>
                     <td>Departemen</td>
-                    <td>: '.$r2['departemen'].'</td>
+                    <td>: '.getDepartemen('replid',filter($_GET['departemenS'])).'</td>
                     <td align="right"> Total :'.$n.' Data</td>
                   </tr>
                 </table>';

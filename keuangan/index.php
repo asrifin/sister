@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <meta name="product" content="Metro UI CSS Framework">
     <meta name="description" content="Simple responsive css framework">
-    <meta name="author" content="Sergey S. Pimenov, Ukraine, Kiev">
+    <meta name="author" content="sister">
 
     <link href="../css/metro-bootstrap.css" rel="stylesheet">
     <link href="../css/metro-bootstrap-responsive.css" rel="stylesheet">
@@ -22,24 +22,16 @@
     <script src="../js/jquery/jquery.min.js"></script>
     <script src="../js/jquery/jquery.widget.min.js"></script>
     <script src="../js/jquery/jquery.mousewheel.js"></script>   
-    <script src="../js/prettify/prettify.js"></script>
+<!--    <script src="../js/prettify/prettify.js"></script>-->
 
     <!-- Metro UI CSS JavaScript plugins -->
     <script src="../js/load-metro.js"></script>
      <script src="js/metro.min.js"></script>
-     <!-- // <script src="../js/metro-scroll.js"></script> -->
 
     <!-- Local JavaScript -->
     <script src="../js/docs.js"></script>
-    <!--<script src="js/github.info.js"></script>-->
     <script src="../js/start-screen.js"></script>
     <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
-
-    <!-- js for datatables -->
-    <!--<script type="text/javascript" language="javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
-    <script type="text/javascript" language="javascript" src="js/shCore.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/shCore.css">-->
 
     <title>.:SISTER:.</title>
 </head>
@@ -128,19 +120,9 @@
                     case 'pembayaran':
                         require $d.'v_pembayaran.php';
                     break;
-                    // case 'pembayaran_pendaftaran':
-                    //     require $d.'v_pembayaran_pendaftaran.php';
-                    // break;
-                    // case 'uang_pangkal':
-                    //     require $d.'v_uang_pangkal.php';
-                    // break;
-                    // case 'uang_sekolah':
-                    //     require $d.'v_uang_sekolah.php';
-                    // break;
                     case 'inventory':
                         require $d.'v_inventory.php';
                     break;
-
                     default:
                         require $d.'v_home.php';
                     break;

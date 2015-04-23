@@ -15,12 +15,13 @@
 
 <!-- tab -->
     <!-- keterangan :
-        - pendaftaranTAB : formulir n joining fee
-        - dppTAB : uang gedung
-        - sppTAB : spp semesteran 
+        - pendaftaranTAB    : formulir n joining fee
+        - joiningTAB        : joining fee
+        - dppTAB            : uang gedung
+        - sppTAB            : spp semesteran 
     -->
     <div  data-effect="fade" class="tab-control" data-role="tab-control">
-        <ul class="tabs">
+        <ul class="tabs level1">
             <li onclick="switchPN('pendaftaran');" class="active"><a href="#pendaftaranTAB">Pendaftaran </a></li>
             <li onclick="switchPN('dpp');"><a href="#dppTAB">DPP</a></li>
             <li onclick="switchPN('spp');"><a href="#sppTAB">SPP</a></li>
@@ -30,57 +31,96 @@
                 </div>
             </li>
         </ul>
-        <div style="background-color:white;" class="frames">
 
+        <div style="background-color:white;" class="frames">
             <!-- pendaftaran  -->
             <div class="frame" id="pendaftaranTAB">
-                <button id="pendaftaran_cariBC" data-hint="Pencarian" data-hint-position="top">
-                    <i class="icon-search" ></i>
-                </button>
-                <button id="pendaftaran_cetakBC" data-hint="Cetak" data-hint-position="top">
-                    <i class="icon-printer" ></i>
-                </button>
-                <div class="input-control select span3">
-                    <select data-hint="Periode Pendaftaran" name="prosesS" id="prosesS"></select>
-                </div>
-                <div class="input-control select span3">
-                    <select data-hint="Kelompok Pendaftaran" class="pendaftaran_cari" name="kelompokS" id="kelompokS"></select>
-                </div>
+                <div  data-effect="fade" class="tab-control" data-role="tab-control">
+                    <ul class="tabs level2">
+                        <li onclick="switchPN('pendaftaran');" class="active"><a href="#formulirTAB">Formulir </a></li>
+                        <li onclick="switchPN('pendaftaran');"><a href="#joiningfTAB">Joining Fee</a></li>
+                        <li class="place-right">
+                            <div class="input-control select">
+                                <div class="input-control select span3">
+                                    <select data-hint="Periode Pendaftaran" name="prosesS" id="prosesS"></select>
+                                </div>
+                                <div class="input-control select span3">
+                                    <select data-hint="Kelompok Pendaftaran" class="pendaftaran_cari" name="kelompokS" id="kelompokS"></select>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
 
-                <table class="table hovered bordered striped">
-                    <thead>
-                        <tr style="color:white;"class="info">
-                            <th class="text-center">No. Pendaftaran</th>
-                            <th class="text-center">Nama</th>
-                            <th class="text-center">Formulir</th>
-                            <th class="text-center">Joining Fee</th>
-                            <th class="text-center">Tanggal</th>
-                            <th class="text-center">Status</th>
-                        </tr>
-                        <tr style="display:none;" id="pendaftaranTR" class="info">
-                            <th class="text-left"><input placeholder="nomor pendaftaran" id="nopendaftaranS" class="pendaftaran_cari"></th>
-                            <th class="text-left"><input placeholder="nama siswa" id="namaS" class="pendaftaran_cari"></th>
-                            <th class="text-leftx"><input placeholder="formulir" id="daftarS" class="pendaftaran_cari"></th>
-                            <th class="text-leftx"><input placeholder="joining fee " id="joiningfS" class="pendaftaran_cari"></th>
-                            <th class="text-leftx"></th>
-                            <th class="text-left"></th>
-                        </tr>
-                    </thead>
+                    <div style="background-color:white;" class="frames">
+                        <div class="frame" id="formulirTAB">
+                            <button id="formulir_cariBC" data-hint="Pencarian" data-hint-position="top">
+                                <i class="icon-search" ></i>
+                            </button>
+                            <button id="formulir_cetakBC" onclick="printPDF('formulir');" data-hint="Cetak" data-hint-position="top">
+                                <i class="icon-printer" ></i>
+                            </button>
 
-                    <tbody id="pendaftaran_tbody">
-                    </tbody>
-                    <tfoot>
-                    </tfoot>
-                </table>
+                            <table class="table hovered bordered striped">
+                                <thead>
+                                    <tr style="color:white;"class="info">
+                                        <th class="text-center">No. Pendaftaran</th>
+                                        <th class="text-center">Nama</th>
+                                        <th class="text-center">Formulir</th>
+                                        <th class="text-center">Tanggal Pembayaran</th>
+                                        <th class="text-center">Status</th>
+                                    </tr>
+                                    <tr style="display:none;" id="formulirTR" class="info">
+                                        <th class="text-left"><input placeholder="nomor pendaftaran" id="formulir_nopendaftaranS" class="formulir_cari"></th>
+                                        <th class="text-left"><input placeholder="nama siswa" id="formulir_namaS" class="formulir_cari"></th>
+                                        <th class="text-leftx"><input placeholder="formulir" id="formulir_daftarS" class="formulir_cari"></th>
+                                        <th class="text-leftx"></th>
+                                        <th class="text-left"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="formulir_tbody"></tbody>
+                            </table>
+                        </div>
+
+                        <div class="frame" id="joiningfTAB">
+                            <button id="joiningf_cariBC" data-hint="Pencarian" data-hint-position="top">
+                                <i class="icon-search" ></i>
+                            </button>
+                            <button id="joiningf_cetakBC" onclick="printPDF('pendaftaran');" data-hint="Cetak" data-hint-position="top">
+                                <i class="icon-printer" ></i>
+                            </button>
+
+                            <table class="table hovered bordered striped">
+                                <thead>
+                                    <tr style="color:white;"class="info">
+                                        <th class="text-center">No. Pendaftaran</th>
+                                        <th class="text-center">Nama</th>
+                                        <th class="text-center">Joining Fee</th>
+                                        <th class="text-center">Kurangan</th>
+                                        <th class="text-center">Tanggal Pembayaran</th>
+                                        <th class="text-center">Status</th>
+                                    </tr>
+                                    <tr style="display:none;" id="joiningfTR" class="info">
+                                        <th class="text-left"><input placeholder="nomor pendaftaran" id="joiningf_nopendaftaranS" class="joiningf_cari"></th>
+                                        <th class="text-left"><input placeholder="nama siswa" id="joiningf_namaS" class="joiningf_cari"></th>
+                                        <th class="text-leftx"><input placeholder="wajib bayar" id="joiningf_joiningfS" class="joiningf_cari"></th>
+                                        <th class="text-leftx"></th>
+                                        <th class="text-leftx"></th>
+                                        <th class="text-left"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="joiningf_tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- end of 1st content -->
 
             <!-- uang gedung -->
             <div class="frame" id="dppTAB">
                 <button id="dpp_cariBC" data-hint="Pencarian" data-hint-position="top">
                     <i class="icon-search" ></i>
                 </button>
-                <button id="dpp_cetakBC" data-hint="Cetak" data-hint-position="top">
+                <button id="dpp_cetakBC"  onclick="printPDF('dpp');"  data-hint="Cetak" data-hint-position="top">
                     <i class="icon-printer" ></i>
                 </button>
                 <div class="input-control select span3">
@@ -93,7 +133,7 @@
                             <th class="text-center">Nama</th>
                             <th class="text-center">Nominal</th>
                             <th class="text-center">Kurang</th>
-                            <th class="text-center">Tanggal</th>
+                            <th class="text-center">Tanggal Pembayaran</th>
                             <th class="text-center">Status</th>
                         </tr>
                         <tr style="display:none;" id="dppTR" class="info">
@@ -113,11 +153,12 @@
                 </table>
             </div>
 
+            <!-- spp -->
             <div class="frame" id="sppTAB">
                 <button id="spp_cariBC" data-hint="Pencarian" data-hint-position="top">
                     <i class="icon-search" ></i>
                 </button>
-                <button id="spp_cetakBC" data-hint="Cetak" data-hint-position="top">
+                <button id="spp_cetakBC"  onclick="printPDF('spp');"  data-hint="Cetak" data-hint-position="top">
                     <i class="icon-printer" ></i>
                 </button>
                 <div class="input-control select span3">
@@ -155,6 +196,7 @@
                     </tfoot>
                 </table>
             </div>
+
         </div>
     </div>
 <!-- end of tab -->

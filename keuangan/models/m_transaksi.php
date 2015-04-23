@@ -592,14 +592,17 @@
 					$c   = count($_POST[$sub.'_rekH']);
 					foreach ($_POST[$sub.'_rekH'] as $i => $v) {
 						$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
-						$nominal+=$nom;
+						if($nom!='0'){
+							$nominal+=$nom;
+						}
 					}
 					$s = 'INSERT INTO keu_transaksi SET 	tahunbuku  ='.getTahunBuku('replid').',
 															nominal    ='.$nominal.',
 															nomer      ="'.getNoTrans2($_POST['subaksi']).'",
 															tanggal    ="'.date('Y-m-d').'",
 															uraian     ="'.$_POST[$sub.'_uraianTB'].'"
-															nobukti    ="'.$_POST[$sub.'_nobumtiTB'].'"';
+															nobukti    ="'.$_POST[$sub.'_nobuktiTB'].'"';
+					var_dump($s);exit();
 					$e  = mysql_query($s);
 					$id = mysql_insert_id();
 					if(!$e) $stat='gagal_insert_transaksi';
@@ -609,6 +612,10 @@
 						$nomDebit = $nomKredit = 0;
 						foreach ($_POST[$sub.'_rekH'] as $i => $v) {
 							if($_POST[$sub.'_jenis'.$v.'TB']=='debit'){ // kredit
+								$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
+								if($nom!='0'){
+									$nominal+=$nom;
+								}
 								$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
 								$nomDebit+=$nom;
 								$s2 = 'INSERT INTO keu_jurnal SET transaksi ='.$id.', rek ='.$_POST[$sub.'_rek'.$v.'H'].', debet ='.$nom;
