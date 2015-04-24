@@ -61,8 +61,8 @@ var contentFR ='';
                         +'<div  data-effect="fade" class="tab-control" data-role="tab-control">'
                             +'<ul class="tabs">'
                                 +'<li><a href="#keteranganTAB">Keterangan </a></li>'
-                                +'<li><a href="#rincianTAB">Rincian Biaya</a></li>'
-                                +'<li class="active"><a href="#pembayaranTAB">Pembayaran</a></li>'
+                                +'<li id="rincianNAV"><a href="#rincianTAB">Rincian Biaya</a></li>'
+                                +'<li id="pembayaranNAV" class="active"><a href="#pembayaranTAB">Pembayaran</a></li>'
                             +'</ul>'
 
                             +'<div style="background-color:white;" class="frames">'
@@ -97,9 +97,16 @@ var contentFR ='';
                                 +'<div class="frame" id="rincianTAB">'
                                     // ALL
                                     +'<label>Nominal</label>'
-                                    +'<div class="input-control text">'
+                                    +'<div class="input-control text4">'
                                         +'<input disabled type="text" id="nominalTB" name="nominalTB">'
+                                        +'<i class="icon-checkmark on-right on-left" style="background:green; color: white; padding: 10px;border-radius: 50%"></i>'
                                     +'</div>'
+                                    // +'<div class="span3">'
+                                    //     +'<div class="notice marker-on-top bg-amber">'
+                                    //         +'<div class="fg-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>'
+                                    //     +'</div>'
+                                    // +'</div>'
+                                    +'<input id="statusTB" type="text" disabled style="display:none;"/>'
 
                                     // DPP grup
                                     +'<div class="dppgrup" style="display:none;">'
@@ -123,20 +130,20 @@ var contentFR ='';
                                     // DPP & pendaftaran (joining fee)
                                     +'<div class="dppjoin" style="display:none;">'
                                         +'<label><a id="histBayar" href="#" >Sudah Dibayar <span class="icon-history"></span></a> </label>'
-                                        +'<div class="input-control text">'
-                                            +'<input disabled type="text"  class="bg-yellow" id="terbayarTB" name="terbayarTB">'
-                                        +'</div>'
                                         +'<table id="histBayarT" style="display:none;" class="table hovered bordered striped">'
                                             +'<thead>'
                                                 +'<tr class="info fg-white">'
-                                                    +'<th>Angsuran</th>'
                                                     +'<th>Tgl Bayar</th>'
-                                                    +'<th>hapus</th>'
+                                                    +'<th>Angsuran</th>'
+                                                    // +'<th>hapus</th>'
                                                 +'</tr>'
                                             +'</thead>'
                                             +'<tbody id="histBayarTBL">'
                                             +'</tbody>'
                                         +'</table>'
+                                        +'<div class="input-control text">'
+                                            +'<input  disabled type="text"  class="text-right bg-yellow" id="terbayarTB" name="terbayarTB">'
+                                        +'</div>'
                                     +'</div>'
 
                                     +'<label>Akan Dibayar </label>'
@@ -146,7 +153,7 @@ var contentFR ='';
                                     +'</div>'
                                     // pendaftaran (joining fee)
                                     +'<div class="input-control text joingrup" style="display:none;">'
-                                        +'<input  placeholder="isi nominal (angka)" name="akanbayar2TB" id="akanbayar2TB" onfocus="inputuang(this);" onclick="inputuang(this);">'
+                                        +'<input class="text-right" placeholder="isi nominal (angka)" name="akanbayar2TB" id="akanbayar2TB" onfocus="inputuang(this);" onclick="inputuang(this);">'
                                         +'<span id="akanbayarI" class="fg-white bg-red"></span>'
                                     +'</div>'   
                                  +'</div>'
@@ -336,6 +343,9 @@ var contentFR ='';
             cari+='&'+p+'='+v;
         });
 
+        if(subaksi=='joiningf' || subaksi=='joining fee'){
+            cari+='&kelompokS='+$('#kelompokS').val();
+        }
         $.ajax({
             url:dir,
             type:"post",
@@ -406,7 +416,7 @@ var contentFR ='';
     function pembayaranSV(e){
         var url  = dir;
         var data = $(e).serialize()+'&aksi=simpan&subaksi='+curTab();
-        if($('#akanbayarI').html()!=''){ 
+        if($('#akanbayarI').html()!='' || $('#akanbayarI').val()=='Rp. 0'){ 
             return false;
         }else{
             ajax(url,data).done(function (dt) {
@@ -438,6 +448,14 @@ var contentFR ='';
                     $('#rek2TB').val(dt.datax.rek2);
                     $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nCalon Siswa : '+dt.datax.siswa+' \nNo. Pendaftaran : '+dt.datax.nopendaftaran);
                     $('#nominalTB').val(dt.datax.nominal);
+                    $('#pembayaranNAV').attr('style','display:none;');
+                    $('#pembayaranNAV').removeClass('active');
+                    $('#rincianNAV').addClass('active');
+                    if(dt.datax.status=='lunas'){
+                        $('.simpanBC').attr('style','display:none;');
+                        $('#statusTB').attr('style','display:visible;');
+                        $('#statusTB').val('Lunas');
+                    }
                 }else if(typ=='joiningf'){ // pendaftaran (joining fee)
                     // hidden
                     $('#idsiswaH').val(dt.datax.idsiswa);
@@ -839,19 +857,26 @@ var contentFR ='';
     function histBayar(siswa){
         var url  = dir;
         var data = '&aksi=histBayar&subaksi='+(curTab()=='joiningf'?'joining fee':curTab())+'&siswa='+siswa;
+        $('#histBayarTBL').html('<tr><td colspan="2" align="center"><img src="img/w8loader.gif"></td></tr>');
         ajax(url,data).done(function (dt) {
             if (dt.status!='sukses') { //gagal
                 notif(dt.status,'red');
             }else{ // sukses
                 $('#histBayarT').attr('style','display:visible;');
                 var out='';
-                $.each(dt.datax,function(id,item){
-                    out+='<tr>'
-                        +'<td>'+item.cicilan+'</td>'
-                        +'<td>'+item.tanggal+'</td>'
-                        +'<td><a href="#" hint="hapus" onclick="alert('+item.replid+');"><span class="icon-remove"></span></a></href="#" td>'
-                    +'</tr>'
-                });$('#histBayarTBL').html(out);
+                if(dt.datax.length==0)
+                    out+='<tr><td colspan="2" class="text-center fg-white bg-orange">belum ada angsuran</td></tr>'
+                else{
+                    $.each(dt.datax,function(id,item){
+                        out+='<tr>'
+                            +'<td>'+item.tanggal+'</td>'
+                            +'<td align="right">'+item.cicilan+'</td>'
+                            // +'<td><a href="#" hint="hapus" onclick="alert('+item.replid+');"><span class="icon-remove"></span></a></href="#" td>'
+                        +'</tr>'
+                    });
+                }setTimeout(function(){
+                    $('#histBayarTBL').html(out);
+                },500);
             }
         });
     }
