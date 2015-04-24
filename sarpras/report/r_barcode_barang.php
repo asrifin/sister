@@ -6,7 +6,7 @@
   require_once '../../lib/func.php';
   require_once '../../lib/bar128.php';
 
-  $x     = $_SESSION['id_loginS'].$_GET['b_katalogS'].$_GET['b_kodeS'].$_GET['b_barkodeS'].$_GET['b_sumberS'].$_GET['b_hargaS'].$_GET['b_kondisiS'].$_GET['b_statusS'].$_GET['b_keteranganS'];
+  $x     = isset($_SESSION['id_loginS']).$_GET['b_katalogS'].$_GET['b_kodeS'].$_GET['b_barkodeS'].$_GET['b_sumberS'].$_GET['b_hargaS'].$_GET['b_kondisiS'].$_GET['b_statusS'].$_GET['b_keteranganS'];
   $token = base64_encode($x);
   if(!isset($_SESSION)){ // login 
     echo 'user has been logout';
@@ -164,7 +164,7 @@
                   // var_dump($e);exit();
                   $e = mysql_query($s) or die(mysql_error());
                   $n = mysql_num_rows($e);
-                  $out.=' <table border="1">';
+                  $out.=' <table border="1" width="90%">';
                   // $nox = 1;
                   if($n==0){
                     $out.=' <tr>
@@ -180,7 +180,7 @@
                       // $x ='okok';
                       $x = bar128(stripcslashes($r['barkode']));
                       // var_dump($x);exit();
-                      $out.="<td align='center' style='padding: 5px'>
+                      $out.="<td align='center' style='padding: 5px' width='30%'>
                               <font face='code128' size='20'>";
                       $out.=$x;
                       $out.="</font><br />
