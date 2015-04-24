@@ -231,7 +231,7 @@
 		// var_dump($typ.'-'.$siswa);exit();
 		if($typ=='pendaftaran'){ // formulir + joining fee
 			$f = '(b.daftar + b.joiningf)';
-		}elseif($typ=='daftar'){ // formulir
+		}elseif($typ=='daftar' || $typ=='formulir'){ // formulir
 			$f = 'b.daftar';
 		}elseif($typ=='joiningf' || $typ=='joining fee'){ // dpp
 			$f = 'b.joiningf';

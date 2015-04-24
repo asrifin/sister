@@ -45,7 +45,7 @@
                                     <select data-hint="Periode Pendaftaran" name="prosesS" id="prosesS"></select>
                                 </div>
                                 <div class="input-control select span3">
-                                    <select data-hint="Kelompok Pendaftaran" class="pendaftaran_cari" name="kelompokS" id="kelompokS"></select>
+                                    <select data-hint="Kelompok Pendaftaran" class="cari" name="kelompokS" id="kelompokS"></select>
                                 </div>
                             </div>
                         </li>
@@ -85,7 +85,7 @@
                             <button id="joiningf_cariBC" data-hint="Pencarian" data-hint-position="top">
                                 <i class="icon-search" ></i>
                             </button>
-                            <button id="joiningf_cetakBC" onclick="printPDF('pendaftaran');" data-hint="Cetak" data-hint-position="top">
+                            <button id="joiningf_cetakBC" onclick="printPDF('joiningf');" data-hint="Cetak" data-hint-position="top">
                                 <i class="icon-printer" ></i>
                             </button>
 
@@ -102,7 +102,9 @@
                                     <tr style="display:none;" id="joiningfTR" class="info">
                                         <th class="text-left"><input placeholder="nomor pendaftaran" id="joiningf_nopendaftaranS" class="joiningf_cari"></th>
                                         <th class="text-left"><input placeholder="nama siswa" id="joiningf_namaS" class="joiningf_cari"></th>
-                                        <th class="text-leftx"><input placeholder="wajib bayar" id="joiningf_joiningfS" class="joiningf_cari"></th>
+                                        <th class="text-leftx">
+                                        <!-- <input placeholder="wajib bayar" id="joiningf_joiningfS" class="joiningf_cari"> -->
+                                        </th>
                                         <th class="text-leftx"></th>
                                         <th class="text-leftx"></th>
                                         <th class="text-left"></th>
