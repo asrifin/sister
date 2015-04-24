@@ -281,6 +281,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             });$('#b_cetakBC').on('click',function(){
                 printPDF('barang');
             });
+            $('#b_cetakbarcodeBC').on('click',function(){
+                printPDF('barcode_barang');
+            });
 
             // search 
             //grup----
@@ -1221,15 +1224,24 @@ function jumupdate (e) {
     }
 // end of notifikasi
 
+// function cetak()  
+//     { 
+//     win=window.open('r_barcode_barang.php','win','width=300, height=400, menubar=0, scrollbars=1, resizable=0, location=0, toolbar=0, status=0'); 
+//     } 
+
 //end of  print to PDF -------
     function printPDF(mn){
-        var par='',tok='',p,v;
-        $('.'+mn+'_cari').each(function(){
+        var par='',tok='',p,v,menu=mn;
+        if(mn=='barcode_barang'){
+            menu='barang';
+        }
+        $('.'+menu+'_cari').each(function(){
             p=$(this).attr('id');
             v=$(this).val();
             par+='&'+p+'='+v;
             tok+=v;
-        });var x  = $('#id_loginS').val();
+        });
+        var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
