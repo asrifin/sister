@@ -4,10 +4,9 @@
   require_once '../../lib/mpdf/mpdf.php';
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
-  $mnu = 'Joining Fee';
-  $pre = 'joiningf_';
+  $mnu = 'SPP';
 
-  $x     = $_SESSION['kelompokS'].$_GET['nopendaftaranS'].$_GET['namaS'].$_GET['joiningf'];
+  $x     = $_SESSION['kelasS'].$_GET['nisS'].$_GET['namaS'];
   $token = base64_encode($x);
 
   if(!isset($_SESSION)){ // belum login  
@@ -23,29 +22,36 @@
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>SISTER::Keu - Pembayaran '.$mnu.'</title>
           </head>';
-          $kelompok      = isset($_GET['kelompokS'])?filter($_GET['kelompokS']):'';
-          $nopendaftaran = isset($_GET[$pre.'nopendaftaranS'])?filter($_GET[$pre.'nopendaftaranS']):'';
-          $nama          = isset($_GET[$pre.'namaS'])?filter($_GET[$pre.'namaS']):'';
-      
+          $pre    ='spp';
+          $kelas  = isset($_GET[$pre.'_kelasS'])?filter($_GET[$pre.'_kelasS']):'';
+          $nis    = isset($_GET[$pre.'_nisS'])?filter($_GET[$pre.'_nisS']):'';
+          $nama   = isset($_GET[$pre.'_namaS'])?filter($_GET[$pre.'_namaS']):'';
+          
         // table content
-          $s2 = 'SELECT
-                  c.replid, 
-                  c.nopendaftaran, 
-                  c.nama
-                FROM
-                  psb_calonsiswa c
-                WHERE 
-                  c.kelompok = '.$kelompok.' and 
-                  c.nama LIKE "%'.$nama.'%" AND
-                  c.nopendaftaran LIKE "%'.$nopendaftaran.'%"';
-                  // var_dump($s2);
+          $s2   = 'SELECT
+                    a.replid,
+                    a.siswa,
+                    c.nis,
+                    c.nama
+                  FROM
+                    aka_siswa_kelas a 
+                    LEFT JOIN psb_calonsiswa c on c.replid = a.siswa 
+                    LEFT JOIN aka_kelas k on k.replid = a.kelas
+                  WHERE 
+                    k.replid = '.$kelas.' AND 
+                    c.nis LIKE "%'.$nis.'%" AND 
+                    c.nama LIKE "%'.$nama.'%" 
+                  ORDER BY 
+                    c.nama asc';
+          // var_dump($s2);
           $e2  = mysql_query($s2) or die(mysql_error());
           $n   = mysql_num_rows($e2);
 
+          // header info 
           $out.='<body>
                     <table width="100%">
                       <tr>
-                        <td width="39%">
+                        <td width="42%">
                           <img width="100" src="../../images/logo.png" alt="" />
                         </td>
                         <td>
@@ -53,9 +59,14 @@
                         </td>
                       </tr>
                     </table><br />';
-          $kel  = getKelompok('kelompok',$kelompok);
-          $pros = getProses('proses',getKelompok('proses',$kelompok));
-          $dep  = getDepartemen('nama',getProses('departemen',getKelompok('proses',$kelompok)));
+
+          $kel   = getKelas('kelas',$kelas);
+          $sub   = getSubtingkat('subtingkat',getKelas('replid',$kelas));
+          $ting  = getTingkat('tingkat',getSubtingkat('replid',getKelas('replid',$kelas)));
+          $ting2 = getTingkat('keterangan',getSubtingkat('replid',getKelas('replid',$kelas)));
+          $thn   = getTahunAjaran('tahunajaran',getTingkat('tahunajaran',getKelas('replid',$kelas)));
+          $dep   = getDepartemen('nama',getTahunAjaran('departemen',getTingkat('tahunajaran',getKelas('replid',$kelas))));
+          // var_dump($thn);exit();
           $out.='<table width="100%">
                   <tr>
                     <td>Departemen </td>
@@ -63,29 +74,34 @@
                     <td></td>
                   </tr>
                   <tr>
-                    <td>Periode</td>
-                    <td>: '.$pros.'</td>
+                    <td>Tahun Ajaran</td>
+                    <td>: '.$thn.'</td>
                     <td align="right"></td>
                   </tr>
                   <tr>
-                    <td>Kelompok</td>
-                    <td>: '.$kel.'</td>
+                    <td>Jenjang</td>
+                    <td>: '.$ting2.' ('.$ting.')</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Kelas</td>
+                    <td>: '.$sub.' '.$kel.'</td>
                     <td align="right"> Total :'.$n.' Data</td>
                   </tr>
                 </table>';
 
             $out.='<table class="isi" width="100%">
                   <tr class="head">
-                    <td align="right">No.</td>
-                    <td align="center">No. Pendaftaran</td>
-                    <td align="center">Nama</td>
-                    <td align="center">Joining Fee</td>
-                    <td align="center">Kurangan</td>
-                    <td align="center">Status</td>
-                    <td align="center">Tanggal Bayar</td>
+                    <td width="2%" align="center">No.</td>
+                    <td  width="8%"  align="center">NIS</td>
+                    <td  width="45%"  align="center">Nama</td>
+                    <td  width="20%"  align="center">SPP</td>
+                    <td  width="10%" align="center">Status</td>
+                    <td  width="15%" align="center">Tanggal Bayar</td>
                   </tr>';
+
             $nox = 1;
-            $totbayar = $totkurang = 0;
+            $totbayar  = 0;
             if($n==0){
               $out.='<tr>
                 <td>-</td>
@@ -96,37 +112,31 @@
                 <td>-</td>
               </tr>';
             }else{
-              $nox = 1;
               while ($r2=mysql_fetch_assoc($e2)) {
-                $biaya    = getBiaya('joining fee',$r2['replid']);
-                $terbayar = getTerbayar('joining fee',$r2['replid']);
-                $kurangan = $biaya - $terbayar;
-                $status   = getStatusBayar('joining fee',$r2['replid']);
-                if($status=='lunas'){
+                $biaya    = getBiaya($pre,$r2['siswa']);
+                $terbayar = getTerbayar($pre,$r2['siswa']);
+                $status   = getStatusBayar($pre,$r2['siswa']);
+                if($status=='lunas'){ 
                   $clr = 'lightGreen';
-                }elseif($status=='kurang'){
-                  $clr = 'yellow';
                 }else{ // belum
                   $clr = 'pink';
                 }
+
                 $out.='<tr>
                           <td align="right">'.$nox.'.</td>
-                          <td>'.$r2['nopendaftaran'].'</td>
+                          <td  align="center">'.$r2['nis'].'</td>
                           <td>'.$r2['nama'].'</td>
                           <td align="right">Rp. '.number_format($biaya).'</td>
-                          <td align="right">Rp. '.number_format($kurangan).'</td>
-                          <td style="background-color:'.$clr.';" align="center">'.$status.'</td>
-                          <td align="center">'.getTglTrans($r2['replid'],'joining fee').'</td>
+                          <td style="background-color:'.$clr.'"  align="center">'.$status.'</td>
+                          <td align="center">'.getTglTrans($r2['siswa'],$pre).'</td>
                     </tr>';
                 $nox++;
                 $totbayar+=$biaya;
-                $totkurang+=$kurangan;
               }
             }
             $out.='<tr class="head">
               <td colspan="3" align="right"><b>Total : </b></td>
               <td align="right">Rp. '.number_format($totbayar).'</td>
-              <td align="right">Rp. '.number_format($totkurang).'</td>
               <td colspan="2"></td>
             </tr>';
             $out.='</table>';

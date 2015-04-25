@@ -70,11 +70,25 @@
                                         <th class="text-center">Status</th>
                                     </tr>
                                     <tr style="display:none;" id="formulirTR" class="info">
-                                        <th class="text-left"><input placeholder="nomor pendaftaran" id="formulir_nopendaftaranS" class="formulir_cari"></th>
-                                        <th class="text-left"><input placeholder="nama siswa" id="formulir_namaS" class="formulir_cari"></th>
-                                        <th class="text-leftx"><input placeholder="formulir" id="formulir_daftarS" class="formulir_cari"></th>
-                                        <th class="text-leftx"></th>
-                                        <th class="text-left"></th>
+                                        <th class="text-center">
+                                            <div class="input-control text">
+                                                <input placeholder="nomor pendaftaran" id="formulir_nopendaftaranS" class="formulir_cari"></th>
+                                            </div>
+                                        <th class="text-center">
+                                            <div class="input-control text">
+                                                <input placeholder="nama siswa" id="formulir_namaS" class="formulir_cari"></th>
+                                            </div>
+                                        <th class="text-center"></th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center">
+                                            <div class="input-control select">
+                                                <select class="formulir_cari text-center" id="formulir_statusS" name="formulir_statusS" >
+                                                    <option value="">-Semua-</option>
+                                                    <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                                    <option class="bg-red fg-white" value="belum">Belum</option>
+                                                </select>
+                                            </div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody id="formulir_tbody"></tbody>
@@ -179,16 +193,16 @@
                 <table class="table hovered bordered striped">
                     <thead>
                         <tr style="color:white;"class="info">
-                            <th class="text-center">nis </th>
-                            <th class="text-center">nama</th>
-                            <th class="text-center">tunggakan</th>
+                            <th class="text-center">NIS </th>
+                            <th class="text-center">Nama</th>
+                            <th class="text-center">Nominal</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                         <tr style="display:none;" id="sppTR" class="info">
-                            <th class="text-left"><input placeholder="nis" id="spp_nisS" class="spp_cari"></th>
-                            <th class="text-left"><input placeholder="nama" id="spp_namaS" class="spp_cari"></th>
-                            <th class="text-left"><input placeholder="tunggakan" id="spp_tunggakanS" class="spp_cari"></th>
-                            <th class="text-left"></th>
+                            <th class="text-center"><input placeholder="nis" id="spp_nisS" class="spp_cari"></th>
+                            <th class="text-center"><input placeholder="nama" id="spp_namaS" class="spp_cari"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
                         </tr>
                     </thead>
 

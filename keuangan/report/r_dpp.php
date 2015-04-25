@@ -43,10 +43,9 @@
                     AND c.nama LIKE "%'.$nama.'%"
                   ORDER BY
                     c.nama asc';
-                    // -- LEFT JOIN aka_angkatan a  on a.replid  =p.angkatan
-          $e  = mysql_query($s) or die(mysql_error());
-            // var_dump($s);exit();
-          $n   = mysql_num_rows($e);
+          //   var_dump($s);exit();
+          $e = mysql_query($s) or die(mysql_error());
+          $n = mysql_num_rows($e);
 
         // header info 
           $departemen = getDepartemen('nama',getAngkatan('departemen',$angkatan));
@@ -78,6 +77,7 @@
 
             $out.='<table class="isi" width="100%">
                   <tr class="head">
+                    <td align="center">no.</td>
                     <td align="center">NIS</td>
                     <td align="center">Nama</td>
                     <td align="center">DPP</td>
@@ -96,28 +96,37 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
+                <td>-</td>
               </tr>';
             }else{
               while ($r=mysql_fetch_assoc($e)) {
                 $dpp      = getBiaya('dpp',$r['replid'])-getDiscTotal('dpp',$r['replid']);
                 $kurangan = $dpp-getTerbayar('dpp',$r['replid']);
+                $status   = getStatusBayar('dpp',$r['replid']);
+                if($status=='lunas'){
+                  $clr = 'lightGreen';
+                }elseif($status=='kurang'){
+                  $clr = 'yellow';
+                }else{ // belum
+                  $clr = 'pink';
+                }
 
                 $out.='<tr>
-                          <td>'.$r['nopendaftaran'].'</td>
+                          <td align="right">'.$nox.'.</td>
+                          <td>'.$r['nis'].'</td>
                           <td>'.$r['nama'].'</td>
                           <td align="right">Rp. '.number_format($dpp).',-</td>
                           <td align="right">Rp. '.number_format($kurangan).',-</td>
-                          <td  align="center">'.getStatusBayar('dpp',$r['replid']).'</td>
-                          <td align="center">'.($r['tanggal']=='-'?'-':tgl_indo5($r['tanggal'])).'</td>
+                          <td style="background-color:'.$clr.'" align="center">'.$status.'</td>
+                          <td align="center">'.getTglTrans($r['replid'],'dpp').'</td>
                     </tr>';
-                          // <td>'.getStatusBayar('dpp',$r['replid']).'</td>
                 $nox++;
                 $totdpp+=$dpp;
                 $totkurang+=$kurangan;
               }
             }
-            $out.='<tr>
-              <td colspan="2" align="right"><b>Total : </b></td>
+            $out.='<tr class="head">
+              <td colspan="3" align="right"><b>Total : </b></td>
               <td align="right">Rp. '.number_format($totdpp).',-</td>
               <td align="right">Rp. '.number_format($totkurang).',-</td>
               <td colspan="2"></td>
