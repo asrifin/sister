@@ -193,7 +193,8 @@
 		// return $r[];	
 	}
 	function getBiayaNet($typ,$siswa){
-		$biaya = $biayaKotor - $diskonTotal; 		
+		$biayaNet = getBiaya($typ,$siswa) - getDiscTotal($typ,$siswa); 		
+		return $biayaNet;
 	}
 	function getStatusBayar($typ,$siswa){
 		$biaya = getBiaya($typ,$siswa);
