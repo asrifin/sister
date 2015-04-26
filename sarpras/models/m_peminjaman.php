@@ -25,6 +25,7 @@
 						SELECT
 							b.replid,
 							k.nama,
+							b.barkode,
 							CONCAT(l.kode,"/",g.kode,"/",t.kode,"/",k.kode,"/",LPAD(b.urut,5,0)) kode
 						FROM
 							sar_barang b
@@ -38,7 +39,8 @@
 						)tb
 					WHERE	
 						tb.nama LIKE "%'.$searchTerm.'%"
-						OR tb.kode LIKE "%'.$searchTerm.'%"';
+						OR tb.kode LIKE "%'.$searchTerm.'%"
+						OR tb.barkode LIKE "%'.$searchTerm.'%"';
 						// '.(isset($_POST['barang']) and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
 
 			// print_r($ss);exit();
@@ -65,7 +67,8 @@
 				$rows[]= array(
 					'replid' =>$row['replid'],
 					'nama'   =>$row['nama'],
-					'kode'   =>$row['kode']
+					'kode'   =>$row['kode'],
+					'barkode'   =>$row['barkode']
 				);
 			}$response=array(
 				'page'    =>$page,

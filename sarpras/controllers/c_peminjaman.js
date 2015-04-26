@@ -69,6 +69,7 @@ var contentAdd=contentDetail='';
                         +'<table class="table hovered bordered striped">'
                             +'<thead>'
                                 +'<tr style="color:white;"class="info">'
+                                    +'<th class="text-center">Barkode</th>'
                                     +'<th class="text-center">Kode</th>'
                                     +'<th class="text-center">Barang</th>'
                                     +'<th class="text-center">Aksi</th>'
@@ -310,11 +311,15 @@ var contentAdd=contentDetail='';
             width:'400px',
             colModel: [{
                     'align':'left',
-                    'columnName':'kode',
+                    'columnName':'barkode',
                     'hide':true,
-                    'width':'55',
+                    'width':'20',
                     // 'width':'8',
-                    'label':'kode'
+                    'label':'Barcode'
+                },{   
+                    'columnName':'kode',
+                    'width':'40',
+                    'label':'Kode'
                 },{   
                     'columnName':'nama',
                     'width':'40',
@@ -327,7 +332,7 @@ var contentAdd=contentDetail='';
                 // $('#gruruH').val(ui.item.replid);
                 
                 // $(this).combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiTB').val() );
-                barangAdd(ui.item.replid,ui.item.kode,ui.item.nama);
+                barangAdd(ui.item.replid,ui.item.barkode,ui.item.kode,ui.item.nama);
                 $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
                 return false;
             }
@@ -354,8 +359,9 @@ var contentAdd=contentDetail='';
 //end of barang record kosong --
 
 // pilih barang yg akan dipinjam ---
-    function barangAdd (id,kode,nama) {
+    function barangAdd (id,barkode,kode,nama) {
         var tr ='<tr val="'+id+'" class="barangTR" id="barangTR_'+id+'">'
+                    +'<td>'+barkode+'</td>'
                     +'<td>'+kode+'</td>'
                     +'<td>'+nama+'</td>'
                     +'<td><button onclick="barangDel('+id+');"><i class="icon-remove"></button></i></td>'
