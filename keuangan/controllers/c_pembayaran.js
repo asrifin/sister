@@ -34,9 +34,13 @@ var contentFR ='';
             viewTB(curTab());
         });$('#formulir_statusS').on('change',function(){
             viewTB('formulir');
+        });$('#joiningf_statusS').on('change',function(){
+            viewTB('joiningf');
         });
         // event filter : dpp 
         $('#angkatanS').on('change',function(){
+            viewTB('dpp');
+        });$('#dpp_statusS').on('change',function(){
             viewTB('dpp');
         });
 
@@ -49,6 +53,8 @@ var contentFR ='';
             cmbkelas('filter',$(this).val());
         });$('#spp_kelasS').on('change',function(){
             viewTB(curTab());
+        });$('#spp_statusS').on('change',function(){
+            viewTB('spp');
         });
     // --------------------------
     //form content
@@ -342,7 +348,7 @@ var contentFR ='';
             cari+='&'+p+'='+v;
         });
 
-        if(subaksi=='joiningf' || subaksi=='joining fee'){
+        if(subaksi=='joiningf' || subaksi=='joining fee' || subaksi=='formulir'){
             cari+='&kelompokS='+$('#kelompokS').val();
         }
         $.ajax({
@@ -669,7 +675,7 @@ var contentFR ='';
         }
         var x     = $('#id_loginS').val();
         var token = encode64(x+tok);
-        // alert(token);return false;
+        // alert(par);return false;
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 

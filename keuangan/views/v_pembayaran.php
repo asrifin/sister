@@ -114,14 +114,27 @@
                                         <th class="text-center">Status</th>
                                     </tr>
                                     <tr style="display:none;" id="joiningfTR" class="info">
-                                        <th class="text-left"><input placeholder="nomor pendaftaran" id="joiningf_nopendaftaranS" class="joiningf_cari"></th>
-                                        <th class="text-left"><input placeholder="nama siswa" id="joiningf_namaS" class="joiningf_cari"></th>
-                                        <th class="text-leftx">
-                                        <!-- <input placeholder="wajib bayar" id="joiningf_joiningfS" class="joiningf_cari"> -->
+                                        <th class="text-left">
+                                            <div class="input-control text">
+                                                <input placeholder="nomor pendaftaran" id="joiningf_nopendaftaranS" class="joiningf_cari"></th>
+                                            </div>
+                                        <th class="text-left">
+                                            <div class="input-control text">
+                                                <input placeholder="nama siswa" id="joiningf_namaS" class="joiningf_cari"></th>
+                                            </div>
+                                        <th class="text-center"></th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center">
+                                            <div class="input-control select">
+                                                <select class="joiningf_cari text-center" id="joiningf_statusS" name="joiningf_statusS" >
+                                                    <option value="">-Semua-</option>
+                                                    <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                                    <option class="bg-yellow fg-white" value="kurang">Kurang</option>
+                                                    <option class="bg-red fg-white" value="belum">Belum</option>
+                                                </select>
+                                            </div>
                                         </th>
-                                        <th class="text-leftx"></th>
-                                        <th class="text-leftx"></th>
-                                        <th class="text-left"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="joiningf_tbody"></tbody>
@@ -153,12 +166,21 @@
                             <th class="text-center">Status</th>
                         </tr>
                         <tr style="display:none;" id="dppTR" class="info">
-                            <th class="text-center"><input placeholder="NIS" id="nisS" class="dpp_cari"></th>
-                            <th class="text-center"><input placeholder="Nama" id="namaS" class="dpp_cari"></th>
+                            <th class="text-center"><div class="input-control text"><input placeholder="NIS" id="nisS" class="dpp_cari"></div></th>
+                            <th class="text-center"><div class="input-control text"><input placeholder="Nama" id="namaS" class="dpp_cari"></div></th>
                             <th class="text-center"></th>
                             <th class="text-center"></th>
                             <th class="text-center"></th>
-                            <th class="text-center"></th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="dpp_cari text-center" id="dpp_statusS" name="dpp_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-yellow fg-white" value="kurang">Kurang</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
 
@@ -178,16 +200,16 @@
                     <i class="icon-printer" ></i>
                 </button>
                 <div class="input-control select span3">
-                    <select data-hint="Tahun Ajaran" class="spp_cari" name="spp_tahunajaranS" id="spp_tahunajaranS"></select>
+                    <select data-hint="Tahun Ajaran" xclass="spp_cari"  id="spp_tahunajaranS"></select>
                 </div>
                 <div class="input-control select span3">
-                    <select data-hint="Tingkat" class="spp_cari" name="spp_tingkatS" id="spp_tingkatS"></select>
+                    <select data-hint="Tingkat" xclass="spp_cari" id="spp_tingkatS"></select>
                 </div>
                 <div class="input-control select span3">
-                    <select data-hint="Sub Tingkat" class="spp_cari" name="spp_subtingkatS" id="spp_subtingkatS"></select>
+                    <select data-hint="Sub Tingkat" xclass="spp_cari" id="spp_subtingkatS"></select>
                 </div>
                 <div class="input-control select span3">
-                    <select data-hint="Kelas" class="spp_cari" name="spp_kelasS" id="spp_kelasS"></select>
+                    <select data-hint="Kelas" class="spp_cari" id="spp_kelasS"></select>
                 </div>
 
                 <table class="table hovered bordered striped">
@@ -199,10 +221,18 @@
                             <th class="text-center">Aksi</th>
                         </tr>
                         <tr style="display:none;" id="sppTR" class="info">
-                            <th class="text-center"><input placeholder="nis" id="spp_nisS" class="spp_cari"></th>
-                            <th class="text-center"><input placeholder="nama" id="spp_namaS" class="spp_cari"></th>
+                            <th class="text-center"><div class="input-control text"><input placeholder="nis" id="spp_nisS" class="spp_cari"></div></th>
+                            <th class="text-center"><div class="input-control text"><input placeholder="nama" id="spp_namaS" class="spp_cari"></div></th>
                             <th class="text-center"></th>
-                            <th class="text-center"></th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="spp_cari text-center" id="spp_statusS" name="spp_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
 
