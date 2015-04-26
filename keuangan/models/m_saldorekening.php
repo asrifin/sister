@@ -14,9 +14,9 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$kategorirekening = (isset($_POST['kategorirekeningS']) and $_POST['kategorirekeningS']!='')?' kr.replid='.$_POST['kategorirekeningS'].' AND':'';
-				$kode             = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
-				$nama             = trim($_POST['namaS'])?filter($_POST['namaS']):'';
-				$tahunbuku        = trim($_POST['tahunbukuS'])?filter($_POST['tahunbukuS']):'';
+				$kode             = isset($_POST['kodeS'])?filter($_POST['kodeS']):'';
+				$nama             = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+				$tahunbuku        = isset($_POST['tahunbukuS'])?filter($_POST['tahunbukuS']):'';
 
 				$sql = 'SELECT
 							sr.replid,
@@ -80,11 +80,7 @@
 												<i class="icon-pencil on-left"></i>
 											</button>
 									 </td>';
-							 	if($res['jenis']=='debit_kredit'){
-									$debit  = 0;  
-									$kredit = 0; 
-									$normal = $res['saldo'];
-							 	}elseif($res['jenis']=='debit'){ // kredit
+							 	if($res['jenis']=='debit'){ // kredit
 									$debit  = $res['saldo']; 
 									$kredit = 0;  
 									$normal = 0;
@@ -97,13 +93,10 @@
 								$out.= '<tr>
 											<td class="text-right">'.$res['kode'].'</td>
 											<td>'.$res['nama'].'</td>
-											<td class="text-right">Rp. '.number_format($normal).',-</td>
 											<td class="text-right">Rp. '.number_format($debit).',-</td>
 											<td class="text-right">Rp. '.number_format($kredit).',-</td>
 											'.$btn.'
 										</tr>';
-										// <td class="text-right">Rp. '.($res['jenis']!='debit'?'':number_format($res['saldo'])).',-</td>
-										// <td class="text-right">Rp. '.number_format($res['saldo']).',-</td>
 							}$curKat=$res['idkategorirekening'];
 						// }
 						$nox++;
