@@ -5,14 +5,15 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
   $mnu = 'SPP';
-
-  $x     = $_SESSION['kelasS'].$_GET['nisS'].$_GET['namaS'];
+  $pre  ='spp_';
+  $x    = $_SESSION['id_loginS'].$_GET[$pre.'kelasS'].$_GET[$pre.'nisS'].$_GET[$pre.'namaS'].$_GET[$pre.'statusS'];
   $token = base64_encode($x);
-
+  // var_dump($token);exit();
+  // var_dump($_GET['token']);exit();
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
   }else{ // sudah login 
-    if(!isset($_GET['token']) and $token!==$_GET['token']){ //token salah 
+    if(!isset($_GET['token']) OR  $token!==$_GET['token']){ //token salah 
       echo 'Token URL tidak sesuai';
     }else{ //token benar
       ob_start(); // digunakan untuk convert php ke html
@@ -23,26 +24,46 @@
             <title>SISTER::Keu - Pembayaran '.$mnu.'</title>
           </head>';
           $pre    ='spp';
+          $status = (isset($_GET[$pre.'_statusS']) AND $_GET[$pre.'_statusS']!='') ?' AND t2.statbayar="'.filter($_GET[$pre.'_statusS']).'"':'';
           $kelas  = isset($_GET[$pre.'_kelasS'])?filter($_GET[$pre.'_kelasS']):'';
           $nis    = isset($_GET[$pre.'_nisS'])?filter($_GET[$pre.'_nisS']):'';
           $nama   = isset($_GET[$pre.'_namaS'])?filter($_GET[$pre.'_namaS']):'';
           
         // table content
           $s2   = 'SELECT
-                    a.replid,
-                    a.siswa,
-                    c.nis,
-                    c.nama
+                    t2.*
                   FROM
-                    aka_siswa_kelas a 
-                    LEFT JOIN psb_calonsiswa c on c.replid = a.siswa 
-                    LEFT JOIN aka_kelas k on k.replid = a.kelas
-                  WHERE 
-                    k.replid = '.$kelas.' AND 
-                    c.nis LIKE "%'.$nis.'%" AND 
-                    c.nama LIKE "%'.$nama.'%" 
-                  ORDER BY 
-                    c.nama asc';
+                    psb_calonsiswa c
+                    LEFT JOIN aka_siswa_kelas a on a.siswa = c.replid
+                    LEFT JOIN (
+                      SELECT
+                        IF (t1.cicilan = t1.spp,"lunas","belum") statbayar,
+                        cs.replid,
+                        cs.nama,
+                        t1.cicilan,
+                        t1.spp,
+                        cs.kelompok,
+                        cs.nis
+                      FROM psb_calonsiswa cs
+                        LEFT JOIN (
+                          SELECT
+                            ss.replid,
+                            p.cicilan,
+                            s.spp
+                          FROM
+                            psb_calonsiswa ss
+                            LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
+                            LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
+                            LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+                            LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
+                          WHERE
+                            k.nama = "spp"
+                        ) t1 ON t1.replid = cs.replid
+                    ) t2 ON t2.replid = c.replid
+                  WHERE
+                    a.kelas = '.$kelas.'
+                    AND c.nama LIKE "%'.$nama.'%"
+                    AND c.nis LIKE "%'.$nis.'%" '.$status;
           // var_dump($s2);
           $e2  = mysql_query($s2) or die(mysql_error());
           $n   = mysql_num_rows($e2);
@@ -113,9 +134,10 @@
               </tr>';
             }else{
               while ($r2=mysql_fetch_assoc($e2)) {
-                $biaya    = getBiaya($pre,$r2['siswa']);
-                $terbayar = getTerbayar($pre,$r2['siswa']);
-                $status   = getStatusBayar($pre,$r2['siswa']);
+                $biaya    = getBiaya($pre,$r2['replid']);
+                $terbayar = getTerbayar($pre,$r2['replid']);
+                $status   = getStatusBayar($pre,$r2['replid']);
+                // var_dump($status);exit();
                 if($status=='lunas'){ 
                   $clr = 'lightGreen';
                 }else{ // belum
@@ -128,7 +150,7 @@
                           <td>'.$r2['nama'].'</td>
                           <td align="right">Rp. '.number_format($biaya).'</td>
                           <td style="background-color:'.$clr.'"  align="center">'.$status.'</td>
-                          <td align="center">'.getTglTrans($r2['siswa'],$pre).'</td>
+                          <td align="center">'.getTglTrans($r2['replid'],$pre).'</td>
                     </tr>';
                 $nox++;
                 $totbayar+=$biaya;

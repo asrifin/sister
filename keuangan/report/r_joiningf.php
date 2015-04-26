@@ -1,4 +1,5 @@
 <?php
+  sleep(1);
   session_start();
   require_once '../../lib/dbcon.php';
   require_once '../../lib/mpdf/mpdf.php';
@@ -6,14 +7,15 @@
   require_once '../../lib/func.php';
   $mnu = 'Joining Fee';
   $pre = 'joiningf_';
-
-  $x     = $_SESSION['kelompokS'].$_GET['nopendaftaranS'].$_GET['namaS'].$_GET['joiningf'];
+  $x     = $_SESSION['id_loginS'].$_GET[$pre.'nopendaftaranS'].$_GET[$pre.'namaS'].$_GET[$pre.'statusS'].$_GET['kelompokS'];
   $token = base64_encode($x);
+  // var_dump($token);exit();
+  // var_dump($$_GET['token']);exit();
 
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
   }else{ // sudah login 
-    if(!isset($_GET['token']) and $token!==$_GET['token']){ //token salah 
+    if(!isset($_GET['token']) OR  $token!==$_GET['token']){ //token salah 
       echo 'Token URL tidak sesuai';
     }else{ //token benar
       ob_start(); // digunakan untuk convert php ke html
@@ -26,19 +28,48 @@
           $kelompok      = isset($_GET['kelompokS'])?filter($_GET['kelompokS']):'';
           $nopendaftaran = isset($_GET[$pre.'nopendaftaranS'])?filter($_GET[$pre.'nopendaftaranS']):'';
           $nama          = isset($_GET[$pre.'namaS'])?filter($_GET[$pre.'namaS']):'';
+          $status        = (isset($_GET[$pre.'statusS']) AND $_GET[$pre.'statusS']!='') ?' AND t2.statbayar="'.filter($_GET[$pre.'statusS']).'"':'';
       
         // table content
-          $s2 = 'SELECT
-                  c.replid, 
-                  c.nopendaftaran, 
-                  c.nama
-                FROM
-                  psb_calonsiswa c
-                WHERE 
-                  c.kelompok = '.$kelompok.' and 
-                  c.nama LIKE "%'.$nama.'%" AND
-                  c.nopendaftaran LIKE "%'.$nopendaftaran.'%"';
-                  // var_dump($s2);
+          $s2 = 'SELECT t2.*
+                FROM psb_calonsiswa c
+                  LEFT JOIN (
+                    SELECT  
+                      case 
+                        when t1.cicilan = 0 OR  t1.cicilan is NULL  then "belum"
+                        when t1.cicilan = sb.joiningf then "lunas"
+                        when t1.cicilan < sb.joiningf then "kurang"
+                      end as statbayar,
+                      sb.joiningf,
+                      cs.replid,
+                      cs.nama,
+                      t1.cicilan,
+                      cs.kelompok,
+                      cs.nopendaftaran
+                    FROM
+                      psb_calonsiswa cs
+                      LEFT JOIN psb_setbiaya sb on sb.replid = cs.setbiaya
+                      LEFT JOIN (
+                        SELECT
+                          ss.replid,
+                          sum(p.cicilan)cicilan
+                        FROM
+                          psb_calonsiswa ss
+                          LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
+                          LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
+                          LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+                          LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
+                        WHERE
+                          k.nama = "joining fee"
+                        GROUP BY  
+                          ss.replid
+                      ) t1 ON t1.replid = cs.replid
+                  ) t2 ON t2.replid = c.replid
+                WHERE
+                  c.kelompok = '.$kelompok.'
+                  AND c.nama LIKE "%'.$nama.'%"
+                  AND c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
+                  '.$status;
           $e2  = mysql_query($s2) or die(mysql_error());
           $n   = mysql_num_rows($e2);
 

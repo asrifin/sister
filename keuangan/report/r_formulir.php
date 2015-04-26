@@ -9,8 +9,7 @@
 
   $x     = $_SESSION['id_loginS'].$_GET[$pre.'nopendaftaranS'].$_GET[$pre.'namaS'].$_GET[$pre.'statusS'].$_GET['kelompokS'];
   $token = base64_encode($x);
-// var_dump($_GET['token']);exit();
-// var_dump($token);exit();
+
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
   }else{ // sudah login 
