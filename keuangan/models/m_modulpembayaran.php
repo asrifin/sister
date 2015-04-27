@@ -158,10 +158,10 @@
 									rek1               = "'.filter($_POST['rek1H']).'",
 									rek2               = "'.filter($_POST['rek2H']).'",
 									rek3               = "'.filter($_POST['rek3H']).'",
-									cicilan            = "'.getuang($_POST['cicilanTB']).'",
-									diskon             = "'.getuang($_POST['diskonTB']).'",
-									biayaadmin         = "'.getuang($_POST['biayaadminTB']).'",
 									keterangan         = "'.filter($_POST['keteranganTB']).'"';
+									// cicilan            = "'.getuang($_POST['cicilanTB']).'",
+									// diskon             = "'.getuang($_POST['diskonTB']).'",
+									// biayaadmin         = "'.getuang($_POST['biayaadminTB']).'",
 									// nominal            = "'.getuang($_POST['nominalTB']).'",
 
 				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
