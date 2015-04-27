@@ -122,7 +122,7 @@ var contentFR ='';
                 }else{
                     $.each(dt.tahunbuku, function(id,item){
                         if(item.aktif==1)
-                            out+='<option selected="selected" value="'+item.replid+'">Tahun Ajaran '+item.nama+' (aktif)</option>';
+                            out+='<option selected="selected" value="'+item.replid+'">Tahun Buku '+item.nama+' (aktif)</option>';
                         else
                             out+='<option value="'+item.replid+'">Tahun Ajaran'+item.nama+'</option>';
                     });

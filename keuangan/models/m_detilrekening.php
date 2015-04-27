@@ -14,15 +14,15 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$kategorirekening = trim($_POST['kategorirekeningS'])?filter($_POST['kategorirekeningS']):'';
-				$kode             = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
-				$nama             = trim($_POST['namaS'])?filter($_POST['namaS']):'';
-				$keterangan       = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$kategorirekening = (isset($_POST['kategorirekeningS']) && $_POST['kategorirekeningS']!='')?' kategorirekening='.$_POST['kategorirekeningS'].' AND':'';
+				$kode             = isset($_POST['kodeS'])?filter($_POST['kodeS']):'';
+				$nama             = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+				$keterangan       = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
-							kategorirekening like "%'.$kategorirekening.'%" and
+							'.$kategorirekening.'
 							kode like "%'.$kode.'%" and
 							nama like "%'.$nama.'%" and
 							keterangan like "%'.$keterangan.'%" 
@@ -51,17 +51,18 @@
 							$ss = 'SELECT replid,nama,RPAD(kode,6,0)kode from keu_kategorirekening where replid='.$res['kategorirekening'];	
 							$ee = mysql_query($ss);
 							$rr = mysql_fetch_assoc($ee);
-							$out.= '<tr>
+							$out.= '<tr class="bg-lightTeal">
 										<td><b>'.$rr['kode'].'</b></td>
 										<td colspan="3"><b>'.$rr['nama'].'</b></td>
 									</tr>';
 						}else{
-							$btn ='<td>
+							$btn ='<td align="center">
 										<button data-hint="ubah" '.isDisabled($menu,'u').' class="button" onclick="viewFR('.$res['replid'].');">
 											<i class="icon-pencil on-left"></i>
 										</button>
 										<button data-hint="hapus" '.isDisabled($menu,'d').'  class="button" onclick="del('.$res['replid'].');">
 											<i class="icon-remove on-left"></i>
+										</button>
 									 </td>';
 							$out.= '<tr>
 										<td class="text-right">'.$res['kode'].'</td>
