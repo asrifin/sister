@@ -52,25 +52,24 @@
 							$ee = mysql_query($ss);
 							$rr = mysql_fetch_assoc($ee);
 							$out.= '<tr class="bg-lightTeal">
-										<td><b>'.$rr['kode'].'</b></td>
+										<td align="right"><b>'.$rr['kode'].'</b></td>
 										<td colspan="3"><b>'.$rr['nama'].'</b></td>
 									</tr>';
-						}else{
-							$btn ='<td align="center">
-										<button data-hint="ubah" '.isDisabled($menu,'u').' class="button" onclick="viewFR('.$res['replid'].');">
-											<i class="icon-pencil on-left"></i>
-										</button>
-										<button data-hint="hapus" '.isDisabled($menu,'d').'  class="button" onclick="del('.$res['replid'].');">
-											<i class="icon-remove on-left"></i>
-										</button>
-									 </td>';
-							$out.= '<tr>
-										<td class="text-right">'.$res['kode'].'</td>
-										<td>'.$res['nama'].'</td>
-										<td>'.$res['keterangan'].'</td>
-										'.$btn.'
-									</tr>';
 						}
+						$btn ='<td align="center">
+									<button data-hint="ubah" '.isDisabled($menu,'u').' class="button" onclick="viewFR('.$res['replid'].');">
+										<i class="icon-pencil on-left"></i>
+									</button>
+									<button data-hint="hapus" '.isDisabled($menu,'d').'  class="button" onclick="del('.$res['replid'].');">
+										<i class="icon-remove on-left"></i>
+									</button>
+								 </td>';
+						$out.= '<tr>
+									<td class="text-right">'.$res['kode'].'</td>
+									<td>'.$res['nama'].'</td>
+									<td>'.$res['keterangan'].'</td>
+									'.$btn.'
+								</tr>';
 						$curKat=$res['kategorirekening'];
 						$nox++;
 					}
@@ -119,7 +118,7 @@
 				if(!$e){
 					$stat = 'gagal_'.mysql_error();
 				}else{
-					$s2   = 'DELETE FROM '.$tb.' WHERE rekening = '.$d['replid'];
+					$s2   = 'DELETE FROM keu_saldorekening WHERE rekening = '.$d['replid'];
 					$e2   = mysql_query($s2);
 					$stat = $e2?'sukses':'gagal_'.mysql_error();
 				}$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));

@@ -49,7 +49,7 @@ var contentFR ='';
                         +'<label>Saldo</label>'
                         +'<div>'
                             +'<div class="input-control size3 text" >'
-                                +'<input onclick="inputuang(this);" placeholder="saldo" type="text" name="nominalTB" id="nominalTB">'
+                                +'<input onclick="inputuang(this);" onfocus="inputuang(this);" placeholder="saldo" type="text" name="nominalTB" id="nominalTB">'
                             +'</div>'
                         +'</div>'
                         

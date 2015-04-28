@@ -70,35 +70,34 @@
 								$ss = 'SELECT replid,nama,RPAD(kode,6,0)kode from keu_kategorirekening where replid='.$res['idkategorirekening'];	
 								$ee = mysql_query($ss);
 								$rr = mysql_fetch_assoc($ee);
-								$out.= '<tr>
-											<td><b>'.$rr['kode'].'</b></td>
+								$out.= '<tr class="bg-lightTeal">
+											<td align="right"><b>'.$rr['kode'].'</b></td>
 											<td colspan="5"><b>'.$rr['nama'].'</b></td>
 										</tr>';
-							}else{ // sub rekening
-								$btn ='<td align="center">
-											<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
-												<i class="icon-pencil on-left"></i>
-											</button>
-									 </td>';
-							 	if($res['jenis']=='debit'){ // kredit
-									$debit  = $res['saldo']; 
-									$kredit = 0;  
-									$normal = 0;
-							 	}else{ // kredit
-									$debit  = 0; 
-									$kredit = $res['saldo'];  
-									$normal = 0;
-							 	}
+							}
+							$btn ='<td align="center">
+										<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
+											<i class="icon-pencil on-left"></i>
+										</button>
+								 </td>';
+						 	if($res['jenis']=='debit'){ // kredit
+								$debit  = $res['saldo']; 
+								$kredit = 0;  
+								$normal = 0;
+						 	}else{ // kredit
+								$debit  = 0; 
+								$kredit = $res['saldo'];  
+								$normal = 0;
+						 	}
 
-								$out.= '<tr>
-											<td class="text-right">'.$res['kode'].'</td>
-											<td>'.$res['nama'].'</td>
-											<td class="text-right">Rp. '.number_format($debit).',-</td>
-											<td class="text-right">Rp. '.number_format($kredit).',-</td>
-											'.$btn.'
-										</tr>';
-							}$curKat=$res['idkategorirekening'];
-						// }
+							$out.= '<tr>
+										<td class="text-right">'.$res['kode'].'</td>
+										<td>'.$res['nama'].'</td>
+										<td class="text-right">Rp. '.number_format($debit).',-</td>
+										<td class="text-right">Rp. '.number_format($kredit).',-</td>
+										'.$btn.'
+									</tr>';
+							$curKat=$res['idkategorirekening'];
 						$nox++;
 					}
 				}else{ #kosong
