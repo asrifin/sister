@@ -5,7 +5,7 @@ var mnu2      ='lokasi';
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
 
-var ju_contentFR = k_contentFR = b_contentFR ='';
+var contentFR ='';
 // main function load first 
     $(document).ready(function(){
         $('#optionBC').on('click',function(){
@@ -19,7 +19,7 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             $('#tgl2TB').val(getLastDate());
         });
     //form content
-        ju_contentFR +='<form id="ju" style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="transSV(this); return false;">'
+        contentFR +='<form id="ju" style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="transSV(this); return false;">'
                         +'<input id="ju_idformH" type="hidden">' 
 
                         // nomer transaksi
@@ -47,8 +47,9 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
 
                         // rekening perkiraan 
                         +'<legend >Rekening :' 
-                            +'<a onclick="addRekTR(\'ju_rekTBL\');return false;" href="#" class="button" >'
-                            +'<i class="icon-plus"></i></a>'
+                            +'<a id="addTRBC" href="#" class="button bg-blue fg-white">'
+                                +'<i class="icon-plus-2"></i>'
+                            +'</a>'
                         +'</legend>'
                         +'<table class="table hovered bordered striped">'
                             +'<thead>'
@@ -59,93 +60,18 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
                                     +'<th class="text-center">Hapus</th>'
                                 +'</tr>'
                             +'</thead>'
-                            +'<tbody id="ju_rekTBL">'
-                                //1
-                                /*+'<tr>'
-                                    // jenis rek
-                                    +'<td align="center">'
-                                        +'<div class="input-control select">'
-                                            +'<select onchange="jenisRekGanti(this);" id="ju_jenisTB" name="ju_jenisTB">'
-                                                +'<option value="">..pilih..</option>'
-                                                +'<option value="debit">Debit</option>'
-                                                +'<option value="kredit">Kredit</option>'
-                                            + '</select>'
-                                        +'</div>'
-                                    +'</td>'
-                                    // rek
-                                    +'<td align="center">'
-                                        +'<span class="input-control text">'
-                                            +'<input class="span1" id="ju_rekH" name="ju_rekH" type="hidden" />'
-                                            +'<input disabled id="ju_rekTB" name="ju_rekTB" placeholder="rekening" type="text" />'
-                                            +'<button class="btn-clear"></button>'
-                                        +'</span>'
-                                    +'</td>'
-                                    // nominal
-                                    +'<td align="center">'
-                                        +'<div class="input-control text">'
-                                            +'<input  disabled  name="ju_nominalTB"  id="ju_nominalTB" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);"  placeholder="nominal"/>'
-                                        +'</div>'
-                                    +'</td>'
-                                    // hapus
-                                    +'<td align="center">'
-                                        +'<a href="#" onclick="delRekTR();" class="button"><i class="icon-cancel-2"></i></a>'
-                                    +'</td>'
-                                +'</tr>'*/
-                                /*//2
-                                +'<tr>'
-                                    +'<td>'
-                                        +'<input  value="2"  id="ju_rekH" name="ju_rekH[]" type="hidden" />'
-                                        +'<input id="ju_rek2H" name="ju_rek2H" type="hidden" />'
-                                        +'<span class="input-control text">'
-                                            +'<input id="ju_rek2TB" name="ju_rek2TB" placeholder="rekening" type="text" />'
-                                            +'<button class="btn-clear"></button>'
-                                        +'</span>'
-                                    +'</td>'
-                                    +'<td><input value="kredit" readonly name="ju_jenis2TB" id="ju_jenis2TB"type="text"/></td>'
-                                    +'<td><input value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);"  name="ju_nominal2TB" type="text"  placeholder="nominal"/></td>'
-                                +'</tr>'
-                                //3
-                                +'<tr>'
-                                    +'<td>'
-                                        +'<input  value="3"  id="ju_rekH" name="ju_rekH[]" type="hidden" />'
-                                        +'<input id="ju_rek3H" name="ju_rek3H" type="hidden" />'
-                                        +'<span class="input-control text">'
-                                            +'<input id="ju_rek3TB" name="ju_rek3TB" placeholder="rekening" type="text" />'
-                                            +'<button class="btn-clear"></button>'
-                                        +'</span>'
-                                    +'</td>'
-                                    +'<td><input value="debit" readonly name="ju_jenis3TB" id="ju_jenis3TB"type="text"/></td>'
-                                    +'<td><input value="Rp. 0"  onfocus="inputuang(this);" onclick="inputuang(this);"  name="ju_nominal3TB" type="text"  placeholder="nominal"/></td>'
-                                +'</tr>'
-                                //4
-                                +'<tr>'
-                                    +'<td>'
-                                        +'<input value="4" id="ju_rekH" name="ju_rekH[]" type="hidden" />'
-                                        +'<input id="ju_rek4H" name="ju_rek4H" type="hidden" />'
-                                        +'<span class="input-control text">'
-                                            +'<input id="ju_rek4TB" name="ju_rek4TB" placeholder="rekening" type="text" />'
-                                            +'<button class="btn-clear"></button>'
-                                        +'</span>'
-                                    +'</td>'
-                                    +'<td><input value="kredit" readonly name="ju_jenis4TB" id="ju_jenis4TB"type="text"/></td>'
-                                    +'<td><input value="Rp. 0"  onfocus="inputuang(this);" onclick="inputuang(this);"  name="ju_nominal4TB" type="text"  placeholder="nominal"/></td>'
-                                +'</tr>'*/
+                            +'<tbody id="rekTBL">'
                             +'</tbody>'
                             +'<tfoot id="legendDet">'
                             +'</tfoot>'
                         +'</table>'
 
                         +'<div class="form-actions">' 
-                            +'<button class="button primary">simpan</button>&nbsp;'
-                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                            +'<button hint="Tambah Rekening" class="button primary"><i class="icon-floppy"></i> simpan</button>'
                         +'</div>'
                     +'</form>';
 
     // button action
-        //add ---
-        $("#ju_addBC").on('click', function(){ 
-            juFR('');
-        });
         //print ---
         $('#ju_cetakBC').on('click',function(){
             printPDF('jurnal');
@@ -535,39 +461,52 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
     }
 
 // record rekening perkiraan
-    var ke = 1;
-    function rekTR () {
-        var tr='<tr class="rekTR" id="rekTR_'+ke+'">'
-                // jenis rek
-                +'<td align="center">'
-                    +'<div class="input-control select">'
-                        +'<select onchange="jenisRekGanti('+ke+');" id="ju_jenis'+ke+'TB" name="ju_jenis'+ke+'TB">'
-                            +'<option value="">..pilih..</option>'
-                            +'<option value="debit">Debit</option>'
-                            +'<option value="kredit">Kredit</option>'
-                        + '</select>'
-                    +'</div>'
-                +'</td>'
-                // rek
-                +'<td align="center">'
-                    +'<span class="input-control text">'
-                        +'<input class="span1" id="ju_rek'+ke+'H" name="ju_rek'+ke+'H" type="hidden" />'
-                        +'<input disabled id="ju_rek'+ke+'TB" name="ju_rek'+ke+'TB" placeholder="rekening" type="text" />'
-                        +'<button class="btn-clear"></button>'
-                    +'</span>'
-                +'</td>'
-                // nominal
-                +'<td align="center">'
-                    +'<div class="input-control text">'
-                        +'<input  disabled  name="ju_nominal'+ke+'TB"  id="ju_nominal'+ke+'TB" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);"  placeholder="nominal"/>'
-                    +'</div>'
-                +'</td>'
-                // hapus
-                +'<td align="center">'
-                    +'<a href="#" onclick="delRekTR('+ke+');" class="button"><i class="icon-cancel-2"></i></a>'
-                +'</td>'
-            +'</tr>';
-        ke++;
+    var i = 1;
+    function rekTR (typ,n) {
+        var tr='';
+        var isLoop=true;
+        if(typ=='ju'){ // jurnal umum
+            if(typeof n=='undefined'){ 
+                isLoop=false; n=i;// alert(n+','+i);
+            }
+            for(var ke=n; ke>=i; ke--){
+                tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
+                        // jenis rek
+                        +'<td align="center">'
+                            +'<div class="input-control select">'
+                                +'<select required onchange="jenisRekGanti('+ke+');" id="ju_jenis'+ke+'TB" name="ju_jenis'+ke+'TB">'
+                                    +'<option value="">..pilih..</option>'
+                                    +'<option value="debit">Debit</option>'
+                                    +'<option value="kredit">Kredit</option>'
+                                + '</select>'
+                            +'</div>'
+                        +'</td>'
+                        // rek
+                        +'<td align="center">'
+                            +'<span class="input-control text">'
+                                +'<input class="span1" id="ju_rek'+ke+'H" name="ju_rek'+ke+'H" type="hidden" />'
+                                +'<input required disabled id="ju_rek'+ke+'TB" name="ju_rek'+ke+'TB" placeholder="rekening" type="text" />'
+                                +'<button class="btn-clear"></button>'
+                            +'</span>'
+                        +'</td>'
+                        // nominal
+                        +'<td align="center">'
+                            +'<div class="input-control text">'
+                                +'<input class="text-right" disabled required name="ju_nominal'+ke+'TB"  id="ju_nominal'+ke+'TB" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);"  placeholder="nominal"/>'
+                            +'</div>'
+                        +'</td>'
+                        // hapus
+                        +'<td align="center">'
+                            +'<a href="#" onclick="delRekTR('+ke+');" class="button"><i class="icon-cancel-2"></i></a>'
+                        +'</td>'
+                    +'</tr>';
+            }
+        }else{ // pemasukkan / pengeluaran
+
+        }
+    
+        if(isLoop) i+=n;
+        else i++;
         return tr; 
     }
 
@@ -620,15 +559,12 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
     }
 
 //add TR rekening into an element 
-    function addRekTR(e){
-        $('#'+e).append(rekTR());
-        // setTimeout(function() {
-        //     autosuggest();
-        // },500);
+    function addRekTR(typ,n){
+        $('#rekTBL').prepend(rekTR(typ,n));
     }
 
 // load form (all)
-    function loadFR(typ,titl,cont){
+    function loadFR(typ,id){
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -637,19 +573,33 @@ var ju_contentFR = k_contentFR = b_contentFR ='';
             padding: 10,
             onShow: function(){
                 kodeTrans(typ);
-                autoSuggest('ju',1);
-                $.Dialog.title(titl+' '+mnu); 
-                $.Dialog.content(cont);
+                if(typ=='ju'){ // jurnal umum
+                    // xonclick="addRekTR(\'ju_rekTBL\');return false;" 
+                    if(id!='') titl ='Ubah Jurnal Umum';
+                    else titl ='Tambah  Jurnal Umum ';
+                }else if(typ=='in'){ // transaksi pemasukkan
+                    if(id!='') titl ='Ubah Transaksi Pemasukkan';
+                    else titl ='Tambah Transaksi Pemasukkan';
+                }else{ // transaksi pengeluaran
+                    if(id!='') titl ='Ubah Transaksi Pengeluaran';
+                    else titl ='Tambah Transaksi Pengeluaran';
+                }
+                setTimeout(function(){
+                    $('#addTRBC').attr('onclick','addRekTR(\''+typ+'\');');
+                    addRekTR(typ,2);
+                },500);
+                $.Dialog.content(contentFR);
+                $.Dialog.title('<i class="fg-white icon-'+(id!=''?'pencil':'plus-2')+'"></i> '+titl); 
             }
         });
     }
  
 /* form jurnal umum (add & edit) */
-    function juFR(id){
-        if(id!=''){ // edit mode
+    // function juFR(id){
+    //     if(id!=''){ // edit mode
             
-        }else{ // add  mode
-            var titl ='<i class="icon-plus-2"></i> Tambah ';
-            loadFR('ju',titl,ju_contentFR);
-        }
-    }
+    //     }else{ // add  mode
+    //         var titl ='<i class="icon-plus-2"></i> Tambah ';
+    //         loadFR('ju',titl,ju_contentFR);
+    //     }
+    // }
