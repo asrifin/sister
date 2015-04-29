@@ -250,8 +250,11 @@
 
 												// sppbulan      = "'.filter($_POST['angsuranTB']).'",
 												// setbiaya      = "'.filter($_POST['setbiayaH']).'",
+												// kelompok      = "'.filter($_POST['kelompokS']).'",
+												// proses        = "'.filter($_POST['prosesS']).'",
 						$siswa  = $tb.' set 	kriteria 		= "'.filter($_POST['kriteriaTB']).'",
 												golongan      = "'.filter($_POST['golonganTB']).'",
+												kelompok      = "'.filter($_POST['kelompokS']).'",
 												sumpokok      = "'.filter($_POST['uang_pangkalTB']).'",
 												sumnet        = "'.filter($_POST['uang_pangkalnetTB']).'",
 												jmlangsur     = "'.filter($_POST['angsuranTB']).'",
