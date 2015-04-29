@@ -17,8 +17,8 @@
             <th class="text-left">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-left"><input placeholder="kode" id="kodeS" name="kodeS"></th>
-            <th class="text-left"><input placeholder="nama" id="namaS" name="namaS"></th>
+            <th class="text-left"><div class="input-control text"><input placeholder="kode" id="kodeS" name="kodeS"></div></th>
+            <th class="text-left"><div class="input-control text"><input placeholder="nama" id="namaS" name="namaS"></div></th>
             <th class="text-left"></th>
             <th class="text-left"></th>
         </tr>

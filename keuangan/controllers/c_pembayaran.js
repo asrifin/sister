@@ -32,11 +32,18 @@ var contentFR ='';
             cmbkelompok('filter',$(this).val());
         });$('#kelompokS').on('change',function(){
             viewTB(curTab());
+        });$('#formulir_statusS').on('change',function(){
+            viewTB('formulir');
+        });$('#joiningf_statusS').on('change',function(){
+            viewTB('joiningf');
         });
         // event filter : dpp 
         $('#angkatanS').on('change',function(){
             viewTB('dpp');
+        });$('#dpp_statusS').on('change',function(){
+            viewTB('dpp');
         });
+
         // event filter : spp
         $('#spp_tahunajaranS').on('change',function(){
             cmbtingkat('filter',$(this).val());
@@ -46,6 +53,8 @@ var contentFR ='';
             cmbkelas('filter',$(this).val());
         });$('#spp_kelasS').on('change',function(){
             viewTB(curTab());
+        });$('#spp_statusS').on('change',function(){
+            viewTB('spp');
         });
     // --------------------------
     //form content
@@ -60,9 +69,10 @@ var contentFR ='';
 
                         +'<div  data-effect="fade" class="tab-control" data-role="tab-control">'
                             +'<ul class="tabs">'
-                                +'<li><a href="#keteranganTAB">Keterangan </a></li>'
+                                +'<li id="keteranganNAV"><a href="#keteranganTAB">Keterangan </a></li>'
                                 +'<li id="rincianNAV"><a href="#rincianTAB">Rincian Biaya</a></li>'
-                                +'<li id="pembayaranNAV" class="active"><a href="#pembayaranTAB">Pembayaran</a></li>'
+                                +'<li id="pembayaranNAV"><a href="#pembayaranTAB">Pembayaran</a></li>'
+                                // +'<li id="pembayaranNAV" class="active"><a href="#pembayaranTAB">Pembayaran</a></li>'
                             +'</ul>'
 
                             +'<div style="background-color:white;" class="frames">'
@@ -99,13 +109,8 @@ var contentFR ='';
                                     +'<label>Nominal</label>'
                                     +'<div class="input-control text4">'
                                         +'<input disabled type="text" id="nominalTB" name="nominalTB">'
-                                        +'<i class="icon-checkmark on-right on-left" style="background:green; color: white; padding: 10px;border-radius: 50%"></i>'
+                                        +'<span id="statusI"></span>'
                                     +'</div>'
-                                    // +'<div class="span3">'
-                                    //     +'<div class="notice marker-on-top bg-amber">'
-                                    //         +'<div class="fg-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>'
-                                    //     +'</div>'
-                                    // +'</div>'
                                     +'<input id="statusTB" type="text" disabled style="display:none;"/>'
 
                                     // DPP grup
@@ -115,8 +120,8 @@ var contentFR ='';
                                             +'<input disabled type="text" id="disctotalTB" name="disctotalTB">'
                                         +'</div>'
                                         +'<label>Nominal Net(setelah dipotong diskon)</label>'
-                                        +'<div class="input-control text warning-state">'
-                                            +'<input disabled class="bg-orange" type="text" id="nominalnetTB" name="nominalnetTB">'
+                                        +'<div class="input-control text">'
+                                            +'<input disabled class="bg-lightTeal" type="text" id="nominalnetTB" name="nominalnetTB">'
                                         +'</div>'
                                         +'<label>Angsuran </label>'
                                         +'<div class="input-control text">'
@@ -146,10 +151,11 @@ var contentFR ='';
                                         +'</div>'
                                     +'</div>'
 
-                                    +'<label>Akan Dibayar </label>'
+                                    +'<label id="akanbayarLBL">Akan Dibayar </label>'
                                     // DPP
                                     +'<div class="input-control select dppgrup" style="display:none;">'
-                                        +'<select class="bg-lime" name="akanbayarTB" id="akanbayarTB"></select>'
+                                        +'<select class="text-right" name="akanbayarTB" id="akanbayarTB"></select>'
+                                        +'<span id="statusI2"></span>'
                                     +'</div>'
                                     // pendaftaran (joining fee)
                                     +'<div class="input-control text joingrup" style="display:none;">'
@@ -250,7 +256,6 @@ var contentFR ='';
                         //         // +'</div>'
                         //     +'</div>'
                         // +'</div>'
-                        
                     +'</form>';
 
     // button action
@@ -343,7 +348,7 @@ var contentFR ='';
             cari+='&'+p+'='+v;
         });
 
-        if(subaksi=='joiningf' || subaksi=='joining fee'){
+        if(subaksi=='joiningf' || subaksi=='joining fee' || subaksi=='formulir'){
             cari+='&kelompokS='+$('#kelompokS').val();
         }
         $.ajax({
@@ -449,13 +454,18 @@ var contentFR ='';
                     $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nCalon Siswa : '+dt.datax.siswa+' \nNo. Pendaftaran : '+dt.datax.nopendaftaran);
                     $('#nominalTB').val(dt.datax.nominal);
                     $('#pembayaranNAV').attr('style','display:none;');
-                    $('#pembayaranNAV').removeClass('active');
                     $('#rincianNAV').addClass('active');
                     if(dt.datax.status=='lunas'){
                         $('.simpanBC').attr('style','display:none;');
-                        $('#statusTB').attr('style','display:visible;');
-                        $('#statusTB').val('Lunas');
-                    }
+                        icon = 'checkmark';
+                        clr  = 'green';
+                        info = 'lunas';
+                    }else{
+                        icon = 'minus-2';
+                        clr  = 'red';
+                        info = 'belum lunas';
+                    }var ico ='<i class="icon-'+icon+' on-right on-left" style="background:'+clr+'; color: white; padding: 10px;border-radius: 50%"></i>';
+                    $('#statusI').html(ico+'<span style="padding:0px 10px 0px 10px ;" class="fg-white bg-'+clr+'">'+info+'</span>');
                 }else if(typ=='joiningf'){ // pendaftaran (joining fee)
                     // hidden
                     $('#idsiswaH').val(dt.datax.idsiswa);
@@ -483,15 +493,28 @@ var contentFR ='';
                     $('#histBayar').on('click',function(){
                         histBayar(dt.datax.idsiswa);
                     });
-                    
-                    // aktifkan button & textbox (jika belum lunas)
-                    if(dt.datax.nominal==dt.datax.terbayar){
+                    $('#pembayaranNAV').addClass('active');
+
+                    if(dt.datax.status=='lunas'){
+                        $('#akanbayar2TB').attr('style','display:none;');
                         $('.simpanBC').attr('style','display:none;');
-                        $('#akanbayar2TB').attr('disabled',true);
-                        $('#akanbayar2TB').val('Lunas');
-                    }else{
+                        $('#akanbayarLBL').attr('style','display:none;');
+                        icon = 'checkmark';
+                        clr  = 'green';
+                        info = 'lunas';
+                    }else if(dt.datax.status=='kurang'){
                         $('#akanbayar2TB').attr('required',true);
+                        icon = 'minus-2';
+                        clr  = 'orange';
+                        info = 'kurang';
+                    }else{ //  belum pernah 
+                        $('#akanbayar2TB').attr('required',true);
+                        icon = 'minus-2';
+                        clr  = 'red';
+                        info = 'belum';
                     }
+                    var ico ='<i class="icon-'+icon+' on-right on-left" style="background:'+clr+'; color: white; padding: 10px;border-radius: 50%"></i>';
+                    $('#statusI').html(ico+'<span style="padding:0px 10px 0px 10px ;" class="fg-white bg-'+clr+'">'+info+'</span>');
                 }else if(typ=='dpp'){ // dpp (uang gedung)
                    // hidden
                     $('#idsiswaH').val(dt.datax.idsiswa);
@@ -513,10 +536,33 @@ var contentFR ='';
                         // data sudah terbayar 
                         $('#terbayarTB').val(dt.datax.terbayar);
                         // data akan dibayar
-                        // $('#akanbayarTB').val(dt.datax.angsuran);
                         cmbakanbayar('dpp',dt.datax.idsiswa);
                     $('.dppgrup').toggle('slow');
+                    $('.dppjoin').toggle('slow');
+                    // cek history pembayaran
+                    $('#histBayar').on('click',function(){
+                        histBayar(dt.datax.idsiswa);
+                    });
+
                     $('.bayargrup').toggle('slow');
+                    $('#pembayaranNAV').addClass('active');
+
+                    if(dt.datax.status=='lunas'){
+                        // $('.simpanBC').attr('style','display:none;');
+                        icon = 'checkmark';
+                        clr  = 'green';
+                        info = 'lunas';
+                    }else if(dt.datax.status=='kurang'){
+                        icon = 'minus-2';
+                        clr  = 'orange';
+                        info = 'kurang';
+                    }else{
+                        icon = 'minus-2';
+                        clr  = 'red';
+                        info = 'belum';
+                    }var ico ='<i class="icon-'+icon+' on-right on-left" style="background:'+clr+'; color: white; padding: 10px;border-radius: 50%"></i>';
+                    $('#statusI2').html(ico+'<span style="padding:0px 10px 0px 10px ;" class="fg-white bg-'+clr+'">'+info+'</span>');
+
                 }else{ //spp
                     // hidden
                     $('#idsiswaH').val(dt.datax.idsiswa);
@@ -532,10 +578,25 @@ var contentFR ='';
                         $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nSiswa : '+dt.datax.siswa+' \nNIS : '+dt.datax.nis);
                         // detail pembayaran (nominal dll)
                         $('#nominalTB').val(dt.datax.nominal);
-                    // $('.dppgrup').toggle('slow');               
+                    $('#pembayaranNAV').attr('style','display:none;');
+                    $('#rincianNAV').addClass('active');
+                    if(dt.datax.status=='lunas'){
+                        $('.simpanBC').attr('style','display:none;');
+                        icon = 'checkmark';
+                        clr  = 'green';
+                        info = 'lunas';
+                    }else{
+                        icon = 'minus-2';
+                        clr  = 'red';
+                        info = 'belum lunas';
+                    }var ico ='<i class="icon-'+icon+' on-right on-left" style="background:'+clr+'; color: white; padding: 10px;border-radius: 50%"></i>';
+                    $('#statusI').html(ico+'<span style="padding:0px 10px 0px 10px ;" class="fg-white bg-'+clr+'">'+info+'</span>');
                 }
             }
-        });loadModal(typ,contentFR);
+        });
+        // setTimeout(function(){
+            loadModal(typ,contentFR);
+        // },500);
     }
 
     function cmbakanbayar(typ,sis){
@@ -601,16 +662,20 @@ var contentFR ='';
 
 // print to PDF -------
     function printPDF(mn){
-        var par='',tok='',p,v;
+        var par='',tok='',p=v='';
         $('.'+mn+'_cari').each(function(){
             p=$(this).attr('id');
             v=$(this).val();
             par+='&'+p+'='+v;
             tok+=v;
         });
-        if(mn=='formulir' || mn=='joiningf') par+='&kelompokS='+$('#kelompokS').val();
+        if(mn=='formulir' || mn=='joiningf') {
+            par+='&kelompokS='+$('#kelompokS').val();
+            tok+=$('#kelompokS').val();
+        }
         var x     = $('#id_loginS').val();
         var token = encode64(x+tok);
+        // alert(par);return false;
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 

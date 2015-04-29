@@ -87,7 +87,7 @@ var contentFR ='';
                             out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                     });
                     if(typ=='filter'){
-                        $('#kategorirekeningS').html('<option value="">--SEMUA--</option>'+out);
+                        $('#kategorirekeningS').html('<option value="">--Semua Kategori Rekening--</option>'+out);
                         viewTB(dt.kategorirekening[0].replid); 
                     }else{
                         $('#kategorirekeningTB').html(out);

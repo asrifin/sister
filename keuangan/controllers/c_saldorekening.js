@@ -49,7 +49,7 @@ var contentFR ='';
                         +'<label>Saldo</label>'
                         +'<div>'
                             +'<div class="input-control size3 text" >'
-                                +'<input onclick="inputuang(this);" placeholder="saldo" type="text" name="nominalTB" id="nominalTB">'
+                                +'<input onclick="inputuang(this);" onfocus="inputuang(this);" placeholder="saldo" type="text" name="nominalTB" id="nominalTB">'
                             +'</div>'
                         +'</div>'
                         
@@ -100,7 +100,7 @@ var contentFR ='';
                     $.each(dt.kategorirekening, function(id,item){
                         out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                     });
-                    $('#kategorirekeningS').html('<option value="">--SEMUA--</option>'+out);
+                    $('#kategorirekeningS').html('<option value="">--Semua Kategori Rekening--</option>'+out);
                     cmbtahunbuku();
                 }
             }
@@ -122,9 +122,9 @@ var contentFR ='';
                 }else{
                     $.each(dt.tahunbuku, function(id,item){
                         if(item.aktif==1)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
+                            out+='<option selected="selected" value="'+item.replid+'">Tahun Buku '+item.nama+' (aktif)</option>';
                         else
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                            out+='<option value="'+item.replid+'">Tahun Ajaran'+item.nama+'</option>';
                     });
                     $('#tahunbukuS').html(out);
                     viewTB(); 
@@ -164,26 +164,64 @@ var contentFR ='';
 //end of save process ---
 
 // view table ---
-    function viewTB(){ 
+// view table ---
+    function viewTB(subaksi){
         var aksi ='aksi=tampil';
-        var cari ='&kategorirekeningS='+$('#kategorirekeningS').val()
-                +'&kodeS='+$('#kodeS').val()
-                +'&namaS='+$('#namaS').val()
-                +'&tahunbukuS='+$('#tahunbukuS').val();
-                // +'&nominalS='+$('#nominalS').val();
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
+        }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
         $.ajax({
             url : dir,
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
     }
+// end of view table
+
+    // function viewTB(){ 
+    //     var aksi ='aksi=tampil';
+    //     var cari ='&kategorirekeningS='+$('#kategorirekeningS').val()
+    //             +'&kodeS='+$('#kodeS').val()
+    //             +'&namaS='+$('#namaS').val()
+    //             +'&tahunbukuS='+$('#tahunbukuS').val();
+    //             // +'&nominalS='+$('#nominalS').val();
+    //     $.ajax({
+    //         url : dir,
+    //         type: 'post',
+    //         data: aksi+cari,
+    //         beforeSend:function(){
+    //             $('#tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
+    //         },success:function(dt){
+    //             setTimeout(function(){
+    //                 $('#tbody').html(dt).fadeIn();
+    //             },1000);
+    //         }
+    //     });
+    // }
 // end of view table ---
 
 // form ---

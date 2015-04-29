@@ -34,10 +34,9 @@
             <th class="text-left">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-right"><input  class="cari" placeholder="nama" id="namaS" name="namaS"></th>
+            <th class="text-right"><div class="input-control text"><input  class="cari" placeholder="nama" id="namaS" name="namaS"></div></th>
             <th class="text-left"></th>
-            <!-- <th class="text-left"><input  class="cari" placeholder="nominal" id="nominalS" name="nominalS"></th> -->
-            <th class="text-left"><input  class="cari" placeholder="keterangan" id="keteranganS" name="keteranganS"></th>
+            <th class="text-left"><div class="input-control text"><input  class="cari" placeholder="keterangan" id="keteranganS" name="keteranganS"></div></th>
             <th class="text-left"></th>
         </tr>
     </thead>

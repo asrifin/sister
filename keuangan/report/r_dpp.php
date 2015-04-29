@@ -4,15 +4,17 @@
   require_once '../../lib/mpdf/mpdf.php';
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
-  $mnu = 'DPP (Uang Pangkal)';
-// var_dump($mnu);exit();
-  $x     = $_SESSION['kelompokS'].$_GET['nopendaftaranS'].$_GET['namaS'].$_GET['daftarS'].$_GET['joiningfS'];
+  $mnu  = 'DPP (Uang Pangkal)';
+  $pre  ='dpp_';
+  $x    = $_SESSION['id_loginS'].$_GET['angkatanS'].$_GET['nisS'].$_GET['namaS'].$_GET[$pre.'statusS'];
   $token = base64_encode($x);
+  // var_dump($_GET['token']);exit();
+  // var_dump($token);exit();
 
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
   }else{ // sudah login 
-    if(!isset($_GET['token']) and $token!==$_GET['token']){ //token salah 
+    if(!isset($_GET['token']) OR  $token!==$_GET['token']){ //token salah 
       echo 'Token URL tidak sesuai';
     }else{ //token benar
       ob_start(); // digunakan untuk convert php ke html
@@ -25,28 +27,54 @@
           $angkatan = isset($_GET['angkatanS'])?filter($_GET['angkatanS']):'';
           $nis      = isset($_GET['nisS'])?filter($_GET['nisS']):'';
           $nama     = isset($_GET['namaS'])?filter($_GET['namaS']):'';
-      
+          $status   = (isset($_GET[$pre.'statusS']) AND $_GET[$pre.'statusS']!='') ?' AND t2.statbayar="'.filter($_GET[$pre.'statusS']).'"':'';
+
         // table content
-            // a.angkatan,
-          $s = 'SELECT
-                    c.replid,
-                    c.nis,
-                    c.nama,
-                    c.kelompok
-                  FROM
-                    psb_calonsiswa c
-                    LEFT JOIN psb_kelompok k on k.replid  = c.kelompok
-                    LEFT JOIN psb_proses p on p.replid  = k.proses
-                  WHERE
-                    p.angkatan = '.$angkatan.'
-                    AND c.nis LIKE "%'.$nis.'%"
-                    AND c.nama LIKE "%'.$nama.'%"
-                  ORDER BY
-                    c.nama asc';
-                    // -- LEFT JOIN aka_angkatan a  on a.replid  =p.angkatan
-          $e  = mysql_query($s) or die(mysql_error());
-            // var_dump($s);exit();
-          $n   = mysql_num_rows($e);
+          $s='SELECT t2.*
+              FROM psb_calonsiswa c
+                LEFT JOIN (
+                    SELECT  
+                      case 
+                        when t1.cicilan = 0 OR t1.cicilan is NULL  then "belum"
+                        when t1.cicilan = sb.nilai-(cs.discsaudara+cs.disctb+ifnull(sb.nilai*dt.nilai/100,0))then "lunas"
+                        when t1.cicilan < sb.nilai-(cs.discsaudara+cs.disctb+ifnull(sb.nilai*dt.nilai/100,0))then "kurang"
+                      end as statbayar,
+                      sb.nilai-(cs.discsaudara+cs.disctb+ifnull(sb.nilai*dt.nilai/100,0))biayanet,
+                      cs.replid,
+                      cs.nama,
+                      t1.cicilan,
+                      p.angkatan,
+                      cs.nis
+                    FROM
+                      psb_calonsiswa cs
+                      LEFT JOIN psb_disctunai dt on dt.replid = cs.disctunai
+                      LEFT JOIN psb_setbiaya sb on sb.replid = cs.setbiaya
+                      LEFT JOIN (
+                        SELECT
+                          ss.replid,
+                          sum(p.cicilan)cicilan
+                        FROM
+                          psb_calonsiswa ss
+                          LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
+                          LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
+                          LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+                          LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
+                        WHERE
+                          k.nama = "dpp"
+                        GROUP BY  
+                          ss.replid
+                      ) t1 ON t1.replid = cs.replid
+                      LEFT JOIN psb_kelompok k on k.replid = cs.kelompok
+                      LEFT JOIN psb_proses p on p.replid = k.proses
+                  ) t2 ON t2.replid = c.replid
+                WHERE
+                  t2.angkatan = '.$angkatan.' AND
+                  t2.nama LIKE "%'.$nama.'%" AND
+                  t2.nis LIKE "%'.$nis.'%" '.$status;
+
+          //   var_dump($s);exit();
+          $e = mysql_query($s) or die(mysql_error());
+          $n = mysql_num_rows($e);
 
         // header info 
           $departemen = getDepartemen('nama',getAngkatan('departemen',$angkatan));
@@ -78,6 +106,7 @@
 
             $out.='<table class="isi" width="100%">
                   <tr class="head">
+                    <td align="center">no.</td>
                     <td align="center">NIS</td>
                     <td align="center">Nama</td>
                     <td align="center">DPP</td>
@@ -96,28 +125,37 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
+                <td>-</td>
               </tr>';
             }else{
               while ($r=mysql_fetch_assoc($e)) {
                 $dpp      = getBiaya('dpp',$r['replid'])-getDiscTotal('dpp',$r['replid']);
                 $kurangan = $dpp-getTerbayar('dpp',$r['replid']);
+                $status   = getStatusBayar('dpp',$r['replid']);
+                if($status=='lunas'){
+                  $clr = 'lightGreen';
+                }elseif($status=='kurang'){
+                  $clr = 'yellow';
+                }else{ // belum
+                  $clr = 'pink';
+                }
 
                 $out.='<tr>
-                          <td>'.$r['nopendaftaran'].'</td>
+                          <td align="right">'.$nox.'.</td>
+                          <td>'.$r['nis'].'</td>
                           <td>'.$r['nama'].'</td>
                           <td align="right">Rp. '.number_format($dpp).',-</td>
                           <td align="right">Rp. '.number_format($kurangan).',-</td>
-                          <td  align="center">'.getStatusBayar('dpp',$r['replid']).'</td>
-                          <td align="center">'.($r['tanggal']=='-'?'-':tgl_indo5($r['tanggal'])).'</td>
+                          <td style="background-color:'.$clr.'" align="center">'.$status.'</td>
+                          <td align="center">'.getTglTrans($r['replid'],'dpp').'</td>
                     </tr>';
-                          // <td>'.getStatusBayar('dpp',$r['replid']).'</td>
                 $nox++;
                 $totdpp+=$dpp;
                 $totkurang+=$kurangan;
               }
             }
-            $out.='<tr>
-              <td colspan="2" align="right"><b>Total : </b></td>
+            $out.='<tr class="head">
+              <td colspan="3" align="right"><b>Total : </b></td>
               <td align="right">Rp. '.number_format($totdpp).',-</td>
               <td align="right">Rp. '.number_format($totkurang).',-</td>
               <td colspan="2"></td>

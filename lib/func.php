@@ -75,6 +75,41 @@
 	    }
 	}
 
+/*aka*/
+	function getTahunAjaran($typ,$id){
+		$s = 'SELECT '.$typ.'
+			  FROM aka_tahunajaran
+			  WHERE replid ='.$id;
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r[$typ];
+	}
+	function getKelas($typ,$id){
+		$s = 'SELECT '.$typ.'
+			  FROM aka_kelas
+			  WHERE replid ='.$id;
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r[$typ];
+	}
+
+	function getSubtingkat($typ,$id){
+		$s = 'SELECT '.$typ.'
+			  FROM aka_subtingkat
+			  WHERE replid ='.$id;
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r[$typ];
+	}
+	function getTingkat($typ,$id){
+		$s = 'SELECT '.$typ.'
+			  FROM aka_tingkat
+			  WHERE replid ='.$id;
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r[$typ];
+	}
+
 /*psb*/
 	function getAngkatan($typ,$id){
 		$s = 'SELECT '.$typ.'
@@ -158,17 +193,16 @@
 		// return $r[];	
 	}
 	function getBiayaNet($typ,$siswa){
-		$biaya = $biayaKotor - $diskonTotal; 		
+		$biayaNet = getBiaya($typ,$siswa) - getDiscTotal($typ,$siswa); 		
+		return $biayaNet;
 	}
 	function getStatusBayar($typ,$siswa){
 		$biaya = getBiaya($typ,$siswa);
 		if($typ=='dpp'){
 			$diskonTotal= getDiscTotal($typ,$siswa);
-			$biaya =- $diskonTotal; 		// 14.100.000
-		}
-		$terbayar = getTerbayar($typ,$siswa);			//  4.700.000
-		// var_dump($terbayar);exit();
-		// if($biaya==$terbayar){
+			$biaya-=$diskonTotal; 		
+		}$terbayar = getTerbayar($typ,$siswa);			
+		// var_dump($biaya);exit();
 		if($terbayar<=0){
 			$status = 'belum';
 		}else{
@@ -177,9 +211,7 @@
 			}else{ 
 				$status = 'kurang';
 			}
-		}
-
-		return $status;
+		}return $status;
 	}
 	function getAngsurNom($typ,$siswa){
 		$biayaKotor = getBiaya($typ,$siswa);			
@@ -218,7 +250,7 @@
 				LEFT JOIN keu_modulpembayaran m on m.replid = p.modul
 				LEFT JOIN keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
 			WHERE
-				k.nama = "'.$typ.'" AND 
+				k.nama = "'.($typ=='joiningf' || $typ=='joining fee'?'joining fee':$typ).'" AND 
 				p.siswa = '.$siswa.'
 			GROUP BY
 				p.siswa';
@@ -228,7 +260,6 @@
 		$rr = $r['terbayar']!=null?$r['terbayar']:0;
 		return $rr;
 	}function getBiaya($typ,$siswa){ // to get : nominal yg harus dibayar
-		// var_dump($typ.'-'.$siswa);exit();
 		if($typ=='pendaftaran'){ // formulir + joining fee
 			$f = '(b.daftar + b.joiningf)';
 		}elseif($typ=='daftar' || $typ=='formulir'){ // formulir

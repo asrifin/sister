@@ -22,7 +22,7 @@ var contentFR = '';
                         +'<label>Jenis </label>'
                         +'<div class="input-control select">'
                             +'<select required name="jenisTB" id="jenisTB">'
-                                +'<option value="debit_kredit">DEBIT & KREDIT</option>'
+                                // +'<option value="debit_kredit">DEBIT & KREDIT</option>'
                                 +'<option value="debit">DEBIT</option>'
                                 +'<option value="kredit">KREDIT</option>'
                             +'</select>'

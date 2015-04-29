@@ -16,9 +16,9 @@
 
 <div class="toolbar">
     <div class="toolbar-group fg-white transparent ">
-        <button id="ju_addBC" onclick="loadFR('ju','');" class="bg-blue" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></button>
-        <button id="in_addBC"  onclick="loadFR('in');"class="bg-green" data-hint="Pemasukkan"><i class="icon-download-2"></i></button>
-        <button id="out_addBC"  onclick="loadFR('out');"class="bg-red" data-hint="Pengeluaran"><i class="icon-upload-3"></i></button>
+        <button id="ju_addBC" class="bg-blue" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></button>
+        <button id="inBC"class="bg-green" data-hint="Pemasukkan"><i class="icon-download-2"></i></button>
+        <button id="out_BC"class="bg-red" data-hint="Pengeluaran"><i class="icon-upload-3"></i></button>
         <button id="printBC"class="bg-amber" data-hint="Cetak"><i class="icon-printer"></i></button>
         <button id="optionBC" data-hint="Selengkapnya..." class="bg-gray fg-white"><i class="icon-grid"></i></button>
     </div>
