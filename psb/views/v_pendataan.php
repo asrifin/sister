@@ -66,7 +66,7 @@
       <div class="table hovered bordered striped panelx" id="pendataanFR" style="display:none;" >
           <div style="overflow:scroll;height:600px;" >
                   <form autocomplete="off" enctype="multipart/form-data" onsubmit="siswaSV();return false;" id="siswa_form"> 
-                        <input id="idformH" type="text"> 
+                        <input id="idformH" type="hidden"> 
                         <!-- Panel -->
                         <div class="panel">
                           <div class="panel-header bg-lightBlue fg-white">
@@ -429,14 +429,14 @@
                                 <div class="row">
                                         <div class="input-control radio">
                                         <label>
-                                            <input value="0" type="radio" name="saudaraTB" id="saudaraTB" />
+                                            <input value="0" type="radio" name="saudaraTB" />
                                             <span class="check"></span>
                                             Satu Sekolah
                                         </label>
                                         </div>
                                         <div class="input-control radio">
                                         <label style="display:visible;">
-                                            <input value="1" type="radio" name="saudaraTB" id="saudara2TB" />
+                                            <input value="1" type="radio" name="saudaraTB"/>
                                             <span class="check"></span>
                                             Luar Sekolah
                                         </label>
@@ -446,7 +446,12 @@
                                             <input placeholder="Saudara Satu Sekolah" type="text" name="nama_saudaraTB" id="nama_saudaraTB">
                                         </div>
                                         <div class="input-control text size5" style="display:none;" id="saudara2">
-                                            <input placeholder="Saudara Luar Sekolah" type="text" name="nama_saudara2TB" id="nama_saudara2TB">
+                                            <label>Nama Saudara</label>
+                                            <input placeholder="Nama Saudara Luar Sekolah" type="text" name="nama_saudara2TB" id="nama_saudara2TB">
+                                        </div>
+                                        <div class="input-control text size5" style="display:none;" id="saudara2">
+                                            <label>Sekolah Saudara</label>
+                                            <input placeholder="Sekolah Saudara" type="text" name="sekolah_saudaraTB" id="sekolah_saudaraTB">
                                         </div>
 
                                         <table class="table hovered bordered striped">

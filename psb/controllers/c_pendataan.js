@@ -47,13 +47,21 @@ var contentFR = '';
             }
         }); //End autocomplete
 
-    // hapus saudara terpilih
-        function saudaraDel(id){
-            $('#saudaraTR_'+id).fadeOut('slow',function(){
-                $('#saudaraTR_'+id).remove();
-                // saudaraExist();
-            });
-        }
+    }
+
+    function switchPN2(){
+        $('#importFR').toggle('slow');
+        $('#pendataanTBL').toggle('slow');
+    }
+
+
+// hapus saudara terpilih
+    function saudaraDelx(id){
+        $('#saudaraTR_'+id).fadeOut('slow',function(){
+            $('#saudaraTR_'+id).remove();
+            // saudaraExist();
+        });
+    }
     //saudara record kosong --
         function saudaraExist(){
             // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
@@ -71,8 +79,14 @@ var contentFR = '';
             var tr ='<tr val="'+id+'" class="saudaraTR" id="saudaraTR_'+id+'">'
                         +'<td>'+nis+'</td>'
                         +'<td>'+nama+'</td>'
-                        +'<td><button onclick="saudaraDel('+id+');"><i class="icon-remove"></button></i></td>'
+                        // +'<td><button xhref="#" xonclick="saudaraDel('+id+');"onclick="alert('+id+');"><i class="icon-remove"></i></button></td>'
+                        +'<td>'
+                            +'<a href="#" onclick="saudaraDelx('+id+');" xonclick="alert('+id+');">'
+                                +'<i class="icon-remove"></i>'
+                            +'</a>'
+                        +'</td>'
                     +'</tr>';
+                // alert(id);return false;
             $('#saudaraTBL').append(tr); 
             saudaraArr();
             // $('#saudaraTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&saudara='+saudaraArr() );
@@ -88,14 +102,6 @@ var contentFR = '';
             });return y;
         }
     // end saudara
-
-    }
-
-    function switchPN2(){
-        $('#importFR').toggle('slow');
-        $('#pendataanTBL').toggle('slow');
-    }
-
 
 
 // main function ---
@@ -459,6 +465,7 @@ var contentFR = '';
 
         // // upload image
             function siswaUp(dataAdd){
+                // alert('upload');return false;
                 $.ajax({
                     url: dir+'?upload',
                     type: 'POST',
@@ -482,6 +489,8 @@ var contentFR = '';
 
         // simpan ke database
             function siswaDb(filex){
+                 // alert('db');return false;
+
                 var formData = $('#siswa_form').serialize();
                 if($('#idformH').val()!=''){
                     formData +='&replid='+$('#idformH').val();
@@ -493,12 +502,20 @@ var contentFR = '';
                         formData+='&photo_asal='+$('#photoH').val();
                     }
                 }
+
+                // var urlx ='&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val();
+                // alert(urlx);return false;
+                // edit mode
+                // if($('#idformH').val()!=''){
+                //     urlx += '&replid='+$('#idformH').val();
+                // }
+
                 // alert(formData);return false;
                 $.ajax({
                     // url: dir+'?aksi=simpan&subaksi=siswa',
                     url: dir,
                     type:'POST',
-                    data:formData+'&aksi=simpan',
+                    data:formData+'&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val(),
                     // data:'aksi=simpan&subaksi=siswa'+formData,
                     // data:'aksi=simpan&subaksi=siswa'+formData+$('#siswa_form').serialize(),
                     cache:false,
@@ -601,37 +618,53 @@ var contentFR = '';
 
 
 //save process ---
-    function siswaSV(){
-        // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
-        var urlx ='&aksi=simpan&subaksi=siswa';
-        // edit mode
-        if($('#idformH').val()!=''){
-            urlx += '&replid='+$('#idformH').val();
-        }
-        $.ajax({
-            url:dir,
-            cache:false,
-            type:'post',
-            dataType:'json',
-            data:$('form').serialize()+urlx,
-            success:function(dt){
-                if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
-                    clr  = 'red';
-                }else{
-                    $.Dialog.close();
-                    kosongkan();
-                    viewTB($('#departemenS').val());
-                     $('#pendataanFR').removeAttr('style');
-                     $('#importFR').removeAttr('style');
-                     $('#panel1').attr('style','display:none;');
-                    cont = 'Berhasil menyimpan data';
-                    clr  = 'green';
-                }
-                notif(cont,clr);
-            }
-        });
-    }
+    // function simpanSV(){
+    //     var files =new Array();
+    //     $("input:file").each(function() {
+    //         files.push($(this).get(0).files[0]); 
+    //     });
+         
+    //     // Create a formdata object and add the files
+    //     var filesAdd = new FormData();
+    //     $.each(files, function(key, value){
+    //         filesAdd.append(key, value);
+    //     });
+
+    //     if($('#photoTB').val()=='')//upload
+    //         siswaDb('');
+    //     else// ga upload
+    //         siswaUp(filesAdd);
+    //             // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
+    //     // var urlx ='&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val();
+    //     // alert(urlx);return false;
+    //     // edit mode
+    //     // if($('#idformH').val()!=''){
+    //     //     urlx += '&replid='+$('#idformH').val();
+    //     // }
+    //     // $.ajax({
+    //     //     url:dir,
+    //     //     cache:false,
+    //     //     type:'post',
+    //     //     dataType:'json',
+    //     //     data:$('form').serialize()+urlx,
+    //     //     success:function(dt){
+    //     //         if(dt.status!='sukses'){
+    //     //             cont = 'Gagal menyimpan data';
+    //     //             clr  = 'red';
+    //     //         }else{
+    //     //             $.Dialog.close();
+    //     //             kosongkan();
+    //     //             viewTB($('#kelompokS').val());
+    //     //              $('#pendataanFR').removeAttr('style');
+    //     //              $('#importFR').removeAttr('style');
+    //     //              $('#panel1').attr('style','display:none;');
+    //     //             cont = 'Berhasil menyimpan data';
+    //     //             clr  = 'green';
+    //     //         }
+    //     //         notif(cont,clr);
+    //     //     }
+    //     // });
+    // }
 //end of save process ---
 
 
