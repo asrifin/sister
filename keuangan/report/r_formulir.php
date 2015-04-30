@@ -160,7 +160,10 @@
         #generate html -> PDF ------------
           $out2 = ob_get_contents();
           ob_end_clean(); 
-          $mpdf=new mPDF('c','A4','');   
+          $mpdf=new mPDF('','', 0, '', 15, 15, 16, 16, 9, 9, 'L');
+          // $mpdf=new mPDF('', 'Letter', 0, '', 12.7, 12.7, 14, 12.7, 8, 8);   
+          // $mpdf=new mPDF('c','4A0','');   
+          // $mpdf=new mPDF('c','A4','');   
           $mpdf->SetDisplayMode('fullpage');   
           $stylesheet = file_get_contents('../../lib/mpdf/r_cetak.css');
           $mpdf->WriteHTML($stylesheet,1);  
