@@ -600,13 +600,16 @@
 					$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
 					$totNominal+=$nom;
 				}$totNominal =$sub=='ju'?($totNominal/2):$totNominal;
-				$s = 'INSERT INTO keu_transaksi SET tahunbuku  ='.getTahunBuku('replid').',
-													nominal    ='.$totNominal.',
-													nomer      ="'.getNoTrans2($sub).'",
-													tanggal    ="'.tgl_indo6($_POST['tanggalTB']).'",
-													uraian     ="'.$_POST['uraianTB'].'",
-													nobukti    ="'.$_POST['nobuktiTB'].'"';
+
+				$s1 = 'keu_transaksi SET 	tahunbuku  ='.getTahunBuku('replid').',
+											nominal    ='.$totNominal.',
+											nomer      ="'.getNoTrans2($sub).'",
+											tanggal    ="'.tgl_indo6($_POST['tanggalTB']).'",
+											uraian     ="'.$_POST['uraianTB'].'",
+											nobukti    ="'.$_POST['nobuktiTB'].'"';
+				$s=(isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1;
 				// var_dump($s);exit();
+				
 				$e  = mysql_query($s);
 				$id = mysql_insert_id();
 				if(!$e) $stat='gagal_insert_transaksi';

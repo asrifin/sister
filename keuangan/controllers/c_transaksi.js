@@ -7,11 +7,6 @@ var dir2 ='models/m_'+mnu2+'.php';
 var contentFR ='';
 // main function load first 
     $(document).ready(function(){
-        // $('body').on('click,focus',function(){
-        //     // "window.close()"
-        //     // $.Dialog.close();
-        //     alert('tutup stik jos');
-        // });
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });
@@ -24,11 +19,10 @@ var contentFR ='';
         });
     //form content
         contentFR +='<form style="overflow:scroll;height:700px;" autocomplete="off" onsubmit="transSV(this); return false;">'
-                        +'<input id="ju_idformH" type="hidden">' 
-                        +'<input id="subaksiH" type="hidden">' 
+                        +'<input name="idformH" id="idformH" type="hidden">' 
+                        +'<input name="subaksiH" id="subaksiH" type="hidden">' 
 
                         // nomer transaksi
-                        // +'<label>No. Jurnal : <b id="ju_nomerTB"></b></label>'
                         +'<label>No. Jurnal : <b id="nomerTB"></b></label>'
                         
                         // no bukti (nota)
@@ -216,7 +210,7 @@ var contentFR ='';
     // subaksi : ju , in, out
     function transSV(e){
         var url  = dir;
-        var data = $(e).serialize()+'&aksi=simpan&subaksi='+$('#subaksiH').val();
+        var data = $(e).serialize()+'&aksi=simpan';
         if(validForm().status[0]!=true){ // tidak valid
             var m = '';
             $.each(validForm().msg,function(id,item){
