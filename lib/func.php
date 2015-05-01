@@ -9,6 +9,9 @@
 		$new = array('','','');
 		$x   = str_replace($old,$new, $str);
 		return $x;
+	}function setuang($str){
+		$str = 'Rp. '.str_replace(',','.',number_format($str));
+		return $str;
 	}function getFileName(){
 		$x=pathinfo(__FILE__, PATHINFO_FILENAME);
 		return $x;
@@ -367,6 +370,16 @@
 		$r=mysql_fetch_assoc($e);
 		// var_dump($r);exit();
 		return $r['rekening'];
+	}function getRekBy($f,$id){
+		$s='SELECT '.$f.' FROM keu_detilrekening WHERE replid='.$id;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r[$f];
+	}function getKatRekBy($f,$id){
+		$s='SELECT '.$f.' FROM keu_kategorirekening WHERE replid='.$id;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r[$f];
 	}
 
 	/*transaksi*/

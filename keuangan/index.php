@@ -26,8 +26,17 @@
 
     <!-- Metro UI CSS JavaScript plugins -->
     <script src="../js/load-metro.js"></script>
-     <script src="js/metro.min.js"></script>
-
+    <script src="js/metro.min.js"></script>
+    <script>
+          // function showDialog(id){
+          //       var dialog = $("#"+id).data('dialog');
+          //       if (!dialog.element.data('opened')) {
+          //           dialog.open();
+          //       } else {
+          //           dialog.close();
+          //       }
+          //   }
+    </script>
     <!-- Local JavaScript -->
     <script src="../js/docs.js"></script>
     <script src="../js/start-screen.js"></script>
