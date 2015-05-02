@@ -330,11 +330,11 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['bukti'];
-	}function getDetJenisTrans($id){
-		$s='SELECT * FROM keu_detjenistrans WHERE replid='.$id;
+	}function getDetJenisTrans($f,$w,$k){
+		$s='SELECT '.$f.' FROM keu_detjenistrans WHERE '.$w.'='.$k;
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
-		return $r['nama'];
+		return $r[$f];
 	}function getKatModulPemb($nama){
 		$s='SELECT * FROM keu_katmodulpembayaran WHERE nama="'.($nama=='joiningf' || $nama=='joining fee'?'joining fee':$nama).'"';
 		// var_dump($s);exit();
