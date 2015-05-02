@@ -20,6 +20,7 @@ var contentFR ='';
     //form content
         contentFR +='<form style="overflow:scroll;height:700px;" autocomplete="off" onsubmit="transSV(this); return false;">'
                         +'<input name="idformH" id="idformH" type="hidden">' 
+                        +'<input name="detjenistransH" id="detjenistransH" type="text">' 
                         +'<input name="subaksiH" id="subaksiH" type="hidden">' 
 
                         // nomer transaksi
@@ -200,8 +201,6 @@ var contentFR ='';
             else {
                 $('#nomerTB').html(dt.kode);
                 $('#tanggalTB').val(getToday());
-                // $('#'+typ+'_nomerTB').html(dt.kode);
-                // $('#'+typ+'_tanggalTB').val(getToday());
             } 
         });
     }
@@ -209,9 +208,11 @@ var contentFR ='';
 /*save (insert & update)*/
     // subaksi : ju , in, out
     function transSV(e){
+        // console.log(idDelTR);return false;
         var url  = dir;
-        var data = $(e).serialize()+'&aksi=simpan';
-        if(validForm().status[0]!=true){ // tidak valid
+        var data = $(e).serialize()+'&aksi=simpan&idDelTR='+idDelTR;
+        // if(validForm().status[0]!=true){ // tidak valid
+        if(validForm().status!=true){ // tidak valid
             var m = '';
             $.each(validForm().msg,function(id,item){
                 m+='<span class="fg-white"><i class="icon-warning"></i> '+item+'</span><br />';
@@ -229,60 +230,16 @@ var contentFR ='';
     }
 
 /*delete*/
-    //jurnal umum   ---
-        function juDel(id){
-            if(confirm('melanjutkan untuk menghapus data?'))
-            $.ajax({
-                url:dir,
-                type:'post',
-                data:'aksi=hapus&subaksi=grup&replid='+id,
-                dataType:'json',
-                success:function(dt){
-                    var cont,clr;
-                    if(dt.status!='sukses'){
-                        cont = '..Gagal Menghapus '+dt.terhapus+' ..';
-                        clr  ='red';
-                    }else{
-                        vwGrup($('#g_lokasiS').val());
-                        cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
-                        clr  ='green';
-                    }notif(cont,clr);
-                }
-            });
-        }
+    function del(id){
+        var url  = dir;
+        var data = 'aksi=hapus&replid='+id;
+        if(confirm('melanjutkan untuk menghapus data?'))
+        ajax(url,data).done(function(dt){
+            notif(dt.status+' menghapus '+dt.terhapus,dt.status!='sukses'?'red':'green');
+            if(dt.status=='sukses') viewTB('ju');
+        });
+    }
     
-
-//create TR rekening by increment
-    /*var iTR=3;
-    function rekTRxx(n){
-        var ret ='';
-        if(n!=0){
-            for (var i = 1; i <= n; i++) {
-                ret+='<tr class="rekTR" id="rekTR_'+i+'">'
-                        +'<td>'
-                            +'<input id="ju_rek'+i+'H" name="ju_rek'+i+'H[]" type="hidden" />'
-                            +'<span class="input-control text"><input id="ju_rek'+i+'TB" name="ju_rek'+i+'TB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
-                        +'</td>'
-                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debet'+i+'TB[]" type="text" placeholder="nominal debet"/></td>'
-                        +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kredit'+i+'TB[]" type="text"  placeholder="nominal kredit"/></td>'
-                        +'<td><a href="#" onclick="delRekTR('+i+');" class="button"><i class="icon-cancel-2"></i></a></td>'
-                    +'</tr>';
-            }
-        }else{
-            ret+='<tr class="rekTR" id="rekTR_'+iTR+'">'
-                    +'<td>'
-                        +'<input id="ju_rek'+iTR+'H" name="ju_rek'+iTR+'H[]" type="hidden" />'
-                        +'<span class="input-control text"><input id="ju_rek'+iTR+'TB" name="ju_rek'+iTR+'TB[]" placeholder="rekening" type="text" /><button class="btn-clear"></button></span>'
-                    +'</td>'
-                    +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_debet'+iTR+'TB[]" type="text" placeholder="nominal debet"/></td>'
-                    +'<td><input value="Rp. 0" onfocus="inputuang(this);" name="ju_kredit'+iTR+'TB[]" type="text"  placeholder="nominal kredit"/></td>'
-                    +'<td><a href="#" onclick="delRekTR('+iTR+');" class="button"><i class="icon-cancel-2"></i></a></td>'
-                +'</tr>';
-            iTR++;
-        }
-        return ret;
-    }*/
-
 
 /*reset form*/
     //jurnal umm   ---
@@ -415,7 +372,10 @@ var contentFR ='';
     }
 
 // record rekening perkiraan
-    var iTR = 1;
+    var iTR = 1;    
+    var idDelTR = [];
+    var idAddTR = [];
+
     function rekTR (typ,n,arr) {
         console.log(arr);
         var tr='';
@@ -424,14 +384,19 @@ var contentFR ='';
             if(typeof n=='undefined'){ isLoop=false; n=iTR;}
 
             for(var ke=n; ke>=iTR; ke--){
-                var idrek   = (typeof arr!='undefined')?arr[ke-1].idrek:'';
-                var rek     = (typeof arr!='undefined')?arr[ke-1].rek:'';
-                var nominal = (typeof arr!='undefined')?arr[ke-1].nominal:'';
-                var jenis   = (typeof arr!='undefined')?arr[ke-1].jenis:'';
+                var idjurnal = (typeof arr!='undefined')?arr[ke-1].idjurnal:null;
+                var idrek    = (typeof arr!='undefined')?arr[ke-1].idrek:'';
+                var rek      = (typeof arr!='undefined')?arr[ke-1].rek:'';
+                var nominal  = (typeof arr!='undefined')?arr[ke-1].nominal:'';
+                var jenis    = (typeof arr!='undefined')?arr[ke-1].jenis:'';
+                
+                var mode = (typeof arr!='undefined')?'edit':'add';
 
                 tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
                         // jenis rek
                         +'<td align="center">'
+                            +'<input type="hidden" name="ju_mode'+ke+'H" value="'+mode+'" />'
+                            +'<input type="hidden" value="'+idjurnal+'" name="ju_idjurnal'+ke+'H" id="ju_idjurnal'+ke+'H">'
                             +'<input type="hidden" class="ju_idTR" value="'+ke+'" name="ju_idTR[]" id="ju_idTR_'+ke+'">'
                             +'<div class="input-control select">'
                                 +'<select required onchange="jenisRekGanti('+ke+');" id="ju_jenis'+ke+'TB" name="ju_jenis'+ke+'TB">'
@@ -457,7 +422,7 @@ var contentFR ='';
                         +'</td>'
                         // hapus
                         +'<td align="center">'
-                            +'<a href="#" onclick="delRekTR('+ke+');" class="button"><i class="icon-cancel-2"></i></a>'
+                            +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+');':'delRekTR('+ke+','+idjurnal+')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
                         +'</td>'
                     +'</tr>';
             }
@@ -511,12 +476,13 @@ var contentFR ='';
     }
 
 // remove TR rekening
-    function delRekTR (e) {
+    function delRekTR (ke,idjurnal) {
         if(($('.rekTR').length)<=2){
             notif('minimal lengkapi kredit dan debit','red');
         }else{
-            $('#rekTR_'+e).fadeOut('slow',function(){
-                $('#rekTR_'+e).remove();
+            if(idjurnal!=null) idDelTR.push(idjurnal); //jika ada hapu jurnal 
+            $('#rekTR_'+ke).fadeOut('slow',function(){
+                $('#rekTR_'+ke).remove();
             });
         }
     }
@@ -553,12 +519,14 @@ var contentFR ='';
                 $.Dialog.content(contentFR);
                 
                 setTimeout(function(){
+                    $('#detjenistransH').val(typ);
                     if(typ=='ju'){
                         if(id!='') { //edit
                             titl ='Ubah Jurnal Umum';
                             var url  = dir;
                             var data = 'aksi=ambiledit&subaksi='+typ+'&replid='+id;
                             ajax(url,data).done(function (dt) {
+                                $('#idformH').val(id);
                                 $('#nomerTB').html(dt.transaksiArr.nomer);
                                 $('#nobuktiTB').val(dt.transaksiArr.nobukti);
                                 $('#tanggalTB').val(dt.transaksiArr.tanggal);
@@ -587,12 +555,15 @@ var contentFR ='';
     }
 
     function isClosedFR () {
-        if($('.window-overlay').length<=0) iTR=1; // reset rekTR's counter
+        if($('.window-overlay').length<=0) {
+            iTR=1; // reset rekTR's counter
+            idDelTR=[]; // reset rekTR's counter
+        }
     }
 
     function validForm() {
         var status = true;
-        var out={'status':[],'msg':[]};
+        var out={'status':null,'msg':[]};
         if ($('#subaksiH').val() == 'ju') {
             var nomDeb = nomKre = 0;
             var pilihDeb = pilihKre = false;
@@ -610,28 +581,24 @@ var contentFR ='';
                 }
             });
 
-            // cek @nominal 
-            if(nomDeb==0 || nomKre==0){
-                var x = nomKre==0?'Kredit':'Debit';
-                out.msg.push('nominal '+x+' tidak boleh 0');
-            }
-
-            // cek pilih 
+            // cek : belum pilih jenis 
             if (!pilihDeb || !pilihKre) {
               if (!pilihDeb) out.msg.push('Anda belum memilih debit');
               if (!pilihKre) out.msg.push('Anda belum memilih kredit');
-            }
-            
-            // cek jumlah
-            if (nomDeb != nomKre) {
-              selisih = 'Rp. '+(Math.abs(nomKre - nomDeb)).setCurr();
-              if (nomKre > nomDeb) out.msg.push('Total kredit melebihi debit ' + selisih);
-              if (nomKre < nomDeb) out.msg.push('Total debit melebihi kredit ' + selisih);
+            }else{// cek nominal 
+                if(nomDeb==0 || nomKre==0){// nominal harus diisi tdk boleh 0 (nol) 
+                    var x = nomKre==0?'Kredit':'Debit';
+                    out.msg.push('nominal '+x+' tidak boleh Rp. 0');
+                }else if (nomDeb != nomKre) { // total nominal harus sama (jenis=kredit)
+                  selisih = 'Rp. '+(Math.abs(nomKre - nomDeb)).setCurr();
+                  if (nomKre > nomDeb) out.msg.push('Total kredit melebihi debit ' + selisih);
+                  if (nomKre < nomDeb) out.msg.push('Total debit melebihi kredit ' + selisih);
+                }
             }
             
             // cek status' valid
-            if (out.msg.length==0) out.status.push(true);
-            else out.status.push(false);
+            if (out.msg.length==0) out.status=true;
+            else out.status=false;
         }return out;
     }
     Number.prototype.setCurr=function(){

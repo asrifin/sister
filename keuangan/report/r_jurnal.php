@@ -5,6 +5,7 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
   $mnu = 'transaksi';
+  $pre = 'transaksi_';
 
   $x     = $_SESSION['ju_noS'].$_GET['ju_uraianS'];
   $token = base64_encode($x);
