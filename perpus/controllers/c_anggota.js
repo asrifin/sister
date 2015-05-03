@@ -44,14 +44,18 @@ var contentFR ='';
         cmbdepartemen();
         
         //load table Siswa
-        vwSiswa();
+        viewTB('siswa');
+        viewTB('pegawai');
+        viewTB('luar');
+        // vwSiswa();
 
         $("#pegawai").on('click', function(){
-            // alert(897987);
-            vwPegawai();
+            viewTB('pegawai');
+            // vwPegawai();
         });
         $("#luar").on('click', function(){
-            vwLuar();
+            viewTB('luar');
+            // vwLuar();
         });
 
         //add form
@@ -62,21 +66,29 @@ var contentFR ='';
         //search action
         $('#nisS').keydown(function (e){
             if(e.keyCode == 13)
-             vwSiswa();
+            viewTB('siswa');
+             // vwSiswa();
         });$('#namaS').keydown(function (e){
             if(e.keyCode == 13)
-             vwSiswa();
+            viewTB('siswa');
+             // vwSiswa();
         });$('#nipS').keydown(function (e){
             if(e.keyCode == 13)
-             vwPegawai();
-        });$('#pegawaiS').keydown(function (e){
-            if(e.keyCode == 13)
-             vwPegawai();
-        });$('#idmemberS').keydown(function (e){
-            if(e.keyCode == 13)
-        });$('#nama_luarS').keydown(function (e){
-            if(e.keyCode == 13)
+            viewTB('pegawai');
+         // vwPegawai();
         });
+        // $('#pegawaiS').keydown(function (e){
+        //     if(e.keyCode == 13)
+                // viewTB('pegawai');
+        //      vwPegawai();
+        // });$('#idmemberS').keydown(function (e){
+        //     if(e.keyCode == 13)
+                // viewTB('pegawai');
+        // });
+        // $('#nama_luarS').keydown(function (e){
+        //     if(e.keyCode == 13)
+                // viewTB('pegawai');
+        // });
                 //search action
         $('#lokasiS').on('change',function(){
             cmbtahunajaran($(this).val());
@@ -85,24 +97,25 @@ var contentFR ='';
         });$('#tingkatS').on('change',function (){
             cmbkelas($(this).val());
         });$('#kelasS').on('change',function (){
-            vwSiswa(); 
+                viewTB('siswa');
+            // vwSiswa(); 
         });
 
         // search button
-        $('#cariBC').on('click',function(){
-            $('#cariTR').toggle('slow');
+        $('#siswaBC').on('click',function(){
+            $('#siswaTR').toggle('slow');
             $('#nisS').val('');
             $('#namaS').val('');
         });
         // search pegawai
-        $('#cari_pegawaiBC').on('click',function(){
-            $('#cari_pegawaiTR').toggle('slow');
+        $('#pegawaiBC').on('click',function(){
+            $('#pegawaiTR').toggle('slow');
             $('#nipS').val('');
             $('#pegawaiS').val('');
         });
         // search button
-        $('#cari_luarBC').on('click',function(){
-            $('#cari_luarTR').toggle('slow');
+        $('#luarBC').on('click',function(){
+            $('#luarTR').toggle('slow');
             $('#idmemberS').val('');
             $('#nama_luarS').val('');
         });
@@ -242,70 +255,105 @@ function cmbkelas(kls){
 //end of save process ---
 
 // view table ---
-    function vwSiswa(){
-        var aksi ='aksi=tampil&subaksi=siswa';
-        var cari = '&nisS='+$('#nisS').val()
-                    +'&namaS='+$('#namaS').val();
+    function viewTB(subaksi){
+        var aksi ='aksi=tampil';
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
+        }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
         $.ajax({
             url : dir,
             type: 'post',
-            // data: aksi,
-            data: aksi+cari, //edit by epiii
+            data: aksi+cari,
             beforeSend:function(){
-                $('#siswa_tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#siswa_tbody').html(dt).fadeIn();
-                    // $('#tbody').delay(4000).fadeIn().html(data);
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
     }
+
+    // function vwSiswa(){
+    //     var aksi ='aksi=tampil&subaksi=siswa';
+    //     var cari = '&nisS='+$('#nisS').val()
+    //                 +'&namaS='+$('#namaS').val();
+    //     $.ajax({
+    //         url : dir,
+    //         type: 'post',
+    //         // data: aksi,
+    //         data: aksi+cari, //edit by epiii
+    //         beforeSend:function(){
+    //             $('#siswa_tbody').html('<tr><td align="center" colspan="7"><img src="../img/w8loader.gif"></td></tr></center>');
+    //         },success:function(dt){
+    //             setTimeout(function(){
+    //                 $('#siswa_tbody').html(dt).fadeIn();
+    //                 // $('#tbody').delay(4000).fadeIn().html(data);
+    //             },1000);
+    //         }
+    //     });
+    // }
 // end of view table ---
 
 // view table PEgawai ---
-    function vwPegawai(){
-        // alert(0099999);
-        var aksi ='aksi=tampil&subaksi=pegawai';
-        var cari = '&nipS='+$('#nipS').val()
-                    +'&pegawaiS='+$('#pegawaiS').val();
-        $.ajax({
-            url : dir,
-            type: 'post',
-            // data: aksi,
-            data: aksi+cari, //edit by epiii
-            beforeSend:function(){
-                $('#pegawai_tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                setTimeout(function(){
-                    $('#pegawai_tbody').html(dt).fadeIn();
-                    // $('#tbody').delay(4000).fadeIn().html(data);
-                },1000);
-            }
-        });
-    }
+    // function vwPegawai(){
+    //     // alert(0099999);
+    //     var aksi ='aksi=tampil&subaksi=pegawai';
+    //     var cari = '&nipS='+$('#nipS').val()
+    //                 +'&pegawaiS='+$('#pegawaiS').val();
+    //     $.ajax({
+    //         url : dir,
+    //         type: 'post',
+    //         // data: aksi,
+    //         data: aksi+cari, //edit by epiii
+    //         beforeSend:function(){
+    //             $('#pegawai_tbody').html('<tr><td align="center" colspan="7"><img src="../img/w8loader.gif"></td></tr></center>');
+    //         },success:function(dt){
+    //             setTimeout(function(){
+    //                 $('#pegawai_tbody').html(dt).fadeIn();
+    //                 // $('#tbody').delay(4000).fadeIn().html(data);
+    //             },1000);
+    //         }
+    //     });
+    // }
 // end of view table --
 
 // view table Member Lain ---
-    function vwLuar(kode){
-        var aksi ='aksi=tampil&subaksi=luar';
-        var cari = '&idmemberS='+$('#idmemberS').val()
-                    +'&nama_luarS='+$('#nama_luarS').val();
-        $.ajax({
-            url : dir,
-            type: 'post',
-            // data: aksi,
-            data: aksi+cari, //edit by epiii
-            beforeSend:function(){
-                $('#luar_tbody').html('<tr><td align="center" colspan="6"><img src="../img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                setTimeout(function(){
-                    $('#luar_tbody').html(dt).fadeIn();
-                    // $('#tbody').delay(4000).fadeIn().html(data);
-                },1000);
-            }
-        });
-    }
+    // function vwLuar(kode){
+    //     var aksi ='aksi=tampil&subaksi=luar';
+    //     var cari = '&idmemberS='+$('#idmemberS').val()
+    //                 +'&nama_luarS='+$('#nama_luarS').val();
+    //     $.ajax({
+    //         url : dir,
+    //         type: 'post',
+    //         // data: aksi,
+    //         data: aksi+cari, //edit by epiii
+    //         beforeSend:function(){
+    //             $('#luar_tbody').html('<tr><td align="center" colspan="6"><img src="../img/w8loader.gif"></td></tr></center>');
+    //         },success:function(dt){
+    //             setTimeout(function(){
+    //                 $('#luar_tbody').html(dt).fadeIn();
+    //                 // $('#tbody').delay(4000).fadeIn().html(data);
+    //             },1000);
+    //         }
+    //     });
+    // }
 // end of view table ---
 
 // form ---
@@ -379,7 +427,7 @@ function cmbkelas(kls){
             type:"post",
             data: aksi+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="8"><img src="../img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();
@@ -435,7 +483,3 @@ function notif(cont,clr) {
     //     $('#keteranganTB').val('');
     // }
 //end of reset form ---
-
-    // ---------------------- //
-    // -- created by rovi  -- //
-    // ---------------------- // 

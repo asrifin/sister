@@ -65,7 +65,7 @@
 										WHERE
 											mtipe = pj.mtipe and 
 											member= s.replid
-									) total,
+									) total
 								FROM
 									aka_siswa s 
 									left JOIN pus_peminjaman pj ON pj.member = s.replid 

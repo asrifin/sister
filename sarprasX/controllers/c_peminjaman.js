@@ -356,7 +356,7 @@ var contentAdd=contentDetail='';
 // pilih barang yg akan dipinjam ---
     function barangAdd (id,kode,nama) {
         var tr ='<tr val="'+id+'" class="barangTR" id="barangTR_'+id+'">'
-                    +'<td>'+kode+'</td>'
+                    +'<td>'+kode+'</td>' //diganti form textbox $('#barangTBL').val()
                     +'<td>'+nama+'</td>'
                     +'<td><button onclick="barangDel('+id+');"><i class="icon-remove"></button></i></td>'
                 +'</tr>';

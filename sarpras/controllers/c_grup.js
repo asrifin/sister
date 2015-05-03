@@ -874,9 +874,9 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                                     $('#k_keteranganTB').val(dt.data.keterangan);
                                     var img;
                                     if(dt.data.photo2!='' && dt.data.photo2!=null){//ada gambar
-                                        img='../img/upload/'+dt.data.photo2;
+                                        img='./img/upload/'+dt.data.photo2;
                                     }else{
-                                        img='../img/no_image.jpg';
+                                        img='./img/no_image.jpg';
                                     }
                                     $('#previmg').attr('src',img);
                                     $('#k_photoH').val(dt.data.photo2);

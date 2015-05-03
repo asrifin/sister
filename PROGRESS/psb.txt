@@ -27,7 +27,9 @@ PSB V2.0
 	+ Insert > Belum Cara insert ke multiple tabel
 	- Cara membuat no otomatis pada no pendaftaran
 	- Update > pas di var_dump replid selalu 14
-	+ menjumlahkan angsuran dan total uang pangkal net
+	- menjumlahkan angsuran dan total uang pangkal net menggunakan Rupiah
+	- Insert > Foto
+	- Cara mengambil id combo box
 	+ view   > 
 	  + Combo Kelompok ga sesuai
 	  + menampilkan foto siswa pada view detail siswa
@@ -36,7 +38,7 @@ PSB V2.0
 
 * penerimaan siswa baru (P)
 	+ paging > klik next, table tidak tampil
-	- simpan > proses menyimpan ketika tombol Belum Diterima dari tabel psb_calonsiswa ke tabel aka_siswa
+	+ simpan > proses menyimpan ketika tombol Belum Diterima dari tabel psb_calonsiswa ke tabel aka_siswa
 	- view   > 
 			+ Dialog pada Tombol Diterima res data undefined  
 			+ Combo kelompok ditampilkan semua 
