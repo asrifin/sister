@@ -35,7 +35,7 @@
             </label>
         </div>
     </legend>
-    <div class="row">
+    <div id="jenistransDV" class="row">
         <div class="span7" style="color:white;"> 
             <!-- row 1 -->
             <div class="row">
@@ -116,7 +116,7 @@
         - lnTAB : laporan neraca
         - pkbTAB : posisi kas dan bank
         - btTAB : buku tambahan-->
-    <div  data-effect="fade" class="tab-control" data-role="tab-control">
+    <div style="overflow:scroll;height:500px" data-effect="fade" class="tab-control" data-role="tab-control">
         <ul class="tabs">
             <li class="active"><a href="#juTAB">Jurnal Umum </a></li>
             <li><a href="#nsTAB">Neraca Saldo</a></li>
@@ -145,7 +145,7 @@
                     </label>
                 </div>
 
-                <table class="table hovered bordered striped">
+                <table  class="table hovered bordered striped">
                     <thead>
                         <tr style="color:white;"class="info">
                             <th class="text-center">Tanggal </th>
@@ -156,8 +156,8 @@
                         </tr>
                         <tr style="display:none;" id="juTR" class="info">
                             <th class="text-left"></th>
-                            <th class="text-left"><input placeholder="nomor jurnal" id="ju_noS" class="ju_cari"></th>
-                            <th class="text-left"><input placeholder="uraian" id="ju_uraianS" class="ju_cari"></th>
+                            <th class="text-left"><div class="input-control text"><input placeholder="cari ..." id="ju_noS" class="ju_cari"></div></th>
+                            <th class="text-left"><div class="input-control text"><input placeholder="cari ..." id="ju_uraianS" class="ju_cari"></div></th>
                             <th style="display:visible;"class="text-left uraianCOL"></th>
                             <th class="text-left"></th>
                         </tr>

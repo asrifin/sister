@@ -1,4 +1,20 @@
 <?php
+	// bulan
+	// $bulanArr=[
+	// 	'Jan'=>'01',
+	// 	'Feb'=>'02',
+	// 	'Mar'=>'03',
+	// 	'Apr'=>'04',
+	// 	'May'=>'05',
+	// 	'Jun'=>'06',
+	// 	'Jul'=>'07',
+	// 	'Aug'=>'08',
+	// 	'Sep'=>'09',
+	// 	'Oct'=>'10',
+	// 	'Nov'=>'11',
+	// 	'Dec'=>'12'
+	// ];
+
 	function tgl_indo($tgl){
 			$tanggal= substr($tgl,8,2);
 			$bulan 	= getBulan(substr($tgl,5,2));
@@ -13,27 +29,45 @@
 			$jam	= substr($tgl,11,2);
 			$menit	= substr($tgl,14,2);
 			return $tanggal.' '.$bulan.' '.$tahun.' ('.$jam.':'.$menit.')' ;		 
-	}function tgl_indo3($tgl){ // 05/25/2012
+	}function tgl_indo3($tgl){ // 2012-05-25
 			$bulan		= substr($tgl,0,2);
 			$tanggal 	= substr($tgl,3,2);
 			$tahun 		= substr($tgl,6,4);
 			return $tahun.'-'.$bulan.'-'.$tanggal;		 
-	}function tgl_indo4($tgl){ //29 sep 09
+	}function tgl_indo4($tgl){ //05/29/2012
 			$tahun 		= substr($tgl,2,2);
 			$bulan		= substr($tgl,5,2);
 			$tanggal 	= substr($tgl,8,2);
 			return $bulan.'/'.$tanggal.'/'.$tahun;		 
-	}function tgl_indo5($tgl){ //29 sep 2009 
-			$tahun 		= substr($tgl,0,4);
-			$bulan 		= getBulan(substr($tgl,5,2));
-			$bulan		= substr($bulan,0,3);
-			$tanggal 	= substr($tgl,8,2);
-			return $tanggal.' '.$bulan.' '.$tahun;		 
-	}function tgl_indo6($tgl){ //09 sep 1925
-		$tahun   =substr($tgl, 6,11);
+	}function tgl_indo5($tgl){ //from 2012-09-29 --> 29 Sep 2012 
+		$tahun 		= substr($tgl,0,4);
+		$bulan 		= getBulan(substr($tgl,5,2));
+		$bulan		= substr($bulan,0,3);
+		$tanggal 	= substr($tgl,8,2);
+		return $tanggal.' '.$bulan.' '.$tahun;		 
+	}function tgl_indo6($tgl){ //from 09 Sep 2012 --> 2012-05-09
+		$tahun   =substr($tgl, 7,11);
 		$bulan   =substr($tgl, 3,3);
 		$tanggal =substr($tgl, 0,2);
 		return $tahun.'-'.getBulan2($bulan).'-'.$tanggal;
+	}function tgl_indo7($tgl){ //from 2012-05-09 --> 09 Sep 2012
+		$tahun   =substr($tgl,0,4);
+		$bulan   =substr($tgl,5,2);
+		$tanggal =substr($tgl,8,2);
+		$bulanArr=[
+			'Jan'=>'01',
+			'Feb'=>'02',
+			'Mar'=>'03',
+			'Apr'=>'04',
+			'May'=>'05',
+			'Jun'=>'06',
+			'Jul'=>'07',
+			'Aug'=>'08',
+			'Sep'=>'09',
+			'Oct'=>'10',
+			'Nov'=>'11',
+			'Dec'=>'12'
+		];return $tanggal.' '.array_search($bulan,$bulanArr).' '.$tahun;
 	}function getBulan2($b){
 		$blnArr=[
 			'Jan'=>'01',
@@ -45,9 +79,9 @@
 			'Jul'=>'07',
 			'Aug'=>'08',
 			'Sep'=>'09',
-			'Okt'=>'10',
+			'Oct'=>'10',
 			'Nov'=>'11',
-			'Des'=>'12'
+			'Dec'=>'12'
 		];return $blnArr[$b];	
 	}function getBulan($bln){
 				switch ($bln){

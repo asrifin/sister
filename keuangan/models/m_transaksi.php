@@ -85,13 +85,15 @@
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					case 'ju':
-						$ju_no     = isset($_POST['ju_noS'])?filter(trim($_POST['ju_noS'])):'';
-						$ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
+						$ju_no     = isset($_POST['ju_noS'])?filter($_POST['ju_noS']):'';
+						$ju_uraian = isset($_POST['ju_uraianS'])?filter($_POST['ju_uraianS']):'';
 						$sql       = 'SELECT * 
 									from '.$tb.' 
 									WHERE 
-										(nomer like "%'.$ju_no.'%" OR nomer like "%'.$ju_no.'%" ) AND
-										uraian like "%'.$ju_uraian.'%"';
+										(nomer like "%'.$ju_no.'%" OR nobukti like "%'.$ju_no.'%" ) AND
+										uraian like "%'.$ju_uraian.'%"
+									ORDER BY	
+										replid DESC';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -111,31 +113,35 @@
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_array($result)){	
-								$btn ='<td>
-											<button data-hint="ubah"  class="button" onclick="juFR('.$res['replid'].');">
+								$btn ='<td align="center">
+											<button data-hint="ubah"  class="button" onclick="loadFR(\'ju\','.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
-											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
+											<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
+											</button>
 										 </td>';
-								$s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
-										from keu_jurnal j,keu_rekening r 
-										where 
-											j.transaksi ='.$res['replid'].' AND 
-											j.rek=r.replid
-										ORDER BY kredit  ASC';
-						// print_r($sql);exit(); 	
-								$e2 = mysql_query($s2);
-								$tb2='';
+								$s2 = ' SELECT replid,rek,nominal
+										FROM keu_jurnal 
+										WHERE 
+											transaksi ='.$res['replid'];
+								$e2  = mysql_query($s2);
+						// var_dump($s2);exit(); 	
+								$tb2 ='';
 								if(mysql_num_rows($e2)!=0){
-	   								$tb2.='<table class="bordered striped lightBlue" width="100%">';
+	   								$tb2.='<table class="bordered striped lightBlue" width="100%">
+												<tr class="bg-lightTeal text-center">
+			   										<td>Rekening</td>
+													<td>Debit</td>
+													<td>Kredit</td>
+												</tr>';
 		   							while($r2=mysql_fetch_assoc($e2)){
+		   								$jenis = getKatRekBy('jenis',getRekBy('kategorirekening',$r2['rek']));
 		   								$tb2.='<tr>
-		   										<td>'.$r2['nama'].'</td>
-		   										<td>'.$r2['kode'].'</td>
-		   										<td>Rp. '.number_format($r2['debet']).',-</td>
-		   										<td>Rp. '.number_format($r2['kredit']).',-</td>
-		   									</tr>';
+			   										<td>'.getRekening($r2['rek']).'</td>
+			   										<td class="text-right">Rp. '.number_format($jenis=='debit'?$r2['nominal']:0).',-</td>
+			   										<td class="text-right">Rp. '.number_format($jenis=='kredit'?$r2['nominal']:0).',-</td>
+			   									</tr>';
 		   							}$tb2.='</table>';
 								}$out.= '<tr>
 											<td>'.tgl_indo($res['tanggal']).'</td>
@@ -154,9 +160,9 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
+					
 					//Neraca Saldo
 					case 'ns':
-
 						$kode     = isset($_POST['ns_kodeS'])?filter(trim($_POST['ns_kodeS'])):'';
 						$nama	  = isset($_POST['ns_namaS'])?filter(trim($_POST['ns_namaS'])):'';
 						$sql       = 'SELECT 
@@ -453,31 +459,6 @@
 
 			// generate kode
 			case 'codeGen':
-				/*switch ($_POST['subaksi']) {
-					case'transNo':
-						switch($_POST['tipe']){
-							case 'ju':
-								$pre='MMJ';
-							break;
-							case 'in':
-								$pre='BKM';
-							break;
-							case 'out':
-								$pre='BKK';
-							break;
-						}
-						$s    ='SELECT max(ct)ct from keu_transaksi ';
-						$e    =mysql_query($s);
-						$stat =!$e?'gagal_'.mysql_error():'sukses';
-						if(mysql_num_rows($e)>0){
-							$r  =mysql_fetch_assoc($e);
-							$in =$r['ct']+1;
-						}else{
-							$in=1;
-						}$kode=$pre.'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
-						$out=json_encode(array('status'=>$stat,'kode'=>$kode));
-					break;
-				}*/
 				$kode = getNoTrans2($_POST['subaksi']);
 				$out  = json_encode(array(
 					'status' =>($kode!=null?'sukses':'gagal'),
@@ -485,14 +466,6 @@
 				));
 			break;
 			// generate kode
-
-			// case 'cmbakanbayar':
-			// 	$out=json_encode(array(
-			// 		'status' =>(akanBayarOpt($_POST['subaksi'],$_POST['siswa'])==null?'gagal':'sukses'),
-			// 		'datax'  =>akanBayarOpt($_POST['subaksi'],$_POST['siswa'])
-			// 	));
-			// break;
-
 
 			// head info ------------------------------------------------------------------
 			case 'headinfo':
@@ -585,49 +558,56 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				// switch ($_POST['subaksi']) {
-					// 1. simpan transaksi
-					$nominal=0;
-					$sub = $_POST['subaksi']; // ju, in, out
-					$c   = count($_POST[$sub.'_rekH']);
-					foreach ($_POST[$sub.'_rekH'] as $i => $v) {
-						$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
-						if($nom!='0'){
-							$nominal+=$nom;
-						}
+				// var_dump($_POST['idDelTR']);exit();
+				// 1. simpan transaksi
+				$totNominal = 0;
+				$sub        = $_POST['subaksiH']; // ju, in, out
+				$c          = count($_POST[$sub.'_idTR']);
+				$rekArr     = $_POST[$sub.'_idTR'];
+				foreach ($rekArr as $i => $v) {
+					$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
+					$totNominal+=$nom;
+				}$totNominal =$sub=='ju'?($totNominal/2):$totNominal;
+				$s1 = 'keu_transaksi SET 	tahunbuku     ='.getTahunBuku('replid').',
+											nominal       ='.$totNominal.',
+											nomer         ="'.getNoTrans2($sub).'",
+											tanggal       ="'.tgl_indo6($_POST['tanggalTB']).'",
+											uraian        ="'.$_POST['uraianTB'].'",
+											detjenistrans ='.getDetJenisTras('replid','kode',$_POST['detjenistransH']).',
+											nobukti       ="'.$_POST['nobuktiTB'].'"';
+				$s  = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1;
+				$e  = mysql_query($s);
+				$id = mysql_insert_id();
+				if(!$e) $stat='gagal_insert_transaksi';
+				else{
+					// 2.a hapus jurnal (jika ada)
+					$stat22 = true;
+					if(isset($_POST['idDelTR']) AND $_POST['idDelTR']!=''){
+						$ss2  = 'DELETE FROM keu_jurnal WHERE replid IN ('.$_POST['idDelTR'].')';
+						$ee2  = mysql_query($ss2);
+						$stat22 = !$ee2?false:true; 
 					}
-					$s = 'INSERT INTO keu_transaksi SET 	tahunbuku  ='.getTahunBuku('replid').',
-															nominal    ='.$nominal.',
-															nomer      ="'.getNoTrans2($_POST['subaksi']).'",
-															tanggal    ="'.date('Y-m-d').'",
-															uraian     ="'.$_POST[$sub.'_uraianTB'].'"
-															nobukti    ="'.$_POST[$sub.'_nobuktiTB'].'"';
-					var_dump($s);exit();
-					$e  = mysql_query($s);
-					$id = mysql_insert_id();
-					if(!$e) $stat='gagal_insert_transaksi';
-					else{
-						// 2. simpan jurnal
-						$stat2 = true;
-						$nomDebit = $nomKredit = 0;
-						foreach ($_POST[$sub.'_rekH'] as $i => $v) {
-							if($_POST[$sub.'_jenis'.$v.'TB']=='debit'){ // kredit
-								$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
-								if($nom!='0'){
-									$nominal+=$nom;
-								}
-								$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
-								$nomDebit+=$nom;
-								$s2 = 'INSERT INTO keu_jurnal SET transaksi ='.$id.', rek ='.$_POST[$sub.'_rek'.$v.'H'].', debet ='.$nom;
-								$e2 = mysql_query($s2);
-							}else{ // kredit
-								$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
-								$nomKredit+=$nom;
-								$s2 = 'INSERT INTO keu_jurnal SET transaksi ='.$id.', rek ='.$_POST[$sub.'_rek'.$v.'H'].', kredit ='.$nom;
-								$e2 = mysql_query($s2);
+					// 2.b simpan jurnal
+					$stat2    = true;
+					$nomDebit = $nomKredit = 0;
+					
+					if(!$stat22) $stat='gagal_delete_jurnal'; // ada hapus jurnal AND gagal 
+					else{ // tidak ada hapus jurnal OR sukses hapus
+						foreach ($rekArr as $i => $v) {
+							$s = ' keu_jurnal SET 	rek       ='.$_POST[$sub.'_rek'.$v.'H'].', 
+													nominal   ='.getuang($_POST[$sub.'_nominal'.$v.'TB']);
+							if($_POST[$sub.'_mode'.$v.'H']=='edit'){ //edit
+								$s2='UPDATE '.$s.' WHERE replid='.$_POST[$sub.'_idjurnal'.$v.'H'];
+							}else{ // add
+								// $s2='a';
+								$s2='INSERT INTO '.$s.', transaksi ='.($id==''?$_POST['idformH']:$id);
 							}
+							// $s2    = ($_POST[$sub.'_mode'.$v.'H']=='edit' OR (isset($_POST['idformH']) AND $_POST['idformH']!='') )?'UPDATE '.$s.' WHERE replid='.$_POST[$sub.'_idjurnal'.$v.'H']:'INSERT INTO '.$s.', transaksi ='.$id;
+							// var_dump($s2);exit();
+							$e2    = mysql_query($s2);
+							$stat2 =!$e2?false:true;
 						}
-
+	
 						if(!$stat2) $stat = 'gagal_insert_jurnal';
 						else{
 							// 3. update saldo rekening
@@ -644,40 +624,23 @@
 							}else
 								$stat = 'sukses';
 						}
+
 					}
-				$out = json_encode(array('status'=>$stat));
+				}$out = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
 			// delete ---------------------------------------------------------------------
 			case 'hapus':
-				switch ($_POST['subaksi']) {
-					case 'grup':
-						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
-						$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
-						$e    = mysql_query($s);
-						$stat = ($e)?'sukses':'gagal';
-						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
-					break;
-
-					case 'katalog':
-						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb3.' where replid='.$_POST['replid']));
-						$s    = 'DELETE from '.$tb3.' WHERE replid='.$_POST['replid'];
-						// var_dump($s);exit();
-						$e    = mysql_query($s);
-						$stat = ($e)?'sukses':'gagal';
-						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
-					break;
-
-					case 'barang':
-						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb4.' where replid='.$_POST['replid']));
-						$s    = 'DELETE from '.$tb4.' WHERE replid='.$_POST['replid'];
-						// var_dump($s);exit();
-						$e    = mysql_query($s);
-						$stat = ($e)?'sukses':'gagal';
-						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['kode']));
-					break;
-				}
+				$d = mysql_fetch_assoc(mysql_query('SELECT * FROM '.$tb.' where replid='.$_POST['replid']));
+				$s = 'DELETE FROM '.$tb.' WHERE replid='.$_POST['replid'];
+				$e = mysql_query($s);
+				if(!$e) $stat = 'gagal';
+				else{
+					$s2   = 'DELETE FROM keu_jurnal WHERE transaksi= '.$d['replid'];
+					$e2   = mysql_query($s2);
+					$stat = !$e2?'gagal':'sukses';
+				}$out = json_encode(array('status'=>$stat,'terhapus'=>$d['nomer']));
 			break;
 			// delete ---------------------------------------------------------------------
 
@@ -687,16 +650,33 @@
 					case 'ju';
 						$s = 'SELECT * FROM '.$tb.'  WHERE replid='.$_POST['replid'];
 						// var_dump($s);exit();
-						$e 		= mysql_query($s);
-						$r 		= mysql_fetch_assoc($e);
-						$stat 	= ($e)?'sukses':'gagal';
-						$out 	= json_encode(array(
-									'status' =>$stat,
-									'datax'  =>array(
-										'nomer'   =>$r['nomer'],
-										'tanggal' =>$r['tanggal'],
-										'uraian'  =>$r['uraian']
-								)));					
+						$e    = mysql_query($s);
+						$r    = mysql_fetch_assoc($e);
+						$stat = ($e)?'sukses':'gagal';
+						if(!$e) $stat='gagal';
+						else{ //sukses
+							$s2        ='SELECT * FROM keu_jurnal WHERE transaksi ='.$_POST['replid'];
+							$e2        =mysql_query($s2);
+							$jurnalArr =array();
+							while ($r2=mysql_fetch_assoc($e2)) {
+								$jurnalArr[]=array(
+									'idjurnal' =>$r2['replid'],
+									'idrek'    =>$r2['rek'],
+									'rek'      =>getRekBy('nama',$r2['rek']),
+									'nominal'  =>setuang($r2['nominal']),
+									'jenis'    =>getKatRekBy('jenis',getRekBy('kategorirekening',$r2['rek'])),
+								);
+							}$transaksiArr=array(
+								'nomer'     =>$r['nomer'],
+								'nobukti'   =>$r['nobukti'],
+								'tanggal'   =>tgl_indo7($r['tanggal']),
+								'uraian'    =>$r['uraian'],
+								'jurnalArr' =>$jurnalArr
+							);$stat='sukses';
+						}$out = json_encode(array(
+									'status'       =>$stat,
+									'transaksiArr' =>$transaksiArr
+								));					
 					break;
 
 					case 'katalog';
