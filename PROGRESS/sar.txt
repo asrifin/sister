@@ -9,6 +9,7 @@ ______________________________________________________
 
 * inventaris (P)
 	- unit_barang > grafik 
+	- Cara Menggunakan Scroll
   
 * aktivitas (p)
 	- katalog 

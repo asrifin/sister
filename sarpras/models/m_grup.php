@@ -313,12 +313,16 @@
 						if($jum!=0){	
 							// $nox 	= $starting+1;
 							while($res = mysql_fetch_array($result)){	
+											// <button data-hint="hapus"  class="button" onclick="printPDF('.$res['replid'].');">
+											// 	<i class="icon-printer on-left"></i>
+											// </button>
 								$btn ='<td>
 											<button data-hint="ubah"  class="button" onclick="barangFR('.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
 											<button data-hint="hapus"  class="button" onclick="barangDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
+											</button>
 										 </td>';
 								$out.= '<tr>
 											<td>'.$res['kode'].'</td>
@@ -466,7 +470,7 @@
 						}else{ //edit
 							$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
 							if(isset($_POST['photo_asal'])){ //change image
-								$img='../../img/upload/'.$_POST['photo_asal'];
+								$img='../img/upload/'.$_POST['photo_asal'];
 								if(file_exists($img)){ //checking image is exist
 									$delimg = unlink($img);
 									$stat2  = !$delimg?false:true;

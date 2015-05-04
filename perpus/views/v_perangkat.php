@@ -1,4 +1,4 @@
-<!-- <script src="controllers/c_perangkat.js"></script> -->
+<script src="controllers/c_perangkat.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
 
@@ -10,7 +10,8 @@
                                 <input type="text" name="idTB" id="idTB" >
                                 <button class="btn-clear"></button>
                             </div>
-                            <button data-hint="Edit Format ID" xclass="large" onclick="loadView('idfmt','')" id="idBC"><span class="icon-pencil"></span> </button>
+                            <a href="#" data-hint="EditFormat ID" id="idBC" class="button"><span class="icon-pencil"></span> </a>
+                            <!-- <button data-hint="Edit Format ID" onclick="loadView('idfmt','')" id="idBC"><span class="icon-pencil"></span> </button> -->
                             <label style="color:white;">Contoh :</label>
 
                             <label style="color:white;">Format barkode :</label>

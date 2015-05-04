@@ -213,7 +213,7 @@
                         <label>Jenis Kelamin</label>
                         <div class="input-control radio">
                         <label>
-                            <input type="radio" name="jkTB" id="jkTB" />
+                            <input type="radio" value="L" name="jkTB" id="jkTB" />
                             <span class="check"></span>
                             Laki-Laki
                         </label>
@@ -221,7 +221,7 @@
 
                         <div class="input-control radio">
                         <label>
-                            <input type="radio" name="jkTB" id="jkTB" />
+                            <input type="radio" value="P" name="jkTB" id="jkTB" />
                             <span class="check"></span>
                             Perempuan
                         </label>

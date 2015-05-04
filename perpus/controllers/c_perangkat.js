@@ -17,7 +17,7 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
     //Dialog ID
         // id_contentFR    +='<div style="overflow:scroll;height:600px;">'
         settingFR    +='<div style="overflow:scroll;height:600px;">'
-                       +'<form autocomplete="off" onsubmit="idSV();return false;" id="idFR">' 
+                       +'<form autocomplete="off" onsubmit="idSV();return false;">' 
                         +'<input id="id_formH" type="hidden">' 
                                 +'<table width="700px" class="table hovered bordered striped">'
                                     +'<thead>'
@@ -54,7 +54,7 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                 //End div
 
         barkode_contentFR    +='<div style="overflow:scroll;height:600px;">'
-                       +'<form autocomplete="off" onsubmit="barkodeSV();return false;" id="barkodeFR">' 
+                       +'<form autocomplete="off" onsubmit="barkodeSV();return false;">' 
                         +'<input id="barkode_formH" type="hidden">' 
                                 +'<table width="700px" class="table hovered bordered striped">'
                                     +'<thead>'
@@ -167,12 +167,15 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                         +'</form>';
 
     // button action
-        // $("#barkodeBC").on('click', function(){ 
-        //     barkodeFR('');
-        // });
-        // $("#infoBC").on('click', function(){ 
-        //     infoFR('');
-        // });
+        $("#barkodeBC").on('click', function(){ 
+            barkodeFR('');
+        });
+        $("#idBC").on('click', function(){ 
+            idFR('');
+        });
+        $("#infoBC").on('click', function(){ 
+            infoFR('');
+        });
         $("#cetaklabel").on('click', function(){ 
             switchPN();
             cmblokasi();
@@ -256,47 +259,58 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
     }
 
 /* form ID (add & edit) */
-    // function idFR(id){
-    //     if(id!=''){ // edit mode
+   // function pinjamFR(id){
+   //      if(id!=''){ // edit mode
             
-    //     }else{ // add  mode
-    //         var titl   ='<i class="icon-plus-2"></i> Edit Format Nomor ID ';
-    //         var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
-    //         loadFR(titl,id_contentFR);
-    //     }
-    // }
+   //      }else{ // add  mode
+   //          var titl   ='<i class="icon-plus-2"></i> Tambah ';
+   //          var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
+   //          loadFR(titl,pinjam_contentFR,inpArr);
+   //          cmblokasi();
+   //      }
+
+   //  }
+    function idFR(id){
+        if(id!=''){ // edit mode
+            
+        }else{ // add  mode
+            var titl   ='<i class="icon-plus-2"></i> Edit Format Nomor ID ';
+            var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
+            loadFR(titl,settingFR,inpArr);
+        }
+    }
 
 /* form Barkode (add & edit) */
-    // function barkodeFR(id){
-    //     if(id!=''){ // edit mode
-    //                 $.ajax({
-    //                     url:dir,
-    //                     data:'aksi=ambiledit&subaksi=barkode&replid='+id,
-    //                     type:'post',
-    //                     dataType:'json',
-    //                     success:function(dt){
-    //                         $('#barkode_formH').val(id);
-    //                         $('#f_barkodeTB').val(dt.nilai);
-    //                     }
-    //                 });        
+    function barkodeFR(id){
+        if(id!=''){ // edit mode
+                    $.ajax({
+                        url:dir,
+                        data:'aksi=ambiledit&subaksi=barkode&replid='+id,
+                        type:'post',
+                        dataType:'json',
+                        success:function(dt){
+                            $('#barkode_formH').val(id);
+                            $('#f_barkodeTB').val(dt.nilai);
+                        }
+                    });        
             
-    //     }else{ // add  mode
-    //         var titl   ='<i class="icon-plus-2"></i> Edit Format Barkode item ';
-    //         var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
-    //         loadFR(titl,barkode_contentFR,inpArr);
-    //     }
-    // }
+        }else{ // add  mode
+            var titl   ='<i class="icon-plus-2"></i> Edit Format Barkode item ';
+            var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
+            loadFR(titl,barkode_contentFR,inpArr);
+        }
+    }
 
 /* form Cetak Label (add & edit) */
-    // function infoFR(id){
-    //     if(id!=''){ // edit mode
-            
-    //     }else{ // add  mode
-    //         var titl   ='<i class="icon-plus-2"></i> Edit Cetak Label';
-    //         var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
-    //         loadFR(titl,info_contentFR,inpArr);
-    //     }
-    // }
+        function infoFR(id){
+            if(id!=''){ // edit mode
+                
+            }else{ // add  mode
+                var titl   ='<i class="icon-plus-2"></i> Edit Cetak Label';
+                var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
+                loadFR(titl,info_contentFR,inpArr);
+            }
+        }
 
 /*view*/
 
@@ -320,7 +334,7 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                     $('#idTB').val(dt.row);
                 });
                 view('labelt').done(function(dt){
-                    $('#judulTB').val(dt.row);
+                    $('#barkodeTB').val(dt.row);
                 });
             }
         }
@@ -425,58 +439,46 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
 // end of notifikasi
 
 //end of  print to PDF -------
-    // function printPDF(mn){
-    //     var par='',tok='',p,v;
-    //     $('.'+mn+'_cari').each(function(){
-    //         p=$(this).attr('id');
-    //         v=$(this).val();
-    //         par+='&'+p+'='+v;
-    //         tok+=v;
-    //     });var x  = $('#id_loginS').val();
-    //     var token = encode64(x+tok);
-    //     window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
-    // }
-
-// input uang --------------------------
-    // function inputuang(e) {
-    //     $(e).maskMoney({
-    //         precision:0,
-    //         prefix:'Rp. ', 
-    //         // allowNegative: true, 
-    //         thousands:'.', 
-    //         // decimal:',', 
-    //         affixesStay: true
-    //     });
-    // }
+    function printPDF(mn){
+        var par='',tok='',p,v;
+        $('.'+mn+'_cari').each(function(){
+            p=$(this).attr('id');
+            v=$(this).val();
+            par+='&'+p+'='+v;
+            tok+=v;
+        });var x  = $('#id_loginS').val();
+        var token = encode64(x+tok);
+        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+    }
 
 // left pad (replace with 0)
-    // function lpadZero (n, length){
-    //     var str = (n > 0 ? n : -n) + "";
-    //     var zeros = "";
-    //     for (var i = length - str.length; i > 0; i--)
-    //         zeros += "0";
-    //     zeros += str;
-    //     return n >= 0 ? zeros : "-" + zeros;
-    // }
+    function lpadZero (n, length){
+        var str = (n > 0 ? n : -n) + "";
+        var zeros = "";
+        for (var i = length - str.length; i > 0; i--)
+            zeros += "0";
+        zeros += str;
+        return n >= 0 ? zeros : "-" + zeros;
+    }
 
 /*about date*/ 
 // get month format -------------
-    // function monthFormat(mon){
-    //     switch(mon){
-    //         case 1:return 'Jan';break;
-    //         case 2:return 'Feb';break;
-    //         case 3:return 'Mar';break;
-    //         case 4:return 'Apr';break;
-    //         case 5:return 'May';break;
-    //         case 6:return 'Jun';break;
-    //         case 7:return 'Jul';break;
-    //         case 8:return 'Aug';break;
-    //         case 9:return 'Sep';break;
-    //         case 10:return 'Oct';break;
-    //         case 11:return 'Nov';break;
-    //         case 12:return 'Dec';break;
-    //     }
-    // }
+    function monthFormat(mon){
+        switch(mon){
+            case 1:return 'Jan';break;
+            case 2:return 'Feb';break;
+            case 3:return 'Mar';break;
+            case 4:return 'Apr';break;
+            case 5:return 'May';break;
+            case 6:return 'Jun';break;
+            case 7:return 'Jul';break;
+            case 8:return 'Aug';break;
+            case 9:return 'Sep';break;
+            case 10:return 'Oct';break;
+            case 11:return 'Nov';break;
+            case 12:return 'Dec';break;
+        }
+    }
 
 //date format -----------------
     function dateFormatx(typ,d,m,y){

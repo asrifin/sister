@@ -52,6 +52,7 @@
           // var_dump($rr);exit();
         // sleep(1);
         // ob_start(); // digunakan untuk convert php ke html
+            // <body OnLoad="window.print()" OnFocus="window.close()">
         $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
           <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
@@ -59,7 +60,7 @@
               <title>SISTER::Sar - Unit Barang</title>
             </head>
 
-            <body OnLoad="window.print()" OnFocus="window.close()">
+            <body OnLoad="window.print()">
               <p align="center">
                 <b>
                   Unit Barang<br>
@@ -164,14 +165,14 @@
                   // var_dump($e);exit();
                   $e = mysql_query($s) or die(mysql_error());
                   $n = mysql_num_rows($e);
-                  $out.=' <table border="1" width="90%">';
+                  $out.=' <table border="1" width="50%">';
                   // $nox = 1;
                   if($n==0){
                     $out.=' <tr>
-                              <td colspan="3">-</td>
+                              <td colspan="2">-</td>
                             </tr>';
                   }else{
-                    $kolom = 3;
+                    $kolom = 2;
                     $counter = 1;
                     while ($r=mysql_fetch_assoc($e)) {
                       if (($counter-1) % $kolom == 0){
@@ -180,8 +181,8 @@
                       // $x ='okok';
                       $x = bar128(stripcslashes($r['barkode']));
                       // var_dump($x);exit();
-                      $out.="<td align='center' style='padding: 5px' width='30%'>
-                              <font face='code128' size='20'>";
+                      $out.="<td align='center' cellspacing='5' style='padding: 20px' width='20%'>
+                              <font face='code128' size='10'>";
                       $out.=$x;
                       $out.="</font><br />
                             ".$r['kode']."

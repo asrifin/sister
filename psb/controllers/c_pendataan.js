@@ -503,20 +503,12 @@ var contentFR = '';
                     }
                 }
 
-                // var urlx ='&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val();
-                // alert(urlx);return false;
-                // edit mode
-                // if($('#idformH').val()!=''){
-                //     urlx += '&replid='+$('#idformH').val();
-                // }
-
                 // alert(formData);return false;
                 $.ajax({
                     // url: dir+'?aksi=simpan&subaksi=siswa',
                     url: dir,
                     type:'POST',
                     data:formData+'&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val(),
-                    // data:'aksi=simpan&subaksi=siswa'+formData,
                     // data:'aksi=simpan&subaksi=siswa'+formData+$('#siswa_form').serialize(),
                     cache:false,
                     dataType: 'json',
@@ -720,9 +712,9 @@ var contentFR = '';
                         $('#asalsekolahTB').val(dt.sekolahasal);
                         var img;
                         if(dt.photo2!='' && dt.photo2!=null){//ada gambar
-                            img='../img/upload/'+dt.photo2;
+                            img='./img/upload/'+dt.photo2;
                         }else{
-                            img='../img/no_image.jpg';
+                            img='./img/no_image.jpg';
                         }
                         $('#previmg').attr('src',img);
                         $('#photoH').val(dt.photo2);
