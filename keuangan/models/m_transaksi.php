@@ -81,17 +81,62 @@
 		}
 	}else{
 		switch ($_POST['aksi']) {
+			// jenis transaksi (checkbox)
+			case 'jenistrans':
+				$s = 'SELECT replid idjenis, nama jenistrans from keu_jenistrans';
+				$e = mysql_query($s);
+				$jenisArr=array();
+				if(!$e) $stat='gagal_ambil_jenis-trans';
+				else{
+					while ($r=mysql_fetch_assoc($e)) {
+						$s2= 'SELECT replid iddetjenis, nama detjenistrans FROM keu_detjenistrans WHERE jenistrans='.$r['idjenis'];
+						// print_r($s2);exit();
+						$e2=mysql_query($s2);
+						if(!$e2) $stat='gagal_ambil_detil-jenis-trans';
+						else{
+							$detjenisArr=array();
+							while ($r2=mysql_fetch_assoc($e2)) {
+								$detjenisArr[]=$r2;
+							}$jenisArr[] = array(
+								'idjenis'     => $r['idjenis'],
+								'jenistrans'  => $r['jenistrans'],
+								'detjenisArr' =>$detjenisArr
+							);$stat='sukses';
+						}
+				 	}$out=json_encode(array('status'=>$stat,'jenisArr'=>$jenisArr));
+				}
+			break;
+
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					case 'ju':
+						$jurnalArr = $ju_detjenistrans ='';
+						if(isset($_POST['jenisAllCB'])){ //select all
+							$s='SELECT replid FROM keu_detjenistrans';
+							$e=mysql_query($s);
+							while($r=mysql_fetch_assoc($e)){
+								$jurnalArr.=','.$r['replid'];
+							}$jurnalArr=substr($jurnalArr,1);
+						}else{ // tidak select all
+							if(isset($_POST['detjenisTB'])){
+								foreach ($_POST['detjenisTB'] as $i=>$v) {
+									$jurnalArr.=','.$i;
+								}$jurnalArr=substr($jurnalArr,1);
+							}else{
+								$jurnalArr=0;
+							}
+						}$ju_detjenistrans=' AND detjenistrans in('.$jurnalArr.')';
+						// var_dump($jurnalArr);exit();
+						
 						$ju_no     = isset($_POST['ju_noS'])?filter($_POST['ju_noS']):'';
 						$ju_uraian = isset($_POST['ju_uraianS'])?filter($_POST['ju_uraianS']):'';
 						$sql       = 'SELECT * 
 									from '.$tb.' 
 									WHERE 
 										(nomer like "%'.$ju_no.'%" OR nobukti like "%'.$ju_no.'%" ) AND
-										uraian like "%'.$ju_uraian.'%"
+										uraian like "%'.$ju_uraian.'%" '.$ju_detjenistrans.' AND 
+										tanggal between "'.tgl_indo6($_POST['tgl1TB']).'" AND "'.tgl_indo6($_POST['tgl2TB']).'" 
 									ORDER BY	
 										replid DESC';
 						// print_r($sql);exit(); 	
@@ -573,7 +618,7 @@
 											nomer         ="'.getNoTrans2($sub).'",
 											tanggal       ="'.tgl_indo6($_POST['tanggalTB']).'",
 											uraian        ="'.$_POST['uraianTB'].'",
-											detjenistrans ='.getDetJenisTras('replid','kode',$_POST['detjenistransH']).',
+											detjenistrans ='.getDetJenisTrans('replid','kode',$_POST['detjenistransH']).',
 											nobukti       ="'.$_POST['nobuktiTB'].'"';
 				$s  = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1;
 				$e  = mysql_query($s);

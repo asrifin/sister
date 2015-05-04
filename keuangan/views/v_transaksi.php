@@ -19,93 +19,35 @@
         <button id="ju_addBC" onclick="loadFR('ju','');" class="bg-blue" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></button>
         <button id="in_addBC"  onclick="loadFR('in');"class="bg-green" data-hint="Pemasukkan"><i class="icon-download-2"></i></button>
         <button id="out_addBC"  onclick="loadFR('out');"class="bg-red" data-hint="Pengeluaran"><i class="icon-upload-3"></i></button>
-        <button id="printBC"class="bg-amber" data-hint="Cetak"><i class="icon-printer"></i></button>
         <button id="optionBC" data-hint="Selengkapnya..." class="bg-gray fg-white"><i class="icon-grid"></i></button>
     </div>
 </div>
     
-<div id="optionPN">
-    <legend class="span7" style="color:white;">
-        Tampilkan catatan Transaksi
+<form id="optionPN" style="display:none;">
+    <label style="color:white;">
+        Jenis Transaksi
         <div class="span3 input-control checkbox" >
             <label>
-                <input checked="checked" type="checkbox" />
+                <input name="jenisAllCB" id="jenisAllCB" onclick="jenisAll();" checked="checked" type="checkbox" />
                 <span class="check"></span>
                 Semua 
             </label>
         </div>
-    </legend>
-    <div id="jenistransDV" class="row">
-        <div class="span7" style="color:white;"> 
-            <!-- row 1 -->
-            <div class="row">
-                <div class="span3 input-control checkbox" >
-                    <label>
-                        <input class="cari"  name="jenisCB[]" value="8" checked="checked" type="checkbox" />
-                        <span class="check"></span>
-                        Jurnal Umum 
-                    </label>
-                </div>
-                <div class="span4 input-control checkbox" >
-                    <label>
-                        <input  class="cari"  name="jenisCB[]" value="1"  checked="checked" type="checkbox" />
-                        <span class="check"></span>
-                        Transaksi Pemasukkan dari Siswa
-                    </label>
-                </div>
-            </div>
-            <!--end of row 1 -->
-            <!-- row 1 -->
-            <div class="row">
-                <div class="span3 input-control checkbox" >
-                    <label>
-                        <input  class="cari"  name="jenisCB[]" value="4"  checked="checked" type="checkbox" />
-                        <span class="check"></span>
-                        Transaksi Pemasukkan 
-                    </label>
-                </div>
-                <div class="span4 input-control checkbox" >
-                    <label>
-                        <input  class="cari"  name="jenisCB[]" value="2"  checked="checked" type="checkbox" />
-                        <span class="check"></span>
-                        Transaksi Pemasukkan dari calon Siswa
-                    </label>
-                </div>
-            </div>
-            <!--end of row 1 -->
-            <!-- row 1 -->
-            <div class="row">
-                <div class="span3 input-control checkbox" >
-                    <label>
-                        <input  class="cari"  name="jenisCB[]" value="7"  checked="checked" type="checkbox" />
-                        <span class="check"></span>
-                        Transaksi Pengeluaran 
-                    </label>
-                </div>
-                <div class="span4 input-control checkbox" >
-                    <label>
-                        <input  class="cari"  name="jenisCB[]" value="5"  checked="checked" type="checkbox" />
-                        <span class="check"></span>
-                        Transaksi Penerimaan Barang
-                    </label>
-                </div>
-            </div>
-            <!--end of row 1 -->
-        </div>
-    </div>
+    </label>
+    <ul id="jenistransDV" class="treeview" data-role="treeview"></ul>
     <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="tgl1TB">
+        <input onchange="viewTB('ju');" type="text" id="tgl1TB" name="tgl1TB">
         <button class="btn-date"></button>
     </div> s/d
     <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="tgl2TB">
+        <input onchange="viewTB('ju');" type="text" id="tgl2TB" name="tgl2TB">
         <button class="btn-date"></button>
     </div> 
-    <button id="hari_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Hari ini</button>
-    <button id="bulan_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Bulan ini</button>
-</div>
-<div class="divider">&nbsp;</div>
+    <a href="#" onclick="viewTB('ju');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
+    <a  href="#" onclick="viewTB('ju');" id="bulan_iniBC" name="bulan_iniBC" class="button bg-gray fg-white"><i class="icon-clock"></i> Bulan ini</a>
+</form>
 
+<div class="divider">&nbsp;</div>
 <!-- tab -->
     <!-- keterangan :
         - juTAB : jurnal umum
@@ -116,7 +58,7 @@
         - lnTAB : laporan neraca
         - pkbTAB : posisi kas dan bank
         - btTAB : buku tambahan-->
-    <div style="overflow:scroll;height:500px" data-effect="fade" class="tab-control" data-role="tab-control">
+    <div style="overflow:scroll;height:600px" data-effect="fade" class="tab-control" data-role="tab-control">
         <ul class="tabs">
             <li class="active"><a href="#juTAB">Jurnal Umum </a></li>
             <li><a href="#nsTAB">Neraca Saldo</a></li>

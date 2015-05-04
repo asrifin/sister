@@ -675,7 +675,6 @@ var contentFR ='';
         }
         var x     = $('#id_loginS').val();
         var token = encode64(x+tok);
-        // alert(par);return false;
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 

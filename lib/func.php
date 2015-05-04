@@ -331,7 +331,8 @@
 		$r=mysql_fetch_assoc($e);
 		return $r['bukti'];
 	}function getDetJenisTrans($f,$w,$k){
-		$s='SELECT '.$f.' FROM keu_detjenistrans WHERE '.$w.'='.$k;
+		$s='SELECT '.$f.' FROM keu_detjenistrans WHERE '.$w.'="'.$k.'"';
+		// var_dump($s);exit();
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r[$f];

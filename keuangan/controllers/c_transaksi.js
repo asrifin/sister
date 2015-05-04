@@ -75,7 +75,7 @@ var contentFR ='';
     // button action
         //print ---
         $('#ju_cetakBC').on('click',function(){
-            printPDF('jurnal');
+            printPDF('ju');
         });
         $('#ns_cetakBC').on('click',function(){
             printPDF('neracasaldo');
@@ -99,13 +99,14 @@ var contentFR ='';
         $('#ju_detiljurnalCB').on('click',function(){
             $('.uraianCOL').toggle();
         });
+        
+        jenisTrans();
         // default tampilkan jurnal umum 
         viewTB('ju');
         viewTB('ns');
         viewTB('bb');
         viewTB('nl');
         viewTB('lr');
-        // juVW();
     }); 
 // end of main function ---------
 
@@ -128,6 +129,11 @@ var contentFR ='';
             var v = $(this).val();
             cari+='&'+p+'='+v;
         });
+
+        if(subaksi=='ju'){
+            var opt = $('form#optionPN').serialize();
+            cari+='&'+opt;
+        }
 
         $.ajax({
             url:dir,
@@ -167,6 +173,11 @@ var contentFR ='';
             var v = $(this).val();
             cari+='&'+p+'='+v;
         });
+
+        if(subaksi=='ju'){
+            var opt = $('form#optionPN').serialize();
+            cari+='&'+opt;
+        }
 
         $.ajax({
             url : dir,
@@ -282,8 +293,29 @@ var contentFR ='';
             v=$(this).val();
             par+='&'+p+'='+v;
             tok+=v;
-        });var x  = $('#id_loginS').val();
+        });
+
+        if(mn=='ju'){
+            var opt = $('form#optionPN').serialize();
+            par+='&jenisAllCB='+$('#jenisAllCB').val();
+            tok+=$('#jenisAllCB').val();
+            $('.detjenisCB').each(function(id,item){
+                if($(this).is(':checked')){
+                    par+='&'+$(this).attr('name')+'='+$(this).val();
+                    tok+=$(this).val();
+                } 
+            });
+            par+='&tgl1TB='+$('#tgl1TB').val()+'&tgl2TB='+$('#tgl2TB').val();
+            tok+=$('#tgl1TB').val()+$('#tgl2TB').val();
+        }
+
+        // return false;
+        var x  = $('#id_loginS').val();
+        // alert(x+tok);
         var token = encode64(x+tok);
+        console.log('val ='+x+tok);
+        console.log('par ='+par);
+        console.log('token ='+token);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 
@@ -610,9 +642,39 @@ var contentFR ='';
         return parseInt(y.replace(',',''));
     }
 
+    function jenisTrans(){
+        var url  = dir;
+        var data = 'aksi=jenistrans';
+        ajax(url,data).done(function (dt) {
+            var out='';
+            $.each(dt.jenisArr,function(id,item){
+                out+='<li class="node">'
+                        +'<a href="#"><span class="node-toggle"></span>'+item.jenistrans+'</a>'
+                            +'<ul>'
+                    $.each(item.detjenisArr, function (id,item) {
+                        out+='<li style="padding-left:20px;">'
+                                +'<label>'
+                                    +'<input class="detjenisCB" onchange="viewTB(\'ju\')" name="detjenisTB['+item.iddetjenis+']" checked="checked" type="checkbox"> '
+                                        +item.detjenistrans+''
+                                +'</label>'
+                            +'</li>';
+                    }); out+='</ul>'
+                    +'</li>';
+            });$('#jenistransDV').html(out);
+        });
+    }
 
-
-
+    function jenisAll() {
+        if($('#jenisAllCB').prop('checked')){
+            $('.detjenisCB').each(function(){
+                $(this).prop('checked',true);
+            });
+        }else{
+            $('.detjenisCB').each(function(){
+                $(this).prop('checked',false);
+            });
+        }viewTB('ju');
+    }
 /*function formatDollar(num) {
     var p = num.toFixed(0).split(".");
     var chars = p[0].split("").reverse();

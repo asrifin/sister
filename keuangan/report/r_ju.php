@@ -5,15 +5,29 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
   $mnu = 'transaksi';
-  $pre = 'transaksi_';
+  $pre = 'ju_';
 
-  $x     = $_SESSION['ju_noS'].$_GET['ju_uraianS'];
+  echo '<pre>';
+  print_r($_GET);
+  echo '</pre>';
+  // exit();
+  $jenis==$jenis2='';
+  foreach ($_GET['detjenisTB'] as $i => $v) {
+    $jenis.=$v;
+    $jenis2.=','.$i;
+  }$jenis2=substr($jenis2,1);
+
+  $x     = $_SESSION['id_loginS'].$_GET[$pre.'noS'].$_GET[$pre.'uraianS'].$_GET['jenisAllCB'].$jenis.$_GET['tgl1TB'].$_GET['tgl2TB'];
   $token = base64_encode($x);
+  var_dump($jenis); echo "<br />";
+  var_dump($x); echo "<br />";
+  var_dump($token); echo "<br />";
+  var_dump($_GET['token']);
 
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
   }else{ // sudah login 
-    if(!isset($_GET['token']) and $token!==$_GET['token']){ //token salah 
+    if(!isset($_GET['token']) OR $token!==$_GET['token']){ //token salah 
       echo 'Token URL tidak sesuai';
     }else{ //token benar
       ob_start(); // digunakan untuk convert php ke html
