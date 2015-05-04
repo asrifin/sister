@@ -19,16 +19,20 @@ var contentFR ='';
         });
     //form content
         contentFR +='<form style="overflow:scroll;height:700px;" autocomplete="off" onsubmit="transSV(this); return false;">'
+                        // hidden input
                         +'<input name="idformH" id="idformH" type="hidden">' 
-                        +'<input name="detjenistransH" id="detjenistransH" type="text">' 
+                        +'<input name="detjenistransH" id="detjenistransH" type="hidden">' 
                         +'<input name="subaksiH" id="subaksiH" type="hidden">' 
 
+                        +'<legend><b>Keterangan Transaksi</b>'
+                            +'<button hint="Tambah Rekening" class="place-right button primary"><i class="icon-floppy"></i> simpan</button>'
+                        +'</legend>'
                         // nomer transaksi
-                        +'<label>No. Jurnal : <b id="nomerTB"></b></label>'
+                        +'<h5 class="place-right fg-green" style="font-weight:bold;" id="nomerTB"></h5>'
                         
                         // no bukti (nota)
                         +'<label>No. Bukti </label>'
-                        +'<div class="input-control size4 text">'
+                        +'<div class="input-control text">'
                             +'<input placeholder="no bukti" name="nobuktiTB" id="nobuktiTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
@@ -37,39 +41,45 @@ var contentFR ='';
                         +'<label>Tanggal</label>'
                         +'<div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">'
                             +'<input required type="text" id="tanggalTB" name="tanggalTB">'
-                            // +'<input required type="text" id="ju_tanggalTB" name="ju_tanggalTB">'
                             +'<button class="btn-date"></button>'
                         +'</div>'
 
-                        // uraian transaksi
-                        +'<label>Uraian</label>'
-                        +'<div class="input-control textarea">'
-                            +'<textarea required placeholder="uraian" name="uraianTB" id="uraianTB"></textarea>'
-                            // +'<textarea required placeholder="uraian" name="ju_uraianTB" id="ju_uraianTB"></textarea>'
+                        // uraian transaksi (optional)
+                        +'<label style="display:none;" class="uraianDV">Uraian</label>'
+                        +'<div  style="display:none;" class="input-control textarea uraianDV">'
+                            +'<textarea placeholder="uraian" name="uraianTB" id="uraianTB"></textarea>'
+                        +'</div>'
+
+                        // rekening kas (optional)
+                        +'<label style="display:none;" class="rekkasDV">Rekening Kas/Bank</label>'
+                        +'<div style="display:none;" class="input-control text rekkasDV">'
+                            +'<input type="hidden" name="rekkasH" id="rekkasH">'
+                            +'<input placeholder="rek. kas / bank" name="rekkasTB" id="rekkasTB">'
+                            +'<button class="btn-clear"></button>'
                         +'</div>'
 
                         // rekening perkiraan 
-                        +'<legend >Rekening :' 
-                            +'<a id="addTRBC" href="#" class="button bg-blue fg-white">'
+                        +'<legend style="font-weight:bold;">Rekening <span style="font-weight:bold;" id="reklawanDV"></span> : '
+                            +'<a id="addTRBC" href="#" class="place-right button bg-blue fg-white">'
                                 +'<i class="icon-plus-2"></i>'
                             +'</a>'
                         +'</legend>'
+
+                        // tabel rekening
                         +'<table class="table hovered bordered striped">'
-                            +'<thead>'
-                                +'<tr style="color:white;"class="info">'
-                                    +'<th class="text-center">Jenis</th>'
-                                    +'<th class="text-center">Rek Perkiraan</th>'
-                                    +'<th class="text-center">Nominal</th>'
-                                    +'<th class="text-center">Hapus</th>'
-                                +'</tr>'
-                            +'</thead>'
-                            +'<tbody id="rekTBL">'
-                            +'</tbody>'
+                            +'<thead id="rekTBL1"></thead>'
+                            +'<tbody id="rekTBL"></tbody>'
+                            +'<tfoot id="rekTBL3"></tfoot>'
                         +'</table>'
 
-                        +'<div class="form-actions">' 
-                            +'<button hint="Tambah Rekening" class="button primary"><i class="icon-floppy"></i> simpan</button>'
+                        // anggaran (optional:income & outcome)
+                        +'<label style="display:none;" class="detilanggaranDV">Anggaran </label>'
+                        +'<div style="display:none;" class="input-control text detilanggaranDV">'
+                            +'<input type="text" name="detilanggaranH" id="detilanggaranH">'
+                            +'<input placeholder="pada anggaran" name="detilanggaranTB" id="detilanggaranTB">'
+                            +'<button class="btn-clear"></button>'
                         +'</div>'
+                        
                   +'</form>';
 
     // button action
@@ -212,6 +222,7 @@ var contentFR ='';
             else {
                 $('#nomerTB').html(dt.kode);
                 $('#tanggalTB').val(getToday());
+                $('#nomerTB').addClass('fg-'+(typ=='ju'?'blue':(typ=='in_come'?'green':'red'))); // color of no. trans
             } 
         });
     }
@@ -219,10 +230,8 @@ var contentFR ='';
 /*save (insert & update)*/
     // subaksi : ju , in, out
     function transSV(e){
-        // console.log(idDelTR);return false;
         var url  = dir;
         var data = $(e).serialize()+'&aksi=simpan&idDelTR='+idDelTR;
-        // if(validForm().status[0]!=true){ // tidak valid
         if(validForm().status!=true){ // tidak valid
             var m = '';
             $.each(validForm().msg,function(id,item){
@@ -387,20 +396,25 @@ var contentFR ='';
 
         
 //ganti jenis rekening (debit/kredit)
-    function jenisRekGanti(i){
-        if ($('#ju_jenis'+i+'TB').val()=='') {  // jika jenis tdk dipilih
-            $('#ju_rek'+i+'TB').attr('disabled',true);
-            $('#ju_nominal'+i+'TB').attr('disabled',true);
-        }else{ // jika jenis (kredit/debit)
-            $('#ju_rek'+i+'TB').focus();
-            $('#ju_rek'+i+'TB').removeAttr('disabled');
-            $('#ju_nominal'+i+'TB').removeAttr('disabled');
-            $('#ju_rek'+i+'TB').attr('onclick','autoSuggest(\''+$('#ju_jenis'+i+'TB').val()+'\',\'ju\','+i+');');
-            $('#ju_rek'+i+'TB').attr('onfocus','autoSuggest(\''+$('#ju_jenis'+i+'TB').val()+'\',\'ju\','+i+');');
-        }
-        $('#ju_rek'+i+'H').val('');
-        $('#ju_rek'+i+'TB').val('');
-        $('#ju_nominal'+i+'TB').val('');
+    function ju_gantiJenisRek(typ,i){
+        // if(typ=='ju'){
+            if ($('#'+typ+'_jenis'+i+'TB').val()=='') {  // jika jenis tdk dipilih
+                $('#'+typ+'_rek'+i+'TB').attr('disabled',true);
+                $('#'+typ+'_nominal'+i+'TB').attr('disabled',true);
+            }else{ // jika jenis (kredit/debit)
+                $('#'+typ+'_rek'+i+'TB').focus();
+                $('#'+typ+'_rek'+i+'TB').removeAttr('disabled');
+                $('#'+typ+'_nominal'+i+'TB').removeAttr('disabled');
+                $('#'+typ+'_rek'+i+'TB').attr('onclick','autoSuggest(\''+$('#'+typ+'_jenis'+i+'TB').val()+'\',\''+typ+'_rek'+i+'\');');
+                $('#'+typ+'_rek'+i+'TB').attr('onfocus','autoSuggest(\''+$('#'+typ+'_jenis'+i+'TB').val()+'\',\''+typ+'_rek'+i+'\');');
+            }
+        // }else{ // in / out 
+        //     $('#'+typ+'_rek'+i+'TB').attr('onclick','autoSuggest(\'debit\',\''+typ+'\','+i+');');
+        //     $('#'+typ+'_rek'+i+'TB').attr('onfocus','autoSuggest(\'debit\',\''+typ+'\','+i+');');
+        // }
+        $('#'+typ+'_rek'+i+'H').val('');
+        $('#'+typ+'_rek'+i+'TB').val('');
+        $('#'+typ+'_nominal'+i+'TB').val('');
     }
 
 // record rekening perkiraan
@@ -431,7 +445,7 @@ var contentFR ='';
                             +'<input type="hidden" value="'+idjurnal+'" name="ju_idjurnal'+ke+'H" id="ju_idjurnal'+ke+'H">'
                             +'<input type="hidden" class="ju_idTR" value="'+ke+'" name="ju_idTR[]" id="ju_idTR_'+ke+'">'
                             +'<div class="input-control select">'
-                                +'<select required onchange="jenisRekGanti('+ke+');" id="ju_jenis'+ke+'TB" name="ju_jenis'+ke+'TB">'
+                                +'<select required onchange="ju_gantiJenisRek(\''+typ+'\','+ke+');" id="ju_jenis'+ke+'TB" name="ju_jenis'+ke+'TB">'
                                     +'<option value="">..pilih..</option>'
                                     +'<option '+(typeof arr=='undefined'?'':(jenis=='debit'?'selected':''))+' value="debit">Debit</option>'
                                     +'<option '+(typeof arr=='undefined'?'':(jenis=='kredit'?'selected':''))+' value="kredit">Kredit</option>'
@@ -440,8 +454,8 @@ var contentFR ='';
                         +'</td>'
                         // rek
                         +'<td align="center">'
-                            +'<span class="input-control text">'
-                                +'<input class="span1" value="'+idrek+'" id="ju_rek'+ke+'H" name="ju_rek'+ke+'H" type="hidden" />'
+                            +'<span class="input-control size5 text">'
+                                +'<input value="'+idrek+'" id="ju_rek'+ke+'H" name="ju_rek'+ke+'H" type="hidden" />'
                                 +'<input value="'+rek+'" required '+(typeof arr=='undefined'?'disabled':' onfocus="autoSuggest(\''+jenis+'\',\'ju\','+ke+');"')+' id="ju_rek'+ke+'TB" name="ju_rek'+ke+'TB" placeholder="rekening" type="text" />'
                                 +'<button class="btn-clear"></button>'
                             +'</span>'
@@ -459,7 +473,54 @@ var contentFR ='';
                     +'</tr>';
             }
         }else{ // pemasukkan / pengeluaran
+            if(typeof n=='undefined'){ isLoop=false; n=iTR;}
 
+            if(typ='in_come'){ //income
+                for(var ke=n; ke>=iTR; ke--){
+                    var idjurnal = (typeof arr!='undefined')?arr[ke-1].idjurnal:null;
+                    var idrek    = (typeof arr!='undefined')?arr[ke-1].idrek:'';
+                    var rek      = (typeof arr!='undefined')?arr[ke-1].rek:'';
+                    var nominal  = (typeof arr!='undefined')?arr[ke-1].nominal:'';
+                    var uraian   = (typeof arr!='undefined')?arr[ke-1].uraian:'';
+                    
+                    var mode     = (typeof arr!='undefined')?'edit':'add'; 
+                    
+                    tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
+                            // rek
+                            +'<td align="center">'
+                                +'<input type="hidden" name="in_come_mode'+ke+'H" value="'+mode+'" />'
+                                +'<input type="hidden" value="'+idjurnal+'" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H">'
+                                +'<input type="hidden" class="'+typ+'_idTR" value="'+ke+'" name="'+typ+'_idTR[]" id="'+typ+'_idTR_'+ke+'">'
+                                +'<span class="input-control size5 text">'
+                                    +'<input value="'+idrek+'" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
+                                    +'<input value="'+rek+'" required  onfocus="autoSuggest(\'debit\',\''+typ+'_rek'+ke+'\');" onclick="autoSuggest(\'debit\',\''+typ+'_rek'+ke+'\')" id="'+typ+'_rek'+ke+'TB" name="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
+                                    +'<button class="btn-clear"></button>'
+                                +'</span>'
+                            +'</td>'
+                            // nominal
+                            +'<td align="center">'
+                                +'<div class="input-control text">'
+                                    +'<input value="'+nominal+'" class="text-right" required name="'+typ+'_nominal'+ke+'TB"  id="'+typ+'_nominal'+ke+'TB" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);"  placeholder="nominal"/>'
+                                +'</div>'
+                            +'</td>'
+                            // uraian
+                            +'<td align="center">'
+                                +'<div class="input-control text">'
+                                    +'<input required value="'+uraian+'" placeholder="uraian" name="'+typ+'_uraian'+ke+'TB" id="'+typ+'_uraian'+ke+'TB">'
+                                +'</div>'
+                                // +'<div class="input-control textarea">'
+                                //     +'<textarea required placeholder="uraian" name="'+typ+'_uraian'+ke+'TB" id="'+typ+'_uraian'+ke+'TB">'+uraian+'</textarea>'
+                                // +'</div>'
+                            +'</td>'
+                            // hapus
+                            +'<td align="center">'
+                                +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+');':'delRekTR('+ke+','+idjurnal+')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
+                            +'</td>'
+                        +'</tr>';
+                }
+            }else{ //outcome
+
+            }
         }
     
         if(isLoop) iTR+=n;
@@ -468,8 +529,10 @@ var contentFR ='';
     }
 
   // autosuggest
-    function autoSuggest(jenis,pre,i){
-        $('#'+pre+'_rek'+i+'TB').combogrid({
+    // function autoSuggest(jenis,pre,i){
+        // $('#'+pre+'_rek'+i+'TB').combogrid({
+    function autoSuggest(jenis,el){
+        $('#'+el+'TB').combogrid({
             debug:true,
             width:'400px',
             colModel: [{
@@ -485,22 +548,30 @@ var contentFR ='';
                     'label':'Rekening'
             }],url: dir+'?aksi=autocomp&jenis='+jenis,
             select: function( event, ui ) { // event setelah data terpilih 
-                $('#'+pre+'_rek'+i+'H').val(ui.item.replid);
-                $('#'+pre+'_rek'+i+'TB').val(ui.item.nama+' ('+ui.item.kode+')');
+                $('#'+el+'H').val(ui.item.replid);
+                $('#'+el+'TB').val(ui.item.nama+' ('+ui.item.kode+')');
+                // $('#'+pre+'_rek'+i+'H').val(ui.item.replid);
+                // $('#'+pre+'_rek'+i+'TB').val(ui.item.nama+' ('+ui.item.kode+')');
 
                 // validasi input (tidak sesuai data dr server)
-                    $('#'+pre+'_rek'+i+'TB').on('keyup', function(e){
+                    // $('#'+pre+'_rek'+i+'TB').on('keyup', function(e){
+                    $('#'+el+'TB').on('keyup', function(e){
                         var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
                         var keyCode = $.ui.keyCode;
                         if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
-                            if($('#'+pre+'_rek'+i+'H').val()!=''){
-                                $('#'+pre+'_rek'+i+'H').val('');
-                                $('#'+pre+'_rek'+i+'TB').val('');
+                            // if($('#'+pre+'_rek'+i+'H').val()!=''){
+                            if($('#'+el+'H').val()!=''){
+                                $('#'+el+'H').val('');
+                                // $('#'+pre+'_rek'+i+'H').val('');
+                                $('#'+el+'TB').val('');
+                                // $('#'+pre+'_rek'+i+'TB').val('');
                             }
                         }
                     });
-                    $('#'+pre+'_rek'+i+'TB').on('blur,change',function(){
-                        if($('#'+pre+'_rek'+i+'H').val()=='') $('#'+pre+'_rek'+i+'TB').val('');
+                    // $('#'+pre+'_rek'+i+'TB').on('blur,change',function(){
+                    $('#'+el+'TB').on('blur,change',function(){
+                        if($('#'+el+'H').val()=='') $('#'+el+'TB').val('');
+                        // if($('#'+pre+'_rek'+i+'H').val()=='') $('#'+pre+'_rek'+i+'TB').val('');
                     });
                 return false;
             }
@@ -509,8 +580,10 @@ var contentFR ='';
 
 // remove TR rekening
     function delRekTR (ke,idjurnal) {
-        if(($('.rekTR').length)<=2){
+        if($('#subaksiH').val()=='ju' && $('.rekTR').length<=2){
             notif('minimal lengkapi kredit dan debit','red');
+        }else if($('#subaksiH').val()!='ju' && $('.rekTR').length<=1){
+            notif('minimal isi 1 rekening','red');
         }else{
             if(idjurnal!=null) idDelTR.push(idjurnal); //jika ada hapu jurnal 
             $('#rekTR_'+ke).fadeOut('slow',function(){
@@ -531,29 +604,27 @@ var contentFR ='';
             shadow: true,
             overlay: true,
             draggable: true,
-            width: 600,
+            width: 800,
             padding: 10,
             onShow: function(){
-                if(typ=='ju'){ // jurnal umum
-                    // if(id!='')titl ='Ubah Jurnal Umum';
-                    // else{
-                    //     kodeTrans(typ);
-                    //     titl ='Tambah  Jurnal Umum ';
-                    // } 
-                }else if(typ=='in'){ // transaksi pemasukkan
-                    if(id!='') titl ='Ubah Transaksi Pemasukkan';
-                    else titl ='Tambah Transaksi Pemasukkan';
-                }else{ // transaksi pengeluaran
-                    if(id!='') titl ='Ubah Transaksi Pengeluaran';
-                    else titl ='Tambah Transaksi Pengeluaran';
-                }
-
                 $.Dialog.content(contentFR);
-                
+                var tr=tr3='';
                 setTimeout(function(){
                     $('#detjenistransH').val(typ);
-                    if(typ=='ju'){
-                        if(id!='') { //edit
+                    if(typ=='ju'){ //ju
+                        tr+='<tr style="color:white;"class="info">'
+                                +'<th class="text-center">Jenis</th>'
+                                +'<th class="text-center">Rek Perkiraan</th>'
+                                +'<th class="text-center">Nominal</th>'
+                                +'<th class="text-center">Hapus</th>'
+                            +'</tr>';
+                        $('.uraianDV').removeAttr('style');
+                        $('#uraianTB').attr('required',true);
+                        if(id==''){ // add 
+                            kodeTrans(typ);
+                            addRekTR(typ,2);
+                            titl ='Tambah  Jurnal Umum ';
+                        }else { //edit
                             titl ='Ubah Jurnal Umum';
                             var url  = dir;
                             var data = 'aksi=ambiledit&subaksi='+typ+'&replid='+id;
@@ -567,16 +638,54 @@ var contentFR ='';
                                 // console.log(jurnal);
                                 addRekTR(typ,jurnal.length,jurnal);
                             });
-                        }else{ // add 
-                            kodeTrans(typ);
-                            addRekTR(typ,2);
-                            titl ='Tambah  Jurnal Umum ';
                         }
+                    }else{ // in_come / out_come
+                        $('.uraianDV').attr('style','display:none;');
+                        $('.detilanggaranDV').attr('style','display:visible;');
+                        $('.rekkasDV').removeAttr('style');
+                        $('#detilanggaranTB').attr('required',true);
+                        $('#rekkasTB').attr('required',true);
+                        $('#reklawanDV').html(' Pemasukkan');
+                        tr+='<tr style="color:white;"class="info">'
+                                +'<th class="text-center">Rekening</th>'
+                                +'<th class="text-center">Nominal</th>'
+                                +'<th class="text-center">Uraian</th>'
+                                +'<th class="text-center">Hapus</th>'
+                            +'</tr>';
+                        tr3+='<tr style="color:white;"class="info">'
+                                +'<th></th>'
+                                +'<th id+="totNominalTD" class="text-right"></th>'
+                                +'<th colspan="2"></th>'
+                            +'</tr>';
+                        if(typ=='in_come'){ //income
+                            autoSuggest('debit','rekkas');
+                            autoSuggest('debit','detilanggaran');
+                            if(id=='') { // add
+                                kodeTrans(typ);
+                                addRekTR(typ,1);
+                                titl='Tambah Transaksi Pemasukkan';
+                            }else{ //edit
+                                titl ='Ubah Transaksi Pemasukkan';
+                                var url  = dir;
+                                var data = 'aksi=ambiledit&subaksi='+typ+'&replid='+id;
+                                ajax(url,data).done(function (dt) {
+                                    $('#idformH').val(id);
+                                    $('#nomerTB').html(dt.transaksiArr.nomer);
+                                    $('#nobuktiTB').val(dt.transaksiArr.nobukti);
+                                    $('#tanggalTB').val(dt.transaksiArr.tanggal);
+                                    var income = dt.transaksiArr.incomeArr;
+                                    addRekTR(typ,income.length,income);
+                                });
+                            }
+                        }else{ // outcome 
 
-                    }else{
-
+                        }
                     }
+                    $('#rekTBL1').html(tr);
+                    $('#rekTBL3').html(tr3);
                     $('#subaksiH').val(typ);
+
+                    // $('#totNominalTD').html('Rp. '+totNominal);
                     $('#addTRBC').attr('onclick','addRekTR(\''+typ+'\');');
                     // addRekTR(typ,2);
                     $.Dialog.title('<i class="fg-white icon-'+(id!=''?'pencil':'plus-2')+'"></i> '+titl); 
@@ -631,7 +740,47 @@ var contentFR ='';
             // cek status' valid
             if (out.msg.length==0) out.status=true;
             else out.status=false;
-        }return out;
+        }else{
+            if($('#subaksiH').val() == 'in_come') {
+                var nomDeb = nomKre = 0;
+                var pilihDeb = pilihKre = false;
+                
+                //looping
+                $('.ju_idTR').each(function () {
+                    var jenis = $('#ju_jenis' + $(this).val() + 'TB').val();
+                    var nominal = getCurr($('#ju_nominal' + $(this).val() + 'TB').val());
+                    if (jenis == 'debit') {
+                        pilihDeb = true; // cek terpilih
+                        nomDeb += nominal; // cek nominal 
+                    } else {
+                        pilihKre = true;
+                        nomKre += nominal;
+                    }
+                });
+
+                // cek : belum pilih jenis 
+                if (!pilihDeb || !pilihKre) {
+                  if (!pilihDeb) out.msg.push('Anda belum memilih debit');
+                  if (!pilihKre) out.msg.push('Anda belum memilih kredit');
+                }else{// cek nominal 
+                    if(nomDeb==0 || nomKre==0){// nominal harus diisi tdk boleh 0 (nol) 
+                        var x = nomKre==0?'Kredit':'Debit';
+                        out.msg.push('nominal '+x+' tidak boleh Rp. 0');
+                    }else if (nomDeb != nomKre) { // total nominal harus sama (jenis=kredit)
+                      selisih = 'Rp. '+(Math.abs(nomKre - nomDeb)).setCurr();
+                      if (nomKre > nomDeb) out.msg.push('Total kredit melebihi debit ' + selisih);
+                      if (nomKre < nomDeb) out.msg.push('Total debit melebihi kredit ' + selisih);
+                    }
+                }
+                
+                // cek status' valid
+                if (out.msg.length==0) out.status=true;
+                else out.status=false;
+            }else{
+
+            }
+        }
+        return out;
     }
     Number.prototype.setCurr=function(){
         return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
@@ -674,6 +823,12 @@ var contentFR ='';
                 $(this).prop('checked',false);
             });
         }viewTB('ju');
+    }
+
+    function totNominal (e) {
+        $('.').each(function() {
+
+        });
     }
 /*function formatDollar(num) {
     var p = num.toFixed(0).split(".");

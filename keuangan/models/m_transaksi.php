@@ -612,12 +612,15 @@
 				foreach ($rekArr as $i => $v) {
 					$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
 					$totNominal+=$nom;
-				}$totNominal =$sub=='ju'?($totNominal/2):$totNominal;
+				}
+				$totNominal =$sub=='ju'?($totNominal/2):$totNominal;
+				$field= $sub=='ju'?'uraian ="'.$_POST['uraianTB'].'",':'';
+
 				$s1 = 'keu_transaksi SET 	tahunbuku     ='.getTahunBuku('replid').',
 											nominal       ='.$totNominal.',
 											nomer         ="'.getNoTrans2($sub).'",
 											tanggal       ="'.tgl_indo6($_POST['tanggalTB']).'",
-											uraian        ="'.$_POST['uraianTB'].'",
+											'.$field.'
 											detjenistrans ='.getDetJenisTrans('replid','kode',$_POST['detjenistransH']).',
 											nobukti       ="'.$_POST['nobuktiTB'].'"';
 				$s  = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1;
