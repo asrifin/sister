@@ -30,19 +30,38 @@
 				$sord       = $_GET['sord']; // get the direction
 				$searchTerm = $_GET['searchTerm'];
 
+				if(isset($_GET['subaksi']) && $_GET['subaksi']=='rek'){
+					$ss='SELECT
+							d.replid,
+							d.kode,
+							d.nama
+						FROM
+							keu_detilrekening d 
+							LEFT JOIN keu_kategorirekening k on k.replid = d.kategorirekening
+						WHERE
+							k.jenis="'.$_GET['jenis'].'" AND (
+								d.kode LIKE "%'.$searchTerm.'%"
+								OR d.nama LIKE "%'.$searchTerm.'%"
+							)';
+				}else{ // detil anggaran 
+					$ss='SELECT
+							d.replid,
+							d.nama,
+							sum(n.nominal)nominal,
+							k.nama kategorianggaran
+						FROM
+							keu_detilanggaran d
+							LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
+							LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
+						WHERE
+							d.nama LIKE "%'.$searchTerm.'%"
+							OR k.nama LIKE "%'.$searchTerm.'%"
+						GROUP BY	
+							d.replid ';
+				}
+				
 				if(!$sidx) 
 					$sidx =1;
-				$ss='SELECT
-						d.*,
-						k.jenis
-					FROM
-						keu_detilrekening d 
-						LEFT JOIN keu_kategorirekening k on k.replid = d.kategorirekening
-					WHERE
-						k.jenis="'.$_GET['jenis'].'" AND (
-							d.kode LIKE "%'.$searchTerm.'%"
-							OR d.nama LIKE "%'.$searchTerm.'%"
-						)';
 				// print_r($ss);exit();
 				$result = mysql_query($ss);
 				$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -64,11 +83,21 @@
 				$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
 				$rows 	= array();
 				while($row = mysql_fetch_assoc($result)) {
-					$rows[]= array(
-						'replid' =>$row['replid'],
-						'kode'   =>$row['kode'],
-						'nama'   =>$row['nama'],
-					);
+					if($_GET['subaksi']=='rek'){
+						$arr= array(
+							'replid' =>$row['replid'],
+							'kode'   =>$row['kode'],
+							'nama'   =>$row['nama'],
+						);
+					}else{
+						$arr= array(
+							'replid'           =>$row['replid'],
+							'nama'             =>$row['nama'],
+							'kategorianggaran' =>$row['kategorianggaran'],
+							'nominal'          =>'Rp. '.number_format($row['nominal']),
+							'sisa'             =>'Rp. '.number_format(1000000),
+						);
+					}$rows[]=$arr; 
 				}$response=array(
 					'page'    =>$page,
 					'total'   =>$total_pages,

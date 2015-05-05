@@ -165,23 +165,24 @@
 					// detil anggaran 
 					case 'detilanggaran':
 						$d_kategorianggaran = isset($_POST['d_kategorianggaranH'])?filter(trim($_POST['d_kategorianggaranH'])):'';
-						$d_tingkat          = isset($_POST['d_tingkatS'])&& $_POST['d_tingkatS']!=''?' tingkat ='.$_POST['d_tingkatS'].' AND ':'';
+						$d_tingkat          = isset($_POST['d_tingkatS'])&& $_POST['d_tingkatS']!=''?' d.tingkat ='.$_POST['d_tingkatS'].' AND ':'';
 						$d_nama             = isset($_POST['d_namaS'])?filter(trim($_POST['d_namaS'])):'';
-						$d_nominal          = isset($_POST['d_nominalS'])?filter(trim($_POST['d_nominalS'])):'';
 						$d_keterangan       = isset($_POST['d_keteranganS'])?filter(trim($_POST['d_keteranganS'])):'';
 
 						$sql = 'SELECT 
-									replid,
-									nama,
-									keterangan,
-									nominal
-								FROM '.$tb2.'
+									d.replid,
+									d.nama,
+									d.keterangan,
+									sum(n.nominal)totNominal
+								FROM '.$tb2.' d
+									LEFT JOIN keu_nominalanggaran n on n.detilanggaran = d.replid
 								WHERE 
-									kategorianggaran ='.$d_kategorianggaran.' and 
+									d.kategorianggaran ='.$d_kategorianggaran.' and 
 									'.$d_tingkat.'
-									nama LIKE"%'.$d_nama.'%" AND 
-									nominal LIKE"%'.$d_nominal.'%" AND 
-									keterangan LIKE"%'.$d_keterangan.'%"';
+									d.nama LIKE"%'.$d_nama.'%" AND 
+									d.keterangan LIKE"%'.$d_keterangan.'%"
+								GROUP BY	
+									d.replid';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -211,7 +212,7 @@
 										 </td>';
 								$out.= '<tr>
 											<td>'.$res['nama'].'</td>
-											<td align="right">Rp. '.number_format($res['nominal']).'</td>
+											<td align="right">Rp. '.number_format($res['totNominal']).'</td>
 											<td >'.$res['keterangan'].'</td>
 											'.$btn.'
 										</tr>';
@@ -418,6 +419,7 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				switch ($_POST['subaksi']) {
+					// kategori anggaran
 					case 'anggaran':
 						$s 		= $tb.' set nama       = "'.filter($_POST['a_namaTB']).'",
 											departemen = "'.filter($_POST['a_departemenH']).'",
@@ -429,28 +431,35 @@
 						$out 	= json_encode(array('status'=>$stat));
 					break;
 
+					// detil anggaran
 					case 'detilanggaran':
-						$s 	= 'keu_detilanggaran  set 	kategorianggaran = "'.$_POST['d_kategorianggaranH2'].'",
-														tingkat          = "'.filter($_POST['d_tingkatH']).'",
-														nama             = "'.filter($_POST['d_namaTB']).'",
-														keterangan       = "'.filter($_POST['d_keteranganTB']).'",
-														tahunbuku        = "'.getTahunBuku('replid').'",
-														nominal          = "'.filter(getuang($_POST['d_nominalTB'])).'"';
-						$s2 = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						$e  = mysql_query($s2);
-						$id = mysql_insert_id();
-						if(!$e){
-							$stat = 'gagal_'.mysql_error();
+						$su = 'keu_detilanggaran  set 	tingkat          = '.$_POST['d_tingkatH'].',
+														nama             = "'.$_POST['d_namaTB'].'",
+														keterangan       = "'.$_POST['d_keteranganTB'].'",
+														tahunbuku        = '.getTahunBuku('replid');
+						if(isset($_POST['replid']) AND $_POST['replid']!=''){
+							$s1='UPDATE '.$su.' WHERE replid='.$_POST['replid'];
 						}else{
-							// if(!isset($_POST['replid'])){
-							// 	$tbuku  = mysql_fetch_assoc(mysql_query('SELECT replid from keu_tahunbuku where aktif =1'));
-							// 	$s3     = 'INSERT INTO keu_anggarantahunan SET 	detilanggaran = '.$id.',
-							// 													tahunbuku ='.$tbuku['replid'];
-							// 	$e3  	= mysql_query($s3);
-							// 	$stat   = !$e3?'gagal_'.mysql_error():'sukses';
-							// }else{
-								$stat   = 'sukses';
-							// }
+							$s1='INSERT INTO '.$su.',kategorianggaran='.$_POST['d_kategorianggaranH2'];
+						}
+						$e1 = mysql_query($s1);
+						$id = mysql_insert_id();
+						if(!$e1){
+							$stat = 'gagal_detilanggaran_'.mysql_error();
+						}else{
+							$stat='sukses';
+							if(isset($_POST['d_nominalTB'])){
+								$stat2=true;
+								$cc='';
+								foreach ($_POST['d_nominalTB'] as $i => $v) {
+									$cc.=$i.',';
+									$su=' keu_nominalanggaran SET 	nominal 		='.getuang($v).',
+																	bulan   		='.$i;
+									$s2    =(isset($_POST['d_idnominalTB'][$i]) AND $_POST['d_idnominalTB'][$i]!='') ?'UPDATE '.$su.' WHERE replid='.$_POST['d_idnominalTB'][$i]:'INSERT INTO '.$su.', detilanggaran 	='.$id;
+									$e2    =mysql_query($s2);
+									$stat2 =!$e2?false:true;
+								}$stat  = !$stat2?'gagal_nominal':'sukses';
+							}
 						}$out 	= json_encode(array('status'=>$stat));
 					break;
 
@@ -537,10 +546,10 @@
 						if(!$e){
 							$stat='gagal_'.mysql_error();
 						}else{
-							
-							$stat='sukses';
+							$s2   = 'DELETE FROM keu_nominalanggaran WHERE detilanggaran ='.$_POST['replid'];
+							$e2   = mysql_query($s2);
+							$stat = !$e?'gagal':'sukses';
 						}
-						$stat = ($e)?'sukses':'gagal';
 						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
 					break;
 
@@ -587,7 +596,6 @@
 						$s = '	SELECT 
 									a.replid,
 									a.nama,
-									a.nominal,
 									a.keterangan
 								FROM keu_detilanggaran a
 								WHERE a.replid='.$_POST['replid'];
@@ -598,16 +606,25 @@
 						if(!$e){
 							$stat ='gagal';
 						}else{
+							$s2     = 'SELECT replid,nominal,bulan FROM keu_nominalanggaran WHERE detilanggaran = '.$r['replid'];
+							$e2     = mysql_query($s2);
+							$nomArr = array();
+							$totNom=0;
+							while ($r2=mysql_fetch_assoc($e2)) {
+								$nomArr[]=$r2;
+								$totNom+=$r2['nominal'];
+							}
+							$dt = array(
+								'nama'       =>$r['nama'],
+								'keterangan' =>$r['keterangan'],
+								'totNom'     =>$totNom,
+								'nomArr'     =>$nomArr
+							);						
 							$stat ='sukses';
-							$dt   =array(
-										'nama'       =>$r['nama'],
-										'nominal'    =>$r['nominal'],
-										'keterangan' =>$r['keterangan']
-									);						
-						}$out 	= json_encode(array(
-									'status' =>$stat,
-									'data'   =>$dt
-								));					
+						}$out = json_encode(array(
+							'status' =>$stat,
+							'data'   =>$dt
+						));					
 					break;
 
 					case 'barang';

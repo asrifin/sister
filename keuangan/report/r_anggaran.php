@@ -5,13 +5,20 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
 
+  $mnu = 'Formulir';
+  $pre = 'formulir_';
+
+  $x     = $_SESSION['id_loginS'].$_GET[$pre.'nopendaftaranS'].$_GET[$pre.'namaS'].$_GET[$pre.'statusS'].$_GET['kelompokS'];
+  $token = base64_encode($x);
+
+
   $x     = $_SESSION['id_loginS'].$_GET['a_departemenS'].$_GET['a_tahunbukuS'].$_GET['a_namaS'].$_GET['a_nominalS'].$_GET['a_keteranganS'];
   $token = base64_encode($x);
 
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
   }else{ // sudah login 
-    if(!isset($_GET['token']) and $token!==$_GET['token']){ //token salah 
+    if(!isset($_GET['token']) OR  $token!==$_GET['token']){ //token salah 
       echo 'Token URL tidak sesuai';
     }else{ //token benar
       $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -55,7 +62,7 @@
                   </tr>
                   <tr>
                     <td>Departemen</td>
-                    <td>: '.getDepartemen('replid',filter($_GET['departemenS'])).'</td>
+                    <td>: '.getDepartemen('replid',$_GET['departemenS']).'</td>
                     <td align="right"> Total :'.$n.' Data</td>
                   </tr>
                 </table>';
