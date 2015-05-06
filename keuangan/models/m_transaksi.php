@@ -90,12 +90,14 @@
 							'nama'   =>$row['nama'],
 						);
 					}else{
+						$kuota=getKuotaAnggaran($row['replid']);
 						$arr= array(
 							'replid'           =>$row['replid'],
 							'nama'             =>$row['nama'],
 							'kategorianggaran' =>$row['kategorianggaran'],
-							'nominal'          =>'Rp. '.number_format($row['nominal']),
-							'sisa'             =>'Rp. '.number_format(1000000),
+							'kuotaBil'         =>'Rp. '.number_format($kuota['kuotaBil']),
+							'sisaBil'          =>'Rp. '.number_format($kuota['sisaBil']),
+							'terpakaiBil'      =>'Rp. '.number_format($kuota['terpakaiBil']),
 						);
 					}$rows[]=$arr; 
 				}$response=array(
@@ -689,19 +691,17 @@
 						else{
 							// 3. update saldo rekening
 							if($sub!='ju'){ // selain jurnal umum 
-								if($nominal!='0'){
-									$s5   = 'UPDATE keu_saldorekening SET nominal2 =nominal2 '.getOperator($_POST['rekkasH']).' '.$nominal.' WHERE rekening ='.$_POST['rekkasH'].' AND tahunbuku='.getTahunBuku('replid');
-									$s6   = 'UPDATE keu_saldorekening SET nominal2 =nominal2 '.getOperator($_POST['rekitemH']).' '.$nominal.' WHERE rekening ='.$_POST['rekitemH'].' AND tahunbuku='.getTahunBuku('replid');
-									// var_dump($s6);exit();
-									$e5   = mysql_query($s5);
-									$e6   = mysql_query($s6);
-									$stat = ($e5 OR $e6)?'sukses':'gagal_update_saldorekening';
-								}else 
-									$stat = 'sukses';
+								$stat3=true;
+								foreach ($rekArr as $i => $v) {
+									$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
+									$s5  = 'UPDATE keu_saldorekening SET nominal2 =nominal2 '.getOperator($_POST['rekkasH']).' '.$nom.' WHERE rekening ='.$_POST['rekkasH'].' AND tahunbuku='.getTahunBuku('replid');
+									$e5  = mysql_query($s5);
+									$stat3=!$e5?false:true;
+								}
+								$stat = $e5?'sukses':'gagal_update_saldorekening';
 							}else
 								$stat = 'sukses';
 						}
-
 					}
 				}$out = json_encode(array('status'=>$stat));
 			break;

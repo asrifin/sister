@@ -161,6 +161,22 @@
 /*keuangan*/
 	// transact
 	/*pembayaran*/
+	function getKuotaAnggaran($anggaran){
+		$s='SELECT
+				sum(n.nominal)kuotaBil,
+				ifnull(sum(t.nominal),0)terpakaiBil,
+				(ifnull(sum(n.nominal),0)-ifnull(sum(t.nominal),0))sisaBil,
+				round(ifnull(sum(t.nominal),0)/ifnull(sum(n.nominal),0)*100,0)terpakaiPerc
+			FROM
+				keu_detilanggaran d
+				LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
+				LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
+				LEFT JOIN keu_transaksi t on t.detilanggaran = d.replid
+			WHERE d.replid= '.$anggaran;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r;
+	}
 	function getPembayaran($siswa,$modul){
 		$s ='SELECT max(replid) modul
 			FROM keu_pembayaran

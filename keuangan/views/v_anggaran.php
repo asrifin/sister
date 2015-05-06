@@ -82,11 +82,13 @@
             <tr style="color:white;"class="info">
                 <th class="text-center">Anggaran </th>
                 <th class="text-center">Nominal</th>
+                <th class="text-center">Terpakai</th>
                 <th class="text-center">Keterangan</th>
                 <th class="text-center">Aksi</th>
             </tr>
             <tr style="display:none;" id="k_cariTR" class="info">
                 <th class="text-center"><div class="input-control text"><input placeholder="Anggaran" id="d_namaS"  class="detilanggaran_cari" class="span1"></div></th>
+                <th class="text-center"><div class="input-control text"></th>
                 <th class="text-center"><div class="input-control text"></th>
                 <th class="text-center"><div class="input-control text"><input placeholder="Keterangan" id="d_keteranganS" class="detilanggaran_cari"></div></th>
                 <th class="text-center"></th>

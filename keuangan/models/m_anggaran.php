@@ -210,9 +210,18 @@
 												<i class="icon-remove on-left"></i>
 											</button>
 										 </td>';
+								$kuota        =getKuotaAnggaran($res['replid']); 
+								$terpakaiPerc =intval($kuota['terpakaiPerc']);
+								// var_dump(intval($terpakaiPerc));exit();
+								if($terpakaiPerc>75) {$clr='red';}
+								elseif($terpakaiPerc>50) {$clr='orange';}
+								elseif($terpakaiPerc>25) {$clr='yellow';}
+								elseif($terpakaiPerc>0 OR $terpakaiPerc<25) {$clr='green';}
+								$prog='<div class="progress-bar" data-role="progress-bar" data-value="'.$terpakaiPerc.'" data-color="bg-'.$clr.'"></div>';
 								$out.= '<tr>
 											<td>'.$res['nama'].'</td>
 											<td align="right">Rp. '.number_format($res['totNominal']).'</td>
+											<td align="right">'.$prog.'<br>Rp. '.number_format($kuota['terpakaiBil']).'</td>
 											<td >'.$res['keterangan'].'</td>
 											'.$btn.'
 										</tr>';
