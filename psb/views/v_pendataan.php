@@ -126,7 +126,7 @@
                               </div>
                               <label>Angusuran per Bulan</label>
                               <div class="input-control text size2">
-                                  <input type="text" name="angsuranbulanTB" id="angsuranbulanTB">
+                                  <input type="text" value="0" name="angsuranbulanTB" id="angsuranbulanTB">
                                   <button class="btn-clear"></button>
                               </div>
 
@@ -144,13 +144,13 @@
                                 <label><b>Discount:</b></label>
                                 <label>Discount Subsidi :</label>
                                 <div class="input-control text size3">
-                                    <input type="text" placeholder="Diskon Subsidi" name="diskon_subsidiTB" id="diskon_subsidiTB">
+                                    <input type="text" value="0" placeholder="Diskon Subsidi" name="diskon_subsidiTB" id="diskon_subsidiTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
                                 <label>Discount Saudara :</label>
                                 <div class="input-control text size3">
-                                    <input type="text" placeholder="Diskon Saudara" name="diskon_saudaraTB" id="diskon_saudaraTB">
+                                    <input type="text" value="0" placeholder="Diskon Saudara" name="diskon_saudaraTB" id="diskon_saudaraTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
@@ -161,7 +161,7 @@
                                   </select>
                               </div>
                                 <div class="input-control text size3">
-                                    <input readonly type="text" name="diskon_tunaiTB" id="diskon_tunaiTB">
+                                    <input readonly type="text" value="0" name="diskon_tunaiTB" id="diskon_tunaiTB">
                                     <button class="btn-clear"></button>
                                 </div>                                
 
@@ -423,7 +423,7 @@
                         <div class="form-actions" id="tambahsdr" style="display:visible;"> 
                             <button data-hint="Tambah Saudara" xclass="large" id="tambahsdrBC">Tambah Saudara</button>
                         </div>        
-                        <div class="panel" id="cetak" style="display:none;">
+<!--                         <div class="panel" id="cetak" style="display:none;">
                             <div class="panel-content">
                             <div class="grid">
                                 <div class="row">
@@ -472,10 +472,12 @@
                                             </tfoot>
                                         </table>
                                 </div> <!-- end row -->
-                            </div> <!-- end grid -->
+                            <!-- </div>  -->
+                            <!-- end grid -->
 
-                            </div>
-                        </div> <!-- end panel -->
+                            <!-- </div> -->
+                        <!-- </div>  -->
+ -->                        <!-- end panel -->
 
                       </div>
                     </div>

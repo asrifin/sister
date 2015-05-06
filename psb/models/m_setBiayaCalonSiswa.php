@@ -15,7 +15,7 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$kelompok  = isset($_POST['kelompokS'])?filter(trim($_POST['kelompokS'])):'';
-				$sql ='SELECT 
+				$sql ='SELECT
 							k.*,(
 								SELECT count(*)
 								FROM psb_golongan
@@ -59,13 +59,14 @@
 									psb_setbiaya ps
 									LEFT JOIN psb_kriteria pk ON pk.replid = ps.krit
 									LEFT JOIN psb_golongan g ON g.replid = ps.gol
-								WHERE
-									pk.replid = '.$res['replid'].'
-								GROUP by
-									ps.gol';
+								GROUP BY 
+									ps.gol
+								HAVING 
+									g.replid = '.$res['gol'];
+						// print_r($sql2);exit();
+
 						$qry2 = mysql_query($sql2);
 						$num  = mysql_num_rows($qry2);
-						// print_r($sql2);exit();
 
 						while ($r2=mysql_fetch_assoc($qry2)) {
 							$out.= '<tr>

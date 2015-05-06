@@ -28,25 +28,39 @@ var contentFR = '';
             width:'400px',
             colModel: [{
                     'align':'left',
-                    'columnName':'siswa',
+                    'columnName':'nis',
                     'hide':true,
                     'width':'55',
                     // 'width':'8',
-                    'label':'Nama'
+                    'label':'NIS'
                 },{   
-                    'columnName':'sekolah',
+                    'columnName':'nama',
                     'width':'40',
-                    'label':'Sekolah'
+                    'label':'Nama'
                 }],
             url: dir+'?aksi=autocomp',
             select: function( event, ui ) { // event setelah data terpilih 
-                saudaraAdd(ui.item.replid,ui.item.siswa,ui.item.sekolah);
+                saudaraAdd(ui.item.replid,ui.item.nis,ui.item.nama);
                 // $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
                 $('#nama_saudaraTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&saudara='+saudaraArr() );
                 return false;
             }
         }); //End autocomplete
 
+        $.each(dt.data.saudaraArr,function(id,item){
+                // +'<td><input '+(item.status==3||item.status==4?'disabled':'')+' type="checkbox" dp="'+item.iddpeminjaman+'" brg="'+item.idbarang+'" /></td>'
+            var btn;
+            tbl+='<tr>'
+                +'<td>'+item.nis+'</td>'
+                +'<td>'+item.nama+'</td>'
+                +'<td>'
+                    +'<button style="background-color:'+item.color+'" '
+                        +(item.status==3||item.status==4?'onclick="alert(\'sudah dikembalikan\')"':'onclick="kembalikanFC('+item.iddpeminjaman+','+item.idbarang+')"')+'>'
+                        +'<i style="color:white;" class="icon-undo"></i>'
+                    +'</button>'
+                +'</td>'
+            +'</tr>';
+        });$('saudaraTBL').html(tbl);
 
     }
 
@@ -76,10 +90,10 @@ var contentFR = '';
     //end of saudara record kosong --  
 
     // pilih saudara yg akan dipinjam ---
-        function saudaraAdd (id,siswa,sekolah) {
+        function saudaraAdd (id,nis,nama) {
             var tr ='<tr val="'+id+'" class="saudaraTR" id="saudaraTR_'+id+'">'
-                        +'<td>'+siswa+'</td>'
-                        +'<td>'+sekolah+'</td>'
+                        +'<td>'+nis+'</td>'
+                        +'<td>'+nama+'</td>'
                         // +'<td><button xhref="#" xonclick="saudaraDel('+id+');"onclick="alert('+id+');"><i class="icon-remove"></i></button></td>'
                         +'<td>'
                             +'<a href="#" onclick="saudaraDelx('+id+');" xonclick="alert('+id+');">'
@@ -359,11 +373,9 @@ var contentFR = '';
         $("#diskon_subsidiTB,#diskon_saudaraTB").keyup(function(){
         // // $("#diskon_subsidiTB").keydown(function(){
              hitung_diskon();
-            hitung_dpp();
         }); $("#diskon_tunai").change(function(){
             setdiskon();
             hitung_diskon();
-            hitung_dpp();
         });
         $("#kriteriaTB,#golonganTB").change(function(){
             getbiaya();
@@ -493,16 +505,14 @@ var contentFR = '';
         // simpan ke database
             function siswaDb(filex){
                  // alert('db');return false;
-                 //Simpan Saudara
-                // if(saudaraArr().length<=0){
-                //     $('#nama_saudaraTB').focus();
-                //     return false;
-                // }else{
-                //     var data ='&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val();
-                //     $.each(saudaraArr(),function(id,item){
-                //         data+='&saudara[]='+item;  
-                //     });
-                // }
+                if(barangArr().length<=0){
+                    $('#nama_saudaraTB').focus();
+                    return false;
+                }else{
+                    var data ='&aksi=simpan';
+                    $.each(barangArr(),function(id,item){
+                        data+='&barang[]='+item;  
+                    });
 
                 var formData = $('#siswa_form').serialize();
                 if($('#idformH').val()!=''){
@@ -521,8 +531,8 @@ var contentFR = '';
                     // url: dir+'?aksi=simpan&subaksi=siswa',
                     url: dir,
                     type:'POST',
-                    // data:formData+data,
-                    data:'aksi=simpan&subaksi=siswa'+formData+$('#siswa_form').serialize(),
+                    data:formData+'&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val(),
+                    // data:'aksi=simpan&subaksi=siswa'+formData+$('#siswa_form').serialize(),
                     cache:false,
                     dataType: 'json',
                     success: function(data, textStatus, jqXHR){
@@ -757,15 +767,6 @@ var contentFR = '';
                         $('#kakekTB').val(dt.kakek);
                         $('#nenekTB').val(dt.nenek);
 
-                        // var tbl='';
-                        // $.each(dt.saudaraArr,function(id,item){
-                        //     var btn;
-                        //     tbl+='<tr>'
-                        //         +'<td>'+item.nis+'</td>'
-                        //         +'<td>'+item.nama+'</td>'
-                        //     +'</tr>';
-                        // });$('saudaraTBL').html(tbl);
-
                         // $('#kakekTB').val(dt.kakek-nama);
                         // $('#nenekTB').val(dt.nenek-nama);
                         cmbkriteria(dt.kriteria);
@@ -926,11 +927,10 @@ var contentFR = '';
         }        
 
         function getbiaya(){
-                console.log($('#kelompokS').val());
                 $.ajax({
                     url : dir,
                     type: 'post',
-                    data:'aksi=getbiaya&kriteria='+$('#kriteriaTB').val()+'&golongan='+$('#golonganTB').val()+'&kelompok='+$('#kelompokS').val(),
+                    data:'aksi=getbiaya&kriteria='+$('#kriteriaTB').val()+'&golongan='+$('#golonganTB').val()+'&kelompok='+$('#prosesS').val(),
                     dataType:'json',
                     success:function(dt){
                         $('#uang_pangkalTB').val(dt.nilai);
@@ -979,6 +979,7 @@ var contentFR = '';
         }
         function hitung_diskon(){
             var pangkal       = $("#uang_pangkalTB").val();
+            var pangkalnet    = $("#uang_pangkalnetTB").val();
             var disc_subsidi  = parseInt($("#diskon_subsidiTB").val());
             var disc_saudara  = parseInt($("#diskon_saudaraTB").val());
             var diskon_total  = parseInt($("#diskon_totalTB").val());
@@ -993,16 +994,14 @@ var contentFR = '';
                 $("#diskon_totalTB").val(total_diskon);
             // alert(diskon_tunaiTB); 
             // return false;
-            // }
-        }
-        function hitung_dpp (){
-            var pangkalnet    = $("#uang_pangkalnetTB").val();
-            var diskon_total  = parseInt($("#diskon_totalTB").val());
-            var total_dpp    = parseInt(pangkalnet)-parseInt(diskon_total);
-            
+                var total_dpp    = parseInt(pangkalnet)-parseInt(diskon_total);
                 //Hitung Total DPP
                 $("#uang_pangkalnetTB").val(total_dpp);
+
+
+            // }
         }
+
 
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;

@@ -45,7 +45,7 @@ var content_stat = content_det = '';
                             +'</tr>'
                         +'</table>'
                         
-                        +'<input id="idformH_terima" name="idformH_terima" type="text">' 
+                        +'<input id="idformH_terima" name="idformH_terima" type="hidden">' 
                         +'<legend>Silahkan lengkapi data berikut:</legend>'
                         +'<label>No Induk</label>'
                         +'<div class="input-control text size2">'

@@ -46,11 +46,13 @@
 				// FROM
 				// 	'.$table.'
 			$ss='SELECT *
-					FROM (SELECT * FROM aka_siswa
+					FROM (SELECT pc.replid, pc.nama siswa, d.nama sekolah FROM psb_calonsiswa pc
+								LEFT JOIN psb_proses ps ON ps.replid = pc.proses 
+								LEFT JOIN departemen d ON d.replid = ps.departemen 
 						)tb
 				WHERE
-						tb.nama LIKE "%'.$searchTerm.'%"
-						OR tb.nis LIKE "%'.$searchTerm.'%"';
+						tb.siswa LIKE "%'.$searchTerm.'%"
+						OR tb.sekolah LIKE "%'.$searchTerm.'%"';
 			// print_r($ss);exit();
 			$result = mysql_query($ss) or die(mysql_error());
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -75,8 +77,8 @@
 				// $kode = (isset($_GET['subaksi']) and $_GET['subaksi']=='klasifikasi')?$row['kode']:'';
 				$rows[]= array(
 					'replid' =>$row['replid'], 
-					'nis'	 =>$row['nis'],
-					'nama'   =>$row['nama'] 
+					'siswa'	 =>$row['siswa'],
+					'sekolah'   =>$row['sekolah'] 
 				);
 			}$response=array(
 				'page'    =>$page,
@@ -193,7 +195,7 @@
 							gol = '.$_POST['golongan'] 
 							;
 
-									// print_r($s);exit();
+									print_r($s);exit();
 				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
@@ -356,8 +358,9 @@
 								if (isset($_POST['saudara'])) {
 									foreach ($_POST['saudara'] as $i => $v) {
 									$sqsaud = 'INSERT INTO '.$tb_saudara.' set calonsiswa = '.$ida.',
-																				 nama 	 ='.$v['nama'].', 
-																				 tgllahir 	 ='.$v['tgllahir'] ;
+																				 nama 	 ='.isset($v['nama']).', 
+																				 tgllahir 	 ='.isset($v['tgllahir']) ;
+						// var_dump($sqsaud);exit();
 										$esaud = mysql_query($sqsaud);
 										$stat = $esaud?true:false;
 									}
