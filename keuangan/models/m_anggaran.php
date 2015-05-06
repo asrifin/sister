@@ -217,11 +217,11 @@
 								elseif($terpakaiPerc>50) {$clr='orange';}
 								elseif($terpakaiPerc>25) {$clr='yellow';}
 								elseif($terpakaiPerc>0 OR $terpakaiPerc<25) {$clr='green';}
-								$prog='<div class="progress-bar" data-role="progress-bar" data-value="'.$terpakaiPerc.'" data-color="bg-'.$clr.'"></div>';
+								$prog='<span class="progress-bar" data-role="progress-bar" data-value="'.($terpakaiPerc==0?1:$terpakaiPerc).'" data-color="bg-'.$clr.'"></span>';
 								$out.= '<tr>
 											<td>'.$res['nama'].'</td>
 											<td align="right">Rp. '.number_format($res['totNominal']).'</td>
-											<td align="right">'.$prog.'<br>Rp. '.number_format($kuota['terpakaiBil']).'</td>
+											<td align="right">'.$prog.'Rp. '.number_format($kuota['terpakaiNum']).'</td>
 											<td >'.$res['keterangan'].'</td>
 											'.$btn.'
 										</tr>';

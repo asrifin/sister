@@ -61,7 +61,7 @@ var contentFR ='';
                         // anggaran (optional:income & outcome)
                         +'<label style="display:none;" class="detilanggaranDV">Anggaran </label>'
                         +'<div style="display:none;" class="input-control text detilanggaranDV">'
-                            +'<input type="text" name="detilanggaranV" id="detilanggaranV">'
+                            +'<input type="hidden" name="detilanggaranV" id="detilanggaranV">'
                             +'<input type="hidden" name="detilanggaranH" id="detilanggaranH">'
                             +'<input placeholder="pada anggaran" name="detilanggaranTB" id="detilanggaranTB">'
                             +'<button class="btn-clear"></button>'
@@ -232,10 +232,9 @@ var contentFR ='';
     // subaksi : ju , in, out
     function transSV(e){
         var url  = dir;
-        var data = $(e).serialize()+'&aksi=simpan&idDelTR='+idDelTR;
+        var data = $(e).serialize()+'&aksi=simpan&subaksi='+$('#subaksiH').val();
+        if($('#subaksiH').val()=='ju') data+=+'&idDelTR='+idDelTR;
         if(validForm().status!=true){ // tidak valid
-            console.log('no');
-            console.log(validForm);
             var m = '';
             $.each(validForm().msg,function(id,item){
                 m+='<span class="fg-white"><i class="icon-warning"></i> '+item+'</span><br />';
@@ -479,48 +478,45 @@ var contentFR ='';
         }else{ // pemasukkan / pengeluaran
             if(typeof n=='undefined'){ isLoop=false; n=iTR;}
 
-            if(typ='in_come'){ //income
-                for(var ke=n; ke>=iTR; ke--){
-                    var idjurnal = (typeof arr!='undefined')?arr[ke-1].idjurnal:null;
-                    var idrek    = (typeof arr!='undefined')?arr[ke-1].idrek:'';
-                    var rek      = (typeof arr!='undefined')?arr[ke-1].rek:'';
-                    var nominal  = (typeof arr!='undefined')?arr[ke-1].nominal:'Rp. 0';
-                    var uraian   = (typeof arr!='undefined')?arr[ke-1].uraian:'';
-                    
-                    var mode     = (typeof arr!='undefined')?'edit':'add'; 
-                    
-                    tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
-                            // rek
-                            +'<td align="center">'
-                                +'<input type="hidden" name="in_come_mode'+ke+'H" value="'+mode+'" />'
-                                +'<input type="hidden" value="'+idjurnal+'" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H">'
-                                +'<input type="hidden" class="'+typ+'_idTR" value="'+ke+'" name="'+typ+'_idTR[]" id="'+typ+'_idTR_'+ke+'">'
-                                +'<span class="input-control size5 text">'
-                                    +'<input value="'+idrek+'" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
-                                    +'<input value="'+rek+'" required  onfocus="autoSuggest(\'debit\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\'debit\',\''+typ+'_rek'+ke+'\',\'rek\',\'\')" id="'+typ+'_rek'+ke+'TB" name="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
-                                    +'<button class="btn-clear"></button>'
-                                +'</span>'
-                            +'</td>'
-                            // nominal
-                            +'<td>'
-                                +'<div class="input-control text">'
-                                    +'<input onkeyup="rekTotNominal();" class="text-right rekNominal" value="'+nominal+'" required name="'+typ+'_nominal'+ke+'TB"  id="'+typ+'_nominal'+ke+'TB" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);"  placeholder="nominal"/>'
-                                +'</div>'
-                            +'</td>'
-                            // uraian
-                            +'<td align="center">'
-                                +'<div class="input-control text">'
-                                    +'<input required value="'+uraian+'" placeholder="uraian" name="'+typ+'_uraian'+ke+'TB" id="'+typ+'_uraian'+ke+'TB">'
-                                +'</div>'
-                            +'</td>'
-                            // hapus
-                            +'<td align="center">'
-                                +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+');':'delRekTR('+ke+','+idjurnal+')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
-                            +'</td>'
-                        +'</tr>';
-                }
-            }else{ //outcome
-
+            jrek=typ=='out_come'?'kredit':'debit'; // jenis rekening (income:debit, outcome:kredit)
+            for(var ke=n; ke>=iTR; ke--){
+                var idjurnal = (typeof arr!='undefined')?arr[ke-1].idjurnal:null;
+                var idrek    = (typeof arr!='undefined')?arr[ke-1].idrek:'';
+                var rek      = (typeof arr!='undefined')?arr[ke-1].rek:'';
+                var nominal  = (typeof arr!='undefined')?arr[ke-1].nominal:'Rp. 0';
+                var uraian   = (typeof arr!='undefined')?arr[ke-1].uraian:'';
+                
+                var mode     = (typeof arr!='undefined')?'edit':'add'; 
+                
+                tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
+                        // rek
+                        +'<td align="center">'
+                            +'<input type="hidden" name="'+typ+'mode'+ke+'H" value="'+mode+'" />'
+                            +'<input type="hidden" value="'+idjurnal+'" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H">'
+                            +'<input type="hidden" class="'+typ+'_idTR" value="'+ke+'" name="'+typ+'_idTR[]" id="'+typ+'_idTR_'+ke+'">'
+                            +'<span class="input-control size5 text">'
+                                +'<input value="'+idrek+'" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
+                                +'<input value="'+rek+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\')" id="'+typ+'_rek'+ke+'TB" name="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
+                                +'<button class="btn-clear"></button>'
+                            +'</span>'
+                        +'</td>'
+                        // nominal
+                        +'<td>'
+                            +'<div class="input-control text">'
+                                +'<input onkeyup="rekTotNominal();" class="text-right rekNominal" value="'+nominal+'" required name="'+typ+'_nominal'+ke+'TB"  id="'+typ+'_nominal'+ke+'TB" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);"  placeholder="nominal"/>'
+                            +'</div>'
+                        +'</td>'
+                        // uraian
+                        +'<td align="center">'
+                            +'<div class="input-control text">'
+                                +'<input required value="'+uraian+'" placeholder="uraian" name="'+typ+'_uraian'+ke+'TB" id="'+typ+'_uraian'+ke+'TB">'
+                            +'</div>'
+                        +'</td>'
+                        // hapus
+                        +'<td align="center">'
+                            +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+');':'delRekTR('+ke+','+idjurnal+')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
+                        +'</td>'
+                    +'</tr>';
             }
         }
     
@@ -556,12 +552,17 @@ var contentFR ='';
             },{   
                     'align':'left',
                     'columnName':'kategorianggaran',
-                    'width':'30',
+                    'width':'20',
                     'label':'Kategori'
             },{   
                     'align':'right',
-                    'columnName':'kuotaBil',
-                    'width':'30',
+                    'columnName':'sisaBilCur',
+                    'width':'20',
+                    'label':'Sisa'
+            },{   
+                    'align':'right',
+                    'columnName':'kuotaBilCur',
+                    'width':'20',
                     'label':'Nominal'
             }];
         }
@@ -575,8 +576,8 @@ var contentFR ='';
                 if (subaksi=='rek') { // rekening 
                     $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
                 }else{ // anggaran 
-                    $('#'+el+'TB').val(ui.item.nama+' ( kuota :'+ui.item.kuotaBil+'  sisa : '+ui.item.sisaBil+' )');
-                    $('#detilanggaranV').val(getCurr(ui.item.sisaBil));
+                    $('#'+el+'TB').val(ui.item.nama+' [ sisa :'+ui.item.sisaBilCur+'  kuota : '+ui.item.kuotaBilCur+' ]');
+                    $('#detilanggaranV').val(getCurr(ui.item.sisaBilNum));
                 }
 
                 // validasi input (tidak sesuai data dr server)
@@ -587,11 +588,15 @@ var contentFR ='';
                             if($('#'+el+'H').val()!=''){
                                 $('#'+el+'H').val('');
                                 $('#'+el+'TB').val('');
+                                if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
                             }
                         }
                     });
                     $('#'+el+'TB').on('blur,change',function(){
-                        if($('#'+el+'H').val()=='') $('#'+el+'TB').val('');
+                        if($('#'+el+'H').val()=='') {
+                            $('#'+el+'TB').val(''); // :: all 
+                            if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
+                        }
                     });
                 return false;
             }
@@ -633,7 +638,7 @@ var contentFR ='';
     }
 
 // load form (all)
-    function loadFR(typ,id){
+    function loadFR(typx,id){
         isClosedFR();
         $.Dialog({
             shadow: true,
@@ -645,8 +650,8 @@ var contentFR ='';
                 $.Dialog.content(contentFR);
                 var tr=tr3='';
                 setTimeout(function(){
-                    $('#detjenistransH').val(typ);
-                    if(typ=='ju'){ //ju
+                    $('#detjenistransH').val(typx);
+                    if(typx=='ju'){ //ju
                         tr+='<tr style="color:white;"class="info">'
                                 +'<th class="text-center">Jenis</th>'
                                 +'<th class="text-center">Rek Perkiraan</th>'
@@ -656,13 +661,13 @@ var contentFR ='';
                         $('.uraianDV').removeAttr('style');
                         $('#uraianTB').attr('required',true);
                         if(id==''){ // add 
-                            kodeTrans(typ);
-                            addRekTR(typ,2);
+                            kodeTrans(typx);
+                            addRekTR(typx,2);
                             titl ='Tambah  Jurnal Umum ';
                         }else { //edit
                             titl ='Ubah Jurnal Umum';
                             var url  = dir;
-                            var data = 'aksi=ambiledit&subaksi='+typ+'&replid='+id;
+                            var data = 'aksi=ambiledit&subaksi='+typx+'&replid='+id;
                             ajax(url,data).done(function (dt) {
                                 $('#idformH').val(id);
                                 $('#nomerTB').html(dt.transaksiArr.nomer);
@@ -671,16 +676,15 @@ var contentFR ='';
                                 $('#uraianTB').val(dt.transaksiArr.uraian);
                                 var jurnal = dt.transaksiArr.jurnalArr;
                                 // console.log(jurnal);
-                                addRekTR(typ,jurnal.length,jurnal);
+                                addRekTR(typx,jurnal.length,jurnal);
                             });
                         }
                     }else{ // in_come / out_come
                         $('.uraianDV').attr('style','display:none;');
-                        // $('.detilanggaranDV').attr('style','display:visible;');
                         $('.rekkasDV').removeAttr('style');
-                        // $('#detilanggaranTB').attr('required',true);
                         $('#rekkasTB').attr('required',true);
-                        $('#reklawanDV').html(' Pemasukkan');
+                        autoSuggest('debit','rekkas','rek','');
+                        
                         tr+='<tr style="color:white;"class="info">'
                                 +'<th class="text-center">Rekening</th>'
                                 +'<th class="text-center">Nominal</th>'
@@ -692,36 +696,58 @@ var contentFR ='';
                                 +'<th id="totNominalTD" class="text-right">Rp. 0</th>'
                                 +'<th colspan="2"></th>'
                             +'</tr>';
-                        if(typ=='in_come'){ //income
-                            autoSuggest('debit','rekkas','rek','');
-                            autoSuggest('','detilanggaran','detilanggaran','');
+                        if(typx=='in_come'){ //income
+                            $('#reklawanDV').html(' Pemasukkan');
                             if(id=='') { // add
-                                kodeTrans(typ);
-                                addRekTR(typ,1);
+                                kodeTrans(typx);
+                                addRekTR(typx,1);
                                 titl='Tambah Transaksi Pemasukkan';
                             }else{ //edit
                                 titl ='Ubah Transaksi Pemasukkan';
                                 var url  = dir;
-                                var data = 'aksi=ambiledit&subaksi='+typ+'&replid='+id;
+                                var data = 'aksi=ambiledit&subaksi='+typx+'&replid='+id;
                                 ajax(url,data).done(function (dt) {
                                     $('#idformH').val(id);
                                     $('#nomerTB').html(dt.transaksiArr.nomer);
                                     $('#nobuktiTB').val(dt.transaksiArr.nobukti);
                                     $('#tanggalTB').val(dt.transaksiArr.tanggal);
                                     var income = dt.transaksiArr.incomeArr;
-                                    addRekTR(typ,income.length,income);
+                                    addRekTR(typx,income.length,income);
                                 });
                             }
-                        }else{ // outcome 
+                        }else if(typx=='out_come'){ // outcome 
+                            console.log('masuk '+typx);
+                            $('.detilanggaranDV').attr('style','display:visible;');
+                            $('#detilanggaranTB').attr('required',true);
+                            $('#reklawanDV').html(' Pengeluaran');
 
+                            if(id=='') { // add
+                                autoSuggest('','detilanggaran','detilanggaran','');
+                                kodeTrans(typx);
+                                addRekTR(typx,1);
+                                console.log('mode add , typxe : '+typx);
+                                titl='Tambah Transaksi Pengeluaran';
+                            }else{ //edit
+                                titl ='Ubah Transaksi Pengeluaran';
+                                var url  = dir;
+                                var data = 'aksi=ambiledit&subaksi='+typx+'&replid='+id;
+                                ajax(url,data).done(function (dt) {
+                                    $('#idformH').val(id);
+                                    $('#nomerTB').html(dt.transaksiArr.nomer);
+                                    $('#nobuktiTB').val(dt.transaksiArr.nobukti);
+                                    $('#tanggalTB').val(dt.transaksiArr.tanggal);
+                                    var income = dt.transaksiArr.incomeArr;
+                                    addRekTR(typx,income.length,income);
+                                });
+                            }
                         }
                     }
                     $('#rekTBL1').html(tr);
                     $('#rekTBL3').html(tr3);
-                    $('#subaksiH').val(typ);
+                    $('#subaksiH').val(typx);
 
                     // $('#totNominalTD').html('Rp. '+totNominal);
-                    $('#addTRBC').attr('onclick','addRekTR(\''+typ+'\');');
+                    $('#addTRBC').attr('onclick','addRekTR(\''+typx+'\');');
                     // addRekTR(typ,2);
                     $.Dialog.title('<i class="fg-white icon-'+(id!=''?'pencil':'plus-2')+'"></i> '+titl); 
                 },200);
@@ -779,33 +805,21 @@ var contentFR ='';
             if (out.msg.length==0) out.status=true;
             else out.status=false;
         }else{ // transaksi (in/out)
-            if($('#subaksiH').val() == 'in_come') { // pemasukkan
-                // var totNominal = 0;
-                // //looping
-                // $('.'+typ+'_idTR').each(function () {
-                //     var nominal = getCurr($('#'+typ+'_nominal' + $(this).val() + 'TB').val());
-                //     totNominal += nominal;
-                // });
+            if(getCurr($('#totNominalTD').html())==0) out.msg.push('nominal tidak boleh Rp. 0');
 
-                // // tidak boleh 0
-                // if(totNominal==0){
-                //     out.msg.push('nominal tidak boleh Rp. 0');
-                // }
-                // // tidakboleh melebihi anggaran
-                // if (totNominal >= $('#detilanggaranV').val()) { 
-                //   selisih = 'Rp. '+Math.abs(totNominal >= $('#detilanggaranV').val()).setCurr();
-                //   out.msg.push('pengeluaran melebihi ' + selisih +' dari sisa anggaran ');
-                // }
-                
-                // // cek status' valid
-                // if (out.msg.length==0) 
+            if($('#subaksiH').val() == 'in_come') { // income
                 out.status=true;
-                // else out.status=false;
-            }else{
-
+            }else{ // outcome
+                var tot=getCurr($('#totNominalTD').html());
+                var sisa=$('#detilanggaranV').val();
+                if(tot>sisa) out.msg.push('melebihi sisa anggaran');
+                console.log('sisa'+sisa);
+                console.log('tot'+tot);
+                
+                if (out.msg.length==0) out.status=true;
+                else out.status=false;
             }
-        }
-        return out;
+        }return out;
     }
 
     function jenisTrans(){

@@ -163,18 +163,22 @@
 	/*pembayaran*/
 	function getKuotaAnggaran($anggaran){
 		$s='SELECT
-				sum(n.nominal)kuotaBil,
-				ifnull(sum(t.nominal),0)terpakaiBil,
-				(ifnull(sum(n.nominal),0)-ifnull(sum(t.nominal),0))sisaBil,
-				round(ifnull(sum(t.nominal),0)/ifnull(sum(n.nominal),0)*100,0)terpakaiPerc
+				SUM(n.nominal)kuotaNum,
+				t1.terpakaiNum,
+				(SUM(n.nominal)-t1.terpakaiNum)sisaNum,
+				round(((t1.terpakaiNum)/SUM(n.nominal)*100))terpakaiPerc
 			FROM
 				keu_detilanggaran d
 				LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
-				LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
-				LEFT JOIN keu_transaksi t on t.detilanggaran = d.replid
-			WHERE d.replid= '.$anggaran;
+				LEFT JOIN (
+					SELECT t.detilanggaran, SUM(t.nominal) terpakaiNum 
+					FROM keu_transaksi t
+					GROUP BY t.detilanggaran
+				)t1 on t1.detilanggaran = d.replid
+			WHERE d.replid='.$anggaran;
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
+		// var_dump($s);
 		return $r;
 	}
 	function getPembayaran($siswa,$modul){
@@ -273,7 +277,6 @@
 				p.siswa = '.$siswa.'
 			GROUP BY
 				p.siswa';
-			// var_dump($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		$rr = $r['terbayar']!=null?$r['terbayar']:0;
@@ -302,7 +305,6 @@
 		return $r[$typ];
 	}function getDiscTunai($typ,$siswa){
 		$s     = 'SELECT nilai FROM psb_disctunai WHERE replid ='.getSiswaBy('disctunai',$siswa);
-		// var_dump($s);exit();
 		$e     = mysql_query($s);
 		$r     = mysql_fetch_assoc($e);
 		$biaya = getBiaya($typ,$siswa);
@@ -348,9 +350,9 @@
 		return $r['bukti'];
 	}function getDetJenisTrans($f,$w,$k){
 		$s='SELECT '.$f.' FROM keu_detjenistrans WHERE '.$w.'="'.$k.'"';
-		// var_dump($s);exit();
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
+		// var_dump($s);exit();
 		return $r[$f];
 	}function getKatModulPemb($nama){
 		$s='SELECT * FROM keu_katmodulpembayaran WHERE nama="'.($nama=='joiningf' || $nama=='joining fee'?'joining fee':$nama).'"';
@@ -358,6 +360,25 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['detjenistrans'];
+	}
+	function getDetJenisTrans2($id){
+		$s  = '	SELECT 
+					d.nama jenis,
+					CASE j.kode
+						when "ju" then "blue" 
+						when "in" then "green"
+						else "red" 
+					end as warna
+				FROM keu_transaksi t
+					left  JOIN keu_detjenistrans d on d.replid = t.detjenistrans
+					left JOIN keu_jenistrans j on j.replid = d.jenistrans 
+				WHERE t.replid='.$id;
+		$e     = mysql_query($s);
+		$r     = mysql_fetch_assoc($e);
+		$warna =$r['warna'];
+		$jenis =$r['jenis'];
+		$ret   ='<span style="font-weight:bold;" class="fg-'.$warna.'">'.$jenis.'</span>';
+		return $ret;
 	}function getNoTrans2($typ){
 		$s = 'SELECT LPAD(max(replid),4,0)replid from keu_transaksi';
 		$e = mysql_query($s);
