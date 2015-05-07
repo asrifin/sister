@@ -319,7 +319,7 @@
 
 					//Buku Besar
 					case 'bb':
-						$bb_detilrekening = isset($_POST['bb_detilrekeningS'])?$_POST['bb_detilrekeningS'):'';
+						$bb_detilrekening = isset($_POST['bb_detilrekeningS'])?$_POST['bb_detilrekeningS']:'';
 						// $ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
 						$sql = 'SELECT * 
 								from '.$tb.' 
