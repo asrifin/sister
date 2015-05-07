@@ -261,51 +261,40 @@
 					
 					//Neraca Saldo
 					case 'ns':
-						$kode     = isset($_POST['ns_kodeS'])?filter(trim($_POST['ns_kodeS'])):'';
-						$nama	  = isset($_POST['ns_namaS'])?filter(trim($_POST['ns_namaS'])):'';
-						$sql       = 'SELECT 
-											kr.kode kode,
-									        kr.nama nama,
-									        kj.debet debet,
-									        kj.kredit kredit
-									    FROM
-											keu_transaksi kt 
-									        LEFT JOIN keu_jurnal kj ON kt.replid = kj.transaksi 
-									        LEFT JOIN keu_rekening kr ON kr.replid = kj.rek
-									    WHERE
-									    	kr.kode like "%'.$kode.'%" and
-											kr.nama like "%'.$nama.'%"
-										GROUP BY
-											kr.kode
-									    ORDER BY
-									        kr.kategorirek,
-											kr.kode ';
+						$kode = isset($_POST['ns_kodeS'])?$_POST['ns_kodeS']:'';
+						$nama = isset($_POST['ns_namaS'])?$_POST['ns_namaS']:'';
+				        // kj.debet debet,
+				        // kj.kredit kredit,
+						$sql  = 'SELECT 
+									kr.kode kode,
+							        kr.nama nama,
+						        	sum(kj.nominal)nominal
+							    FROM
+									keu_transaksi kt 
+							        LEFT JOIN keu_jurnal kj ON kt.replid = kj.transaksi 
+							        LEFT JOIN keu_detilrekening kr ON kr.replid = kj.rek
+							    WHERE
+							    	kr.kode like "%'.$kode.'%" and
+									kr.nama like "%'.$nama.'%"
+								GROUP BY
+									kr.kode
+							    ORDER BY
+							        kr.kategorirekening,
+									kr.kode ';
 						// print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ //nilai awal halaman
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-
-						$recpage = 5;//jumlah data per halaman
 						$aksi    ='tampil';
 						$subaksi ='ns';
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';$totaset=0;
+						$result  =mysql_query($sql);
+						$jum     = mysql_num_rows($result);
+						$out     ='';$totaset=0;
 						if($jum!=0){	
-							$nox = $starting+1;
 							while($res = mysql_fetch_array($result)){	
 								$out.= '<tr>
 											<td>'.$res['kode'].'</td>
 											<td>'.$res['nama'].'</td>
-											<td>'.$res['debet'].'</td>
-											<td>'.$res['kredit'].'</td>
+											<td class="text-right">Rp. '.number_format($res['nominal']).'</td>
+											<td class="text-right">Rp. '.number_format($res['nominal']).'</td>
 										</tr>';
-								$nox++;
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
@@ -313,17 +302,19 @@
 									... data tidak ditemukan...</span></td></tr>';
 						}
 						#link paging
-						$out.= '<tr class="info"><td colspan="4">'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan="4">'.$obj->total.'</td></tr>';
+						$out.= '<tr class="info"><td colspan="2" class="text-right">Jumlah :</td>
+							<td class="text-right"><b>Rp. '.number_format(9000).'</b></td>
+							<td class="text-right"><b>Rp. '.number_format(9000).'</b></td>
+						</tr>';
+						// $out.='<tr class="info"><td colspan="4">'.$obj->total.'</td></tr>';
 					break;
 
 					//Buku Besar
 					case 'bb':
 						$bb_detilrekening = isset($_POST['bb_detilrekeningS'])?$_POST['bb_detilrekeningS']:'';
-						// $ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
 						$sql = 'SELECT * 
-								from '.$tb.' 
-								WHERE uraian like "%'.$ju_uraian.'%"';
+								FROM  '.$tb.' 
+								WHERE  like "%'.$ju_uraian.'%"';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
