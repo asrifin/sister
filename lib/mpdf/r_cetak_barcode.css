@@ -1,4 +1,4 @@
-body{
+/*body{
   font-weight: bold;
   font-family:'Arial, Helvetica, sans-serif';
   color: rgb(84,84,84);
@@ -10,7 +10,6 @@ table.isi {
 table.isi2 {
   font-size:12px;
   background-color:red;
-  /*color:red;*/
 }
 table tr{
   background-color:white;
@@ -18,31 +17,31 @@ table tr{
 table tr.head{
   background-color:rgb(190,190,190);
   font-weight: bold;
-  /*font-color:#000000;*/
 }
 .tabel1{ 
   font:Arial, Helvetica, sans-serif;
   font-size:20px;
 }
-
+*/
 /*barcode*/
-div.b128{
+/*div.b128{
     border-left: 1px black solid;
   height: 30px;
-} 
+} */
 /*Tabel*/
-/*table {
+table {
         width: 80%;
-border-collapse: separate;
-    border-spacing: 10px;
+border-collapse: collapse;
+  font-size:12px;
+    /*border-spacing: 10px;*/
         }       
 tr {
 
-}*/
+}
 td {
-    width: 32mm;
-    height: 18mm;
-    margin: 0 1mm;
+    width: 24mm;
+    height: 12mm;
+    /*margin: 0 1mm;*/
     text-align: center;
     vertical-align:middle; 
     font-size:xx-small;

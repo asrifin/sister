@@ -1,22 +1,3 @@
-<style type="text/css">
-.table {
-        width: 80%;
-border-collapse: separate;
-    border-spacing: 10px;
-          /*border-collapse: collapse;*/
-        }       
-tr {
-
-}
-td {
-    width: 24mm;
-    height: 12mm;
-    margin: 0 1mm;
-    text-align: center;
-    vertical-align:middle; 
-    font-size:xx-small;
-}
-</style>
 <?php
   session_start();
   require_once '../../lib/dbcon.php';
@@ -139,7 +120,7 @@ td {
                   // var_dump($e);exit();
                   $e = mysql_query($s) or die(mysql_error());
                   $n = mysql_num_rows($e);
-                  // $out.=' <table border="1" width="50%">';
+                  // $out.=' <table borde="1" width="50%">';
                   $out.=' <table border="1">';
                   // $nox = 1;
                   if($n==0){
@@ -157,7 +138,7 @@ td {
 
                       // $out.="<td align='center' cellspacing='5' style='padding: 20px' width='20%'>
                       $out.="<td align='center' cellspacing='5'>
-                          <barcode code='$x' type='C128A' size='1' class='barcode' />";
+                          <barcode code='$x' type='C128A' class='barcode' />";
                       $out.="<br />".$r['kode']."
                         </td>";
 
@@ -177,11 +158,14 @@ td {
           $mpdf=new mPDF('c', 'A4', '', '', 4, 4, 10, 10, 0, 0);   
           // $mpdf=new mPDF('c','A4','');   
           $mpdf->SetDisplayMode('fullpage');   
-          $stylesheet = file_get_contents('../../lib/mpdf/r_cetak.css');
+          $stylesheet = file_get_contents('../../lib/mpdf/r_cetak_barcode.css');
 // var_dump($stylesheet);exit();
+          $mpdf->SetDisplayMode('fullpage');
+          $mpdf->list_indent_first_level = 0;
           $mpdf->WriteHTML($stylesheet,1);  // The parameter 1 tells that this is css/style only and no body/html/text
           $mpdf->writeBarcode($out);
           $mpdf->WriteHTML($out);
+          $mpdf->keep_table_proportions = true;
           $mpdf->Output();
     }
 }
