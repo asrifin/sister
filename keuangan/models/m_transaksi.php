@@ -316,15 +316,14 @@
 						$out.= '<tr class="info"><td colspan="4">'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan="4">'.$obj->total.'</td></tr>';
 					break;
+
 					//Buku Besar
 					case 'bb':
-						$ju_no     = isset($_POST['ju_noS'])?filter(trim($_POST['ju_noS'])):'';
-						$ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
-						$sql       = 'SELECT * 
-									from '.$tb.' 
-									WHERE 
-										(nomer like "%'.$ju_no.'%" OR nomer like "%'.$ju_no.'%" ) AND
-										uraian like "%'.$ju_uraian.'%"';
+						$bb_detilrekening = isset($_POST['bb_detilrekeningS'])?$_POST['bb_detilrekeningS'):'';
+						// $ju_uraian = isset($_POST['ju_uraianS'])?filter(trim($_POST['ju_uraianS'])):'';
+						$sql = 'SELECT * 
+								from '.$tb.' 
+								WHERE uraian like "%'.$ju_uraian.'%"';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -914,6 +913,44 @@
 						)));
 			break;
 			// generate barcode -----------------------------------------------------------
+						
+			// cmbbuku besar -----------------------------------------------------------------
+			case 'cmbbukubesar':
+				$w='';
+				if(isset($_POST[$mnu])){
+					$w='where '.$mnu.'='.$_POST[$mnu];
+				}elseif (isset($_POST['tahunajaran'])) {
+					$w='where tahunajaran='.$_POST['tahunajaran'];
+				}
+				
+				$s	= ' SELECT *
+						from keu_detilrekening
+						'.$w.'		
+						ORDER  BY kode asc';
+				// print_r($s);exit();
+				$e  = mysql_query($s);
+				$n  = mysql_num_rows($e);
+				$ar = $dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error');
+				}else{
+					if($n==0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}$ar = array('status'=>'sukses','bukubesar'=>$dt);
+					}
+				}
+				$out=json_encode($ar);
+			break;
+			// cmbpelajaran -----------------------------------------------------------------
+
 			}
 	}echo $out;
 

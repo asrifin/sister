@@ -118,11 +118,11 @@
                 </div>
                 <!-- end of 1st content -->
                 <div class="frame" id="bbTAB">
-                    Tampilkan Akun : 
-    <!--                 <div class="input-control select span3">
-                        <select id="bbS"></select>
+                    <span class="fg-white">Tampilkan Akun :</span> 
+                    <div class="input-control select span3">
+                        <select class="bb_cari" onchange="viewTB('bb');" id="bb_detilrekeningS" name="bb_detilrekeningS"></select>
                     </div>
-     -->                <table class="table hovered bordered striped">
+                    <table class="table hovered bordered striped">
                         <thead>
                             <tr style="color:white;"class="info">
                                 <th class="text-center">Tanggal </th>
@@ -131,13 +131,6 @@
                                 <th class="text-center">Kode Rekening</th>
                                 <th class="text-center">Debet</th>
                                 <th class="text-center">Kredit</th>
-                            </tr>
-                            <tr style="display:none;" id="bbTR" class="info">
-                                <th class="text-left"></th>
-                                <th class="text-left"><input placeholder="No Jurnal" id="bb_jurnalS" class="bb_cari"></th>
-                                <th class="text-left"></th>
-                                <th class="text-left"></th>
-                                <th class="text-left"></th>
                             </tr>
                         </thead>
 

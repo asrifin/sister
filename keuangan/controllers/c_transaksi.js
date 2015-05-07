@@ -111,14 +111,9 @@ var contentFR ='';
             $('.uraianCOL').toggle();
         });
         
-        jenisTrans();
+        jenisTrans(); // load checkbox jenis transaksi
         loadAll();
-        // default tampilkan jurnal umum 
-        // viewTB('ju');
-        // viewTB('ns');
-        // viewTB('bb');
-        // viewTB('nl');
-        // viewTB('lr');
+        cmbbukubesar();
     }); 
 // end of main function ---------
 
@@ -883,3 +878,23 @@ var contentFR ='';
     Number.prototype.setCurr=function(){
         return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
     }
+
+// combo akun buku besar  ---
+    function cmbbukubesar(){
+        var url  = dir;
+        var data = 'aksi=cmbbukubesar';
+        ajax(url,data).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.bukubesar, function(id,item){
+                    out+='<option value="'+item.replid+'"> ['+item.kode+'] '+item.nama+'</option>';
+                });
+                $('#bb_detilrekeningS').html('<option value="">-SEMUA-</option>'+out);
+                viewTB('bb');
+            }
+        });
+    }
+//end of combo kelas---
+
