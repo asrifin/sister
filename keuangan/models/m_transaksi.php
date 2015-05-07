@@ -198,9 +198,9 @@
 									$j=$jTrans.'_come';
 								}
 								$btn ='<td align="center">
-											<button data-hint="ubah"  class="button" onclick="loadFR(\''.$j.'\','.$res['replid'].');">
+											<!--<button data-hint="ubah"  class="button" onclick="loadFR(\''.$j.'\','.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
-											</button>
+											</button>-->
 											<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 											</button>
