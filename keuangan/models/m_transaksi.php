@@ -311,71 +311,85 @@
 
 					//Buku Besar
 					case 'bb':
-						$bb_detilrekening = isset($_POST['bb_detilrekeningS'])?$_POST['bb_detilrekeningS']:'';
-						$sql = 'SELECT * 
-								FROM  '.$tb.' 
-								WHERE  like "%'.$ju_uraian.'%"';
-						// print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ //nilai awal halaman
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
+						$bb_detilrekening = (isset($_POST['bb_detilrekeningS']) && $_POST['bb_detilrekeningS']!='')?' WHERE kr.replid = '.$bb_detilrekening:'';
+						// var_dump($bb_detilrekening);exit();
+						$sql  = 'SELECT 
+									kr.kode kode,
+							        kr.nama nama,
+						        	sum(kj.nominal)nominal
+							    FROM
+									keu_transaksi kt 
+							        LEFT JOIN keu_jurnal kj ON kt.replid = kj.transaksi 
+							        LEFT JOIN keu_detilrekening kr ON kr.replid = kj.rek
+							    '.$bb_detilrekening.'
+								GROUP BY
+									kr.kode
+							    ORDER BY
+							        kr.kategorirekening,
+									kr.kode ';
 
-						$recpage = 5;//jumlah data per halaman
-						$aksi    ='tampil';
-						$subaksi ='ju';
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';$totaset=0;
+						$aksi   ='tampil';
+						$result = mysql_query($sql);
+						$jum    = mysql_num_rows($result);
+						$out    ='';$totaset=0;
 						if($jum!=0){	
-							$nox = $starting+1;
-							while($res = mysql_fetch_array($result)){	
-								$btn ='<td>
-											<button data-hint="ubah"  class="button" onclick="juFR('.$res['replid'].');">
-												<i class="icon-pencil on-left"></i>
-											</button>
-											<button data-hint="hapus"  class="button" onclick="grupDel('.$res['replid'].');">
-												<i class="icon-remove on-left"></i>
-										 </td>';
-								$s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
-										from keu_jurnal j,keu_rekening r 
-										where 
-											j.transaksi ='.$res['replid'].' AND 
-											j.rek=r.replid
-										ORDER BY kredit  ASC';
-								$e2 = mysql_query($s2);
-								$tb2='';
-								if(mysql_num_rows($e2)!=0){
-	   								$tb2.='<table class="bordered striped lightBlue" width="100%">';
-		   							while($r2=mysql_fetch_assoc($e2)){
-		   								$tb2.='<tr>
-		   										<td>'.$r2['nama'].'</td>
-		   										<td>'.$r2['kode'].'</td>
-		   										<td>Rp. '.number_format($r2['debet']).',-</td>
-		   										<td>Rp. '.number_format($r2['kredit']).',-</td>
-		   									</tr>';
-		   							}$tb2.='</table>';
-								}
-								$out.= '<tr>
-											<td>'.tgl_indo($res['tanggal']).'</td>
-											<td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
-											<td>'.$res['uraian'].'</td>
-											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
-											'.$btn.'
-										</tr>';
+							while($res = mysql_fetch_assoc($result)){
+								$out.='<ul class="fg-white" style="list-style:none;">';
+									$out.='<li>['.$res['kode'].'] '.$res['nama'].'</li>';
+			                    		$out.='<table class="table hovered bordered striped">
+							                        <thead>
+							                            <tr style="color:white;"class="info">
+							                                <th class="text-center">Tanggal </th>
+							                                <th class="text-center">No. Jurnal/Transaksi</th>
+							                                <th class="text-center">Uraian</th>
+							                                <th class="text-center">Kode Rekening</th>
+							                                <th class="text-center">Debet</th>
+							                                <th class="text-center">Kredit</th>
+							                            </tr>
+							                        </thead>
+							                        <tbody>';
+							                        
+							                        $out.='</tbody>
+							                        <tfoot>
+							                        </tfoot>
+							                    </table>'; 
+								$out.='</ul>';
 							}
+							// while($res = mysql_fetch_assoc($result)){	
+							// 	$s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
+							// 			from keu_jurnal j,keu_rekening r 
+							// 			where 
+							// 				j.transaksi ='.$res['replid'].' AND 
+							// 				j.rek=r.replid
+							// 			ORDER BY kredit  ASC';
+							// 	$e2 = mysql_query($s2);
+							// 	$tb2='';
+							// 	if(mysql_num_rows($e2)!=0){
+	   			// 					$tb2.='<table class="bordered striped lightBlue" width="100%">';
+		   		// 					while($r2=mysql_fetch_assoc($e2)){
+		   		// 						$tb2.='<tr>
+		   		// 								<td>'.$r2['nama'].'</td>
+		   		// 								<td>'.$r2['kode'].'</td>
+		   		// 								<td>Rp. '.number_format($r2['debet']).',-</td>
+		   		// 								<td>Rp. '.number_format($r2['kredit']).',-</td>
+		   		// 							</tr>';
+		   		// 					}$tb2.='</table>';
+							// 	}
+							// 	$out.= '<tr>
+							// 				<td>'.tgl_indo($res['tanggal']).'</td>
+							// 				<td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
+							// 				<td>'.$res['uraian'].'</td>
+							// 				<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
+							// 			</tr>';
+							// }
 						}else{ #kosong
 							$out.= '<tr align="center">
 									<td  colspan=9 ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
 						}
 						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+						// $out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
+						// $out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
 					case 'nl':
 
@@ -907,17 +921,19 @@
 						
 			// cmbbuku besar -----------------------------------------------------------------
 			case 'cmbbukubesar':
-				$w='';
-				if(isset($_POST[$mnu])){
-					$w='where '.$mnu.'='.$_POST[$mnu];
-				}elseif (isset($_POST['tahunajaran'])) {
-					$w='where tahunajaran='.$_POST['tahunajaran'];
-				}
-				
-				$s	= ' SELECT *
-						from keu_detilrekening
-						'.$w.'		
-						ORDER  BY kode asc';
+				$s  = 'SELECT 
+							kr.replid,
+							kr.kode kode,
+					        kr.nama nama
+					    FROM
+							keu_transaksi kt 
+					        LEFT JOIN keu_jurnal kj ON kt.replid = kj.transaksi 
+					        LEFT JOIN keu_detilrekening kr ON kr.replid = kj.rek
+						GROUP BY
+							kr.kode
+					    ORDER BY
+					        kr.kategorirekening,
+							kr.kode ';				
 				// print_r($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);

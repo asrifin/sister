@@ -122,23 +122,7 @@
                     <div class="input-control select span3">
                         <select class="bb_cari" onchange="viewTB('bb');" id="bb_detilrekeningS" name="bb_detilrekeningS"></select>
                     </div>
-                    <table class="table hovered bordered striped">
-                        <thead>
-                            <tr style="color:white;"class="info">
-                                <th class="text-center">Tanggal </th>
-                                <th class="text-center">No. Jurnal/Transaksi</th>
-                                <th class="text-center">Uraian</th>
-                                <th class="text-center">Kode Rekening</th>
-                                <th class="text-center">Debet</th>
-                                <th class="text-center">Kredit</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="bb_tbody">
-                        </tbody>
-                        <tfoot>
-                        </tfoot>
-                    </table> 
+                    <div id="bb_tbody"></div>
                 </div>
                 <!-- </div> -->
 
