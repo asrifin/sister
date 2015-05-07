@@ -221,7 +221,11 @@
 								$out.= '<tr>
 											<td>'.$res['nama'].'</td>
 											<td align="right">Rp. '.number_format($res['totNominal']).'</td>
-											<td align="right">'.$prog.'Rp. '.number_format($kuota['terpakaiNum']).'</td>
+											<td align="right">
+												'.$prog.'
+												<span class="place-left">'.$kuota['terpakaiPerc'].' %</span> 
+												<span class="place-right">Rp. '.number_format($kuota['terpakaiNum']).'</span>
+											</td>
 											<td >'.$res['keterangan'].'</td>
 											'.$btn.'
 										</tr>';

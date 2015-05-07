@@ -164,9 +164,9 @@
 	function getKuotaAnggaran($anggaran){
 		$s='SELECT
 				SUM(n.nominal)kuotaNum,
-				t1.terpakaiNum,
-				(SUM(n.nominal)-t1.terpakaiNum)sisaNum,
-				round(((t1.terpakaiNum)/SUM(n.nominal)*100))terpakaiPerc
+				ifnull(t1.terpakaiNum,0)terpakaiNum,
+				ifnull((SUM(n.nominal)-t1.terpakaiNum),SUM(n.nominal))sisaNum,
+				ifnull(round(((t1.terpakaiNum)/SUM(n.nominal)*100)),0)terpakaiPerc
 			FROM
 				keu_detilanggaran d
 				LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
@@ -333,11 +333,12 @@
 		$r = mysql_fetch_assoc($e);
 		// var_dump($s);exit();
 		return $r[$x];
-	}function getJenisTrans($id){
+	}function getJenisTrans($f,$id){
 		$s='SELECT * FROM keu_jenistrans WHERE replid='.$id;
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
-		return $r['nama'];
+		// var_dump($s);exit();
+		return $r[$f];
 	}function getBuktiTrans2($id){
 		$s='SELECT * FROM keu_detjenistrans WHERE kode="'.$id.'"';
 		$e=mysql_query($s);

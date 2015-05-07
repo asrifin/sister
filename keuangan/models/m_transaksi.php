@@ -213,12 +213,28 @@
 													<td>Kredit</td>
 												</tr>';
 		   							while($r2=mysql_fetch_assoc($e2)){
-		   								$jenis = getKatRekBy('jenis',getRekBy('kategorirekening',$r2['rek']));
+										$jDetTrans = getDetJenisTrans('jenistrans','replid',$res['detjenistrans']);
+										$jTrans    = getJenisTrans('kode',$jDetTrans);
+										$jRek      = getKatRekBy('jenis',getRekBy('kategorirekening',$r2['rek']));
+		   								if($jTrans=='ju'){
+		   									$debit=($jRek=='debit'?$r2['nominal']:0);
+		   									$kredit=($jRek=='kredit'?$r2['nominal']:0);
+		   								}else{
+		   									if($jTrans=='out'){
+		   										$debit=$r2['rek']==$res['rekitem']?$res['nominal']:0;
+		   										$kredit=$r2['rek']==$res['rekkas']?$res['nominal']:0;
+		   									}else{ // in
+		   										$debit=$r2['rek']==$res['rekkas']?$res['nominal']:0;
+		   										$kredit=$r2['rek']==$res['rekitem']?$res['nominal']:0;
+		   									}
+		   								}
 		   								$tb2.='<tr>
 			   										<td>'.getRekening($r2['rek']).'</td>
-			   										<td class="text-right">Rp. '.number_format($jenis=='debit'?$r2['nominal']:0).',-</td>
-			   										<td class="text-right">Rp. '.number_format($jenis=='kredit'?$r2['nominal']:0).',-</td>
+			   										<td class="text-right">Rp. '.number_format($debit).',-</td>
+			   										<td class="text-right">Rp. '.number_format($kredit).',-</td>
 			   									</tr>';
+			   										// <td class="text-right">Rp. '.number_format($debit).',-</td>
+			   										// <td class="text-right">Rp. '.number_format($kredit).',-</td>
 		   							}$tb2.='</table>';
 								}$out.= '<tr>
 											<td>'.tgl_indo($res['tanggal']).'</td>
@@ -839,98 +855,6 @@
 						}$out = json_encode(array(
 									'status'       =>$stat,
 									'transaksiArr' =>$transaksiArr
-								));					
-					break;
-
-					case 'katalog';
-						$s = '	SELECT
-									k.kode,
-									k.nama,
-									k.jenis,
-									k.photo2,
-									k.susut,
-									k.keterangan,
-									l.nama as lokasi, 
-									g.nama as grup
-								FROM 
-									'.$tb3.' k,
-									 '.$tb2.' l,
-									 '.$tb.' g
-								WHERE 
-									g.replid = k.grup and 
-									l.replid = g.lokasi and 
-									k.replid ='.$_POST['replid'];
-						$e 		= mysql_query($s);
-						$r 		= mysql_fetch_assoc($e);
-						$stat 	= ($e)?'sukses':'gagal';
-						if(!$e){
-							$stat ='gagal';
-						}else{
-							$stat ='sukses';
-							$dt   =array(
-										'kode'       =>$r['kode'],
-										'nama'       =>$r['nama'],
-										'susut'      =>$r['susut'],
-										'lokasi'     =>$r['lokasi'],
-										'grup'       =>$r['grup'],
-										'photo2'     =>$r['photo2'],
-										'jenis'      =>$r['jenis'],
-										'keterangan' =>$r['keterangan']
-									);						
-						}$out 	= json_encode(array(
-									'status' =>$stat,
-									'data'   =>$dt
-								));					
-					break;
-
-					case 'barang';
-						$s ='SELECT
-								b.tempat,
-								LPAD(b.urut,5,0) as barkode,(
-									SELECT 
-										CONCAT(ll.kode,"/",gg.kode,"/",tt.kode,"/",kk.kode,"/",LPAD(b.urut,5,0))
-									from 
-										sar_katalog kk,
-										sar_grup gg,
-										sar_tempat tt,
-										sar_lokasi ll
-									where 
-										kk.replid = b.katalog AND
-										kk.grup   = gg.replid AND
-										b.tempat  = tt.replid AND
-										tt.lokasi = ll.replid
-								)as kode,
-								b.harga,
-								b.urut,
-								b.kondisi,
-								b.sumber,
-								b.keterangan
-							FROM
-								sar_barang b, sar_kondisi k
-							WHERE
-								b.kondisi = k.replid and
-								b.replid  = '.$_POST['replid'];
-						// print_r($s);exit();
-						$e 		= mysql_query($s);
-						$r 		= mysql_fetch_assoc($e);
-						$stat 	= ($e)?'sukses':'gagal';
-						if(!$e){
-							$stat ='gagal';
-						}else{
-							$stat ='sukses';
-							$dt   =array(
-										'tempat'     =>$r['tempat'],
-										'barkode'    =>$r['barkode'],
-										'urut'       =>$r['urut'],
-										'kode'       =>$r['kode'],
-										'harga'      =>$r['harga'],
-										'kondisi'    =>$r['kondisi'],
-										'sumber'     =>$r['sumber'],
-										'keterangan' =>$r['keterangan']
-									);						
-						}$out 	= json_encode(array(
-									'status' =>$stat,
-									'data'   =>$dt
 								));					
 					break;
 				}

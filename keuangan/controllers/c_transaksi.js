@@ -568,7 +568,7 @@ var contentFR ='';
         }
         $('#'+el+'TB').combogrid({
             debug:true,
-            width:'600px',
+            width:'700px',
             colModel: col ,
             url: dir+urlx,
             select: function( event, ui ) { // event setelah data terpilih 
