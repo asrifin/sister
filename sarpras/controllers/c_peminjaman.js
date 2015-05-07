@@ -192,8 +192,6 @@ var contentAdd=contentDetail='';
             $.each(barangArr(),function(id,item){
                 data+='&barang[]='+item;  
             });
-            // console.log(JSON.stringify(xx));
-            // console.log(JSON.stringify(x()));
             $.ajax({
                 url:dir,
                 data:$('form').serialize()+data,

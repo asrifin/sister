@@ -1,26 +1,20 @@
 <style type="text/css">
-.table {
-        width: 80%;
-border-collapse: separate;
-    border-spacing: 10px;
-          /*border-collapse: collapse;*/
-        }       
-tr {
-
+.m-content {
+  float:none;
+  padding:5px;
+  height:80px;
 }
-td {
-    width: 24mm;
-    height: 12mm;
-    margin: 0 1mm;
-    text-align: center;
-    vertical-align:middle; 
-    font-size:xx-small;
+.barcode{
+  float:left;
+  width:94px;
+  height:100px;
+  margin:5px 5px 0 5px;
 }
 </style>
 <?php
   session_start();
   require_once '../../lib/dbcon.php';
-  require_once '../../lib/mpdf/mpdf.php';
+  // require_once '../../lib/mpdf/mpdf.php';
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
   require_once '../../lib/bar128.php';
@@ -70,7 +64,7 @@ td {
       //   $rr = mysql_fetch_assoc($ee);
           // var_dump($rr);exit();
         // sleep(1);
-        ob_start(); // digunakan untuk convert php ke html
+        // ob_start(); // digunakan untuk convert php ke html
             // <body OnLoad="window.print()" OnFocus="window.close()">
         $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
           <html xmlns="http://www.w3.org/1999/xhtml">
@@ -79,12 +73,58 @@ td {
               <title>SISTER::Sar - Unit Barang</title>
             </head>
 
-            <body>';
-              // <p align="center">
-              //   <b>
-              //     Unit Barang<br>
-              //   </b>
-              // </p>';
+            <body OnLoad="window.print()">
+              <p align="center">
+                <b>
+                  Unit Barang<br>
+                </b>
+              </p>';
+              // <table width="100%">
+              //   <tr >
+              //     <td>Nama Barang</td>
+              //     <td>:</td>
+              //     <td>'.$rr['katalog'].'</td>
+              //     <td rowspan="5"><img width="120" src="../../img/'.($rr['photo2']==''? 'no_image.jpg':'upload/'.$rr['photo2']).'" alt="" /></td>
+              //     <td rowspan="5"><img width="120" src="../../img/no_image.jpg"></td>
+              //   </tr>
+              //   <tr>
+              //     <td>Grup Barang</td>
+              //     <td>:</td>
+              //     <td>'.$rr['grup'].'</td>
+              //   </tr>
+              //   <tr>
+              //     <td>Lokasi</td>
+              //     <td>:</td>
+              //     <td>'.$rr['lokasi'].'</td>
+              //   </tr>
+              //   <tr>
+              //     <td>Jumlah Barang</td>
+              //     <td>:</td>
+              //     <td>'.$rr['totbarang'].' unit</td>
+              //   </tr>
+              //   <tr>
+              //     <td>Total Aset</td>
+              //     <td>:</td>
+              //     <td>Rp. '.number_format($rr['totaset']).',-</td>
+              //   </tr>
+              //   <tr>
+              //     <td>Penyusustan Per Th.</td>
+              //     <td>:</td>
+              //     <td>'.$rr['susut'].' %</td>
+              //   </tr>
+              // </table><br>';
+  
+              // <table class="isi" width="100%">
+              //     <tr class="head">
+              //       <td align="center">Kode</td>
+              //       <td align="center">Barcode</td>
+              //       <td align="center">Tempat</td>
+              //       <td align="center">Sumber</td>
+              //       <td align="center">Harga</td>
+              //       <td align="center">Kondisi</td>
+              //       <td align="center">Status</td>
+              //       <td align="center">Keterangan</td>
+              //     </tr>
             $b_katalog    = isset($_GET['b_katalogS'])?filter(trim($_GET['b_katalogS'])):'';
             $b_kode       = isset($_GET['b_kodeS'])?filter(trim($_GET['b_kodeS'])):'';
             $b_barkode    = isset($_GET['b_barkodeS'])?filter(trim($_GET['b_barkodeS'])):'';
@@ -96,8 +136,7 @@ td {
             
             $s = 'SELECT (
                         SELECT 
-                          -- CONCAT(ll.kode,"/",gg.kode,"/",tt.kode,"/",kk.kode,"/",LPAD(b.urut,5,0))
-                          CONCAT(tt.kode,"/",kk.kode,"/",LPAD(b.urut,5,0))
+                          CONCAT(ll.kode,"/",gg.kode,"/",tt.kode,"/",kk.kode,"/",LPAD(b.urut,5,0))
                         from 
                           sar_katalog kk,
                           sar_grup gg,
@@ -139,8 +178,7 @@ td {
                   // var_dump($e);exit();
                   $e = mysql_query($s) or die(mysql_error());
                   $n = mysql_num_rows($e);
-                  // $out.=' <table border="1" width="50%">';
-                  $out.=' <table border="1">';
+                  $out.=' <table border="1" width="50%">';
                   // $nox = 1;
                   if($n==0){
                     $out.=' <tr>
@@ -153,13 +191,27 @@ td {
                       if (($counter-1) % $kolom == 0){
                         $out.="<tr>";
                       } 
-                      $x =" ".$r['barkode']." ";
-
+                      // $x ='okok';
+                      $x = bar128(stripcslashes($r['barkode']));
+                      // var_dump($x);exit();
+                      $out.="<div class='barcode'>";
+                              // <font face='code128' size='10'>
+                      // $out.="<div class='barcode'>";
+                      $out.=$x;
+                      $out.="</div>";
+                            // <br />
+                            // ".$r['kode']."
                       // $out.="<td align='center' cellspacing='5' style='padding: 20px' width='20%'>
-                      $out.="<td align='center' cellspacing='5'>
-                          <barcode code='$x' type='C128A' size='1' class='barcode' />";
-                      $out.="<br />".$r['kode']."
-                        </td>";
+                      //         <font face='code128' size='10'>
+                      //         <div class='barcode'>";
+                      // // $out.="<div class='barcode'>";
+                      // $out.=$x;
+                      // $out.="</font>
+                      //       </div>
+                      //       <br />
+                      //       ".$r['kode']."
+                      //   </td>";
+                            // ".$x."</font><br />
 
                       if ($counter % $kolom == 0) {
                         $out.="</tr>";
@@ -172,17 +224,15 @@ td {
         echo $out;
   
         #generate html -> PDF ------------
-          $out2 = ob_get_contents();
-          ob_end_clean(); 
-          $mpdf=new mPDF('c', 'A4', '', '', 4, 4, 10, 10, 0, 0);   
-          // $mpdf=new mPDF('c','A4','');   
-          $mpdf->SetDisplayMode('fullpage');   
-          $stylesheet = file_get_contents('../../lib/mpdf/r_cetak.css');
-// var_dump($stylesheet);exit();
-          $mpdf->WriteHTML($stylesheet,1);  // The parameter 1 tells that this is css/style only and no body/html/text
-          $mpdf->writeBarcode($out);
-          $mpdf->WriteHTML($out);
-          $mpdf->Output();
+          // $out2 = ob_get_contents();
+//           ob_end_clean(); 
+//           $mpdf=new mPDF('c','A4','');   
+//           $mpdf->SetDisplayMode('fullpage');   
+//           $stylesheet = file_get_contents('../../lib/mpdf/r_cetak.css');
+// // var_dump($stylesheet);exit();
+//           $mpdf->WriteHTML($stylesheet,1);  // The parameter 1 tells that this is css/style only and no body/html/text
+//           $mpdf->WriteHTML($out);
+//           $mpdf->Output();
     }
 }
   // ---------------------- //
