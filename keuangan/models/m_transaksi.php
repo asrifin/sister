@@ -190,14 +190,21 @@
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_array($result)){	
+								$jDetTrans = getDetJenisTrans('jenistrans','replid',$res['detjenistrans']);
+								$jTrans    = getJenisTrans('kode',$jDetTrans);
+								if($jTrans=='ju'){
+									$j='ju';
+								}else{
+									$j=$jTrans.'_come';
+								}
 								$btn ='<td align="center">
-											<button data-hint="ubah"  class="button" onclick="loadFR(\'ju\','.$res['replid'].');">
+											<button data-hint="ubah"  class="button" onclick="loadFR(\''.$j.'\','.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
 											<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 											</button>
-										 </td>';
+										</td>';
 								$s2 = ' SELECT replid,rek,nominal
 										FROM keu_jurnal 
 										WHERE 
@@ -233,8 +240,6 @@
 			   										<td class="text-right">Rp. '.number_format($debit).',-</td>
 			   										<td class="text-right">Rp. '.number_format($kredit).',-</td>
 			   									</tr>';
-			   										// <td class="text-right">Rp. '.number_format($debit).',-</td>
-			   										// <td class="text-right">Rp. '.number_format($kredit).',-</td>
 		   							}$tb2.='</table>';
 								}$out.= '<tr>
 											<td>'.tgl_indo($res['tanggal']).'</td>

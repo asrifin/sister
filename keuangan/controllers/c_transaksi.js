@@ -112,14 +112,23 @@ var contentFR ='';
         });
         
         jenisTrans();
+        loadAll();
         // default tampilkan jurnal umum 
+        // viewTB('ju');
+        // viewTB('ns');
+        // viewTB('bb');
+        // viewTB('nl');
+        // viewTB('lr');
+    }); 
+// end of main function ---------
+
+     function loadAll(){
         viewTB('ju');
         viewTB('ns');
         viewTB('bb');
         viewTB('nl');
         viewTB('lr');
-    }); 
-// end of main function ---------
+    }
 
 //paging ---
     function pagination(page,aksix,subaksi){ 

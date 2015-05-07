@@ -47,6 +47,7 @@
         </div> 
         <a href="#" onclick="viewTB('ju');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
         <a  href="#" onclick="viewTB('ju');" id="bulan_iniBC" name="bulan_iniBC" class="button bg-gray fg-white"><i class="icon-clock"></i> Bulan ini</a>
+        <a data-hint="refresh"  href="#" onclick="loadAll();" id="refreshBC" name="refreshBC" class="button bg-blue fg-white"><i class="icon-cycle"></i> </a>
     </form>
 
     <div class="divider">&nbsp;</div>
