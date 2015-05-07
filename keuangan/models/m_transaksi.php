@@ -311,9 +311,10 @@
 
 					//Buku Besar
 					case 'bb':
-						$bb_detilrekening = (isset($_POST['bb_detilrekeningS']) && $_POST['bb_detilrekeningS']!='')?' WHERE kr.replid = '.$bb_detilrekening:'';
+						$bb_detilrekening = (isset($_POST['bb_detilrekeningS']) AND $_POST['bb_detilrekeningS']!='')?' WHERE kr.replid = '.$_POST['bb_detilrekeningS']:'';
 						// var_dump($bb_detilrekening);exit();
-						$sql  = 'SELECT 
+						$sql  = 'SELECT
+									kr.replid, 
 									kr.kode kode,
 							        kr.nama nama,
 						        	sum(kj.nominal)nominal
@@ -340,15 +341,36 @@
 							                        <thead>
 							                            <tr style="color:white;"class="info">
 							                                <th class="text-center">Tanggal </th>
-							                                <th class="text-center">No. Jurnal/Transaksi</th>
+							                                <th class="text-center">No. Transaksi</th>
 							                                <th class="text-center">Uraian</th>
-							                                <th class="text-center">Kode Rekening</th>
 							                                <th class="text-center">Debet</th>
 							                                <th class="text-center">Kredit</th>
 							                            </tr>
 							                        </thead>
-							                        <tbody>';
-							                        
+							                        <tbody class="fg-black">';
+							                        $s2='SELECT 
+															t.tanggal,
+															t.nomer,
+															t.uraian,
+													        d.nama
+													    FROM
+															keu_transaksi t 
+													        LEFT JOIN keu_jurnal j ON t.replid = j.transaksi 
+													        LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+													    WHERE d.replid='.$res['replid'].'
+													    ORDER BY
+													        d.kategorirekening,
+															d.kode ';
+															// var_dump($s2);exit();
+													$e2=mysql_query($s2);
+													while ($r2=mysql_fetch_assoc($e2)) {
+														$out.='<tr >
+															<td>'.tgl_indo5($r2['tanggal']).'</td>
+															<td>'.$r2['nomer'].'</td>
+															<td>'.$r2['uraian'].'</td>
+															<td>'.$r2['nama'].'</td>
+														</tr>';
+													}
 							                        $out.='</tbody>
 							                        <tfoot>
 							                        </tfoot>
