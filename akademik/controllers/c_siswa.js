@@ -219,14 +219,14 @@ var contentFR ='';
                 if(dt.status!='sukses'){
                     out+='<option value="">'+dt.status+'</option>';
                 }else{
-                    if(dt.nama.length==0)
+                    if(dt.subtingkat.length==0)
                         out+='<option value="">kosong</option>';
                     else{
-                        $.each(dt.nama, function(id,item){
+                        $.each(dt.subtingkat, function(id,item){
                             out+='<option value="'+item.replid+'">Kelas '+item.subtingkat+'</option>';
                         });
                     }$('#subtingkatS').html(out);
-                }cmbkelas(dt.nama[0].replid);
+                }cmbkelas(dt.subtingkat[0].replid);
             }
         });
     }

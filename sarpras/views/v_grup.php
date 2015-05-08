@@ -7,6 +7,8 @@
 <div id="loadarea"></div>
 <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
 
+ <div style="overflow:scroll;height:600px;" style="display:none;">
+
 <!-- panel 1 -->
 <div title="Grup Barang" class="panelx" id="panel1" style="display:none;">
     <div class="input-control select span3">
@@ -105,7 +107,6 @@
 <!-- end of panel 2 -->
 
 <!-- panel 3 -->
- <div style="overflow:scroll;height:650px;" style="display:none;">
     <div title="Unit Barang" class="panelx" id="panel3" style="display:none;">
         <button data-hint="kembali ke Katalog" id="b_katalogBC"><span class=" icon-arrow-left-2"></span> </button>
         <button data-hint="Ubah Data" id="b_ubahBC"><span class="icon-pencil"></span> </button>

@@ -24192,6 +24192,7 @@ function _tableColumnWidth(&$table,$firstpass=false){
 		if (isset($table['w']) && $table['w'] ) {
 			if ($table['w'] >= $checkminwidth && $table['w'] <= $mxw) { $table['maw'] = $mxw = $table['w']; }
 			else if ($table['w'] >= $checkminwidth && $table['w'] > $mxw && $this->keep_table_proportions) { $checkminwidth = $table['w']; }
+ 			// else if ($table['w'] < $checkminwidth && $checkminwidth < $mxw && $this->keep_table_proportions) {  $table['maw'] = $table['w'] = $checkminwidth; }			
 			else {  
 				unset($table['w']); 
 			}
