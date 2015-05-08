@@ -20,7 +20,7 @@ var g_contentFR = k_contentFR = b_contentFR = b_importForm = '';
     $(document).ready(function(){
         //form content
        b_importForm+= '<form enctype="multipart/form-data" onsubmit="importBarangSV(this); return false;">' 
-            +'<label>Lokasi</label>'
+            +'<label>Excel (97-2003) (.xls)</label>'
             +'<div class="input-control file" data-role="input-control">'
                 +'<input required onchange="importValidate(this);" id="b_importTB" name="b_importTB" type="file">'
                 +'<button class="btn-file"></button>'
