@@ -5,6 +5,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
+	require_once '../../lib/excel_reader2.php';
 
 	// var_dump($_SESSION);exit();
 	$mnu  = 'grup';
@@ -28,12 +29,58 @@
 			$src      = $_FILES[0]['tmp_name'];
 			$destix   = '../../img/upload/'.basename($namaSkrg);
 
-			if(move_uploaded_file($src, $destix))
-				$o=array('status'=>'sukses','file'=>$namaSkrg);
-			else
-				$o=array('status'=>'gagal');
+			if(move_uploaded_file($src, $destix)) $o=array('status'=>'sukses','file'=>$namaSkrg);
+			else $o=array('status'=>'gagal');
 
 			$out=json_encode($o);
+		}elseif(isset($_GET['import'])){
+			$file = $_FILES[0];
+			// var_dump($file);exit();
+			$data 	= new Spreadsheet_Excel_Reader($file['tmp_name']);
+			$baris 	= $data->rowcount($sheet_index=0);
+			$kolom	= $data->colcount($sheet_index=0);
+			$sukses = 0;
+			$gagal 	= 0;
+			// $idx	= $data->val(2,1);
+			// var_dump($idx);exit();
+			
+			for($i=2; $i<=$baris; $i++){
+				$barkode = $data->val($i, 1);
+				$nama    = $data->val($i, 2);
+				$tempat  = $data->val($i, 3);
+				$kondisi = $data->val($i, 4);
+				// var_dump($barkode);exit();
+				// get katalog id
+				$sk = 'SELECT replid idkatalog from sar_katalog where nama ="'.$nama.'"';
+				$ek = mysql_query($sk);
+				$rk = mysql_fetch_assoc($ek);
+				// get tempat id
+				$st = 'SELECT replid idtempat from sar_tempat where kode ="'.$tempat.'"';
+				$et = mysql_query($st);
+				$rt = mysql_fetch_assoc($et);
+				// get kondisi id 
+				if($kondisi=='sangat baik') $idkondisi = 1;
+				elseif($kondisi=='baik') $idkondisi = 2;
+				elseif($kondisi=='buruk') $idkondisi = 3;
+				elseif($kondisi=='sangat buruk') $idkondisi = 4;
+				// insert barang
+				$s1 = 'INSERT INTO sar_barang SET 	katalog ='.$rk['idkatalog'].',
+													tempat	='.$rt['idtempat'].',
+													barkode	='.$barkode.',
+													kondisi	='.$idkondisi;
+				$e1=mysql_query($s1);
+				var_dump($e1);exit();
+				if (!$e1) {
+					$gagal++;
+					continue;
+				}else{
+					$sukses++;
+				} 
+			}
+			if($sukses==$baris) $stat='sukses';
+			elseif($sukses>0) $stat='gagal_import_'.$gagal.'_data';
+			else $stat='gagal_import_semua';
+			$out=json_encode(array('status'=>$stat));		
 		}else{
 			$out=json_encode(array('status'=>'invalid_no_post'));		
 		}
