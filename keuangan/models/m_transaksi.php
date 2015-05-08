@@ -214,7 +214,7 @@
 								$tb2 ='';
 								if(mysql_num_rows($e2)!=0){
 	   								$tb2.='<table class="bordered striped lightBlue" width="100%">
-												<tr class="bg-lightTeal text-center">
+												<tr class="info fg-whit text-center">
 			   										<td>Rekening</td>
 													<td>Debit</td>
 													<td>Kredit</td>
@@ -335,7 +335,7 @@
 						$out    ='';$totaset=0;
 						if($jum!=0){	
 							while($res = mysql_fetch_assoc($result)){
-								$out.='<ul class="fg-white" style="list-style:none;">';
+								$out.='<ul class="fg-gray" style="list-style:none;">';
 									$out.='<li>['.$res['kode'].'] '.$res['nama'].'</li>';
 			                    		$out.='<table class="table hovered bordered striped">
 							                        <thead>
@@ -370,9 +370,13 @@
 															<td>'.$r2['uraian'].'</td>
 															<td>'.$r2['nama'].'</td>
 														</tr>';
-													}
-							                        $out.='</tbody>
+													}$out.='</tbody>
 							                        <tfoot>
+							                        	<tr class="info fg-white">
+							                        		<th colspan="3" class="text-right">Jumlah</th>
+							                        		<th></th>
+							                        		<th></th>
+							                        	</tr>
 							                        </tfoot>
 							                    </table>'; 
 								$out.='</ul>';
