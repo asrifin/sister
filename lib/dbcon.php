@@ -3,8 +3,8 @@
 	$server   = "localhost";
 	$username = "root";
 	$password = "";
-	$database = "sister_siadu_demo";
-	// $database = "sister_siadu";
+	// $database = "sister_siadu_demo";
+	$database = "sister_siadu";
 	
 	//online
 	// $server   = "mysql.idhotinger.com";

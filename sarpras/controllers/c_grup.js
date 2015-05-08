@@ -650,20 +650,20 @@ var g_contentFR = k_contentFR = b_contentFR = b_importForm = '';
         // upload image
             function katalogUp(dataAdd){
                 $.ajax({
-                    url: dir+'?upload',
-                    type: 'POST',
-                    data: dataAdd,
-                    cache: false,
-                    dataType: 'json',
-                    processData: false,// Don't process the files
-                    contentType: false,//Set content type to false as jq 'll tell the server its a query string request
-                    success: function(data, textStatus, jqXHR){
+                    url:dir+'?upload',
+                    type:'POST',
+                    data:dataAdd,
+                    cache:false,
+                    dataType:'json',
+                    processData:false,// Don't process the files
+                    contentType:false,//Set content type to false as jq 'll tell the server its a query string request
+                    success:function(data, textStatus, jqXHR){
                         if(data.status == 'sukses'){ //gak error
                             katalogDb(data);
                         }else{ //error
                             notif(data.status,'red');
                         }
-                    },error: function(jqXHR, textStatus, errorThrown){
+                    },error:function(jqXHR, textStatus, errorThrown){
                         notif('error'+textStatus,'red');// $('#loadarea').html('<img src="../img/loader.gif"> ').fadeOut();
                     }
                 });
@@ -1295,12 +1295,16 @@ function jumupdate (e) {
             data: filesAdd,
             cache: false,
             dataType: 'json',
-            processData: false,// Don't process the files
-            contentType: false,//Set content type to false as jq 'll tell the server its a query string request
-            success: function(data, textStatus, jqXHR){
-                console.log(data);
+            processData: false,
+            contentType: false,
+            success: function(dt, textStatus, jqXHR){
+                notif(dt.status, (dt.status=='sukses'?'green':'red'));
+                if(dt.status=='sukses'){
+                    vwBarang($('#b_katalogS').val());
+                    $.Dialog.close();
+                } 
             },error: function(jqXHR, textStatus, errorThrown){
-                notif('error'+textStatus,'red');// $('#loadarea').html('<img src="../img/loader.gif"> ').fadeOut();
+                notif('error'+textStatus,'red');
             }
         });
     }
