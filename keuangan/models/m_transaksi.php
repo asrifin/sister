@@ -337,7 +337,7 @@
 							while($res = mysql_fetch_assoc($result)){
 								$out.='<ul class="fg-gray" style="list-style:none;">';
 									$out.='<li>['.$res['kode'].'] '.$res['nama'].'</li>';
-			                    		$out.='<table class="table hovered bordered striped">
+			                    		$out.='<table width="100%" class="table hovered bordered striped">
 							                        <thead>
 							                            <tr style="color:white;"class="info">
 							                                <th class="text-center">Tanggal </th>
@@ -352,7 +352,9 @@
 															t.tanggal,
 															t.nomer,
 															t.uraian,
-													        d.nama
+													        d.nama,
+												        	j.nominal
+
 													    FROM
 															keu_transaksi t 
 													        LEFT JOIN keu_jurnal j ON t.replid = j.transaksi 
@@ -365,10 +367,11 @@
 													$e2=mysql_query($s2);
 													while ($r2=mysql_fetch_assoc($e2)) {
 														$out.='<tr >
-															<td>'.tgl_indo5($r2['tanggal']).'</td>
-															<td>'.$r2['nomer'].'</td>
-															<td>'.$r2['uraian'].'</td>
-															<td>'.$r2['nama'].'</td>
+															<td width="10%">'.tgl_indo5($r2['tanggal']).'</td>
+															<td  width="20%">'.$r2['nomer'].'</td>
+															<td  width="30%">'.$r2['uraian'].'</td>
+															<td width="20%">Rp. '.number_format($r2['nominal']).'</td>
+															<td width="20%">'.$r2['nama'].'</td>
 														</tr>';
 													}$out.='</tbody>
 							                        <tfoot>
@@ -381,41 +384,11 @@
 							                    </table>'; 
 								$out.='</ul>';
 							}
-							// while($res = mysql_fetch_assoc($result)){	
-							// 	$s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
-							// 			from keu_jurnal j,keu_rekening r 
-							// 			where 
-							// 				j.transaksi ='.$res['replid'].' AND 
-							// 				j.rek=r.replid
-							// 			ORDER BY kredit  ASC';
-							// 	$e2 = mysql_query($s2);
-							// 	$tb2='';
-							// 	if(mysql_num_rows($e2)!=0){
-	   			// 					$tb2.='<table class="bordered striped lightBlue" width="100%">';
-		   		// 					while($r2=mysql_fetch_assoc($e2)){
-		   		// 						$tb2.='<tr>
-		   		// 								<td>'.$r2['nama'].'</td>
-		   		// 								<td>'.$r2['kode'].'</td>
-		   		// 								<td>Rp. '.number_format($r2['debet']).',-</td>
-		   		// 								<td>Rp. '.number_format($r2['kredit']).',-</td>
-		   		// 							</tr>';
-		   		// 					}$tb2.='</table>';
-							// 	}
-							// 	$out.= '<tr>
-							// 				<td>'.tgl_indo($res['tanggal']).'</td>
-							// 				<td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
-							// 				<td>'.$res['uraian'].'</td>
-							// 				<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
-							// 			</tr>';
-							// }
 						}else{ #kosong
 							$out.= '<tr align="center">
 									<td  colspan=9 ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
 						}
-						#link paging
-						// $out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						// $out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
 					case 'nl':
 
@@ -763,7 +736,8 @@
 							$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
 							$s1 = 'keu_transaksi SET 	tahunbuku     ='.getTahunBuku('replid').',
 														rekkas        ='.$_POST['rekkasH'].',
-														rekitem        ='.$_POST[$sub.'_rek'.$v.'H'].',
+														uraian        ="'.$_POST[$sub.'_uraian'.$v.'TB'].'",
+														rekitem       ='.$_POST[$sub.'_rek'.$v.'H'].',
 														nominal       ='.$nom.',
 														nomer         ="'.getNoTrans2($sub).'",
 														tanggal       ="'.tgl_indo6($_POST['tanggalTB']).'",
@@ -772,7 +746,7 @@
 							$s  = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1;
 							$e  = mysql_query($s);
 							$id = mysql_insert_id();
-
+							// var_dump($s);exit();
 							// 2. simpan jurnal umum 
 							if(!$e) $stat1= false;
 							else {

@@ -114,7 +114,7 @@
         <button data-hint="Field Pencarian" id="b_cariBC"><span class="icon-search"></span> </button>
         <button data-hint="Cetak" id="b_cetakBC"><span class="icon-printer"></span> </button>
         <button data-hint="Barcode" id="b_cetakbarcodeBC"><span class="icon-barcode"></span></button>
-        <button data-hint="Export" id="b_exportBC"><span class="icon-upload-2"></span></button>
+        <!-- <button data-hint="Export" id="b_exportBC"><span class="icon-upload-2"></span></button> -->
         <button data-hint="Import" id="b_importBC"><span class="icon-download-2"></span></button>
         <!-- <button data-hint="Cetak" id="b_cetakbarcodeBC" onclick="cetak()"><span class="icon-printer"></span> Cetak Barcode</button> -->
 
