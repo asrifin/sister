@@ -5,6 +5,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
+	require_once '../../lib/excel_reader2.php';
 
 	// var_dump($_SESSION);exit();
 	$mnu  = 'grup';
@@ -28,12 +29,80 @@
 			$src      = $_FILES[0]['tmp_name'];
 			$destix   = '../../img/upload/'.basename($namaSkrg);
 
-			if(move_uploaded_file($src, $destix))
-				$o=array('status'=>'sukses','file'=>$namaSkrg);
-			else
-				$o=array('status'=>'gagal');
+			if(move_uploaded_file($src, $destix)) $o=array('status'=>'sukses','file'=>$namaSkrg);
+			else $o=array('status'=>'gagal');
 
 			$out=json_encode($o);
+		}elseif(isset($_GET['import'])){
+			$file = $_FILES[0];
+			$data 	= new Spreadsheet_Excel_Reader($file['tmp_name']);
+			$baris 	= ($data->rowcount($sheet_index=0)-1);
+			$kolom	= ($data->colcount($sheet_index=0)-1);
+			$sukses = 0;
+			$gagal 	= 0;
+
+			$ss='';
+			for($i=2; $i<=($baris+1); $i++){
+				$barkode    = $data->val($i, 1);
+				$nama       = $data->val($i, 2);
+				$tempat     = $data->val($i, 3);
+				$kondisi    = $data->val($i, 4);
+				$sumber     = $data->val($i, 5);
+				$harga      = $data->val($i, 6);
+				$keterangan = $data->val($i, 7);
+
+				// get katalog id
+				$sk = 'SELECT replid idkatalog from sar_katalog where nama ="'.$nama.'"';
+				$ek = mysql_query($sk);
+				$rk = mysql_fetch_assoc($ek);
+				// get tempat id
+				// $st = 'SELECT replid idtempat from sar_tempat where kode LIKE "%'.$tempat.'%"';
+				$st = 'SELECT replid idtempat from sar_tempat where nama = "'.$tempat.'"';
+				$et = mysql_query($st);
+				$rt = mysql_fetch_assoc($et);
+				// if(mysql_num_rows($et)<=0){
+				// 	$ss='INSERT INTO sar_tempat SET kode	   ="",
+				// 									lokasi     =0,
+				// 									nama       ='.$tempat.',
+				// 									keterangan =""';
+				// }
+				// get kondisi id 
+				if($kondisi=='sangat baik') $idkondisi = 1;
+				elseif($kondisi=='baik') $idkondisi = 2;
+				elseif($kondisi=='buruk') $idkondisi = 3;
+				elseif($kondisi=='sangat buruk') $idkondisi = 4;
+				//get sumber barang 
+				if($sumber=='Beli')$idsumber=0;
+				elseif($sumber=='Pemberian')$idsumber=1;
+				else $idsumber=2;
+				// var_dump($st);exit();
+				
+				// insert barang
+				$s1 = 'INSERT INTO sar_barang SET 	katalog  ='.$rk['idkatalog'].',
+													tempat     ='.$rt['idtempat'].',
+													sumber     ='.$idsumber.',
+													keterangan ="'.$keterangan.'",
+													harga      ='.getuang($harga).',
+													urut       ='.$barkode.',
+													isImport   = 1,
+													kondisi    ='.$idkondisi;
+				$ss.=$s1."\n";
+				// var_dump($e1);exit();
+				$e1=mysql_query($s1);
+				if (!$e1) {
+					$gagal+=1;
+					continue;
+				}else{
+					$sukses+=1;
+				} 
+			}
+			// var_dump($ss);exit();
+			if($sukses==$baris) {
+				$stat='sukses';
+			}else{
+				if($sukses<=0) $stat='gagal_import_semua';
+				else $stat='gagal_import_'.$gagal.'_data';
+			}$out=json_encode(array('status'=>$stat));		
 		}else{
 			$out=json_encode(array('status'=>'invalid_no_post'));		
 		}
@@ -44,10 +113,10 @@
 				switch ($_POST['subaksi']) {
 					// grup barang
 					case 'grup':
-						$lokasi       = isset($_POST['g_lokasiS'])?filter(trim($_POST['g_lokasiS'])):'';
-						$g_kode       = isset($_POST['g_kodeS'])?filter(trim($_POST['g_kodeS'])):'';
-						$g_nama       = isset($_POST['g_namaS'])?filter(trim($_POST['g_namaS'])):'';
-						$g_keterangan = isset($_POST['g_keteranganS'])?filter(trim($_POST['g_keteranganS'])):'';
+						$lokasi       = isset($_POST['g_lokasiS'])?$_POST['g_lokasiS']:'';
+						$g_kode       = isset($_POST['g_kodeS'])?$_POST['g_kodeS']:'';
+						$g_nama       = isset($_POST['g_namaS'])?filter($_POST['g_namaS']):'';
+						$g_keterangan = isset($_POST['g_keteranganS'])?filter($_POST['g_keteranganS']):'';
 						
 						$sql = 'SELECT
 									g.replid,
@@ -58,6 +127,7 @@
 									IFNULL(tbtot.jum,0) - IFNULL(tbpjm.jum,0) u_tersedia,
 									IFNULL(tbaset.aset,0) aset,
 									g.keterangan
+									/*,g.isImport*/
 								FROM
 									sar_grup g
 									LEFT JOIN (
@@ -133,7 +203,8 @@
 												<i class="icon-remove on-left"></i>
 											</button>
 										 </td>';
-								$out.= '<tr>
+								// $out.= '<tr '.($res['isImport']==1?'class="bg-lightTeal" data-hint="hasil dari import" data-hint-position="left"':'').'>
+								$out.= '<tr> 
 											<td>'.$res['kode'].'</td>
 											<td>'.$res['nama'].'</td>
 											<td>'.$res['u_total'].'</td>
@@ -174,6 +245,7 @@
 									SUM(b.harga) aset,
 									k.susut,
 									k.keterangan
+									/*,k.isImport*/
 								FROM	
 									sar_katalog k
 									LEFT JOIN sar_jenis  j on j.replid = k.jenis
@@ -217,6 +289,7 @@
 											<button data-hint="hapus"  class="button" onclick="katalogDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 										 </td>';
+								// $out.= '<tr '.($res['isImport']==1?'class="bg-lightTeal" data-hint="hasil dari import" data-hint-position="left"':'').'>
 								$out.= '<tr>
 											<td>'.$res['kode'].'</td>
 											<td>'.$res['nama'].'</td>
@@ -244,14 +317,14 @@
 
 					// barang
 					case 'barang':
-						$b_katalog    = isset($_POST['b_katalogS'])?filter(trim($_POST['b_katalogS'])):'';
-						$b_kode       = isset($_POST['b_kodeS'])?filter(trim($_POST['b_kodeS'])):'';
-						$b_barkode    = isset($_POST['b_barkodeS'])?filter(trim($_POST['b_barkodeS'])):'';
-						$b_harga      = isset($_POST['b_hargaS'])?filter(trim($_POST['b_hargaS'])):'';
-						$b_kondisi    = isset($_POST['b_kondisiS'])?filter(trim($_POST['b_kondisiS'])):'';
-						$b_sumber     = isset($_POST['b_sumberS'])?filter(trim($_POST['b_sumberS'])):'';
-						$b_status     = isset($_POST['b_statusS'])?filter(trim($_POST['b_statusS'])):'';
-						$b_keterangan = isset($_POST['b_keteranganS'])?filter(trim($_POST['b_keteranganS'])):'';
+						$b_katalog    = isset($_POST['b_katalogS'])?$_POST['b_katalogS']:'';
+						$b_kode       = isset($_POST['b_kodeS'])?$_POST['b_kodeS']:'';
+						$b_barkode    = isset($_POST['b_barkodeS'])?filter($_POST['b_barkodeS']):'';
+						$b_harga      = isset($_POST['b_hargaS'])?filter($_POST['b_hargaS']):'';
+						$b_kondisi    = isset($_POST['b_kondisiS'])?filter($_POST['b_kondisiS']):'';
+						$b_sumber     = isset($_POST['b_sumberS'])?filter($_POST['b_sumberS']):'';
+						$b_status     = isset($_POST['b_statusS'])?filter($_POST['b_statusS']):'';
+						$b_keterangan = isset($_POST['b_keteranganS'])?filter($_POST['b_keteranganS']):'';
 						
 						$sql = 'SELECT (
 										SELECT 
@@ -279,7 +352,8 @@
 									IF(b. STATUS=1,"Tersedia","Dipinjam")AS status,
 									k.nama as kondisi,
 									t.nama as tempat,
-									b.keterangan
+									b.keterangan,
+									b.isImport
 								FROM
 									sar_barang b 
 									LEFT JOIN sar_kondisi k on k.replid = b.kondisi
@@ -292,7 +366,9 @@
 									b.sumber LIKE "%'.$b_sumber.'%" and
 									b.kondisi LIKE "%'.$b_kondisi.'%" and
 									b.status LIKE "%'.$b_status.'%" and
-									b.keterangan LIKE "%'.$b_keterangan.'%"';
+									b.keterangan LIKE "%'.$b_keterangan.'%"
+								ORDER BY 
+									b.replid desc';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -324,7 +400,7 @@
 												<i class="icon-remove on-left"></i>
 											</button>
 										 </td>';
-								$out.= '<tr>
+								$out.= '<tr '.($res['isImport']==1?'class="bg-lightTeal" data-hint="hasil dari import" data-hint-position="left"':'').'>
 											<td>'.$res['kode'].'</td>
 											<td>'.$res['barkode'].'</td>
 											<td>'.$res['tempat'].'</td>

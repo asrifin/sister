@@ -31,13 +31,13 @@
                 <th class="text-left">Aksi</th>
             </tr>
             <tr style="display:none;" id="g_cariTR" class="info">
-                <th class="text-left"><input placeholder="kode" id="g_kodeS" class="grup_cari" class="span1"></th>
-                <th class="text-left"><input placeholder="nama" id="g_namaS" class="grup_cari"></th>
+                <th class="text-left"><div class="input-control text"><input placeholder="kode" id="g_kodeS" class="grup_cari" class="span1"></div></th>
+                <th class="text-left"><div class="input-control text"><input placeholder="nama" id="g_namaS" class="grup_cari"></div></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
                 <th class="text-left"></th>
-                <th class="text-left"><input placeholder="keterangan" id="g_keteranganS" class="grup_cari"></th>
+                <th class="text-left"><div class="input-control text"><input placeholder="keterangan" id="g_keteranganS" class="grup_cari"></div></th>
                 <th class="text-left"></th>
             </tr>
         </thead>
@@ -79,22 +79,22 @@
             <tr style="color:white;"class="info">
                 <th class="text-center">Kode </th>
                 <th class="text-center">Nama Barang</th>
-                <th class="text-left">Jenis</th>
-                <th class="text-left">Jumlah Unit</th>
-                <th class="text-left">Asset</th>
-                <th class="text-left">Penyusutan per th</th>
-                <th class="text-left">Keterangan</th>
-                <th class="text-left">Aksi</th>
+                <th class="text-center">Jenis</th>
+                <th class="text-center">Jumlah Unit</th>
+                <th class="text-center">Asset</th>
+                <th class="text-center">Penyusutan per th</th>
+                <th class="text-center">Keterangan</th>
+                <th class="text-center">Aksi</th>
             </tr>
             <tr style="display:none;" id="k_cariTR" class="info">
-                <th class="text-left"><input placeholder="kode" id="k_kodeS"  class="katalog_cari" class="span1"></th>
-                <th class="text-left"><input placeholder="nama" id="k_namaS" class="katalog_cari"></th>
-                <th class="text-left"></th>
-                <th class="text-left"></th>
-                <th class="text-left"></th>
-                <th class="text-left"></th>
-                <th class="text-left"><input placeholder="keterangan" id="k_keteranganS"class="katalog_cari"></th>
-                <th class="text-left"></th>
+                <th class="text-center"><div class="input-control text"><input placeholder="kode" id="k_kodeS"  class="katalog_cari" class="span1"></div></th>
+                <th class="text-center"><div class="input-control text"><input placeholder="nama" id="k_namaS" class="katalog_cari"></div></th>
+                <th class="text-center"></th>
+                <th class="text-center"></th>
+                <th class="text-center"></th>
+                <th class="text-center"></th>
+                <th class="text-center"><div class="input-control text"><input placeholder="keterangan" id="k_keteranganS"class="katalog_cari"></div></th>
+                <th class="text-center"></th>
             </tr>
         </thead>
 
@@ -113,7 +113,9 @@
         <button data-hint="Tambah Data" id="b_tambahBC"><span class="icon-plus-2"></span> </button>
         <button data-hint="Field Pencarian" id="b_cariBC"><span class="icon-search"></span> </button>
         <button data-hint="Cetak" id="b_cetakBC"><span class="icon-printer"></span> </button>
-        <button data-hint="Cetak" id="b_cetakbarcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
+        <button data-hint="Barcode" id="b_cetakbarcodeBC"><span class="icon-barcode"></span></button>
+        <!-- <button data-hint="Export" id="b_exportBC"><span class="icon-upload-2"></span></button> -->
+        <button data-hint="Import" id="b_importBC"><span class="icon-download-2"></span></button>
         <!-- <button data-hint="Cetak" id="b_cetakbarcodeBC" onclick="cetak()"><span class="icon-printer"></span> Cetak Barcode</button> -->
 
         <input type="hidden"  class="barang_cari" id="b_katalogS">
@@ -166,38 +168,39 @@
                 <tr style="color:white;"class="info">
                     <th class="text-center">Kode </th>
                     <th class="text-center">Barcode</th>
-                    <th class="text-left">Tempat</th>
-                    <th class="text-left">Sumber</th>
-                    <th class="text-left">Harga</th>
-                    <th class="text-left">Kondisi</th>
-                    <th class="text-left">Status</th>
-                    <th class="text-left">Keterangan</th>
-                    <th class="text-left">Aksi</th>
+                    <th class="text-center">Tempat</th>
+                    <th class="text-center">Sumber</th>
+                    <th class="text-center">Harga</th>
+                    <th class="text-center">Kondisi</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Keterangan</th>
+                    <th class="text-center">Aksi</th>
                 </tr>
                 <tr style="display:none;" id="b_cariTR" class="selected">
-                    <th class="text-left"><input placeholder="kode" id="b_kodeS"class="barang_cari"></th>
-                    <th class="text-left"><input placeholder="barkode" id="b_barkodeS" class="barang_cari"></th>
-                    <th class="text-left"></th>
-                    <th class="text-left">
+                    <th class="text-center"><div class="input-control text"><input placeholder="kode" id="b_kodeS"class="barang_cari"></div></th>
+                    <th class="text-center"><div class="input-control text"><input placeholder="barkode" id="b_barkodeS" class="barang_cari"></div></th>
+                    <th class="text-center"></th>
+                    <th class="text-center"><div class="input-control select">
                         <select class="barang_cari" id="b_sumberS">
                             <option value="">-Semua-</option>
                             <option value="0">Beli</option>
                             <option value="1">Pemberian</option>
                             <option value="2">Membuat Sendiri</option>
-                        </select> 
+                        </select> </div>
                     </th>
-                    <th class="text-left"><input  class="barang_cari" placeholder="harga" id="b_hargaS"></th>
-                    <th class="text-left">
+                    <th class="text-left"><div class="input-control text"><input  class="barang_cari" placeholder="harga" id="b_hargaS"></div></th>
+                    <th class="text-left"><div class="input-control select">
                         <select  class="barang_cari"id="b_kondisiS"></select>
-                    </th>
+                    </div></th>
                     <th class="text-left">
+                        <div class="input-control select">
                         <select id="b_statusS" class="barang_cari">
                             <option value="">-Semua-</option>
                             <option value="1">Tersedia</option>
                             <option value="2">Dipinjam</option>
-                        </select>
+                        </select></div>
                     </th>
-                    <th class="text-left"><input placeholder="keterangan" id="b_keteranganS" class="barang_cari"></th>
+                    <th class="text-left"><div class="input-control text"><input placeholder="keterangan" id="b_keteranganS" class="barang_cari"></div></th>
                     <th class="text-left"></th>
                 </tr>
             </thead>

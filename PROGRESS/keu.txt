@@ -11,12 +11,15 @@ _________________________  transact  ___________________________
 
 * transaksi (P)
 	+ submenu : jurnal_umum 
-	- lainnya 
-* modul pembayaran(P)
-	- kode rekening (perlu dibuatkan tabel detilmodulpembayaran kah=> rekening multi (pendatpaan, kas, piutang) )
+	- jurnal umum : form edit : autosuggest tidak aktif
+	- jurnal umum :  report & print 
+	- jurnal umum : button edit blum aktif
+* modul pembayaran(C)
+	+ kode rekening (perlu dibuatkan tabel detilmodulpembayaran kah=> rekening multi (pendatpaan, kas, piutang) )
 * pembayaran pendaftaran(P)
-* pembayaran uang pangkal(P)
-* pembayaran uang sekolah(P)
+	- print/ pdf : error
+* pembayaran uang pangkal(C)
+* pembayaran uang sekolah(C)
 	- Rincian nominal pembayaran uang sekolah dan uang pangkal
 * inventory(P)
 
@@ -41,7 +44,6 @@ ________________________   master  ____________________________
 	+ filtering : combo rekening tidak tampil
 * detil anggaran (P)
 	+ CRUD
-	- P 
 * sub rekening (C)
 	+ CRUD 
 * status rekening (C)

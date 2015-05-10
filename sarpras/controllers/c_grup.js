@@ -14,11 +14,22 @@ var dir5      ='models/m_'+mnu5+'.php';
 var dir6      ='models/m_'+mnu6+'.php';
 var dir7      ='models/m_'+mnu7+'.php';
 
-var g_contentFR = k_contentFR = b_contentFR ='';
+var g_contentFR = k_contentFR = b_contentFR = b_importForm = '';
     
 // main function ---
     $(document).ready(function(){
         //form content
+       b_importForm+= '<form enctype="multipart/form-data" onsubmit="importBarangSV(this); return false;">' 
+            +'<label>Excel (97-2003) (.xls)</label>'
+            +'<div class="input-control file" data-role="input-control">'
+                +'<input required onchange="importValidate(this);" id="b_importTB" name="b_importTB" type="file">'
+                +'<button class="btn-file"></button>'
+            +'</div>'
+            +'<div class="form-actions">' 
+                +'<button class="button primary">simpan</button>'
+            +'</div>'
+        +'</form>';
+
             // grup
             g_contentFR += '<form autocomplete="off" onsubmit="grupSV(); return false;" id="'+mnu+'FR">' 
                             +'<input id="g_idformH" type="hidden">' 
@@ -312,7 +323,7 @@ var g_contentFR = k_contentFR = b_contentFR ='';
                 $('#b_barkodeS').val('');
                 $('#b_namaS').val('');
                 $('#b_keteranganS').val('');
-            });
+            }); $('#b_importBC').on('click',importFR);
 
         //search action 
             // grup barang
@@ -618,7 +629,8 @@ var g_contentFR = k_contentFR = b_contentFR ='';
             function katalogSV () {
                 //add image
                 var files =new Array();
-                $("input:file").each(function() {
+                // $("input:file").each(function() {
+                $("#k_photoTB").each(function() {
                     files.push($(this).get(0).files[0]); 
                 });
                  
@@ -638,20 +650,20 @@ var g_contentFR = k_contentFR = b_contentFR ='';
         // upload image
             function katalogUp(dataAdd){
                 $.ajax({
-                    url: dir+'?upload',
-                    type: 'POST',
-                    data: dataAdd,
-                    cache: false,
-                    dataType: 'json',
-                    processData: false,// Don't process the files
-                    contentType: false,//Set content type to false as jq 'll tell the server its a query string request
-                    success: function(data, textStatus, jqXHR){
+                    url:dir+'?upload',
+                    type:'POST',
+                    data:dataAdd,
+                    cache:false,
+                    dataType:'json',
+                    processData:false,// Don't process the files
+                    contentType:false,//Set content type to false as jq 'll tell the server its a query string request
+                    success:function(data, textStatus, jqXHR){
                         if(data.status == 'sukses'){ //gak error
                             katalogDb(data);
                         }else{ //error
                             notif(data.status,'red');
                         }
-                    },error: function(jqXHR, textStatus, errorThrown){
+                    },error:function(jqXHR, textStatus, errorThrown){
                         notif('error'+textStatus,'red');// $('#loadarea').html('<img src="../img/loader.gif"> ').fadeOut();
                     }
                 });
@@ -1246,6 +1258,67 @@ function jumupdate (e) {
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 //end of  print to PDF -------
+
+// import's dialog 
+    function importFR(){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: 300,
+            padding: 10,
+            onShow: function(){
+                $.Dialog.title('<span class="icon-download-2"></span> Import Data Barang');
+                $.Dialog.content(b_importForm);
+            }
+        });
+    }
+// end of import's dialog ---
+
+    function importBarangSV (e) {
+        var files =new Array();
+        $("#b_importTB").each(function() {
+            files.push($(this).get(0).files[0]); 
+        });
+
+        var filesAdd = new FormData();
+        $.each(files, function(key, value){
+            filesAdd.append(key, value);
+            console.log(value);
+        });
+        console.log(files[0].name);
+        console.log(filesAdd);
+
+        $.ajax({
+            url: dir+'?import',
+            type: 'POST',
+            data: filesAdd,
+            cache: false,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function(dt, textStatus, jqXHR){
+                notif(dt.status, (dt.status=='sukses'?'green':'red'));
+                if(dt.status=='sukses'){
+                    vwBarang($('#b_katalogS').val());
+                    $.Dialog.close();
+                } 
+            },error: function(jqXHR, textStatus, errorThrown){
+                notif('error'+textStatus,'red');
+            }
+        });
+    }
+
+//validate before import -------
+    function importValidate(e){
+        var typex = e.files[0].type;
+        console.log(typex);
+        if(typex !='application/vnd.ms-excel'){// valid (format excel) 
+            notif('format harus excel (.xls)','red');
+            $(e).val('');
+            return false;
+        }else return true;
+    }
 
     // ---------------------- //
     // -- created by epiii -- //

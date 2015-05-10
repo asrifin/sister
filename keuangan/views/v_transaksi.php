@@ -73,13 +73,13 @@
                 <li><a href="#pkbTAB">Posisi Kas dan Bank</a></li>
                 <li><a href="#btTAB">Buku Tambahan</a></li>
             </ul>
-            <div class="frames">
+            <div style="background-color:#dddddd;"  class="frames">
                 <!-- 1st content -->
                 <div class="frame" id="juTAB">    
-                    <button id="juBC" data-hint="Pencarian" data-hint-position="top">
+                    <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
                     </button>
-                    <button id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
 
@@ -118,7 +118,7 @@
                 </div>
                 <!-- end of 1st content -->
                 <div class="frame" id="bbTAB">
-                    <span class="fg-white">Tampilkan Akun :</span> 
+                    <span class="fg-gray">Tampilkan Akun :</span> 
                     <div class="input-control select span3">
                         <select class="bb_cari" onchange="viewTB('bb');" id="bb_detilrekeningS" name="bb_detilrekeningS"></select>
                     </div>
@@ -127,10 +127,10 @@
                 <!-- </div> -->
 
                 <div class="frame" id="nsTAB">
-                    <button id="nsBC" data-hint="Pencarian" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="nsBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
                     </button>
-                    <button id="ns_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="ns_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
                     <table class="table hovered bordered striped">
@@ -157,7 +157,7 @@
 
                 </div>
                 <div class="frame" id="nlTAB">
-                    <button id="nlBC" data-hint="Pencarian" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="nlBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
                     </button>
                     <table class="table hovered bordered striped">
