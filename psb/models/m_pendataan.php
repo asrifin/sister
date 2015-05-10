@@ -195,7 +195,7 @@
 							gol = '.$_POST['golongan'] 
 							;
 
-									print_r($s);exit();
+									// print_r($s);exit();
 				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';

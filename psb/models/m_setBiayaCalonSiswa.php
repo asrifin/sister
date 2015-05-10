@@ -59,10 +59,10 @@
 									psb_setbiaya ps
 									LEFT JOIN psb_kriteria pk ON pk.replid = ps.krit
 									LEFT JOIN psb_golongan g ON g.replid = ps.gol
-								GROUP BY 
-									ps.gol
-								HAVING 
-									g.replid = '.$res['gol'];
+								WHERE
+									pk.replid = '.$res['replid'].'
+								GROUP by
+									ps.gol';
 						// print_r($sql2);exit();
 
 						$qry2 = mysql_query($sql2);

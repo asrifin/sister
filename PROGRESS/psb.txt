@@ -28,8 +28,7 @@ PSB V2.0
 	- Cara membuat no otomatis pada no pendaftaran
 	- Update > pas di var_dump replid selalu 14
 	- menjumlahkan angsuran dan total uang pangkal net menggunakan Rupiah
-	- Insert > Foto
-	- Cara mengambil id combo box
+	+ Insert > Foto
 	+ view   > 
 	  + Combo Kelompok ga sesuai
 	  + menampilkan foto siswa pada view detail siswa
