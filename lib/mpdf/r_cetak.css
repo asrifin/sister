@@ -30,20 +30,3 @@ div.b128{
     border-left: 1px black solid;
   height: 30px;
 } 
-/*Tabel*/
-/*table {
-        width: 80%;
-border-collapse: separate;
-    border-spacing: 10px;
-        }       
-tr {
-
-}*/
-td {
-    width: 32mm;
-    height: 18mm;
-    margin: 0 1mm;
-    text-align: center;
-    vertical-align:middle; 
-    font-size:xx-small;
-}
