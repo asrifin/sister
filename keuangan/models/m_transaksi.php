@@ -314,7 +314,7 @@
 
 					//Buku Besar
 					case 'bb':
-						$bb_detilrekening = (isset($_POST['bb_detilrekeningS']) AND $_POST['bb_detilrekeningS']!='')?' WHERE r.replid = '.$_POST['bb_detilrekeningS']:'';
+						$bb_detilrekening = (isset($_POST['bb_detilrekeningS']) AND $_POST['bb_detilrekeningS']!='')?' AND  d.replid = '.$_POST['bb_detilrekeningS']:'';
 						$sql  = 'SELECT
 									d.replid,
 									d.kode kode,
@@ -370,41 +370,42 @@
 													        d.kategorirekening ASC, 
 															d.kode ASC';
 															// var_dump($s2);exit();
-													$e2=mysql_query($s2);
+													$e2       =mysql_query($s2);
+													$debitTot =$kreditTot=0;
 													while ($r2=mysql_fetch_assoc($e2)) {
 														$jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r2['detjenistrans']));
-														echo '<pre>';
-														print_r($r2);exit();
-														echo '</pre>';
 														if($jenis=='ju'){ // ju
 															$debit=99;
 															$kredit=0;
 														}else{
 															if($jenis=='out'){ // outcome
-																// var_dump($r2);
+																$debit  = $r2['rekkas']==$r2['rek']?0:$r2['nominal'];
+																$kredit = $r2['rekitem']==$r2['rek']?0:$r2['nominal'];
+															}else{ // income
 																$debit  = $r2['rekkas']==$r2['rek']?$r2['nominal']:0;
 																$kredit = $r2['rekitem']==$r2['rek']?$r2['nominal']:0;
-															}else{ // income
-																$debit  = $r2['nominal'];
-																$kredit = 0;
 															}
 														}
-														// $debit = $r2['rek']==$r?
+														$debitTot+=$debit;
+														$kreditTot+=$kredit;
 														$out.='<tr >
 															<td width="10%">'.tgl_indo5($r2['tanggal']).'</td>
 															<td  width="20%">'.$r2['nomer'].'</td>
 															<td  width="30%">'.$r2['uraian'].'</td>
-															<td width="20%">Rp. '.number_format($debit).'</td>
-															<td width="20%">Rp. '.number_format($kredit).'</td>
+															<td  class="text-right" width="20%">Rp. '.number_format($debit).'</td>
+															<td  class="text-right" width="20%">Rp. '.number_format($kredit).'</td>
 														</tr>';
 													}$out.='</tbody>
 							                        <tfoot>
 							                        	<tr class="info fg-white">
 							                        		<th colspan="3" class="text-right">Jumlah</th>
-							                        		<th></th>
-							                        		<th></th>
+							                        		<th class="text-right">Rp. '.number_format($debitTot).'</th>
+							                        		<th class="text-right">Rp. '.number_format($kreditTot).'</th>
 							                        	</tr>
-							                        </tfoot>
+							                        	<tr class="info fg-white">
+							                        		<th colspan="3" class="text-right">Selisih</th>
+							                        		<th colspan="2" class="text-center">Rp. '.number_format($debitTot-$kreditTot).'</th>
+							                        	</tr>
 							                    </table>'; 
 								$out.='</ul>';
 							}

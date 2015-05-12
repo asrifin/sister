@@ -111,6 +111,9 @@ var contentFR ='';
         $('#ns_cetakBC').on('click',function(){
             printPDF('neracasaldo');
         });
+        $('#bb_cetakBC').on('click',function(){
+            printPDF('bb');
+        });
         //search button
         $('#juBC').on('click',function(){
             $('#juTR').toggle('slow');
@@ -140,7 +143,8 @@ var contentFR ='';
      function loadAll(){
         viewTB('ju');
         viewTB('ns');
-        viewTB('bb');
+        cmbbukubesar();
+        // viewTB('bb'); 
         viewTB('nl');
         viewTB('lr');
     }

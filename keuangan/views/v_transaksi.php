@@ -122,6 +122,9 @@
                     <div class="input-control select span3">
                         <select class="bb_cari" onchange="viewTB('bb');" id="bb_detilrekeningS" name="bb_detilrekeningS"></select>
                     </div>
+                    <button  class="bg-blue fg-white" id="bb_cetakBC" data-hint="Cetak" data-hint-position="top">
+                        <i class="icon-printer" ></i>
+                    </button>
                     <div id="bb_tbody"></div>
                 </div>
                 <!-- </div> -->
