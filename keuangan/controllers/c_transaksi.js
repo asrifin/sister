@@ -115,6 +115,9 @@ var contentFR ='';
         $('#bb_cetakBC').on('click',function(){
             printPDF('bb');
         });
+        $('#lr_cetakBC').on('click',function(){
+            printPDF('lr');
+        });
         //search button
         $('#juBC').on('click',function(){
             $('#juTR').toggle('slow');

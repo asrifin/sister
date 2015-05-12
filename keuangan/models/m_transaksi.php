@@ -441,7 +441,7 @@
 					case 'nl':
 						$kode = isset($_POST['ns_kodeS'])?filter($_POST['ns_kodeS']):'';
 						$nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
-						$sql  = 'SELECT 
+						$s  = 'SELECT 
 									kr.kode kode,
 							        kr.nama nama,
 							        kr.kategorirek kategorirek,
@@ -458,23 +458,16 @@
 							    ORDER BY
 							        kr.kategorirek,
 									kr.kode ';
-						// print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ //nilai awal halaman
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-
-						$jum = mysql_num_rows($result);
+						$e   = mysql_query($s);
+						$n   = mysql_num_rows($e);
 						$out ='';$totaset=0;
-						if($jum!=0){	
-							$nox = $starting+1;
-							while($res = mysql_fetch_array($result)){	
+						if($n!=0){	
+							while($r = mysql_fetch_assoc($e)){	
 								$out.= '<tr>
-											<td>'.$res['kode'].'</td>
-											<td>'.$res['nama'].'</td>
-											<td>'.$res['debet'].'</td>
-											<td>'.$res['kredit'].'</td>
+											<td>'.$r['kode'].'</td>
+											<td>'.$r['nama'].'</td>
+											<td>'.$r['debet'].'</td>
+											<td>'.$r['kredit'].'</td>
 											<td>&nbsp</td>
 											<td>&nbsp</td>
 											<td>&nbsp</td>
@@ -491,97 +484,102 @@
 						$out.= '<tr class="info"><td colspan="8">'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan="8">'.$obj->total.'</td></tr>';
 					break;
+
 					//Laba Rugi
 					case 'lr':
-
-						$kode     = isset($_POST['ns_kodeS'])?filter(trim($_POST['ns_kodeS'])):'';
-						$nama	  = isset($_POST['ns_namaS'])?filter(trim($_POST['ns_namaS'])):'';
-						$sql       = 'SELECT 
-											kr.kode kode,
-									        kr.nama nama,
-									        kr.kategorirek kategorirek,
-									        kj.debet debet,
-									        kj.kredit kredit
-									    FROM
-									        keu_jurnal kj
-									        LEFT JOIN keu_rekening kr ON kr.replid = kj.rek
-									    WHERE
-									    	kr.kategorirek BETWEEN 6 AND 7
-										GROUP BY
-											kr.kode
-									    ORDER BY
-									        kr.kategorirek,
-											kr.kode';
-						// print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ //nilai awal halaman
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-
-						$recpage = 5;//jumlah data per halaman
-						$aksi    ='tampil';
-						$subaksi ='lr';
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';$totaset=0;
-						if($jum!=0){	
-							$nox = $starting+1;
-							while($res = mysql_fetch_array($result)){	
-									$rek=isset($res['rek']);
-									$kategorirek = $res['kategorirek'];
-									$neracasaldo[$rek]=array('debet'=>0,'kredit'=>0,'kode'=>$res['koderek'],'nama'=>$res['nrek'],'kategorirek'=>$kategorirek);
-									$labarugi[$rek]=array('debet'=>0,'kredit'=>0);
-
-									if($debet>=$kredit){
-										$neracasaldo[$rek]['debet']=$selisih;
-									} else {
-										$neracasaldo[$rek]['kredit']=$selisih;
-									}
-									if($kategorirek==6){
-										$rekpendapatan[$rek]=array();
-										if($neracasaldo[$rek]['debet']>$neracasaldo[$rek]['kredit']){
-											$rekpendapatan[$rek]['nominal']=-$neracasaldo[$rek]['debet'];
-										} else {
-											$rekpendapatan[$rek]['nominal']=$neracasaldo[$rek]['kredit'];
-										}
-										$rekpendapatan[$rek]['nama']=$neracasaldo[$rek]['nama'];
-									}
-									if($kategorirek==7){
-										$rekbeban[$rek]=array();
-										if($neracasaldo[$rek]['kredit']>$neracasaldo[$rek]['debet']){
-											$rekbeban[$rek]['nominal']=-$neracasaldo[$rek]['kredit'];
-										} else {
-											$rekbeban[$rek]['nominal']=$neracasaldo[$rek]['debet'];
-										}
-										$rekbeban[$rek]['nama']=$neracasaldo[$rek]['nama'];
-									}									// if($kategorirek==6){
-									// }
+						$out ='';
+						$pendapatanTot=$biayaTot=0;
+						$s=' SELECT
+								d.kode,
+								d.nama,
+								j.nominal
+							FROM
+								keu_transaksi t
+								LEFT JOIN keu_jurnal j ON j.transaksi = t.replid
+								LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+								LEFT JOIN keu_kategorirekening k ON k.replid = d.kategorirekening
+							WHERE
+								k.nama=';
+						$s1 = $s.'"pendapatan"';
+						$s2 = $s.'"biaya"';
+						$e1  = mysql_query($s1);
+						$n1  = mysql_num_rows($e1);
+						$e2  = mysql_query($s2);
+						$n2  = mysql_num_rows($e2);
+						
+						// pendapatan
+						$out.='<table width="100%" class="table">
+			                        <thead>
+			                            <tr class="info fg-white">
+			                                <th width="50%" class="text-left">Rekening</th>
+			                                <th width="25%" class="text-right">Nominal</th>
+			                                <th  width="25%" class="text-right">Sub Total</th>
+			                            </tr>
+			                            <tr>
+			                                <th class="text-left" colspan="3" >Pendapatan</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody>';
+						if($n1!=0){	
+							while($r1 = mysql_fetch_assoc($e1)){
 								$out.= '<tr>
-											<td>Pendapatan :</td>
-											<td>&nbsp</td>
-											<td>&nbsp</td>
-										</tr>
-										<tr>
-											<td>'.$rekpendapatan[$rek]['nama'].'</td>
-											<td>'.$rekpendapatan[$rek]['nominal'].'</td>
-											<td>&nbsp</td>
+											<td>['.$r1['kode'].'] '.$r1['nama'].'</td>
+											<td align="right">Rp. '.number_format($r1['nominal']).'</td>
+											<td></td>
 										</tr>';
-								$nox++;
-											// <td>'.$debet_ns.'</td>
-											// <td>'.$kredit_ns.'</td>
+								$pendapatanTot+=$r1['nominal'];
 							}
-						}else{ #kosong
+						}else{
 							$out.= '<tr align="center">
 									<td  colspan="8" ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
-						}
-						#link paging
-						$out.= '<tr class="info"><td colspan="8">'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan="8">'.$obj->total.'</td></tr>';
+						}$out.='</tbody>';
+						$out.='<tfoot>
+									<tr>
+										<td align="right" colspan="2">Total :</td>
+										<td class="bg-green fg-white" align="right">Rp. '.number_format($pendapatanTot).'</td>
+									</tr>
+								</tfoot>';
+						$out.='</table>';                 
+						
+						//biaya
+						$out.='<table wifth="100%" class="table">
+			                        <thead>
+			                            <tr>
+			                                <th colspan="3" class="text-left">Biaya</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody>';
+						if($n2!=0){	
+							while($r2 = mysql_fetch_assoc($e2)){
+								$out.= '<tr>
+											<td width="50%">['.$r2['kode'].'] '.$r2['nama'].'</td>
+											<td width="25%"align="right">Rp. '.number_format($r2['nominal']).'</td>
+											<td width="25%"></td>
+										</tr>';
+								$biayaTot+=$r2['nominal'];
+
+							}
+						}else{
+							$out.= '<tr align="center">
+									<td  colspan="8" ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}$out.='</tbody>';
+						$out.='<tfoot>
+									<tr>
+										<td align="right" colspan="2">Total :</td>
+										<td class="bg-red fg-white" align="right">Rp. '.number_format($biayaTot).'</td>
+									</tr>
+								</tfoot>';
+						$out.='</table>';
+						$status = (($pendapatanTot-$biayaTot)<=0?'Kerugian : ':'Laba :');
+						$warna  = (($pendapatanTot-$biayaTot)<=0?'red':'green');
+						$out.='<table wiidth="100%" class="table">
+									<tr>
+										<th width="75%" colspan="2" align="right">'.$status.'</th>
+										<th class="bg-'.$warna.' fg-white" width="25%" align="right">Rp. '.number_format($pendapatanTot-$biayaTot).'</th>
+									</tr>
+								</table>';                 
 					break;
 
 				}

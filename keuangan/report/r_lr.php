@@ -5,9 +5,8 @@
   require_once '../../lib/mpdf/mpdf.php';
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
-  // $mnu = 'pendaftaran';
 
-  $x     = $_SESSION['id_loginS'].$_GET['ns_kodeS'].$_GET['ns_namaS'];
+  $x     = $_SESSION['id_loginS'];
   $token = base64_encode($x);
 
   if(!isset($_SESSION)){ // belum login  
@@ -21,45 +20,36 @@
         <html xmlns="http://www.w3.org/1999/xhtml">
           <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-            <title>SISTER::Keu - Neraca Saldo</title>
+            <title>SISTER::Keu - Laporan Laba / Rugi</title>
           </head>';
         // table content
-            $kode = isset($_POST['ns_kodeS'])?$_POST['ns_kodeS']:'';
-            $nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
-            $s='SELECT 
-                t.replid,
-                t.tanggal,
-                t.nomer,
-                t.uraian,
-                    d.nama,
-                    d.kode,
-                    j.nominal,
-                    j.rek,
-                    t.rekkas,
-                    t.rekitem,
-                    t.detjenistrans
-                FROM
-                    keu_transaksi t 
-                    LEFT JOIN keu_jurnal j ON t.replid = j.transaksi 
-                    LEFT JOIN keu_detilrekening d ON d.replid = j.rek
-                  WHERE 
-                    d.kode LIKE "%'.$kode.'%"  AND
-                    d.nama LIKE "%'.$nama.'%" 
-                GROUP BY d.replid
-                ORDER BY
-                    d.kategorirekening ASC, 
-                d.kode ASC';
-            $e = mysql_query($s) or die(mysql_error());
-            $n = mysql_num_rows($e);
-
-          $out.='<body>
+            $pendapatanTot=$biayaTot=0;
+            $s=' SELECT
+                d.kode,
+                d.nama,
+                j.nominal
+              FROM
+                keu_transaksi t
+                LEFT JOIN keu_jurnal j ON j.transaksi = t.replid
+                LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+                LEFT JOIN keu_kategorirekening k ON k.replid = d.kategorirekening
+              WHERE
+                k.nama=';
+            $s1 = $s.'"pendapatan"';
+            $s2 = $s.'"biaya"';
+            $e1  = mysql_query($s1);
+            $n1  = mysql_num_rows($e1);
+            $e2  = mysql_query($s2);
+            $n2  = mysql_num_rows($e2);
+            
+            $out.='<body>
                     <table width="100%">
                       <tr>
-                        <td width="40%">
+                        <td width="38%">
                           <img width="100" src="../../images/logo.png" alt="" />
                         </td>
                         <td>
-                          <b>Neraca Saldo</b>
+                          <b>Laporan Laba / Rugi</b>
                         </td>
                         <td align="right">
                           <b>Tahun Buku : '.getTahunBuku('nama').'</b>
