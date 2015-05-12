@@ -145,8 +145,8 @@
                                 <th class="text-center">Kredit</th>
                             </tr>
                             <tr style="display:none;" id="nsTR" class="info">
-                                <th class="text-left"><input placeholder="Kode Rekening" id="ns_kodeS" class="ns_cari"></th>
-                                <th class="text-left"><input placeholder="Nama Rekening" id="ns_namaS" class="ns_cari"></th>
+                                <th class="text-left"><div class="input-control text"><input placeholder="Kode Rekening" id="ns_kodeS" class="ns_cari"></div></th>
+                                <th class="text-left"><div class="input-control text"><input placeholder="Nama Rekening" id="ns_namaS" class="ns_cari"></div></th>
                                 <th class="text-left"></th>
                                 <th class="text-left"></th>
                             </tr>
@@ -160,9 +160,12 @@
 
                 </div>
                 <div class="frame" id="nlTAB">
-                    <button  class="bg-blue fg-white" id="nlBC" data-hint="Pencarian" data-hint-position="top">
-                        <i class="icon-search" ></i>
+                    <button  class="bg-blue fg-white" id="nl_cetakBC" data-hint="Pencarian" data-hint-position="top">
+                        <i class="icon-printer" ></i>
                     </button>
+                    <!-- <button  class="bg-blue fg-white" id="nlBC" data-hint="Pencarian" data-hint-position="top"> -->
+                        <!-- <i class="icon-search" ></i> -->
+                    <!-- </button> -->
                     <table class="table hovered bordered striped">
                         <thead>
                             <tr style="color:white;" class="info">

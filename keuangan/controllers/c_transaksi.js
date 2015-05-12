@@ -21,6 +21,7 @@ var contentFR ='';
             $('#tgl1TB').val(getFirstDate());
             $('#tgl2TB').val(getLastDate());
         });
+
     //form content
         contentFR +='<form style="overflow:scroll;height:700px;" autocomplete="off" onsubmit="transSV(this); return false;">'
                         // hidden input
@@ -109,7 +110,7 @@ var contentFR ='';
             printPDF('ju');
         });
         $('#ns_cetakBC').on('click',function(){
-            printPDF('neracasaldo');
+            printPDF('ns');
         });
         $('#bb_cetakBC').on('click',function(){
             printPDF('bb');
@@ -119,11 +120,22 @@ var contentFR ='';
             $('#juTR').toggle('slow');
             $('#ju_noS').val('');
             $('#ju_uraianS').val('');
+        });       
+        // cari TR
+        $('#nsBC').on('click',function(){
+            $('#nsTR').toggle('slow');
+            $('#ns_kodeS').val('');
+            $('#ns_namaS').val('');
         });
-        //search ---
-        $('#ju_noS,#ju_uraianS').on('keydown',function (e){ // kode grup
-            if(e.keyCode == 13) //juVW();
-            viewTB('ju');
+
+        //search action ---
+        // ju
+        $('#ju_noS,#ju_uraianS').on('keydown',function (e){ 
+            if(e.keyCode == 13)  viewTB('ju');
+        });
+        // ns
+        $('#ns_kodeS,#ns_namaS').on('keydown',function (e){ 
+            if(e.keyCode == 13)  viewTB('ns');
         });
 
         // set default this month

@@ -42,7 +42,8 @@
                       d.kode ASC';
             $e1 = mysql_query($s1) or die(mysql_error());
             $n1 = mysql_num_rows($e1);
-// var_dump($detilrekening);exit();
+            // var_dump($detilrekening);exit();
+            
             $out.='<body>
                     <table width="100%">
                       <tr>
@@ -60,9 +61,10 @@
             if($n1==0){
               $out.='<b align="center">Tidak ditemukan data Transaksi</b>';
             }else{
-              $out.='<ul>';
+              // $out.='<ul>';
               while ($r1=mysql_fetch_array($e1)) {
-                $out.='<li style="list-style:none;">['.$r1['kode'].'] '.$r1['nama'].'</li>';
+                $out.='['.$r1['kode'].'] '.$r1['nama'].'</br>';
+                // $out.='<li style="list-style:none;">['.$r1['kode'].'] '.$r1['nama'].'</li>';
                 $s2='SELECT            
                       t.replid,
                       t.tanggal,
@@ -123,18 +125,19 @@
                   </tr>';
                 }$out.='</tbody>
                         <tfoot>
-                          <tr>
+                          <tr class="head">
                             <th align="right" colspan="3">Jumlah</th>
                             <th align="right">Rp. '.number_format($debitTot).'</th>
                             <th align="right">Rp. '.number_format($kreditTot).'</th>
                           </tr>
-                          <tr>
+                          <tr class="head">
                             <th align="right" colspan="3">Selisih</th>
                             <th align="center" colspan="2">Rp. '.number_format($debitTot-$kreditTot).'</th>
                           </tr>
                         </tfoot>
-                    </table>';
-              }$out.='</ul>';
+                    </table><br />';
+              }
+              // $out.='</ul>';
             }
             echo $out;
   

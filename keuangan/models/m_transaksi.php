@@ -266,37 +266,59 @@
 					case 'ns':
 						$kode = isset($_POST['ns_kodeS'])?$_POST['ns_kodeS']:'';
 						$nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
-				        // kj.debet debet,
-				        // kj.kredit kredit,
-						$sql  = 'SELECT 
-									kr.kode kode,
-							        kr.nama nama,
-						        	sum(kj.nominal)nominal
-							    FROM
-									keu_transaksi kt 
-							        LEFT JOIN keu_jurnal kj ON kt.replid = kj.transaksi 
-							        LEFT JOIN keu_detilrekening kr ON kr.replid = kj.rek
-							    WHERE
-							    	kr.kode like "%'.$kode.'%" and
-									kr.nama like "%'.$nama.'%"
-								GROUP BY
-									kr.kode
-							    ORDER BY
-							        kr.kategorirekening,
-									kr.kode ';
+						$s='SELECT 
+								t.replid,
+								t.tanggal,
+								t.nomer,
+								t.uraian,
+						        d.nama,
+						        d.kode,
+					        	j.nominal,
+					        	j.rek,
+				        		t.rekkas,
+				        		t.rekitem,
+			        			t.detjenistrans
+						    FROM
+								keu_transaksi t 
+						        LEFT JOIN keu_jurnal j ON t.replid = j.transaksi 
+						        LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+					        WHERE 
+					        	d.kode LIKE "%'.$kode.'%"  AND
+					        	d.nama LIKE "%'.$nama.'%" 
+						    GROUP BY d.replid
+						    ORDER BY
+						        d.kategorirekening ASC, 
+								d.kode ASC';
 						// print_r($sql);exit(); 	
 						$aksi    ='tampil';
 						$subaksi ='ns';
-						$result  =mysql_query($sql);
-						$jum     = mysql_num_rows($result);
+						$e       = mysql_query($s);
+						$n       = mysql_num_rows($e);
 						$out     ='';$totaset=0;
-						if($jum!=0){	
-							while($res = mysql_fetch_array($result)){	
+						if($n!=0){	
+							$debitTot=$kreditTot=0;
+							while($r = mysql_fetch_array($e)){	
+								$jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r['detjenistrans']));
+								$clr   ='';
+								if($jenis=='ju'){ // ju
+									$debit=99;
+									$kredit=0;
+								}else{
+									if($jenis=='out'){ // outcome
+										$debit  = $r['rekkas']==$r['rek']?0:$r['nominal'];
+										$kredit = $r['rekitem']==$r['rek']?0:$r['nominal'];
+									}else{ // income
+										$debit  = $r['rekkas']==$r['rek']?$r['nominal']:0;
+										$kredit = $r['rekitem']==$r['rek']?$r['nominal']:0;
+									}
+								}
+								$debitTot+=$debit;
+								$kreditTot+=$kredit;								
 								$out.= '<tr>
-											<td>'.$res['kode'].'</td>
-											<td>'.$res['nama'].'</td>
-											<td class="text-right">Rp. '.number_format($res['nominal']).'</td>
-											<td class="text-right">Rp. '.number_format($res['nominal']).'</td>
+											<td>'.$r['kode'].'</td>
+											<td>'.$r['nama'].'</td>
+											<td class="text-right">Rp. '.number_format($debit).'</td>
+											<td class="text-right">Rp. '.number_format($kredit).'</td>
 										</tr>';
 							}
 						}else{ #kosong
@@ -306,8 +328,8 @@
 						}
 						#link paging
 						$out.= '<tr class="info"><td colspan="2" class="text-right">Jumlah :</td>
-							<td class="text-right"><b>Rp. '.number_format(9000).'</b></td>
-							<td class="text-right"><b>Rp. '.number_format(9000).'</b></td>
+							<td class="text-right"><b>Rp. '.number_format($debitTot).'</b></td>
+							<td class="text-right"><b>Rp. '.number_format($kreditTot).'</b></td>
 						</tr>';
 						// $out.='<tr class="info"><td colspan="4">'.$obj->total.'</td></tr>';
 					break;
@@ -369,7 +391,7 @@
 													    ORDER BY
 													        d.kategorirekening ASC, 
 															d.kode ASC';
-															// var_dump($s2);exit();
+													// var_dump($s2);exit();
 													$e2       =mysql_query($s2);
 													$debitTot =$kreditTot=0;
 													while ($r2=mysql_fetch_assoc($e2)) {
@@ -404,7 +426,7 @@
 							                        	</tr>
 							                        	<tr class="info fg-white">
 							                        		<th colspan="3" class="text-right">Selisih</th>
-							                        		<th colspan="2" class="text-center">Rp. '.number_format($debitTot-$kreditTot).'</th>
+							                        		<th colspan="2" class="text-cen">Rp. '.number_format($debitTot-$kreditTot).'</th>
 							                        	</tr>
 							                    </table>'; 
 								$out.='</ul>';
@@ -417,25 +439,25 @@
 					break;
 
 					case 'nl':
-						$kode     = isset($_POST['ns_kodeS'])?filter(trim($_POST['ns_kodeS'])):'';
-						$nama	  = isset($_POST['ns_namaS'])?filter(trim($_POST['ns_namaS'])):'';
-						$sql       = 'SELECT 
-											kr.kode kode,
-									        kr.nama nama,
-									        kr.kategorirek kategorirek,
-									        kj.debet debet,
-									        kj.kredit kredit
-									    FROM
-									        keu_jurnal kj
-									        LEFT JOIN keu_rekening kr ON kr.replid = kj.rek
-									    WHERE
-									    	kr.kode like "%'.$kode.'%" and
-											kr.nama like "%'.$nama.'%"
-										GROUP BY
-											kr.kode
-									    ORDER BY
-									        kr.kategorirek,
-											kr.kode ';
+						$kode = isset($_POST['ns_kodeS'])?filter($_POST['ns_kodeS']):'';
+						$nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
+						$sql  = 'SELECT 
+									kr.kode kode,
+							        kr.nama nama,
+							        kr.kategorirek kategorirek,
+							        kj.debet debet,
+							        kj.kredit kredit
+							    FROM
+							        keu_jurnal kj
+							        LEFT JOIN keu_rekening kr ON kr.replid = kj.rek
+							    WHERE
+							    	kr.kode like "%'.$kode.'%" and
+									kr.nama like "%'.$nama.'%"
+								GROUP BY
+									kr.kode
+							    ORDER BY
+							        kr.kategorirek,
+									kr.kode ';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -443,26 +465,11 @@
 							$starting=0;
 						}
 
-						$recpage = 5;//jumlah data per halaman
-						$aksi    ='tampil';
-						$subaksi ='ns';
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
 						$jum = mysql_num_rows($result);
 						$out ='';$totaset=0;
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_array($result)){	
-										// $neracasaldo_debet=0; $neracasaldo_kredit=0;
-										// $labarugi_debet=0; $labarugi_kredit=0;
-										// $neraca_debet=0; $neraca_kredit=0;
-
-								// if($res['kategorirek']==4){
-								// 		$debet_ns =$res['debet'];
-								// 		$kredit_ns ='';
-								// }
 								$out.= '<tr>
 											<td>'.$res['kode'].'</td>
 											<td>'.$res['nama'].'</td>
@@ -474,8 +481,6 @@
 											<td>&nbsp</td>
 										</tr>';
 								$nox++;
-											// <td>'.$debet_ns.'</td>
-											// <td>'.$kredit_ns.'</td>
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
