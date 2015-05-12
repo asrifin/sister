@@ -1,8 +1,12 @@
 var mnu  ='transaksi'; 
 var mnu2 ='lokasi'; 
+var mnu3 ='departemen'; 
+var mnu4 ='tingkat'; 
 
 var dir  ='models/m_'+mnu+'.php';
 var dir2 ='models/m_'+mnu2+'.php';
+var dir3 ='../akademik/models/m_'+mnu3+'.php';
+var dir4 ='../akademik/models/m_'+mnu4+'.php';
 
 var contentFR ='';
 // main function load first 
@@ -23,14 +27,18 @@ var contentFR ='';
                         +'<input name="idformH" id="idformH" type="hidden">' 
                         +'<input name="detjenistransH" id="detjenistransH" type="hidden">' 
                         +'<input name="subaksiH" id="subaksiH" type="hidden">' 
+                        +'<input class="kwitansi_cari" name="nomerH" id="nomerH" type="hidden">' 
 
                         +'<legend><b>Keterangan Transaksi</b>'
-                            +'<button hint="Tambah Rekening" class="place-right button primary"><i class="icon-floppy"></i> simpan</button>'
+                            +'<span class="place-right">'
+                                +'<span id="kwitansiDV" style="display:none;" class="size2"><input id="kwitansiCB" checked type="checkbox"> Cetak kwitansi </span>&nbsp;'
+                                +'<button hint="Tambah Rekening" class="button primary"><i class="icon-floppy"></i> simpan</button>'
+                            +'</span>'
                         +'</legend>'
                         // nomer transaksi
                         +'<h5 class="place-right fg-green" style="font-weight:bold;" id="nomerTB"></h5>'
                         
-                        // no bukti (nota)
+                        // no bukti (kwitansi)
                         +'<label>No. Bukti </label>'
                         +'<div class="input-control text">'
                             +'<input placeholder="no bukti" name="nobuktiTB" id="nobuktiTB">'
@@ -57,6 +65,18 @@ var contentFR ='';
                             +'<input placeholder="rek. kas / bank" name="rekkasTB" id="rekkasTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+
+                        // departemen (optional)
+                        // +'<label>Departemen</label>'
+                        // +'<div class="input-control select">'
+                        //     +'<select onchange="cmbtingkat(this.value,\'\');" name="departemenTB" id="departemenTB"></select>'
+                        // +'</div>'
+                        
+                        // tingkat / jenjang  (optional)
+                        // +'<label>Tingkat</label>'
+                        // +'<div class="input-control select">'
+                        //     +'<select name="tingkatTB" id="tingkatTB"></select>'
+                        // +'</div>'
 
                         // anggaran (optional:income & outcome)
                         +'<label style="display:none;" class="detilanggaranDV">Anggaran </label>'
@@ -226,6 +246,7 @@ var contentFR ='';
             if(dt.status!='sukses') ret=dt.status;
             else {
                 $('#nomerTB').html(dt.kode);
+                $('#nomerH').val(dt.kode);
                 $('#tanggalTB').val(getToday());
                 $('#nomerTB').addClass('fg-'+(typ=='ju'?'blue':(typ=='in_come'?'green':'red'))); // color of no. trans
             } 
@@ -251,6 +272,7 @@ var contentFR ='';
                     $.Dialog.close();
                     $('#rekTBL').html('');
                     viewTB('ju');
+                    if($('#kwitansiCB').prop('checked')) printPDF('kwitansi');
                 }
             });
         }
@@ -304,12 +326,14 @@ var contentFR ='';
 //end of  print to PDF -------
     function printPDF(mn){
         var par='',tok='',p,v;
-        $('.'+mn+'_cari').each(function(){
-            p=$(this).attr('id');
-            v=$(this).val();
-            par+='&'+p+'='+v;
-            tok+=v;
-        });
+        // if(mn!='kwitansi'){
+            $('.'+mn+'_cari').each(function(){
+                p=$(this).attr('id');
+                v=$(this).val();
+                par+='&'+p+'='+v;
+                tok+=v;
+            });
+        // }
 
         if(mn=='ju'){
             var opt = $('form#optionPN').serialize();
@@ -326,12 +350,12 @@ var contentFR ='';
         }
 
         // return false;
-        var x  = $('#id_loginS').val();
         // alert(x+tok);
+        // console.log('val ='+x+tok);
+        // console.log('par ='+par);
+        // console.log('token ='+token);
+        var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
-        console.log('val ='+x+tok);
-        console.log('par ='+par);
-        console.log('token ='+token);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 
@@ -537,42 +561,48 @@ var contentFR ='';
                     'align':'left',
                     'columnName':'kode',
                     'hide':true,
-                    'width':'20',
+                    'width':'10',
                     'label':'Kode'
                 },{   
                     'align':'left',
                     'columnName':'nama',
-                    'width':'60',
+                    'width':'90',
                     'label':'Rekening'
             }];
         }else{ // anggaran 
-            var urlx= '?aksi=autocomp&subaksi='+subaksi+'&tingkat='+tingkat;
+            // var urlx= '?aksi=autocomp&subaksi='+subaksi+'&tingkat='+tingkat;
+            var urlx= '?aksi=autocomp&subaksi='+subaksi;
             var col =[{
                     'align':'left',
                     'columnName':'nama',
                     'hide':true,
-                    'width':'40',
+                    'width':'30',
                     'label':'Anggaran'
             },{   
                     'align':'left',
                     'columnName':'kategorianggaran',
-                    'width':'20',
+                    'width':'15',
                     'label':'Kategori'
+            },{   
+                    'align':'left',
+                    'columnName':'tingkat',
+                    'width':'25',
+                    'label':'Jenjang'
             },{   
                     'align':'right',
                     'columnName':'sisaBilCur',
-                    'width':'20',
+                    'width':'15',
                     'label':'Sisa'
             },{   
                     'align':'right',
                     'columnName':'kuotaBilCur',
-                    'width':'20',
+                    'width':'15',
                     'label':'Nominal'
             }];
         }
         $('#'+el+'TB').combogrid({
             debug:true,
-            width:'700px',
+            width:'750px',
             colModel: col ,
             url: dir+urlx,
             select: function( event, ui ) { // event setelah data terpilih 
@@ -617,7 +647,6 @@ var contentFR ='';
                 ret.status=false;
                 ret.msg='minimal isi 1 rekening';
             }else{
-                alert('okokok');
                 rekTotNominal();
             }
         }return ret;
@@ -688,6 +717,7 @@ var contentFR ='';
                         $('.rekkasDV').removeAttr('style');
                         $('#rekkasTB').attr('required',true);
                         autoSuggest('debit','rekkas','rek','');
+                        $('#kwitansiDV').removeAttr('style');
                         
                         tr+='<tr style="color:white;"class="info">'
                                 +'<th class="text-center">Rekening</th>'
@@ -724,8 +754,11 @@ var contentFR ='';
                             $('.detilanggaranDV').attr('style','display:visible;');
                             $('#detilanggaranTB').attr('required',true);
                             $('#reklawanDV').html(' Pengeluaran');
+                            // $('#departemenTB').attr('required',true);
+                            // $('#tingkatTB').attr('required',true);
 
                             if(id=='') { // add
+                                // cmbdepartemen('');
                                 autoSuggest('','detilanggaran','detilanggaran','');
                                 kodeTrans(typx);
                                 addRekTR(typx,1);
@@ -896,5 +929,37 @@ var contentFR ='';
             }
         });
     }
-//end of combo kelas---
+
+// combo departemen  ---
+    function cmbdepartemen(dep){
+        var url  = dir3;
+        var data = 'aksi=cmb'+mnu3;
+        ajax(url,data).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.departemen, function(id,item){
+                    out+='<option '+(dep==item.replid?'selected':'')+' value="'+item.replid+'">'+item.nama+'</option>';
+                });
+            }$('#departemenTB').html('<option value="">-Pilih Departemen-</option>'+out);
+            cmbtingkat($('#departemenTB').val(),'');
+        });
+    }
+
+// combo tingkat / jenjang  ---
+    function cmbtingkat(dep,ting){
+        var url  = dir4;
+        var data = 'aksi=cmb'+mnu4+'&departemen='+dep;
+        ajax(url,data).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.tingkat, function(id,item){
+                    out+='<option '+(ting==item.replid?'selected':'')+' value="'+item.replid+'">'+item.tingkat+'</option>';
+                });
+            }$('#tingkatTB').html('<option value="">-Pilih Tingkat-</option>'+out);
+        });
+    }
 

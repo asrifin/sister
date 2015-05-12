@@ -6,9 +6,9 @@
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 	// note :
-	// ju : jurnal umum
-	// in : pemasukkan
-	// out : pengeluaran
+	/*ju : jurnal umum
+	in : pemasukkan
+	out : pengeluaran*/
 
 	$mnu  = 'transaksi';
 	$mnu2 = 'rekening';
@@ -30,7 +30,7 @@
 				$sord       = $_GET['sord']; // get the direction
 				$searchTerm = $_GET['searchTerm'];
 
-				if(isset($_GET['subaksi']) && $_GET['subaksi']=='rek'){
+				if(isset($_GET['subaksi']) && $_GET['subaksi']=='rek'){ // rekening
 					$ss='SELECT
 							d.replid,
 							d.kode,
@@ -48,11 +48,13 @@
 							d.replid,
 							d.nama,
 							sum(n.nominal)nominal,
-							k.nama kategorianggaran
+							k.nama kategorianggaran,
+							concat(t.tingkat," (",t.keterangan,")") tingkat
 						FROM
 							keu_detilanggaran d
 							LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
 							LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
+							LEFT JOIN aka_tingkat t ON t.replid = d.tingkat
 						WHERE
 							d.nama LIKE "%'.$searchTerm.'%"
 							OR k.nama LIKE "%'.$searchTerm.'%"
@@ -95,6 +97,7 @@
 							'replid'           =>$row['replid'],
 							'nama'             =>$row['nama'],
 							'kategorianggaran' =>$row['kategorianggaran'],
+							'tingkat'          =>$row['tingkat'],
 							'kuotaBilCur'      =>'Rp. '.number_format($kuota['kuotaNum']),
 							'sisaBilCur'       =>'Rp. '.number_format($kuota['sisaNum']),
 							'sisaBilNum'       => $kuota['sisaNum'],
@@ -262,7 +265,7 @@
 					//Neraca Saldo
 					case 'ns':
 						$kode = isset($_POST['ns_kodeS'])?$_POST['ns_kodeS']:'';
-						$nama = isset($_POST['ns_namaS'])?$_POST['ns_namaS']:'';
+						$nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
 				        // kj.debet debet,
 				        // kj.kredit kredit,
 						$sql  = 'SELECT 
@@ -311,25 +314,24 @@
 
 					//Buku Besar
 					case 'bb':
-						$bb_detilrekening = (isset($_POST['bb_detilrekeningS']) AND $_POST['bb_detilrekeningS']!='')?' WHERE kr.replid = '.$_POST['bb_detilrekeningS']:'';
-						// var_dump($bb_detilrekening);exit();
+						$bb_detilrekening = (isset($_POST['bb_detilrekeningS']) AND $_POST['bb_detilrekeningS']!='')?' WHERE r.replid = '.$_POST['bb_detilrekeningS']:'';
 						$sql  = 'SELECT
-									kr.replid, 
-									kr.kode kode,
-							        kr.nama nama,
-						        	sum(kj.nominal)nominal
-							    FROM
-									keu_transaksi kt 
-							        LEFT JOIN keu_jurnal kj ON kt.replid = kj.transaksi 
-							        LEFT JOIN keu_detilrekening kr ON kr.replid = kj.rek
-							    '.$bb_detilrekening.'
+									d.replid,
+									d.kode kode,
+									d.nama nama
+								FROM
+									keu_transaksi t
+									LEFT JOIN keu_jurnal j ON t.replid = j.transaksi
+									LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+								WHERE 
+									t.tahunbuku='.getTahunBuku('replid').'
+									'.$bb_detilrekening.'
 								GROUP BY
-									kr.kode
-							    ORDER BY
-							        kr.kategorirekening,
-									kr.kode ';
-
-						$aksi   ='tampil';
+									d.kode
+								ORDER BY
+									d.kategorirekening ASC,
+									d.kode ASC';
+						// var_dump($sql);exit();
 						$result = mysql_query($sql);
 						$jum    = mysql_num_rows($result);
 						$out    ='';$totaset=0;
@@ -349,29 +351,51 @@
 							                        </thead>
 							                        <tbody class="fg-black">';
 							                        $s2='SELECT 
+															t.replid,
 															t.tanggal,
 															t.nomer,
 															t.uraian,
 													        d.nama,
-												        	j.nominal
-
+												        	j.nominal,
+												        	j.rek,
+											        		t.rekkas,
+											        		t.rekitem,
+										        			t.detjenistrans
 													    FROM
 															keu_transaksi t 
 													        LEFT JOIN keu_jurnal j ON t.replid = j.transaksi 
 													        LEFT JOIN keu_detilrekening d ON d.replid = j.rek
 													    WHERE d.replid='.$res['replid'].'
 													    ORDER BY
-													        d.kategorirekening,
-															d.kode ';
+													        d.kategorirekening ASC, 
+															d.kode ASC';
 															// var_dump($s2);exit();
 													$e2=mysql_query($s2);
 													while ($r2=mysql_fetch_assoc($e2)) {
+														$jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r2['detjenistrans']));
+														echo '<pre>';
+														print_r($r2);exit();
+														echo '</pre>';
+														if($jenis=='ju'){ // ju
+															$debit=99;
+															$kredit=0;
+														}else{
+															if($jenis=='out'){ // outcome
+																// var_dump($r2);
+																$debit  = $r2['rekkas']==$r2['rek']?$r2['nominal']:0;
+																$kredit = $r2['rekitem']==$r2['rek']?$r2['nominal']:0;
+															}else{ // income
+																$debit  = $r2['nominal'];
+																$kredit = 0;
+															}
+														}
+														// $debit = $r2['rek']==$r?
 														$out.='<tr >
 															<td width="10%">'.tgl_indo5($r2['tanggal']).'</td>
 															<td  width="20%">'.$r2['nomer'].'</td>
 															<td  width="30%">'.$r2['uraian'].'</td>
-															<td width="20%">Rp. '.number_format($r2['nominal']).'</td>
-															<td width="20%">'.$r2['nama'].'</td>
+															<td width="20%">Rp. '.number_format($debit).'</td>
+															<td width="20%">Rp. '.number_format($kredit).'</td>
 														</tr>';
 													}$out.='</tbody>
 							                        <tfoot>
@@ -390,8 +414,8 @@
 									... data tidak ditemukan...</span></td></tr>';
 						}
 					break;
-					case 'nl':
 
+					case 'nl':
 						$kode     = isset($_POST['ns_kodeS'])?filter(trim($_POST['ns_kodeS'])):'';
 						$nama	  = isset($_POST['ns_namaS'])?filter(trim($_POST['ns_namaS'])):'';
 						$sql       = 'SELECT 
@@ -778,6 +802,7 @@
 						foreach ($rekArr as $i => $v) {
 							$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
 							$s1 = 'keu_transaksi SET 	tahunbuku     ='.getTahunBuku('replid').',
+														uraian        ="'.$_POST[$sub.'_uraian'.$v.'TB'].'",
 														detilanggaran ='.$_POST['detilanggaranH'].',
 														rekkas        ='.$_POST['rekkasH'].',
 														rekitem       ='.$_POST[$sub.'_rek'.$v.'H'].',
@@ -786,6 +811,7 @@
 														tanggal       ="'.tgl_indo6($_POST['tanggalTB']).'",
 														detjenistrans ='.getDetJenisTrans('replid','kode',$_POST['detjenistransH']).',
 														nobukti       ="'.$_POST['nobuktiTB'].'"';
+							// var_dump($s1);exit();
 							$s  = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1;
 							$e  = mysql_query($s);
 							$id = mysql_insert_id();
@@ -825,6 +851,14 @@
 				$e = mysql_query($s);
 				if(!$e) $stat = 'gagal';
 				else{
+					if($d['pembayaran']!=0){
+						$s='DELETE * FROM keu_pembayaran WHERE replid='.$d['pembayaran'];
+						$e=mysql_query($s);
+						if(!$e){
+							$stat='gagal_hapus_pembayaran';
+							break;
+						}
+					}
 					$s2   = 'DELETE FROM keu_jurnal WHERE transaksi= '.$d['replid'];
 					$e2   = mysql_query($s2);
 					$stat = !$e2?'gagal':'sukses';

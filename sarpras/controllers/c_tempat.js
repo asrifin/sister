@@ -1,25 +1,24 @@
-var mnu       ='tempat'; // edit by epiii
-var mnu2      ='lokasi'; // edit by epii
-var dir       ='models/m_'+mnu+'.php'; //edit by epiii
-var dir2      ='models/m_'+mnu2+'.php'; //edit by epiii
-var contentFR ='';
+var mnu    ='tempat'; 
+var mnu2   ='lokasi'; 
+var dir    ='models/m_'+mnu+'.php'; 
+var dir2   ='models/m_'+mnu2+'.php'; 
+var c_mainFR =c_detailFR='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+        c_mainFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         +'<label>Lokasi</label>'
 
                         +'<div class="input-control text">'
                             +'<input  type="hidden" name="lokasiH" id="lokasiH" class="span2">'
-                            // +'<input enabled="enabled" name="lokasiTB" id="lokasiTB" class="span2">'
-                            +'<input disabled="disabled" name="lokasiTB" id="lokasiTB" class="span2">'
+                            +'<input disabled="disabled" name="lokasiTB" id="lokasiTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
                         +'<label>Kode Tempat</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="kode tampat"  class="span2" required type="text" name="kodeTB" id="kodeTB">'
+                            +'<input placeholder="kode tampat"  required type="text" name="kodeTB" id="kodeTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -39,19 +38,52 @@ var contentFR ='';
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
+        c_detailFR+='<div style="overflow:scroll;height:600px;">'
+                    +'<input type="hidden" id="detail_tempatH" class="detail_cari" >'
+                    +'<table width="100%" >'
+                        +'<tr>'
+                            +'<td  width="5%" ><b>Lokasi</b></td><td width="1%">:</td>'
+                            +'<td colspan="2" id="lokasiDV"></td>'
+                        +'</tr>'
+                        +'<tr>'
+                            +'<td><b>Tempat</b></td><td  width="1%">:</td>'
+                            +'<td colspan="2" id="tempatDV"></td>'
+                        +'</tr>'
+                        +'<tr>'
+                            +'<td><b>Keterangan</b></td><td  width="1%">:</td>'
+                            +'<td id="keteranganDV"></td>'
+                            +'<td class="place-right"><button data-hint="cetak" onclick="printPDF(\'main\');" class="button"><i class="icon-printer"></i></button></td>'
+                        +'</tr>'
+                    +'</table>'
+                    +'<table class="table hovered bordered striped">'
+                        +'<thead>'
+                            +'<tr class="info fg-white">'
+                                +'<th>Kode</th>'
+                                +'<th>Nama</th>'
+                                +'<th>Barcode</th>'
+                                +'<th>Sumber</th>'
+                                +'<th>Harga</th>'
+                                +'<th>Kondisi</th>'
+                                +'<th>Status</th>'
+                                +'<th>Keterangan</th>'
+                            +'</tr>'
+                            +'<tr id="detail_cariTR" class="info ">'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_kodeS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_namaS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_barkodeS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_sumberS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_hargaS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_kondisiS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_statusS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_keteranganS"  class="detail_cari"></th>'
+                            +'</tr>'
+                        +'</thead>'
+                        +'<tbody id="detail_tbody"></tbody>'
+                    +'</table>'
+                    +'</div>';
 
-        /*
-        load pertama kali (pilihn salah satu) :
-        cmblokasi : bila ada combo box
-        viewTB : jika tanpa combo box
-        */
-
-        //combo lokasi
-        cmblokasi();
+        cmblokasi('filter','');
         
-        //load table // edit by epiii
-        // viewTB();
-
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
@@ -59,33 +91,27 @@ var contentFR ='';
 
         //search action // edit by epiii
         $('#lokasiS').on('change',function (e){ // change : combo box
-                viewTB($('#lokasiS').val());
+            viewTB('main');
         });
-        $('#tempatS').on('keydown',function (e){ // keydown : textbox
+        $('#main_tempatS,#main_keteranganS,#main_kodeS').on('keydown',function (e){ // keydown : textbox
             if(e.keyCode == 13)
-                viewTB($('#lokasiS').val());
+                viewTB('main');
         });
-        $('#keteranganS').on('keydown',function (e){ // keydown : textbox
-            if(e.keyCode == 13)
-                // viewTB($('#keteranganS').val());
-                viewTB($('#lokasiS').val());
-        });
-
         // search button
         $('#cariBC').on('click',function(){
             $('#cariTR').toggle('slow');
-            // $('#lokasiS').val('');
-            $('#tempatS').val('');
-            $('#keteranganS').val('');
+            $('#main_kodeS').val('');
+            $('#main_tempatS').val('');
+            $('#main_keteranganS').val('');
         });
     }); 
 // end of main function ---
 
 // combo departemen ---
-    function cmblokasi(){
+    function cmblokasi(typ,lok){
         $.ajax({
             url:dir2,
-            data:'aksi=cmblokasi',
+            data:'aksi=cmblokasi'+(lok!=''?'&replid='+lok:''),
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -96,9 +122,13 @@ var contentFR ='';
                     $.each(dt.lokasi, function(id,item){
                         out+='<option value="'+item.replid+'">['+item.kode+'] '+item.nama+'</option>';
                     });
-                    //panggil fungsi viewTB() ==> tampilkan tabel 
-                    viewTB(dt.lokasi[0].replid); 
-                }$('#lokasiS').html(out);
+                }
+                if(typ=='form')//filter
+                    $('#lokasiTB').val('['+dt.lokasi[0].kode+']'+dt.lokasi[0].nama);
+                else{ // filter
+                    $('#lokasiS').html(out);
+                    viewTB('main'); 
+                }
             }
         });
     }
@@ -124,7 +154,7 @@ var contentFR ='';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#lokasiS').val());
+                    viewTB('main');
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }notif(cont,clr);
@@ -134,7 +164,46 @@ var contentFR ='';
 //end of save process ---
 
 // view table ---
-    function viewTB(lok){ //edit by epiii 
+    function viewTB(subaksi){
+        var aksi ='aksi=tampil';
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
+        }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
+        $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi+cari,
+            beforeSend:function(){
+                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                setTimeout(function(){
+                    $(el2).html(dt).fadeIn();
+                },1000);
+            }
+        });
+    }
+// end of view table
+
+
+// view table ---
+    function viewTBx(lok){  
         var aksi ='aksi=tampil';
         var cari ='&lokasiS='+lok
                     +'&kodeS='+$('#kodeS').val()
@@ -145,7 +214,7 @@ var contentFR ='';
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                $('#tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $('#tbody').html(dt).fadeIn();
@@ -155,7 +224,31 @@ var contentFR ='';
     }
 // end of view table ---
 
-// form ---
+// detail pop up---
+    function detailFR(id){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: 850,
+            padding: 10,
+            onShow: function(){
+                var titlex;
+                var data = 'aksi=ambiledit&replid='+id;
+                $.Dialog.title('Detail Tempat & Barang '+mnu); // edit by epiii
+                $.Dialog.content(c_detailFR);
+                ajax(dir,data).done(function(dt){
+                    $('#detail_tempatH').val(id);
+                    $('#lokasiDV').html(dt.lokasi);
+                    $('#tempatDV').html('['+dt.kode+']'+dt.nama);
+                    $('#keteranganDV').html(dt.keterangan);
+                    viewTB('detail');
+                });
+            }
+        });
+    }
+
+// form add/edit ---
     function viewFR(id){
         $.Dialog({
             shadow: true,
@@ -166,40 +259,27 @@ var contentFR ='';
             onShow: function(){
                 var titlex;
                 if(id==''){  //add mode
-                    // alert('halooo');
                     titlex='<span class="icon-plus-2"></span> Tambah ';
-                    $.ajax({
-                        url:dir2,
-                        data:'aksi=cmblokasi&replid='+$('#lokasiS').val(),
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#lokasiTB').val(dt.lokasi[0].nama);
-                            $('#lokasiH').val($('#lokasiS').val());
-                        }
-                    });
+                    cmblokasi('form',$('#lokasiS').val());
+                    setTimeout(function(){
+                        $('#lokasiH').val($('#lokasiS').val());
+                    },500);
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=ambiledit&replid='+id,
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#idformH').val(id);
-                            $('#lokasiH').val($('#lokasiS').val()); // edit by epii
-                            $('#lokasiTB').val(dt.lokasi);
-                            $('#kodeTB').val(dt.kode);
-                            $('#namaTB').val(dt.nama);
-                            $('#keteranganTB').val(dt.keterangan);
-                        }
+                    var data='aksi=ambiledit&replid='+id;
+                    ajax(dir,data).done(function(dt){
+                        $('#idformH').val(id);
+                        $('#lokasiH').val($('#lokasiS').val());
+                        $('#lokasiTB').val('['+dt.kode+'] '+dt.lokasi);
+                        $('#kodeTB').val(dt.kode);
+                        $('#namaTB').val(dt.nama);
+                        $('#keteranganTB').val(dt.keterangan);
                     });
                 }$.Dialog.title(titlex+' '+mnu); // edit by epiii
-                $.Dialog.content(contentFR);
+                $.Dialog.content(c_mainFR);
             }
         });
     }
-// end of form ---
 
 //paging ---
 
@@ -287,6 +367,28 @@ function notif(cont,clr) {
 	function xx () {
 		alert(arguments[0]); // baca argument tanpa harus tulis d fungsi
 	}
+
+// fungsi AJAX : asyncronous
+    function ajax(u,d) {
+        return $.ajax({
+            url:u,
+            type:'post',
+            dataType:'json',
+            data:d
+        });
+    }
+
+    function printPDF(mn){
+        var par='',tok='',p,v;
+        $('.'+mn+'_cari').each(function(){
+            p=$(this).attr('id');
+            v=$(this).val();
+            par+='&'+p+'='+v;
+            tok+=v;
+        });var x  = $('#id_loginS').val();
+        var token = encode64(x+tok);
+        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+    }
     // ---------------------- //
     // -- created by rovi  -- //
     // ---------------------- // 
