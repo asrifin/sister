@@ -76,10 +76,31 @@
                     $out.='<div class="tile-group '.$v['size'].'">';
                     // looping modul
                     foreach ($v['modul'] as $ii => $vv) {
-                                // <div style="align:center;" class="tile-content email">
-                                // '.($vv['statmod']==0?'<span class="icon-locked-2"></span>':'<img src="images/'.$vv['icon'].'png">').'
+                        $out.='<a id="mod-'.$vv['link'].'" href="'.$vv['link'].'" class="tile '.$vv['size'].' bg-'.$vv['warna'].' live" data-role="live-tile" '.($vv['statmod']!=0?'data-effect="slideUp"':'').' data-click="transform">
+                                <div style="align:center;" class="tile-content icon">
+                                    <center>
+                                        <span class="icon-'.$vv['icon'].'"></span>
+                                    </center>
+                                </div>
+                                <div class="tile-content email">
+                                    <div class="email-data-text">Keterangan :</div>
+                                    <div class="email-data-text">'.$vv['keterangan'].'</div>
+                                </div>
+                                <div class="brand">
+                                    <div class="label">
+                                        <h4 class="no-margin fg-white">
+                                            '.$vv['modul'].'
+                                        </h4>
+                                    </div>
+                                    <!--<div class="badge">3</div>-->
+                                </div>
+                            </a>';
+                    } //end of looping modul
+
+/*                    foreach ($v['modul'] as $ii => $vv) {
                         $out.='<a id="mod-'.$vv['link'].'" 
-                                '.($vv['statmod']==0?' onclick="warning(\''.$vv['modul'].'\');"':' href="'.$vv['link'].'"').' class="tile '.$vv['size'].' 
+                                '.($vv['statmod']==0?' onclick="warning(\''.$vv['modul'].'\');"':' 
+                                href="'.$vv['link'].'"').' class="tile '.$vv['size'].' 
                                 bg-'.($vv['statmod']!=0?$vv['warna']:'grey').' live" data-role="live-tile" 
                                 '.($vv['statmod']!=0?'data-effect="slideUp"':'').' 
                                 data-click="transform">
@@ -102,6 +123,7 @@
                                 </div>
                             </a>';
                     } //end of looping modul
+*/
                     $out.='</div>';
                 } ///end of looping grup modul
                 echo $out;
