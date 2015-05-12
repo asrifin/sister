@@ -5,20 +5,10 @@
   require_once '../../lib/mpdf/mpdf.php';
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
-  $mnu = 'transaksi';
-  $pre = 'ju_';
-
-  echo '<pre>';
-  print_r($_GET);
-  echo '</pre>';
-  exit();
-
-  $x     = $_SESSION['id_loginS'].$_GET[$pre.'noS'].$_GET[$pre.'uraianS'].$_GET['jenisAllCB'].$jenis.$_GET['tgl1TB'].$_GET['tgl2TB'];
+  $mnu   = 'transaksi';
+  $pre   = 'bb_';
+  $x     = $_SESSION['id_loginS'].$_GET[$pre.'detilrekeningS'];
   $token = base64_encode($x);
-  // var_dump($jenis); echo "<br />";
-  // var_dump($x); echo "<br />";
-  // var_dump($token); echo "<br />";
-  // var_dump($_GET['token']);
 
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
@@ -33,86 +23,119 @@
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>SISTER::Keu - Jurnal Umum '.$mnu.'</title>
           </head>';
-          // $kelompok      = isset($_GET['kelompokS'])?filter($_GET['kelompokS']):'';
-          // $nopendaftaran = isset($_GET['nopendaftaranS'])?filter($_GET['nopendaftaranS']):'';
-          // $nama          = isset($_GET['namaS'])?filter($_GET['namaS']):'';
-          $ju_no     = isset($_GET['ju_noS'])?filter($_GET['ju_noS']):'';
-          $ju_uraian = isset($_GET['ju_uraianS'])?filter($_GET['ju_uraianS']):'';
-      
-        // table content
-          $s1 = 'SELECT * 
-                  from keu_transaksi 
-                  WHERE 
-                    (nomer like "%'.$ju_no.'%" OR nomer like "%'.$ju_no.'%" ) AND
-                    uraian like "%'.$ju_uraian.'%"';
-            $e1  = mysql_query($s21) or die(mysql_error());
-            // $n   = mysql_num_rows($e1);
-
-          $out.='<body>
+            $detilrekening = (isset($_GET[$pre.'detilrekeningS']) AND $_GET[$pre.'detilrekeningS']!='')?' AND  d.replid = '.$_GET[$pre.'detilrekeningS']:'';
+            $s1 ='SELECT
+                      d.replid,
+                      d.kode kode,
+                      d.nama nama
+                    FROM
+                      keu_transaksi t
+                      LEFT JOIN keu_jurnal j ON t.replid = j.transaksi
+                      LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+                    WHERE 
+                      t.tahunbuku='.getTahunBuku('replid').'
+                      '.$detilrekening.'
+                    GROUP BY
+                      d.kode
+                    ORDER BY
+                      d.kategorirekening ASC,
+                      d.kode ASC';
+            $e1 = mysql_query($s1) or die(mysql_error());
+            $n1 = mysql_num_rows($e1);
+// var_dump($detilrekening);exit();
+            $out.='<body>
                     <table width="100%">
                       <tr>
                         <td width="39%">
                           <img width="100" src="../../images/logo.png" alt="" />
                         </td>
                         <td>
-                          <b>Jurnal Umum</b>
+                          <b>Laporan Buku Besar</b>
+                        </td>
+                        <td align="right">
+                          <b>Tahun Buku : '.getTahunBuku('nama').'</b>
                         </td>
                       </tr>
-                    </table><br />';
-
-            $out.='<table class="isi" width="100%">
-                        <tr class="head">
-                            <td class="text-center">Tanggal </td>
-                            <td class="text-center">No. Jurnal/Jenis Bukti/No.Bukti</td>
-                            <td class="text-center">Uraian</td>
-                            <td class="text-center">Detil Jurnal</td>
-                        </tr>';
-            $nox = 1;
-            $totbayar = 0;
-            if($n==0){
-              $out.='<tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>';
+                    </table>';
+            if($n1==0){
+              $out.='<b align="center">Tidak ditemukan data Transaksi</b>';
             }else{
-              while ($res=mysql_fetch_array($e1)) {
-                $s2 = 'SELECT r.kode,r.nama,j.debet,j.kredit
-                    from keu_jurnal j,keu_rekening r 
-                    where 
-                      j.transaksi ='.$res['replid'].' AND 
-                      j.rek=r.replid
-                    ORDER BY kredit  ASC';
-                $e2 = mysql_query($s2);
-                $tb2.='<table class="bordered striped lightBlue" width="100%">';
-                    while($r2=mysql_fetch_assoc($e2)){
-                      $tb2.='<tr>
-                          <td>'.$r2['nama'].'</td>
-                          <td>'.$r2['kode'].'</td>
-                          <td>Rp. '.number_format($r2['debet']).',-</td>
-                          <td>Rp. '.number_format($r2['kredit']).',-</td>
-                        </tr>';
-                    }$tb2.='</table>';
-                $out.= '<tr>
-                      <td>'.tgl_indo($res['tanggal']).'</td>
-                      <td>'.ju_nomor($res['nomer'],$res['jenis'],$res['nobukti']).'</td>
-                      <td>'.$res['uraian'].'</td>
-                      <td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
-                    </tr>';
-                $nox++;
-                // $totbayar+=($r2['daftar']+$r2['joiningf']);
-                $debet += ($r2['debet']);
-                $kredit += ($r2['kredit']);
-              }
+              $out.='<ul>';
+              while ($r1=mysql_fetch_array($e1)) {
+                $out.='<li style="list-style:none;">['.$r1['kode'].'] '.$r1['nama'].'</li>';
+                $s2='SELECT            
+                      t.replid,
+                      t.tanggal,
+                      t.nomer,
+                      t.uraian,
+                      d.nama,
+                      j.nominal,
+                      j.rek,
+                      t.rekkas,
+                      t.rekitem,
+                      t.detjenistrans
+                    FROM
+                      keu_transaksi t 
+                      LEFT JOIN keu_jurnal j ON t.replid = j.transaksi 
+                      LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+                    WHERE 
+                      d.replid='.$r1['replid'].'
+                    ORDER BY
+                      d.kategorirekening ASC, 
+                      d.kode ASC';
+                  // print_r($s2);exit();
+
+                $e2 = mysql_query($s2) or die(mysql_error());
+                $out.='<table width="100%" class="isi">
+                      <thead>
+                          <tr class="head">
+                              <th width="12%">Tanggal </th>
+                              <th width="18%">No. Transaksi</th>
+                              <th width="30%">Uraian</th>
+                              <th width="20%">Debet</th>
+                              <th width="20%">Kredit</th>
+                          </tr>
+                      </thead>
+                      <tbody>';
+                $debitTot=$kreditTot=0;
+                while ($r2=mysql_fetch_assoc($e2)) {
+                  $jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r2['detjenistrans']));
+                  if($jenis=='ju'){ // ju
+                    $debit=99;
+                    $kredit=0;
+                  }else{
+                    if($jenis=='out'){ // outcome
+                      $debit  = $r2['rekkas']==$r2['rek']?0:$r2['nominal'];
+                      $kredit = $r2['rekitem']==$r2['rek']?0:$r2['nominal'];
+                    }else{ // income
+                      $debit  = $r2['rekkas']==$r2['rek']?$r2['nominal']:0;
+                      $kredit = $r2['rekitem']==$r2['rek']?$r2['nominal']:0;
+                    }
+                  }
+                  $debitTot+=$debit;
+                  $kreditTot+=$kredit;
+                  $out.='<tr >
+                    <td>'.tgl_indo5($r2['tanggal']).'</td>
+                    <td>'.$r2['nomer'].'</td>
+                    <td>'.$r2['uraian'].'</td>
+                    <td align="right">Rp. '.number_format($debit).'</td>
+                    <td align="right">Rp. '.number_format($kredit).'</td>
+                  </tr>';
+                }$out.='</tbody>
+                        <tfoot>
+                          <tr>
+                            <th align="right" colspan="3">Jumlah</th>
+                            <th align="right">Rp. '.number_format($debitTot).'</th>
+                            <th align="right">Rp. '.number_format($kreditTot).'</th>
+                          </tr>
+                          <tr>
+                            <th align="right" colspan="3">Selisih</th>
+                            <th align="center" colspan="2">Rp. '.number_format($debitTot-$kreditTot).'</th>
+                          </tr>
+                        </tfoot>
+                    </table>';
+              }$out.='</ul>';
             }
-            $out.='<tr>
-              <td colspan="2" align="right"><b>Total : </b></td>
-              <td align="right">Rp. '.number_format($debet).',-</td>
-              <td align="right">Rp. '.number_format($kredit).',-</td>
-            </tr>';
-            $out.='</table>';
-            $out.='</body>';
             echo $out;
   
         #generate html -> PDF ------------
