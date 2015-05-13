@@ -1,4 +1,3 @@
-
 <script src="controllers/c_transaksi.js"></script>
 <script src="js/metro/metro-hint.js"></script>
 <script src="../js/base64.js"></script>
@@ -22,7 +21,6 @@
         <button id="optionBC" data-hint="Selengkapnya..." class="bg-gray fg-white"><i class="icon-grid"></i></button>
     </div>
 </div>
- 
 
 <div style="overflow:scroll;height:700px">    
     <form id="optionPN" style="display:none;">
@@ -73,8 +71,9 @@
                 <li><a href="#pkbTAB">Posisi Kas dan Bank</a></li>
                 <li><a href="#btTAB">Buku Tambahan</a></li>
             </ul>
+
             <div style="background-color:#dddddd;"  class="frames">
-                <!-- 1st content -->
+                <!-- jurnal umum -->
                 <div class="frame" id="juTAB">    
                     <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
@@ -101,11 +100,11 @@
                                 <th class="text-center">Aksi</th>
                             </tr>
                             <tr style="display:none;" id="juTR" class="info">
-                                <th class="text-left"></th>
-                                <th class="text-left"><div class="input-control text"><input placeholder="cari ..." id="ju_noS" class="ju_cari"></div></th>
-                                <th class="text-left"><div class="input-control text"><input placeholder="cari ..." id="ju_uraianS" class="ju_cari"></div></th>
-                                <th style="display:visible;"class="text-left uraianCOL"></th>
-                                <th class="text-left"></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"><div class="input-control text"><input placeholder="cari ..." id="ju_noS" class="ju_cari"></div></th>
+                                <th class="text-center"><div class="input-control text"><input placeholder="cari ..." id="ju_uraianS" class="ju_cari"></div></th>
+                                <th style="display:visible;"class="text-center uraianCOL"></th>
+                                <th class="text-center"></th>
                             </tr>
                         </thead>
 
@@ -114,18 +113,21 @@
                         <tfoot>
                         </tfoot>
                     </table>
-
                 </div>
-                <!-- end of 1st content -->
+
+                <!-- buku besar -->
                 <div class="frame" id="bbTAB">
                     <span class="fg-gray">Tampilkan Akun :</span> 
                     <div class="input-control select span3">
                         <select class="bb_cari" onchange="viewTB('bb');" id="bb_detilrekeningS" name="bb_detilrekeningS"></select>
                     </div>
+                    <button  class="bg-blue fg-white" id="bb_cetakBC" data-hint="Cetak" data-hint-position="top">
+                        <i class="icon-printer" ></i>
+                    </button>
                     <div id="bb_tbody"></div>
                 </div>
-                <!-- </div> -->
 
+                <!-- neraca saldo -->
                 <div class="frame" id="nsTAB">
                     <button  class="bg-blue fg-white" id="nsBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
@@ -142,10 +144,10 @@
                                 <th class="text-center">Kredit</th>
                             </tr>
                             <tr style="display:none;" id="nsTR" class="info">
-                                <th class="text-left"><input placeholder="Kode Rekening" id="ns_kodeS" class="ns_cari"></th>
-                                <th class="text-left"><input placeholder="Nama Rekening" id="ns_namaS" class="ns_cari"></th>
-                                <th class="text-left"></th>
-                                <th class="text-left"></th>
+                                <th class="text-center"><div class="input-control text"><input placeholder="Kode Rekening" id="ns_kodeS" class="ns_cari"></div></th>
+                                <th class="text-center"><div class="input-control text"><input placeholder="Nama Rekening" id="ns_namaS" class="ns_cari"></div></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
                             </tr>
                         </thead>
 
@@ -154,17 +156,18 @@
                         <tfoot>
                         </tfoot>
                     </table> 
-
                 </div>
+
+                <!-- neraca lajur-->
                 <div class="frame" id="nlTAB">
-                    <button  class="bg-blue fg-white" id="nlBC" data-hint="Pencarian" data-hint-position="top">
-                        <i class="icon-search" ></i>
+                    <button  class="bg-blue fg-white" id="nl_cetakBC" data-hint="Pencarian" data-hint-position="top">
+                        <i class="icon-printer" ></i>
                     </button>
                     <table class="table hovered bordered striped">
                         <thead>
                             <tr style="color:white;" class="info">
-                                <th class="text-left" rowspan="2">Kode Rekening</th>
-                                <th class="text-left" rowspan="2">Nama Rekening</th>
+                                <th class="text-center" rowspan="2">Kode Rekening</th>
+                                <th class="text-center" rowspan="2">Nama Rekening</th>
                                 <th class="text-center" colspan="2">Neraca Saldo</th>
                                 <th class="text-center" colspan="2">Laba/Rugi</th>
                                 <th class="text-center" colspan="2">Neraca</th>
@@ -177,47 +180,45 @@
                                 <th class="text-right">Debit</th>
                                 <th class="text-right">Kredit</th>
                             </tr>
-    <!--                         <tr style="color:white;" class="info">
-                                <th class="text-right">Debit</th>
-                                <th class="text-right">Kredit</th>
-                            </tr>
-                            <tr style="color:white;" class="info">
-                                <th class="text-right">Debit</th>
-                                <th class="text-right">Kredit</th>
-                            </tr>
-     -->           </thead>
-
-                        <tbody id="nl_tbody">
-                        </tbody>
-                        <tfoot>
-                        </tfoot>
+                        </thead>
+                        <tbody id="nl_tbody"></tbody>
+                        <tfoot></tfoot>
                     </table>                 
                 </div>
-                <div class="frame" id="lrTAB">
 
-    <!--                     <thead>
+                <!-- laba / rugi-->
+                <div class="frame" id="lrTAB">
+                    <button  class="bg-blue fg-white" id="lr_cetakBC" data-hint="cetak" data-hint-position="top">
+                        <i class="icon-printer" ></i>
+                    </button>
+                    <div id="lr_tbody"></div>
+                </div>
+
+                <!-- laporan Neraca -->
+                <div class="frame" id="lnTAB">
+                    <table class="table hovered bordered striped">
+                        <thead>
                             <tr style="color:white;"class="info">
-                                <th class="text-center">Kode Rekening </th>
-                                <th class="text-center">Nama Rekening</th>
-                                <th class="text-center">Debet</th>
-                                <th class="text-center">Kredit</th>
+                                <th class="text-center">Tanggal </th>
+                                <th class="text-center">No. Jurnal/Transaksi</th>
+                                <th class="text-center">Uraian</th>
+                                <th class="text-center">Nominal</th>
                             </tr>
-                            <tr style="display:none;" id="nsTR" class="info">
-                                <th class="text-left"><input placeholder="Kode Rekening" id="ns_kodeS" class="ns_cari"></th>
-                                <th class="text-left"><input placeholder="Nama Rekening" id="ns_namaS" class="ns_cari"></th>
-                                <th class="text-left"></th>
-                                <th class="text-left"></th>
+                            <tr style="display:none;" id="pkbTR" class="info">
+                                <th class="text-center"></th>
+                                <th class="text-center"><input placeholder="No Jurnal" id="pkb_jurnalS" class="pkb_cari"></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
                             </tr>
                         </thead>
-     -->
-                        <tbody id="ns_tbody">
+                        <tbody id="pkb_tbody">
                         </tbody>
                         <tfoot>
                         </tfoot>
                     </table> 
-
                 </div>
-                <div class="frame" id="lnTAB">6</div>
+
+                <!-- posisi kas / bank -->
                 <div class="frame" id="pkbTAB">
                     <table class="table hovered bordered striped">
                         <thead>
@@ -228,22 +229,46 @@
                                 <th class="text-center">Nominal</th>
                             </tr>
                             <tr style="display:none;" id="pkbTR" class="info">
-                                <th class="text-left"></th>
-                                <th class="text-left"><input placeholder="No Jurnal" id="pkb_jurnalS" class="pkb_cari"></th>
-                                <th class="text-left"></th>
-                                <th class="text-left"></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"><input placeholder="No Jurnal" id="pkb_jurnalS" class="pkb_cari"></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
                             </tr>
                         </thead>
-
                         <tbody id="pkb_tbody">
                         </tbody>
                         <tfoot>
                         </tfoot>
                     </table> 
-                    
                 </div>
-                <div class="frame" id="btTAB">8</div>
+
+                <!-- buku tambahan -->
+                <div class="frame" id="btTAB">
+                    <table class="table hovered bordered striped">
+                        <thead>
+                            <tr style="color:white;"class="info">
+                                <th class="text-center">Tanggal </th>
+                                <th class="text-center">Kode Rekening</th>
+                                <th class="text-center">Nama Perkiraan</th>
+                                <th class="text-center">No. Transaksi</th>
+                                <th class="text-center">Uraian</th>
+                                <th class="text-center">Debet</th>
+                                <th class="text-center">Kredit</th>
+                            </tr>
+                            <tr style="display:none;" id="btTR" class="info">
+                                <th class="text-center"></th>
+                                <th class="text-center"><div class="input-control text"><input placeholder="cari" id="bt_kodeS" class="bt_cari"></div></th>
+                                <th class="text-center"><div class="input-control text"><input placeholder="cari" id="bt_namaS" class="bt_cari"></div></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="bt_tbody"></tbody>
+                    </table> 
+                </div>
+
             </div>
-        </div>
     <!-- end of tab -->
 </div>

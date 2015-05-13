@@ -19,10 +19,10 @@
 
   $x     = $_SESSION['id_loginS'].$_GET[$pre.'noS'].$_GET[$pre.'uraianS'].$_GET['jenisAllCB'].$jenis.$_GET['tgl1TB'].$_GET['tgl2TB'];
   $token = base64_encode($x);
-  var_dump($jenis); echo "<br />";
-  var_dump($x); echo "<br />";
-  var_dump($token); echo "<br />";
-  var_dump($_GET['token']);
+  // var_dump($jenis); echo "<br />";
+  // var_dump($x); echo "<br />";
+  // var_dump($token); echo "<br />";
+  // var_dump($_GET['token']);
 
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
