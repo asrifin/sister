@@ -41,6 +41,7 @@ var content_stat = content_det = '';
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Angkatan</td>'
+                                +'<input id="idformH_angkatan" name="idformH_angkatan" type="text">' 
                                 +'<td>: <span id="angkatanTD"></span></td>'
                             +'</tr>'
                         +'</table>'
@@ -364,14 +365,18 @@ var content_stat = content_det = '';
                     // alert(calon);
                     cont= content_stat;
                     titl= 'Calon Siswa (belum dikonfirmasi)';
-                    var res = sjax(dir,'aksi=ambiledit&subaksi=status&replid='+calon);
-                    setTimeout(function(){
-                    $('#idformH_terima').val(calon);
-                        $('#namaTD').html(res.data.nama);
-                        $('#nopendaftaranTD').html(res.data.nopendaftaran);
-                        $('#departemenTD').html(res.data.departemen);
-                        $('#angkatanTD').html(res.data.angkatan);
-                    },200);
+                    // url : dir,'aksi=ambiledit&subaksi=status&replid='+calon);
+                    ajax(dir,'aksi=ambiledit&subaksi=status&replid='+calon).done(function(dt){
+
+                        $('#idformH_terima').val(calon);
+                        $('#idformH_angkatan').val(dt.data.idangkatan);
+                        $('#namaTD').html(dt.data.nama);
+                        $('#nopendaftaranTD').html(dt.data.nopendaftaran);
+                        $('#departemenTD').html(dt.data.departemen);
+                        $('#angkatanTD').html(dt.data.angkatan);
+                    });
+                    // setTimeout(function(){
+                    // },200);
                 }else if(typ='sudah'){ // form mode : sudah diterima
                     cont= content_det;
                     titl= 'Batalkan Penerimaan Siswa';

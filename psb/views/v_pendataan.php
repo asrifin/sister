@@ -418,12 +418,12 @@
                         <div class="input-control text size5">
                             <input placeholder="Nomor" type="text" name="nomorTB" id="nomorTB">
                         </div>
-                        <label>Data Saudara :</label>
+                        <!-- <label>Data Saudara :</label> -->
                             <!-- <a href="#" data-hint="Tambah Saudara" id="saudaraBC" class="button"><span class="icon-plus-2"></span> Tambah Saudara</a> -->
-                        <div class="form-actions" id="tambahsdr" style="display:visible;"> 
+<!--                         <div class="form-actions" id="tambahsdr" style="display:visible;"> 
                             <button data-hint="Tambah Saudara" xclass="large" id="tambahsdrBC">Tambah Saudara</button>
                         </div>        
-<!--                         <div class="panel" id="cetak" style="display:none;">
+ --><!--                         <div class="panel" id="cetak" style="display:none;">
                             <div class="panel-content">
                             <div class="grid">
                                 <div class="row">
@@ -477,7 +477,7 @@
 
                             <!-- </div> -->
                         <!-- </div>  -->
- -->                        <!-- end panel -->
+                       <!-- end panel -->
 
                       </div>
                     </div>

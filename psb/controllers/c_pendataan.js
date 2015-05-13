@@ -522,7 +522,7 @@ var contentFR = '';
                     url: dir,
                     type:'POST',
                     // data:formData+data,
-                    data:'aksi=simpan&subaksi=siswa'+formData+$('#siswa_form').serialize(),
+                    data:formData+'&aksi=simpan&subaksi=siswa'+$('#siswa_form').serialize()+'&kelompokS='+$('#kelompokS').val(),
                     cache:false,
                     dataType: 'json',
                     success: function(data, textStatus, jqXHR){
@@ -926,7 +926,7 @@ var contentFR = '';
         }        
 
         function getbiaya(){
-                console.log($('#kelompokS').val());
+                // console.log($('#kelompokS').val());
                 $.ajax({
                     url : dir,
                     type: 'post',

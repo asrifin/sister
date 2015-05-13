@@ -20,15 +20,29 @@
 				$nopendaftaran = isset($_POST['no_pendaftaranS'])?filter($_POST['no_pendaftaranS']):'';
 				$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+				// $sql = 'SELECT c.nama,
+				// 				c.replid,
+				// 				c.nopendaftaran,
+				// 				c.kelompok,
+				// 				c.status,
+				// 				s.nis,
+				// 				s.nisn
+				// 		FROM '.$tb.' c 
+				// 		LEFT JOIN aka_siswa s ON s.nopendaftaran = c.nopendaftaran
+				// 		WHERE 
+				// 			c.nopendaftaran like "%'.$nopendaftaran.'%" and
+				// 			c.nama like "%'.$nama.'%" and
+				// 			c.kelompok = '.$kelompok.'
+				// 		ORDER 
+				// 			BY c.nopendaftaran asc';
 				$sql = 'SELECT c.nama,
 								c.replid,
 								c.nopendaftaran,
 								c.kelompok,
 								c.status,
-								s.nis,
-								s.nisn
+								c.nis,
+								c.nisn
 						FROM '.$tb.' c 
-						LEFT JOIN aka_siswa s ON s.nopendaftaran = c.nopendaftaran
 						WHERE 
 							c.nopendaftaran like "%'.$nopendaftaran.'%" and
 							c.nama like "%'.$nama.'%" and
@@ -129,6 +143,7 @@
 						// $e2 =  mysql_query($s2);
 						// if ($e2) {
 							$s3 = 'UPDATE psb_calonsiswa set status  = 1,
+												angkatan      = "'.filter($_POST['idformH_angkatan']).'",
 												nis           = "'.filter($_POST['nisTB']).'",
 												nisn          = "'.filter($_POST['nisnTB']).'"
 										WHERE replid='.$_POST['idformH_terima'];
@@ -212,6 +227,7 @@
 									c.nama,
 									c.nopendaftaran,
 									d.nama AS departemen,
+									a.replid idangkatan,
 									a.angkatan
 								FROM
 									psb_calonsiswa c
@@ -231,6 +247,7 @@
 										'nama'          =>$r['nama'],
 										'nopendaftaran' =>$r['nopendaftaran'],
 										'departemen'    =>$r['departemen'],
+										'idangkatan'    =>$r['idangkatan'],
 										'angkatan'      =>$r['angkatan']
 								)));					
 					break;
