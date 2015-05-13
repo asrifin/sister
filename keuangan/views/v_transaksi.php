@@ -13,17 +13,32 @@
 <div id="loadarea"></div>
 <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
 
-<div class="toolbar">
-    <div class="toolbar-group fg-white transparent ">
-        <button id="ju_addBC" onclick="loadFR('ju','');" class="bg-blue" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></button>
-        <button id="in_addBC"  onclick="loadFR('in_come','');"class="bg-green" data-hint="Pemasukkan"><i class="icon-download-2"></i></button>
-        <button id="out_addBC"  onclick="loadFR('out_come','');"class="bg-red" data-hint="Pengeluaran"><i class="icon-upload-3"></i></button>
-        <button id="optionBC" data-hint="Selengkapnya..." class="bg-gray fg-white"><i class="icon-grid"></i></button>
+<form id="filterFR">
+    <!-- button -->
+    <div class="toolbar">
+        <div class="toolbar-group fg-white transparent ">
+            <a href="#"  id="ju_addBC" onclick="loadFR('ju','');" class="button bg-blue" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></a>
+            <a href="#" id="in_addBC"  onclick="loadFR('in_come','');"class="button bg-green" data-hint="Pemasukkan"><i class="icon-download-2"></i></a>
+            <a href="#" id="out_addBC"  onclick="loadFR('out_come','');"class="button bg-red" data-hint="Pengeluaran"><i class="icon-upload-3"></i></a>
+            <a href="#" id="optionBC" data-hint="Selengkapnya..." class="button bg-gray fg-white"><i class="icon-grid"></i></a>
+        </div>
     </div>
-</div>
 
-<div style="overflow:scroll;height:700px">    
-    <form id="optionPN" style="display:none;">
+    <!-- filter :: tanggal -->
+    <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
+        <input onchange="viewTB('ju');" type="text" id="tgl1TB" name="tgl1TB">
+        <button class="btn-date"></button>
+    </div> s/d
+    <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
+        <input onchange="viewTB('ju');" type="text" id="tgl2TB" name="tgl2TB">
+        <button class="btn-date"></button>
+    </div> 
+    <a href="#" onclick="viewTB('ju');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
+    <a  href="#" onclick="viewTB('ju');" id="bulan_iniBC" name="bulan_iniBC" class="button bg-gray fg-white"><i class="icon-clock"></i> Bulan ini</a>
+    <a data-hint="refresh"  href="#" onclick="loadAll();" id="refreshBC" name="refreshBC" class="button bg-blue fg-white"><i class="icon-cycle"></i> </a>
+    
+    <!-- jenis transaksi -->
+    <div style="display:none;" id="optionPN">
         <label style="color:white;">
             Jenis Transaksi
             <div class="span3 input-control checkbox" >
@@ -35,20 +50,11 @@
             </div>
         </label>
         <ul id="jenistransDV" class="treeview" data-role="treeview"></ul>
-        <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-            <input onchange="viewTB('ju');" type="text" id="tgl1TB" name="tgl1TB">
-            <button class="btn-date"></button>
-        </div> s/d
-        <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-            <input onchange="viewTB('ju');" type="text" id="tgl2TB" name="tgl2TB">
-            <button class="btn-date"></button>
-        </div> 
-        <a href="#" onclick="viewTB('ju');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
-        <a  href="#" onclick="viewTB('ju');" id="bulan_iniBC" name="bulan_iniBC" class="button bg-gray fg-white"><i class="icon-clock"></i> Bulan ini</a>
-        <a data-hint="refresh"  href="#" onclick="loadAll();" id="refreshBC" name="refreshBC" class="button bg-blue fg-white"><i class="icon-cycle"></i> </a>
-    </form>
+    </div>
+</form>
 
-    <div class="divider">&nbsp;</div>
+<div style="overflow:scroll;height:700px">    
+    <!-- <div class="divider">&nbsp;</div> -->
     <!-- tab -->
         <!-- keterangan :
             - juTAB : jurnal umum
@@ -196,26 +202,7 @@
 
                 <!-- laporan Neraca -->
                 <div class="frame" id="lnTAB">
-                    <table class="table hovered bordered striped">
-                        <thead>
-                            <tr style="color:white;"class="info">
-                                <th class="text-center">Tanggal </th>
-                                <th class="text-center">No. Jurnal/Transaksi</th>
-                                <th class="text-center">Uraian</th>
-                                <th class="text-center">Nominal</th>
-                            </tr>
-                            <tr style="display:none;" id="pkbTR" class="info">
-                                <th class="text-center"></th>
-                                <th class="text-center"><input placeholder="No Jurnal" id="pkb_jurnalS" class="pkb_cari"></th>
-                                <th class="text-center"></th>
-                                <th class="text-center"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="pkb_tbody">
-                        </tbody>
-                        <tfoot>
-                        </tfoot>
-                    </table> 
+                    <div id="ln_tbody"></div>
                 </div>
 
                 <!-- posisi kas / bank -->

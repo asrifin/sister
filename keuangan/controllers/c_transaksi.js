@@ -161,6 +161,7 @@ var contentFR ='';
         cmbbukubesar();
         // viewTB('bb'); 
         viewTB('nl');
+        viewTB('ln');
         viewTB('lr');
     }
 
@@ -185,7 +186,7 @@ var contentFR ='';
         });
 
         if(subaksi=='ju'){
-            var opt = $('form#optionPN').serialize();
+            var opt = $('form#filterFR').serialize();
             cari+='&'+opt;
         }
 
@@ -229,7 +230,7 @@ var contentFR ='';
         });
 
         if(subaksi=='ju'){
-            var opt = $('form#optionPN').serialize();
+            var opt = $('form#filterFR').serialize();
             cari+='&'+opt;
         }
 
@@ -355,7 +356,7 @@ var contentFR ='';
         // }
 
         if(mn=='ju'){
-            var opt = $('form#optionPN').serialize();
+            var opt = $('form#filterFR').serialize();
             par+='&jenisAllCB='+$('#jenisAllCB').val();
             tok+=$('#jenisAllCB').val();
             $('.detjenisCB').each(function(id,item){
@@ -525,7 +526,8 @@ var contentFR ='';
         }else{ // pemasukkan / pengeluaran
             if(typeof n=='undefined'){ isLoop=false; n=iTR;}
 
-            jrek=typ=='out_come'?'kredit':'debit'; // jenis rekening (income:debit, outcome:kredit)
+            // jrek=typ=='out_come'?'kredit':'debit'; // jenis rekening (income:debit, outcome:kredit)
+            jrek=''; // jenis rekening (income:debit, outcome:kredit)
             for(var ke=n; ke>=iTR; ke--){
                 var idjurnal = (typeof arr!='undefined')?arr[ke-1].idjurnal:null;
                 var idrek    = (typeof arr!='undefined')?arr[ke-1].idrek:'';
@@ -735,7 +737,8 @@ var contentFR ='';
                         $('.uraianDV').attr('style','display:none;');
                         $('.rekkasDV').removeAttr('style');
                         $('#rekkasTB').attr('required',true);
-                        autoSuggest('debit','rekkas','rek','');
+                        autoSuggest('','rekkas','rek','');
+                        // autoSuggest('debit','rekkas','rek','');
                         $('#kwitansiDV').removeAttr('style');
                         
                         tr+='<tr style="color:white;"class="info">'
