@@ -39,7 +39,7 @@
 							keu_detilrekening d 
 							LEFT JOIN keu_kategorirekening k on k.replid = d.kategorirekening
 						WHERE
-							k.jenis="'.$_GET['jenis'].'" AND (
+							'.($_GET['jenis']!=''?'k.jenis="'.$_GET['jenis'].'" AND ':'').' (
 								d.kode LIKE "%'.$searchTerm.'%"
 								OR d.nama LIKE "%'.$searchTerm.'%"
 							)';
@@ -438,6 +438,7 @@
 						}
 					break;
 
+					// neraca lajur
 					case 'nl':
 						$kode = isset($_POST['ns_kodeS'])?filter($_POST['ns_kodeS']):'';
 						$nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
@@ -543,10 +544,10 @@
 						$out.='</table>';                 
 						
 						//biaya
-						$out.='<table wifth="100%" class="table">
+						$out.='<table width="100%" class="table">
 			                        <thead>
 			                            <tr>
-			                                <th colspan="3" class="text-left">Biaya</th>
+			                                <th colspan="3" class="text-left">Beban</th>
 			                            </tr>
 			                        </thead>
 			                        <tbody>';
@@ -572,8 +573,9 @@
 									</tr>
 								</tfoot>';
 						$out.='</table>';
-						$status = (($pendapatanTot-$biayaTot)<=0?'Kerugian : ':'Laba :');
-						$warna  = (($pendapatanTot-$biayaTot)<=0?'red':'green');
+						$selisih = $pendapatanTot-$biayaTot;
+						$status  = $selisih<0?'Kerugian : ':($selisih==0?'normal':'Laba :');
+						$warna   = $selisih<0?'red':($selisih==0?'blue':'green');
 						$out.='<table wiidth="100%" class="table">
 									<tr>
 										<th width="75%" colspan="2" align="right">'.$status.'</th>
@@ -582,6 +584,116 @@
 								</table>';                 
 					break;
 
+					//Laporan neraca
+					case 'ln':
+						$out ='';
+						$pendapatanTot=$biayaTot=0;
+						$s=' SELECT
+								d.kode,
+								d.nama,
+								j.nominal
+							FROM
+								keu_transaksi t
+								LEFT JOIN keu_jurnal j ON j.transaksi = t.replid
+								LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+								LEFT JOIN keu_kategorirekening k ON k.replid = d.kategorirekening
+							WHERE
+								k.nama IN ';
+						$s1 = $s.'("aktiva","kas","bank")';
+						$s2 = $s.'"biaya"';
+						$e1  = mysql_query($s1);
+						$n1  = mysql_num_rows($e1);
+						// $e2  = mysql_query($s2);
+						// $n2  = mysql_num_rows($e2);
+						
+						// aktiva
+						$out.='<table width="100%" class="table">
+			                        <thead>
+			                            <tr class="info fg-white">
+			                                <th width="50%" class="text-left">Rekening</th>
+			                                <th width="25%" class="text-right">Nominal</th>
+			                                <th  width="25%" class="text-right">Sub Total</th>
+			                            </tr>
+			                            <tr>
+			                                <th class="text-left" colspan="3" >Aktiva</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody>';
+						if($n1!=0){	
+							while($r1 = mysql_fetch_assoc($e1)){
+								$jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r2['detjenistrans']));
+								if($jenis=='ju'){ // ju
+									$debit=99;
+									$kredit=0;
+								}else{
+									if($jenis=='out'){ // outcome
+										$debit  = $r2['rekkas']==$r2['rek']?0:$r2['nominal'];
+										$kredit = $r2['rekitem']==$r2['rek']?0:$r2['nominal'];
+									}else{ // income
+										$debit  = $r2['rekkas']==$r2['rek']?$r2['nominal']:0;
+										$kredit = $r2['rekitem']==$r2['rek']?$r2['nominal']:0;
+									}
+								}
+								$out.= '<tr>
+											<td>['.$r1['kode'].'] '.$r1['nama'].'</td>
+											<td align="right">Rp. '.number_format($r1['nominal']).'</td>
+											<td></td>
+										</tr>';
+								$pendapatanTot+=$r1['nominal'];
+							}
+						}else{
+							$out.= '<tr align="center">
+									<td  colspan="8" ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}$out.='</tbody>';
+						$out.='<tfoot>
+									<tr>
+										<td align="right" colspan="2">Total :</td>
+										<td class="bg-green fg-white" align="right">Rp. '.number_format($pendapatanTot).'</td>
+									</tr>
+								</tfoot>';
+						$out.='</table>';                 
+						
+						//biaya
+						$out.='<table width="100%" class="table">
+			                        <thead>
+			                            <tr>
+			                                <th colspan="3" class="text-left">Pasiva</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody>';
+						if($n2!=0){	
+							while($r2 = mysql_fetch_assoc($e2)){
+								$out.= '<tr>
+											<td width="50%">['.$r2['kode'].'] '.$r2['nama'].'</td>
+											<td width="25%"align="right">Rp. '.number_format($r2['nominal']).'</td>
+											<td width="25%"></td>
+										</tr>';
+								$biayaTot+=$r2['nominal'];
+
+							}
+						}else{
+							$out.= '<tr align="center">
+									<td  colspan="8" ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}$out.='</tbody>';
+						$out.='<tfoot>
+									<tr>
+										<td align="right" colspan="2">Total :</td>
+										<td class="bg-red fg-white" align="right">Rp. '.number_format($biayaTot).'</td>
+									</tr>
+								</tfoot>';
+						$out.='</table>';
+						$selisih = $pendapatanTot-$biayaTot;
+						$status  = $selisih<0?'Kerugian : ':($selisih==0?'normal':'Laba :');
+						$warna   = $selisih<0?'red':($selisih==0?'blue':'green');
+						$out.='<table wiidth="100%" class="table">
+									<tr>
+										<th width="75%" colspan="2" align="right">'.$status.'</th>
+										<th class="bg-'.$warna.' fg-white" width="25%" align="right">Rp. '.number_format($pendapatanTot-$biayaTot).'</th>
+									</tr>
+								</table>';                 
+					break;
 				}
 			break; 
 			// tampil ---------------------------------------------------------------------
