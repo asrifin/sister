@@ -362,7 +362,7 @@
 																				 tgllahir 	 ='.isset($v['tgllahir']) ;
 						// var_dump($sqsaud);exit();
 										$esaud = mysql_query($sqsaud);
-										$stat = $esaud?true:false;
+										// $stat = $esaud?true:false;
 									}
 								}
 
@@ -383,14 +383,14 @@
 										} else {
 											$exkel= mysql_query($sqkel);
 											if (!$exkel) {
-												// var_dump($sqas);exit();
 												$stat='{"status":"gagal keluarga"}';
 											} else {
-												if (!$stat2){
-													$stat = 'gagal_saudara';
-												}else{
-													$stat = 'sukses';
-												}
+												// var_dump($sqkel);exit();
+												// if (!$stat2){
+												// 	$stat = 'gagal_saudara';
+												// }else{
+												// 	$stat = 'sukses';
+												// }
 
 												// $stat='{
 												// 		"status":"sukses"
