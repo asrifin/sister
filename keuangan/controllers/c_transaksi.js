@@ -23,7 +23,7 @@ var contentFR ='';
         });
 
     //form content
-        contentFR +='<form style="overflow:scroll;height:700px;" autocomplete="off" onsubmit="transSV(this); return false;">'
+        contentFR +='<form style="overflow:scroll;height:450px;" autocomplete="off" onsubmit="transSV(this); return false;">'
                         // hidden input
                         +'<input name="idformH" id="idformH" type="hidden">' 
                         +'<input name="detjenistransH" id="detjenistransH" type="hidden">' 
@@ -714,6 +714,7 @@ var contentFR ='';
                             +'</tr>';
                         $('.uraianDV').removeAttr('style');
                         $('#uraianTB').attr('required',true);
+                        $('#kwitansiCB').removeAttr('checked');
                         if(id==''){ // add 
                             kodeTrans(typx);
                             addRekTR(typx,2);

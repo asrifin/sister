@@ -15,28 +15,26 @@
 
 <form id="filterFR">
     <!-- button -->
-    <div class="toolbar">
-        <div class="toolbar-group fg-white transparent ">
-            <a href="#"  id="ju_addBC" onclick="loadFR('ju','');" class="button bg-blue" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></a>
-            <a href="#" id="in_addBC"  onclick="loadFR('in_come','');"class="button bg-green" data-hint="Pemasukkan"><i class="icon-download-2"></i></a>
-            <a href="#" id="out_addBC"  onclick="loadFR('out_come','');"class="button bg-red" data-hint="Pengeluaran"><i class="icon-upload-3"></i></a>
-            <a href="#" id="optionBC" data-hint="Selengkapnya..." class="button bg-gray fg-white"><i class="icon-grid"></i></a>
-        </div>
-    </div>
+    <a href="#"  id="ju_addBC" onclick="loadFR('ju','');" class="button bg-blue fg-white" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></a>
+    <a href="#" id="in_addBC"  onclick="loadFR('in_come','');"class="button bg-green fg-white" data-hint="Pemasukkan"><i class="icon-download-2"></i></a>
+    <a href="#" id="out_addBC"  onclick="loadFR('out_come','');"class="button bg-red fg-white" data-hint="Pengeluaran"><i class="icon-upload-3"></i></a>
+    <a href="#" id="optionBC" data-hint="Selengkapnya..." class="button bg-gray fg-white"><i class="icon-grid"></i></a>
 
     <!-- filter :: tanggal -->
-    <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input onchange="viewTB('ju');" type="text" id="tgl1TB" name="tgl1TB">
-        <button class="btn-date"></button>
-    </div> s/d
-    <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input onchange="viewTB('ju');" type="text" id="tgl2TB" name="tgl2TB">
-        <button class="btn-date"></button>
+    <div class="place-right">
+        <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">
+            <input onchange="viewTB('ju');" type="text" id="tgl1TB" name="tgl1TB">
+            <button class="btn-date"></button>
+        </div> s/d
+        <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">
+            <input onchange="viewTB('ju');" type="text" id="tgl2TB" name="tgl2TB">
+            <button class="btn-date"></button>
+        </div> 
+        <a href="#" onclick="viewTB('ju');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
+        <a  href="#" onclick="viewTB('ju');" id="bulan_iniBC" name="bulan_iniBC" class="button bg-gray fg-white"><i class="icon-clock"></i> Bulan ini</a>
+        <a data-hint="refresh"  href="#" onclick="loadAll();" id="refreshBC" name="refreshBC" class="button bg-blue fg-white"><i class="icon-cycle"></i> </a>
     </div> 
-    <a href="#" onclick="viewTB('ju');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
-    <a  href="#" onclick="viewTB('ju');" id="bulan_iniBC" name="bulan_iniBC" class="button bg-gray fg-white"><i class="icon-clock"></i> Bulan ini</a>
-    <a data-hint="refresh"  href="#" onclick="loadAll();" id="refreshBC" name="refreshBC" class="button bg-blue fg-white"><i class="icon-cycle"></i> </a>
-    
+
     <!-- jenis transaksi -->
     <div style="display:none;" id="optionPN">
         <label style="color:white;">
@@ -53,7 +51,7 @@
     </div>
 </form>
 
-<div style="overflow:scroll;height:700px">    
+<div style="overflow:scroll;height:450px">    
     <!-- <div class="divider">&nbsp;</div> -->
     <!-- tab -->
         <!-- keterangan :
@@ -66,7 +64,6 @@
             - pkbTAB : posisi kas dan bank
             - btTAB : buku tambahan-->
         <div data-effect="fade" class="tab-control" data-role="tab-control">
-        <!-- <div style="overflow:scroll;height:600px" data-effect="fade" class="tab-control" data-role="tab-control"> -->
             <ul class="tabs">
                 <li class="active"><a href="#juTAB">Jurnal Umum </a></li>
                 <li><a href="#nsTAB">Neraca Saldo</a></li>
