@@ -12,8 +12,8 @@
 	}else{
 		switch ($_POST['aksi']) {
 			case 'tampil':
-				$kode = trim($_POST['kodeS'])?filter($_POST['kodeS']):'';
-				$nama = trim($_POST['namaS'])?filter($_POST['namaS']):'';
+				$kode = isset($_POST['kodeS'])?filter($_POST['kodeS']):'';
+				$nama = isset($_POST['namaS'])?filter($_POST['namaS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
@@ -46,10 +46,12 @@
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
-						$out.= '<tr>
-									<td>'.$res['kode'].'</td>
+						$out.= '<tr align="center">
+									<td><b>'.$res['kode'].'</b> xxxx</td>
 									<td>'.$res['nama'].'</td>
-									<td>'.$res['jenis'].'</td>
+									<td>'.jenisRek2($res['jenis']).'</td>
+									<td>'.jenisRek2($res['jenistambah']).'</td>
+									<td>'.jenisRek2($res['jeniskurang']).'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -67,9 +69,11 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 	= $tb.' set kode 	= "'.filter($_POST['kodeTB']).'",
-								jenis 	= "'.filter($_POST['jenisTB']).'",
-								nama 	= "'.filter($_POST['namaTB']).'"';
+				$s 	= $tb.' set kode        = "'.filter($_POST['kodeTB']).'",
+								jenis       = "'.$_POST['jenisTB'].'",
+								jenistambah = "'.$_POST['jenistambahTB'].'",
+								jeniskurang = "'.$_POST['jeniskurangTB'].'",
+								nama        = "'.filter($_POST['namaTB']).'"';
 				// var_dump($s);exit();
 				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e    = mysql_query($s2);

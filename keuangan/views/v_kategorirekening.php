@@ -11,16 +11,17 @@
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
-            <th class="text-left">Kode </th>
-            <th class="text-left">Nama</th>
-            <th class="text-left">Jenis</th>
-            <th class="text-left">Aksi</th>
+            <th class="text-center">Kode </th>
+            <th class="text-center">Nama</th>
+            <th class="text-center">Jenis</th>
+            <th class="text-center">Penambahan</th>
+            <th class="text-center">Pengurangan</th>
+            <th class="text-center">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-left"><div class="input-control text"><input placeholder="kode" id="kodeS" name="kodeS"></div></th>
-            <th class="text-left"><div class="input-control text"><input placeholder="nama" id="namaS" name="namaS"></div></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
+            <th class="text-center"><div class="input-control text"><input placeholder="cari..." id="kodeS" name="kodeS"></div></th>
+            <th class="text-center"><div class="input-control text"><input placeholder="cari..." id="namaS" name="namaS"></div></th>
+            <th colspan="4" class="text-center"></th>
         </tr>
     </thead>
 
