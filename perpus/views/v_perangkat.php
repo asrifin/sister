@@ -1,6 +1,7 @@
 <script src="controllers/c_perangkat.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
+<script src="../js/base64.js"></script>
 
 <h4 style="color:white;">Perangkat</h4>
             <div style="overflow:scroll;height:550px;" >
@@ -65,7 +66,7 @@
                         </tr>
                     </thead>
 
-                    <tbody id="tbody">
+                    <tbody id="bukuTBL">
 
                     </tbody>
 
@@ -73,6 +74,9 @@
                         
                     </tfoot>
                 </table>
+
+                    <!-- <a href="#" data-hint="Cetak Barcode" id="cetak_barcodeBC" class="button"><span class="icon-printer"></span> Cetak Barkode</a> -->
+                    <button data-hint="Cetak Barcode" xclass="large" id="cetak_barcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
 
             </div> <!-- end span -->
 
@@ -87,4 +91,3 @@
 </div> <!-- end panel -->
 
 </div>
-<script src="controllers/c_perangkat.js"></script>

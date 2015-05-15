@@ -10,9 +10,80 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
         $('#cetak').toggle('slow');
         $('#labelcetak').toggle('slow');
         $('#cetaklabel').toggle('slow');
+
+                //autocomplete
+        $("#labelTB").combogrid({
+            debug:true,
+            width:'550px',
+            colModel: [{
+                    'align':'left',
+                    'columnName':'barkode',
+                    'hide':true,
+                    'width':'25',
+                    'label':'Barkode'
+                },{   
+                    'align':'left',
+                    'columnName':'callnumber',
+                    'width':'20',
+                    'label':'Callnumber'
+                },{   
+                    'align':'left',
+                    'columnName':'judul',
+                    'width':'25',
+                    'label':'Judul'
+                }],
+            url: dir+'?aksi=autocomp',
+            select: function( event, ui ) { // event setelah data terpilih 
+                bukuAdd(ui.item.replid,ui.item.barkode,ui.item.callnumber,ui.item.judul);
+                $('#labelTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&buku='+bukuArr() );
+                return false;
+            }
+        }); //End autocomplete
+
     }
 
-// main function load first 
+     // hapus buku terpilih
+    function bukuDel(id){
+        $('#bukuTR_'+id).fadeOut('slow',function(){
+            $('#bukuTR_'+id).remove();
+            // barangExist();
+        });
+    }
+
+    //buku record kosong --
+    function bukuExist(){
+        // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
+        alert('jumlah tr: '+$('#bukuTBL','.bukuTR').length);return false;
+        var tr ='<tr class="warning"><td colspan="4" class="text-center">Silahkan pilih Judul Buku ..</td></tr>';
+        if($('#bukuTBL').html()=='')
+            $('#bukuTBL').html(tr);
+        else
+            $('#bukuTBL').html('');
+    }
+    //end of buku record kosong --
+
+    // pilih buku yang akan dicetak ---
+        function bukuAdd (id,barkode,callnumber,judul) {
+            var tr ='<tr val="'+id+'" class="bukuTR" id="bukuTR_'+id+'">'
+                        +'<td>'+barkode+'</td>'
+                        +'<td>'+callnumber+'</td>'
+                        +'<td>'+judul+'</td>'
+                        +'<td><button onclick="bukuDel('+id+');"><i class="icon-remove"></button></i></td>'
+                    +'</tr>';
+            $('#bukuTBL').append(tr); 
+            bukuArr();
+        }
+        
+    //himpun array buku terpilih
+        function bukuArr(){
+            var y=[];
+            $('.bukuTR').each(function(id,item){
+                y.push($(this).attr('val'));
+            });return y;
+        }
+    // end    
+
+    // main function load first 
     $(document).ready(function(){
     //Dialog ID
         // id_contentFR    +='<div style="overflow:scroll;height:600px;">'
@@ -176,9 +247,15 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
         $("#infoBC").on('click', function(){ 
             infoFR('');
         });
+        $("#cetakBC").on('click', function(){ 
+            // infoFR('');
+            cmblokasi();
+        });
         $("#cetaklabel").on('click', function(){ 
             switchPN();
-            cmblokasi();
+        });
+        $('#cetak_barcodeBC').on('click',function(){
+            printPDF('barcode_buku');
         });
 
         // search button
@@ -236,6 +313,26 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
     }
 //end of paging ---
 
+    function cmblokasi(lok){
+        $.ajax({
+            url:dir2,
+            data:'aksi=cmblokasi',
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.lokasi, function(id,item){
+                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                    });
+                }
+                $('#lokasiS').html(out);
+                // cmbjenisbuku(dt.lokasi[0].replid);
+            }
+        });
+    }
 
 // load form (all)
     function loadFR(titl,cont,inpArr){        
@@ -258,18 +355,6 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
         });
     }
 
-/* form ID (add & edit) */
-   // function pinjamFR(id){
-   //      if(id!=''){ // edit mode
-            
-   //      }else{ // add  mode
-   //          var titl   ='<i class="icon-plus-2"></i> Tambah ';
-   //          var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
-   //          loadFR(titl,pinjam_contentFR,inpArr);
-   //          cmblokasi();
-   //      }
-
-   //  }
     function idFR(id){
         if(id!=''){ // edit mode
             
@@ -295,9 +380,9 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                     });        
             
         }else{ // add  mode
-            var titl   ='<i class="icon-plus-2"></i> Edit Format Barkode item ';
-            var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
-            loadFR(titl,barkode_contentFR,inpArr);
+            // var titl   ='<i class="icon-plus-2"></i> Edit Format Barkode item ';
+            // var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
+            // loadFR(titl,barkode_contentFR,inpArr);
         }
     }
 
@@ -336,6 +421,9 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                 view('labelt').done(function(dt){
                     $('#barkodeTB').val(dt.row);
                 });
+                view('judul').done(function(dt){
+                    $('#judulTB').val(dt.row);
+                });
             }
         }
         function detSetting (id){
@@ -360,24 +448,11 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                                 +'<td>'+item.keterangan+'</td>'
                             +'</tr>';
                         });$('#idTBL').html(tbl);
-                        loadFR('titl',settingFR);
                     }
                 }
             });            
         }
 
-
-        // function viewBarkode(){  
-        //     var aksi ='aksi=tampil&subaksi=barkode';
-        //     $.ajax({
-        //         url : dir,
-        //         type: 'post',
-        //         data: aksi,
-        //         success:function(dt){
-        //                 $('#barkodeTB').val(dt);
-        //         }
-        //     });
-        // }
         // function viewJudul(){  
         //     var aksi ='aksi=tampil&subaksi=judul';
         //     $.ajax({
@@ -513,4 +588,19 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
         return dateFormatx('id',dd,monthFormat(mm),yyyy);
     }
 
-        
+    function printPDF(mn){
+        var par='',tok='',p,v,menu=mn;
+        if(mn=='barcode_buku'){
+            menu='barang';
+        }
+        $('.'+menu+'_cari').each(function(){
+            p=$(this).attr('id');
+            v=$(this).val();
+            par+='&'+p+'='+v;
+            tok+=v;
+        });
+        var x  = $('#id_loginS').val();
+        var token = encode64(x+tok);
+        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+    }
+//end of  print to PDF -------        
