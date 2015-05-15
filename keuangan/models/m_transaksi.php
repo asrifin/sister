@@ -1,5 +1,4 @@
 <?php
-
 	session_start();
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
@@ -39,7 +38,7 @@
 							keu_detilrekening d 
 							LEFT JOIN keu_kategorirekening k on k.replid = d.kategorirekening
 						WHERE
-							'.($_GET['jenis']!=''?'k.jenis="'.$_GET['jenis'].'" AND ':'').' (
+							'.(isset($_GET['jenis']) AND $_GET['jenis']!=''?'k.jenis="'.$_GET['jenis'].'" AND ':'').' (
 								d.kode LIKE "%'.$searchTerm.'%"
 								OR d.nama LIKE "%'.$searchTerm.'%"
 							)';
@@ -192,7 +191,7 @@
 						$out ='';$totaset=0;
 						if($jum!=0){	
 							$nox = $starting+1;
-							while($res = mysql_fetch_array($result)){	
+							while($res = mysql_fetch_assoc($result)){	
 								$jDetTrans = getDetJenisTrans('jenistrans','replid',$res['detjenistrans']);
 								$jTrans    = getJenisTrans('kode',$jDetTrans);
 								if($jTrans=='ju'){
@@ -201,17 +200,19 @@
 									$j=$jTrans.'_come';
 								}
 								$btn ='<td align="center">
-											<!--<button data-hint="ubah"  class="button" onclick="loadFR(\''.$j.'\','.$res['replid'].');">
+											<button data-hint="ubah"  class="button" onclick="loadFR(\''.$j.'\','.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
-											</button>-->
+											</button>
 											<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 											</button>
 										</td>';
-								$s2 = ' SELECT replid,rek,nominal
+								$s2 = ' SELECT replid,rek,nominal,jenis
 										FROM keu_jurnal 
 										WHERE 
-											transaksi ='.$res['replid'];
+											transaksi ='.$res['replid'].'
+										ORDER BY 
+											jenis ASC';
 								$e2  = mysql_query($s2);
 						// var_dump($s2);exit(); 	
 								$tb2 ='';
@@ -223,12 +224,15 @@
 													<td>Kredit</td>
 												</tr>';
 		   							while($r2=mysql_fetch_assoc($e2)){
-										$jDetTrans = getDetJenisTrans('jenistrans','replid',$res['detjenistrans']);
-										$jTrans    = getJenisTrans('kode',$jDetTrans);
-										$jRek      = getKatRekBy('jenis',getRekBy('kategorirekening',$r2['rek']));
+										// $jDetTrans = getDetJenisTrans('jenistrans','replid',$res['detjenistrans']);
+										// $jTrans    = getJenisTrans('kode',$jDetTrans);
+										// $jRek      = getKatRekBy('jenis',getRekBy('kategorirekening',$r2['rek']));
+										// var_dump($jRek);exit();
 		   								if($jTrans=='ju'){
-		   									$debit=($jRek=='debit'?$r2['nominal']:0);
-		   									$kredit=($jRek=='kredit'?$r2['nominal']:0);
+		   									$debit=($r2['jenis']=='d'?$r2['nominal']:0);
+		   									$kredit=($r2['jenis']=='k'?$r2['nominal']:0);
+		   									// $debit=($jRek=='d'?$r2['nominal']:0);
+		   									// $kredit=($jRek=='k'?$r2['nominal']:0);
 		   								}else{
 		   									if($jTrans=='out'){
 		   										$debit=$r2['rek']==$res['rekitem']?$res['nominal']:0;
@@ -812,10 +816,11 @@
 					$totNominal =$sub=='ju'?($totNominal/2):$totNominal;
 					$s1 = 'keu_transaksi SET 	tahunbuku     ='.getTahunBuku('replid').',
 												nominal       ='.$totNominal.',
-												nomer         ="'.getNoTrans2($sub).'",
 												tanggal       ="'.tgl_indo6($_POST['tanggalTB']).'",
 												detjenistrans ='.getDetJenisTrans('replid','kode',$_POST['detjenistransH']).',
-												nobukti       ="'.$_POST['nobuktiTB'].'"';
+												nobukti       ="'.$_POST['nobuktiTB'].'",
+												uraian        ="'.$_POST['uraianTB'].'",
+												nomer         ="'.$_POST['nomerH'].'"';
 					$s  = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1;
 					$e  = mysql_query($s);
 					$id = mysql_insert_id();
@@ -836,8 +841,9 @@
 						else{ // tidak ada hapus jurnal OR sukses hapus
 							
 							foreach ($rekArr as $i => $v) {
-								$s = ' keu_jurnal SET 	rek       ='.$_POST[$sub.'_rek'.$v.'H'].', 
-														nominal   ='.getuang($_POST[$sub.'_nominal'.$v.'TB']);
+								$s = ' keu_jurnal SET 	rek     ='.$_POST[$sub.'_rek'.$v.'H'].', 
+														jenis   ="'.$_POST[$sub.'_jenis'.$v.'TB'].'",
+														nominal ='.getuang($_POST[$sub.'_nominal'.$v.'TB']);
 								if($_POST[$sub.'_mode'.$v.'H']=='edit'){ //edit
 									$s2='UPDATE '.$s.' WHERE replid='.$_POST[$sub.'_idjurnal'.$v.'H'];
 								}else{ // add
@@ -962,23 +968,41 @@
 			
 			// delete ---------------------------------------------------------------------
 			case 'hapus':
-				$d = mysql_fetch_assoc(mysql_query('SELECT * FROM '.$tb.' where replid='.$_POST['replid']));
-				$s = 'DELETE FROM '.$tb.' WHERE replid='.$_POST['replid'];
-				$e = mysql_query($s);
-				if(!$e) $stat = 'gagal';
+				// get information about transact. will delete
+				$sb = 'SELECT * FROM '.$tb.' WHERE replid='.$_POST['replid'];
+				$eb = mysql_query($sb);
+				$rb = mysql_fetch_assoc($eb);
+
+				// delete transact. by replid 
+				$sd = 'DELETE FROM '.$tb.' WHERE replid='.$_POST['replid'];
+				$ed = mysql_query($sd);
+				if(!$ed) $stat = 'gagal';
 				else{
-					if($d['pembayaran']!=0){
-						$s='DELETE * FROM keu_pembayaran WHERE replid='.$d['pembayaran'];
-						$e=mysql_query($s);
-						if(!$e){
+					// get number record before reset
+					$sa = 'SELECT * FROM '.$tb;
+					$ea = mysql_query($sa);
+					$na = mysql_num_rows($ea);
+					// reset kode transaksi -> 0 (nol)
+					if($na==0){
+						$st = 'TRUNCATE TABLE keu_transaksi';
+						$et = mysql_query($st);
+					}
+
+					// delete pembayaran (optional)
+					if($rb['pembayaran']!=0){
+						$sy = 'DELETE * FROM keu_pembayaran WHERE replid='.$rb['pembayaran'];
+						$ey = mysql_query($sy);
+						if(!$ey){
 							$stat='gagal_hapus_pembayaran';
 							break;
 						}
 					}
-					$s2   = 'DELETE FROM keu_jurnal WHERE transaksi= '.$d['replid'];
-					$e2   = mysql_query($s2);
-					$stat = !$e2?'gagal':'sukses';
-				}$out = json_encode(array('status'=>$stat,'terhapus'=>$d['nomer']));
+
+					// delete jurnal 
+					$sj   = 'DELETE FROM keu_jurnal WHERE transaksi= '.$rb['replid'];
+					$ej   = mysql_query($sj);
+					$stat = !$ej?'gagal':'sukses';
+				}$out = json_encode(array('status'=>$stat,'terhapus'=>$rb['nomer']));
 			break;
 			// delete ---------------------------------------------------------------------
 
@@ -993,7 +1017,7 @@
 						$stat = ($e)?'sukses':'gagal';
 						if(!$e) $stat='gagal';
 						else{ //sukses
-							$s2        ='SELECT * FROM keu_jurnal WHERE transaksi ='.$_POST['replid'];
+							$s2        ='SELECT * FROM keu_jurnal WHERE transaksi ='.$_POST['replid'].' ORDER BY jenis ASC';
 							$e2        =mysql_query($s2);
 							$jurnalArr =array();
 							while ($r2=mysql_fetch_assoc($e2)) {
@@ -1002,7 +1026,8 @@
 									'idrek'    =>$r2['rek'],
 									'rek'      =>getRekBy('nama',$r2['rek']),
 									'nominal'  =>setuang($r2['nominal']),
-									'jenis'    =>getKatRekBy('jenis',getRekBy('kategorirekening',$r2['rek'])),
+									'jenis'    =>$r2['jenis']
+									// 'jenis'    =>getKatRekBy('jenis',getRekBy('kategorirekening',$r2['rek'])),
 								);
 							}$transaksiArr=array(
 								'nomer'     =>$r['nomer'],

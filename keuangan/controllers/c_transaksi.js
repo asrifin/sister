@@ -278,7 +278,7 @@ var contentFR ='';
     function transSV(e){
         var url  = dir;
         var data = $(e).serialize()+'&aksi=simpan&subaksi='+$('#subaksiH').val();
-        if($('#subaksiH').val()=='ju') data+=+'&idDelTR='+idDelTR;
+        if($('#subaksiH').val()=='ju') data+='&idDelTR='+idDelTR;
         if(validForm().status!=true){ // tidak valid
             var m = '';
             $.each(validForm().msg,function(id,item){
@@ -456,16 +456,14 @@ var contentFR ='';
                 $('#'+typ+'_rek'+i+'TB').focus();
                 $('#'+typ+'_rek'+i+'TB').removeAttr('disabled');
                 $('#'+typ+'_nominal'+i+'TB').removeAttr('disabled');
-                $('#'+typ+'_rek'+i+'TB').attr('onclick','autoSuggest(\''+$('#'+typ+'_jenis'+i+'TB').val()+'\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
-                $('#'+typ+'_rek'+i+'TB').attr('onfocus','autoSuggest(\''+$('#'+typ+'_jenis'+i+'TB').val()+'\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
+                $('#'+typ+'_rek'+i+'TB').attr('onclick','autoSuggest(\'\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
+                $('#'+typ+'_rek'+i+'TB').attr('onfocus','autoSuggest(\'\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
+                // $('#'+typ+'_rek'+i+'TB').attr('onclick','autoSuggest(\''+$('#'+typ+'_jenis'+i+'TB').val()+'\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
+                // $('#'+typ+'_rek'+i+'TB').attr('onfocus','autoSuggest(\''+$('#'+typ+'_jenis'+i+'TB').val()+'\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
             }
-        // }else{ // in / out 
-        //     $('#'+typ+'_rek'+i+'TB').attr('onclick','autoSuggest(\'debit\',\''+typ+'\','+i+');');
-        //     $('#'+typ+'_rek'+i+'TB').attr('onfocus','autoSuggest(\'debit\',\''+typ+'\','+i+');');
-        // }
-        $('#'+typ+'_rek'+i+'H').val('');
-        $('#'+typ+'_rek'+i+'TB').val('');
-        $('#'+typ+'_nominal'+i+'TB').val('');
+        // $('#'+typ+'_rek'+i+'H').val('');
+        // $('#'+typ+'_rek'+i+'TB').val('');
+        // $('#'+typ+'_nominal'+i+'TB').val('');
     }
 
 // record rekening perkiraan
@@ -498,8 +496,8 @@ var contentFR ='';
                             +'<div class="input-control select">'
                                 +'<select required onchange="ju_gantiJenisRek(\''+typ+'\','+ke+');" id="ju_jenis'+ke+'TB" name="ju_jenis'+ke+'TB">'
                                     +'<option value="">..pilih..</option>'
-                                    +'<option '+(typeof arr=='undefined'?'':(jenis=='debit'?'selected':''))+' value="debit">Debit</option>'
-                                    +'<option '+(typeof arr=='undefined'?'':(jenis=='kredit'?'selected':''))+' value="kredit">Kredit</option>'
+                                    +'<option '+(typeof arr=='undefined'?'':(jenis=='d'?'selected':''))+' value="d">Debit</option>'
+                                    +'<option '+(typeof arr=='undefined'?'':(jenis=='k'?'selected':''))+' value="k">Kredit</option>'
                                 + '</select>'
                             +'</div>' 
                         +'</td>'
@@ -507,7 +505,11 @@ var contentFR ='';
                         +'<td align="center">'
                             +'<span class="input-control size5 text">'
                                 +'<input value="'+idrek+'" id="ju_rek'+ke+'H" name="ju_rek'+ke+'H" type="hidden" />'
-                                +'<input value="'+rek+'" required '+(typeof arr=='undefined'?'disabled':' onfocus="autoSuggest(\''+jenis+'\',\'ju\','+ke+',\'rek\',\'\');"')+' id="ju_rek'+ke+'TB" name="ju_rek'+ke+'TB" placeholder="rekening" type="text" />'
+                                +'<input value="'+rek+'" required '
+                                    // +(typeof arr=='undefined'?'disabled':' onfocus="alert(9999);"')
+                                    +(typeof arr=='undefined'?'disabled':' onfocus="autoSuggest(\'\',\'ju_rek'+ke+'\',\'rek\',\'rek\',\'\');"')
+                                    +' id="ju_rek'+ke+'TB" name="ju_rek'+ke+'TB" placeholder="rekening" type="text" />'
+                                // +'<input value="'+rek+'" required '+(typeof arr=='undefined'?'disabled':' onfocus="autoSuggest(\''+jenis+'\',\'ju\','+ke+',\'rek\',\'\');"')+' id="ju_rek'+ke+'TB" name="ju_rek'+ke+'TB" placeholder="rekening" type="text" />'
                                 +'<button class="btn-clear"></button>'
                             +'</span>'
                         +'</td>'
@@ -575,9 +577,10 @@ var contentFR ='';
     }
 
   // autosuggest
+    // autoSuggest(\'\',\'ju\','+ke+',\'rek\',\'\')
     function autoSuggest(jenis,el,subaksi,tingkat){
         if(subaksi=='rek'){ //rekening
-            var urlx= '?aksi=autocomp&subaksi='+subaksi+'&jenis='+jenis;
+            var urlx= '?aksi=autocomp&subaksi='+subaksi+(jenis!=''?'&jenis='+jenis:'');
             var col = [{
                     'align':'left',
                     'columnName':'kode',
@@ -683,6 +686,7 @@ var contentFR ='';
             $('#rekTR_'+ke).fadeOut('slow',function(){
                 $('#rekTR_'+ke).remove();
             });
+            console.log(idDelTR);
         }
     }
 
@@ -726,6 +730,7 @@ var contentFR ='';
                             ajax(url,data).done(function (dt) {
                                 $('#idformH').val(id);
                                 $('#nomerTB').html(dt.transaksiArr.nomer);
+                                $('#nomerH').val(dt.transaksiArr.nomer);
                                 $('#nobuktiTB').val(dt.transaksiArr.nobukti);
                                 $('#tanggalTB').val(dt.transaksiArr.tanggal);
                                 $('#uraianTB').val(dt.transaksiArr.uraian);
@@ -837,7 +842,8 @@ var contentFR ='';
             $('.ju_idTR').each(function () {
                 var jenis = $('#ju_jenis' + $(this).val() + 'TB').val();
                 var nominal = getCurr($('#ju_nominal' + $(this).val() + 'TB').val());
-                if (jenis == 'debit') {
+                // if (jenis == 'debit') {
+                if (jenis == 'd') {
                     pilihDeb = true; // cek terpilih
                     nomDeb += nominal; // cek nominal 
                 } else {

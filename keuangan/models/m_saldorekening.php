@@ -147,7 +147,7 @@
 							'kategorirekening' =>$r['kategorirekening'],
 							'kode'             =>$r['kode'],
 							'nama'             =>$r['nama'],
-							'jenis'            =>$r['jenis'],
+							'jenis'            =>jenisRek($r['jenis']),
 							'nominal'          =>$r['nominal']
 						));
 			break;

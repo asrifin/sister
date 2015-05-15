@@ -162,7 +162,13 @@
 /*keuangan*/
 	// transact
 	/*pembayaran*/
-	function getTerbilang($angka,$debug){
+	function jenisRek2($rek){
+		$ret = '<b class="fg-'.($rek=='d'?'green':'red').'">'.jenisRek($rek).'</b>';
+		return $ret;
+	}function jenisRek($rek){
+		$ret = $rek=='d'?'debit':'kredit';
+		return $ret;
+	}function getTerbilang($angka,$debug){
 		// $angka = str_replace('Rp. ','');
 	    $angka = str_replace(".",",",'75.900.500');
 	    // $angka = str_replace(".",",",$angka);
