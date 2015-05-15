@@ -23,7 +23,7 @@ var contentFR ='';
         });
 
     //form content
-        contentFR +='<form style="overflow:scroll;height:450px;" autocomplete="off" onsubmit="transSV(this); return false;">'
+        contentFR +='<form style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="transSV(this); return false;">'
                         // hidden input
                         +'<input name="idformH" id="idformH" type="hidden">' 
                         +'<input name="detjenistransH" id="detjenistransH" type="hidden">' 
@@ -723,7 +723,7 @@ var contentFR ='';
                             kodeTrans(typx);
                             addRekTR(typx,2);
                             titl ='Tambah  Jurnal Umum ';
-                        }else { //edit
+                        } else { //edit
                             titl ='Ubah Jurnal Umum';
                             var url  = dir;
                             var data = 'aksi=ambiledit&subaksi='+typx+'&replid='+id;
@@ -893,11 +893,13 @@ var contentFR ='';
         var data = 'aksi=jenistrans';
         ajax(url,data).done(function (dt) {
             var out='';
+            var counter=0;
             $.each(dt.jenisArr,function(id,item){
                 out+='<li class="node">'
                         +'<a href="#"><span class="node-toggle"></span>'+item.jenistrans+'</a>'
                             +'<ul>'
                     $.each(item.detjenisArr, function (id,item) {
+                        // counter++;
                         out+='<li style="padding-left:20px;">'
                                 +'<label>'
                                     +'<input class="detjenisCB" onchange="viewTB(\'ju\')" name="detjenisTB['+item.iddetjenis+']" checked="checked" type="checkbox"> '
