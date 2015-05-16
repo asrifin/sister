@@ -6,7 +6,7 @@
   require_once '../../lib/func.php';
   require_once '../../lib/bar128.php';
 
-  $x     = isset($_SESSION['id_loginS']).$_GET['lokasiS'].$_GET['b_hargaS'].$_GET['b_kondisiS'].$_GET['b_statusS'].$_GET['b_keteranganS'];
+  $x     = isset($_SESSION['id_loginS']).$_GET['lokasiS'];
   $token = base64_encode($x);
   if(!isset($_SESSION)){ // login 
     echo 'user has been logout';
@@ -28,19 +28,16 @@
 
             $lokasi     = isset($_GET['lokasiS'])?filter(trim($_GET['lokasiS'])):'';
             
-            $s = 'SELECT 
-                      pus_katalog.replid,
-                      pus_buku.barkode barkode,
-                      pus_katalog.callnumber callnumber,
-                      pus_katalog.judul judul
-                    FROM 
-                      pus_katalog
-                      LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
-                      LEFT JOIN pus_lokasi ON pus_lokasi.replid = pus_buku.lokasi
-                    WHERE 
-                      pus_buku.lokasi = '.$lokasiS ;
-                      // print_r($s);exit();
-                  // var_dump($e);exit();
+            $s = 'SELECT pus_buku.replid,
+                         pus_buku.idbuku,
+                         pus_buku.barkode,pus_katalog.callnumber 
+                      FROM pus_buku 
+                          LEFT JOIN pus_katalog ON pus_katalog.replid=pus_buku.katalog
+                          LEFT JOIN pus_lokasi ON pus_buku.lokasi =  pus_lokasi.replid
+                      WHERE
+                          pus_buku.lokasi = '.$lokasi ;
+                       print_r($s);exit();
+                  // var_dump($s);exit();
                   $e = mysql_query($s) or die(mysql_error());
                   $n = mysql_num_rows($e);
                   // $out.=' <table borde="1" width="50%">';

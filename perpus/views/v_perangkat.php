@@ -76,7 +76,7 @@
                 </table>
 
                     <!-- <a href="#" data-hint="Cetak Barcode" id="cetak_barcodeBC" class="button"><span class="icon-printer"></span> Cetak Barkode</a> -->
-                    <button data-hint="Cetak Barcode" xclass="large" id="cetak_barcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
+                    <button data-hint="Cetak Barcode" class="barcode_cari" id="cetak_barcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
 
             </div> <!-- end span -->
 
