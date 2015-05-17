@@ -1010,37 +1010,40 @@
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
 					case 'in_come';
-						$s = 'SELECT * FROM '.$tb.'  WHERE replid='.$_POST['replid'];
+						$s = 'SELECT t.*, j.replid idjurnal 
+							  FROM '.$tb.' t 
+							  	LEFT JOIN keu_jurnal j on j.transaksi = t.replid
+							  WHERE
+							  	t.replid ='.$_POST['replid'];
 						// var_dump($s);exit();
 						$e    = mysql_query($s);
 						$r    = mysql_fetch_assoc($e);
 						$stat = ($e)?'sukses':'gagal';
 						if(!$e) $stat='gagal';
 						else{ //sukses
-							$s2        ='SELECT * FROM keu_jurnal WHERE transaksi ='.$_POST['replid'].' ORDER BY jenis ASC';
-							$e2        =mysql_query($s2);
-							$jurnalArr =array();
-							while ($r2=mysql_fetch_assoc($e2)) {
-								$jurnalArr[]=array(
-									'idjurnal' =>$r2['replid'],
-									'idrek'    =>$r2['rek'],
-									'rek'      =>getRekBy('nama',$r2['rek']),
-									'nominal'  =>setuang($r2['nominal']),
-									'jenis'    =>$r2['jenis'],
-									'uraian'   =>$r['uraian']
-									// 'jenis'    =>getKatRekBy('jenis',getRekBy('kategorirekening',$r2['rek'])),
-								);
-							}$transaksiArr=array(
-								'nomer'     =>$r['nomer'],
-								'nobukti'   =>$r['nobukti'],
-								'tanggal'   =>tgl_indo7($r['tanggal']),
-								'jurnalArr' =>$jurnalArr
-							);$stat='sukses';
+							$stat ='sukses';
+							$transaksiArr = array(
+								// transaksi
+								'nomer'    =>$r['nomer'],
+								'nobukti'  =>$r['nobukti'],
+								'tanggal'  =>tgl_indo7($r['tanggal']),
+								'idrekkas' =>$r['rekkas'],
+								'rekkas'   =>getRekening($r['rekkas']),
+								//jurnal
+								'income'   => array(
+									'idjurnal'  =>$r['idjurnal'],
+									'idrekitem' =>$r['rekitem'],
+									'rekitem'   =>getRekening($r['rekitem']),
+									'nominal'   =>setuang($r['nominal']),
+									'uraian'    =>$r['uraian']
+								),
+							);
 						}$out = json_encode(array(
 									'status'       =>$stat,
 									'transaksiArr' =>$transaksiArr
 								));					
 					break;
+
 					case 'ju';
 						$s = 'SELECT * FROM '.$tb.'  WHERE replid='.$_POST['replid'];
 						// var_dump($s);exit();
@@ -1052,7 +1055,7 @@
 							$s2        ='SELECT * FROM keu_jurnal WHERE transaksi ='.$_POST['replid'].' ORDER BY jenis ASC';
 							$e2        =mysql_query($s2);
 							$jurnalArr =array();
-							while ($r2=mysql_fetch_assoc($e2)) {
+							while ($r2 =mysql_fetch_assoc($e2)) {
 								$jurnalArr[]=array(
 									'idjurnal' =>$r2['replid'],
 									'idrek'    =>$r2['rek'],

@@ -10,7 +10,48 @@ var dir4 ='../akademik/models/m_'+mnu4+'.php';
 
 var contentFR ='';
 // main function load first 
+    //print to PDF -------
+    function printPDF(mn){
+        var par='',tok='',p,v;
+        $('.'+mn+'_cari').each(function(){
+            p=$(this).attr('id');
+            v=$(this).val();
+            par+='&'+p+'='+v;
+            tok+=v;
+        });
+        if(mn=='ju'){
+            var opt = $('form#filterFR').serialize();
+            par+='&jenisAllCB='+$('#jenisAllCB').val();
+            tok+=$('#jenisAllCB').val();
+            $('.detjenisCB').each(function(id,item){
+                if($(this).is(':checked')){
+                    par+='&'+$(this).attr('name')+'='+$(this).val();
+                    tok+=$(this).val();
+                } 
+            });
+            par+='&tgl1TB='+$('#tgl1TB').val()+'&tgl2TB='+$('#tgl2TB').val();
+            tok+=$('#tgl1TB').val()+$('#tgl2TB').val();
+        }
+        var x  = $('#id_loginS').val();
+        var token = encode64(x+tok);
+        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+    }
+
     $(document).ready(function(){
+    // button action
+        //print ---
+        $('#ju_cetakBC').on('click',function(){
+            printPDF('ju');
+        });
+        $('#ns_cetakBC').on('click',function(){
+            printPDF('ns');
+        });
+        $('#bb_cetakBC').on('click',function(){
+            printPDF('bb');
+        });
+        $('#lr_cetakBC').on('click',function(){
+            printPDF('lr');
+        });
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });
@@ -63,7 +104,7 @@ var contentFR ='';
                         +'<label style="display:none;" class="rekkasDV">Rekening Kas/Bank</label>'
                         +'<div style="display:none;" class="input-control text rekkasDV">'
                             +'<input type="hidden" name="rekkasH" id="rekkasH">'
-                            +'<input placeholder="rek. kas / bank" name="rekkasTB" id="rekkasTB">'
+                            +'<input placeholder="rek. kas / bank" id="rekkasTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -84,7 +125,7 @@ var contentFR ='';
                         +'<div style="display:none;" class="input-control text detilanggaranDV">'
                             +'<input type="hidden" name="detilanggaranV" id="detilanggaranV">'
                             +'<input type="hidden" name="detilanggaranH" id="detilanggaranH">'
-                            +'<input placeholder="pada anggaran" name="detilanggaranTB" id="detilanggaranTB">'
+                            +'<input placeholder="pada anggaran" id="detilanggaranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -104,20 +145,7 @@ var contentFR ='';
                         
                   +'</form>';
 
-    // button action
-        //print ---
-        $('#ju_cetakBC').on('click',function(){
-            printPDF('ju');
-        });
-        $('#ns_cetakBC').on('click',function(){
-            printPDF('ns');
-        });
-        $('#bb_cetakBC').on('click',function(){
-            printPDF('bb');
-        });
-        $('#lr_cetakBC').on('click',function(){
-            printPDF('lr');
-        });
+
         //search button
         $('#juBC').on('click',function(){
             $('#juTR').toggle('slow');
@@ -343,41 +371,6 @@ var contentFR ='';
     }
 // end of notifikasi
 
-//end of  print to PDF -------
-    function printPDF(mn){
-        var par='',tok='',p,v;
-        // if(mn!='kwitansi'){
-            $('.'+mn+'_cari').each(function(){
-                p=$(this).attr('id');
-                v=$(this).val();
-                par+='&'+p+'='+v;
-                tok+=v;
-            });
-        // }
-
-        if(mn=='ju'){
-            var opt = $('form#filterFR').serialize();
-            par+='&jenisAllCB='+$('#jenisAllCB').val();
-            tok+=$('#jenisAllCB').val();
-            $('.detjenisCB').each(function(id,item){
-                if($(this).is(':checked')){
-                    par+='&'+$(this).attr('name')+'='+$(this).val();
-                    tok+=$(this).val();
-                } 
-            });
-            par+='&tgl1TB='+$('#tgl1TB').val()+'&tgl2TB='+$('#tgl2TB').val();
-            tok+=$('#tgl1TB').val()+$('#tgl2TB').val();
-        }
-
-        // return false;
-        // alert(x+tok);
-        // console.log('val ='+x+tok);
-        // console.log('par ='+par);
-        // console.log('token ='+token);
-        var x  = $('#id_loginS').val();
-        var token = encode64(x+tok);
-        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
-    }
 
 // left pad (replace with 0)
     function lpadZero (n, length){
@@ -472,18 +465,17 @@ var contentFR ='';
     var idAddTR = [];
 
     function rekTR (typ,n,arr) {
-        console.log(arr);
         var tr='';
         var isLoop=true;
         if(typ=='ju'){ // jurnal umum
             if(typeof n=='undefined'){ isLoop=false; n=iTR;}
-
-            for(var ke=n; ke>=iTR; ke--){
-                var idjurnal = (typeof arr!='undefined')?arr[ke-1].idjurnal:null;
-                var idrek    = (typeof arr!='undefined')?arr[ke-1].idrek:'';
-                var rek      = (typeof arr!='undefined')?arr[ke-1].rek:'';
-                var nominal  = (typeof arr!='undefined')?arr[ke-1].nominal:'';
-                var jenis    = (typeof arr!='undefined')?arr[ke-1].jenis:'';
+            for(var i=n; i>=iTR; i--){
+                var ke = parseInt(i)-1;
+                var idjurnal = (typeof arr!='undefined')?arr[ke].idjurnal:null;
+                var idrek    = (typeof arr!='undefined')?arr[ke].idrek:'';
+                var rek      = (typeof arr!='undefined')?arr[ke].rek:'';
+                var nominal  = (typeof arr!='undefined')?arr[ke].nominal:'';
+                var jenis    = (typeof arr!='undefined')?arr[ke].jenis:'';
                 
                 var mode = (typeof arr!='undefined')?'edit':'add';
 
@@ -530,24 +522,26 @@ var contentFR ='';
 
             // jrek=typ=='out_come'?'kredit':'debit'; // jenis rekening (income:debit, outcome:kredit)
             jrek=''; // jenis rekening (income:debit, outcome:kredit)
-            for(var ke=n; ke>=iTR; ke--){
-                var idjurnal = (typeof arr!='undefined')?arr[ke-1].idjurnal:null;
-                var idrek    = (typeof arr!='undefined')?arr[ke-1].idrek:'';
-                var rek      = (typeof arr!='undefined')?arr[ke-1].rek:'';
-                var nominal  = (typeof arr!='undefined')?arr[ke-1].nominal:'Rp. 0';
-                var uraian   = (typeof arr!='undefined')?arr[ke-1].uraian:'';
-                
-                var mode     = (typeof arr!='undefined')?'edit':'add'; 
+            for(var i=n; i>=iTR; i--){
+                var ke = parseInt(i);//-1;
+                // console.log(arr);return false;   
+                // var idjurnal  = (typeof arr!='undefined')?arr[ke].idjurnal:null;
+                var idjurnal  = (typeof arr!='undefined')?arr.idjurnal:null;
+                var idrekitem = (typeof arr!='undefined')?arr.idrekitem:'';
+                var rekitem   = (typeof arr!='undefined')?arr.rekitem:'';
+                var nominal   = (typeof arr!='undefined')?arr.nominal:'Rp. 0';
+                var uraian    = (typeof arr!='undefined')?arr.uraian:'';
+                var mode      = (typeof arr!='undefined')?'edit':'add'; 
                 
                 tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
                         // rek
                         +'<td align="center">'
-                            +'<input type="hidden" name="'+typ+'mode'+ke+'H" value="'+mode+'" />'
+                            +'<input type="hidden" name="'+typ+'_mode'+ke+'H" value="'+mode+'" />'
                             +'<input type="hidden" value="'+idjurnal+'" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H">'
                             +'<input type="hidden" class="'+typ+'_idTR" value="'+ke+'" name="'+typ+'_idTR[]" id="'+typ+'_idTR_'+ke+'">'
                             +'<span class="input-control size5 text">'
-                                +'<input value="'+idrek+'" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
-                                +'<input value="'+rek+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\')" id="'+typ+'_rek'+ke+'TB" name="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
+                                +'<input value="'+idrekitem+'" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
+                                +'<input value="'+rekitem+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\')" id="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
                                 +'<button class="btn-clear"></button>'
                             +'</span>'
                         +'</td>'
@@ -735,8 +729,9 @@ var contentFR ='';
                                 $('#tanggalTB').val(dt.transaksiArr.tanggal);
                                 $('#uraianTB').val(dt.transaksiArr.uraian);
                                 var jurnal = dt.transaksiArr.jurnalArr;
-                                // console.log(jurnal);
-                                addRekTR(typx,jurnal.length,jurnal);
+                                var n = jurnal.length;
+                                // console.log('banyak jurnal = '+jurnal.length);
+                                addRekTR(typx,n,jurnal);
                             });
                         }
                     }else{ // in_come / out_come
@@ -765,16 +760,21 @@ var contentFR ='';
                                 addRekTR(typx,1);
                                 titl='Tambah Transaksi Pemasukkan';
                             }else{ //edit
+                                $('#addTRBC').attr('style','display:none;');
                                 titl ='Ubah Transaksi Pemasukkan';
                                 var url  = dir;
                                 var data = 'aksi=ambiledit&subaksi='+typx+'&replid='+id;
                                 ajax(url,data).done(function (dt) {
-                                    $('#idformH').val(id);
+                                    // $('#idformH').val(id);
                                     $('#nomerTB').html(dt.transaksiArr.nomer);
                                     $('#nobuktiTB').val(dt.transaksiArr.nobukti);
                                     $('#tanggalTB').val(dt.transaksiArr.tanggal);
-                                    var income = dt.transaksiArr.incomeArr;
-                                    addRekTR(typx,income.length,income);
+                                    $('#rekkasTB').val(dt.transaksiArr.rekkas);
+                                    $('#rekkasH').val(dt.transaksiArr.idrekkas);
+                                    var income = dt.transaksiArr.income;
+                                    // console.log(dt.transaksiArr.income.rekitem);
+                                    // console.log('length='+income.length);
+                                    addRekTR(typx,1,income);
                                 });
                             }
                         }else if(typx=='out_come'){ // outcome 

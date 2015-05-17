@@ -104,8 +104,16 @@
                             </tr>
                             <tr style="display:none;" id="juTR" class="info">
                                 <th class="text-center"></th>
-                                <th class="text-center"><div class="input-control text"><input placeholder="cari ..." id="ju_noS" class="ju_cari"></div></th>
-                                <th class="text-center"><div class="input-control text"><input placeholder="cari ..." id="ju_uraianS" class="ju_cari"></div></th>
+                                <th class="text-center">
+                                    <div class="input-control text">
+                                        <input class="ju_cari" placeholder="cari ..." id="ju_noS">
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="input-control text">
+                                        <input class="ju_cari" placeholder="cari ..." id="ju_uraianS" >
+                                    </div>
+                                </th>
                                 <th style="display:visible;"class="text-center uraianCOL"></th>
                                 <th class="text-center"></th>
                             </tr>
