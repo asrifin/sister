@@ -4,18 +4,10 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	// note :
-	// ju : jurnal umum
-	// in : pemasukkan
-	// out : pengeluaran
 
 	$mnu  = 'perangkat';
 	
 	$tb   = 'pus_'.$mnu;
-	// $tb2  = 'keu_'.$mnu2;
-	// $tb3  = 'keu_'.$mnu3;
-	// $tb4  = 'keu_'.$mnu4;
-	// $tb5  = 'keu_'.$mnu5;
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
@@ -31,6 +23,7 @@
 						FROM(SELECT
 									pus_katalog.replid,
 									pus_buku.barkode barkode,
+									pus_buku.callnumber callnumber,
 									pus_katalog.judul judul
 							FROM pus_katalog
 							LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
@@ -61,9 +54,10 @@
 				$rows 	= array();
 				while($row = mysql_fetch_assoc($result)) {
 					$rows[]= array(
-						'replid'  =>$row['replid'],
-						'barkode' =>$row['barkode'],
-						'judul'   =>$row['judul']
+						'replid'     =>$row['replid'],
+						'barkode'    =>$row['barkode'],
+						'callnumber' =>$row['callnumber'],
+						'judul'      =>$row['judul']
 					);
 				}$response=array(
 					'page'    =>$page,
@@ -81,6 +75,22 @@
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					case 'setting':
+							$sql = 'SELECT ps.nilai
+									FROM pus_detail_setting ps 
+									LEFT JOIN pus_setting2 ps2 ON ps2.replid = ps.kunci
+									WHERE 
+										ps2.kunci= "'.$_POST['kunci'].'"'
+									;
+							// print_r($sql);exit();
+							$query = mysql_query($sql);
+							// $hasil = mysql_fetch_assoc($query);
+							$row = '';
+							while ($hasil = mysql_fetch_assoc($query)) {
+								$row.=$hasil['nilai'].'/';
+							}
+							$out=json_encode(array('status'=>'sukses','row'=>$row));	
+					break;
+					case 'judul':
 							$sql = 'SELECT ps.nilai
 									FROM pus_detail_setting ps 
 									LEFT JOIN pus_setting2 ps2 ON ps2.replid = ps.kunci
