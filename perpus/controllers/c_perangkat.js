@@ -37,6 +37,7 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
             url: dir+'?aksi=autocomp&lokasi='+lok, /*epiii*/
             select: function( event, ui ) { 
                 bukuAdd(ui.item.replid,ui.item.barkode,ui.item.callnumber,ui.item.judul);
+                $(el).val('');
                 return false;
             }
         }); //End autocomplete    
@@ -75,6 +76,7 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
 
     // main function load first 
     $(document).ready(function(){
+        enabledButton();
         cmblokasi();
         $('#lokasiS').on('change',function(){
             autoSug($('#labelTB'),$(this).val());

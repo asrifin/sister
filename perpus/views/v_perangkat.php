@@ -61,6 +61,7 @@
                     </div>
                     <div class="input-control text size5">
                         <input  placeholder="barkode atau judul item" type="text" id="labelTB">
+                        <button class="btn-clear"></button>
                     </div>
 
                     <table class="table hovered bordered striped" id="cetaklabelTBL">
