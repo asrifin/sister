@@ -6,7 +6,7 @@
   require_once '../../lib/func.php';
   require_once '../../lib/bar128.php';
 
-  $x     = $_SESSION['id_loginS'].$_GET['lokasiS'].$_GET['bukuArr'];
+  $x     = $_SESSION['id_loginS'].$_GET['lokasiS'].$_GET['bukuArr']; /*epiii*/
   $token = base64_encode($x);
   // var_dump($_GET['lokasiS']);exit();
   // var_dump($_SESSION['id_loginS']);
@@ -43,8 +43,7 @@
                       LEFT JOIN pus_lokasi l ON b.lokasi =  l.replid
                   WHERE
                       b.lokasi = '.$lokasi.' AND 
-                      b.replid IN ('.$_GET['bukuArr'].')';
-             // print_r($s);exit();
+                      b.replid IN ('.$_GET['bukuArr'].')';   /*epiii*/
                   // var_dump($s);exit();
                   $e = mysql_query($s) or die(mysql_error());
                   $n = mysql_num_rows($e);

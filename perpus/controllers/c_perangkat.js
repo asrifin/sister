@@ -12,10 +12,8 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
         $('#cetaklabel').toggle('slow');
     }
 
-    var terpilihArr=bukuArr().toString();
+    /*epiii*/
     function  autoSug (el,lok) {
-        // var terpilihArr = JSON.stringify(bukuArr());
-        // console.log(terpilihArr);
         $(el).combogrid({
             debug:true,
             width:'550px',
@@ -36,45 +34,21 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                     'width':'25',
                     'label':'Judul'
                 }],
-            url: dir+'?aksi=autocomp&lokasi='+lok,
-            // +'&terpilihArr='+terpilihArr, //epiii
+            url: dir+'?aksi=autocomp&lokasi='+lok, /*epiii*/
             select: function( event, ui ) { 
                 bukuAdd(ui.item.replid,ui.item.barkode,ui.item.callnumber,ui.item.judul);
-                // terpilihF(el,lok);
-                var terpilihx=bukuArr().toString();
-                // console.log('terpilih di auto array= '+terpilihArr);
-                // console.log('terpilih array= '+bukuArr());
                 return false;
             }
         }); //End autocomplete    
     }
 
-    function terpilihF (el,lok) {
-        console.log('masuk terpilihF');
-        console.log('terpilih, elem ='+el);
-        console.log('terpilih, lokasi ='+lok);
-        console.log('terpilih, buku arr='+bukuArr().toString());
-        autoSug(el,lok);//,bukuArr().toString());
-    }
-     // hapus buku terpilih
+    // hapus buku terpilih
     function bukuDel(id){
         $('#bukuTR_'+id).fadeOut('slow',function(){
             $('#bukuTR_'+id).remove();
-            $('#labelTB').combogrid('option','url', dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&terpilihArr='+bukuArr().toString());
+            $('#labelTB').combogrid('option','url', dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&terpilihArr='+bukuArr().toString()); /*epiii*/
         });
     }
-
-    //buku record kosong --
-    function bukuExist(){
-        // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
-        alert('jumlah tr: '+$('#bukuTBL','.bukuTR').length);return false;
-        var tr ='<tr class="warning"><td colspan="4" class="text-center">Silahkan pilih Judul Buku ..</td></tr>';
-        if($('#bukuTBL').html()=='')
-            $('#bukuTBL').html(tr);
-        else
-            $('#bukuTBL').html('');
-    }
-    //end of buku record kosong --
 
     // pilih buku yang akan dicetak ---
         function bukuAdd (id,barkode,callnumber,judul) {
@@ -86,7 +60,7 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                     +'</tr>';
             $('#bukuTBL').prepend(tr); 
             bukuArr();
-            $('#labelTB').combogrid('option','url', dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&terpilihArr='+bukuArr().toString());
+            $('#labelTB').combogrid('option','url', dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&terpilihArr='+bukuArr().toString()); /*epiii*/
         }
         
     //himpun array buku terpilih
@@ -96,7 +70,6 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                 y.push($(this).attr('val'));
             });return y;
         }
-    // end    
 
     // main function load first 
     $(document).ready(function(){
@@ -104,9 +77,7 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
         $('#lokasiS').on('change',function(){
             autoSug($('#labelTB'),$(this).val());
         });
-        // $('#labelTB').on('keyup',alert($('#lokasiS').val()));
-    //Dialog ID
-        // id_contentFR    +='<div style="overflow:scroll;height:600px;">'
+
         settingFR    +='<div style="overflow:scroll;height:600px;">'
                        +'<form autocomplete="off" onsubmit="idSV();return false;">' 
                         +'<input id="id_formH" type="hidden">' 
@@ -274,8 +245,8 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
             switchPN();
         });
         $('#cetak_barcodeBC').on('click',function(){
-            printPDF('barcode');
-            // printPDF('barcode_buku'); epiii
+            printPDF('barcode'); /*epiii*/
+            // printPDF('barcode_buku'); 
         });
 
         // search button
@@ -295,7 +266,6 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
 
         // default view
         loadView('','');
-        // autoSug('#labelTB');
     }); 
 // end of main function ---------
 
@@ -332,7 +302,6 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
             }
         });
     }
-//end of paging ---
 
     function cmblokasi(lok){
         $.ajax({
@@ -388,17 +357,16 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
 /* form Barkode (add & edit) */
     function barkodeFR(id){
         if(id!=''){ // edit mode
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=ambiledit&subaksi=barkode&replid='+id,
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#barkode_formH').val(id);
-                            $('#f_barkodeTB').val(dt.nilai);
-                        }
-                    });        
-            
+            $.ajax({
+                url:dir,
+                data:'aksi=ambiledit&subaksi=barkode&replid='+id,
+                type:'post',
+                dataType:'json',
+                success:function(dt){
+                    $('#barkode_formH').val(id);
+                    $('#f_barkodeTB').val(dt.nilai);
+                }
+            });        
         }else{ // add  mode
             // var titl   ='<i class="icon-plus-2"></i> Edit Format Barkode item ';
             // var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
@@ -417,107 +385,71 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
             }
         }
 
-/*view*/
 
-        function view(kunci){  
-            var res='';
-            var aksi ='aksi=tampil&subaksi=setting&kunci='+kunci;
-            return $.ajax({
-                url : dir,
-                type: 'post',
-                data: aksi,
-                dataType:'json'
+    function view(kunci){  
+        var res='';
+        var aksi ='aksi=tampil&subaksi=setting&kunci='+kunci;
+        return $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi,
+            dataType:'json'
+        });
+    }
+    function loadView(id,kunci){
+        if(kunci!=''){ //edit
+            view(kunci).done(function(dt){
+                detSetting(kunci);
+            });
+        }else{ //view --> all 
+            view('idfmt').done(function(dt){
+                $('#idTB').val(dt.row);
+            });
+            view('labelt').done(function(dt){
+                $('#barkodeTB').val(dt.row);
+            });
+            view('judul').done(function(dt){
+                $('#judulTB').val(dt.row);
             });
         }
-        function loadView(id,kunci){
-            if(kunci!=''){ //edit
-                view(kunci).done(function(dt){
-                    detSetting(kunci);
-                });
-            }else{ //view --> all 
-                view('idfmt').done(function(dt){
-                    $('#idTB').val(dt.row);
-                });
-                view('labelt').done(function(dt){
-                    $('#barkodeTB').val(dt.row);
-                });
-                view('judul').done(function(dt){
-                    $('#judulTB').val(dt.row);
-                });
-            }
-        }
-        function detSetting (id){
-            $.ajax({
-                url:dir,
-                data:'aksi=tampil&subaksi=detSetting&kunci='+id,
-                type:'post',
-                dataType:'json',
-                success:function(dt){
-                    // console.log(dt);
-                    if(dt.status!='sukses'){
-                        notif(dt.status,'red');
-                    }else{
-                        // data detail barang
-                        $('#f_idTB').val(data.kunci);
-                        var tbl='';
-                        $.each(dt.data,function(id,item){
-                            var btn;
-                            tbl+='<tr>'
-                                +'<td><input type="checkbox" dp="'+item.kunci+'" brg="'+item.replid+'" /></td>'
-                                +'<td>'+item.nilai+'</td>'
-                                +'<td>'+item.keterangan+'</td>'
-                            +'</tr>';
-                        });$('#idTBL').html(tbl);
-                    }
+    }
+    function detSetting (id){
+        $.ajax({
+            url:dir,
+            data:'aksi=tampil&subaksi=detSetting&kunci='+id,
+            type:'post',
+            dataType:'json',
+            success:function(dt){
+                // console.log(dt);
+                if(dt.status!='sukses'){
+                    notif(dt.status,'red');
+                }else{
+                    // data detail barang
+                    $('#f_idTB').val(data.kunci);
+                    var tbl='';
+                    $.each(dt.data,function(id,item){
+                        var btn;
+                        tbl+='<tr>'
+                            +'<td><input type="checkbox" dp="'+item.kunci+'" brg="'+item.replid+'" /></td>'
+                            +'<td>'+item.nilai+'</td>'
+                            +'<td>'+item.keterangan+'</td>'
+                        +'</tr>';
+                    });$('#idTBL').html(tbl);
                 }
-            });            
-        }
+            }
+        });            
+    }
 
-        // function viewJudul(){  
-        //     var aksi ='aksi=tampil&subaksi=judul';
-        //     $.ajax({
-        //         url : dir,
-        //         type: 'post',
-        //         data: aksi,
-        //         success:function(dt){
-        //                 $('#judulTB').val(dt);
-        //         }
-        //     });
-        // }
-        // function viewDeskripsi(){  
-        //     var aksi ='aksi=tampil&subaksi=deskripsi';
-        //     $.ajax({
-        //         url : dir,
-        //         type: 'post',
-        //         data: aksi,
-        //         success:function(dt){
-        //                 $('#deskripsiTB').val(dt);
-        //         }
-        //     });
-        // }
 
 // fungsi AJAX : asyncronous
-    // function ajaxFC (u,d) {
-    //     return $.ajax({
-    //         url:u,
-    //         type:'post',
-    //         dataType:'json',
-    //         data:d
-    //     });
-    // }
-
-// input uang --------------------------
-    // function inputuang(e) {
-    //     $(e).maskMoney({
-    //         precision:0,
-    //         prefix:'Rp. ', 
-    //         // allowNegative: true, 
-    //         thousands:'.', 
-    //         // decimal:',', 
-    //         affixesStay: true
-    //     });
-    // }
-// end of input uang --------------------------
+    function ajaxFC (u,d) {
+        return $.ajax({
+            url:u,
+            type:'post',
+            dataType:'json',
+            data:d
+        });
+    }
 
 // notifikasi
     function notif(cont,clr) {
@@ -532,19 +464,6 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
         });
     }
 // end of notifikasi
-
-//end of  print to PDF ------- epiii : kelebihan function printPDF dlm 1 halaman
-    // function printPDF(mn){
-    //     var par='',tok='',p,v;
-    //     $('.'+mn+'_cari').each(function(){
-    //         p=$(this).attr('id');
-    //         v=$(this).val();
-    //         par+='&'+p+'='+v;
-    //         tok+=v;
-    //     });var x  = $('#id_loginS').val();
-    //     var token = encode64(x+tok);
-    //     window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
-    // }
 
 // left pad (replace with 0)
     function lpadZero (n, length){
@@ -618,15 +537,8 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
         });
 
         var x     = $('#id_loginS').val();
-        var buku  = bukuArr();
-        var buku2 = buku.toString();
-        // var token = encode64(buku2);
-        var token = encode64(x+tok+buku2);
-        console.log(x);
-        console.log(tok); // lokasi
-        console.log(buku2);
-        console.log(token);
-        // console.log(x+tok+buku);
-        window.open('report/r_'+mn+'.php?token='+token+par+'&bukuArr='+bukuArr(),'_blank');
+        var buku  = bukuArr();              /*epiii*/
+        var buku2 = buku.toString();        /*epiii*/
+        var token = encode64(x+tok+buku2);  /*epiii*/
+        window.open('report/r_'+mn+'.php?token='+token+par+'&bukuArr='+bukuArr(),'_blank'); 
     }
-//end of  print to PDF -------        
