@@ -47,6 +47,7 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
         $('#bukuTR_'+id).fadeOut('slow',function(){
             $('#bukuTR_'+id).remove();
             $('#labelTB').combogrid('option','url', dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&terpilihArr='+bukuArr().toString()); /*epiii*/
+            enabledButton(); /*epiii*/
         });
     }
 
@@ -61,6 +62,7 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
             $('#bukuTBL').prepend(tr); 
             bukuArr();
             $('#labelTB').combogrid('option','url', dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&terpilihArr='+bukuArr().toString()); /*epiii*/
+            enabledButton();
         }
         
     //himpun array buku terpilih
@@ -78,23 +80,22 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
             autoSug($('#labelTB'),$(this).val());
         });
 
-        settingFR    +='<div style="overflow:scroll;height:600px;">'
-                       +'<form autocomplete="off" onsubmit="idSV();return false;">' 
+        settingFR +='<div style="overflow:scroll;height:600px;">'
+                    +'<form autocomplete="off" onsubmit="idSV();return false;">' 
                         +'<input id="id_formH" type="hidden">' 
-                                +'<table width="700px" class="table hovered bordered striped">'
-                                    +'<thead>'
-                                        +'<tr style="color:white;"class="info">'
-                                            +'<th width="250"class="text-left">Kode</th>'
-                                            +'<th width="450" class="text-left">Keterangan</th>'
-                                        +'</tr>'
-                                    +'</thead>'     
-                                    +'<tbody id="idTBL">'
+                            +'<table width="700px" class="table hovered bordered striped">'
+                                +'<thead>'
+                                    +'<tr style="color:white;"class="info">'
+                                        +'<th width="250"class="text-left">Kode</th>'
+                                        +'<th width="450" class="text-left">Keterangan</th>'
+                                    +'</tr>'
+                                +'</thead>'     
+                                +'<tbody id="idTBL">'
 
-                                    +'</tbody>'
-
-                                    +'<tfoot>'
-                                    +'</tfoot>'
-                                +'</table>'
+                                +'</tbody>'
+                                +'<tfoot>'
+                                +'</tfoot>'
+                            +'</table>'
                             
                             +'<label>Format</label>'
                             +'<div class="input-control text size6">'
@@ -267,7 +268,11 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
         // default view
         loadView('','');
     }); 
-// end of main function ---------
+// main function ---------
+    function enabledButton () {
+        if(bukuArr().length>0) $('#cetak_barcodeBC').removeAttr('disabled');
+        else $('#cetak_barcodeBC').attr('disabled',true);
+    }
 
 //paging ---
     function pagination(page,aksix,subaksi){ 

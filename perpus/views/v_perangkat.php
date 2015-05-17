@@ -5,7 +5,7 @@
 
 <h4 style="color:white;">Perangkat</h4>
     <!-- epiii -->
-        <input type="text" id="id_loginS" value="<?php echo $_SESSION['id_loginS']; ?>">
+        <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS']; ?>">
     <!-- end of epiii -->
 
     <!-- id  -->
@@ -75,7 +75,7 @@
                         <tbody id="bukuTBL"></tbody>
                         <tfoot></tfoot>
                     </table>
-                    <button data-hint="Cetak Barcode" id="cetak_barcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
+                    <button disabled data-hint="Cetak Barcode" id="cetak_barcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
                 </div> <!-- end span -->
                 <div class="span6"></div>
             </div> <!-- end row -->

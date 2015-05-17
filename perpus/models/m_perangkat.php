@@ -16,7 +16,7 @@
 				$sidx       = $_GET['sidx'];  
 				$sord       = $_GET['sord']; 				
 				$searchTerm = $_GET['searchTerm'];
-				$terpilih   = !isset($_GET['terpilihArr'])?'':' AND b.replid NOT IN ('.$_GET['terpilihArr'].')'; /*epiii*/
+				$terpilih   = (isset($_GET['terpilihArr']) AND $_GET['terpilihArr']!='')?' AND b.replid NOT IN ('.$_GET['terpilihArr'].')':''; /*epiii*/
 				
 				if(!$sidx) 
 					$sidx =1;
