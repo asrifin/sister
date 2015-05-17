@@ -6,17 +6,24 @@
   require_once '../../lib/func.php';
   require_once '../../lib/bar128.php';
 
-  $x     = isset($_SESSION['id_loginS']).$_GET['lokasiS'];
+  // $buku = '';
+  // foreach ($_GET['bukuArr'] as $i => $v) {
+  //   $buku.='';
+  // }
+
+  $x     = isset($_SESSION['id_loginS']).$_GET['lokasiS'].$_GET['bukuArr'];
   $token = base64_encode($x);
+  var_dump($_GET['token']);
+  var_dump($token);
+  exit();
   if(!isset($_SESSION)){ // login 
     echo 'user has been logout';
   }else{ // logout
-    if(!isset($_GET['token']) and $token!==$_GET['token']){
+    if(!isset($_GET['token']) OR  $token!==$_GET['token']){
       echo 'maaf token - url tidak valid';
     }else{
-
         ob_start(); // digunakan untuk convert php ke html
-            // <body OnLoad="window.print()" OnFocus="window.close()">
+        // <body OnLoad="window.print()" OnFocus="window.close()">
         $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
           <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
@@ -26,17 +33,20 @@
 
             <body>';
 
-            $lokasi     = isset($_GET['lokasiS'])?filter(trim($_GET['lokasiS'])):'';
+            $lokasi = isset($_GET['lokasiS'])?filter($_GET['lokasiS']):'';
             
-            $s = 'SELECT pus_buku.replid,
-                         pus_buku.idbuku,
-                         pus_buku.barkode,pus_katalog.callnumber 
-                      FROM pus_buku 
-                          LEFT JOIN pus_katalog ON pus_katalog.replid=pus_buku.katalog
-                          LEFT JOIN pus_lokasi ON pus_buku.lokasi =  pus_lokasi.replid
-                      WHERE
-                          pus_buku.lokasi = '.$lokasi ;
-                       print_r($s);exit();
+            $s = 'SELECT 
+                    b.replid,
+                    b.idbuku,
+                    b.barkode,
+                    k.callnumber 
+                  from pus_buku b
+                      LEFT JOIN pus_katalog k ON k.replid=b.katalog
+                      LEFT JOIN pus_lokasi l ON b.lokasi =  l.replid
+                  WHERE
+                      b.lokasi = '.$lokasi.' AND 
+                      b.replid IN ('.$_GET['bukuArr'].')';
+             print_r($s);exit();
                   // var_dump($s);exit();
                   $e = mysql_query($s) or die(mysql_error());
                   $n = mysql_num_rows($e);

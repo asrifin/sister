@@ -4,6 +4,10 @@
 <script src="../js/base64.js"></script>
 
 <h4 style="color:white;">Perangkat</h4>
+    <!-- epiii -->
+        <input type="text" id="id_loginS" value="<?php echo $_SESSION['id_loginS']; ?>">
+    <!-- end of epiii -->
+
             <div style="overflow:scroll;height:550px;" >
                        <legend style="color:white;">Pengaturan Nomor Item</legend>
                             <label style="color:white;">Format nomor ID (Identitas) :</label>
@@ -50,40 +54,27 @@
             <div class="span6">
                 <label><b>Daftar label item yang dicetak :</b></label>
                 <div class="input-control select span3">
-                    <select data-hint="lokasi" name="lokasiS" id="lokasiS"></select>
+                    <select data-hint="lokasi" class="barcode_cari" name="lokasiS" id="lokasiS"></select>
                 </div>
                 <div class="input-control text size5">
-                    <input placeholder="barkode atau judul item" type="text" name="labelTB" id="labelTB">
+                    <input  placeholder="barkode atau judul item" type="text" id="labelTB">
                 </div>
 
                 <table class="table hovered bordered striped" id="cetaklabelTBL">
                     <thead>
                         <tr style="color:white;"class="info">
-                            <th class="text-left">Barkode</th>
-                            <th class="text-left">Callnumber</th>
-                            <th class="text-left">Judul</th>
-                            <th class="text-left">Aksi</th>
+                            <th class="text-cari">Barkode</th>
+                            <th class="text-cari">Callnumber</th>
+                            <th class="text-cari">Judul</th>
+                            <th class="text-cari">Aksi</th>
                         </tr>
                     </thead>
-
-                    <tbody id="bukuTBL">
-
-                    </tbody>
-
-                    <tfoot>
-                        
-                    </tfoot>
+                    <tbody id="bukuTBL"></tbody>
+                    <tfoot></tfoot>
                 </table>
-
-                    <!-- <a href="#" data-hint="Cetak Barcode" id="cetak_barcodeBC" class="button"><span class="icon-printer"></span> Cetak Barkode</a> -->
-                    <button data-hint="Cetak Barcode" class="barcode_cari" id="cetak_barcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
-
+                <button data-hint="Cetak Barcode" id="cetak_barcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
             </div> <!-- end span -->
-
-            <div class="span6">
-                
-            </div>
-
+            <div class="span6"></div>
         </div> <!-- end row -->
     </div> <!-- end grid -->
 

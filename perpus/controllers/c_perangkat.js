@@ -255,7 +255,8 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
             switchPN();
         });
         $('#cetak_barcodeBC').on('click',function(){
-            printPDF('barcode_buku');
+            printPDF('barcode');
+            // printPDF('barcode_buku'); epiii
         });
 
         // search button
@@ -513,18 +514,18 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
     }
 // end of notifikasi
 
-//end of  print to PDF -------
-    function printPDF(mn){
-        var par='',tok='',p,v;
-        $('.'+mn+'_cari').each(function(){
-            p=$(this).attr('id');
-            v=$(this).val();
-            par+='&'+p+'='+v;
-            tok+=v;
-        });var x  = $('#id_loginS').val();
-        var token = encode64(x+tok);
-        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
-    }
+//end of  print to PDF ------- epiii : kelebihan function printPDF dlm 1 halaman
+    // function printPDF(mn){
+    //     var par='',tok='',p,v;
+    //     $('.'+mn+'_cari').each(function(){
+    //         p=$(this).attr('id');
+    //         v=$(this).val();
+    //         par+='&'+p+'='+v;
+    //         tok+=v;
+    //     });var x  = $('#id_loginS').val();
+    //     var token = encode64(x+tok);
+    //     window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+    // }
 
 // left pad (replace with 0)
     function lpadZero (n, length){
@@ -590,17 +591,26 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
 
     function printPDF(mn){
         var par='',tok='',p,v,menu=mn;
-        if(mn=='barcode_buku'){
-            menu='barang';
-        }
         $('.'+menu+'_cari').each(function(){
             p=$(this).attr('id');
             v=$(this).val();
             par+='&'+p+'='+v;
             tok+=v;
         });
+
+        // console.log('val='+bukuArr());
+        // console.log('mn='+mn);
+        // console.log('sesi='+x);
+        // console.log('par='+par);
+        // console.log('tok='+tok);
+        // console.log('el sesi='+$('#id_loginS'));
+
         var x  = $('#id_loginS').val();
-        var token = encode64(x+tok);
-        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+        var token = encode64(x+tok+bukuArr());
+        console.log('token='+token);
+        console.log('x='+x);
+        console.log('tok='+tok);
+        console.log('bukuArr='+bukuArr());
+        window.open('report/r_'+mn+'.php?token='+token+par+'&bukuArr='+bukuArr(),'_blank');
     }
 //end of  print to PDF -------        
