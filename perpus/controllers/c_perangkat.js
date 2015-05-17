@@ -10,9 +10,13 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
         $('#cetak').toggle('slow');
         $('#labelcetak').toggle('slow');
         $('#cetaklabel').toggle('slow');
+    }
 
-                //autocomplete
-        $("#labelTB").combogrid({
+    var terpilihArr=bukuArr().toString();
+    function  autoSug (el,lok) {
+        // var terpilihArr = JSON.stringify(bukuArr());
+        // console.log(terpilihArr);
+        $(el).combogrid({
             debug:true,
             width:'550px',
             colModel: [{
@@ -32,21 +36,31 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                     'width':'25',
                     'label':'Judul'
                 }],
-            url: dir+'?aksi=autocomp',
-            select: function( event, ui ) { // event setelah data terpilih 
+            url: dir+'?aksi=autocomp&lokasi='+lok,
+            // +'&terpilihArr='+terpilihArr, //epiii
+            select: function( event, ui ) { 
                 bukuAdd(ui.item.replid,ui.item.barkode,ui.item.callnumber,ui.item.judul);
-                $('#labelTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&buku='+bukuArr() );
+                // terpilihF(el,lok);
+                var terpilihx=bukuArr().toString();
+                // console.log('terpilih di auto array= '+terpilihArr);
+                // console.log('terpilih array= '+bukuArr());
                 return false;
             }
-        }); //End autocomplete
-
+        }); //End autocomplete    
     }
 
+    function terpilihF (el,lok) {
+        console.log('masuk terpilihF');
+        console.log('terpilih, elem ='+el);
+        console.log('terpilih, lokasi ='+lok);
+        console.log('terpilih, buku arr='+bukuArr().toString());
+        autoSug(el,lok);//,bukuArr().toString());
+    }
      // hapus buku terpilih
     function bukuDel(id){
         $('#bukuTR_'+id).fadeOut('slow',function(){
             $('#bukuTR_'+id).remove();
-            // barangExist();
+            $('#labelTB').combogrid('option','url', dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&terpilihArr='+bukuArr().toString());
         });
     }
 
@@ -70,8 +84,9 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                         +'<td>'+judul+'</td>'
                         +'<td><button onclick="bukuDel('+id+');"><i class="icon-remove"></button></i></td>'
                     +'</tr>';
-            $('#bukuTBL').append(tr); 
+            $('#bukuTBL').prepend(tr); 
             bukuArr();
+            $('#labelTB').combogrid('option','url', dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&terpilihArr='+bukuArr().toString());
         }
         
     //himpun array buku terpilih
@@ -85,6 +100,11 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
 
     // main function load first 
     $(document).ready(function(){
+        cmblokasi();
+        $('#lokasiS').on('change',function(){
+            autoSug($('#labelTB'),$(this).val());
+        });
+        // $('#labelTB').on('keyup',alert($('#lokasiS').val()));
     //Dialog ID
         // id_contentFR    +='<div style="overflow:scroll;height:600px;">'
         settingFR    +='<div style="overflow:scroll;height:600px;">'
@@ -248,8 +268,7 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
             infoFR('');
         });
         $("#cetakBC").on('click', function(){ 
-            // infoFR('');
-            cmblokasi();
+            // autoSug($('#labelTB'),$('#lokasiS').val());
         });
         $("#cetaklabel").on('click', function(){ 
             switchPN();
@@ -276,6 +295,7 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
 
         // default view
         loadView('','');
+        // autoSug('#labelTB');
     }); 
 // end of main function ---------
 
@@ -328,9 +348,8 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
                     $.each(dt.lokasi, function(id,item){
                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
-                }
-                $('#lokasiS').html(out);
-                // cmbjenisbuku(dt.lokasi[0].replid);
+                }$('#lokasiS').html(out);
+                autoSug($('#labelTB'),$('#lokasiS').val());
             }
         });
     }
@@ -598,19 +617,16 @@ var settingFR = id_contentFR = barkode_contentFR = info_contentFR = cetak_conten
             tok+=v;
         });
 
-        // console.log('val='+bukuArr());
-        // console.log('mn='+mn);
-        // console.log('sesi='+x);
-        // console.log('par='+par);
-        // console.log('tok='+tok);
-        // console.log('el sesi='+$('#id_loginS'));
-
-        var x  = $('#id_loginS').val();
-        var token = encode64(x+tok+bukuArr());
-        console.log('token='+token);
-        console.log('x='+x);
-        console.log('tok='+tok);
-        console.log('bukuArr='+bukuArr());
+        var x     = $('#id_loginS').val();
+        var buku  = bukuArr();
+        var buku2 = buku.toString();
+        // var token = encode64(buku2);
+        var token = encode64(x+tok+buku2);
+        console.log(x);
+        console.log(tok); // lokasi
+        console.log(buku2);
+        console.log(token);
+        // console.log(x+tok+buku);
         window.open('report/r_'+mn+'.php?token='+token+par+'&bukuArr='+bukuArr(),'_blank');
     }
 //end of  print to PDF -------        

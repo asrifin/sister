@@ -6,22 +6,22 @@
   require_once '../../lib/func.php';
   require_once '../../lib/bar128.php';
 
-  // $buku = '';
-  // foreach ($_GET['bukuArr'] as $i => $v) {
-  //   $buku.='';
-  // }
-
-  $x     = isset($_SESSION['id_loginS']).$_GET['lokasiS'].$_GET['bukuArr'];
+  $x     = $_SESSION['id_loginS'].$_GET['lokasiS'].$_GET['bukuArr'];
   $token = base64_encode($x);
-  var_dump($_GET['token']);
-  var_dump($token);
-  exit();
+  // var_dump($_GET['lokasiS']);exit();
+  // var_dump($_SESSION['id_loginS']);
+  // var_dump($_GET['lokasiS']);
+  // var_dump($_GET['bukuArr']);
+  // var_dump($token);
+  // // exit();
+  // var_dump($_GET['token']);exit();
+  // var_dump($_SESSION['id_loginS'].$_GET['lokasiS'].$_GET['bukuArr']);exit();
   if(!isset($_SESSION)){ // login 
     echo 'user has been logout';
   }else{ // logout
-    if(!isset($_GET['token']) OR  $token!==$_GET['token']){
-      echo 'maaf token - url tidak valid';
-    }else{
+    // if(!isset($_GET['token']) OR  $token!=$_GET['token']){
+    //   echo 'maaf token - url tidak valid';
+    // }else{
         ob_start(); // digunakan untuk convert php ke html
         // <body OnLoad="window.print()" OnFocus="window.close()">
         $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -30,11 +30,9 @@
               <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
               <title>SISTER::Perpus - Perangkat</title>
             </head>
-
             <body>';
 
             $lokasi = isset($_GET['lokasiS'])?filter($_GET['lokasiS']):'';
-            
             $s = 'SELECT 
                     b.replid,
                     b.idbuku,
@@ -46,7 +44,7 @@
                   WHERE
                       b.lokasi = '.$lokasi.' AND 
                       b.replid IN ('.$_GET['bukuArr'].')';
-             print_r($s);exit();
+             // print_r($s);exit();
                   // var_dump($s);exit();
                   $e = mysql_query($s) or die(mysql_error());
                   $n = mysql_num_rows($e);
@@ -58,7 +56,7 @@
                               <td colspan="2">-</td>
                             </tr>';
                   }else{
-                    $kolom = 2;
+                    $kolom   = 2;
                     $counter = 1;
                     while ($r=mysql_fetch_assoc($e)) {
                       $out.="<tr>
@@ -68,21 +66,21 @@
                                 <td></td>
                              </tr>";
 
-                      // if (($counter-1) % $kolom == 0){
-                      //   $out.="<tr>";
-                      // } 
-                      // $x =" ".$r['barkode']." ";
+                      if (($counter-1) % $kolom == 0){
+                        $out.="<tr>";
+                      } 
+                      $x =" ".$r['barkode']." ";
 
-                      // $out.="<td align='center' cellspacing='5'>
-                      //     <barcode code='$x' type='C128A' class='barcode' />
-                      //   </td>";
-                      // // $out.="<br />".$r['kode']."
+                      $out.="<td align='center' cellspacing='5'>
+                          <barcode code='$x' type='C128A' class='barcode' />
+                        </td>";
+                      // $out.="<br />".$r['kode']."
 
-                      // if ($counter % $kolom == 0) {
-                      //   $out.="</tr>";
-                      // }
+                      if ($counter % $kolom == 0) {
+                        $out.="</tr>";
+                      }
 
-                      // $counter++;
+                      $counter++;
                     }
                   }
           $out.='</table>';
@@ -103,7 +101,7 @@
           $mpdf->WriteHTML($out);
           $mpdf->keep_table_proportions = true;
           $mpdf->Output();
-    }
+    // }
 }
   // ---------------------- //
   // -- created by epiii -- //

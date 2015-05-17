@@ -8,77 +8,78 @@
         <input type="text" id="id_loginS" value="<?php echo $_SESSION['id_loginS']; ?>">
     <!-- end of epiii -->
 
-            <div style="overflow:scroll;height:550px;" >
-                       <legend style="color:white;">Pengaturan Nomor Item</legend>
-                            <label style="color:white;">Format nomor ID (Identitas) :</label>
-                            <div class="input-control text size5">
-                                <input type="text" name="idTB" id="idTB" >
-                                <button class="btn-clear"></button>
-                            </div>
-                            <a href="#" data-hint="EditFormat ID" id="idBC" class="button"><span class="icon-pencil"></span> </a>
-                            <!-- <button data-hint="Edit Format ID" onclick="loadView('idfmt','')" id="idBC"><span class="icon-pencil"></span> </button> -->
-                            <label style="color:white;">Contoh :</label>
-
-                            <label style="color:white;">Format barkode :</label>
-                            <div class="input-control text size5">
-                                <input type="text" id="barkodeTB" name="barkodeTB">
-                                <button class="btn-clear"></button>
-                            </div>
-                            <a href="#" data-hint="Edit Barkode" id="barkodeBC" class="button"><span class="icon-pencil"></span> </a>
-                                <!-- <button data-hint="Edit Barkode" xclass="large" id="barkodeBC"><span class="icon-pencil"></span> </button> -->
-                            <label style="color:white;">Contoh :</label>
-
-                       <legend style="color:white;">Cetak Label</legend>
-                            <label style="color:white;">Judul :</label>
-                            <div class="input-control text size5">
-                                <input type="text" name="judulTB" id="judulTB">
-                                <button class="btn-clear"></button>
-                            </div>
-                            <label style="color:white;">Deskripsi :</label>
-                            <div class="input-control text size5">
-                                <input type="text" name="deskripsiTB" id="deskripsiTB">
-                                <button class="btn-clear"></button><br>
-                            </div>
-                        <div class="form-actions"> 
-                            <button data-hint="Edit" xclass="large" id="infoBC"><span class="icon-pencil"></span> </button>
-                        </div><br>        
-                        <div class="form-actions" id="cetaklabel" style="display:visible;"> 
-                            <button data-hint="Cetak Label" xclass="large" id="cetakBC">Cetak Label</button>
-                        </div>        
-        <!-- </div> -->
-
-<div class="panel" id="cetak" style="display:none;">
-    <div class="panel-content">
-    <div class="grid">
-        <div class="row">
-            <div class="span6">
-                <label><b>Daftar label item yang dicetak :</b></label>
-                <div class="input-control select span3">
-                    <select data-hint="lokasi" class="barcode_cari" name="lokasiS" id="lokasiS"></select>
-                </div>
-                <div class="input-control text size5">
-                    <input  placeholder="barkode atau judul item" type="text" id="labelTB">
-                </div>
-
-                <table class="table hovered bordered striped" id="cetaklabelTBL">
-                    <thead>
-                        <tr style="color:white;"class="info">
-                            <th class="text-cari">Barkode</th>
-                            <th class="text-cari">Callnumber</th>
-                            <th class="text-cari">Judul</th>
-                            <th class="text-cari">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="bukuTBL"></tbody>
-                    <tfoot></tfoot>
-                </table>
-                <button data-hint="Cetak Barcode" id="cetak_barcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
-            </div> <!-- end span -->
-            <div class="span6"></div>
-        </div> <!-- end row -->
-    </div> <!-- end grid -->
-
+    <!-- id  -->
+    <div style="overflow:scroll;height:550px;" >
+       <legend style="color:white;">Pengaturan Nomor Item</legend>
+    <label style="color:white;">Format nomor ID (Identitas) :</label>
+    <div class="input-control text size5">
+        <input type="text" name="idTB" id="idTB" >
+        <button class="btn-clear"></button>
     </div>
-</div> <!-- end panel -->
+    <a href="#" data-hint="EditFormat ID" id="idBC" class="button"><span class="icon-pencil"></span> </a>
+    <!-- conoth id -->
+    <label style="color:white;">Contoh :</label>
+    <label style="color:white;">Format barkode :</label>
+    <div class="input-control text size5">
+        <input type="text" id="barkodeTB" name="barkodeTB">
+        <button class="btn-clear"></button>
+    </div>
+    <!-- barcode -->
+    <a href="#" data-hint="Edit Barkode" id="barkodeBC" class="button"><span class="icon-pencil"></span> </a>
+    <label style="color:white;">Contoh :</label>
 
+    <!-- judul -->
+    <legend style="color:white;">Cetak Label</legend>
+    <label style="color:white;">Judul :</label>
+    <div class="input-control text size5">
+        <input type="text" name="judulTB" id="judulTB">
+        <button class="btn-clear"></button>
+    </div>
+    <!-- deskripsi -->
+    <label style="color:white;">Deskripsi :</label>
+    <div class="input-control text size5">
+        <input type="text" name="deskripsiTB" id="deskripsiTB">
+        <button class="btn-clear"></button><br>
+    </div>
+
+    <!-- button -->
+    <div class="form-actions"> 
+        <button data-hint="Edit" xclass="large" id="infoBC"><span class="icon-pencil"></span> </button>
+    </div><br>        
+    <div class="form-actions" id="cetaklabel" style="display:visible;"> 
+        <button data-hint="Cetak Label" xclass="large" id="cetakBC">Cetak Label</button>
+    </div>        
+
+    <div class="panel" id="cetak" style="display:none;">
+    <div class="panel-content">
+        <div class="grid">
+            <div class="row">
+                <div class="span6">
+                    <label><b>Daftar label item yang dicetak :</b></label>
+                    <div class="input-control select span3">
+                        <select  data-hint="lokasi" class="barcode_cari" name="lokasiS" id="lokasiS"></select>
+                    </div>
+                    <div class="input-control text size5">
+                        <input  placeholder="barkode atau judul item" type="text" id="labelTB">
+                    </div>
+
+                    <table class="table hovered bordered striped" id="cetaklabelTBL">
+                        <thead>
+                            <tr style="color:white;"class="info">
+                                <th class="text-cari">Barkode</th>
+                                <th class="text-cari">Callnumber</th>
+                                <th class="text-cari">Judul</th>
+                                <th class="text-cari">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bukuTBL"></tbody>
+                        <tfoot></tfoot>
+                    </table>
+                    <button data-hint="Cetak Barcode" id="cetak_barcodeBC"><span class="icon-printer"></span> Cetak Barcode</button>
+                </div> <!-- end span -->
+                <div class="span6"></div>
+            </div> <!-- end row -->
+        </div> <!-- end grid -->
+        </div>
+    </div> <!-- end panel -->
 </div>

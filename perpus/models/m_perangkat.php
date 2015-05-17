@@ -11,27 +11,43 @@
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
-				$page       = $_GET['page']; // get the requested page
-				$limit      = $_GET['rows']; // get how many rows we want to have into the grid
-				$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
-				$sord       = $_GET['sord']; // get the direction
+				$page       = $_GET['page']; 
+				$limit      = $_GET['rows'];  
+				$sidx       = $_GET['sidx'];  
+				$sord       = $_GET['sord']; 				
 				$searchTerm = $_GET['searchTerm'];
-
+				$terpilih   = !isset($_GET['terpilihArr'])?'':' AND b.replid NOT IN ('.$_GET['terpilihArr'].')'; /*epiii*/
+				
 				if(!$sidx) 
 					$sidx =1;
-				$ss='SELECT *
-						FROM(SELECT
-									pus_katalog.replid,
-									pus_buku.barkode barkode,
-									pus_buku.callnumber callnumber,
-									pus_katalog.judul judul
-							FROM pus_katalog
-							LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
-							LEFT JOIN pus_lokasi ON pus_lokasi.replid = pus_buku.lokasi
-							WHERE pus_lokasi.replid
-							)tb
-							WHERE	tb.barkode  LIKE "%'.$searchTerm.'%"
-									OR tb.judul LIKE "%'.$searchTerm.'%"';
+				$ss = 'SELECT 
+	                    b.replid,
+	                    b.idbuku,
+	                    b.barkode,
+	                    k.callnumber,
+                    	k.judul
+	                  FROM 
+						pus_buku b
+	                    LEFT JOIN pus_katalog k ON k.replid = b.katalog
+	                    LEFT JOIN pus_lokasi l ON b.lokasi = l.replid
+	                  WHERE
+                      	b.lokasi = '.$_GET['lokasi'].' AND (
+							k.judul LIKE "%'.$searchTerm.'%" OR b.barkode LIKE "%'.$searchTerm.'%"
+                      	)'.$terpilih; /*epiii*/
+ 
+				// $ss='SELECT *
+				// 		FROM(SELECT
+				// 					pus_katalog.replid,
+				// 					pus_buku.barkode barkode,
+				// 					pus_buku.callnumber callnumber,
+				// 					pus_katalog.judul judul
+				// 			FROM pus_katalog
+				// 			LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
+				// 			LEFT JOIN pus_lokasi ON pus_lokasi.replid = pus_buku.lokasi
+				// 			WHERE pus_lokasi.replid
+				// 			)tb
+				// 			WHERE	tb.barkode  LIKE "%'.$searchTerm.'%"
+				// 					OR tb.judul LIKE "%'.$searchTerm.'%"';
 				// print_r($ss);exit();
 				$result = mysql_query($ss) or die(mysql_error());
 				$row    = mysql_fetch_array($result,MYSQL_ASSOC);
