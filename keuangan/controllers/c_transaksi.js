@@ -479,7 +479,7 @@ var contentFR ='';
                 
                 var mode = (typeof arr!='undefined')?'edit':'add';
 
-                tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
+                tr+='<tr class="rekTR" id="rekTR_'+ke+'" value="'+ke+'">'
                         // jenis rek
                         +'<td align="center">'
                             +'<input type="hidden" name="ju_mode'+ke+'H" value="'+mode+'" />'
@@ -519,29 +519,27 @@ var contentFR ='';
             }
         }else{ // pemasukkan / pengeluaran
             if(typeof n=='undefined'){ isLoop=false; n=iTR;}
-
-            // jrek=typ=='out_come'?'kredit':'debit'; // jenis rekening (income:debit, outcome:kredit)
-            jrek=''; // jenis rekening (income:debit, outcome:kredit)
+            jrek='rekitem'; // jenis rekening (income:debit, outcome:kredit)
+            // jrek='"aktiva","modal","kewajiban","pendapatan","biaya"'; // jenis rekening (income:debit, outcome:kredit)
             for(var i=n; i>=iTR; i--){
                 var ke = parseInt(i);//-1;
-                // console.log(arr);return false;   
-                // var idjurnal  = (typeof arr!='undefined')?arr[ke].idjurnal:null;
                 var idjurnal  = (typeof arr!='undefined')?arr.idjurnal:null;
                 var idrekitem = (typeof arr!='undefined')?arr.idrekitem:'';
                 var rekitem   = (typeof arr!='undefined')?arr.rekitem:'';
                 var nominal   = (typeof arr!='undefined')?arr.nominal:'Rp. 0';
                 var uraian    = (typeof arr!='undefined')?arr.uraian:'';
                 var mode      = (typeof arr!='undefined')?'edit':'add'; 
-                
-                tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
+                // console.log(jenis);
+                tr+='<tr class="rekTR" id="rekTR_'+ke+'" value="'+ke+'">'
                         // rek
                         +'<td align="center">'
-                            +'<input type="hidden" name="'+typ+'_mode'+ke+'H" value="'+mode+'" />'
-                            +'<input type="hidden" value="'+idjurnal+'" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H">'
                             +'<input type="hidden" class="'+typ+'_idTR" value="'+ke+'" name="'+typ+'_idTR[]" id="'+typ+'_idTR_'+ke+'">'
+                            +'<input type="hidden" value="'+idjurnal+'" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H">'
+                            +'<input type="hidden" name="'+typ+'_mode'+ke+'H" value="'+mode+'" />'
+                           
                             +'<span class="input-control size5 text">'
                                 +'<input value="'+idrekitem+'" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
-                                +'<input value="'+rekitem+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\')" id="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
+                                +'<input value="'+rekitem+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');"  id="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
                                 +'<button class="btn-clear"></button>'
                             +'</span>'
                         +'</td>'
@@ -571,7 +569,6 @@ var contentFR ='';
     }
 
   // autosuggest
-    // autoSuggest(\'\',\'ju\','+ke+',\'rek\',\'\')
     function autoSuggest(jenis,el,subaksi,tingkat){
         if(subaksi=='rek'){ //rekening
             var urlx= '?aksi=autocomp&subaksi='+subaksi+(jenis!=''?'&jenis='+jenis:'');
@@ -627,6 +624,9 @@ var contentFR ='';
                 $('#'+el+'H').val(ui.item.replid);
                 if (subaksi=='rek') { // rekening 
                     $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
+                    // rekArrFC(ui.item.replid);
+                    rekArrFC();
+                    console.log(rekArrFC().toString());
                 }else{ // anggaran 
                     $('#'+el+'TB').val(ui.item.nama+' [ sisa :'+ui.item.sisaBilCur+'  kuota : '+ui.item.kuotaBilCur+' ]');
                     $('#detilanggaranV').val(getCurr(ui.item.sisaBilNum));
@@ -653,6 +653,17 @@ var contentFR ='';
                 return false;
             }
         });
+    }
+    //himpun array rekening terpilih
+    // var rekArr=[];
+    function rekArrFC(el){
+        var rekArr=[];
+        // $('.rekTR').each(function(id,item){
+            // rekArr.push($(this).attr('val'));
+            rekArr.push(el);
+            // console.log($(this).attr('val'));
+        // });
+        return rekArr;
     }
 
     function validDelRek () {
@@ -738,7 +749,7 @@ var contentFR ='';
                         $('.uraianDV').attr('style','display:none;');
                         $('.rekkasDV').removeAttr('style');
                         $('#rekkasTB').attr('required',true);
-                        autoSuggest('','rekkas','rek','');
+                        autoSuggest('rekkas','rekkas','rek','');
                         // autoSuggest('debit','rekkas','rek','');
                         $('#kwitansiDV').removeAttr('style');
                         
@@ -765,7 +776,7 @@ var contentFR ='';
                                 var url  = dir;
                                 var data = 'aksi=ambiledit&subaksi='+typx+'&replid='+id;
                                 ajax(url,data).done(function (dt) {
-                                    // $('#idformH').val(id);
+                                    $('#idformH').val(id);
                                     $('#nomerTB').html(dt.transaksiArr.nomer);
                                     $('#nobuktiTB').val(dt.transaksiArr.nobukti);
                                     $('#tanggalTB').val(dt.transaksiArr.tanggal);

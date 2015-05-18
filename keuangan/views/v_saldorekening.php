@@ -19,17 +19,20 @@
         <tr style="color:white;"class="info">
             <th class="text-center" rowspan="2">Kode</th>
             <th class="text-center" rowspan="2">Rekening</th>
-            <th class="text-center" colspan="2">Saldo</th>
+            <th class="text-center" colspan="2">Saldo Awal</th>
+            <th class="text-center" colspan="2">Saldo Sementara</th>
             <th class="text-center" rowspan="2">Aksi</th>
         </tr>
         <tr style="color:white;" class="info">
+            <th>debit</th>
+            <th>kredit</th>
             <th>debit</th>
             <th>kredit</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <th><div class="input-control text"><input  class="cari" placeholder="Kode Rekening" id="kodeS" name="kodeS"></div></th>
             <th><div class="input-control text"><input  class="cari" placeholder="Nama Rekening " id="namaS" name="namaS"></div></th>
-            <th colspan="3"></th>
+            <th colspan="5"></th>
         </tr>
     </thead>
 
