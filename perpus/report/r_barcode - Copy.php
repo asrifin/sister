@@ -55,44 +55,19 @@
                               <td colspan="2">-</td>
                             </tr>';
                   }else{
-                    $arr = array();
+                    $kolom   = 2;
+                    $counter = 1;
                     while ($r=mysql_fetch_assoc($e)) {
-                      $arr[]=$r;
-                    }
-
-                    foreach ($arr as $i => $v) {
-                      // $x =" ".$v['barkode']." ";
-                      $tb='<table width="100%" border="0">
-                            <tr>
-                                <td>Logo</td>
-                                <td>Judul</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">'.$v['callnumber'].'</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><barcode code=" '.$v['barkode'].' " type="C128A" class="barcode" /> </td>
-                            </tr>
-                          </table>';
-                        if ($i % 2 == 0) {
-                          $out.='<tr><td width="50%">'.$tb.'</td>';
-                        }else{
-                          $out.='<td width="50%">'.$tb.'</td></tr>';
-                        }
-                    }
-                    // $kolom   = 2;
-                    // $counter = 1;
-                    // while ($r=mysql_fetch_assoc($e)) {
-                    //   $x =" ".$r['barkode']." ";
-                    //   $out.="<tr>
-                    //             <td></td>
-                    //          </tr>
-                    //          <tr>
-                    //             <td>".$r['callnumber']."</td>
-                    //          </tr>
-                    //          <tr>
-                                // <td><barcode code='$x' type='C128A' class='barcode' /></td>
-                    //          </tr>";
+                      $x =" ".$r['barkode']." ";
+                      $out.="<tr>
+                                <td></td>
+                             </tr>
+                             <tr>
+                                <td>".$r['callnumber']."</td>
+                             </tr>
+                             <tr>
+                                <td><barcode code='$x' type='C128A' class='barcode' /></td>
+                             </tr>";
                       // $x =" ".$r['barkode']." ";
 
                       // if (($counter-1) % $kolom == 0){
@@ -110,11 +85,9 @@
                       // }
 
                       // $counter++;
-                    // }
+                    }
                   }
-          $out.='</table>
-                 </body>
-              </html>';
+          $out.='</table>';
         echo $out;
   
         #generate html -> PDF ------------
