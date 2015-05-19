@@ -28,12 +28,13 @@
 				$sidx       = $_GET['sidx']; 
 				$sord       = $_GET['sord'];
 				$searchTerm = $_GET['searchTerm'];
+				$terpilih   = (isset($_GET['terpilihArr']) AND $_GET['terpilihArr']!='')?' AND d.replid NOT IN ('.$_GET['terpilihArr'].')':''; /*epiii*/
 
 				if(isset($_GET['jenis']) AND $_GET['jenis']!=''){
 					if($_GET['jenis']=='rekitem')
-						$jenis = 'k.nama IN ("aktiva","modal","pendapatan","biaya","kewajiban") AND';
+						$jenis = ' AND k.nama IN ("aktiva","modal","pendapatan","biaya","kewajiban")';
 					else
-						$jenis = 'k.nama IN ("kas","bank") AND';
+						$jenis = ' AND k.nama IN ("kas","bank")';
 				}else $jenis='';
 
 				if(isset($_GET['subaksi']) && $_GET['subaksi']=='rek'){ // rekening
@@ -45,10 +46,10 @@
 							keu_detilrekening d 
 							LEFT JOIN keu_kategorirekening k on k.replid = d.kategorirekening
 						WHERE
-							'.$jenis.' (
+							(
 								d.kode LIKE "%'.$searchTerm.'%"
 								OR d.nama LIKE "%'.$searchTerm.'%"
-							)';
+							)'.$terpilih.$jenis;
 							// '.(isset($_GET['jenis']) AND $_GET['jenis']!=''?'k.jenis="'.$_GET['jenis'].'" AND ':'').' (
 				}else{ // detil anggaran 
 					$ss='SELECT

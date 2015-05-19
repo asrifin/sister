@@ -479,7 +479,7 @@ var contentFR ='';
                 
                 var mode = (typeof arr!='undefined')?'edit':'add';
 
-                tr+='<tr class="rekTR" id="rekTR_'+ke+'" value="'+ke+'">'
+                tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
                         // jenis rek
                         +'<td align="center">'
                             +'<input type="hidden" name="ju_mode'+ke+'H" value="'+mode+'" />'
@@ -496,7 +496,7 @@ var contentFR ='';
                         // rek
                         +'<td align="center">'
                             +'<span class="input-control size5 text">'
-                                +'<input value="'+idrek+'" id="ju_rek'+ke+'H" name="ju_rek'+ke+'H" type="hidden" />'
+                                +'<input class="idrek" value="'+idrek+'" id="ju_rek'+ke+'H" name="ju_rek'+ke+'H" type="hidden" />'
                                 +'<input value="'+rek+'" required '
                                     // +(typeof arr=='undefined'?'disabled':' onfocus="alert(9999);"')
                                     +(typeof arr=='undefined'?'disabled':' onfocus="autoSuggest(\'\',\'ju_rek'+ke+'\',\'rek\',\'rek\',\'\');"')
@@ -530,15 +530,15 @@ var contentFR ='';
                 var uraian    = (typeof arr!='undefined')?arr.uraian:'';
                 var mode      = (typeof arr!='undefined')?'edit':'add'; 
                 // console.log(jenis);
-                tr+='<tr class="rekTR" id="rekTR_'+ke+'" value="'+ke+'">'
+                tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
                         // rek
                         +'<td align="center">'
-                            +'<input type="hidden" class="'+typ+'_idTR" value="'+ke+'" name="'+typ+'_idTR[]" id="'+typ+'_idTR_'+ke+'">'
-                            +'<input type="hidden" value="'+idjurnal+'" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H">'
+                            +'<input type="hidden" name="'+typ+'_idTR[]" id="'+typ+'_idTR_'+ke+'" class="'+typ+'_idTR" value="'+ke+'" >'
+                            +'<input type="hidden" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H" value="'+idjurnal+'" >'
                             +'<input type="hidden" name="'+typ+'_mode'+ke+'H" value="'+mode+'" />'
                            
                             +'<span class="input-control size5 text">'
-                                +'<input value="'+idrekitem+'" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
+                                +'<input value="'+idrekitem+'" class="idrek" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
                                 +'<input value="'+rekitem+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');"  id="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
                                 +'<button class="btn-clear"></button>'
                             +'</span>'
@@ -615,18 +615,18 @@ var contentFR ='';
                     'label':'Nominal'
             }];
         }
+        urly = dir+urlx;
         $('#'+el+'TB').combogrid({
             debug:true,
             width:'750px',
             colModel: col ,
-            url: dir+urlx,
+            url: urly,
             select: function( event, ui ) { // event setelah data terpilih 
                 $('#'+el+'H').val(ui.item.replid);
                 if (subaksi=='rek') { // rekening 
                     $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
-                    // rekArrFC(ui.item.replid);
-                    rekArrFC();
-                    console.log(rekArrFC().toString());
+                    rekArrFC(el,urly);
+                    console.log(rekArrFC(el,urly).toString());
                 }else{ // anggaran 
                     $('#'+el+'TB').val(ui.item.nama+' [ sisa :'+ui.item.sisaBilCur+'  kuota : '+ui.item.kuotaBilCur+' ]');
                     $('#detilanggaranV').val(getCurr(ui.item.sisaBilNum));
@@ -655,14 +655,14 @@ var contentFR ='';
         });
     }
     //himpun array rekening terpilih
-    // var rekArr=[];
-    function rekArrFC(el){
+    function rekArrFC(el,urlx){
+        console.log(el);
+        console.log(urlx);
         var rekArr=[];
-        // $('.rekTR').each(function(id,item){
-            // rekArr.push($(this).attr('val'));
-            rekArr.push(el);
-            // console.log($(this).attr('val'));
-        // });
+        $('.idrek').each(function(id,item){
+            rekArr.push($(this).val());
+        });
+        $('#'+el+'TB').combogrid('option','url', urlx+'&terpilihArr='+rekArr.toString()); /*epiii*/
         return rekArr;
     }
 
