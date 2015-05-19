@@ -558,7 +558,7 @@ var rekArr=[];
                         +'</td>'
                         // hapus
                         +'<td align="center">'
-                            +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+','++');':'delRekTR('+ke+','+idjurnal+')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
+                            +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+');':'delRekTR('+ke+','+idjurnal+')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
                         +'</td>'
                     +'</tr>';
             }
@@ -617,20 +617,24 @@ var rekArr=[];
             }];
         }
         urly = dir+urlx;
+        var t= terpilihx = '';
+        if(rekArr!='' || rekArr!=null){
+            t         = rekArr.filter(function(item) { return item !== ''; });
+            terpilihx = '&terpilihArr='+t.toString();
+        }
+
         $('#'+el+'TB').combogrid({
             debug:true,
             width:'750px',
             colModel: col ,
-            url: urly+((rekArr!='' || rekArr!=null)?'&terpilihArr='+rekArr.toString():''),
+            url: urly+terpilihx,
             select: function( event, ui ) { // event setelah data terpilih 
                 $('#'+el+'H').val(ui.item.replid);
                 if (subaksi=='rek') { // rekening 
                     $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
-                    rekArrFC();
-                    // $('#'+el+'TB').combogrid('option','url', urly+'&terpilihArr='+rekArrFC().toString()); /*epiii*/
-                    // rekArrFC(el,urly);
-
-                    // console.log(rekArrFC(el,urly).toString());
+                    var arr = rekArrFC();
+                    var str = arr.toString();
+                    console.log('terpilih in auto 1 =>'+str);
                 }else{ // anggaran 
                     $('#'+el+'TB').val(ui.item.nama+' [ sisa :'+ui.item.sisaBilCur+'  kuota : '+ui.item.kuotaBilCur+' ]');
                     $('#detilanggaranV').val(getCurr(ui.item.sisaBilNum));
@@ -644,6 +648,9 @@ var rekArr=[];
                             if($('#'+el+'H').val()!=''){
                                 $('#'+el+'H').val('');
                                 $('#'+el+'TB').val('');
+            
+                                var str = rekArr.toString();
+                                console.log('terpilih in auto 2 =>'+str+' arr=> '+rekArr);
                                 if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
                             }
                         }
@@ -659,11 +666,11 @@ var rekArr=[];
         });
     }
     //himpun array rekening terpilih
-    function rekArrFC(urlx){
+    function rekArrFC(){
+        rekArr=[];
         $('.idrek').each(function(id,item){
             rekArr.push($(this).val());
-        });
-        return rekArr;
+        });return rekArr;
     }
 
     function validDelRek () {
@@ -682,17 +689,18 @@ var rekArr=[];
     }
 
 // remove TR rekening
-    function delRekTR (ke,idjurnal,idrek) {
+    function delRekTR (ke,idjurnal) {
         console.log(validDelRek());
         if(validDelRek().status==false){
             notif(validDelRek().msg,'red');
         }else{
             if(idjurnal!=null) idDelTR.push(idjurnal); //jika ada hapus (jurnal umum)
-            if(idrek!=null) rekArr.splice(rekArr.indexOf(idrek),1);
             $('#rekTR_'+ke).fadeOut('slow',function(){
                 $('#rekTR_'+ke).remove();
+                rekArrFC();
+                console.log('arr terpilih in delrek=>'+rekArr);
             });
-            console.log(idDelTR);
+            // console.log(idDelTR);
         }
     }
 
@@ -837,6 +845,7 @@ var rekArr=[];
         if($('.window-overlay').length<=0) {
             iTR=1; // reset rekTR's counter
             idDelTR=[]; // reset rekTR's counter
+            rekArr=[]; // reset rekArr's counter
         }
     }
 
