@@ -9,6 +9,7 @@ var dir3 ='../akademik/models/m_'+mnu3+'.php';
 var dir4 ='../akademik/models/m_'+mnu4+'.php';
 
 var contentFR ='';
+var rekArr=[];
 // main function load first 
     //print to PDF -------
     function printPDF(mn){
@@ -513,7 +514,7 @@ var contentFR ='';
                         +'</td>'
                         // hapus
                         +'<td align="center">'
-                            +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+');':'delRekTR('+ke+','+idjurnal+')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
+                            +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+',\'\');':'delRekTR('+ke+','+idjurnal+',\'\')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
                         +'</td>'
                     +'</tr>';
             }
@@ -557,7 +558,7 @@ var contentFR ='';
                         +'</td>'
                         // hapus
                         +'<td align="center">'
-                            +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+');':'delRekTR('+ke+','+idjurnal+')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
+                            +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+','++');':'delRekTR('+ke+','+idjurnal+')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
                         +'</td>'
                     +'</tr>';
             }
@@ -620,13 +621,16 @@ var contentFR ='';
             debug:true,
             width:'750px',
             colModel: col ,
-            url: urly,
+            url: urly+((rekArr!='' || rekArr!=null)?'&terpilihArr='+rekArr.toString():''),
             select: function( event, ui ) { // event setelah data terpilih 
                 $('#'+el+'H').val(ui.item.replid);
                 if (subaksi=='rek') { // rekening 
                     $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
-                    rekArrFC(el,urly);
-                    console.log(rekArrFC(el,urly).toString());
+                    rekArrFC();
+                    // $('#'+el+'TB').combogrid('option','url', urly+'&terpilihArr='+rekArrFC().toString()); /*epiii*/
+                    // rekArrFC(el,urly);
+
+                    // console.log(rekArrFC(el,urly).toString());
                 }else{ // anggaran 
                     $('#'+el+'TB').val(ui.item.nama+' [ sisa :'+ui.item.sisaBilCur+'  kuota : '+ui.item.kuotaBilCur+' ]');
                     $('#detilanggaranV').val(getCurr(ui.item.sisaBilNum));
@@ -655,14 +659,10 @@ var contentFR ='';
         });
     }
     //himpun array rekening terpilih
-    function rekArrFC(el,urlx){
-        console.log(el);
-        console.log(urlx);
-        var rekArr=[];
+    function rekArrFC(urlx){
         $('.idrek').each(function(id,item){
             rekArr.push($(this).val());
         });
-        $('#'+el+'TB').combogrid('option','url', urlx+'&terpilihArr='+rekArr.toString()); /*epiii*/
         return rekArr;
     }
 
@@ -682,12 +682,13 @@ var contentFR ='';
     }
 
 // remove TR rekening
-    function delRekTR (ke,idjurnal) {
+    function delRekTR (ke,idjurnal,idrek) {
         console.log(validDelRek());
         if(validDelRek().status==false){
             notif(validDelRek().msg,'red');
         }else{
-            if(idjurnal!=null) idDelTR.push(idjurnal); //jika ada hapu jurnal 
+            if(idjurnal!=null) idDelTR.push(idjurnal); //jika ada hapus (jurnal umum)
+            if(idrek!=null) rekArr.splice(rekArr.indexOf(idrek),1);
             $('#rekTR_'+ke).fadeOut('slow',function(){
                 $('#rekTR_'+ke).remove();
             });
