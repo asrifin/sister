@@ -13,7 +13,7 @@ var rekArr=[];
 // main function load first 
     //print to PDF -------
     function printPDF(mn){
-        var par='',tok='',p,v;
+        var c = par = tok ='',p,v;
         $('.'+mn+'_cari').each(function(){
             p=$(this).attr('id');
             v=$(this).val();
@@ -33,8 +33,15 @@ var rekArr=[];
             par+='&tgl1TB='+$('#tgl1TB').val()+'&tgl2TB='+$('#tgl2TB').val();
             tok+=$('#tgl1TB').val()+$('#tgl2TB').val();
         }
+        if(mn=='kwitansi'){ 
+            c = $('.rekTR').length;
+            par+='&countx='+c;
+            tok+=c;
+        }
         var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
+        console.log('berfore encypt='+x+tok);
+        console.log('token ='+token);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 
@@ -318,10 +325,11 @@ var rekArr=[];
             ajax(url,data).done(function(dt){
                 notif(dt.status,dt.status!='sukses'?'red':'green');
                 if(dt.status=='sukses'){
+                    if($('#kwitansiCB').prop('checked')) printPDF('kwitansi');
                     $.Dialog.close();
                     $('#rekTBL').html('');
-                    viewTB('ju');
-                    if($('#kwitansiCB').prop('checked')) printPDF('kwitansi');
+                    loadAll();
+                    // viewTB('ju');
                 }
             });
         }
