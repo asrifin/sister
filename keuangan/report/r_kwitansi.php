@@ -29,8 +29,8 @@
       $belakang = substr($nomer,8,8);
       // u/ looping nomer transaksi --> query
       $start    = intval($tengah);
-      $end      = intval($countx);
-      $kode     =getBuktiTrans(getKatModulPemb($typ)).'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
+      $end      = intval($countx)+$start;
+      // var_dump($end);exit();
       
       $nomerArr ='';
       for ($i =$start; $i<=$end ; $i++) { 
@@ -39,7 +39,6 @@
       
       $s1 = 'SELECT * FROM keu_transaksi WHERE nomer IN ('.$nomerArr.')';
       $e1 = mysql_query($s1) or die(mysql_error());
-      // print_r($s1);exit();
       while($r1 = mysql_fetch_assoc($e1)){
         $jenisTrans  =getJenisTrans('nama',getDetJenisTrans('jenistrans','replid',$r1['detjenistrans']));
         $jenisTrans2 =getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r1['detjenistrans']));
@@ -73,10 +72,11 @@
                     <td>: '.$r1['uraian'].'</td>
                   </tr>';
           if($jenisTrans=='pengeluaran'){
-            $out.='<td>Anggaran</td>
-                   <td>: '.getAnggaran($r1['detilanggaran']).'</td>';
+            $out.='<tr>
+                    <td>Anggaran</td>
+                    <td>: '.getAnggaran($r1['detilanggaran']).'</td>
+                  </tr>';
           }
-          $out.='</tr>';
           $out.='</table>';
           // end of header
 
@@ -89,15 +89,12 @@
                   </tr>';
           $totbayar =0;
 
-          if($jenisTrans2=='ju'){
-            $debit=($r2['jenis']=='d'?$r2['nominal']:0);
-            $kredit=($r2['jenis']=='k'?$r2['nominal']:0);
-            // $debit=($jRek=='d'?$r2['nominal']:0);
-            // $kredit=($jRek=='k'?$r2['nominal']:0);
-          }else{
+          if($jenisTrans2!='ju'){
             if($jenisTrans2=='out'){
-              $debit=$r2['rek']==$res['rekitem']?$res['nominal']:0;
-              $kredit=$r2['rek']==$res['rekkas']?$res['nominal']:0;
+              $debit1  =0;
+              $kredit1 =$r1['nominal'];
+              $debit2  =$r1['nominal'];
+              $kredit2 =0;
             }else{ // in
               $debit1  =$r1['nominal'];
               $kredit1 =0;

@@ -14,6 +14,7 @@ _________________________  transact  ___________________________
 	- jurnal umum : form edit : autosuggest tidak aktif
 	- jurnal umum :  report & print 
 	- jurnal umum : button edit blum aktif
+	- report : buku besar : saldo rekening (sementara) @akun
 * modul pembayaran(C)
 	+ kode rekening (perlu dibuatkan tabel detilmodulpembayaran kah=> rekening multi (pendatpaan, kas, piutang) )
 * pembayaran pendaftaran(P)
@@ -48,4 +49,6 @@ ________________________   master  ____________________________
 	+ CRUD 
 * status rekening (C)
 	+ CRUD 
+*pembyran
+	- spp : report (header)
 _____________________________________________________

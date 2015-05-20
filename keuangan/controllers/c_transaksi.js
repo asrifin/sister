@@ -131,8 +131,8 @@ var rekArr=[];
                         // anggaran (optional:income & outcome)
                         +'<label style="display:none;" class="detilanggaranDV">Anggaran </label>'
                         +'<div style="display:none;" class="input-control text detilanggaranDV">'
-                            +'<input type="hidden" name="detilanggaranV" id="detilanggaranV">'
-                            +'<input type="hidden" name="detilanggaranH" id="detilanggaranH">'
+                            +'<input type="text" name="detilanggaranV" id="detilanggaranV">'
+                            +'<input type="text" name="detilanggaranH" id="detilanggaranH">'
                             +'<input placeholder="pada anggaran" id="detilanggaranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
@@ -800,8 +800,6 @@ var rekArr=[];
                                     $('#rekkasTB').val(dt.transaksiArr.rekkas);
                                     $('#rekkasH').val(dt.transaksiArr.idrekkas);
                                     var income = dt.transaksiArr.income;
-                                    // console.log(dt.transaksiArr.income.rekitem);
-                                    // console.log('length='+income.length);
                                     addRekTR(typx,1,income);
                                 });
                             }
@@ -810,12 +808,9 @@ var rekArr=[];
                             $('.detilanggaranDV').attr('style','display:visible;');
                             $('#detilanggaranTB').attr('required',true);
                             $('#reklawanDV').html(' Pengeluaran');
-                            // $('#departemenTB').attr('required',true);
-                            // $('#tingkatTB').attr('required',true);
+                            autoSuggest('','detilanggaran','detilanggaran','');
 
                             if(id=='') { // add
-                                // cmbdepartemen('');
-                                autoSuggest('','detilanggaran','detilanggaran','');
                                 kodeTrans(typx);
                                 addRekTR(typx,1);
                                 console.log('mode add , typxe : '+typx);
@@ -827,10 +822,14 @@ var rekArr=[];
                                 ajax(url,data).done(function (dt) {
                                     $('#idformH').val(id);
                                     $('#nomerTB').html(dt.transaksiArr.nomer);
+                                    $('#detilanggaranTB').val(dt.transaksiArr.detilanggaran);
+                                    $('#detilanggaranV').val(dt.transaksiArr.sisaBilNum);
+                                    $('#detilanggaranH').val(dt.transaksiArr.iddetilanggaran);
+                                    $('#rekkasTB').val(dt.transaksiArr.rekkas);
                                     $('#nobuktiTB').val(dt.transaksiArr.nobukti);
                                     $('#tanggalTB').val(dt.transaksiArr.tanggal);
-                                    var income = dt.transaksiArr.incomeArr;
-                                    addRekTR(typx,income.length,income);
+                                    var outcome= dt.transaksiArr.outcome;
+                                    addRekTR(typx,1,outcome);
                                 });
                             }
                         }
