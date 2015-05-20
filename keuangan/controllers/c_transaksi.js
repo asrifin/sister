@@ -9,10 +9,11 @@ var dir3 ='../akademik/models/m_'+mnu3+'.php';
 var dir4 ='../akademik/models/m_'+mnu4+'.php';
 
 var contentFR ='';
+var rekArr=[];
 // main function load first 
     //print to PDF -------
     function printPDF(mn){
-        var par='',tok='',p,v;
+        var c = par = tok ='',p,v;
         $('.'+mn+'_cari').each(function(){
             p=$(this).attr('id');
             v=$(this).val();
@@ -32,8 +33,15 @@ var contentFR ='';
             par+='&tgl1TB='+$('#tgl1TB').val()+'&tgl2TB='+$('#tgl2TB').val();
             tok+=$('#tgl1TB').val()+$('#tgl2TB').val();
         }
+        if(mn=='kwitansi'){ 
+            c = $('.rekTR').length;
+            par+='&countx='+c;
+            tok+=c;
+        }
         var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
+        console.log('berfore encypt='+x+tok);
+        console.log('token ='+token);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 
@@ -317,10 +325,11 @@ var contentFR ='';
             ajax(url,data).done(function(dt){
                 notif(dt.status,dt.status!='sukses'?'red':'green');
                 if(dt.status=='sukses'){
+                    if($('#kwitansiCB').prop('checked')) printPDF('kwitansi');
                     $.Dialog.close();
                     $('#rekTBL').html('');
-                    viewTB('ju');
-                    if($('#kwitansiCB').prop('checked')) printPDF('kwitansi');
+                    loadAll();
+                    // viewTB('ju');
                 }
             });
         }
@@ -496,7 +505,7 @@ var contentFR ='';
                         // rek
                         +'<td align="center">'
                             +'<span class="input-control size5 text">'
-                                +'<input value="'+idrek+'" id="ju_rek'+ke+'H" name="ju_rek'+ke+'H" type="hidden" />'
+                                +'<input class="idrek" value="'+idrek+'" id="ju_rek'+ke+'H" name="ju_rek'+ke+'H" type="hidden" />'
                                 +'<input value="'+rek+'" required '
                                     // +(typeof arr=='undefined'?'disabled':' onfocus="alert(9999);"')
                                     +(typeof arr=='undefined'?'disabled':' onfocus="autoSuggest(\'\',\'ju_rek'+ke+'\',\'rek\',\'rek\',\'\');"')
@@ -513,35 +522,33 @@ var contentFR ='';
                         +'</td>'
                         // hapus
                         +'<td align="center">'
-                            +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+');':'delRekTR('+ke+','+idjurnal+')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
+                            +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delRekTR('+ke+','+idjurnal+',\'\');':'delRekTR('+ke+','+idjurnal+',\'\')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
                         +'</td>'
                     +'</tr>';
             }
         }else{ // pemasukkan / pengeluaran
             if(typeof n=='undefined'){ isLoop=false; n=iTR;}
-
-            // jrek=typ=='out_come'?'kredit':'debit'; // jenis rekening (income:debit, outcome:kredit)
-            jrek=''; // jenis rekening (income:debit, outcome:kredit)
+            jrek='rekitem'; // jenis rekening (income:debit, outcome:kredit)
+            // jrek='"aktiva","modal","kewajiban","pendapatan","biaya"'; // jenis rekening (income:debit, outcome:kredit)
             for(var i=n; i>=iTR; i--){
                 var ke = parseInt(i);//-1;
-                // console.log(arr);return false;   
-                // var idjurnal  = (typeof arr!='undefined')?arr[ke].idjurnal:null;
                 var idjurnal  = (typeof arr!='undefined')?arr.idjurnal:null;
                 var idrekitem = (typeof arr!='undefined')?arr.idrekitem:'';
                 var rekitem   = (typeof arr!='undefined')?arr.rekitem:'';
                 var nominal   = (typeof arr!='undefined')?arr.nominal:'Rp. 0';
                 var uraian    = (typeof arr!='undefined')?arr.uraian:'';
                 var mode      = (typeof arr!='undefined')?'edit':'add'; 
-                
+                // console.log(jenis);
                 tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
                         // rek
                         +'<td align="center">'
+                            +'<input type="hidden" name="'+typ+'_idTR[]" id="'+typ+'_idTR_'+ke+'" class="'+typ+'_idTR" value="'+ke+'" >'
+                            +'<input type="hidden" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H" value="'+idjurnal+'" >'
                             +'<input type="hidden" name="'+typ+'_mode'+ke+'H" value="'+mode+'" />'
-                            +'<input type="hidden" value="'+idjurnal+'" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H">'
-                            +'<input type="hidden" class="'+typ+'_idTR" value="'+ke+'" name="'+typ+'_idTR[]" id="'+typ+'_idTR_'+ke+'">'
+                           
                             +'<span class="input-control size5 text">'
-                                +'<input value="'+idrekitem+'" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
-                                +'<input value="'+rekitem+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\')" id="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
+                                +'<input value="'+idrekitem+'" class="idrek" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
+                                +'<input value="'+rekitem+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');"  id="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
                                 +'<button class="btn-clear"></button>'
                             +'</span>'
                         +'</td>'
@@ -571,7 +578,6 @@ var contentFR ='';
     }
 
   // autosuggest
-    // autoSuggest(\'\',\'ju\','+ke+',\'rek\',\'\')
     function autoSuggest(jenis,el,subaksi,tingkat){
         if(subaksi=='rek'){ //rekening
             var urlx= '?aksi=autocomp&subaksi='+subaksi+(jenis!=''?'&jenis='+jenis:'');
@@ -618,15 +624,25 @@ var contentFR ='';
                     'label':'Nominal'
             }];
         }
+        urly = dir+urlx;
+        var t= terpilihx = '';
+        if(rekArr!='' || rekArr!=null){
+            t         = rekArr.filter(function(item) { return item !== ''; });
+            terpilihx = '&terpilihArr='+t.toString();
+        }
+
         $('#'+el+'TB').combogrid({
             debug:true,
             width:'750px',
             colModel: col ,
-            url: dir+urlx,
+            url: urly+terpilihx,
             select: function( event, ui ) { // event setelah data terpilih 
                 $('#'+el+'H').val(ui.item.replid);
                 if (subaksi=='rek') { // rekening 
                     $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
+                    var arr = rekArrFC();
+                    var str = arr.toString();
+                    console.log('terpilih in auto 1 =>'+str);
                 }else{ // anggaran 
                     $('#'+el+'TB').val(ui.item.nama+' [ sisa :'+ui.item.sisaBilCur+'  kuota : '+ui.item.kuotaBilCur+' ]');
                     $('#detilanggaranV').val(getCurr(ui.item.sisaBilNum));
@@ -640,6 +656,9 @@ var contentFR ='';
                             if($('#'+el+'H').val()!=''){
                                 $('#'+el+'H').val('');
                                 $('#'+el+'TB').val('');
+            
+                                var str = rekArr.toString();
+                                console.log('terpilih in auto 2 =>'+str+' arr=> '+rekArr);
                                 if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
                             }
                         }
@@ -653,6 +672,13 @@ var contentFR ='';
                 return false;
             }
         });
+    }
+    //himpun array rekening terpilih
+    function rekArrFC(){
+        rekArr=[];
+        $('.idrek').each(function(id,item){
+            rekArr.push($(this).val());
+        });return rekArr;
     }
 
     function validDelRek () {
@@ -676,11 +702,13 @@ var contentFR ='';
         if(validDelRek().status==false){
             notif(validDelRek().msg,'red');
         }else{
-            if(idjurnal!=null) idDelTR.push(idjurnal); //jika ada hapu jurnal 
+            if(idjurnal!=null) idDelTR.push(idjurnal); //jika ada hapus (jurnal umum)
             $('#rekTR_'+ke).fadeOut('slow',function(){
                 $('#rekTR_'+ke).remove();
+                rekArrFC();
+                console.log('arr terpilih in delrek=>'+rekArr);
             });
-            console.log(idDelTR);
+            // console.log(idDelTR);
         }
     }
 
@@ -738,7 +766,7 @@ var contentFR ='';
                         $('.uraianDV').attr('style','display:none;');
                         $('.rekkasDV').removeAttr('style');
                         $('#rekkasTB').attr('required',true);
-                        autoSuggest('','rekkas','rek','');
+                        autoSuggest('rekkas','rekkas','rek','');
                         // autoSuggest('debit','rekkas','rek','');
                         $('#kwitansiDV').removeAttr('style');
                         
@@ -765,7 +793,7 @@ var contentFR ='';
                                 var url  = dir;
                                 var data = 'aksi=ambiledit&subaksi='+typx+'&replid='+id;
                                 ajax(url,data).done(function (dt) {
-                                    // $('#idformH').val(id);
+                                    $('#idformH').val(id);
                                     $('#nomerTB').html(dt.transaksiArr.nomer);
                                     $('#nobuktiTB').val(dt.transaksiArr.nobukti);
                                     $('#tanggalTB').val(dt.transaksiArr.tanggal);
@@ -825,6 +853,7 @@ var contentFR ='';
         if($('.window-overlay').length<=0) {
             iTR=1; // reset rekTR's counter
             idDelTR=[]; // reset rekTR's counter
+            rekArr=[]; // reset rekArr's counter
         }
     }
 

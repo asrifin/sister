@@ -26,7 +26,8 @@
 							r.kode,
 							r.nama,
 							kr.jenis,
-							IFNULL(sr.nominal,0)saldo
+							IFNULL(sr.nominal,0)saldo,
+							IFNULL(sr.nominal2,0)saldo2
 						FROM
 							keu_detilrekening r
 							LEFT JOIN keu_saldorekening sr ON sr.rekening = r.replid
@@ -72,7 +73,7 @@
 								$rr = mysql_fetch_assoc($ee);
 								$out.= '<tr class="bg-lightTeal">
 											<td align="right"><b>'.$rr['kode'].'</b></td>
-											<td colspan="5"><b>'.$rr['nama'].'</b></td>
+											<td colspan="6"><b>'.$rr['nama'].'</b></td>
 										</tr>';
 							}
 							$btn ='<td align="center">
@@ -80,21 +81,25 @@
 											<i class="icon-pencil on-left"></i>
 										</button>
 								 </td>';
-						 	if($res['jenis']=='debit'){ // kredit
-								$debit  = $res['saldo']; 
-								$kredit = 0;  
-								$normal = 0;
+						 	if($res['jenis']=='d'){ // kredit
+								$debit  = '<b>Rp. '.number_format($res['saldo']).'</b>'; 
+								$kredit  = 'Rp. 0';  
+								$debit2  = ($res['saldo2']!=0?'<b>Rp. '.number_format($res['saldo2']).'</b>':'Rp. 0'); 
+								$kredit2 = 'Rp. 0';  
 						 	}else{ // kredit
-								$debit  = 0; 
-								$kredit = $res['saldo'];  
-								$normal = 0;
+								$debit   = 'Rp. 0'; 
+								$kredit  = '<b>Rp. '.number_format($res['saldo']).'</b>'; 
+								$debit2  = 'Rp. 0'; 
+								$kredit2 = ($res['saldo2']!=0?'<b>'.number_format($res['saldo2']).'</b>':'Rp. 0');  
 						 	}
 
 							$out.= '<tr>
 										<td class="text-right">'.$res['kode'].'</td>
 										<td>'.$res['nama'].'</td>
-										<td class="text-right">Rp. '.number_format($debit).',-</td>
-										<td class="text-right">Rp. '.number_format($kredit).',-</td>
+										<td class="text-right">'.$debit.',-</td>
+										<td class="text-right">'.$kredit.',-</td>
+										<td class="text-right">'.$debit2.',-</td>
+										<td class="text-right">'.$kredit2.',-</td>
 										'.$btn.'
 									</tr>';
 							$curKat=$res['idkategorirekening'];

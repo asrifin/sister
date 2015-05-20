@@ -5,7 +5,8 @@
   require_once '../../lib/mpdf/mpdf.php';
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
-  $x     = $_SESSION['id_loginS'].$_GET['nomerH'];
+  $countx= isset($_GET['countx'])?filter($_GET['countx']):'';
+  $x     = $_SESSION['id_loginS'].$_GET['nomerH'].$countx;
   $token = base64_encode($x);
 
   if(!isset($_SESSION)){ // belum login  
@@ -21,16 +22,31 @@
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>SISTER::Keu - Kwitansi Transaksi '.$mnu.'</title>
           </head>';
-          $nomer = isset($_GET['nomerH'])?filter($_GET['nomerH']):'';
-        // keterangan transaksi
-          $s1 = 'SELECT * FROM keu_transaksi WHERE nomer = "'.$nomer.'"';
-          $e1 = mysql_query($s1) or die(mysql_error());
-          $r1 = mysql_fetch_assoc($e1);
-          $jenisTrans=getJenisTrans('nama',getDetJenisTrans('jenistrans','replid',$r1['detjenistrans']));
-          $out.='<body>
+      $nomer    = isset($_GET['nomerH'])?filter($_GET['nomerH']):'';
+      // grouping 
+      $depan    = substr($nomer,0,3);
+      $tengah   = substr($nomer,5,3);
+      $belakang = substr($nomer,8,8);
+      // u/ looping nomer transaksi --> query
+      $start    = intval($tengah);
+      $end      = intval($countx);
+      $kode     =getBuktiTrans(getKatModulPemb($typ)).'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
+      
+      $nomerArr ='';
+      for ($i =$start; $i<=$end ; $i++) { 
+        $nomerArr.=',"'.$depan.'-'.sprintf('%04d',$i).$belakang.'"';      
+      }$nomerArr=substr($nomerArr,1);
+      
+      $s1 = 'SELECT * FROM keu_transaksi WHERE nomer IN ('.$nomerArr.')';
+      $e1 = mysql_query($s1) or die(mysql_error());
+      // print_r($s1);exit();
+      while($r1 = mysql_fetch_assoc($e1)){
+        $jenisTrans  =getJenisTrans('nama',getDetJenisTrans('jenistrans','replid',$r1['detjenistrans']));
+        $jenisTrans2 =getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r1['detjenistrans']));
+        $out.='<body>
                     <table width="100%">
                       <tr>
-                        <td width="39%">
+                        <td width="36%">
                           <img width="100" src="../../images/logo.png" alt="" />
                         </td>
                         <td>
@@ -38,8 +54,8 @@
                         </td>
                       </tr>
                     </table><br />';
-
-          $out.='<table width="100%">
+        // start of header
+        $out.='<table width="100%">
                   <tr>
                     <td width="20%" >Kode Transaksi </td>
                     <td>: '.$r1['nomer'].'</td>
@@ -53,44 +69,61 @@
                     <td>: '.tgl_indo5($r1['tanggal']).'</td>
                   </tr>
                   <tr>
-                    <td>Rekening Kas</td>
-                    <td>: '.getRekening($r1['rekkas']).'</td>
-                  </tr>
-                  <tr>';
+                    <td>Uraian</td>
+                    <td>: '.$r1['uraian'].'</td>
+                  </tr>';
           if($jenisTrans=='pengeluaran'){
             $out.='<td>Anggaran</td>
-                    <td>: '.getAnggaran($r1['detilanggaran']).'</td>
-                  </tr>';
+                   <td>: '.getAnggaran($r1['detilanggaran']).'</td>';
           }
+          $out.='</tr>';
           $out.='</table>';
+          // end of header
 
-            $out.='<table class="isi" width="100%">
+          // start of detail table
+          $out.='<table class="isi" width="100%">
                   <tr class="head">
                     <td align="center">Rekening</td>
-                    <td align="center">Nominal</td>
-                    <td align="center">Uraian</td>
+                    <td align="center">Debit</td>
+                    <td align="center">Kredit</td>
                   </tr>';
-            $totbayar =0;
-            $nox      = 1;
-            $s2       ='SELECT * from keu_jurnal WHERE transaksi='.$r1['replid'];
-            $e2       =mysql_query($s2);
-            while ($r2 =mysql_fetch_assoc($e2)) {
-              $out.='<tr>
-                        <td>'.getRekening($r2['rek']).'</td>
-                        <td align="right">Rp. '.number_format($r1['nominal']).'</td>
-                        <td>'.$r1['uraian'].'</td>
-                  </tr>';
-              $totbayar+=$r2['nominal'];
+          $totbayar =0;
+
+          if($jenisTrans2=='ju'){
+            $debit=($r2['jenis']=='d'?$r2['nominal']:0);
+            $kredit=($r2['jenis']=='k'?$r2['nominal']:0);
+            // $debit=($jRek=='d'?$r2['nominal']:0);
+            // $kredit=($jRek=='k'?$r2['nominal']:0);
+          }else{
+            if($jenisTrans2=='out'){
+              $debit=$r2['rek']==$res['rekitem']?$res['nominal']:0;
+              $kredit=$r2['rek']==$res['rekkas']?$res['nominal']:0;
+            }else{ // in
+              $debit1  =$r1['nominal'];
+              $kredit1 =0;
+              $debit2  =0;
+              $kredit2 =$r1['nominal'];
             }
-            $out.='<tr class="head">
-              <td align="right"><b>Total : </b></td>
-              <td align="right">Rp. '.number_format($totbayar).'</td>
-              <td></td>
-            </tr>';
-            $out.='</table>';
-            $out.='</body>';
-            echo $out;
-  
+          }
+          $out.='<tr>
+                    <td>'.getRekening($r1['rekkas']).'</td>
+                    <td align="right">Rp. '.number_format($debit1).'</td>
+                    <td align="right">Rp. '.number_format($kredit1).'</td>
+              </tr><tr>
+                    <td>'.getRekening($r1['rekitem']).'</td>
+                    <td align="right">Rp. '.number_format($debit2).'</td>
+                    <td align="right">Rp. '.number_format($kredit2).'</td>
+              </tr>';
+          $out.='<tr class="head">
+            <td ></td>
+            <td colspan="2" align="center">Rp. '.number_format($r1['nominal']).'</td>
+          </tr>';
+          $out.='</table><br>';
+        }// end of detail table
+
+        $out.='</body>';
+        echo $out;
+
         #generate html -> PDF ------------
           $out2 = ob_get_contents();
           ob_end_clean(); 
