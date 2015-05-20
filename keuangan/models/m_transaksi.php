@@ -31,11 +31,13 @@
 				$terpilih   = (isset($_GET['terpilihArr']) AND $_GET['terpilihArr']!='')?' AND d.replid NOT IN ('.$_GET['terpilihArr'].')':''; /*epiii*/
 
 				if(isset($_GET['jenis']) AND $_GET['jenis']!=''){
-					if($_GET['jenis']=='rekitem')
+					if($_GET['jenis']=='rekitem') // in || out 
 						$jenis = ' AND k.nama IN ("aktiva","modal","pendapatan","biaya","kewajiban")';
-					else
+					elseif($_GET['jenis']=='rekkas') // in || out
 						$jenis = ' AND k.nama IN ("kas","bank")';
-				}else $jenis='';
+					else // ju 
+						$jenis = ' AND k.nama IN ("kas","aktiva") OR d.nama LIKE "%piutang%"';
+				}
 
 				if(isset($_GET['subaksi']) && $_GET['subaksi']=='rek'){ // rekening
 					$ss='SELECT

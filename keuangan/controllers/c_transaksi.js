@@ -33,10 +33,11 @@ var rekArr=[];
             par+='&tgl1TB='+$('#tgl1TB').val()+'&tgl2TB='+$('#tgl2TB').val();
             tok+=$('#tgl1TB').val()+$('#tgl2TB').val();
         }
-        if(mn=='kwitansi'){ 
+        if(mn=='kwitansi'){
+            par+='&jenistrans='+$('#subaksiH').val();
             c = $('.rekTR').length;
             par+='&countx='+c;
-            tok+=c;
+            tok+=$('#subaksiH').val()+c;
         }
         var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
@@ -81,7 +82,7 @@ var rekArr=[];
 
                         +'<legend><b>Keterangan Transaksi</b>'
                             +'<span class="place-right">'
-                                +'<span id="kwitansiDV" style="display:none;" class="size2"><input id="kwitansiCB" checked type="checkbox"> Cetak kwitansi </span>&nbsp;'
+                                +'<span id="kwitansiDV" class="size2"><input id="kwitansiCB" checked type="checkbox"> Cetak kwitansi </span>&nbsp;'
                                 +'<button hint="Tambah Rekening" class="button primary"><i class="icon-floppy"></i> simpan</button>'
                             +'</span>'
                         +'</legend>'
@@ -458,8 +459,8 @@ var rekArr=[];
                 $('#'+typ+'_rek'+i+'TB').focus();
                 $('#'+typ+'_rek'+i+'TB').removeAttr('disabled');
                 $('#'+typ+'_nominal'+i+'TB').removeAttr('disabled');
-                $('#'+typ+'_rek'+i+'TB').attr('onclick','autoSuggest(\'\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
-                $('#'+typ+'_rek'+i+'TB').attr('onfocus','autoSuggest(\'\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
+                $('#'+typ+'_rek'+i+'TB').attr('onclick','autoSuggest(\'ju\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
+                $('#'+typ+'_rek'+i+'TB').attr('onfocus','autoSuggest(\'ju\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
                 // $('#'+typ+'_rek'+i+'TB').attr('onclick','autoSuggest(\''+$('#'+typ+'_jenis'+i+'TB').val()+'\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
                 // $('#'+typ+'_rek'+i+'TB').attr('onfocus','autoSuggest(\''+$('#'+typ+'_jenis'+i+'TB').val()+'\',\''+typ+'_rek'+i+'\',\'rek\',\'\');');
             }
@@ -508,7 +509,7 @@ var rekArr=[];
                                 +'<input class="idrek" value="'+idrek+'" id="ju_rek'+ke+'H" name="ju_rek'+ke+'H" type="hidden" />'
                                 +'<input value="'+rek+'" required '
                                     // +(typeof arr=='undefined'?'disabled':' onfocus="alert(9999);"')
-                                    +(typeof arr=='undefined'?'disabled':' onfocus="autoSuggest(\'\',\'ju_rek'+ke+'\',\'rek\',\'rek\',\'\');"')
+                                    +(typeof arr=='undefined'?'disabled':' onfocus="autoSuggest(\'ju\',\'ju_rek'+ke+'\',\'rek\',\'rek\',\'\');"')
                                     +' id="ju_rek'+ke+'TB" name="ju_rek'+ke+'TB" placeholder="rekening" type="text" />'
                                 // +'<input value="'+rek+'" required '+(typeof arr=='undefined'?'disabled':' onfocus="autoSuggest(\''+jenis+'\',\'ju\','+ke+',\'rek\',\'\');"')+' id="ju_rek'+ke+'TB" name="ju_rek'+ke+'TB" placeholder="rekening" type="text" />'
                                 +'<button class="btn-clear"></button>'
@@ -740,7 +741,7 @@ var rekArr=[];
                             +'</tr>';
                         $('.uraianDV').removeAttr('style');
                         $('#uraianTB').attr('required',true);
-                        $('#kwitansiCB').removeAttr('checked');
+                        // $('#kwitansiCB').removeAttr('checked');
                         if(id==''){ // add 
                             kodeTrans(typx);
                             addRekTR(typx,2);
