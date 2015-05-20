@@ -11,19 +11,15 @@ ____________________________________________________
 * daftar koleksi (P)
 	- select all (checkbox) 
 	- delete : all & per-record
-	- searching : all column, tidak ngefek ke "tabel" (C)
-	- filtering > combo :  jenis_buku & tingkat_buku , tidak ngefek ke "table"  (C)
+	+ searching : all column, tidak ngefek ke "tabel" (C)
+	+ filtering > combo :  jenis_buku & tingkat_buku , tidak ngefek ke "table"  (C)
 	+ form (edit_mode) : tidak tampil		(+)
 	- SQL Where pengarang, penerbit, klasifikasi belum bisa
 	- paging -> SQl
 
 	- sorting : all column (belum ada lib/contoh) 
 * katalog (P)
-	+ Insert (foto) dan semua data  
 	+ Tambah Koleksi menampilkan hasil yang sama meskipun pilih koleksi yang lain 
-	+ Lihat katalog sql belum bisa nampil data koleksi (+)	
-	+ Combogrid SQL pada models gimana kalau beda field??  (+)	
-	+ Tambah koleksi untuk Lihat Katalog belum bisa (+)
 	+ Edit Informasi Katalog pada View Katalog (+) --> ditambahkan ajax yang sama pada edit katalog
 	+ pencarian judul pas jumlahnya 2 hasilnya ikut 2 (+) --> menggunakan SQL Group By
 	+ data katalog berhasil di insert tapi di searching ga nampil (+) --> di SQL tampil pakai JOIN seharusnya LEFT JOIN
@@ -32,7 +28,7 @@ ____________________________________________________
 	+ combo lokasi pada view katalog (+) --> tambah filter pada cmblokasi
 	+ pas tambah koleksi jumlah dan sumber ga nampil --> ARRAY disamakan namanya
 	- simpan koleksi belum bisa 
-	- pas tambah katalog form edit katalog juga muncul
+	- pas tambah katalog form edit katalog juga muncul dibawah
 	- cara membuat generate id buku( dan barcode (lokasi,tingkatbuku, tahun, urut pd pus_buku)
 	- Ketika kode barcode pd perangkat di update otomatis kode barcode pd koleksi berubah
 * data anggota (P)
@@ -55,6 +51,7 @@ ____________________________________________________
 ____________________________________________________
 * perangkat (P)
 	- cara edit dan simpan di perangkat
+	- tombol edit form check tidak muncul??
 * lokasi (C)
 * daftar penerbit (C)
 * daftar pengarang (C)

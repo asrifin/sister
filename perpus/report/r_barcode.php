@@ -61,14 +61,18 @@
                     }
 
                     foreach ($arr as $i => $v) {
-                      // $x =" ".$v['barkode']." ";
+                      $x =" ".$v['callnumber']." ";
+                      $callnumber = explode(" ", $x);
+                      // var_dump($callnumber);exit();
                       $tb='<table width="100%" border="0">
                             <tr>
                                 <td>Logo</td>
                                 <td>Judul</td>
                             </tr>
                             <tr>
-                                <td colspan="2">'.$v['callnumber'].'</td>
+                                <td colspan="2">'.$callnumber[1].'<br>
+                                '.$callnumber[2].'<br>
+                                '.$callnumber[3].'</td>
                             </tr>
                             <tr>
                                 <td colspan="2"><barcode code=" '.$v['barkode'].' " type="C128A" class="barcode" /> </td>
