@@ -11,19 +11,27 @@ _________________________  transact  ___________________________
 
 * transaksi (P)
 	+ submenu : jurnal_umum 
-	- jurnal umum : form edit : autosuggest tidak aktif
-	- jurnal umum :  report & print 
-	- jurnal umum : button edit blum aktif
-	- report : buku besar : saldo rekening (sementara) @akun
+	+ jurnal umum : form edit : autosuggest tidak aktif
+	+ jurnal umum : button edit blum aktif
+	+ report : buku besar : saldo rekening (sementara) @akun
+	* report :
+		- jurnal umum 	:  print 
+		- neraca saldo 	:  report & print & filter (tgl+jenis Trans) 
+		- buku besar 	:  report & print & filter (tgl+jenis Trans)
+		- neraca lajur 	:  report & print & filter (tgl+jenis Trans)
+		- laba/ rugi 	:  report & print & filter (tgl+jenis Trans)
+		- lap. neraca 	:  report & print & filter (tgl+jenis Trans)
+		- kas / bank 	:  report & print & filter (tgl+jenis Trans)
+		- buku tambahan	:  report & print & filter (tgl+jenis Trans)
 * modul pembayaran(C)
 	+ kode rekening (perlu dibuatkan tabel detilmodulpembayaran kah=> rekening multi (pendatpaan, kas, piutang) )
-* pembayaran pendaftaran(P)
-	- print/ pdf : error
+* pembayaran pendaftaran(C)
+	+ print/ pdf : error
 * pembayaran uang pangkal(C)
 * pembayaran uang sekolah(C)
-	- Rincian nominal pembayaran uang sekolah dan uang pangkal
+	+ Rincian nominal pembayaran uang sekolah dan uang pangkal
 * inventory(P)
-
+	- ALL
 ________________________   master  ____________________________
 
 * tahun buku (P)
