@@ -84,7 +84,7 @@
           $kelNama  = getKelas('kelas',$kelas);
           $subId    = getKelas('subtingkat',$kelas);
           // tingkat : 1,2,3
-          $subNama  = 'tingkat '.getSubtingkat('subtingkat',$subId);
+          $subNama  = getSubtingkat('subtingkat',$subId);
           $tingId   = getSubtingkat('tingkat',getSubtingkat('tingkat',$subId));
           // tingkat : sma,smp,sd  
           $tingNama = getTingkat('tingkat',$tingId);
@@ -95,7 +95,7 @@
           // departemen 
           $depId   = getTahunAjaran('departemen',$thnId);
           $depNama = getDepartemen('nama',$depId);
-          // var_dump($depNama);exit();
+
           $out.='<table width="100%">
                   <tr>
                     <td>Departemen </td>
