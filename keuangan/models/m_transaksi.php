@@ -155,6 +155,7 @@
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
+					// jurnal umum 
 					case 'ju':
 						$jurnalArr = $ju_detjenistrans ='';
 						if(isset($_POST['jenisAllCB'])){ //select all
@@ -355,11 +356,13 @@
 						$sql  = 'SELECT
 									d.replid,
 									d.kode kode,
-									d.nama nama
+									d.nama nama,
+									s.nominal2 saldo
 								FROM
 									keu_transaksi t
 									LEFT JOIN keu_jurnal j ON t.replid = j.transaksi
 									LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+									LEFT JOIN keu_saldorekening s  ON s.rekening = d.replid
 								WHERE 
 									t.tahunbuku='.getTahunBuku('replid').'
 									'.$bb_detilrekening.'
@@ -375,7 +378,7 @@
 						if($jum!=0){	
 							while($res = mysql_fetch_assoc($result)){
 								$out.='<ul class="fg-gray" style="list-style:none;">';
-									$out.='<li>['.$res['kode'].'] '.$res['nama'].'</li>';
+									$out.='<li>['.$res['kode'].'] '.$res['nama'].' <span class="fg-'.($res['saldo']<0?'red':($res['saldo']==0?'blue':'green')).'">Rp.'.number_format($res['saldo']).'</span></li>';
 			                    		$out.='<table width="100%" class="table hovered bordered striped">
 							                        <thead>
 							                            <tr style="color:white;"class="info">
