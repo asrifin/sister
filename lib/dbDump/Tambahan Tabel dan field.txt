@@ -18,6 +18,10 @@ PENAMBAHAN TABEL atau PENAMBAHAN FIELD
 	- Tambah -> keu_katmodulpembayaran, keu_modulpembayaran -> Folder 20150411
 	- Tambah -> keu_saldorekening -> Folder 20150413
 	- Tambah -> keu_transaksi -> field detjenistrans dan field detilanggaran
+
+	BARU 20150521
+	- tambah -> keu_kategorirekening -> 20150521
+	- tambah -> keu_jurnal -> 20150521
 * Perpustakaan
 	- edit	 -> tabel pus_katalog yang dirubah klasifikasi-kode diganti klasifikasi_kode
 	- Tambah -> tabel pus_setting2 dan pus_detail_setting -> Folder 20150324
@@ -26,3 +30,7 @@ PENAMBAHAN TABEL atau PENAMBAHAN FIELD
 	- tambah -> aka_kelas -> field subtingkat
 	- tambah -> tabel aka_subtingkat
 	- tambah -> field setbiaya(int 10 -> not null) di tabel aka_siswa
+
+	BARU 20150521
+	- edit -> kon_modul
+	
