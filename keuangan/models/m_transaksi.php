@@ -377,8 +377,8 @@
 						$out    ='';$totaset=0;
 						if($jum!=0){	
 							while($res = mysql_fetch_assoc($result)){
-								$out.='<ul class="fg-gray" style="list-style:none;">';
-									$out.='<li>['.$res['kode'].'] '.$res['nama'].' <span class="fg-'.($res['saldo']<0?'red':($res['saldo']==0?'blue':'green')).'">Rp.'.number_format($res['saldo']).'</span></li>';
+								// $out.='<ul class="fg-gray" style="list-style:none;">';
+									$out.='<span>['.$res['kode'].'] '.$res['nama'].'</span> <b class="place-right fg-'.($res['saldo']<0?'red':($res['saldo']==0?'blue':'green')).'">Rp.'.number_format($res['saldo']).'</b>';
 			                    		$out.='<table width="100%" class="table hovered bordered striped">
 							                        <thead>
 							                            <tr style="color:white;"class="info">
@@ -447,7 +447,7 @@
 							                        		<th colspan="2" class="text-cen">Rp. '.number_format($debitTot-$kreditTot).'</th>
 							                        	</tr>
 							                    </table>'; 
-								$out.='</ul>';
+								// $out.='</ul>';
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">

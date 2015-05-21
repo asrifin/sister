@@ -27,11 +27,13 @@
             $s1 ='SELECT
                       d.replid,
                       d.kode kode,
-                      d.nama nama
+                      d.nama nama,
+                      s.nominal2 saldo
                     FROM
                       keu_transaksi t
                       LEFT JOIN keu_jurnal j ON t.replid = j.transaksi
                       LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+                      LEFT JOIN keu_saldorekening s ON s.rekening = d.replid
                     WHERE 
                       t.tahunbuku='.getTahunBuku('replid').'
                       '.$detilrekening.'
@@ -63,7 +65,16 @@
             }else{
               // $out.='<ul>';
               while ($r1=mysql_fetch_array($e1)) {
-                $out.='['.$r1['kode'].'] '.$r1['nama'].'</br>';
+                $out.='<table width="100%">
+                  <tr>
+                    <td align="left">
+                      ['.$r1['kode'].'] '.$r1['nama'].' 
+                    </td>
+                    <td align="right">
+                      Rp. '.number_format($r1['saldo']).'
+                    </td>
+                  </tr>
+                </table>';
                 // $out.='<li style="list-style:none;">['.$r1['kode'].'] '.$r1['nama'].'</li>';
                 $s2='SELECT            
                       t.replid,
