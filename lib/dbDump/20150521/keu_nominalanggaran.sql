@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-21 08:16:49
+Date: 2015-05-21 08:32:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,25 +23,25 @@ CREATE TABLE `keu_nominalanggaran` (
   `replid` int(10) NOT NULL AUTO_INCREMENT,
   `detilanggaran` int(10) NOT NULL,
   `bulan` int(2) NOT NULL,
-  `nominal` decimal(10,0) NOT NULL,
+  `nominal` double(14,0) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=303 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_nominalanggaran
 -- ----------------------------
-INSERT INTO `keu_nominalanggaran` VALUES ('203', '37', '1', '1000000');
-INSERT INTO `keu_nominalanggaran` VALUES ('204', '37', '2', '1000000');
-INSERT INTO `keu_nominalanggaran` VALUES ('205', '37', '3', '1000000');
-INSERT INTO `keu_nominalanggaran` VALUES ('206', '37', '4', '1000000');
-INSERT INTO `keu_nominalanggaran` VALUES ('207', '37', '5', '1000000');
-INSERT INTO `keu_nominalanggaran` VALUES ('208', '37', '6', '1000000');
-INSERT INTO `keu_nominalanggaran` VALUES ('209', '37', '7', '1000000');
-INSERT INTO `keu_nominalanggaran` VALUES ('210', '37', '8', '1000000');
-INSERT INTO `keu_nominalanggaran` VALUES ('211', '37', '9', '1000000');
-INSERT INTO `keu_nominalanggaran` VALUES ('212', '37', '10', '1000000');
-INSERT INTO `keu_nominalanggaran` VALUES ('213', '37', '11', '1000000');
-INSERT INTO `keu_nominalanggaran` VALUES ('214', '37', '12', '1000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('203', '37', '1', '10000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('204', '37', '2', '10000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('205', '37', '3', '10000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('206', '37', '4', '10000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('207', '37', '5', '10000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('208', '37', '6', '10000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('209', '37', '7', '10000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('210', '37', '8', '10000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('211', '37', '9', '10000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('212', '37', '10', '10000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('213', '37', '11', '10000000');
+INSERT INTO `keu_nominalanggaran` VALUES ('214', '37', '12', '10000000');
 INSERT INTO `keu_nominalanggaran` VALUES ('231', '39', '1', '46250');
 INSERT INTO `keu_nominalanggaran` VALUES ('232', '39', '2', '46250');
 INSERT INTO `keu_nominalanggaran` VALUES ('233', '39', '3', '46250');
@@ -114,3 +114,15 @@ INSERT INTO `keu_nominalanggaran` VALUES ('299', '44', '9', '416667');
 INSERT INTO `keu_nominalanggaran` VALUES ('300', '44', '10', '416667');
 INSERT INTO `keu_nominalanggaran` VALUES ('301', '44', '11', '416667');
 INSERT INTO `keu_nominalanggaran` VALUES ('302', '44', '12', '416667');
+INSERT INTO `keu_nominalanggaran` VALUES ('303', '45', '1', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('304', '45', '2', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('305', '45', '3', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('306', '45', '4', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('307', '45', '5', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('308', '45', '6', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('309', '45', '7', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('310', '45', '8', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('311', '45', '9', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('312', '45', '10', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('313', '45', '11', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('314', '45', '12', '10000');
