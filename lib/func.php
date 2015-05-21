@@ -97,21 +97,23 @@
 		return $r[$typ];
 	}
 
-	function getSubtingkat($typ,$id){
-		$s = 'SELECT '.$typ.'
+	function getSubtingkat($f,$id){
+		$s = 'SELECT '.$f.'
 			  FROM aka_subtingkat
 			  WHERE replid ='.$id;
+			  // print_r($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
-		return $r[$typ];
+		return $r[$f];
 	}
-	function getTingkat($typ,$id){
-		$s = 'SELECT '.$typ.'
+	function getTingkat($f,$id){
+		$s = 'SELECT '.$f.'
 			  FROM aka_tingkat
 			  WHERE replid ='.$id;
+		// var_dump($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
-		return $r[$typ];
+		return $r[$f];
 	}
 
 /*psb*/
