@@ -149,7 +149,7 @@ var a_contentFR = d_contentFR = b_contentFR ='';
             $('#a_cetakBC').on('click',function(){
                 printPDF('anggaran');
             });$('#k_cetakBC').on('click',function(){
-                printPDF('katalog');
+                printPDF('detilanggaran');
             });
 
             // search 
@@ -958,6 +958,9 @@ function jumupdate (e) {
             tok+=v;
         });var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
+        console.log('para = '+par);
+        console.log('tok = '+x+tok);
+        console.log('token = '+token);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 //end of  print to PDF -------

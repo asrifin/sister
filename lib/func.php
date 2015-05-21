@@ -298,7 +298,13 @@
     return $terbilang;
   
 }
-	function getAnggaran($id){
+	function getKatAnggaran($f,$id){
+		$s='SELECT '.$f.' FROM keu_kategorianggaran WHERE replid='.$id;
+		// print_r($s);exit();
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r[$f];
+	}function getAnggaran($id){
 		$s='SELECT * FROM keu_detilanggaran WHERE replid='.$id;
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);

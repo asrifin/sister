@@ -31,15 +31,24 @@
                 $a_nama       = isset($_GET['a_namaS'])?filter($_GET['a_namaS']):'';
                 $a_rekening   = isset($_GET['a_rekeningS'])?filter($_GET['a_rekeningS']):'';
                 $a_keterangan = isset($_GET['a_keteranganS'])?filter($_GET['a_keteranganS']):'';
-                
-                $s = 'SELECT * 
-                      FROM keu_kategorianggaran 
-                      WHERE 
-                        departemen = '.$a_departemen.' and
-                        nama like"%'.$a_nama.'%" and
-                        rekening like"%'.$rekening.'%" and
-                        keterangan like"%'.$a_keterangan.'%"';
-                
+
+                $s = 'SELECT
+                      a.replid,
+                      a.nama,
+                      a.keterangan,
+                      a.rekening
+                    FROM
+                      keu_kategorianggaran a
+                      LEFT JOIN keu_detilrekening d ON d.replid = a.rekening
+                    WHERE
+                      a.departemen = '.$a_departemen.'
+                      AND a.nama LIKE "%'.$a_nama.'%"
+                      AND (
+                        d.nama LIKE "%'.$a_rekening.'%"
+                        OR d.kode LIKE "%'.$a_rekening.'%"
+                      )AND a.keterangan LIKE "%'.$a_keterangan.'%"
+                    ORDER BY
+                      a.replid ASC';                
                 $e = mysql_query($s) or die(mysql_error());
                 $n = mysql_num_rows($e);
 
@@ -62,7 +71,7 @@
                   </tr>
                   <tr>
                     <td>Departemen</td>
-                    <td>: '.getDepartemen('replid',$_GET['departemenS']).'</td>
+                    <td>: '.getDepartemen('nama',$a_departemen).'</td>
                     <td align="right"> Total :'.$n.' Data</td>
                   </tr>
                 </table>';
@@ -82,7 +91,6 @@
                       </tr>';
                     }else{
                       while ($r=mysql_fetch_assoc($e)) {
-                        // var_dump(getRekening($r['rekening']));exit();
                         $out.='<tr>
                                   <td>'.$r['nama'].'</td>
                                   <td>'.getRekening($r['rekening']).'</td>
