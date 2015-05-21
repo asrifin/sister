@@ -19,7 +19,8 @@
 
   $x     = $_SESSION['id_loginS'].$_GET[$pre.'noS'].$_GET[$pre.'uraianS'].$_GET['jenisAllCB'].$jenis.$_GET['tgl1TB'].$_GET['tgl2TB'];
   $token = base64_encode($x);
-  var_dump($jenis2); echo "<br />";
+  // var_dump($jenis2); 
+  echo "<br />";
   // var_dump($x); echo "<br />";
   // var_dump($token); echo "<br />";
   // var_dump($_GET['token']);
@@ -37,9 +38,6 @@
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>SISTER::Keu - Jurnal Umum '.$mnu.'</title>
           </head>';
-          // $kelompok      = isset($_GET['kelompokS'])?filter($_GET['kelompokS']):'';
-          // $nopendaftaran = isset($_GET['nopendaftaranS'])?filter($_GET['nopendaftaranS']):'';
-          // $nama          = isset($_GET['namaS'])?filter($_GET['namaS']):'';
           $ju_no     = isset($_GET['ju_noS'])?filter($_GET['ju_noS']):'';
           $ju_uraian = isset($_GET['ju_uraianS'])?filter($_GET['ju_uraianS']):'';
           $s1 = 'SELECT *  
@@ -101,7 +99,7 @@
             // var_dump($s2);exit();  
                 $tb2 ='';
                 if(mysql_num_rows($e2)!=0){
-                    $tb2.='<table width="100%">
+                    $tb2.='<table class="isi" width="100%">
                             <tr class="head">
                               <td width="60%">Rekening</td>
                               <td width="20%">Debit</td>
