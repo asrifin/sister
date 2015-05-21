@@ -29,6 +29,8 @@ _________________________  transact  ___________________________
 	+ print/ pdf : error
 * pembayaran uang pangkal(C)
 * pembayaran uang sekolah(C)
+	+ spp : report (header's info)
+_____________________________________________________
 	+ Rincian nominal pembayaran uang sekolah dan uang pangkal
 * inventory(P)
 	- ALL
@@ -51,12 +53,10 @@ ________________________   master  ____________________________
 		+ hapus field : rekening 
 	+ view : tidak tampil 
 	+ filtering : combo rekening tidak tampil
-* detil anggaran (P)
-	+ CRUD
+* detil anggaran (C)
+	+ CRUD 
+	+ report (PDF)
 * sub rekening (C)
 	+ CRUD 
 * status rekening (C)
 	+ CRUD 
-*pembyran
-	- spp : report (header)
-_____________________________________________________
