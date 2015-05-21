@@ -624,11 +624,18 @@
 			case 'simpan':
 				// 1. simpan pembayaran
 				if($_POST['subaksi']=='dpp'){ // dpp 
-					$nominal = $_POST['akanbayarTB'] * getAngsurNom($_POST['subaksi'],$_POST['idsiswaH']);
+					$nominal       = $_POST['akanbayarTB'] * getAngsurNom($_POST['subaksi'],$_POST['idsiswaH']);
+					$detjenistrans = 'in_siswa';
 				}elseif($_POST['subaksi']=='joiningf'){ //joining fee
-					$nominal = getuang($_POST['akanbayar2TB']);
+					$nominal       = getuang($_POST['akanbayar2TB']);
+					$detjenistrans = 'in_calonsiswa';
 				}else{ // spp , formulir
 					$nominal = getBiaya($_POST['subaksi'],$_POST['idsiswaH']); // pendaftaran & spp
+					if($_POST['subaksi']=='spp'){ // spp
+						$detjenistrans = 'in_siswa';
+					}else{  // formulir
+						$detjenistrans = 'in_calonsiswa';
+					}
 				}$s = 'INSERT INTO '.$tb.' set 	modul   = '.$_POST['idmodulH'].',
 												cicilan = '.$nominal.',
 												siswa   = '.$_POST['idsiswaH'];
@@ -644,28 +651,29 @@
 															tanggal    ="'.date('Y-m-d').'",
 															uraian     ="'.$_POST['uraianTB'].'",
 															rekkas     ='.$_POST['rekkasH'].',
+															detjenistrans='.getDetJenisTrans('replid','kode',$detjenistrans).',
 															rekitem    ='.$_POST['rekitemH'];
 					$e2  = mysql_query($s2);
 					$id2 = mysql_insert_id();
 					if(!$e2) $stat='gagal_insert_transaksi';
 					else{
 						// 3. simpan jurnal
-						$s3 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekkasH'].', debet ='.$nominal;
-						$s4 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekitemH'].', kredit ='.$nominal;
+						$s3 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekkasH'].', jenis = "d", nominal ='.$nominal;
+						$s4 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekitemH'].',jenis = "k", nominal ='.$nominal;
+						// $s3 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekkasH'].', debet ='.$nominal;
+						// $s4 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekitemH'].', kredit ='.$nominal;
 						$e3 = mysql_query($s3);
 						$e4 = mysql_query($s4);
 
 						if(!$e3 OR !$e4) $stat = 'gagal_insert_jurnal';
 						else{
 							// 4. update saldo rekening
-							if($nominal!='0'){
-								$s5   = 'UPDATE keu_saldorekening SET nominal2 =nominal2 '.getOperator($_POST['rekkasH']).' '.$nominal.' WHERE rekening ='.$_POST['rekkasH'].' AND tahunbuku='.getTahunBuku('replid');
-								$s6   = 'UPDATE keu_saldorekening SET nominal2 =nominal2 '.getOperator($_POST['rekitemH']).' '.$nominal.' WHERE rekening ='.$_POST['rekitemH'].' AND tahunbuku='.getTahunBuku('replid');
-								// var_dump($s6);exit();
-								$e5   = mysql_query($s5);
-								$e6   = mysql_query($s6);
-								$stat = ($e5 OR $e6)?'sukses':'gagal_update_saldorekening';
-							}else $stat = 'sukses';
+							$s5   = 'UPDATE keu_saldorekening SET nominal2 = nominal2 + '.$nominal.' WHERE rekening ='.$_POST['rekkasH'].' AND tahunbuku='.getTahunBuku('replid');
+							$s6   = 'UPDATE keu_saldorekening SET nominal2 = nominal2 - '.$nominal.' WHERE rekening ='.$_POST['rekitemH'].' AND tahunbuku='.getTahunBuku('replid');
+							// var_dump($s6);exit();
+							$e5   = mysql_query($s5);
+							$e6   = mysql_query($s6);
+							$stat = ($e5 OR $e6)?'sukses':'gagal_update_saldorekening';
 						}
 					}
 				}$out = json_encode(array('status'=>$stat));

@@ -80,33 +80,41 @@
                         </td>
                       </tr>
                     </table><br />';
-
-          $kel   = getKelas('kelas',$kelas);
-          $sub   = getSubtingkat('subtingkat',getKelas('replid',$kelas));
-          $ting  = getTingkat('tingkat',getSubtingkat('replid',getKelas('replid',$kelas)));
-          $ting2 = getTingkat('keterangan',getSubtingkat('replid',getKelas('replid',$kelas)));
-          $thn   = getTahunAjaran('tahunajaran',getTingkat('tahunajaran',getKelas('replid',$kelas)));
-          $dep   = getDepartemen('nama',getTahunAjaran('departemen',getTingkat('tahunajaran',getKelas('replid',$kelas))));
-          // var_dump($thn);exit();
+          // kelas : a,b,c
+          $kelNama  = getKelas('kelas',$kelas);
+          $subId    = getKelas('subtingkat',$kelas);
+          // tingkat : 1,2,3
+          $subNama  = 'tingkat '.getSubtingkat('subtingkat',$subId);
+          $tingId   = getSubtingkat('tingkat',getSubtingkat('tingkat',$subId));
+          // tingkat : sma,smp,sd  
+          $tingNama = getTingkat('tingkat',$tingId);
+          $tingKet  = getTingkat('keterangan',$tingId);
+          // tahun ajaran 
+          $thnId    = getTingkat('tahunajaran',$tingId);
+          $thnNama  = getTahunAjaran('tahunajaran',$tingId);
+          // departemen 
+          $depId   = getTahunAjaran('departemen',$thnId);
+          $depNama = getDepartemen('nama',$depId);
+          // var_dump($depNama);exit();
           $out.='<table width="100%">
                   <tr>
                     <td>Departemen </td>
-                    <td>: '.$dep.'</td>
+                    <td>: '.$depNama.'</td>
                     <td></td>
                   </tr>
                   <tr>
                     <td>Tahun Ajaran</td>
-                    <td>: '.$thn.'</td>
+                    <td>: '.$thnNama.'</td>
                     <td align="right"></td>
                   </tr>
                   <tr>
                     <td>Jenjang</td>
-                    <td>: '.$ting2.' ('.$ting.')</td>
+                    <td>: '.$tingNama.' ('.$tingKet.')</td>
                     <td></td>
                   </tr>
                   <tr>
                     <td>Kelas</td>
-                    <td>: '.$sub.' '.$kel.'</td>
+                    <td>: '.$subNama.' '.$kelNama.'</td>
                     <td align="right"> Total :'.$n.' Data</td>
                   </tr>
                 </table>';
