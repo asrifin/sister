@@ -282,35 +282,25 @@
 					case 'ns':
 						$kode = isset($_POST['ns_kodeS'])?$_POST['ns_kodeS']:'';
 						$nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
-						$s='SELECT 
-								t.replid,
-								t.tanggal,
-								t.nomer,
-								t.uraian,
-						        d.nama,
-						        d.kode,
-					        	j.nominal,
-					        	j.rek,
-				        		t.rekkas,
-				        		t.rekitem,
-			        			t.detjenistrans
-						    FROM
-								keu_transaksi t 
-						        LEFT JOIN keu_jurnal j ON t.replid = j.transaksi 
-						        LEFT JOIN keu_detilrekening d ON d.replid = j.rek
-					        WHERE 
-					        	d.kode LIKE "%'.$kode.'%"  AND
-					        	d.nama LIKE "%'.$nama.'%" 
-						    GROUP BY d.replid
-						    ORDER BY
-						        d.kategorirekening ASC, 
-								d.kode ASC';
-						$ss = 'SELECT
+						$s = 'SELECT
 									d.replid,
 									d.kode,
-									d.nama,
-									if(j.jenis="d",sum(j.nominal),0)nomDeb,
-									if(j.jenis="k",sum(j.nominal),0)nomKre
+									d.nama,IFNULL((
+										SELECT  
+											sum(kj.nominal)nomDeb
+										FROM	
+											keu_jurnal kj
+										WHERE 
+											kj.jenis = "d" AND kj.rek= d.replid
+									),0)nomDeb,IFNULL((
+										SELECT  
+											sum(kj.nominal)nomDeb
+										FROM	
+											keu_jurnal kj
+										WHERE 
+											kj.jenis = "k" AND kj.rek= d.replid
+									),0)nomKre
+
 								FROM
 									keu_jurnal j 
 									LEFT JOIN keu_detilrekening d on d.replid = j.rek
@@ -319,28 +309,12 @@
 						// print_r($s);exit(); 	
 						$aksi    ='tampil';
 						$subaksi ='ns';
-						$e       = mysql_query($ss);
+						$e       = mysql_query($s);
 						$n       = mysql_num_rows($e);
 						$out     ='';$totaset=0;
 						if($n!=0){	
 							$debitTot=$kreditTot=0;
 							while($r = mysql_fetch_assoc($e)){	
-								// $jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r['detjenistrans']));
-								// $clr   ='';
-								// if($jenis=='ju'){ // ju
-								// 	$debit=99;
-								// 	$kredit=0;
-								// }else{
-								// 	if($jenis=='out'){ // outcome
-								// 		$debit  = $r['rekkas']==$r['rek']?0:$r['nominal'];
-								// 		$kredit = $r['rekitem']==$r['rek']?0:$r['nominal'];
-								// 	}else{ // income
-								// 		$debit  = $r['rekkas']==$r['rek']?$r['nominal']:0;
-								// 		$kredit = $r['rekitem']==$r['rek']?$r['nominal']:0;
-								// 	}
-								// }
-								// $debitTot+=$debit;
-								// $kreditTot+=$kredit;								
 								$debitTot+=$r['nomDeb'];
 								$kreditTot+=$r['nomKre'];								
 								$out.= '<tr>
@@ -349,8 +323,6 @@
 											<td class="text-right">Rp. '.number_format($r['nomDeb']).'</td>
 											<td class="text-right">Rp. '.number_format($r['nomKre']).'</td>
 										</tr>';
-											// <td class="text-right">Rp. '.number_format($debit).'</td>
-											// <td class="text-right">Rp. '.number_format($kredit).'</td>
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
