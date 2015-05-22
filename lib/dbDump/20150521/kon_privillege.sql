@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-22 07:43:54
+Date: 2015-05-22 15:21:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,7 +31,6 @@ CREATE TABLE `kon_privillege` (
 -- ----------------------------
 INSERT INTO `kon_privillege` VALUES ('1', '1', '12');
 INSERT INTO `kon_privillege` VALUES ('2', '1', '13');
-INSERT INTO `kon_privillege` VALUES ('3', '1', '14');
 INSERT INTO `kon_privillege` VALUES ('4', '1', '15');
 INSERT INTO `kon_privillege` VALUES ('5', '1', '16');
 INSERT INTO `kon_privillege` VALUES ('7', '2', '18');
@@ -43,5 +42,4 @@ INSERT INTO `kon_privillege` VALUES ('12', '1', '20');
 INSERT INTO `kon_privillege` VALUES ('13', '1', '21');
 INSERT INTO `kon_privillege` VALUES ('14', '1', '19');
 INSERT INTO `kon_privillege` VALUES ('15', '1', '22');
-INSERT INTO `kon_privillege` VALUES ('16', '1', '18');
 INSERT INTO `kon_privillege` VALUES ('17', '1', '11');
