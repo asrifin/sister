@@ -305,37 +305,52 @@
 						    ORDER BY
 						        d.kategorirekening ASC, 
 								d.kode ASC';
-						// print_r($sql);exit(); 	
+						$ss = 'SELECT
+									d.replid,
+									d.kode,
+									d.nama,
+									if(j.jenis="d",sum(j.nominal),0)nomDeb,
+									if(j.jenis="k",sum(j.nominal),0)nomKre
+								FROM
+									keu_jurnal j 
+									LEFT JOIN keu_detilrekening d on d.replid = j.rek
+								GROUP BY
+									j.rek';
+						// print_r($s);exit(); 	
 						$aksi    ='tampil';
 						$subaksi ='ns';
-						$e       = mysql_query($s);
+						$e       = mysql_query($ss);
 						$n       = mysql_num_rows($e);
 						$out     ='';$totaset=0;
 						if($n!=0){	
 							$debitTot=$kreditTot=0;
-							while($r = mysql_fetch_array($e)){	
-								$jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r['detjenistrans']));
-								$clr   ='';
-								if($jenis=='ju'){ // ju
-									$debit=99;
-									$kredit=0;
-								}else{
-									if($jenis=='out'){ // outcome
-										$debit  = $r['rekkas']==$r['rek']?0:$r['nominal'];
-										$kredit = $r['rekitem']==$r['rek']?0:$r['nominal'];
-									}else{ // income
-										$debit  = $r['rekkas']==$r['rek']?$r['nominal']:0;
-										$kredit = $r['rekitem']==$r['rek']?$r['nominal']:0;
-									}
-								}
-								$debitTot+=$debit;
-								$kreditTot+=$kredit;								
+							while($r = mysql_fetch_assoc($e)){	
+								// $jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r['detjenistrans']));
+								// $clr   ='';
+								// if($jenis=='ju'){ // ju
+								// 	$debit=99;
+								// 	$kredit=0;
+								// }else{
+								// 	if($jenis=='out'){ // outcome
+								// 		$debit  = $r['rekkas']==$r['rek']?0:$r['nominal'];
+								// 		$kredit = $r['rekitem']==$r['rek']?0:$r['nominal'];
+								// 	}else{ // income
+								// 		$debit  = $r['rekkas']==$r['rek']?$r['nominal']:0;
+								// 		$kredit = $r['rekitem']==$r['rek']?$r['nominal']:0;
+								// 	}
+								// }
+								// $debitTot+=$debit;
+								// $kreditTot+=$kredit;								
+								$debitTot+=$r['nomDeb'];
+								$kreditTot+=$r['nomKre'];								
 								$out.= '<tr>
 											<td>'.$r['kode'].'</td>
 											<td>'.$r['nama'].'</td>
-											<td class="text-right">Rp. '.number_format($debit).'</td>
-											<td class="text-right">Rp. '.number_format($kredit).'</td>
+											<td class="text-right">Rp. '.number_format($r['nomDeb']).'</td>
+											<td class="text-right">Rp. '.number_format($r['nomKre']).'</td>
 										</tr>';
+											// <td class="text-right">Rp. '.number_format($debit).'</td>
+											// <td class="text-right">Rp. '.number_format($kredit).'</td>
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
@@ -1038,9 +1053,8 @@
 
 				// delete transact
 				$sd = 'DELETE FROM '.$tb.' WHERE replid='.$_POST['replid'];
-				// var_dump($rb);exit();
 				$ed = mysql_query($sd);
-				if(!$ed) $stat = 'gagal';
+				if(!$ed) $stat = 'gagal_hapus_transaksi';
 				else{
 					// get number of record will be resetted
 					$sa = 'SELECT * FROM '.$tb;
@@ -1078,7 +1092,8 @@
 							$stat =!$ej?'gagal_hapus_jurnal':'sukses';
 						}
 					}
-				}$out = json_encode(array('status'=>$stat,'terhapus'=>$rb['nomer']));
+				}
+				$out = json_encode(array('status'=>$stat,'terhapus'=>$rb['nomer']));
 			break;
 			// delete ---------------------------------------------------------------------
 
