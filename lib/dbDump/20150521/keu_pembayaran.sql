@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-22 05:28:37
+Date: 2015-05-22 15:14:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,9 +29,8 @@ CREATE TABLE `keu_pembayaran` (
   `tanggal` date NOT NULL DEFAULT '0000-00-00',
   `keterangan` varchar(250) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=3645 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3653 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_pembayaran
 -- ----------------------------
-INSERT INTO `keu_pembayaran` VALUES ('3644', '30', '7', '0', '1200000', '0', '0000-00-00', '');

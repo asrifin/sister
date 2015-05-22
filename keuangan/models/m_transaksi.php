@@ -287,25 +287,28 @@
 									d.kode,
 									d.nama,IFNULL((
 										SELECT  
-											sum(kj.nominal)nomDeb
+											sum(kj.nominal)
 										FROM	
 											keu_jurnal kj
 										WHERE 
 											kj.jenis = "d" AND kj.rek= d.replid
 									),0)nomDeb,IFNULL((
 										SELECT  
-											sum(kj.nominal)nomDeb
+											sum(kj.nominal)
 										FROM	
 											keu_jurnal kj
 										WHERE 
 											kj.jenis = "k" AND kj.rek= d.replid
 									),0)nomKre
-
 								FROM
 									keu_jurnal j 
 									LEFT JOIN keu_detilrekening d on d.replid = j.rek
+									LEFT JOIN keu_saldorekening s on s.rekening = d.replid
+								WHERE	
+									s.tahunbuku = '.getTahunBuku('replid').'
 								GROUP BY
 									j.rek';
+						// $s='SELECT * FROM keu'
 						// print_r($s);exit(); 	
 						$aksi    ='tampil';
 						$subaksi ='ns';

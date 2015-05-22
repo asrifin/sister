@@ -132,8 +132,8 @@ var rekArr=[];
                         // anggaran (optional:income & outcome)
                         +'<label style="display:none;" class="detilanggaranDV">Anggaran </label>'
                         +'<div style="display:none;" class="input-control text detilanggaranDV">'
-                            +'<input type="text" name="detilanggaranV" id="detilanggaranV">'
-                            +'<input type="text" name="detilanggaranH" id="detilanggaranH">'
+                            +'<input type="hidden" name="detilanggaranV" id="detilanggaranV">'
+                            +'<input type="hidden" name="detilanggaranH" id="detilanggaranH">'
                             +'<input placeholder="pada anggaran" id="detilanggaranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'

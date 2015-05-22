@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-21 08:35:18
+Date: 2015-05-22 15:14:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -39,10 +39,13 @@ CREATE TABLE `keu_transaksi` (
   `detjenistrans` int(10) NOT NULL,
   `detilanggaran` int(10) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_transaksi
 -- ----------------------------
-INSERT INTO `keu_transaksi` VALUES ('1', '1', 'BKK-0001/05/2015', 'ii', '2015-05-21', '1', '190', '35000', 'ok', '0', '0', '0', '0', '0', '0', '0', '7', '37');
-INSERT INTO `keu_transaksi` VALUES ('2', '1', 'MMJ-0002/05/2015', 'ju', '2015-05-21', '0', '0', '900', 'urai', '0', '0', '0', '0', '0', '0', '0', '8', '0');
+INSERT INTO `keu_transaksi` VALUES ('1', '1', 'MMJ-0001/05/2015', 'ju1', '2015-05-22', '0', '0', '50000', 'u1', '0', '0', '0', '0', '0', '0', '0', '8', '0');
+INSERT INTO `keu_transaksi` VALUES ('2', '1', 'BKM-0002/05/2015', '', '2015-05-22', '2', '18', '40000', 'in1', '0', '0', '0', '0', '0', '0', '0', '4', '0');
+INSERT INTO `keu_transaksi` VALUES ('3', '1', 'BKK-0003/05/2015', 'ou1', '2015-05-22', '4', '33', '20000', 'ou1', '0', '0', '0', '0', '0', '0', '0', '7', '42');
+INSERT INTO `keu_transaksi` VALUES ('4', '1', 'BKM-0004/05/2015', '', '2015-05-22', '1', '23', '60000', 'in2', '0', '0', '0', '0', '0', '0', '0', '4', '0');
+INSERT INTO `keu_transaksi` VALUES ('5', '1', 'BKK-0005/05/2015', 'o2', '2015-05-22', '1', '85', '15000', 'out2', '0', '0', '0', '0', '0', '0', '0', '7', '39');

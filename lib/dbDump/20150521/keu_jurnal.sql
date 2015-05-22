@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-21 08:35:29
+Date: 2015-05-22 15:14:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,12 +29,18 @@ CREATE TABLE `keu_jurnal` (
   `kredit` decimal(10,0) NOT NULL DEFAULT '0',
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=1081 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1135 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_jurnal
 -- ----------------------------
-INSERT INTO `keu_jurnal` VALUES ('1080', '2', '22', '900', 'k', '0', '0', '2015-05-21 07:41:35');
-INSERT INTO `keu_jurnal` VALUES ('1078', '1', '1', '35000', 'k', '0', '0', '2015-05-21 07:19:02');
-INSERT INTO `keu_jurnal` VALUES ('1077', '1', '190', '35000', 'd', '0', '0', '2015-05-21 07:19:02');
-INSERT INTO `keu_jurnal` VALUES ('1079', '2', '1', '900', 'd', '0', '0', '2015-05-21 07:41:34');
+INSERT INTO `keu_jurnal` VALUES ('1125', '1', '1', '50000', 'd', '0', '0', '2015-05-22 09:50:42');
+INSERT INTO `keu_jurnal` VALUES ('1126', '1', '22', '50000', 'k', '0', '0', '2015-05-22 09:50:42');
+INSERT INTO `keu_jurnal` VALUES ('1127', '2', '18', '40000', 'k', '0', '0', '2015-05-22 09:51:03');
+INSERT INTO `keu_jurnal` VALUES ('1128', '2', '2', '40000', 'd', '0', '0', '2015-05-22 09:51:03');
+INSERT INTO `keu_jurnal` VALUES ('1129', '3', '33', '20000', 'd', '0', '0', '2015-05-22 09:51:36');
+INSERT INTO `keu_jurnal` VALUES ('1130', '3', '4', '20000', 'k', '0', '0', '2015-05-22 09:51:36');
+INSERT INTO `keu_jurnal` VALUES ('1131', '4', '23', '60000', 'k', '0', '0', '2015-05-22 09:52:15');
+INSERT INTO `keu_jurnal` VALUES ('1132', '4', '1', '60000', 'd', '0', '0', '2015-05-22 09:52:15');
+INSERT INTO `keu_jurnal` VALUES ('1133', '5', '85', '15000', 'd', '0', '0', '2015-05-22 10:07:22');
+INSERT INTO `keu_jurnal` VALUES ('1134', '5', '1', '15000', 'k', '0', '0', '2015-05-22 10:07:22');
