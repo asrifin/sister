@@ -33,4 +33,5 @@ PENAMBAHAN TABEL atau PENAMBAHAN FIELD
 
 	BARU 20150521
 	- edit -> kon_modul
+	- tambah -> modul purchase order
 	
