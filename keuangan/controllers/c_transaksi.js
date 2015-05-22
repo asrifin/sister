@@ -931,7 +931,8 @@ var rekArr=[];
                         // counter++;
                         out+='<li style="padding-left:20px;">'
                                 +'<label>'
-                                    +'<input class="detjenisCB" onchange="viewTB(\'ju\')" name="detjenisTB['+item.iddetjenis+']" checked="checked" type="checkbox"> '
+                                    +'<input class="detjenisCB" onchange="loadAll();" name="detjenisTB['+item.iddetjenis+']" checked="checked" type="checkbox"> '
+                                    // +'<input class="detjenisCB" onchange="viewTB(\'ju\')" name="detjenisTB['+item.iddetjenis+']" checked="checked" type="checkbox"> '
                                         +item.detjenistrans+''
                                 +'</label>'
                             +'</li>';
@@ -950,7 +951,8 @@ var rekArr=[];
             $('.detjenisCB').each(function(){
                 $(this).prop('checked',false);
             });
-        }viewTB('ju');
+        }loadAll();
+        // viewTB('ju');
     }
 
     // get total nominal rekening (ex : Rp. 500.000)

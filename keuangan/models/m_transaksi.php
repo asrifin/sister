@@ -1030,6 +1030,7 @@
 			
 			// delete ---------------------------------------------------------------------
 			case 'hapus':
+				// $out='mbuh';
 				// get transact's info
 				$sb = 'SELECT * FROM '.$tb.' WHERE replid='.$_POST['replid'];
 				$eb = mysql_query($sb);
@@ -1037,6 +1038,7 @@
 
 				// delete transact
 				$sd = 'DELETE FROM '.$tb.' WHERE replid='.$_POST['replid'];
+				// var_dump($rb);exit();
 				$ed = mysql_query($sd);
 				if(!$ed) $stat = 'gagal';
 				else{
@@ -1048,6 +1050,7 @@
 					if($na==0){
 						$st = 'TRUNCATE TABLE keu_transaksi';
 						$et = mysql_query($st);
+						$stat=!$et?'gagal':'sukses_truncate_transaksi';
 					}
 
 					// delete pembayaran (optional)

@@ -55,7 +55,7 @@
           $out.='<body>
                     <table width="100%">
                       <tr>
-                        <td width="39%">
+                        <td width="40 %">
                           <img width="100" src="../../images/logo.png" alt="" />
                         </td>
                         <td>
@@ -63,14 +63,20 @@
                         </td>
                       </tr>
                     </table><br />';
-
-            $out.='<table class="isi" width="100%">
-                        <tr class="head">
-                            <td align="center">Tanggal </td>
-                            <td align="center">No. Jurnal/Jenis Bukti/No.Bukti</td>
-                            <td align="center">Uraian</td>
-                            <td align="center">Detil Jurnal</td>
-                        </tr>';
+          $out.='<table width=100%"">
+                  <tr>
+                    <td>Tanggal : '.$_GET['tgl1TB'].' s/d '.$_GET['tgl2TB'].'</td>
+                    <td align="right">Tahun Buku :</td>
+                    <td width="5%" align="right">'.getTahunBuku('nama').'</td>
+                  </tr>';
+          $out.='</table>';
+          $out.='<table class="isi" width="100%">
+                    <tr class="head">
+                        <td align="center">Tanggal </td>
+                        <td align="center">No. Jurnal/Jenis Bukti/No.Bukti</td>
+                        <td align="center">Uraian</td>
+                        <td align="center">Detil Jurnal</td>
+                    </tr>';
             $nox = 1;
             $totbayar = 0;
             if($n1==0){
