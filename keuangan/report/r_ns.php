@@ -26,7 +26,37 @@
         // table content
             $kode = isset($_POST['ns_kodeS'])?$_POST['ns_kodeS']:'';
             $nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
-            $s='SELECT 
+            $s='SELECT
+                  d.replid,
+                  d.kode,
+                  d.nama,IFNULL((
+                    SELECT  
+                      sum(kj.nominal)
+                    FROM  
+                      keu_jurnal kj
+                    WHERE 
+                      kj.jenis = "d" AND kj.rek= d.replid
+                  ),0)nomDeb,IFNULL((
+                    SELECT  
+                      sum(kj.nominal)
+                    FROM  
+                      keu_jurnal kj
+                    WHERE 
+                      kj.jenis = "k" AND kj.rek= d.replid
+                  ),0)nomKre
+                FROM
+                  keu_jurnal j 
+                  LEFT JOIN keu_detilrekening d on d.replid = j.rek
+                  LEFT JOIN keu_saldorekening s on s.rekening = d.replid
+                WHERE 
+                  s.tahunbuku = '.getTahunBuku('replid').' AND
+                  d.kode LIKE "%'.$kode.'%"  AND
+                  d.nama LIKE "%'.$nama.'%" 
+                GROUP BY d.replid
+                ORDER BY
+                    d.kategorirekening ASC, 
+                d.kode ASC';
+/*            $s='SELECT 
                 t.replid,
                 t.tanggal,
                 t.nomer,
@@ -49,7 +79,7 @@
                 ORDER BY
                     d.kategorirekening ASC, 
                 d.kode ASC';
-            $e = mysql_query($s) or die(mysql_error());
+*/            $e = mysql_query($s) or die(mysql_error());
             $n = mysql_num_rows($e);
 
           $out.='<body>
@@ -85,32 +115,30 @@
               </tr>';
             }else{
               while ($r=mysql_fetch_assoc($e)) {
-                $jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r['detjenistrans']));
-                $clr   ='';
-                if($jenis=='ju'){ // ju
-                  $debit=99;
-                  $kredit=0;
-                }else{
-                  if($jenis=='out'){ // outcome
-                    $debit  = $r['rekkas']==$r['rek']?0:$r['nominal'];
-                    $kredit = $r['rekitem']==$r['rek']?0:$r['nominal'];
-                  }else{ // income
-                    $debit  = $r['rekkas']==$r['rek']?$r['nominal']:0;
-                    $kredit = $r['rekitem']==$r['rek']?$r['nominal']:0;
-                  }
-                }
-                $debitTot+=$debit;
-                $kreditTot+=$kredit;                
+                // $jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r['detjenistrans']));
+                // $clr   ='';
+                // if($jenis=='ju'){ // ju
+                //   $debit=99;
+                //   $kredit=0;
+                // }else{
+                //   if($jenis=='out'){ // outcome
+                //     $debit  = $r['rekkas']==$r['rek']?0:$r['nominal'];
+                //     $kredit = $r['rekitem']==$r['rek']?0:$r['nominal'];
+                //   }else{ // income
+                //     $debit  = $r['rekkas']==$r['rek']?$r['nominal']:0;
+                //     $kredit = $r['rekitem']==$r['rek']?$r['nominal']:0;
+                //   }
+                // }
+                $debitTot+=$r['nomDeb'];
+                $kreditTot+=$r['nomKre'];                
 
                 $out.= '<tr>
                       <td>'.$r['kode'].'</td>
                       <td>'.$r['nama'].'</td>
-                      <td align="right">Rp. '.number_format($debit).'</td>
-                      <td align="right">Rp. '.number_format($kredit).'</td>
+                      <td align="right">Rp. '.number_format($r['nomDeb']).'</td>
+                      <td align="right">Rp. '.number_format($r['nomKre']).'</td>
                     </tr>';
                 $nox++;
-                $debet+=($r['debet']);
-                $kredit+=($r['kredit']);
               }
             }
             $out.= '<tr class="head"><td colspan="2" align="right">Jumlah :</td>
