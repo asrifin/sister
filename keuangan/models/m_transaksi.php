@@ -724,7 +724,7 @@
 								ORDER BY
 									d.kategorirekening ASC,
 									d.kode ASC';
-						var_dump($sql);exit();
+						// var_dump($sql);exit();
 						$result = mysql_query($sql);
 						$jum    = mysql_num_rows($result);
 						$out    ='';$totaset=0;
@@ -1008,7 +1008,9 @@
 							$s  = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1;
 							$e  = mysql_query($s);
 
-							$id = (mysql_insert_id()!='' OR !empty(mysql_insert_id()))?mysql_insert_id():$_POST['idformH'];
+							$idx = mysql_insert_id();
+							$id = ($idx!='' OR !empty($idx))?$idx:$_POST['idformH'];
+							// $id = (mysql_insert_id()!='' OR !empty(mysql_insert_id()))?mysql_insert_id():$_POST['idformH'];
 								// 2. simpan jurnal umum 
 							if(!$e) $stat1= false;
 							else {
