@@ -857,9 +857,8 @@
 							                        	</tr>
 						                        	</tfoot>
 							                    </table>';
-				                    	$out.='<b class="place-right"> Saldo Akhir : Rp. '.number_format($r['saldoAkhir']).'</b><br><br>';// tabel penerimaan
-
-								// $out.='</ul>';
+				                    	$out.='<b class="place-right"> Saldo Akhir : Rp. '.number_format($r['saldoAkhir']).'</b><br><br>';
+				                    	$out.='<hr>';
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
