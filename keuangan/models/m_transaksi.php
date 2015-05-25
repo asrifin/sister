@@ -436,6 +436,7 @@
 							                        		<th colspan="3" class="text-right">Selisih</th>
 							                        		<th colspan="2" class="text-cen">Rp. '.number_format($debitTot-$kreditTot).'</th>
 							                        	</tr>
+						                        	</tfoot>
 							                    </table>'; 
 								// $out.='</ul>';
 							}
@@ -705,41 +706,50 @@
 
 					// posisi kas bank
 					case 'pkb':
-						$bb_detilrekening = (isset($_POST['bb_detilrekeningS']) AND $_POST['bb_detilrekeningS']!='')?' AND  d.replid = '.$_POST['bb_detilrekeningS']:'';
-						$sql  = 'SELECT
+						// $bb_detilrekening = (isset($_POST['bb_detilrekeningS']) AND $_POST['bb_detilrekeningS']!='')?' AND  d.replid = '.$_POST['bb_detilrekeningS']:'';
+						$s  = 'SELECT
 									d.replid,
 									d.kode kode,
 									d.nama nama,
-									s.nominal2 saldo
+									s.nominal saldoAwal,
+									s.nominal2 saldoAkhir
 								FROM
 									keu_transaksi t
 									LEFT JOIN keu_jurnal j ON t.replid = j.transaksi
 									LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+									LEFT JOIN keu_kategorirekening k ON k.replid = d.kategorirekening
 									LEFT JOIN keu_saldorekening s  ON s.rekening = d.replid
 								WHERE 
-									t.tahunbuku='.getTahunBuku('replid').'
-									'.$bb_detilrekening.'
+									t.tahunbuku='.getTahunBuku('replid').' AND(
+										k.nama ="KAS" OR 
+										k.nama ="BANK"
+									) 
 								GROUP BY
 									d.kode
 								ORDER BY
 									d.kategorirekening ASC,
 									d.kode ASC';
-						// var_dump($sql);exit();
-						$result = mysql_query($sql);
-						$jum    = mysql_num_rows($result);
-						$out    ='';$totaset=0;
+						// var_dump($s);exit();
+						$e   = mysql_query($s);
+						$jum = mysql_num_rows($e);
+						$out ='';$totaset=0;
 						if($jum!=0){	
-							while($res = mysql_fetch_assoc($result)){
+							while($r = mysql_fetch_assoc($e)){
 								// $out.='<ul class="fg-gray" style="list-style:none;">';
-									$out.='<span>['.$res['kode'].'] '.$res['nama'].'</span> <b class="place-right fg-'.($res['saldo']<0?'red':($res['saldo']==0?'blue':'green')).'">Rp.'.number_format($res['saldo']).'</b>';
+									$out.='	<span>['.$r['kode'].'] '.$r['nama'].'</span> 
+											<b class="place-right fg-'.($r['saldoAwal']<0?'red':($r['saldoAwal']==0?'blue':'green')).'">
+												Saldo Awal : Rp.'.number_format($r['saldoAwal']).'
+											</b>';
+										
+										// tabel penerimaan -------------------------------------
+										$out.='<div>Penerimaan :</div>';
 			                    		$out.='<table width="100%" class="table hovered bordered striped">
 							                        <thead>
 							                            <tr style="color:white;"class="info">
 							                                <th class="text-center">Tanggal </th>
 							                                <th class="text-center">No. Transaksi</th>
 							                                <th class="text-center">Uraian</th>
-							                                <th class="text-center">Debet</th>
-							                                <th class="text-center">Kredit</th>
+							                                <th class="text-center">Nominal</th>
 							                            </tr>
 							                        </thead>
 							                        <tbody class="fg-black">';
@@ -758,48 +768,84 @@
 															keu_transaksi t 
 													        LEFT JOIN keu_jurnal j ON t.replid = j.transaksi 
 													        LEFT JOIN keu_detilrekening d ON d.replid = j.rek
-													    WHERE d.replid='.$res['replid'].'
+													    WHERE 
+													    	d.replid='.$r['replid'].' AND	
+												    		j.jenis = "d"
 													    ORDER BY
 													        d.kategorirekening ASC, 
 															d.kode ASC';
-													// var_dump($s2);exit();
 													$e2       =mysql_query($s2);
-													$debitTot =$kreditTot=0;
+													$debitTot =0;
 													while ($r2=mysql_fetch_assoc($e2)) {
-														$jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r2['detjenistrans']));
-														if($jenis=='ju'){ // ju
-															$debit=99;
-															$kredit=0;
-														}else{
-															if($jenis=='out'){ // outcome
-																$debit  = $r2['rekkas']==$r2['rek']?0:$r2['nominal'];
-																$kredit = $r2['rekitem']==$r2['rek']?0:$r2['nominal'];
-															}else{ // income
-																$debit  = $r2['rekkas']==$r2['rek']?$r2['nominal']:0;
-																$kredit = $r2['rekitem']==$r2['rek']?$r2['nominal']:0;
-															}
-														}
-														$debitTot+=$debit;
-														$kreditTot+=$kredit;
+														$debitTot+=$r2['nominal'];
 														$out.='<tr >
 															<td width="10%">'.tgl_indo5($r2['tanggal']).'</td>
 															<td  width="20%">'.$r2['nomer'].'</td>
 															<td  width="30%">'.$r2['uraian'].'</td>
-															<td  class="text-right" width="20%">Rp. '.number_format($debit).'</td>
-															<td  class="text-right" width="20%">Rp. '.number_format($kredit).'</td>
+															<td style="font-weight:bold;" class="text-right fg-green" width="20%">Rp. '.number_format($r2['nominal']).'</td>
 														</tr>';
 													}$out.='</tbody>
 							                        <tfoot>
 							                        	<tr class="info fg-white">
-							                        		<th colspan="3" class="text-right">Jumlah</th>
+							                        		<th colspan="3" class="text-right">Jumlah : </th>
 							                        		<th class="text-right">Rp. '.number_format($debitTot).'</th>
+							                        	</tr>
+						                        	</tfoot>
+							                    </table>';
+
+										// tabel pengeluaran -------------------------------------
+										$out.='<div>Pengeluaran :</div>';
+			                    		$out.='<table width="100%" class="table hovered bordered striped">
+							                        <thead>
+							                            <tr style="color:white;"class="info">
+							                                <th class="text-center">Tanggal </th>
+							                                <th class="text-center">No. Transaksi</th>
+							                                <th class="text-center">Uraian</th>
+							                                <th class="text-center">Nominal</th>
+							                            </tr>
+							                        </thead>
+							                        <tbody class="fg-black">';
+							                        $s2='SELECT 
+															t.replid,
+															t.tanggal,
+															t.nomer,
+															t.uraian,
+													        d.nama,
+												        	j.nominal,
+												        	j.rek,
+											        		t.rekkas,
+											        		t.rekitem,
+										        			t.detjenistrans
+													    FROM
+															keu_transaksi t 
+													        LEFT JOIN keu_jurnal j ON t.replid = j.transaksi 
+													        LEFT JOIN keu_detilrekening d ON d.replid = j.rek
+													    WHERE 
+													    	d.replid='.$r['replid'].' AND	
+												    		j.jenis = "k"
+													    ORDER BY
+													        d.kategorirekening ASC, 
+															d.kode ASC';
+													$e2       =mysql_query($s2);
+													$kreditTot =0;
+													while ($r2=mysql_fetch_assoc($e2)) {
+														$kreditTot+=$r2['nominal'];
+														$out.='<tr >
+															<td width="10%">'.tgl_indo5($r2['tanggal']).'</td>
+															<td  width="20%">'.$r2['nomer'].'</td>
+															<td  width="30%">'.$r2['uraian'].'</td>
+															<td  style="font-weight:bold;"  class="text-right fg-red" width="20%">Rp. '.number_format($r2['nominal']).'</td>
+														</tr>';
+													}$out.='</tbody>
+							                        <tfoot>
+							                        	<tr class="info fg-white">
+							                        		<th colspan="3" class="text-right">Jumlah : </th>
 							                        		<th class="text-right">Rp. '.number_format($kreditTot).'</th>
 							                        	</tr>
-							                        	<tr class="info fg-white">
-							                        		<th colspan="3" class="text-right">Selisih</th>
-							                        		<th colspan="2" class="text-cen">Rp. '.number_format($debitTot-$kreditTot).'</th>
-							                        	</tr>
-							                    </table>'; 
+						                        	</tfoot>
+							                    </table>';
+				                    	$out.='<b class="place-right"> Saldo Akhir : Rp. '.number_format($r['saldoAkhir']).'</b><br><br>';// tabel penerimaan
+
 								// $out.='</ul>';
 							}
 						}else{ #kosong

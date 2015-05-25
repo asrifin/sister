@@ -213,26 +213,7 @@
 
                 <!-- posisi kas / bank -->
                 <div class="frame" id="pkbTAB">
-                    <table class="table hovered bordered striped">
-                        <thead>
-                            <tr style="color:white;"class="info">
-                                <th class="text-center">Tanggal </th>
-                                <th class="text-center">No. Jurnal/Transaksi</th>
-                                <th class="text-center">Uraian</th>
-                                <th class="text-center">Nominal</th>
-                            </tr>
-                            <tr style="display:none;" id="pkbTR" class="info">
-                                <th class="text-center"></th>
-                                <th class="text-center"><input placeholder="No Jurnal" id="pkb_jurnalS" class="pkb_cari"></th>
-                                <th class="text-center"></th>
-                                <th class="text-center"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="pkb_tbody">
-                        </tbody>
-                        <tfoot>
-                        </tfoot>
-                    </table> 
+                    <div id="pkb_tbody"></div>
                 </div>
 
                 <!-- buku tambahan -->
