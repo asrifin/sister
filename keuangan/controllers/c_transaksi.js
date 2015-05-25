@@ -200,6 +200,7 @@ var rekArr=[];
         viewTB('nl');
         viewTB('ln');
         viewTB('lr');
+        viewTB('pkb');
     }
 
 //paging ---
@@ -983,12 +984,13 @@ var rekArr=[];
             if(dt.status!='sukses'){
                 out+='<option value="">'+dt.status+'</option>';
             }else{
+                out+='<option value="">-SEMUA-</option>';
                 $.each(dt.bukubesar, function(id,item){
                     out+='<option value="'+item.replid+'"> ['+item.kode+'] '+item.nama+'</option>';
                 });
-                $('#bb_detilrekeningS').html('<option value="">-SEMUA-</option>'+out);
-                viewTB('bb');
             }
+            $('#bb_detilrekeningS').html(out);
+            viewTB('bb');
         });
     }
 
