@@ -867,6 +867,90 @@
 						}
 					break;
 
+					//buku tambahan 
+					case 'bt':
+						$out='<p>Buku Tambahan</p>
+							<table class="table hovered bordered striped">
+ 	                        <thead>
+ 	                            <tr style="color:white;"class="info">
+ 	                                <th class="text-center">Tanggal </th>
+ 	                                <th class="text-center">Kode Rekening</th>
+ 	                                <th class="text-center">Nama Perkiraan</th>
+ 	                                <th class="text-center">No. Transaksi</th>
+ 	                                <th class="text-center">Uraian</th>
+ 	                                <th class="text-center">Debet</th>
+ 	                                <th class="text-center">Kredit</th>
+ 	                            </tr>
+ 	                            <tr style="display:none;" id="btTR" class="info">
+ 	                                <th class="text-center"></th>
+ 	                                <th class="text-center"><div class="input-control text"><input placeholder="cari" id="bt_kodeS" class="bt_cari"></div></th>
+ 	                                <th class="text-center"><div class="input-control text"><input placeholder="cari" id="bt_namaS" class="bt_cari"></div></th>
+ 	                                <th class="text-center"></th>
+ 	                                <th class="text-center"></th>
+ 	                                <th class="text-center"></th>
+ 	                                <th class="text-center"></th>
+ 	                            </tr>
+ 	                        </thead>
+ 	                        <tbody>';
+
+						$kode = isset($_POST['ns_kodeS'])?$_POST['ns_kodeS']:'';
+						$nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
+						$s    = 'SELECT
+									d.replid,
+									d.kode,
+									d.nama,IFNULL((
+										SELECT  
+											sum(kj.nominal)
+										FROM	
+											keu_jurnal kj
+										WHERE 
+											kj.jenis = "d" AND kj.rek= d.replid
+									),0)nomDeb,IFNULL((
+										SELECT  
+											sum(kj.nominal)
+										FROM	
+											keu_jurnal kj
+										WHERE 
+											kj.jenis = "k" AND kj.rek= d.replid
+									),0)nomKre
+								FROM
+									keu_jurnal j 
+									LEFT JOIN keu_detilrekening d on d.replid = j.rek
+									LEFT JOIN keu_saldorekening s on s.rekening = d.replid
+								WHERE	
+									s.tahunbuku = '.getTahunBuku('replid').'
+								GROUP BY
+									j.rek';
+						$aksi    ='tampil';
+						$subaksi ='ns';
+						$e       = mysql_query($s);
+						$n       = mysql_num_rows($e);
+						print_r($n);exit(); 	
+						$outx     ='';$totaset=0;
+						$debitTot=$kreditTot=0;
+						if($n!=0){	
+							while($r = mysql_fetch_assoc($e)){	
+								$debitTot+=$r['nomDeb'];
+								$kreditTot+=$r['nomKre'];								
+								$outx.= '<tr>
+											<td>'.$r['kode'].'</td>
+											<td>'.$r['nama'].'</td>
+											<td class="text-right">Rp. '.number_format($r['nomDeb']).'</td>
+											<td class="text-right">Rp. '.number_format($r['nomKre']).'</td>
+										</tr>';
+							}
+						}else{ #kosong
+							$outx.= '<tr align="center">
+									<td  colspan="4" ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						// $out.='<tr>
+						// 	<td>okoko</td>
+						// </tr>';
+                        $out.='</tbody>
+ 	                    </table>'; 
+ 	                    // $out='okok';
+					break;
 				}
 			break; 
 			// tampil ---------------------------------------------------------------------

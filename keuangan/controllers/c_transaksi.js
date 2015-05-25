@@ -30,10 +30,11 @@ var rekArr=[];
                     tok+=$(this).val();
                 } 
             });
-            par+='&tgl1TB='+$('#tgl1TB').val()+'&tgl2TB='+$('#tgl2TB').val();
-            tok+=$('#tgl1TB').val()+$('#tgl2TB').val();
         }
-        if(mn=='kwitansi'){
+        if(mn!='kwitansi'){ // bukan kwitansi
+            // par+='&tgl1TB='+$('#tgl1TB').val()+'&tgl2TB='+$('#tgl2TB').val();
+            // tok+=$('#tgl1TB').val()+$('#tgl2TB').val();
+        }else{ // mn == kwitansi
             par+='&jenistrans='+$('#subaksiH').val();
             c = $('.rekTR').length;
             par+='&countx='+c;
@@ -204,6 +205,7 @@ var rekArr=[];
         viewTB('ln');
         viewTB('lr');
         viewTB('pkb');
+        viewTB('bt');
     }
 
 //paging ---

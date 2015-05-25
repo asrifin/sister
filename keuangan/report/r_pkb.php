@@ -9,6 +9,10 @@
   $pre   = 'pkb_';
   $x     = $_SESSION['id_loginS'].$_GET['tgl1TB'].$_GET['tgl2TB'];
   $token = base64_encode($x);
+  // echo '<pre>';
+  // print_r($_GET);
+  // echo '</pre>';
+  // exit();
 
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
@@ -40,7 +44,7 @@
                   t.tahunbuku='.getTahunBuku('replid').' AND(
                     k.nama ="KAS" OR 
                     k.nama ="BANK"
-                  ) 
+                  ) AND  t.tanggal between "'.tgl_indo6($_GET['tgl1TB']).'" AND "'.tgl_indo6($_GET['tgl2TB']).'" 
                 GROUP BY
                   d.kode
                 ORDER BY

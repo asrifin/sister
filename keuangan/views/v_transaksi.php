@@ -221,30 +221,9 @@
 
                 <!-- buku tambahan -->
                 <div class="frame" id="btTAB">
-                    <table class="table hovered bordered striped">
-                        <thead>
-                            <tr style="color:white;"class="info">
-                                <th class="text-center">Tanggal </th>
-                                <th class="text-center">Kode Rekening</th>
-                                <th class="text-center">Nama Perkiraan</th>
-                                <th class="text-center">No. Transaksi</th>
-                                <th class="text-center">Uraian</th>
-                                <th class="text-center">Debet</th>
-                                <th class="text-center">Kredit</th>
-                            </tr>
-                            <tr style="display:none;" id="btTR" class="info">
-                                <th class="text-center"></th>
-                                <th class="text-center"><div class="input-control text"><input placeholder="cari" id="bt_kodeS" class="bt_cari"></div></th>
-                                <th class="text-center"><div class="input-control text"><input placeholder="cari" id="bt_namaS" class="bt_cari"></div></th>
-                                <th class="text-center"></th>
-                                <th class="text-center"></th>
-                                <th class="text-center"></th>
-                                <th class="text-center"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="bt_tbody"></tbody>
-                    </table> 
+                    <div id="bt_tbody"></div>
                 </div>
+                    
 
             </div>
     <!-- end of tab -->
