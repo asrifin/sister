@@ -776,14 +776,20 @@
 															d.kode ASC';
 													$e2       =mysql_query($s2);
 													$debitTot =0;
-													while ($r2=mysql_fetch_assoc($e2)) {
-														$debitTot+=$r2['nominal'];
-														$out.='<tr >
-															<td width="10%">'.tgl_indo5($r2['tanggal']).'</td>
-															<td  width="20%">'.$r2['nomer'].'</td>
-															<td  width="30%">'.$r2['uraian'].'</td>
-															<td style="font-weight:bold;" class="text-right fg-green" width="20%">Rp. '.number_format($r2['nominal']).'</td>
+													if(mysql_num_rows($e2)<=0){
+														$out.='<tr>
+															<td colspan="4" class="fg-red text-center">data kosong</td>
 														</tr>';
+													}else{
+														while ($r2=mysql_fetch_assoc($e2)) {
+															$debitTot+=$r2['nominal'];
+															$out.='<tr >
+																<td width="10%">'.tgl_indo5($r2['tanggal']).'</td>
+																<td  width="20%">'.$r2['nomer'].'</td>
+																<td  width="30%">'.$r2['uraian'].'</td>
+																<td style="font-weight:bold;" class="text-right fg-green" width="20%">Rp. '.number_format($r2['nominal']).'</td>
+															</tr>';
+														}
 													}$out.='</tbody>
 							                        <tfoot>
 							                        	<tr class="info fg-white">
@@ -805,7 +811,7 @@
 							                            </tr>
 							                        </thead>
 							                        <tbody class="fg-black">';
-							                        $s2='SELECT 
+							                        $s3='SELECT 
 															t.replid,
 															t.tanggal,
 															t.nomer,
@@ -826,16 +832,23 @@
 													    ORDER BY
 													        d.kategorirekening ASC, 
 															d.kode ASC';
-													$e2       =mysql_query($s2);
+													$e3 =mysql_query($s3);
 													$kreditTot =0;
-													while ($r2=mysql_fetch_assoc($e2)) {
-														$kreditTot+=$r2['nominal'];
-														$out.='<tr >
-															<td width="10%">'.tgl_indo5($r2['tanggal']).'</td>
-															<td  width="20%">'.$r2['nomer'].'</td>
-															<td  width="30%">'.$r2['uraian'].'</td>
-															<td  style="font-weight:bold;"  class="text-right fg-red" width="20%">Rp. '.number_format($r2['nominal']).'</td>
+
+													if(mysql_num_rows($e3)<=0){
+														$out.='<tr>
+															<td colspan="4" class="fg-red text-center">data kosong</td>
 														</tr>';
+													}else{
+														while ($r3=mysql_fetch_assoc($e3)) {
+															$kreditTot+=$r3['nominal'];
+															$out.='<tr >
+																<td width="10%">'.tgl_indo5($r3['tanggal']).'</td>
+																<td  width="20%">'.$r3['nomer'].'</td>
+																<td  width="30%">'.$r3['uraian'].'</td>
+																<td  style="font-weight:bold;"  class="text-right fg-red" width="20%">Rp. '.number_format($r2['nominal']).'</td>
+															</tr>';
+														}
 													}$out.='</tbody>
 							                        <tfoot>
 							                        	<tr class="info fg-white">
