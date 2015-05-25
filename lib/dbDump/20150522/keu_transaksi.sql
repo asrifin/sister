@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-22 15:14:09
+Date: 2015-05-26 06:26:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,7 +27,7 @@ CREATE TABLE `keu_transaksi` (
   `tanggal` date NOT NULL DEFAULT '0000-00-00',
   `rekkas` int(10) unsigned NOT NULL DEFAULT '0',
   `rekitem` int(10) unsigned NOT NULL DEFAULT '0',
-  `nominal` decimal(10,0) NOT NULL DEFAULT '0',
+  `nominal` double(14,0) NOT NULL DEFAULT '0',
   `uraian` varchar(250) NOT NULL,
   `modul` int(10) unsigned NOT NULL DEFAULT '0',
   `kategori` int(10) unsigned NOT NULL DEFAULT '0',
@@ -44,8 +44,8 @@ CREATE TABLE `keu_transaksi` (
 -- ----------------------------
 -- Records of keu_transaksi
 -- ----------------------------
-INSERT INTO `keu_transaksi` VALUES ('1', '1', 'MMJ-0001/05/2015', 'ju1', '2015-05-22', '0', '0', '50000', 'u1', '0', '0', '0', '0', '0', '0', '0', '8', '0');
-INSERT INTO `keu_transaksi` VALUES ('2', '1', 'BKM-0002/05/2015', '', '2015-05-22', '2', '18', '40000', 'in1', '0', '0', '0', '0', '0', '0', '0', '4', '0');
-INSERT INTO `keu_transaksi` VALUES ('3', '1', 'BKK-0003/05/2015', 'ou1', '2015-05-22', '4', '33', '20000', 'ou1', '0', '0', '0', '0', '0', '0', '0', '7', '42');
-INSERT INTO `keu_transaksi` VALUES ('4', '1', 'BKM-0004/05/2015', '', '2015-05-22', '1', '23', '60000', 'in2', '0', '0', '0', '0', '0', '0', '0', '4', '0');
-INSERT INTO `keu_transaksi` VALUES ('5', '1', 'BKK-0005/05/2015', 'o2', '2015-05-22', '1', '85', '15000', 'out2', '0', '0', '0', '0', '0', '0', '0', '7', '39');
+INSERT INTO `keu_transaksi` VALUES ('1', '1', 'BKM-0001/05/2015', 'o', '2015-05-25', '1', '83', '80000', '8', '0', '0', '0', '0', '0', '0', '0', '4', '0');
+INSERT INTO `keu_transaksi` VALUES ('2', '1', 'BKK-0002/05/2015', 'd', '2015-05-25', '1', '83', '15000', 'gaji xx', '0', '0', '0', '0', '0', '0', '0', '7', '39');
+INSERT INTO `keu_transaksi` VALUES ('3', '1', 'BKK-0003/05/2015', '', '2015-05-25', '6', '222', '35000', 'pesangon', '0', '0', '0', '0', '0', '0', '0', '7', '39');
+INSERT INTO `keu_transaksi` VALUES ('4', '1', 'BKM-0004/05/2015', '', '2015-05-25', '1', '203', '70000', 'donasi uang sekolah dari para wali murid', '0', '0', '0', '0', '0', '0', '0', '4', '0');
+INSERT INTO `keu_transaksi` VALUES ('5', '1', 'MMJ-0005/05/2015', 'ju 2', '2015-05-26', '0', '0', '55000', 'uraian ju 2 ', '0', '0', '0', '0', '0', '0', '0', '8', '0');

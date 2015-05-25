@@ -869,7 +869,7 @@
 
 					//buku tambahan 
 					case 'bt':
-						$out='<p>Buku Tambahan</p>
+						$out='<div style="font-weight:bold;" class="text-right">Tahun Buku : '.getTahunBuku('nama').'</div>
 							<table class="table hovered bordered striped">
  	                        <thead>
  	                            <tr style="color:white;"class="info">
@@ -892,49 +892,41 @@
  	                            </tr>
  	                        </thead>
  	                        <tbody>';
-
-						$kode = isset($_POST['ns_kodeS'])?$_POST['ns_kodeS']:'';
-						$nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
 						$s    = 'SELECT
-									d.replid,
+									t.tanggal,
 									d.kode,
-									d.nama,IFNULL((
-										SELECT  
-											sum(kj.nominal)
-										FROM	
-											keu_jurnal kj
-										WHERE 
-											kj.jenis = "d" AND kj.rek= d.replid
-									),0)nomDeb,IFNULL((
-										SELECT  
-											sum(kj.nominal)
-										FROM	
-											keu_jurnal kj
-										WHERE 
-											kj.jenis = "k" AND kj.rek= d.replid
-									),0)nomKre
+									d.nama,
+									t.nomer,
+									t.uraian,
+									s.nominal saldoAwal,
+									s.nominal2 saldoAkhir,
+									(SELECT sum(nominal) FROM keu_jurnal where transaksi=t.replid and jenis="d")nomDeb,
+									(SELECT sum(nominal) FROM keu_jurnal where transaksi=t.replid and jenis="k")nomKre
 								FROM
-									keu_jurnal j 
+									keu_transaksi t 
+									LEFT JOIN keu_jurnal j on j.transaksi = t.replid
 									LEFT JOIN keu_detilrekening d on d.replid = j.rek
+									LEFT JOIN keu_kategorirekening k on k.replid = d.kategorirekening
 									LEFT JOIN keu_saldorekening s on s.rekening = d.replid
-								WHERE	
-									s.tahunbuku = '.getTahunBuku('replid').'
-								GROUP BY
-									j.rek';
-						$aksi    ='tampil';
-						$subaksi ='ns';
-						$e       = mysql_query($s);
-						$n       = mysql_num_rows($e);
-						print_r($n);exit(); 	
-						$outx     ='';$totaset=0;
-						$debitTot=$kreditTot=0;
-						if($n!=0){	
+								WHERE
+									t.tahunbuku=1 
+									and k.nama="kas"
+								GROUP BY 
+									t.replid';
+						$e    = mysql_query($s);
+						$n    = mysql_num_rows($e);
+						$saldoAwal=$saldoAkhir=$mutasiTot=0;
+						if($n>=0){	
 							while($r = mysql_fetch_assoc($e)){	
-								$debitTot+=$r['nomDeb'];
-								$kreditTot+=$r['nomKre'];								
-								$outx.= '<tr>
+								$saldoAwal+=$r['saldoAwal'];								
+								$saldoAkhir+=$r['saldoAkhir'];								
+								$mutasiTot+=$r['nomKre'];								
+								$out.= '<tr>
+											<td>'.tgl_indo5($r['tanggal']).'</td>
 											<td>'.$r['kode'].'</td>
 											<td>'.$r['nama'].'</td>
+											<td>'.$r['nomer'].'</td>
+											<td>'.$r['uraian'].'</td>
 											<td class="text-right">Rp. '.number_format($r['nomDeb']).'</td>
 											<td class="text-right">Rp. '.number_format($r['nomKre']).'</td>
 										</tr>';
@@ -943,10 +935,19 @@
 							$outx.= '<tr align="center">
 									<td  colspan="4" ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
-						}
-						// $out.='<tr>
-						// 	<td>okoko</td>
-						// </tr>';
+						}$out.='<tr style="font-weight:bold;">
+							<td colspan="4"></td>
+							<td>Total Mutasi</td>
+							<td colspan="2" class="text-right">Rp. '.number_format($mutasiTot).'</td>
+						</tr><tr style="font-weight:bold;">
+							<td colspan="4"></td>
+							<td>Total Saldo Awal</td>
+							<td colspan="2" class="text-right">Rp. '.number_format($saldoAwal).'</td>
+						</tr><tr style="font-weight:bold;">
+							<td colspan="4"></td>
+							<td>Total Saldo Akhir</td>
+							<td colspan="2" class="text-right">Rp. '.number_format($saldoAkhir).'</td>
+						</tr>';
                         $out.='</tbody>
  	                    </table>'; 
  	                    // $out='okok';

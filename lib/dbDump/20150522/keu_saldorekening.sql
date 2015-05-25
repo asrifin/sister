@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-22 15:14:32
+Date: 2015-05-26 06:26:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,20 +23,20 @@ CREATE TABLE `keu_saldorekening` (
   `replid` int(10) NOT NULL AUTO_INCREMENT,
   `rekening` int(10) NOT NULL,
   `tahunbuku` int(10) NOT NULL,
-  `nominal` decimal(10,0) NOT NULL DEFAULT '0',
-  `nominal2` decimal(10,0) NOT NULL,
+  `nominal` double(14,0) NOT NULL DEFAULT '0',
+  `nominal2` double(14,0) NOT NULL DEFAULT '0',
   PRIMARY KEY (`replid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=493 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_saldorekening
 -- ----------------------------
-INSERT INTO `keu_saldorekening` VALUES ('155', '1', '1', '100000', '195000');
-INSERT INTO `keu_saldorekening` VALUES ('156', '2', '1', '100000', '140000');
-INSERT INTO `keu_saldorekening` VALUES ('157', '3', '1', '100000', '100000');
-INSERT INTO `keu_saldorekening` VALUES ('158', '4', '1', '100000', '80000');
+INSERT INTO `keu_saldorekening` VALUES ('155', '1', '1', '100000', '285000');
+INSERT INTO `keu_saldorekening` VALUES ('156', '2', '1', '100000', '100000');
+INSERT INTO `keu_saldorekening` VALUES ('157', '3', '1', '100000', '105000');
+INSERT INTO `keu_saldorekening` VALUES ('158', '4', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('159', '5', '1', '100000', '100000');
-INSERT INTO `keu_saldorekening` VALUES ('160', '6', '1', '100000', '100000');
+INSERT INTO `keu_saldorekening` VALUES ('160', '6', '1', '100000', '65000');
 INSERT INTO `keu_saldorekening` VALUES ('161', '7', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('162', '8', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('163', '9', '1', '100000', '100000');
@@ -48,14 +48,14 @@ INSERT INTO `keu_saldorekening` VALUES ('168', '14', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('169', '15', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('170', '16', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('171', '17', '1', '100000', '100000');
-INSERT INTO `keu_saldorekening` VALUES ('172', '18', '1', '100000', '60000');
+INSERT INTO `keu_saldorekening` VALUES ('172', '18', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('173', '19', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('174', '20', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('175', '21', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('176', '22', '1', '100000', '50000');
-INSERT INTO `keu_saldorekening` VALUES ('177', '23', '1', '100000', '40000');
+INSERT INTO `keu_saldorekening` VALUES ('177', '23', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('178', '24', '1', '100000', '100000');
-INSERT INTO `keu_saldorekening` VALUES ('179', '25', '1', '100000', '100000');
+INSERT INTO `keu_saldorekening` VALUES ('179', '25', '1', '100000', '95000');
 INSERT INTO `keu_saldorekening` VALUES ('180', '26', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('181', '27', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('182', '28', '1', '100000', '100000');
@@ -63,7 +63,7 @@ INSERT INTO `keu_saldorekening` VALUES ('183', '29', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('184', '30', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('185', '31', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('186', '32', '1', '100000', '100000');
-INSERT INTO `keu_saldorekening` VALUES ('187', '33', '1', '100000', '120000');
+INSERT INTO `keu_saldorekening` VALUES ('187', '33', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('188', '34', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('189', '35', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('190', '36', '1', '100000', '100000');
@@ -226,7 +226,7 @@ INSERT INTO `keu_saldorekening` VALUES ('346', '234', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('347', '219', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('348', '220', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('349', '221', '1', '100000', '100000');
-INSERT INTO `keu_saldorekening` VALUES ('350', '222', '1', '100000', '100000');
+INSERT INTO `keu_saldorekening` VALUES ('350', '222', '1', '100000', '135000');
 INSERT INTO `keu_saldorekening` VALUES ('351', '223', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('352', '224', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('353', '225', '1', '100000', '100000');
@@ -239,7 +239,7 @@ INSERT INTO `keu_saldorekening` VALUES ('359', '215', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('360', '216', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('361', '217', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('362', '218', '1', '100000', '100000');
-INSERT INTO `keu_saldorekening` VALUES ('363', '203', '1', '100000', '100000');
+INSERT INTO `keu_saldorekening` VALUES ('363', '203', '1', '100000', '30000');
 INSERT INTO `keu_saldorekening` VALUES ('364', '204', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('365', '205', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('366', '206', '1', '100000', '100000');
@@ -359,9 +359,9 @@ INSERT INTO `keu_saldorekening` VALUES ('479', '95', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('480', '96', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('481', '97', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('482', '98', '1', '100000', '100000');
-INSERT INTO `keu_saldorekening` VALUES ('483', '83', '1', '100000', '100000');
+INSERT INTO `keu_saldorekening` VALUES ('483', '83', '1', '100000', '35000');
 INSERT INTO `keu_saldorekening` VALUES ('484', '84', '1', '100000', '100000');
-INSERT INTO `keu_saldorekening` VALUES ('485', '85', '1', '100000', '115000');
+INSERT INTO `keu_saldorekening` VALUES ('485', '85', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('486', '86', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('487', '87', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('488', '88', '1', '100000', '100000');
