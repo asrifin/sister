@@ -846,7 +846,7 @@
 																<td width="10%">'.tgl_indo5($r3['tanggal']).'</td>
 																<td  width="20%">'.$r3['nomer'].'</td>
 																<td  width="30%">'.$r3['uraian'].'</td>
-																<td  style="font-weight:bold;"  class="text-right fg-red" width="20%">Rp. '.number_format($r2['nominal']).'</td>
+																<td  style="font-weight:bold;"  class="text-right fg-red" width="20%">Rp. '.number_format($r3['nominal']).'</td>
 															</tr>';
 														}
 													}$out.='</tbody>

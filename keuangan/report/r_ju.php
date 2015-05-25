@@ -10,7 +10,7 @@
   echo '<pre>';
   print_r($_GET);
   echo '</pre>';
-  // exit();
+  exit();
   $jenis==$jenis2='';
   foreach ($_GET['detjenisTB'] as $i => $v) {
     $jenis.=$v;

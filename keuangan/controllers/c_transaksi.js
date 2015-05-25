@@ -61,6 +61,9 @@ var rekArr=[];
         $('#lr_cetakBC').on('click',function(){
             printPDF('lr');
         });
+        $('#pkb_cetakBC').on('click',function(){
+            printPDF('pkb');
+        });
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });

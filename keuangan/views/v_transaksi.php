@@ -213,6 +213,9 @@
 
                 <!-- posisi kas / bank -->
                 <div class="frame" id="pkbTAB">
+                    <button  class="bg-blue fg-white" id="pkb_cetakBC" data-hint="cetak" data-hint-position="top">
+                        <i class="icon-printer" ></i>
+                    </button>
                     <div id="pkb_tbody"></div>
                 </div>
 
