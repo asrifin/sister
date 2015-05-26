@@ -483,16 +483,12 @@
 											<td>&nbsp</td>
 											<td>&nbsp</td>
 										</tr>';
-								$nox++;
 							}
 						}else{ #kosong
 							$out.= '<tr align="center">
 									<td  colspan="8" ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
 						}
-						#link paging
-						$out.= '<tr class="info"><td colspan="8">'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan="8">'.$obj->total.'</td></tr>';
 					break;
 
 					//Laba Rugi
