@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-26 06:26:49
+Date: 2015-05-26 12:07:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,7 +31,7 @@ CREATE TABLE `keu_saldorekening` (
 -- ----------------------------
 -- Records of keu_saldorekening
 -- ----------------------------
-INSERT INTO `keu_saldorekening` VALUES ('155', '1', '1', '100000', '285000');
+INSERT INTO `keu_saldorekening` VALUES ('155', '1', '1', '100000', '315000');
 INSERT INTO `keu_saldorekening` VALUES ('156', '2', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('157', '3', '1', '100000', '105000');
 INSERT INTO `keu_saldorekening` VALUES ('158', '4', '1', '100000', '100000');
@@ -239,7 +239,7 @@ INSERT INTO `keu_saldorekening` VALUES ('359', '215', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('360', '216', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('361', '217', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('362', '218', '1', '100000', '100000');
-INSERT INTO `keu_saldorekening` VALUES ('363', '203', '1', '100000', '30000');
+INSERT INTO `keu_saldorekening` VALUES ('363', '203', '1', '100000', '0');
 INSERT INTO `keu_saldorekening` VALUES ('364', '204', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('365', '205', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('366', '206', '1', '100000', '100000');

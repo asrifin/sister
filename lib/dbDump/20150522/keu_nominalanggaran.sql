@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-26 06:26:31
+Date: 2015-05-26 12:08:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,7 @@ CREATE TABLE `keu_nominalanggaran` (
   `bulan` int(2) NOT NULL,
   `nominal` double(14,0) NOT NULL DEFAULT '0',
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=327 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_nominalanggaran
@@ -126,3 +126,15 @@ INSERT INTO `keu_nominalanggaran` VALUES ('311', '45', '9', '10000');
 INSERT INTO `keu_nominalanggaran` VALUES ('312', '45', '10', '10000');
 INSERT INTO `keu_nominalanggaran` VALUES ('313', '45', '11', '10000');
 INSERT INTO `keu_nominalanggaran` VALUES ('314', '45', '12', '10000');
+INSERT INTO `keu_nominalanggaran` VALUES ('315', '46', '1', '1250000');
+INSERT INTO `keu_nominalanggaran` VALUES ('316', '46', '2', '1250000');
+INSERT INTO `keu_nominalanggaran` VALUES ('317', '46', '3', '1250000');
+INSERT INTO `keu_nominalanggaran` VALUES ('318', '46', '4', '1250000');
+INSERT INTO `keu_nominalanggaran` VALUES ('319', '46', '5', '1250000');
+INSERT INTO `keu_nominalanggaran` VALUES ('320', '46', '6', '1250000');
+INSERT INTO `keu_nominalanggaran` VALUES ('321', '46', '7', '1250000');
+INSERT INTO `keu_nominalanggaran` VALUES ('322', '46', '8', '1250000');
+INSERT INTO `keu_nominalanggaran` VALUES ('323', '46', '9', '1250000');
+INSERT INTO `keu_nominalanggaran` VALUES ('324', '46', '10', '1250000');
+INSERT INTO `keu_nominalanggaran` VALUES ('325', '46', '11', '1250000');
+INSERT INTO `keu_nominalanggaran` VALUES ('326', '46', '12', '1250000');

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-26 06:25:39
+Date: 2015-05-26 12:07:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,8 +40,8 @@ INSERT INTO `keu_jurnal` VALUES ('1172', '1', '1', '80000', 'd', '0', '0', '2015
 INSERT INTO `keu_jurnal` VALUES ('1171', '1', '83', '80000', 'k', '0', '0', '2015-05-25 15:47:11');
 INSERT INTO `keu_jurnal` VALUES ('1174', '2', '1', '15000', 'k', '0', '0', '2015-05-25 15:47:58');
 INSERT INTO `keu_jurnal` VALUES ('1173', '2', '83', '15000', 'd', '0', '0', '2015-05-25 15:47:58');
-INSERT INTO `keu_jurnal` VALUES ('1178', '4', '1', '70000', 'd', '0', '0', '2015-05-25 16:00:10');
-INSERT INTO `keu_jurnal` VALUES ('1177', '4', '203', '70000', 'k', '0', '0', '2015-05-25 16:00:10');
+INSERT INTO `keu_jurnal` VALUES ('1178', '4', '1', '100000', 'd', '0', '0', '2015-05-25 16:00:10');
+INSERT INTO `keu_jurnal` VALUES ('1177', '4', '203', '100000', 'k', '0', '0', '2015-05-25 16:00:10');
 INSERT INTO `keu_jurnal` VALUES ('1180', '5', '22', '50000', 'k', '0', '0', '2015-05-26 06:08:09');
 INSERT INTO `keu_jurnal` VALUES ('1179', '5', '1', '50000', 'd', '0', '0', '2015-05-26 06:08:09');
 INSERT INTO `keu_jurnal` VALUES ('1181', '5', '25', '5000', 'k', '0', '0', '2015-05-26 06:08:59');
