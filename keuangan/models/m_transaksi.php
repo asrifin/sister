@@ -658,7 +658,7 @@
 							// <td>['.$r1['kode'].'] '.$r1['nama'].'</td>
 								$out.= '<tr>
 											<td>- '.$r1['nama'].'</td>
-											<td align="right">Rp. '.number_format($r1['nominal']).'</td>
+											<td class="fg-'.($r1['nominal']<0?'red':'').'" align="right">Rp. '.number_format($r1['nominal']).'</td>
 											<td></td>
 										</tr>';
 								$aktivaTot+=$r1['nominal'];
