@@ -141,9 +141,9 @@
 
                 <!-- neraca saldo -->
                 <div class="frame" id="nsTAB">
-                    <button  class="bg-blue fg-white" id="nsBC" data-hint="Pencarian" data-hint-position="top">
+<!--                     <button  class="bg-blue fg-white" id="nsBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
-                    </button>
+                    </button> -->
                     <button  class="bg-blue fg-white" id="ns_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
@@ -181,8 +181,8 @@
                                 <th class="text-center" rowspan="2">Kode Rekening</th>
                                 <th class="text-center" rowspan="2">Nama Rekening</th>
                                 <th class="text-center" colspan="2">Neraca Saldo</th>
-                                <th class="text-center" colspan="2">Laba/Rugi</th>
                                 <th class="text-center" colspan="2">Neraca</th>
+                                <th class="text-center" colspan="2">Laba/Rugi</th>
                             </tr>
                             <tr style="color:white;" class="info">
                                 <th class="text-right">Debit</th>

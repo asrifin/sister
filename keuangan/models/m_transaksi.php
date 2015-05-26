@@ -596,14 +596,23 @@
 						$s1=' SELECT
 								d.kode,
 								d.nama,
-								j.nominal
+								SUM(if(j.jenis="k",concat("-",j.nominal),j.nominal))nominal
 							FROM
 								keu_transaksi t
 								LEFT JOIN keu_jurnal j ON j.transaksi = t.replid
 								LEFT JOIN keu_detilrekening d ON d.replid = j.rek
 								LEFT JOIN keu_kategorirekening k ON k.replid = d.kategorirekening
 							WHERE
-								k.nama IN ("KAS","BANK","AKTIVA","KEWAJIBAN","MODAL")';
+								k.nama IN (
+									"KAS",
+									"BANK",
+									"AKTIVA",
+									"KEWAJIBAN",
+									"MODAL"
+								) AND t.tahunbuku ='.getTahunBuku('replid').'
+							GROUP BY
+								k.replid';
+						// var_dump($s1);exit();
 						$s2=' SELECT 
 									IF(sum(tb.nominal)<0,0,sum(tb.nominal)) selisih 
 								from (
