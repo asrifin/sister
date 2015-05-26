@@ -451,23 +451,32 @@
 					case 'nl':
 						$kode = isset($_POST['ns_kodeS'])?filter($_POST['ns_kodeS']):'';
 						$nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
-						$s  = 'SELECT 
-									kr.kode kode,
-							        kr.nama nama,
-							        kr.kategorirek kategorirek,
-							        kj.debet debet,
-							        kj.kredit kredit
-							    FROM
-							        keu_jurnal kj
-							        LEFT JOIN keu_rekening kr ON kr.replid = kj.rek
-							    WHERE
-							    	kr.kode like "%'.$kode.'%" and
-									kr.nama like "%'.$nama.'%"
+						$s  = 'SELECT
+									d.replid,
+									d.kode,
+									d.nama,IFNULL((
+										SELECT  
+											sum(kj.nominal)
+										FROM	
+											keu_jurnal kj
+										WHERE 
+											kj.jenis = "d" AND kj.rek= d.replid
+									),0)nomDeb,IFNULL((
+										SELECT  
+											sum(kj.nominal)
+										FROM	
+											keu_jurnal kj
+										WHERE 
+											kj.jenis = "k" AND kj.rek= d.replid
+									),0)nomKre
+								FROM
+									keu_jurnal j 
+									LEFT JOIN keu_detilrekening d on d.replid = j.rek
+									LEFT JOIN keu_saldorekening s on s.rekening = d.replid
+								WHERE	
+									s.tahunbuku = '.getTahunBuku('replid').'
 								GROUP BY
-									kr.kode
-							    ORDER BY
-							        kr.kategorirek,
-									kr.kode ';
+									j.rek ';
 						$e   = mysql_query($s);
 						$n   = mysql_num_rows($e);
 						$out ='';$totaset=0;
@@ -476,8 +485,8 @@
 								$out.= '<tr>
 											<td>'.$r['kode'].'</td>
 											<td>'.$r['nama'].'</td>
-											<td>'.$r['debet'].'</td>
-											<td>'.$r['kredit'].'</td>
+											<td class="text-right">Rp. '.number_format($r['nomDeb']).'</td>
+											<td class="text-right">Rp. '.number_format($r['nomKre']).'</td>
 											<td>&nbsp</td>
 											<td>&nbsp</td>
 											<td>&nbsp</td>
