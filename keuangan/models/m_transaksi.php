@@ -592,8 +592,8 @@
 					//laporan neraca 
 					case 'ln':
 						$out ='';
-						$pendapatanTot=$biayaTot=0;
-						$s=' SELECT
+						$aktivaTot=$pasivaTot=0;
+						$s1=' SELECT
 								d.kode,
 								d.nama,
 								j.nominal
@@ -603,9 +603,29 @@
 								LEFT JOIN keu_detilrekening d ON d.replid = j.rek
 								LEFT JOIN keu_kategorirekening k ON k.replid = d.kategorirekening
 							WHERE
-								k.nama IN ';
-						$s1 = $s.'("KAS","BANK","AKTIVA","KEWAJIBAN","MODAL")';
-						$s2 = $s.'("PENDAPATAN","BIAYA")';
+								k.nama IN ("KAS","BANK","AKTIVA","KEWAJIBAN","MODAL")';
+						$s2=' SELECT 
+									IF(sum(tb.nominal)<0,0,sum(tb.nominal)) selisih 
+								from (
+									SELECT
+										d.replid,
+										d.kode,
+										d.nama,
+										k.replid idkaterek,
+										k.nama katrek,
+										if(k.nama="BIAYA",concat("-",sum(j.nominal)),sum(j.nominal))nominal
+									FROM 
+										keu_transaksi t
+										LEFT JOIN keu_jurnal j on j.transaksi = t.replid
+										LEFT JOIN keu_detilrekening d on d.replid = j.rek
+										LEFT JOIN keu_kategorirekening k on k.replid= d.kategorirekening
+									WHERE
+										k.nama IN ("PENDAPATAN","BIAYA")
+									GROUP BY 
+										d.kategorirekening
+									ORDER BY
+										k.nama DESC
+								)tb';
 						$e1 = mysql_query($s1);
 						$n1 = mysql_num_rows($e1);
 						$e2 = mysql_query($s2);
@@ -632,7 +652,7 @@
 											<td align="right">Rp. '.number_format($r1['nominal']).'</td>
 											<td></td>
 										</tr>';
-								$pendapatanTot+=$r1['nominal'];
+								$aktivaTot+=$r1['nominal'];
 							}
 						}else{
 							$out.= '<tr align="center">
@@ -642,7 +662,7 @@
 						$out.='<tfoot>
 									<tr>
 										<td align="right" colspan="2">Total Aktiva:</td>
-										<td class="bg-green fg-white" align="right">Rp. '.number_format($pendapatanTot).'</td>
+										<td class="bg-green fg-white" align="right">Rp. '.number_format($aktivaTot).'</td>
 									</tr>
 								</tfoot>';
 						$out.='</table>';                 
@@ -661,10 +681,10 @@
 								// <td width="50%">['.$r2['kode'].'] '.$r2['nama'].'</td>
 								$out.= '<tr>
 											<td width="50%">- Laba Bersih </td>
-											<td width="25%"align="right">Rp. '.number_format($r2['nominal']).'</td>
+											<td width="25%"align="right">Rp. '.number_format($r2['selisih']).'</td>
 											<td width="25%"></td>
 										</tr>';
-								$biayaTot+=$r2['nominal'];
+								$pasivaTot+=$r2['selisih'];
 							// }
 						}else{
 							$out.= '<tr align="center">
@@ -674,20 +694,21 @@
 						$out.='<tfoot>
 									<tr>
 										<td align="right" colspan="2">Total Passiva:</td>
-										<td class="bg-green fg-white" align="right">Rp. '.number_format($biayaTot).'</td>
+										<td class="bg-green fg-white" align="right">Rp. '.number_format($pasivaTot).'</td>
 									</tr>
 								</tfoot>';
+								// <td class="bg-green fg-white" align="right">Rp. '.number_format($pasivaTot).'</td>
 						$out.='</table>';
-						$selisih = $pendapatanTot-$biayaTot;
-						$status  = $selisih<0?'Kerugian : ':($selisih==0?'normal':'Laba :');
-						$warna   = $selisih<0?'red':($selisih==0?'blue':'green');
-						$out.='<table wiidth="100%" class="table">
-									<tr>
-										<th width="75%" colspan="2" align="right">'.$status.'</th>
-										<th class="bg-green fg-white" width="25%" align="right">Rp. '.number_format($pendapatanTot-$biayaTot).'</th>
-									</tr>
-								</table>';                 
-								// <th class="bg-'.$warna.' fg-white" width="25%" align="right">Rp. '.number_format($pendapatanTot-$biayaTot).'</th>
+						// $selisih = $aktivaTot-$pasivaTot;
+						// $status  = $selisih<0?'Kerugian : ':($selisih==0?'normal':'Laba :');
+						// $warna   = $selisih<0?'red':($selisih==0?'blue':'green');
+						// $out.='<table width="100%" class="table">
+						// 			<tr>
+						// 				<th width="75%" colspan="2" align="right">'.$status.'</th>
+						// 				<th class="bg-green fg-white" width="25%" align="right">Rp. '.number_format($aktivaTot-$pasivaTot).'</th>
+						// 			</tr>
+						// 		</table>';                 
+								// <th class="bg-'.$warna.' fg-white" width="25%" align="right">Rp. '.number_format($pendapatanTot-$pasivaTot).'</th>
 					break;
 
 					// posisi kas bank
