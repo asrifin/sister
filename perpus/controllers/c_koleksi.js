@@ -365,9 +365,7 @@ function cmbtingkatbuku(tgt){
                         dataType:'json',
                         success:function(dt){
                             $('#koleksiH').val(id);
-                            // $('#lokasiH').val($('#lokasiS').val());
                             $('#judulTD').html(dt.judul);
-                            // $('#judulTB').val(dt.judul);
                             $('#jml_koleksiTB').val(dt.jum);
                             $('#idbukuTB').val(dt.kode);
                             $('#barcodeTB').val(dt.barkode);
@@ -381,8 +379,8 @@ function cmbtingkatbuku(tgt){
                             $('#lokasiTB').val(dt.lokasi);
                             $('#tingkatTB').val(dt.tingkatbuku);
                             
-                            cmblokasi(dt.lok);
-                            cmbtingkatbuku(dt.tgt);
+                            cmblokasi(dt.lokasi);
+                            cmbtingkatbuku(dt.tingkatbuku);
 
                         }
                     });

@@ -1,17 +1,22 @@
-<script src="controllers/c_lokasi.js"></script>
+<script src="controllers/c_opac.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
 
-<h4 style="color:white;">Lokasi</h4>
+<h4 style="color:white;">OPAC</h4>
 <div id="loadarea"></div>
 
-<button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+ <div style="overflow:scroll;height:600px;" style="display:none;">
+
+<!-- <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
+ -->
+
+<div class="tile-group quadro" id="tbody">
+
+</div>
 
 
-
-
-<table class="table hovered bordered striped">
+<!-- <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-center">Kode</th>
@@ -30,10 +35,12 @@
     </thead>
 
     <tbody id="tbody">
-        <!-- row table -->
     </tbody>
     <tfoot>
         
     </tfoot>
-</table>
+</table> -->
+
+</div>
+
 

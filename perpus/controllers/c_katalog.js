@@ -1169,7 +1169,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                     });
 
                 }else{ // edit mode
-                    titlex='<span class="icon-pencil"></span> Tambah';
+                    titlex='<span class="icon-pencil"></span> Edit';
                     $.ajax({
                         url:dir,
                         data:'aksi=ambiledit&subaksi=koleksi&replid='+id,

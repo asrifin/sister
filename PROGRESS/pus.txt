@@ -40,6 +40,7 @@ ____________________________________________________
 	- view sirkulasi - field aksi -> tombol aksi kalau dipinjam muncul kalau dikembalikan tidak
 	- view sirkulasi - filter checkbox blm bisa
 	- cara sinkron status peminjaman pada tabel pus_peminjaman dan pus_buku ?
+	- combobox peminjaman 
 	
 	* statistik
 	- menampilkan jumlah yang dipinjam (filter tanggal)
