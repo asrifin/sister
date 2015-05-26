@@ -172,9 +172,9 @@
 
                 <!-- neraca lajur-->
                 <div class="frame" id="nlTAB">
-                    <button  class="bg-blue fg-white" id="nl_cetakBC" data-hint="Pencarian" data-hint-position="top">
+<!--                     <button  class="bg-blue fg-white" id="nl_cetakBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-printer" ></i>
-                    </button>
+                    </button> -->
                     <table class="table hovered bordered striped">
                         <thead>
                             <tr style="color:white;" class="info">
@@ -200,10 +200,10 @@
 
                 <!-- laba / rugi-->
                 <div class="frame" id="lrTAB">
-                    <button  class="bg-blue fg-white" id="lr_cetakBC" data-hint="cetak" data-hint-position="top">
+<!--                     <button  class="bg-blue fg-white" id="lr_cetakBC" data-hint="cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
-                    <div id="lr_tbody"></div>
+ -->                    <div id="lr_tbody"></div>
                 </div>
 
                 <!-- laporan Neraca -->
@@ -213,9 +213,9 @@
 
                 <!-- posisi kas / bank -->
                 <div class="frame" id="pkbTAB">
-                    <button  class="bg-blue fg-white" id="pkb_cetakBC" data-hint="cetak" data-hint-position="top">
+                    <!-- <button  class="bg-blue fg-white" id="pkb_cetakBC" data-hint="cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
-                    </button>
+                    </button> -->
                     <div id="pkb_tbody"></div>
                 </div>
 
