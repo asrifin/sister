@@ -67,11 +67,11 @@
         <div data-effect="fade" class="tab-control" data-role="tab-control">
             <ul class="tabs">
                 <li class="active"><a href="#juTAB">Jurnal Umum </a></li>
-                <li><a href="#nsTAB">Neraca Saldo</a></li>
                 <li><a href="#bbTAB">Buku Besar</a></li>
-                <li><a href="#nlTAB">Neraca Lajur</a></li>
-                <li><a href="#lrTAB">Laporan Laba/Rugi</a></li>
+                <li><a href="#nsTAB">Neraca Saldo</a></li>
                 <li><a href="#lnTAB">Laporan Neraca</a></li>
+                <li><a href="#lrTAB">Laporan Laba/Rugi</a></li>
+                <li><a href="#nlTAB">Neraca Lajur</a></li>
                 <li><a href="#pkbTAB">Posisi Kas dan Bank</a></li>
                 <li><a href="#btTAB">Buku Tambahan</a></li>
             </ul>

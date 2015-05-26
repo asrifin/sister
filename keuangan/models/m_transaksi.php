@@ -589,7 +589,7 @@
 								</table>';                 
 					break;
 
-					//Laporan neraca
+					//laporan neraca 
 					case 'ln':
 						$out ='';
 						$pendapatanTot=$biayaTot=0;
@@ -603,15 +603,15 @@
 								LEFT JOIN keu_detilrekening d ON d.replid = j.rek
 								LEFT JOIN keu_kategorirekening k ON k.replid = d.kategorirekening
 							WHERE
-								k.nama IN ';
-						$s1 = $s.'("aktiva","kas","bank")';
+								k.nama=';
+						$s1 = $s.'"pendapatan"';
 						$s2 = $s.'"biaya"';
 						$e1  = mysql_query($s1);
 						$n1  = mysql_num_rows($e1);
-						// $e2  = mysql_query($s2);
-						// $n2  = mysql_num_rows($e2);
+						$e2  = mysql_query($s2);
+						$n2  = mysql_num_rows($e2);
 						
-						// aktiva
+						// pendapatan
 						$out.='<table width="100%" class="table">
 			                        <thead>
 			                            <tr class="info fg-white">
@@ -620,25 +620,12 @@
 			                                <th  width="25%" class="text-right">Sub Total</th>
 			                            </tr>
 			                            <tr>
-			                                <th class="text-left" colspan="3" >Aktiva</th>
+			                                <th class="text-left" colspan="3" >Pendapatan</th>
 			                            </tr>
 			                        </thead>
 			                        <tbody>';
 						if($n1!=0){	
 							while($r1 = mysql_fetch_assoc($e1)){
-								$jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r2['detjenistrans']));
-								if($jenis=='ju'){ // ju
-									$debit=99;
-									$kredit=0;
-								}else{
-									if($jenis=='out'){ // outcome
-										$debit  = $r2['rekkas']==$r2['rek']?0:$r2['nominal'];
-										$kredit = $r2['rekitem']==$r2['rek']?0:$r2['nominal'];
-									}else{ // income
-										$debit  = $r2['rekkas']==$r2['rek']?$r2['nominal']:0;
-										$kredit = $r2['rekitem']==$r2['rek']?$r2['nominal']:0;
-									}
-								}
 								$out.= '<tr>
 											<td>['.$r1['kode'].'] '.$r1['nama'].'</td>
 											<td align="right">Rp. '.number_format($r1['nominal']).'</td>
@@ -663,7 +650,7 @@
 						$out.='<table width="100%" class="table">
 			                        <thead>
 			                            <tr>
-			                                <th colspan="3" class="text-left">Pasiva</th>
+			                                <th colspan="3" class="text-left">Beban</th>
 			                            </tr>
 			                        </thead>
 			                        <tbody>';
