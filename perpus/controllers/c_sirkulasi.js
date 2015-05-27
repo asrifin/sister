@@ -437,7 +437,8 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
         }
 
         //autocomplete
-        $("#judulTB").combogrid({
+    function autosug(el,lok){
+        $(el).combogrid({
             debug:true,
             width:'400px',
             colModel: [{
@@ -452,13 +453,15 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
                     'width':'40',
                     'label':'Judul'
                 }],
-            url: dir+'?aksi=autocomp&subaksi=tersedia',
+            url: dir+'?aksi=autocomp&subaksi=tersedia'+lok,
             select: function( event, ui ) { // event setelah data terpilih 
                 barangAdd(ui.item.replid,ui.item.barkode,ui.item.judul);
-                $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=judul&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
+                $(el).val('');
+                // $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=judul&lokasi='+$('#lokasiS').val()+'&brgArr='+barangArr().toString() );
                 return false;
             }
         }); //End autocomplete
+    }
 
     }
 
@@ -467,6 +470,8 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
             $('#barangTR_'+id).fadeOut('slow',function(){
                 $('#barangTR_'+id).remove();
                 // barangExist();
+            $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=judul&lokasi='+$('#lokasiS').val()+'&brgArr='+barangArr().toString() );
+            enabledButton();
             });
         }
     //barang record kosong --
@@ -488,10 +493,10 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
                         +'<td>'+judul+'</td>'
                         +'<td><button onclick="barangDel('+id+');"><i class="icon-remove"></button></i></td>'
                     +'</tr>';
-            $('#barangTBL').append(tr); 
+            $('#barangTBL').prepend(tr); 
             barangArr();
-            // $('#barangTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
-
+            $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=judul&lokasi='+$('#lokasiS').val()+'&brgArr='+barangArr().toString() );
+            enabledButton();
             // barangExist();
         }
         

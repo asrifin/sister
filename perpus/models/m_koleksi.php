@@ -33,32 +33,74 @@
 				$penerbit    = isset($_POST['penerbitS'])?filter(trim($_POST['penerbitS'])):'';
 				$status      = isset($_POST['statusS'])?filter(trim($_POST['statusS'])):'';
 				
-				$sql = 'SELECT *, b.idbuku AS kode,
-								k.replid as replid,
-								k.judul AS judul,
-								l.nama AS klasifikasi, 
-								r.nama AS penerbit, 
-								if(b.status=1,"Tersedia","Dipinjam") as status, 
-								p.nama2 AS pengarang
+				
 
-						FROM pus_buku b
-						LEFT JOIN pus_katalog k on k.replid=b.katalog
-						LEFT JOIN pus_tingkatbuku t on t.replid=b.tingkatbuku
-						LEFT JOIN pus_klasifikasi l on l.replid=k.klasifikasi
-						LEFT JOIN pus_pengarang p on p.replid=k.pengarang
-						LEFT JOIN pus_penerbit r on r.replid=k.penerbit
-						LEFT JOIN pus_jenisbuku u on u.replid=k.jenisbuku
-						WHERE 
-						b.lokasi='.$lokasi.'
-						AND b.tingkatbuku='.$tingkatbuku.'
-						AND k.jenisbuku='.$jenisbuku.'
-						AND b.barkode like "%'.$barkode.'%"
-						AND b.idbuku like "%'.$idbuku.'%"
-						AND k.judul like "%'.$judul.'%"
-						AND b.callnumber like "%'.$callnumber.'%"
-						AND b.status like "%'.$status.'%"
-						ORDER BY k.replid asc';
+				// $sql = 'SELECT *, b.idbuku AS kode,
+				// 				k.replid as replid,
+				// 				k.judul AS judul,
+				// 				l.nama AS klasifikasi, 
+				// 				r.nama AS penerbit, 
+								// if(b.status=1,"Tersedia","Dipinjam") as status, 
+				// 				p.nama2 AS pengarang
+
+				// 		FROM pus_buku b
+				// 		LEFT JOIN pus_katalog k on k.replid=b.katalog
+				// 		LEFT JOIN pus_tingkatbuku t on t.replid=b.tingkatbuku
+				// 		LEFT JOIN pus_klasifikasi l on l.replid=k.klasifikasi
+						// LEFT JOIN pus_pengarang p on p.replid=k.pengarang
+						// LEFT JOIN pus_penerbit r on r.replid=k.penerbit
+				// 		LEFT JOIN pus_jenisbuku u on u.replid=k.jenisbuku
+				// 		WHERE 
+				// 		b.lokasi ='.$lokasi.' AND
+				// 		b.tingkatbuku ='.$tingkatbuku.' AND
+				// 		k.jenisbuku ='.$jenisbuku.' AND
+				// 		b.barkode like "%'.$barkode.'%"
+				// 		AND b.idbuku like "%'.$idbuku.'%"
+				// 		AND k.judul like "%'.$judul.'%"
+				// 		AND b.callnumber like "%'.$callnumber.'%"
+				// 		AND b.status like "%'.$status.'%"
+				// 		ORDER BY k.replid asc';
 				// print_r($sql);exit();
+				$sql 	= ' SELECT
+	                          kg.replid as replid,
+	                          kg.judul,
+							  LPAD(pb.idbuku,18,0)as kode,
+							  pb.barkode,
+							  pb.harga,
+							  pb.tanggal,
+							  pb.lokasi,
+							  pb.tingkatbuku,
+							  pb.sumber,
+							  if(pb.status=1,"Tersedia","Dipinjam") as status, 
+							  --if(pb.sumber=0,"Beli","Pemberian") as sumber,
+							  pj.nama jenisbuku,
+	                          kg.callnumber,
+	                          kg.dimensi,
+	                          kg.deskripsi, 
+	                          kf.nama AS klasifikasi,
+	                          p.nama2 AS pengarang,
+	                          r.nama AS penerbit,
+	                          (SELECT count(*) from pus_buku where katalog=kg.replid) as jum
+	                        FROM
+	                          pus_katalog kg
+	                          LEFT JOIN pus_buku pb ON pb.replid = kg.pengarang
+					      	  LEFT JOIN pus_tingkatbuku t on t.replid= pb.tingkatbuku
+	                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
+	                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
+							  LEFT JOIN pus_pengarang p on p.replid= kg.pengarang
+							  LEFT JOIN pus_penerbit r on r.replid= kg.penerbit
+	                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+	                        WHERE
+					    		pb.lokasi ='.$lokasi.' AND
+					    		pb.tingkatbuku ='.$tingkatbuku.' AND
+					    		kg.jenisbuku ='.$jenisbuku.' AND
+					    		pb.barkode like "%'.$barkode.'%"
+					    		AND pb.idbuku like "%'.$idbuku.'%"
+					    		AND kg.judul like "%'.$judul.'%"
+					    		AND pb.callnumber like "%'.$callnumber.'%"
+					    		AND pb.status like "%'.$status.'%"
+	                        order BY
+	                          kg.replid asc';
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -167,7 +209,7 @@
 						$out    = json_encode(array(
 									'status'      =>$stat,
 									'judul'       =>$r['judul'],
-									'jumlah'      =>$r['jum'],
+									'jum'      	  =>$r['jum'],
 									'kode'        =>$r['kode'],
 									'barkode'     =>$r['barkode'],
 									'sumber'      =>$r['sumber'],
@@ -179,50 +221,9 @@
 			break;
 			// // ambiledit -----------------------------------------------------------------
 
-			// // cmbtempat ---------------------------------------------------------
-			// case 'cmb'.$mnu:
-			// 	$w='';
-			// 	if(isset($_POST['replid'])){
-			// 		$w.='where replid ='.$_POST['replid'];
-			// 	}else{
-			// 		if(isset($_POST[$mnu])){
-			// 			$w.='where '.$mnu.'='.$_POST[$mnu];
-			// 		}elseif(isset($_POST[$mnu2])){
-			// 			$w.='where '.$mnu2.' ='.$_POST[$mnu2];
-			// 		}
-			// 	}
-				
-			// 	$s	= ' SELECT *
-			// 			from '.$tb.'
-			// 			'.$w.'		
-			// 			ORDER  BY nama desc';
-			// 	// var_dump($s);exit();
-			// 	$e 	= mysql_query($s);
-			// 	$n 	= mysql_num_rows($e);
-			// 	$ar=$dt=array();
-
-			// 	if(!$e){ //error
-			// 		$ar = array('status'=>'error');
-			// 	}else{
-			// 		if($n=0){ // kosong 
-			// 			$ar = array('status'=>'kosong');
-			// 		}else{ // ada data
-			// 			if(!isset($_POST['replid'])){
-			// 				while ($r=mysql_fetch_assoc($e)) {
-			// 					$dt[]=$r;
-			// 				}
-			// 			}else{
-			// 				$dt[]=mysql_fetch_assoc($e);
-			// 			}$ar = array('status'=>'sukses',$mnu=>$dt);
-			// 		}
-			// 	}$out=json_encode($ar);
-			// break;
-			// end of cmblokasi ---------------------------------------------------------
 
 		}
 	}echo $out;
 
-    // ---------------------- //
-    // -- created by rovi  -- //
-    // ---------------------- // 
+    
 ?>

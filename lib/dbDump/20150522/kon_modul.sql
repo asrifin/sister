@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.36)
-# Date: 2015-05-22 06:14:03
+# Date: 2015-05-24 17:20:42
 # Generator: MySQL-Front 5.3  (Build 2.16)
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -36,7 +36,7 @@ CREATE TABLE `kon_modul` (
 # Data for table "kon_modul"
 #
 
-INSERT INTO `kon_modul` VALUES (1,1,'akademik','akademik',13,1,'double','data akademik siswa'),(2,1,'psb','penerimaan siswa baru',14,2,'double','data penerimaan siswa'),(3,1,'perpus','perpustakaan',3,3,'double double-vertical','data koleksi dan sirkulasi buku di perpustakaan'),(4,1,'sarpras','sarana dan prasarana',4,4,'double double-vertical','data sirkulasi peminjaman barang / inventaris'),(5,2,'hrd','kepegawaian',5,5,'double double-vertical','data kepegawaian dan penggajian\n'),(6,2,'keuangan','keuangan',6,6,'double double-vertical','data keuangan'),(7,2,'student','student services',7,7,'double','data pemesanan seragam dan buku'),(8,2,'purchaseorder','purchase order',8,8,'double','data purchase order'),(9,3,'guru','guru',9,9,'double','data guru dan proses belajar mengajar'),(10,3,'konfigurasi','konfigurasi',12,8,'','konfigurasi sistem');
+INSERT INTO `kon_modul` VALUES (1,1,'akademik','akademik',13,9,'double','data akademik siswa'),(2,1,'psb','penerimaan siswa baru',14,10,'double','data penerimaan siswa'),(3,1,'perpus','perpustakaan',3,11,'double double-vertical','data koleksi dan sirkulasi buku di perpustakaan'),(4,1,'sarpras','sarana dan prasarana',4,12,'double double-vertical','data sirkulasi peminjaman barang / inventaris'),(5,2,'hrd','kepegawaian',5,13,'double double-vertical','data kepegawaian dan penggajian'),(6,2,'keuangan','keuangan',6,14,'double double-vertical','data keuangan'),(7,2,'student','student services',7,15,'double','data pembelian seragam dan buku'),(8,2,'purchaseorder','purchase order',8,16,'double','data purchase order'),(9,3,'guru','guru',9,17,'double','data guru dan proses belajar mengajar'),(10,3,'konfigurasi','konfigurasi',12,20,'','konfigurasi sistem');
 
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;

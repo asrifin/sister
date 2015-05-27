@@ -21,6 +21,7 @@
 				$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
 				$sord       = $_GET['sord']; // get the direction
 				$searchTerm = $_GET['searchTerm'];
+				$terpilih   = (isset($_GET['brgArr']) AND $_GET['brgArr']!='')?' AND b.replid NOT IN ('.$_GET['brgArr'].')':''; /*epiii*/
 
 				if(!$sidx) 
 					$sidx =1;
@@ -36,8 +37,10 @@
 							LEFT JOIN pus_lokasi ON pus_lokasi.replid = pus_buku.lokasi
 							WHERE pus_buku.status = 1
 							)tb
-							WHERE	tb.barkode  LIKE "%'.$searchTerm.'%"
-									OR tb.judul LIKE "%'.$searchTerm.'%"';
+							WHERE	pus_buku.lokasi = '.$_GET['lokasi'].' AND (tb.barkode  LIKE "%'.$searchTerm.'%"
+									OR tb.judul LIKE "%'.$searchTerm.'%")'.$terpilih;
+					// var_dump($ss);exit()
+					// print_r($ss);exit();
 				}if(isset($_GET['subaksi']) && $_GET['subaksi']=='dipinjam'){
 				$ss='SELECT *
 						FROM(SELECT

@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu = 'lokasi';
+	$mnu = 'katalog';
 	$tb  = 'pus_'.$mnu;
 	$out ='';
 	// $out=array();
@@ -22,11 +22,8 @@
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
-							kode like "%'.$kode.'%" and
-							nama like "%'.$nama.'%" and
-							alamat like "%'.$alamat.'%" and
-							keterangan like "%'.$keterangan.'%"
-						ORDER BY kode asc';
+							replid
+						ORDER BY judul asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -45,31 +42,43 @@
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
-						$btn ='<td>
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
-										<i class="icon-pencil on-left"></i>
-									</button>
-									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
-										<i class="icon-remove on-left"></i>
-								 </td>';
-						$out.= '<tr>
-									<td>'.$res['kode'].'</td>
-									<td>'.$res['nama'].'</td>
-									<td>'.$res['alamat'].'</td>
-									<td>'.$res['keterangan'].'</td>
-									'.$btn.'
-								</tr>';
-						$nox++;
+					// while($res = mysql_fetch_array($result)){	
+					foreach ($var['judul'] as $i => $v) {
+							
+						// $btn ='<td>
+						// 			<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
+						// 				<i class="icon-pencil on-left"></i>
+						// 			</button>
+						// 			<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+						// 				<i class="icon-remove on-left"></i>
+						// 		 </td>';
+						// $out.= '<tr>
+						// 			<td>'.$res['kode'].'</td>
+						// 			<td>'.$res['nama'].'</td>
+						// 			<td>'.$res['alamat'].'</td>
+						// 			<td>'.$res['keterangan'].'</td>
+						// 			'.$btn.'
+                                    		// <div class="email-data-text">'.$res['nama'].'</div>
+						// 		</tr>';
+						$out.='
+								    <a href="perangkat" class="tile  bg-green" data-click="transform">
+								        <div class="tile-content email">
+                                    		<div class="email-data-text">'.$v['judul'].'</div>
+								        </div>
+								        <div class="brand">
+								            <div class="label">Perangkat</div>
+								        </div>
+								    </a>
+							   ';
+						// $nox++;
 					}
 				}else{ #kosong
-					$out.= '<tr align="center">
-							<td  colspan="10" ><span style="color:red;text-align:center;">
-							... data tidak ditemukan...</span></td></tr>';
+					$out.= '<span style="color:red;text-align:center;">
+							... data tidak ditemukan...</span>';
 				}
 				#link paging
-				$out.= '<tr class="info"><td colspan="10">'.$obj->anchors.'</td></tr>';
-				$out.='<tr class="info"><td colspan="10">'.$obj->total.'</td></tr>';
+				// $out.= '<tr class="info"><td colspan="10">'.$obj->anchors.'</td></tr>';
+				// $out.='<tr class="info"><td colspan="10">'.$obj->total.'</td></tr>';
 			break; 
 			// // view -----------------------------------------------------------------
 

@@ -1,4 +1,4 @@
-var mnu       ='lokasi';
+var mnu       ='opac';
 var dir       ='models/m_'+mnu+'.php';
 var contentFR ='';
 
@@ -251,7 +251,3 @@ function notif(cont,clr) {
         $('#keteranganTB').val('');
     }
 //end of reset form ---
-
-    // ---------------------- //
-    // -- created by rovi  -- //
-    // ---------------------- // 

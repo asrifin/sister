@@ -79,9 +79,9 @@
                             </tr>
                           </table>';
                         if ($i % 2 == 0) {
-                          $out.='<tr><td width="50%">'.$tb.'</td>';
+                          $out.='<tr><td width="40%">'.$tb.'</td>';
                         }else{
-                          $out.='<td width="50%">'.$tb.'</td></tr>';
+                          $out.='<td width="40%">'.$tb.'</td></tr>';
                         }
                     }
                     // $kolom   = 2;
@@ -124,17 +124,25 @@
         #generate html -> PDF ------------
           $out2 = ob_get_contents();
           ob_end_clean(); 
-          $mpdf=new mPDF('c', 'A4', '', '', 4, 4, 10, 10, 0, 0);   
-          // $mpdf=new mPDF('c','A4','');   
-          $mpdf->SetDisplayMode('fullpage');   
+          /*
+          margin_left 4
+          margin_right 4
+          margin_top 10
+          margin_bottom 10
+          margin_header 0
+          margin_footer 0  
+          */
+          $mpdf=new mPDF('c', 'A4', '', '', 4, 4, 10, 10, 0, 0); 
+          // $mpdf=new mPDF('c', array(105,24), '', '', 1, 1, 1, 1, 0, 0); 
+          // $mpdf=new mPDF('utf-8', array(105,24)); 
           $stylesheet = file_get_contents('../../lib/mpdf/r_barcode_buku.css');
 // var_dump($stylesheet);exit();
-          $mpdf->SetDisplayMode('fullpage');
-          $mpdf->list_indent_first_level = 0;
+          // $mpdf->SetDisplayMode('fullpage');
+          // $mpdf->list_indent_first_level = 0;
           $mpdf->WriteHTML($stylesheet,1);  // The parameter 1 tells that this is css/style only and no body/html/text
           $mpdf->writeBarcode($out);
           $mpdf->WriteHTML($out);
-          $mpdf->keep_table_proportions = true;
+          // $mpdf->keep_table_proportions = true;
           $mpdf->Output();
     // }
 }
