@@ -138,7 +138,7 @@
 
                       // $out.="<td align='center' cellspacing='5' style='padding: 20px' width='20%'>
                       $out.="<td align='center' cellspacing='5'>
-                          <barcode code='$x' type='C128A' class='barcode' />";
+                          <barcode code='$x' type='C128A' size='2' class='barcode' />";
                       $out.="<br />".$r['kode']."
                         </td>";
 
@@ -157,7 +157,7 @@
           ob_end_clean(); 
           $mpdf=new mPDF('c', 'A4', '', '', 4, 4, 10, 10, 0, 0);   
           // $mpdf=new mPDF('c','A4','');   
-          $mpdf->SetDisplayMode('fullpage');   
+          // $mpdf->SetDisplayMode('fullpage');   
           $stylesheet = file_get_contents('../../lib/mpdf/r_cetak_barcode.css');
 // var_dump($stylesheet);exit();
           $mpdf->SetDisplayMode('fullpage');
