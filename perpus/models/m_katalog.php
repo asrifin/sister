@@ -611,17 +611,36 @@
 			
 					// generate kode
 			case 'codeGen':
-						switch ($_POST['subaksi']) {
-							case'trans':
-								$r = 'SELECT kunci, nilai 
-										FROM pus_setting
-										WHERE kunci = "'.$_POST['kunci'].'"';
-								$sql =mysql_query($r);
-								$query = mysql_fetch_assoc($sql);
-								// $pisah = explode('/',$query['nilai']);
-								$jmlauto = (substr($query['nilai'],10,1));
+				switch ($_POST['subaksi']) {
+					case'trans':
+						$s1 = '	SELECT d.nilai,d.keterangan,d.isActive
+								FROM pus_setting2 s 
+								     left join pus_detail_setting d on d.kunci = s.replid
+								WHERE s.kunci ="idfmt"';
+						$e1 = mysql_query($s1);
+						// $r1 = mysql_fetch_assoc($e1);
+						// $pisah = explode('/',$query['nilai']);
+						// $jmlauto = (substr($r1['nilai'],10,1));
+						// var_dump($e1);exit();
 					//select kode generate
-					$s='SELECT
+					/*$s='SELECT
+							tb1.lokasi,
+							LPAD(tb2.idbuku,5,0)idbuku,
+							YEAR(CURDATE())tahun,
+							tb3.kode tingkatbuku
+						FROM (
+							SELECT
+								l.kode lokasi
+							FROM
+								pus_lokasi l 
+							WHERE	
+								l.replid = 3
+							)tb1,(
+								SELECT kode
+								from pus_tingkatbuku 
+								where replid = 1
+							)tb3, ';*/
+					$s2='SELECT
 							tb1.lokasi,
 							LPAD(tb2.idbuku,5,0)idbuku,
 							YEAR(CURDATE())tahun,
@@ -641,28 +660,46 @@
 								where replid = 1
 							)tb3, ';
 
-				if($_POST['replid']!=''){//edit
-					$s.= '(SELECT urut FROM pus_buku WHERE replid='.$_POST['replid'].')tb2';
+				if(isset($_POST['replid']) and $_POST['replid']!=''){//edit
+					$s2.= '(SELECT urut FROM pus_buku WHERE replid='.$_POST['replid'].')tb4';
+					// $s2.= '(SELECT urut FROM pus_buku WHERE replid='.$_POST['replid'].')tb2';
 				}else{ //add 
-					$s.= '(SELECT (MAX(urut) + 1) AS urut FROM pus_buku )tb2';
+					$s2.= '(SELECT (MAX(urut) + 1) AS urut FROM pus_buku )tb4';
+					// $s2.= '(SELECT (MAX(urut) + 1) AS urut FROM pus_buku )tb2';
 				}
 
-				// print_r($s);exit();
-				// $sumber = $_POST['sumberTB'] == 0?"B":"H";
-				$id = 
-				$e    = mysql_query($s) or die(mysql_error());
-				$r    = mysql_fetch_assoc($e);
-				$stat = !$e?'gagal':'sukses';
-				$out  = json_encode(array(
-							'status' =>$stat,
-							'data'   =>array(
-										'urut'    =>$r['urut'],
-										'lokasi'  =>$r['lokasi'],
-										'katalog' =>$r['katalog'],
-										'barkode' =>$r['barkode']
-						)));
-							break;
-						}
+				// $s2umber = $_POST['sumberTB'] == 0?"B":"H";
+				// $id = 
+				$e2 = mysql_query($s2) or die(mysql_error());
+				$r2 = mysql_fetch_assoc($e2);
+				// var_dump($r2);exit();
+				// $xx = strpos('nomoraouto.5','99');
+				// if($xx==true){
+				// 	$c='ada';
+				// }else{
+				// 	$c='tidak ';
+
+				// }
+				// var_dump($c);exit();
+				$bukuArr    = array();
+				$bukuFormat = '/';
+				while ($r1 = mysql_fetch_assoc($e1)) {
+					if(strpos('nomoraouto',$r1['nilai'])==true){
+						$bukuFormat.='/'.$r1['nilai'];						
+					}
+				}
+				print_r($bukuFormat);exit();
+				// $stat = !$e1?'gagal':'sukses';
+				// $out  = json_encode(array(
+				// 			'status' =>$stat,
+				// 			'data'   =>array(
+				// 				'urut'    =>$r['urut'],
+				// 				'lokasi'  =>$r['lokasi'],
+				// 				'katalog' =>$r['katalog'],
+				// 				'barkode' =>$r['barkode']
+				// 		)));
+				break;
+				}
 			break;
 					// generate kode
 

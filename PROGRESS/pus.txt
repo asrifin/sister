@@ -27,8 +27,8 @@ ____________________________________________________
 	+ pas edit katalog nyimpan klasifikasi,pengarang, penerbit tidak bisa (+) --> SQL ditambahkan select replid pada tabel
 	+ combo lokasi pada view katalog (+) --> tambah filter pada cmblokasi
 	+ pas tambah koleksi jumlah dan sumber ga nampil --> ARRAY disamakan namanya
-	- simpan koleksi belum bisa 
-	- pas tambah katalog form edit katalog juga muncul dibawah
+	+ simpan koleksi belum bisa 
+	+ pas tambah katalog form edit katalog juga muncul dibawah
 	- cara membuat generate id buku( dan barcode (lokasi,tingkatbuku, tahun, urut pd pus_buku)
 	- Ketika kode barcode pd perangkat di update otomatis kode barcode pd koleksi berubah
 * data anggota (P)

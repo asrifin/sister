@@ -124,7 +124,7 @@
                   $e = mysql_query($s) or die(mysql_error());
                   $n = mysql_num_rows($e);
                   // $out.=' <table borde="1" width="50%">';
-                  $out.=' <table border="1">';
+                  $out.=' <table border="0">';
                   // $nox = 1;
                   if($n==0){
                     $out.=' <tr>
