@@ -18,7 +18,7 @@ var contentFR ='';
                         
                         +'<label>Tanggal Mulai</label>'
                         +'<div class="input-control text" data-role="datepicker"'
-                            +'data-date="2014-10-23"'
+                            // +'data-date="2014-10-23"'
                             +'data-format="yyyy-mm-dd"'
                             +'data-effect="slide">'
                             +'<input id="tanggal1TB" name="tanggal1TB" type="text">'

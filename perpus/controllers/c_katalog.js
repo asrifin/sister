@@ -365,7 +365,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         +'<div>'
                             +'<div class="input-control radio margin3" >'
                                 +'<label>'
-                                    +'<input value="0" required type="radio" name="sumberTB" />'
+                                    +'<input checked value="0" required type="radio" name="sumberTB" />'  /*default*/
                                     +'<span class="check"></span>'
                                     +'Beli'
                                 +'</label>'
@@ -1099,6 +1099,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                             });
                             $('#k_viewtbody').html(tbl);
                             $('#katalogTBL').attr('style','display:none;');
+                            $('#katalogFR').attr('style','display:none;');
                             // $('#katalogTBL').removeAttr('style');
                             $('#k_viewFR').toggle('slow');
                         }
@@ -1114,20 +1115,21 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
     
 // form ---
     function kode_gen(id){
-                    titlex='<span class="icon-pencil"></span> Tambah';
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=codeGen&subaksi=trans&kunci='+id,
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#idbukuTB').val(dt.kode);
+        titlex='<span class="icon-pencil"></span> Tambah';
+        $.ajax({
+            url:dir,
+            data:'aksi=codeGen&subaksi=trans&kunci='+id+'&sumber='+$('#sumberTB').val(),
+            type:'post',
+            dataType:'json',
+            success:function(dt){
+                $('#idbukuTB').val(dt.kode);
+                $('#barcodeTB').val(dt.barcode); /*epiii*/
 
-                        }
-                    });
-               
+            }
+        });
+
     }
-// end of form ---
+    // end of form ---
 
 
 // form ---
@@ -1165,6 +1167,8 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                             
                             cmblokasi(dt.lokasi);
                             cmbtingkatbuku(dt.tingkatbuku);
+                            kode_gen();
+                            // kode_gen('"idfmt","labelt"');
                         }
                     });
 
