@@ -37,9 +37,9 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                             +'</div>'
 
                             // keterangan
-                            +'<label>Keterangan</label>'
+                            +'<label>Tujuan</label>'
                             +'<div class="input-control textarea">'
-                                +'<textarea placeholder="keterangan" name="a_keteranganTB" id="a_keteranganTB"></textarea>'
+                                +'<textarea placeholder="tujuan" name="a_keteranganTB" id="a_keteranganTB"></textarea>'
                             +'</div>'
                             
                             // button simpan

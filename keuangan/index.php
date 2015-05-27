@@ -126,8 +126,8 @@
                     case 'modulpembayaran':
                         require $d.'v_modulpembayaran.php';
                     break;
-                    case 'pembayaran':
-                        require $d.'v_pembayaran.php';
+                    case 'penerimaan':
+                        require $d.'v_penerimaan.php';
                     break;
                     case 'inventory':
                         require $d.'v_inventory.php';

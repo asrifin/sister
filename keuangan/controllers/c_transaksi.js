@@ -533,7 +533,7 @@ var rekArr=[];
                         +'</td>'
                     +'</tr>';
             }
-        }else{ // pemasukkan / pengeluaran
+        }else{ // pemasukan / pengeluaran
             if(typeof n=='undefined'){ isLoop=false; n=iTR;}
             jrek='rekitem'; // jenis rekening (income:debit, outcome:kredit)
             // jrek='"aktiva","modal","kewajiban","pendapatan","biaya"'; // jenis rekening (income:debit, outcome:kredit)
@@ -789,14 +789,14 @@ var rekArr=[];
                                 +'<th colspan="2"></th>'
                             +'</tr>';
                         if(typx=='in_come'){ //income
-                            $('#reklawanDV').html(' Pemasukkan');
+                            $('#reklawanDV').html(' Pemasukan');
                             if(id=='') { // add
                                 kodeTrans(typx);
                                 addRekTR(typx,1);
-                                titl='Tambah Transaksi Pemasukkan';
+                                titl='Tambah Transaksi Pemasukan';
                             }else{ //edit
                                 $('#addTRBC').attr('style','display:none;');
-                                titl ='Ubah Transaksi Pemasukkan';
+                                titl ='Ubah Transaksi Pemasukan';
                                 var url  = dir;
                                 var data = 'aksi=ambiledit&subaksi='+typx+'&replid='+id;
                                 ajax(url,data).done(function (dt) {

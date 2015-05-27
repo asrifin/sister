@@ -1,4 +1,4 @@
-var mnu  ='pembayaran'; 
+var mnu  ='penerimaan'; 
 var mnu2 ='departemen'; 
 var mnu3 ='angkatan'; 
 var mnu4 ='proses'; 

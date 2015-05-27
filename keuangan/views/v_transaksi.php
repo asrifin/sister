@@ -16,7 +16,7 @@
 <form id="filterFR">
     <!-- button -->
     <a href="#"  id="ju_addBC" onclick="loadFR('ju','');" class="button bg-blue fg-white" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></a>
-    <a href="#" id="in_addBC"  onclick="loadFR('in_come','');"class="button bg-green fg-white" data-hint="Pemasukkan"><i class="icon-download-2"></i></a>
+    <a href="#" id="in_addBC"  onclick="loadFR('in_come','');"class="button bg-green fg-white" data-hint="Pemasukan"><i class="icon-download-2"></i></a>
     <a href="#" id="out_addBC"  onclick="loadFR('out_come','');"class="button bg-red fg-white" data-hint="Pengeluaran"><i class="icon-upload-3"></i></a>
     <a href="#" id="optionBC" data-hint="Selengkapnya..." class="button bg-gray fg-white"><i class="icon-grid"></i></a>
 

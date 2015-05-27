@@ -10,6 +10,7 @@
 _________________________  transact  ___________________________
 
 * transaksi (P)
+	- pemasukkan 
 	+ submenu : jurnal_umum 
 	+ jurnal umum : form edit : autosuggest tidak aktif
 	+ jurnal umum : button edit blum aktif
