@@ -609,96 +609,145 @@
 			break;
 			// ambiledit -----------------------------------------------------------------
 			
-					// generate kode
+			// generate kode
 			case 'codeGen':
 				switch ($_POST['subaksi']) {
 					case'trans':
+					// rule
+						// 1. idbuku / label buku
 						$s1 = '	SELECT d.nilai,d.keterangan,d.isActive
 								FROM pus_setting2 s 
 								     left join pus_detail_setting d on d.kunci = s.replid
-								WHERE s.kunci ="idfmt"';
+								WHERE s.kunci ="idfmt"
+								ORDER BY urut asc';
+								// var_dump($s1);exit();
 						$e1 = mysql_query($s1);
-						// $r1 = mysql_fetch_assoc($e1);
-						// $pisah = explode('/',$query['nilai']);
-						// $jmlauto = (substr($r1['nilai'],10,1));
-						// var_dump($e1);exit();
-					//select kode generate
-					/*$s='SELECT
-							tb1.lokasi,
-							LPAD(tb2.idbuku,5,0)idbuku,
-							YEAR(CURDATE())tahun,
-							tb3.kode tingkatbuku
-						FROM (
-							SELECT
-								l.kode lokasi
-							FROM
-								pus_lokasi l 
-							WHERE	
-								l.replid = 3
-							)tb1,(
-								SELECT kode
-								from pus_tingkatbuku 
-								where replid = 1
-							)tb3, ';*/
-					$s2='SELECT
-							tb1.lokasi,
-							LPAD(tb2.idbuku,5,0)idbuku,
-							YEAR(CURDATE())tahun,
-							tb3.kode tingkatbuku
-						FROM (
-							SELECT
-								l.kode lokasi
-							FROM
-								pus_lokasi l 
-							WHERE	
-								l.replid = 3
-							)tb1,(
-								SELECT (MAX(urut) + 1) AS idbuku FROM pus_buku
-							)tb2,(
-								SELECT kode
-								from pus_tingkatbuku 
-								where replid = 1
-							)tb3, ';
+						
+						// 2. barcode
+						// $s3 = '	SELECT d.nilai,d.keterangan,d.isActive
+						// 		FROM pus_setting2 s 
+						// 		     left join pus_detail_setting d on d.kunci = s.replid
+						// 		WHERE s.kunci ="labelt"
+						// 		ORDER BY urut asc';
+						// 		// var_dump($s1);exit();
+						// $e3 = mysql_query($s3);
+						
+					// data
+						// 1 idbuku / label buku
+						$s2='SELECT
+								tb1.lokasi,
+								LPAD(tb2.idbuku,5,0)idbuku,
+								YEAR(CURDATE())tahun,
+								tb3.kode tingkatbuku
+							FROM (
+								SELECT
+									l.kode lokasi
+								FROM
+									pus_lokasi l 
+								WHERE	
+									l.replid = 3
+								)tb1,(
+									SELECT (MAX(urut) + 1) AS idbuku FROM pus_buku
+								)tb2,(
+									SELECT kode
+									from pus_tingkatbuku 
+									where replid = 1
+								)tb3, ';
 
-				if(isset($_POST['replid']) and $_POST['replid']!=''){//edit
-					$s2.= '(SELECT urut FROM pus_buku WHERE replid='.$_POST['replid'].')tb4';
-					// $s2.= '(SELECT urut FROM pus_buku WHERE replid='.$_POST['replid'].')tb2';
-				}else{ //add 
-					$s2.= '(SELECT (MAX(urut) + 1) AS urut FROM pus_buku )tb4';
-					// $s2.= '(SELECT (MAX(urut) + 1) AS urut FROM pus_buku )tb2';
-				}
+						if(isset($_POST['replid']) and $_POST['replid']!=''){//edit
+							$s2.= '(SELECT urut FROM pus_buku WHERE replid='.$_POST['replid'].')tb4';
+						}else{ //add 
+							$s2.= '(SELECT (MAX(urut) + 1) AS urut FROM pus_buku )tb4';
+						}
 
-				// $s2umber = $_POST['sumberTB'] == 0?"B":"H";
-				// $id = 
-				$e2 = mysql_query($s2) or die(mysql_error());
-				$r2 = mysql_fetch_assoc($e2);
-				// var_dump($r2);exit();
-				// $xx = strpos('nomoraouto.5','99');
-				// if($xx==true){
-				// 	$c='ada';
-				// }else{
-				// 	$c='tidak ';
+						$e2 = mysql_query($s2) or die(mysql_error());
+						$r2 = mysql_fetch_assoc($e2);
+						$bukuArr    = array();
+						$bukuFormat = '';
+						while ($r1 = mysql_fetch_assoc($e1)) {
+							if(strpos($r1['nilai'],'nomorauto')!==FALSE and $r1['isActive']==1){
+								if($_POST['jml_koleksi']>1) $bukuFormat.='/[auto]';
+								else {
+									$id = (substr($r1['nilai'],10,1));
+									$bukuFormat.='/'.sprintf('%0'.$id.'d',$r2['idbuku']);
+								}
+							}
+							if(strpos($r1['nilai'],'sumber')!==FALSE and $r1['isActive']==1){
+								$bukuFormat.='/'.($_POST['sumber']=='0'?'B':'H');			
+							}
+							if(strpos($r1['nilai'],'sistem')!==FALSE and $r1['isActive']==1){
+								$bukuFormat.='/'.$r1['keterangan'];						
+							}
+							if(strpos($r1['nilai'],'tahun')!==FALSE and $r1['isActive']==1){
+								$bukuFormat.='/'.substr($_POST['tanggal'],7,4);						
+							}
+							if(strpos($r1['nilai'],'tingkatbuku')!==FALSE and $r1['isActive']==1){
+								$tingkat = getTingkatBuku('kode','replid',$_POST['tingkat']);
+								$bukuFormat.='/'.$tingkat;						
+							}
+						}$bukuFormat=substr($bukuFormat,1);
 
-				// }
-				// var_dump($c);exit();
-				$bukuArr    = array();
-				$bukuFormat = '/';
-				while ($r1 = mysql_fetch_assoc($e1)) {
-					if(strpos('nomoraouto',$r1['nilai'])==true){
-						$bukuFormat.='/'.$r1['nilai'];						
-					}
-				}
-				print_r($bukuFormat);exit();
-				// $stat = !$e1?'gagal':'sukses';
-				// $out  = json_encode(array(
-				// 			'status' =>$stat,
-				// 			'data'   =>array(
-				// 				'urut'    =>$r['urut'],
-				// 				'lokasi'  =>$r['lokasi'],
-				// 				'katalog' =>$r['katalog'],
-				// 				'barkode' =>$r['barkode']
-				// 		)));
-				break;
+						// 2 barcode buku
+						// $s4='SELECT
+						// 		tb1.lokasi,
+						// 		LPAD(tb2.idbuku,5,0)idbuku,
+						// 		YEAR(CURDATE())tahun,
+						// 		tb3.kode tingkatbuku
+						// 	FROM (
+						// 		SELECT
+						// 			l.kode lokasi
+						// 		FROM
+						// 			pus_lokasi l 
+						// 		WHERE	
+						// 			l.replid = 3
+						// 		)tb1,(
+						// 			SELECT (MAX(urut) + 1) AS idbuku FROM pus_buku
+						// 		)tb2,(
+						// 			SELECT kode
+						// 			from pus_tingkatbuku 
+						// 			where replid = 1
+						// 		)tb3, ';
+
+						// if(isset($_POST['replid']) and $_POST['replid']!=''){//edit
+						// 	$s4.= '(SELECT urut FROM pus_buku WHERE replid='.$_POST['replid'].')tb4';
+						// }else{ //add 
+						// 	$s4.= '(SELECT (MAX(urut) + 1) AS urut FROM pus_buku )tb4';
+						// }
+
+						// $e4 = mysql_query($s4) or die(mysql_error());
+						// $r4 = mysql_fetch_assoc($e4);
+						// $barkodeArr    = array();
+						// $barkodeFormat = '';
+						// while ($r4 = mysql_fetch_assoc($e4)) {
+						// 	if(strpos($r3['nilai'],'nomorauto')!==FALSE and $r3['isActive']==1){
+						// 		if($_POST['jml_koleksi']>1) $barkodeFormat.='/[auto]';
+						// 		else {
+						// 			$id = (substr($r3['nilai'],10,1));
+						// 			$barkodeFormat.='/'.sprintf('%0'.$id.'d',$r4['idbarkode']);
+						// 		}
+						// 	}
+						// 	if(strpos($r3['nilai'],'sumber')!==FALSE and $r3['isActive']==1){
+						// 		$barkodeFormat.='/'.($_POST['sumber']=='0'?'B':'H');			
+						// 	}
+						// 	if(strpos($r3['nilai'],'sistem')!==FALSE and $r3['isActive']==1){
+						// 		$barkodeFormat.='/'.$r3['keterangan'];						
+						// 	}
+						// 	if(strpos($r3['nilai'],'tahun')!==FALSE and $r3['isActive']==1){
+						// 		$barkodeFormat.='/'.substr($_POST['tanggal'],7,4);						
+						// 	}
+						// 	if(strpos($r3['nilai'],'tingkatbarkode')!==FALSE and $r3['isActive']==1){
+						// 		$tingkat = getTingkatbarkode('kode','replid',$_POST['tingkat']);
+						// 		$barkodeFormat.='/'.$tingkat;						
+						// 	}
+						// }$barkodeFormat=substr($bukuFormat,1);
+
+
+						$stat = !$e1?'gagal':'sukses';
+						$out  = json_encode(array(
+									'status' =>$stat,
+									'idbuku' =>$bukuFormat
+								));
+					break;
 				}
 			break;
 					// generate kode
@@ -821,5 +870,5 @@
 
 		}
 	}echo $out;
-
+// ..../lokasi/tahun/idbuku
 ?>

@@ -161,6 +161,13 @@
 	// 	$r=mysql_fetch_assoc($e);
 	// 	return $r[$f];
 	// }
+/*pus*/
+	function getTingkatBuku($f,$w,$k){
+		$s='SELECT * FROM pus_tingkatbuku WHERE '.$w.'='.$k;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r[$f];
+	}
 /*keuangan*/
 	// transact
 	/*pembayaran*/

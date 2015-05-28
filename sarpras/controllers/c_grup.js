@@ -1158,7 +1158,7 @@ var g_contentFR = k_contentFR = b_contentFR = b_importForm = '';
     // end of Kondisi
 
 function tempatupdate (e) {
-    $('#b_tempatTB').val($(e).val());
+    // $('#b_tempatTB').val($(e).val());
     if($('#b_idformH').val()!='') //edit
         kodegenerate($('#b_idformH').val());
     else //add
@@ -1166,7 +1166,7 @@ function tempatupdate (e) {
 }
 
 function jumupdate (e) {
-    $('#b_jumbarangTB').val($(e).val());
+    // $('#b_jumbarangTB').val($(e).val());
     if($('#b_idformH').val()!='') //edit
         kodegenerate($('#b_idformH').val());
     else //add
