@@ -5,9 +5,6 @@
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 
-	// $mnu  = 'perangkat';
-	// $tb   = 'pus_'.$mnu;
-
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
 				$page       = $_GET['page']; 
@@ -34,19 +31,6 @@
 							k.judul LIKE "%'.$searchTerm.'%" OR b.barkode LIKE "%'.$searchTerm.'%"
                       	)'.$terpilih; /*epiii*/
  
-				// $ss='SELECT *
-				// 		FROM(SELECT
-				// 					pus_katalog.replid,
-				// 					pus_buku.barkode barkode,
-				// 					pus_buku.callnumber callnumber,
-				// 					pus_katalog.judul judul
-				// 			FROM pus_katalog
-				// 			LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
-				// 			LEFT JOIN pus_lokasi ON pus_lokasi.replid = pus_buku.lokasi
-				// 			WHERE pus_lokasi.replid
-				// 			)tb
-				// 			WHERE	tb.barkode  LIKE "%'.$searchTerm.'%"
-				// 					OR tb.judul LIKE "%'.$searchTerm.'%"';
 				// print_r($ss);exit();
 				$result = mysql_query($ss) or die(mysql_error());
 				$row    = mysql_fetch_array($result,MYSQL_ASSOC);
