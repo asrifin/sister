@@ -124,7 +124,7 @@ var contentFR ='';
                         +'</td>'
                         +'<td>['+item.nilai+']</td>'
                         +'<td>'
-                            +(item.isEdit=='1'?'<div required class="input-control text"><input  name="nilai2_'+item.replid+'TB" type="text" value="'+item.nilai2+'"/></div>':'-auto-')
+                            +(item.isEdit=='1'?'<div required class="input-control text"><input name="nilai2_'+item.replid+'TB" type="text" value="'+item.nilai2+'"/></div>':'-auto-')
                         +'</td>'
                         +'<td align="justify">'+item.keterangan+'</td>'
                     +'</tr>';

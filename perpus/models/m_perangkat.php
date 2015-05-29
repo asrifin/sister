@@ -74,47 +74,9 @@
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					case 'setting':
-					// rule
-						$s = '	SELECT
-									d.nilai,
-									d.nilai2,
-									d.keterangan,
-									d.isActive,
-									d.urut
-								FROM
-									pus_setting2 s
-									LEFT JOIN pus_detail_setting d ON d.kunci = s.replid
-								WHERE
-									s.kunci = "'.$_POST['kunci'].'"
-									AND d.isActive = 1
-								ORDER BY
-									urut ASC';
-								// var_dump($s);exit();
-						$e = mysql_query($s);
-						$format = '';
-						while ($r = mysql_fetch_assoc($e)) {
-							$format.='/['.$r['nilai'].( ($r['nilai2']!='' AND is_numeric($r['nilai2']))?'.'.$r['nilai2']:'').']';						
-						}$format=substr($format,1);
-						$out=json_encode(array('status'=>'sukses','row'=>$format));	
+						$out=json_encode(array('status'=>'sukses','row'=>getSettingFormat($_POST['kunci'])));	
 					break;
 
-					case 'judul':
-							$sql = 'SELECT ps.nilai
-									FROM pus_detail_setting ps 
-									LEFT JOIN pus_setting2 ps2 ON ps2.replid = ps.kunci
-									WHERE 
-										ps2.kunci= "'.$_POST['kunci'].'"'
-									;
-							// print_r($sql);exit();
-							$query = mysql_query($sql);
-							// $hasil = mysql_fetch_assoc($query);
-							$row = '';
-							while ($hasil = mysql_fetch_assoc($query)) {
-								$row.=$hasil['nilai'].'/';
-							}
-							$out=json_encode(array('status'=>'sukses','row'=>$row));	
-					break;
-	
 					case 'detSetting':
 						$s   = 'SELECT 
 									d.replid,

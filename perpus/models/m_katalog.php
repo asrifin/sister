@@ -621,79 +621,33 @@
 						}$e = mysql_query($s) or die(mysql_error());
 						$r = mysql_fetch_assoc($e);
 					
-						// rule kode buku dan barkode  ----------------------------------------------- 
-						$ss = '	SELECT 
-									d.nilai,
-									d.nilai2,
-									d.keterangan,
-									d.isActive
-								FROM pus_setting2 s 
-								     left join pus_detail_setting d on d.kunci = s.replid
-								WHERE 
-									s.kunci =';
-						$s1 = $ss.'"idfmt" ORDER BY  d.urut asc';
-						$s2 = $ss.'"bcfmt" ORDER BY  d.urut asc';
-						$e1 = mysql_query($s1);
-						$e2 = mysql_query($s2);
-						$bukuFormat = $barkodeFormat = '';
+						// u/ id buku 
+						$data1 = array(
+							'idbuku'  =>$r['idbuku'],
+							'sumber'  =>$_POST['sumber'],
+							'tahun'   =>substr($_POST['tanggal'],7,4),
+							'tingkat' => getTingkatBuku('kode','replid',$_POST['tingkat'])
+						);
 
-						// kode buku -------------
-						while ($r1 = mysql_fetch_assoc($e1)) {
-							if(strpos($r1['nilai'],'nomorauto')!==FALSE and $r1['isActive']==1){
-								if($_POST['jml_koleksi']>1) {
-									$bukuFormat.='/[auto]';
-								}else {
-									$id = $r1['nilai2'];
-									$bukuFormat.='/'.sprintf('%0'.$id.'d',$r['idbuku']);
-								}
-							}
-							if(strpos($r1['nilai'],'sumber')!==FALSE and $r1['isActive']==1){
-								$bukuFormat.='/'.($_POST['sumber']=='0'?'B':'H');			
-							}
-							if(strpos($r1['nilai'],'sistem')!==FALSE and $r1['isActive']==1){
-								$bukuFormat.='/'.$r1['nilai2'];						
-							}
-							if(strpos($r1['nilai'],'tahun')!==FALSE and $r1['isActive']==1){
-								$tahun = substr($_POST['tanggal'],7,4);
-								$bukuFormat.='/'.$tahun;						
-							}
-							if(strpos($r1['nilai'],'tingkatbuku')!==FALSE and $r1['isActive']==1){
-								$tingkat = getTingkatBuku('kode','replid',$_POST['tingkat']);
-								$bukuFormat.='/'.$tingkat;						
-							}
-						}$bukuFormat=substr($bukuFormat, 1);
+						// u/ barcode
+						$data2 = array(
+							'lokasi'  => getLokasi('kode','replid',$_POST['lokasi']),
+							'tingkat' => getTingkatBuku('kode','replid',$_POST['tingkat']),
+							'tahun'   =>substr($_POST['tanggal'],7,4),
+							'idbuku'  =>$r['idbuku']
+						);
 
-						//barkode buku -------------
-						while ($r2 = mysql_fetch_assoc($e2)) {
-							if(strpos($r2['nilai'],'nomorauto')!==FALSE and $r2['isActive']==1){
-								if($_POST['jml_koleksi']>1) {
-									$barkodeFormat.='[auto]';
-								}else {
-									$id = $r2['nilai2'];
-									$barkodeFormat.=sprintf('%0'.$id.'d',$r['idbuku']);
-								}
-							}
-							if(strpos($r2['nilai'],'tahun')!==FALSE and $r2['isActive']==1){
-								$tahun = substr($_POST['tanggal'],7,4);
-								$barkodeFormat.=$tahun;
-							}
-							if(strpos($r2['nilai'],'tingkat')!==FALSE and $r2['isActive']==1){
-								$tingkat = getTingkatBuku('kode','replid',$_POST['tingkat']);
-								$barkodeFormat.=$tingkat;						
-							}
-							if(strpos($r2['nilai'],'lokasi')!==FALSE and $r2['isActive']==1){
-								$lokasi = getLokasi('kode','replid',$_POST['lokasi']);
-								$barkodeFormat.=$lokasi;						
-							}
-						}
-
+						// panggil fungsi  generate
+						$idbuku  = getKodeBukuDT($data1);
+						$barcode = getBarcodeDT($data2);
+						
 						// output --------------------------------
-						$stat = !$e1?'gagal':'sukses';
+						$stat = ($idbuku==NULL && $barcode==NULL) ?'gagal':'sukses';
 						$out  = json_encode(array(
-									'status'  =>$stat,
-									'idbuku'  =>$bukuFormat,
-									'barcode' =>$barkodeFormat
-								));
+							'status'  =>$stat,
+							'idbuku'  =>$idbuku,
+							'barcode' =>$barcode
+						));
 					break;
 				}
 			break;
