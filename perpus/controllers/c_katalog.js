@@ -364,7 +364,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         // jumlah 
                         +'<label>Jumlah Koleksi Baru</label>' 
                         +'<div class="input-control text">'
-                            +'<input onchange="kode_gen();" value="1" required type="number" min="0" name="jml_koleksiTB" id="jml_koleksiTB">'
+                            +'<input onchange="kode_gen();" value="1" required type="number" min="1" name="jml_koleksiTB" id="jml_koleksiTB">'
                         +'</div>'
                         // sumber
                         +'<label>Sumber</label>'

@@ -613,9 +613,16 @@
 			case 'codeGen':
 				switch ($_POST['subaksi']) {
 					case'trans':
-					// rule
-						// 1. idbuku / label buku
-						$s1 = '	SELECT 
+						// idbuku  ------------------------------------------------
+						if(isset($_POST['replid']) and $_POST['replid']!=''){//edit
+							$s= 'SELECT urut idbuku FROM pus_buku WHERE replid='.$_POST['replid'].'';
+						}else{ //add 
+							$s ='SELECT (max(urut)+1)idbuku from pus_buku';
+						}$e = mysql_query($s) or die(mysql_error());
+						$r = mysql_fetch_assoc($e);
+					
+						// rule kode buku dan barkode  ----------------------------------------------- 
+						$ss = '	SELECT 
 									d.nilai,
 									d.nilai2,
 									d.keterangan,
@@ -623,60 +630,21 @@
 								FROM pus_setting2 s 
 								     left join pus_detail_setting d on d.kunci = s.replid
 								WHERE 
-									s.kunci ="idfmt"
-								ORDER BY 
-									urut asc';
-								// var_dump($s1);exit();
+									s.kunci =';
+						$s1 = $ss.'"idfmt" ORDER BY  d.urut asc';
+						$s2 = $ss.'"bcfmt" ORDER BY  d.urut asc';
 						$e1 = mysql_query($s1);
-						
-						// 2. barcode
-						// $s3 = '	SELECT d.nilai,d.keterangan,d.isActive
-						// 		FROM pus_setting2 s 
-						// 		     left join pus_detail_setting d on d.kunci = s.replid
-						// 		WHERE s.kunci ="labelt"
-						// 		ORDER BY urut asc';
-						// 		// var_dump($s1);exit();
-						// $e3 = mysql_query($s3);
-						
-					// data
-						// 1 idbuku / label buku
-						$s2='SELECT
-								tb1.lokasi,
-								LPAD(tb2.idbuku,5,0)idbuku,
-								YEAR(CURDATE())tahun,
-								tb3.kode tingkatbuku
-							FROM (
-								SELECT
-									l.kode lokasi
-								FROM
-									pus_lokasi l 
-								WHERE	
-									l.replid = 3
-								)tb1,(
-									SELECT (MAX(urut) + 1) AS idbuku FROM pus_buku
-								)tb2,(
-									SELECT kode
-									from pus_tingkatbuku 
-									where replid = 1
-								)tb3, ';
+						$e2 = mysql_query($s2);
+						$bukuFormat = $barkodeFormat = '';
 
-						if(isset($_POST['replid']) and $_POST['replid']!=''){//edit
-							$s2.= '(SELECT urut FROM pus_buku WHERE replid='.$_POST['replid'].')tb4';
-						}else{ //add 
-							$s2.= '(SELECT (MAX(urut) + 1) AS urut FROM pus_buku )tb4';
-						}
-
-						$e2 = mysql_query($s2) or die(mysql_error());
-						$r2 = mysql_fetch_assoc($e2);
-						$bukuArr    = array();
-						$bukuFormat = '';
+						// kode buku -------------
 						while ($r1 = mysql_fetch_assoc($e1)) {
 							if(strpos($r1['nilai'],'nomorauto')!==FALSE and $r1['isActive']==1){
-								if($_POST['jml_koleksi']>1) $bukuFormat.='/[auto]';
-								else {
-									// $id = (substr($r1['nilai'],10,1));
+								if($_POST['jml_koleksi']>1) {
+									$bukuFormat.='/[auto]';
+								}else {
 									$id = $r1['nilai2'];
-									$bukuFormat.='/'.sprintf('%0'.$id.'d',$r2['idbuku']);
+									$bukuFormat.='/'.sprintf('%0'.$id.'d',$r['idbuku']);
 								}
 							}
 							if(strpos($r1['nilai'],'sumber')!==FALSE and $r1['isActive']==1){
@@ -686,73 +654,45 @@
 								$bukuFormat.='/'.$r1['nilai2'];						
 							}
 							if(strpos($r1['nilai'],'tahun')!==FALSE and $r1['isActive']==1){
-								$bukuFormat.='/'.substr($_POST['tanggal'],7,4);						
+								$tahun = substr($_POST['tanggal'],7,4);
+								$bukuFormat.='/'.$tahun;						
 							}
 							if(strpos($r1['nilai'],'tingkatbuku')!==FALSE and $r1['isActive']==1){
 								$tingkat = getTingkatBuku('kode','replid',$_POST['tingkat']);
 								$bukuFormat.='/'.$tingkat;						
 							}
-						}$bukuFormat=substr($bukuFormat,1);
+						}$bukuFormat=substr($bukuFormat, 1);
 
-						// 2 barcode buku
-						// $s4='SELECT
-						// 		tb1.lokasi,
-						// 		LPAD(tb2.idbuku,5,0)idbuku,
-						// 		YEAR(CURDATE())tahun,
-						// 		tb3.kode tingkatbuku
-						// 	FROM (
-						// 		SELECT
-						// 			l.kode lokasi
-						// 		FROM
-						// 			pus_lokasi l 
-						// 		WHERE	
-						// 			l.replid = 3
-						// 		)tb1,(
-						// 			SELECT (MAX(urut) + 1) AS idbuku FROM pus_buku
-						// 		)tb2,(
-						// 			SELECT kode
-						// 			from pus_tingkatbuku 
-						// 			where replid = 1
-						// 		)tb3, ';
+						//barkode buku -------------
+						while ($r2 = mysql_fetch_assoc($e2)) {
+							if(strpos($r2['nilai'],'nomorauto')!==FALSE and $r2['isActive']==1){
+								if($_POST['jml_koleksi']>1) {
+									$barkodeFormat.='[auto]';
+								}else {
+									$id = $r2['nilai2'];
+									$barkodeFormat.=sprintf('%0'.$id.'d',$r['idbuku']);
+								}
+							}
+							if(strpos($r2['nilai'],'tahun')!==FALSE and $r2['isActive']==1){
+								$tahun = substr($_POST['tanggal'],7,4);
+								$barkodeFormat.=$tahun;
+							}
+							if(strpos($r2['nilai'],'tingkat')!==FALSE and $r2['isActive']==1){
+								$tingkat = getTingkatBuku('kode','replid',$_POST['tingkat']);
+								$barkodeFormat.=$tingkat;						
+							}
+							if(strpos($r2['nilai'],'lokasi')!==FALSE and $r2['isActive']==1){
+								$lokasi = getLokasi('kode','replid',$_POST['lokasi']);
+								$barkodeFormat.=$lokasi;						
+							}
+						}
 
-						// if(isset($_POST['replid']) and $_POST['replid']!=''){//edit
-						// 	$s4.= '(SELECT urut FROM pus_buku WHERE replid='.$_POST['replid'].')tb4';
-						// }else{ //add 
-						// 	$s4.= '(SELECT (MAX(urut) + 1) AS urut FROM pus_buku )tb4';
-						// }
-
-						// $e4 = mysql_query($s4) or die(mysql_error());
-						// $r4 = mysql_fetch_assoc($e4);
-						// $barkodeArr    = array();
-						// $barkodeFormat = '';
-						// while ($r4 = mysql_fetch_assoc($e4)) {
-						// 	if(strpos($r3['nilai'],'nomorauto')!==FALSE and $r3['isActive']==1){
-						// 		if($_POST['jml_koleksi']>1) $barkodeFormat.='/[auto]';
-						// 		else {
-						// 			$id = (substr($r3['nilai'],10,1));
-						// 			$barkodeFormat.='/'.sprintf('%0'.$id.'d',$r4['idbarkode']);
-						// 		}
-						// 	}
-						// 	if(strpos($r3['nilai'],'sumber')!==FALSE and $r3['isActive']==1){
-						// 		$barkodeFormat.='/'.($_POST['sumber']=='0'?'B':'H');			
-						// 	}
-						// 	if(strpos($r3['nilai'],'sistem')!==FALSE and $r3['isActive']==1){
-						// 		$barkodeFormat.='/'.$r3['keterangan'];						
-						// 	}
-						// 	if(strpos($r3['nilai'],'tahun')!==FALSE and $r3['isActive']==1){
-						// 		$barkodeFormat.='/'.substr($_POST['tanggal'],7,4);						
-						// 	}
-						// 	if(strpos($r3['nilai'],'tingkatbarkode')!==FALSE and $r3['isActive']==1){
-						// 		$tingkat = getTingkatbarkode('kode','replid',$_POST['tingkat']);
-						// 		$barkodeFormat.='/'.$tingkat;						
-						// 	}
-						// }$barkodeFormat=substr($bukuFormat,1);
-
-
+						// output --------------------------------
 						$stat = !$e1?'gagal':'sukses';
 						$out  = json_encode(array(
-									'status' =>$stat,
-									'idbuku' =>$bukuFormat
+									'status'  =>$stat,
+									'idbuku'  =>$bukuFormat,
+									'barcode' =>$barkodeFormat
 								));
 					break;
 				}
