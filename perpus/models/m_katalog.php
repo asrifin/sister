@@ -615,11 +615,17 @@
 					case'trans':
 					// rule
 						// 1. idbuku / label buku
-						$s1 = '	SELECT d.nilai,d.keterangan,d.isActive
+						$s1 = '	SELECT 
+									d.nilai,
+									d.nilai2,
+									d.keterangan,
+									d.isActive
 								FROM pus_setting2 s 
 								     left join pus_detail_setting d on d.kunci = s.replid
-								WHERE s.kunci ="idfmt"
-								ORDER BY urut asc';
+								WHERE 
+									s.kunci ="idfmt"
+								ORDER BY 
+									urut asc';
 								// var_dump($s1);exit();
 						$e1 = mysql_query($s1);
 						
@@ -668,7 +674,8 @@
 							if(strpos($r1['nilai'],'nomorauto')!==FALSE and $r1['isActive']==1){
 								if($_POST['jml_koleksi']>1) $bukuFormat.='/[auto]';
 								else {
-									$id = (substr($r1['nilai'],10,1));
+									// $id = (substr($r1['nilai'],10,1));
+									$id = $r1['nilai2'];
 									$bukuFormat.='/'.sprintf('%0'.$id.'d',$r2['idbuku']);
 								}
 							}
@@ -676,7 +683,7 @@
 								$bukuFormat.='/'.($_POST['sumber']=='0'?'B':'H');			
 							}
 							if(strpos($r1['nilai'],'sistem')!==FALSE and $r1['isActive']==1){
-								$bukuFormat.='/'.$r1['keterangan'];						
+								$bukuFormat.='/'.$r1['nilai2'];						
 							}
 							if(strpos($r1['nilai'],'tahun')!==FALSE and $r1['isActive']==1){
 								$bukuFormat.='/'.substr($_POST['tanggal'],7,4);						

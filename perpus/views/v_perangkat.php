@@ -4,51 +4,55 @@
 <script src="../js/base64.js"></script>
 
 <h4 style="color:white;">Perangkat</h4>
-    <!-- epiii -->
-        <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS']; ?>">
-    <!-- end of epiii -->
-
-    <!-- id  -->
     <div style="overflow:scroll;height:550px;" >
-       <legend style="color:white;">Pengaturan Nomor Item</legend>
-    <label style="color:white;">Format nomor ID (Identitas) :</label>
-    <div class="input-control text size5">
-        <input type="text" name="idTB" id="idTB" >
-        <button class="btn-clear"></button>
-    </div>
-    <a href="#" data-hint="EditFormat ID" id="idBC" class="button"><span class="icon-pencil"></span> </a>
-    <!-- conoth id -->
-    <label style="color:white;">Contoh :</label>
-    <label style="color:white;">Format barkode :</label>
-    <div class="input-control text size5">
-        <input type="text" id="barkodeTB" name="barkodeTB">
-        <button class="btn-clear"></button>
-    </div>
-    <!-- barcode -->
-    <a href="#" data-hint="Edit Barkode" id="barkodeBC" class="button"><span class="icon-pencil"></span> </a>
-    <label style="color:white;">Contoh :</label>
+        <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS']; ?>"><!-- epiii -->
 
-    <!-- judul -->
-    <legend style="color:white;">Cetak Label</legend>
-    <label style="color:white;">Judul :</label>
-    <div class="input-control text size5">
-        <input type="text" name="judulTB" id="judulTB">
-        <button class="btn-clear"></button>
-    </div>
-    <!-- deskripsi -->
-    <label style="color:white;">Deskripsi :</label>
-    <div class="input-control text size5">
-        <input type="text" name="deskripsiTB" id="deskripsiTB">
-        <button class="btn-clear"></button><br>
-    </div>
-
-    <!-- button -->
-    <div class="form-actions"> 
-        <button data-hint="Edit" xclass="large" id="infoBC"><span class="icon-pencil"></span> </button>
-    </div><br>        
-    <div class="form-actions" id="cetaklabel" style="display:visible;"> 
-        <button data-hint="Cetak Label" xclass="large" id="cetakBC">Cetak Label</button>
-    </div>        
+    <!-- FORMAT -->
+        <legend style="color:white;">Pengaturan Nomor Item</legend>
+        <label style="color:white;">Format nomor ID (Identitas) :</label>
+        
+        <!-- ID Buku -->
+            <!-- format -->
+            <div class="input-control text size5">
+                <input readonly type="text" name="idfmtTB" id="idfmtTB" >
+            </div>
+            <a href="#" onclick="loadFR('idfmt');" data-hint="Edit Format ID" class="button"><span class="icon-pencil"></span> </a>
+            <!-- contoh -->
+            <p class="fg-white">Contoh : 
+                <span id="idfmtEx"></span>
+            </p>
+            
+        <!-- Barcode Buku -->
+            <!-- format -->
+            <label style="color:white;">Format barkode :</label>
+            <div class="input-control text size5">
+                <input readonly type="text" id="bcfmtTB" name="bcfmtTB">
+            </div>
+            <a href="#" onclick="loadFR('bcfmt');" data-hint="Edit Format ID" class="button"><span class="icon-pencil"></span> </a>
+            <!-- Contoh -->
+            <p class="fg-white">Contoh : 
+                <span id="idfmtEx"></span>
+            </p>
+      
+    <!-- LABEL -->
+        <legend style="color:white;">Cetak Label</legend>
+        <label style="color:white;">Judul :</label>
+        <!-- Judul -->
+            <div class="input-control text size5">
+                <input readonly type="text" name="titfmtTB" id="titfmtTB" >
+            </div>
+            <a href="#" onclick="loadFR('titfmt');" data-hint="Edit Judul" class="button"><span class="icon-pencil"></span> </a>
+        <!-- Deskripsi -->
+            <label style="color:white;">Deskripsi :</label>
+            <div class="input-control text size5">
+                <input readonly type="text" id="desfmtTB" name="desfmtTB">
+            </div>
+            <a href="#" onclick="loadFR('desfmt');" data-hint="Edit Deskripsi" class="button"><span class="icon-pencil"></span> </a>
+        
+    <!-- CETAK LABEL -->
+        <div class="form-actions" id="cetaklabel" style="display:visible;"> 
+            <button data-hint="Cetak Label" xclass="large" id="cetakBC">Cetak Label</button>
+        </div>        
 
     <div class="panel" id="cetak" style="display:none;">
     <div class="panel-content">
