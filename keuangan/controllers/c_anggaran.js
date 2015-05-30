@@ -63,58 +63,88 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 		                                +'<input placeholder="Anggaran"  required type="text" name="d_namaTB" id="d_namaTB">'
 		                                +'<button class="btn-clear"></button>'
 		                            +'</div>'
-		                            
+
+                                    // tujuan
+                                    +'<label>Tujuan</label>'
+                                    +'<div class="input-control textarea">'
+                                        +'<textarea placeholder="tujuan" name="d_keteranganTB" id="d_keteranganTB"></textarea>'
+                                    +'</div>'
+    
                                     // nominal angsuran anggaran
                                     +'<legend>Nominal (@bulan)</legend>'
-                                    +'<input type="hidden" name="d_idnominalTB[1]" />'
-                                    +'<div  data-hint="Januari" class="input-control text">'
+
+                                    +'<label>Januari :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[1]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[1]" placeholder="Februari" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<input type="hidden" name="d_idnominalTB[2]" />'
-                                    +'<div class="input-control text">'
+                                    
+                                    +'<label>Februari :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[2]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[2]" placeholder="Februari" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<input type="hidden" name="d_idnominalTB[3]" />'
-                                    +'<div class="input-control text">'
+
+                                    +'<label>Maret :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[3]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[3]" placeholder="Maret" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<input type="hidden" name="d_idnominalTB[4]" />'
-                                    +'<div class="input-control text">'
+
+                                    +'<label>April :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[4]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[4]" placeholder="April" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<input type="hidden" name="d_idnominalTB[5]" />'
-                                    +'<div class="input-control text">'
+
+                                    +'<label>Mei :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[5]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[5]" placeholder="Mei" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<input type="hidden" name="d_idnominalTB[6]" />'
-                                    +'<div class="input-control text">'
+
+                                    +'<label>Juni :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[6]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[6]" placeholder="Juni" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<input type="hidden" name="d_idnominalTB[7]" />'
-                                    +'<div class="input-control text">'
+
+                                    +'<label>Juli :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[7]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[7]" placeholder="Juli" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<input type="hidden" name="d_idnominalTB[8]" />'
-                                    +'<div class="input-control text">'
+
+                                    +'<label>Agustus :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[8]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[8]" placeholder="Agustus" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<input type="hidden" name="d_idnominalTB[9]" />'
-                                    +'<div class="input-control text">'
+
+                                    +'<label>September :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[9]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[9]" placeholder="September" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<input type="hidden" name="d_idnominalTB[10]" />'
-                                    +'<div class="input-control text">'
+
+                                    +'<label>Oktober :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[10]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[10]" placeholder="Oktober" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<input type="hidden" name="d_idnominalTB[11]" />'
-                                    +'<div class="input-control text">'
+
+                                    +'<label>November :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[11]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[11]" placeholder="November" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<input type="hidden" name="d_idnominalTB[12]" />'
-                                    +'<div class="input-control text">'
+
+                                    +'<label>Desember :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input type="hidden" name="d_idnominalTB[12]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[12]" placeholder="Desember" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
-                                    +'<hr />'
+                                    // +'<hr />'
 
                                     // total
                                     +'<legend>Nominal (@tahun)</legend>'
@@ -122,12 +152,6 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                                         +'<input id="d_totNominalTB" onkeyup="perBulanAnggaran();" class="bg-yellow text-right" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
 
-                                    // keterangan
-		                            +'<label>Keterangan</label>'
-		                            +'<div class="input-control textarea">'
-		                                +'<textarea placeholder="keterangan" name="d_keteranganTB" id="d_keteranganTB"></textarea>'
-		                            +'</div>'
-    
                                     // button simpan
 		                            +'<div class="form-actions">' 
 		                                +'<button class="button primary">simpan</button>&nbsp;'
@@ -562,7 +586,7 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 	            overlay:true,
 	            draggable:true,
 	            height:'auto',
-	            width:300,
+	            width:450,
 	            padding:20,
 	            onShow: function(){
 	                var titlex;
@@ -599,40 +623,6 @@ var a_contentFR = d_contentFR = b_contentFR ='';
                 	$.Dialog.content(d_contentFR);
 	            }
 	        });
-	     //    $("#d_rekeningTB").combogrid({
-	     //        debug:true,
-	     //        width:'600px',
-	     //        colModel: [{
-	     //                // 'align':'left',
-	     //                'columnName':'kode',
-	     //                // 'hide':true,
-	     //                'width':'15',
-	     //                'label':'KODE'
-	     //            },{   
-	     //                'align':'left',
-	     //                'columnName':'nama',
-	     //                'width':'85',
-	     //                'label':'NAMA'
-	     //            }],
-	     //        url: dir+'?aksi=autocomp',
-	     //        select: function( event, ui ) {
-	     //            $('#d_rekeningH').val(ui.item.replid);
-	     //            $(this).val(ui.item.nama);
-	                
-	     //            // validasi input (tidak sesuai data dr server)
-		    //             $(this).on('keyup', function(e){
-						// 	var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-						// 	var keyCode = $.ui.keyCode;
-						// 	if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
-	     //            			if($('#d_rekeningH').val()!=''){
-						// 			$('#d_rekeningH').val('');
-						// 			$('#d_rekeningTB').val('');
-						// 		}
-						// 	}
-						// });
-	     //           	return false;
-	     //        }
-	     //    });
         }
     // end of form katalog---
 

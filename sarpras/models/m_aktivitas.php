@@ -17,7 +17,7 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$lokasi     = trim($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
+				$lokasi = isset($_POST['lokasiS'])?filter($_POST['lokasiS']):'';
 				// $tempat     = trim($_POST['tempatS'])?filter($_POST['tempatS']):'';
 				// $keterangan = trim($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT t.*
@@ -34,37 +34,37 @@
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
+				$recpage = 5;//jumlah data per halaman
 				$aksi    ='';
 				$subaksi ='tampil';
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
-				$result =$obj->result;
-
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+				$result  =$obj->result;
 				#ada data
-				$jum	= mysql_num_rows($result);
-				$out ='';
+				$jum     = mysql_num_rows($result);
+				$out     ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
+					while($res = mysql_fetch_assoc($result)){	
+						// <button data-hint="detail"  class="button" onclick="viewFR('.$res['replid'].');">
+						// 	<i class="icon-zoom-in"></i>
+						// </button>
 						$btn ='<td>
 									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
 									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
+									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.tgl_indo($res['tanggal1']).', '.tgl_indo($res['tanggal2']).'</td>
+									<td class="text-center">'.tgl_indo5($res['tanggal1']).' - '.tgl_indo5($res['tanggal2']).'</td>
+									<td>'.$res['aktivitas'].'</td>
+									<td>'.$res['aktivitas'].'</td>
 									<td>'.$res['aktivitas'].'</td>
 									<td><pre>'.$res['keterangan'].'</pre></td>
 									'.$btn.'
 								</tr>';
 						$nox++;
-									// <td>'.$res['replid'].'</td>
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">

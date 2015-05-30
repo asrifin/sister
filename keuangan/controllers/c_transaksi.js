@@ -765,7 +765,6 @@ var rekArr=[];
                                 $('#uraianTB').val(dt.transaksiArr.uraian);
                                 var jurnal = dt.transaksiArr.jurnalArr;
                                 var n = jurnal.length;
-                                // console.log('banyak jurnal = '+jurnal.length);
                                 addRekTR(typx,n,jurnal);
                             });
                         }
@@ -774,7 +773,6 @@ var rekArr=[];
                         $('.rekkasDV').removeAttr('style');
                         $('#rekkasTB').attr('required',true);
                         autoSuggest('rekkas','rekkas','rek','');
-                        // autoSuggest('debit','rekkas','rek','');
                         $('#kwitansiDV').removeAttr('style');
                         
                         tr+='<tr style="color:white;"class="info">'
@@ -845,9 +843,7 @@ var rekArr=[];
                     $('#rekTBL3').html(tr3);
                     $('#subaksiH').val(typx);
 
-                    // $('#totNominalTD').html('Rp. '+totNominal);
                     $('#addTRBC').attr('onclick','addRekTR(\''+typx+'\');');
-                    // addRekTR(typ,2);
                     $.Dialog.title('<i class="fg-white icon-'+(id!=''?'pencil':'plus-2')+'"></i> '+titl); 
                 },200);
             }
