@@ -6,7 +6,7 @@ var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+        contentFR += '<form autocomplete="off" style="overflow:scroll;height:600px;" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         +'<label>Lokasi</label>'
                         +'<div class="input-control text">'
@@ -42,7 +42,7 @@ var contentFR ='';
 
                         // button 
                         +'<legend style="font-weight:bold;">Item  : '
-                            +'<a id="addTRBC" href="#" class="place-right button bg-blue fg-white">'
+                            +'<a id="addTRBC" onclick="addItemTR();" href="#" class="place-right button bg-blue fg-white">'
                                 +'<i class="icon-plus-2"></i>'
                             +'</a>'
                         +'</legend>'
@@ -60,6 +60,14 @@ var contentFR ='';
                                 +'</tr>'
                             +'</thead>'
                             +'<tbody id="itemTBL"></tbody>'
+                            +'<tfoot>'
+                                +'<tr style="color:white;"class="info">'
+                                    +'<th class="text-rigt">Jumlah :</th>'
+                                    +'<th id="totNominal1TD" class="text-right">Rp. 0</th>'
+                                    +'<th id="totNominal2TD" class="text-right">Rp. 0</th>'
+                                    +'<th colspan="3"></th>'
+                                +'</tr>';
+                            +'</tfoot>'
                         +'</table>'
                         
                         +'<div class="form-actions">' 
@@ -201,13 +209,13 @@ var contentFR ='';
             var iditem   = (typeof arr!='undefined')?arr[ke].iditem:null;
             var item     = (typeof arr!='undefined')?arr[ke].item:'';
             var biaya    = (typeof arr!='undefined')?arr[ke].biaya:'';
-            var biaya2   = (typeof arr!='undefined')?arr[ke].biaya2:'';
+            var biaya2   = (typeof arr!='undefined')?arr[ke].biaya2:'-';
             var tglbayar = (typeof arr!='undefined')?arr[ke].tglbayar:'';
             var tgllunas = (typeof arr!='undefined')?arr[ke].tgllunas:'';
             
             var mode = (typeof arr!='undefined')?'edit':'add';
 
-            tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
+            tr+='<tr class="itemTR" id="itemTR_'+ke+'">'
                     // item
                     +'<td align="center">'
                         +'<input type="hidden" name="mode'+ke+'H" value="'+mode+'" />'
@@ -215,19 +223,19 @@ var contentFR ='';
                         +'<input type="hidden" class="idTR" value="'+ke+'" name="idTR[]" id="idTR_'+ke+'">'
                         +'<div class="input-control text">'
                             +'<input required id="item_'+ke+'TB" name="item_'+ke+'TB">'
+                            // +'<button class="btn-clear"></button>'
                         +'</div>' 
                     +'</td>'
                     // biaya yg diajukan 
                     +'<td align="center">'
                         +'<span class="input-control text">'
-                            +'<input value="'+item+'" required onfocus="inputuang(this);" onclick="inputuang(this);"' 
-                                +((biaya2>0 || biaya2!='')?'disabled':'')+' id="biaya_'+ke+'TB" name="biaya_'+ke+'TB" >'
-                            +'<button class="btn-clear"></button>'
+                            +'<input onkeyup="itemTotNominal();" value="'+item+'" required class="text-right itemNominal1" onfocus="inputuang(this);" onclick="inputuang(this);"' 
+                                +((biaya2!='-')?'disabled':'')+' id="biaya_'+ke+'TB" name="biaya_'+ke+'TB" >'
                         +'</span>'
                     +'</td>'
                     // biaya yg disetujui 
                     +'<td align="center">'
-                        +'<span id="biaya2_'+ke+'TB" class="input-control text">'+biaya2+'</span>'
+                        +'<span class="text-right itemNominal2" id="biaya2_'+ke+'TB">'+biaya2+'</span>'
                     +'</td>'
                     // tgl wajib dibayar
                     +'<td align="center">'
@@ -235,7 +243,7 @@ var contentFR ='';
                             +'data-format="dd mmmm yyyy" data-position="top"'
                             +'data-effect="slide">'
                             +'<input value="'+tglbayar+'" required id="tglbayar_'+ke+'TB" name="tglbayar_'+ke+'TB" type="text">'
-                            +'<button class="btn-date"></button>'
+                            // +'<button class="btn-date"></button>'
                         +'</div>'
                     +'</td>'
                     // tgl pelunasan
@@ -244,68 +252,71 @@ var contentFR ='';
                             +'data-format="dd mmmm yyyy" data-position="top"'
                             +'data-effect="slide">'
                             +'<input  value="'+tgllunas+'" required id="tgllunas_'+ke+'TB" name="tgllunas_'+ke+'TB" type="text">'
-                            +'<button class="btn-date"></button>'
+                            // +'<button class="btn-date"></button>'
                         +'</div>'
                     +'</td>'
                     // hapus
                     +'<td align="center">'
-                        // +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delItemTR('+ke+','+idjurnal+',\'\');':'delItemTR('+ke+','+idjurnal+',\'\')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
+                        // +'<a href="">ok</a>'
+                        +'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delItemTR('+ke+','+iditem+',\'\');':'delItemTR('+ke+','+iditem+',\'\')')+'"  class="button"><i class="icon-cancel-2"></i></a>'
                     +'</td>'
                 +'</tr>';
         }
+        console.log(tr);
         if(isLoop) iTR+=n;
         else iTR++;
+
         return tr; 
     }
 
 //add TR rekening into an element 
     function addItemTR(n,arr){
-        // console.log(itemTR(n,arr));return false;
-        // $('#itemTBL').prepend('<tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td></td></tr>');
         $('#itemTBL').prepend(itemTR(n,arr));
     }
 
 // form ---
     function viewFR(id){
+        isClosedFR();
         $.Dialog({
             shadow: true,
             overlay: true,
             draggable: true,
-            width: 500,
+            width: 700,
             padding: 10,
             onShow: function(){
                 var titlex;
-                if(id==''){  //add mode
-                    // alert('halooo');
-                    titlex='<span class="icon-plus-2"></span> Tambah ';
-                    var u = dir2;
-                    var d = 'aksi=cmblokasi&replid='+$('#lokasiS').val();
-                    ajax(u,d).done(function(dt){
-                        $('#tanggal1TB').val(getToday());
-                        $('#tanggal2TB').val(getToday());
-                        $('#lokasiTB').val(dt.lokasi[0].nama);
-                        $('#lokasiH').val($('#lokasiS').val());
-                    });
-                    addItemTR(1);
-                }else{ // edit mode
-                    titlex='<span class="icon-pencil"></span> Ubah';
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=ambiledit&replid='+id,
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#idformH').val(id);
-                            // $('#tempatH').val($('#tempatS').val());
-                            $('#lokasiH').val($('#lokasiS').val()); // edit by epii
-                            $('#lokasiTB').val(dt.lokasi);
-                            $('#tanggal1TB').val(dt.tanggal1);
-                            $('#tanggal2TB').val(dt.tanggal2);
-                            $('#aktivitasTB').val(dt.aktivitas);
-                            $('#keteranganTB').val(dt.keterangan);
-                        }
-                    });
-                }
+                setTimeout(function(){
+                    if(id==''){  //add mode
+                        titlex='<span class="icon-plus-2"></span> Tambah ';
+                        var u = dir2;
+                        var d = 'aksi=cmblokasi&replid='+$('#lokasiS').val();
+                        ajax(u,d).done(function(dt){
+                            $('#tanggal1TB').val(getToday());
+                            $('#tanggal2TB').val(getToday());
+                            $('#lokasiTB').val(dt.lokasi[0].nama);
+                            $('#lokasiH').val($('#lokasiS').val());
+                            addItemTR(1);
+                        });
+                    }else{ // edit mode
+                        titlex='<span class="icon-pencil"></span> Ubah';
+                        $.ajax({
+                            url:dir,
+                            data:'aksi=ambiledit&replid='+id,
+                            type:'post',
+                            dataType:'json',
+                            success:function(dt){
+                                $('#idformH').val(id);
+                                // $('#tempatH').val($('#tempatS').val());
+                                $('#lokasiH').val($('#lokasiS').val()); // edit by epii
+                                $('#lokasiTB').val(dt.lokasi);
+                                $('#tanggal1TB').val(dt.tanggal1);
+                                $('#tanggal2TB').val(dt.tanggal2);
+                                $('#aktivitasTB').val(dt.aktivitas);
+                                $('#keteranganTB').val(dt.keterangan);
+                            }
+                        });
+                    }
+                },200);
                 $.Dialog.title(titlex+' '+mnu); // edit by epiii
                 $.Dialog.content(contentFR);
             }
@@ -465,3 +476,85 @@ function notif(cont,clr) {
         });
     }
 
+// input uang --------------------------
+    function inputuang(e) {
+        $(e).maskMoney({
+            precision:0,
+            prefix:'Rp. ', 
+            thousands:'.', 
+            affixesStay: true
+        });
+    }
+// end of input uang --------------------------
+
+    function isClosedFR () {
+        if($('.window-overlay').length<=0) {
+            iTR=1; // reset rekTR's counter
+            idDelTR=[]; // reset rekTR's counter
+            itemArr=[]; // reset itemArr's counter
+        }
+    }
+
+
+// remove TR rekening
+    function delItemTR (ke,iditem) {
+        // console.log(validDelRek());
+        if(validDelRek().status==false){
+            notif(validDelRek().msg,'red');
+        }else{
+            if(iditem!=null) idDelTR.push(iditem); //jika ada hapus (jurnal umum)
+            $('#itemTR_'+ke).fadeOut('slow',function(){
+                $('#itemTR_'+ke).remove();
+                itemArrFC();
+                console.log('arr terpilih in delitem=>'+itemArr);
+            });
+            // console.log(idDelTR);
+        }
+    }
+
+    function itemArrFC(){
+        itemArr=[];
+        $('.idrek').each(function(id,item){
+            itemArr.push($(this).val());
+        });return itemArr;
+    }
+
+    function validDelRek () {
+        var ret={'status':true,'msg':null};
+        // if($('#subaksiH').val()=='ju' && $('.rekTR').length<=2){
+        //     ret.status=false;
+        //     ret.msg='minimal lengkapi kredit dan debit';
+        // }else 
+        // if($('#subaksiH').val()!='ju'){
+            if($('.itemTR').length<=1){
+                ret.status=false;
+                ret.msg='minimal isi 1 item';
+            }else{
+                rekTotNominal();
+            }
+        // }
+        return ret;
+    }
+    // get total nominal rekening (ex : Rp. 500.000)
+    function itemTotNominal () {
+        var tot1=tot2=0;
+        $('.itemNominal1').each(function() {
+            tot1+=getCurr($(this).val());
+        });
+        $('.itemNominal2').each(function() {
+            tot2+=getCurr($(this).val());
+        });
+        $('#totNominal1TD').html('Rp. '+tot1.setCurr());
+        $('#totNominal2TD').html('Rp. '+tot2.setCurr());
+    }
+
+    // currency to number (ex : Rp. 500.000 -> 500000)
+    function getCurr(n){  
+        var x = Number(n.replace(/[^0-9\,]+/g,""));
+        return x;
+    }
+
+    // number to currency (ex : 500000 -> 500.000)  
+    Number.prototype.setCurr=function(){
+        return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
+    }
