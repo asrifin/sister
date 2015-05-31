@@ -209,13 +209,14 @@ var contentFR ='';
         if(typeof n=='undefined'){ isLoop=false; n=iTR;}
         for(var i=n; i>=iTR; i--){
             var ke = parseInt(i)-1;
-            var iditem   = (typeof arr!='undefined')?arr[ke].iditem:null;
-            var item     = (typeof arr!='undefined')?arr[ke].item:'';
-            var jumlah   = (typeof arr!='undefined')?arr[ke].jumlah:1;
-            var biaya    = (typeof arr!='undefined')?arr[ke].biaya:'';
-            var biaya2   = (typeof arr!='undefined')?arr[ke].biaya2:'-';
-            var tglbayar = (typeof arr!='undefined')?arr[ke].tglbayar:'';
-            var tgllunas = (typeof arr!='undefined')?arr[ke].tgllunas:'';
+            var iditem    = (typeof arr!='undefined')?arr[ke].iditem:null;
+            var item      = (typeof arr!='undefined')?arr[ke].item:'';
+            var jumlah    = (typeof arr!='undefined')?arr[ke].jumlah:1;
+            var biayaSat  = (typeof arr!='undefined')?arr[ke].biayaSat:'';
+            var biayaTot  = (typeof arr!='undefined')?arr[ke].biayaTot:'';
+            var biayaTot2 = (typeof arr!='undefined')?arr[ke].biayaTot2:'-';
+            var tglbayar  = (typeof arr!='undefined')?arr[ke].tglbayar:'';
+            var tgllunas  = (typeof arr!='undefined')?arr[ke].tgllunas:'';
             
             var mode = (typeof arr!='undefined')?'edit':'add';
 
@@ -239,17 +240,17 @@ var contentFR ='';
                     // biaya satuan (yg diajukan) 
                     +'<td align="center">'
                         +'<span class="input-control text">'
-                            +'<input onkeyup="itemTotNominal();" value="'+item+'" required class="text-right itemNominal1" onfocus="inputuang(this);" onclick="inputuang(this);"' 
-                                +(biaya2!='-'?'disabled':'')+' id="biaya_'+ke+'TB" name="biaya_'+ke+'TB" >'
+                            +'<input onkeyup="itemTotNominal();" value="'+biayaSat+'" required class="text-right itemNominal1" onfocus="inputuang(this);" onclick="inputuang(this);"' 
+                                +(biayaTot2!='-'?'disabled':'')+' id="biaya_'+ke+'TB" name="biaya_'+ke+'TB" >'
                         +'</span>'
                     +'</td>'
                     // biaya total (yg diajukan) 
                     +'<td align="center">'
-                        +'<span class="text-right itemNominal2" id="biaya2_'+ke+'TB">'+biaya2+'</span>'
+                        +'<span class="text-right itemNominal2" id="biayaTot2_'+ke+'TB">'+biayaTot2+'</span>'
                     +'</td>'
                     // biaya total (realisasi)
                     +'<td align="center">'
-                        +'<span class="text-right itemNominal3" id="biaya2_'+ke+'TB">'+biaya2+'</span>'
+                        +'<span class="text-right itemNominal3" id="biayaTot2_'+ke+'TB">'+biayaTot2+'</span>'
                     +'</td>'
                     // tgl wajib dibayar
                     +'<td align="center">'
@@ -265,7 +266,7 @@ var contentFR ='';
                         +'<div xdisabled class="input-control text" data-role="datepicker"' 
                             +'data-format="dd mmmm yyyy" data-position="top"'
                             +'data-effect="slide">'
-                            +'<input xdisabled '+(biaya2=='-'?'disabled':'')+' value="'+tgllunas+'" required id="tgllunas_'+ke+'TB" name="tgllunas_'+ke+'TB" type="text">'
+                            +'<input xdisabled '+(biayaTot2=='-'?'disabled':'')+' value="'+tgllunas+'" required id="tgllunas_'+ke+'TB" name="tgllunas_'+ke+'TB" type="text">'
                             // +'<button class="btn-date"></button>'
                         +'</div>'
                     +'</td>'
@@ -320,13 +321,14 @@ var contentFR ='';
                             dataType:'json',
                             success:function(dt){
                                 $('#idformH').val(id);
-                                // $('#tempatH').val($('#tempatS').val());
                                 $('#lokasiH').val($('#lokasiS').val()); // edit by epii
                                 $('#lokasiTB').val(dt.lokasi);
                                 $('#tanggal1TB').val(dt.tanggal1);
                                 $('#tanggal2TB').val(dt.tanggal2);
                                 $('#aktivitasTB').val(dt.aktivitas);
                                 $('#keteranganTB').val(dt.keterangan);
+                                var n = dt.itemArr.length;
+                                addItemTR(n,dt.itemArr);
                             }
                         });
                     }

@@ -85,12 +85,6 @@
 				$totNominal = 0;
 				$c          = count($_POST['idTR']);
 				$itemArr    = $_POST['idTR'];
-				// var_dump($c);exit();
-				// foreach ($itemArr as $i => $v) {
-				// 	$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
-				// 	$totNominal+=$nom;
-				// }
-				// $totNominal =$sub=='ju'?($totNominal/2):$totNominal;
 				$s1 = $tb.' SET tanggal1   ="'.tgl_indo6($_POST['tanggal1TB']).'",
 								tanggal2   ="'.tgl_indo6($_POST['tanggal2TB']).'",
 								aktivitas  ="'.$_POST['aktivitasTB'].'",
@@ -135,13 +129,8 @@
 							$e2    = mysql_query($s2);
 							$stat2 =!$e2?false:true;
 						}
-						// var_dump($xx);exit();
-	
-						if(!$stat2) {
-							$stat = 'gagal_simpan_detail_aktivitas';
-						}else{
-							$stat = 'sukses';
-						}
+						if(!$stat2)  $stat = 'gagal_simpan_detail_aktivitas';
+						else $stat = 'sukses';
 					}
 				}$out=json_encode(array('status'=>$stat));
 			break;
@@ -149,11 +138,16 @@
 			
 			// delete -----------------------------------------------------------------
 			case 'hapus':
-				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
-				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
-				$e    = mysql_query($s);
-				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['aktivitas']));
+				$d = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
+				$s = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
+				$e = mysql_query($s);
+				if(!$e){
+					$stat='gagal_hapus_aktivitas';
+				}else{
+					$s2 = 'DELETE FROM '.$tb3.' WHERE aktivitas = '.$d['replid'];
+					$e2 = mysql_query($s2);
+					$stat=!$e2?'gagal_hapus_aktivitas':'sukses';
+				}$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['aktivitas']));
 			break;
 			// delete -----------------------------------------------------------------
 
@@ -170,15 +164,38 @@
 								t.lokasi= l.replid and
 								t.replid='.$_POST['replid'];
 				// var_dump($s);exit();
-				$e 		= mysql_query($s);
-				$r 		= mysql_fetch_assoc($e);
-				// $stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array(
-							'lokasi'     =>$r['lokasi'],
-							'tanggal1'  =>$r['tanggal1'],
-							'tanggal2'  =>$r['tanggal2'],
-							'aktivitas'  =>$r['aktivitas'],
-							'keterangan' =>$r['keterangan']
+				$e       = mysql_query($s);
+				$r       = mysql_fetch_assoc($e);
+				$itemArr = array();
+				$biayaTotSum=$biayaTotSum2=0;
+				if(!$e) $stat = ($e)?'sukses':'gagal_ambil_data_aktivitas';
+				else{
+					$s2 ='SELECT * FROM '.$tb3.' WHERE aktivitas ='.$_POST['replid'];
+					$e2  = mysql_query($s2);
+					while($r2 = mysql_fetch_assoc($e2)){
+						$itemArr[]=array(
+							'iditem'    =>$r2['replid'],
+							'item'      =>$r2['item'],
+							'jumlah'    =>$r2['jumlah'],
+							'biayaSat'  =>$r2['biaya'],
+							'biayaTot'  =>(intval($r2['biaya']) * intval($r2['jumlah'])),
+							'biayaTot2' =>$r2['biaya2'],
+							'tglbayar'  =>tgl_indo5($r2['tglbayar']),
+							'tgllunas'  =>tgl_indo5($r2['tgllunas']),
+						);$biayaTotSum+=(intval($r2['biaya']) * intval($r2['jumlah']));
+						$biayaTotSum2+=intval($r2['biaya2']);
+					}
+				 	$stat = ($e2)?'sukses':'gagal_ambil_detail_aktivitas';
+				}$out  = json_encode(array(
+							'status'       =>$stat,
+							'lokasi'       =>$r['lokasi'],
+							'tanggal1'     =>tgl_indo5($r['tanggal1']),
+							'tanggal2'     =>tgl_indo5($r['tanggal2']),
+							'aktivitas'    =>$r['aktivitas'],
+							'keterangan'   =>$r['keterangan'],
+							'biayaTotSum'  =>$biayaTotSum,
+							'biayaTotSum2' =>$biayaTotSum2,
+							'itemArr'      =>$itemArr
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

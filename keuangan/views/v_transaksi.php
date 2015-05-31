@@ -23,11 +23,11 @@
     <!-- filter :: tanggal -->
     <div class="place-right">
         <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">
-            <input onchange="viewTB('ju');" type="text" id="tgl1TB" name="tgl1TB">
+            <input xonchange="viewTB('ju');" type="text" id="tgl1TB" name="tgl1TB">
             <button class="btn-date"></button>
         </div> s/d
         <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">
-            <input onchange="viewTB('ju');" type="text" id="tgl2TB" name="tgl2TB">
+            <input xonchange="viewTB('ju');" type="text" id="tgl2TB" name="tgl2TB">
             <button class="btn-date"></button>
         </div> 
         <a href="#" onclick="viewTB('ju');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
