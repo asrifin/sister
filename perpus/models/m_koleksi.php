@@ -84,7 +84,7 @@
 	                        FROM
 	                          pus_katalog kg
 	                          LEFT JOIN pus_buku pb ON pb.replid = kg.pengarang
-					      	  LEFT JOIN pus_tingkatbuku t on t.replid= pb.tingkatbuku
+					      	  LEFT JOIN pus_tingkatbuku t on t.replid = pb.tingkatbuku
 	                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
 	                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
 							  LEFT JOIN pus_pengarang p on p.replid= kg.pengarang
@@ -97,6 +97,9 @@
 					    		pb.barkode like "%'.$barkode.'%"
 					    		AND pb.idbuku like "%'.$idbuku.'%"
 					    		AND kg.judul like "%'.$judul.'%"
+					    		AND p.nama2 like "%'.$pengarang.'%"
+					    		AND r.nama like "%'.$penerbit.'%"
+					    		AND kf.nama like "%'.$klasifikasi.'%"
 					    		AND pb.callnumber like "%'.$callnumber.'%"
 					    		AND pb.status like "%'.$status.'%"
 	                        order BY
