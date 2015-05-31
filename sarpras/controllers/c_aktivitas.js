@@ -52,9 +52,11 @@ var contentFR ='';
                             +'<thead>'
                                 +'<tr style="color:white;"class="info">'
                                     +'<th class="text-center">Item</th>'
-                                    +'<th class="text-center">Biaya yg diajukan</th>'
-                                    +'<th class="text-center">Biaya yg disetujui</th>'
-                                    +'<th class="text-center">Tgl Wajib Bayar</th>'
+                                    +'<th class="text-center">Jumlah</th>'
+                                    +'<th class="text-center">Biaya Satuan (pengajuan)</th>'
+                                    +'<th class="text-center">Biaya Total (pengajuan)</th>'
+                                    +'<th class="text-center">Biaya Total (Realisasi)</th>'
+                                    +'<th class="text-center">Tgl Tagihan</th>'
                                     +'<th class="text-center">Tgl Pelunasan</th>'
                                     +'<th class="text-center">Hapus</th>'
                                 +'</tr>'
@@ -62,11 +64,12 @@ var contentFR ='';
                             +'<tbody id="itemTBL"></tbody>'
                             +'<tfoot>'
                                 +'<tr style="color:white;"class="info">'
-                                    +'<th class="text-rigt">Jumlah :</th>'
+                                    +'<th colspan="2" class="text-right">Jumlah :</th>'
                                     +'<th id="totNominal1TD" class="text-right">Rp. 0</th>'
                                     +'<th id="totNominal2TD" class="text-right">Rp. 0</th>'
+                                    +'<th id="totNominal3TD" class="text-right">Rp. 0</th>'
                                     +'<th colspan="3"></th>'
-                                +'</tr>';
+                                +'</tr>'
                             +'</tfoot>'
                         +'</table>'
                         
@@ -208,6 +211,7 @@ var contentFR ='';
             var ke = parseInt(i)-1;
             var iditem   = (typeof arr!='undefined')?arr[ke].iditem:null;
             var item     = (typeof arr!='undefined')?arr[ke].item:'';
+            var jumlah   = (typeof arr!='undefined')?arr[ke].jumlah:1;
             var biaya    = (typeof arr!='undefined')?arr[ke].biaya:'';
             var biaya2   = (typeof arr!='undefined')?arr[ke].biaya2:'-';
             var tglbayar = (typeof arr!='undefined')?arr[ke].tglbayar:'';
@@ -219,23 +223,33 @@ var contentFR ='';
                     // item
                     +'<td align="center">'
                         +'<input type="hidden" name="mode'+ke+'H" value="'+mode+'" />'
-                        // +'<input type="hidden" value="'+id+'" name="iditem_'+ke+'H" id="iditem_'+ke+'H">'
+                        +'<input type="hidden" value="'+iditem+'" name="iditem_'+ke+'H" id="iditem_'+ke+'H">'
                         +'<input type="hidden" class="idTR" value="'+ke+'" name="idTR[]" id="idTR_'+ke+'">'
                         +'<div class="input-control text">'
-                            +'<input required id="item_'+ke+'TB" name="item_'+ke+'TB">'
+                            +'<input value="'+item+'" required id="item_'+ke+'TB" name="item_'+ke+'TB">'
                             // +'<button class="btn-clear"></button>'
                         +'</div>' 
                     +'</td>'
-                    // biaya yg diajukan 
+                    // jumlah item 
+                    +'<td align="center">'
+                        +'<div class="input-control text">'
+                            +'<input value="'+jumlah+'"  type="number" required min="1" id="jumlah_'+ke+'TB" name="jumlah_'+ke+'TB">'
+                        +'</div>' 
+                    +'</td>'
+                    // biaya satuan (yg diajukan) 
                     +'<td align="center">'
                         +'<span class="input-control text">'
                             +'<input onkeyup="itemTotNominal();" value="'+item+'" required class="text-right itemNominal1" onfocus="inputuang(this);" onclick="inputuang(this);"' 
-                                +((biaya2!='-')?'disabled':'')+' id="biaya_'+ke+'TB" name="biaya_'+ke+'TB" >'
+                                +(biaya2!='-'?'disabled':'')+' id="biaya_'+ke+'TB" name="biaya_'+ke+'TB" >'
                         +'</span>'
                     +'</td>'
-                    // biaya yg disetujui 
+                    // biaya total (yg diajukan) 
                     +'<td align="center">'
                         +'<span class="text-right itemNominal2" id="biaya2_'+ke+'TB">'+biaya2+'</span>'
+                    +'</td>'
+                    // biaya total (realisasi)
+                    +'<td align="center">'
+                        +'<span class="text-right itemNominal3" id="biaya2_'+ke+'TB">'+biaya2+'</span>'
                     +'</td>'
                     // tgl wajib dibayar
                     +'<td align="center">'
@@ -248,10 +262,10 @@ var contentFR ='';
                     +'</td>'
                     // tgl pelunasan
                     +'<td align="center">'
-                        +'<div class="input-control text" data-role="datepicker"' 
+                        +'<div xdisabled class="input-control text" data-role="datepicker"' 
                             +'data-format="dd mmmm yyyy" data-position="top"'
                             +'data-effect="slide">'
-                            +'<input  value="'+tgllunas+'" required id="tgllunas_'+ke+'TB" name="tgllunas_'+ke+'TB" type="text">'
+                            +'<input xdisabled '+(biaya2=='-'?'disabled':'')+' value="'+tgllunas+'" required id="tgllunas_'+ke+'TB" name="tgllunas_'+ke+'TB" type="text">'
                             // +'<button class="btn-date"></button>'
                         +'</div>'
                     +'</td>'
@@ -530,22 +544,27 @@ function notif(cont,clr) {
                 ret.status=false;
                 ret.msg='minimal isi 1 item';
             }else{
-                rekTotNominal();
+                itemTotNominal();
             }
         // }
         return ret;
     }
     // get total nominal rekening (ex : Rp. 500.000)
     function itemTotNominal () {
-        var tot1=tot2=0;
+        var tot1=tot2=tot3=0;
+        // jumlah_'+ke+'TB
         $('.itemNominal1').each(function() {
             tot1+=getCurr($(this).val());
         });
         $('.itemNominal2').each(function() {
             tot2+=getCurr($(this).val());
         });
+        $('.itemNominal3').each(function() {
+            tot3+=getCurr($(this).val());
+        });
         $('#totNominal1TD').html('Rp. '+tot1.setCurr());
         $('#totNominal2TD').html('Rp. '+tot2.setCurr());
+        $('#totNominal3TD').html('Rp. '+tot3.setCurr());
     }
 
     // currency to number (ex : Rp. 500.000 -> 500000)
@@ -558,3 +577,29 @@ function notif(cont,clr) {
     Number.prototype.setCurr=function(){
         return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
     }
+
+
+/*save (insert & update)*/
+    /*function transSV(e){
+        var url  = dir;
+        var data = $(e).serialize()+'&aksi=simpan&subaksi='+$('#subaksiH').val();
+        if($('#subaksiH').val()=='ju') data+='&idDelTR='+idDelTR;
+        if(validForm().status!=true){ // tidak valid
+            var m = '';
+            $.each(validForm().msg,function(id,item){
+                m+='<span class="fg-white"><i class="icon-warning"></i> '+item+'</span><br />';
+            });notif(m,'red');
+        }else{ // valid 
+            console.log('ok');
+            ajax(url,data).done(function(dt){
+                notif(dt.status,dt.status!='sukses'?'red':'green');
+                if(dt.status=='sukses'){
+                    if($('#kwitansiCB').prop('checked')) printPDF('kwitansi');
+                    $.Dialog.close();
+                    $('#rekTBL').html('');
+                    loadAll();
+                    // viewTB('ju');
+                }
+            });
+        }
+    }*/

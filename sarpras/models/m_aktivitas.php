@@ -4,10 +4,12 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu  = 'aktivitas';
-	$mnu2 = 'lokasi';
-	$tb   = 'sar_'.$mnu;
-	$tb2  = 'sar_'.$mnu2;
+	$mnu   = 'aktivitas';
+	$mnu2  = 'lokasi';
+	$mnu3 = 'detailaktivitas';
+	$tb    = 'sar_'.$mnu;
+	$tb2   = 'sar_'.$mnu2;
+	$tb3   = 'sar_'.$mnu3;
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -79,16 +81,69 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				//kurang field lokasi (FK)
-				$s 		= $tb.' set 	lokasi 		= "'.filter($_POST['lokasiH']).'",
-										tanggal1 	= "'.filter($_POST['tanggal1TB']).'",
-										tanggal2 	= "'.filter($_POST['tanggal2TB']).'",
-										aktivitas 	= "'.filter($_POST['aktivitasTB']).'",
-										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e 		= mysql_query($s2);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array('status'=>$stat));
+				// 1. simpan aktivitas
+				$totNominal = 0;
+				$c          = count($_POST['idTR']);
+				$itemArr    = $_POST['idTR'];
+				// var_dump($c);exit();
+				// foreach ($itemArr as $i => $v) {
+				// 	$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
+				// 	$totNominal+=$nom;
+				// }
+				// $totNominal =$sub=='ju'?($totNominal/2):$totNominal;
+				$s1 = $tb.' SET tanggal1   ="'.tgl_indo6($_POST['tanggal1TB']).'",
+								tanggal2   ="'.tgl_indo6($_POST['tanggal2TB']).'",
+								aktivitas  ="'.$_POST['aktivitasTB'].'",
+								lokasi     ="'.$_POST['lokasiH'].'",
+								keterangan ="'.$_POST['keteranganTB'].'"';
+				$s  = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1;
+				$e  = mysql_query($s);
+				$id = (isset($_POST['idformH']) AND $_POST['idformH']!='')?$_POST['idformH']:mysql_insert_id();
+				if(!$e) $stat='gagal_insert_aktivitas';
+				else{
+					// 2.a hapus item detail aktivitas (jika ada)
+					$stat22 = true;
+					if(isset($_POST['idDelTR']) AND $_POST['idDelTR']!=''){
+						$ss2  = 'DELETE FROM '.$tb2.' WHERE replid IN ('.$_POST['idDelTR'].')';
+						$ee2  = mysql_query($ss2);
+						$stat22 = !$ee2?false:true; 
+					}
+					// 2.b simpan detail aktivitas (wajib)
+					$stat2 =$stat2 = true;
+					$nomDebit = $nomKredit = 0;
+					
+					if(!$stat22) $stat='gagal_delete_detail_aktivitas'; // ada hapus detail aktivitas AND gagal 
+					else{ // tidak ada hapus detail aktivitas OR sukses hapus
+						$xx='';
+						foreach ($itemArr as $i => $v) {
+							$item     = getuang($_POST['item_'.$v.'TB']);
+							$jumlah   = $_POST['jumlah_'.$v.'TB'];
+							$biaya    = isset($_POST['biaya_'.$v.'TB'])?'biaya='.getuang($_POST['biaya_'.$v.'TB']).',':'';
+							$tglbayar = isset($_POST['tglbayar_'.$v.'TB'])?tgl_indo6($_POST['tglbayar_'.$v.'TB']):'0000-00-00';
+							$tgllunas = isset($_POST['tgllunas_'.$v.'TB'])?tgl_indo6($_POST['tgllunas_'.$v.'TB']):'0000-00-00';
+							$s        = $tb3.' SET 	aktivitas='.$id.', 
+													'.$biaya.'
+													jumlah   ='.$jumlah.',
+													tglbayar ="'.$tglbayar.'",
+													tgllunas ="'.$tgllunas.'"';
+							if($_POST['mode'.$v.'H']=='edit')//edit
+								$s2   = 'UPDATE '.$s.' WHERE replid='.$_POST['iditem_'.$v.'H'];
+							else // add
+								$s2   ='INSERT INTO '.$s;
+
+							$xx.=$s2;
+							$e2    = mysql_query($s2);
+							$stat2 =!$e2?false:true;
+						}
+						// var_dump($xx);exit();
+	
+						if(!$stat2) {
+							$stat = 'gagal_simpan_detail_aktivitas';
+						}else{
+							$stat = 'sukses';
+						}
+					}
+				}$out=json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
