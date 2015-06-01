@@ -609,60 +609,47 @@
 			break;
 			// ambiledit -----------------------------------------------------------------
 			
-					// generate kode
+			// generate kode
 			case 'codeGen':
-						switch ($_POST['subaksi']) {
-							case'trans':
-								$r = 'SELECT kunci, nilai 
-										FROM pus_setting
-										WHERE kunci = "'.$_POST['kunci'].'"';
-								$sql =mysql_query($r);
-								$query = mysql_fetch_assoc($sql);
-								// $pisah = explode('/',$query['nilai']);
-								$jmlauto = (substr($query['nilai'],10,1));
-					//select kode generate
-					$s='SELECT
-							tb1.lokasi,
-							LPAD(tb2.idbuku,5,0)idbuku,
-							YEAR(CURDATE())tahun,
-							tb3.kode tingkatbuku
-						FROM (
-							SELECT
-								l.kode lokasi
-							FROM
-								pus_lokasi l 
-							WHERE	
-								l.replid = 3
-							)tb1,(
-								SELECT (MAX(urut) + 1) AS idbuku FROM pus_buku
-							)tb2,(
-								SELECT kode
-								from pus_tingkatbuku 
-								where replid = 1
-							)tb3, ';
+				switch ($_POST['subaksi']) {
+					case'trans':
+						// idbuku  ------------------------------------------------
+						if(isset($_POST['replid']) and $_POST['replid']!=''){//edit
+							$s= 'SELECT urut idbuku FROM pus_buku WHERE replid='.$_POST['replid'].'';
+						}else{ //add 
+							$s ='SELECT (max(urut)+1)idbuku from pus_buku';
+						}$e = mysql_query($s) or die(mysql_error());
+						$r = mysql_fetch_assoc($e);
+					
+						// u/ id buku 
+						$data1 = array(
+							'idbuku'  =>$r['idbuku'],
+							'sumber'  =>$_POST['sumber'],
+							'tahun'   =>substr($_POST['tanggal'],7,4),
+							'tingkat' => getTingkatBuku('kode','replid',$_POST['tingkat'])
+						);
 
-				if($_POST['replid']!=''){//edit
-					$s.= '(SELECT urut FROM pus_buku WHERE replid='.$_POST['replid'].')tb2';
-				}else{ //add 
-					$s.= '(SELECT (MAX(urut) + 1) AS urut FROM pus_buku )tb2';
+						// u/ barcode
+						$data2 = array(
+							'lokasi'  => getLokasi('kode','replid',$_POST['lokasi']),
+							'tingkat' => getTingkatBuku('kode','replid',$_POST['tingkat']),
+							'tahun'   =>substr($_POST['tanggal'],7,4),
+							'idbuku'  =>$r['idbuku']
+						);
+
+						// panggil fungsi  generate
+						$idbuku  = getKodeBukuDT($data1);
+						$barcode = getBarcodeDT($data2);
+						
+						// output --------------------------------
+						$stat = ($idbuku==NULL && $barcode==NULL) ?'gagal':'sukses';
+						$out  = json_encode(array(
+							'status'  =>$stat,
+							'idbuku'  =>$idbuku,
+							'barcode' =>$barcode
+						));
+					break;
 				}
-
-				// print_r($s);exit();
-				// $sumber = $_POST['sumberTB'] == 0?"B":"H";
-				$id = 
-				$e    = mysql_query($s) or die(mysql_error());
-				$r    = mysql_fetch_assoc($e);
-				$stat = !$e?'gagal':'sukses';
-				$out  = json_encode(array(
-							'status' =>$stat,
-							'data'   =>array(
-										'urut'    =>$r['urut'],
-										'lokasi'  =>$r['lokasi'],
-										'katalog' =>$r['katalog'],
-										'barkode' =>$r['barkode']
-						)));
-							break;
-						}
 			break;
 					// generate kode
 
@@ -784,5 +771,5 @@
 
 		}
 	}echo $out;
-
+// ..../lokasi/tahun/idbuku
 ?>

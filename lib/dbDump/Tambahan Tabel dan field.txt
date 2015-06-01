@@ -24,7 +24,7 @@ PENAMBAHAN TABEL atau PENAMBAHAN FIELD
 	- tambah -> keu_jurnal -> 20150521
 * Perpustakaan
 	- edit	 -> tabel pus_katalog yang dirubah klasifikasi-kode diganti klasifikasi_kode
-	- Tambah -> tabel pus_setting2 dan pus_detail_setting -> Folder 20150324
+	- Tambah -> tabel pus_setting2 dan pus_detail_setting -> Folder 20150522
 	
 * Akademik
 	- tambah -> aka_kelas -> field subtingkat

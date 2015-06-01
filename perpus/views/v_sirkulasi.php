@@ -12,7 +12,7 @@
     <div class="tab-control" data-role="tab-control">
         <ul class="tabs">
             <li class="active"><a href="#sirkulasi">Sirkulasi</a></li>
-            <li><a onclick="statistikVW();" href="#statistik">Statistik</a></li>
+            <li><a href="#statistik">Statistik</a></li>
         </ul>
 
 <div class="frames">
@@ -124,21 +124,25 @@
         </div>
     </div>
     <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="tgl1TB" name="tgl1TB">
+        <input type="text" id="tgl1TB" name="tgl1TB" class="sirkulasi_cari">
         <button class="btn-date"></button>
     </div> s/d
     <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="tgl2TB" name="tgl2TB">
+        <input type="text" id="tgl2TB" name="tgl2TB" class="sirkulasi_cari">
         <button class="btn-date"></button>
     </div> 
-    <button data-hint="Tampilkan" class="bg-blue fg-white" style="font-weight:bold;" id="tampilkanBC">Tampilkan >> </button>
+        <a href="#" onclick="viewTB('sirkulasi');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
+        <a  href="#" onclick="viewTB('sirkulasi');" id="bulan_iniBC" name="bulan_iniBC" class="button bg-gray fg-white"><i class="icon-clock"></i> Bulan ini</a>
+        <a data-hint="Tampilkan"  href="#" onclick="loadAll();" id="tampilkanBC" name="refreshBC" class="button bg-blue fg-white"><i class="icon-cycle"></i> </a>
+   
+<!--     <button data-hint="Tampilkan" class="bg-blue fg-white" style="font-weight:bold;" id="tampilkanBC" class="sirkulasi_cari">Tampilkan >> </button>
     <button id="hari_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Hari ini</button>
-    <button id="bulan_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Bulan ini</button>
+    <button id="bulan_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Bulan ini</button> -->
 </div>
 
 <div class="divider">&nbsp;</div>
 
-            <button data-hint="Field Pencarian" xclass="large" id="cari_sirkulasiBC"><span class="icon-search"></span> </button>
+            <button data-hint="Field Pencarian" xclass="large" id="cari_sirkulasiBC" class="sirkulasi_cari"><span class="icon-search"></span> </button>
                  <table class="table hovered bordered striped">
                     <thead>
                         <tr style="color:white;"class="info">
@@ -154,11 +158,11 @@
                             <!-- <th style="display:visible;"class="text-left  uraianCOL">Detil Jurnal</th> -->
                             <th class="text-left">Aksi</th>
                         </tr>
-                        <tr style="display:none;" id="cari_sirkulasiTR">
+                        <tr style="display:none;" id="sirkulasiTR">
                             <th class="text-left"></th>
-                            <th class="text-left"><input placeholder="Id Member atau Nama" id="memberS" name="memberS"></th>
-                            <th class="text-left"><input placeholder="Barkode" id="barkodeS" name="barkodeS"></th>
-                            <th class="text-left"><input placeholder="Judul" id="judulS" name="judulS"></th>
+                            <th class="text-left"><input class="sirkulasi_cari" placeholder="Id Member atau Nama" id="memberS" name="memberS"></th>
+                            <th class="text-left"><input class="sirkulasi_cari" placeholder="Barkode" id="barkodeS" name="barkodeS"></th>
+                            <th class="text-left"><input class="sirkulasi_cari" placeholder="Judul" id="judulS" name="judulS"></th>
                             <th class="text-left"></th>
                             <th class="text-left"></th>
                             <th class="text-left"></th>
@@ -179,24 +183,24 @@
         <!-- Member Luar -->
         <div class="frame" id="statistik">
             <!-- <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button> -->
-            <button data-hint="Field Pencarian" xclass="large" id="cari_statistikBC"><span class="icon-search"></span> </button>
+            <button data-hint="Field Pencarian" xclass="large" id="cari_statistikBC" class="statistik_cari"><span class="icon-search"></span> </button>
             <div class="input-control select span4">
-                <select data-hint="Statistik" name="statistikS" id="statistikS">
+                <select data-hint="Statistik" name="statistikS" id="statistikS" class="statistik_cari">
                     <option value="0">Judul yang paling sering dipinjam</option>
                     <option value="1">Member dengan peminjaman terbanyak</option>
                 </select>
             </div>
             <div class="input-control select span3">
-                <select data-hint="Lokasi" name="lokasiS" id="lokasiS"></select>
+                <select data-hint="Lokasi" name="lokasiS" id="lokasiS" class="statistik_cari"></select>
             </div>
             <br>
     <label>Periode :</label>
     <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="s_tgl1TB" name="s_tgl1TB">
+        <input type="text" id="s_tgl1TB" name="s_tgl1TB" class="statistik_cari">
         <button class="btn-date"></button>
     </div> s/d
     <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="s_tgl2TB" name="s_tgl2TB">
+        <input type="text" id="s_tgl2TB" name="s_tgl2TB" class="statistik_cari">
         <button class="btn-date"></button>
     </div> 
     
@@ -209,11 +213,11 @@
                         <th class="text-left" >Penerbit</th>
                         <th class="text-center">Dipinjam</th>
                     </tr>
-                    <tr style="display:none;" id="cari_statistikTR" class="selected">
-                        <th class="text-left"><input placeholder="judul" id="s_judulS" name="s_judulS"></th>
-                        <th class="text-left"><input placeholder="klasifikasi" id="klasifikasiS" name="klasifikasiS"></th>
-                        <th class="text-left"><input placeholder="Pengarang" id="pengarangS" name="pengarangS"></th>
-                        <th class="text-left"><input placeholder="Penerbit" id="penerbitS" name="penerbitS"></th>
+                    <tr style="display:none;" id="statistikTR" class="selected">
+                        <th class="text-left"><input class="statistik_cari" placeholder="judul" id="s_judulS" name="s_judulS"></th>
+                        <th class="text-left"><input class="statistik_cari" placeholder="klasifikasi" id="klasifikasiS" name="klasifikasiS"></th>
+                        <th class="text-left"><input class="statistik_cari" placeholder="Pengarang" id="pengarangS" name="pengarangS"></th>
+                        <th class="text-left"><input class="statistik_cari" placeholder="Penerbit" id="penerbitS" name="penerbitS"></th>
                         <th class="text-left"></th>
                     </tr>
                 </thead>

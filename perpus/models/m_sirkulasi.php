@@ -101,8 +101,8 @@
 						$member  = isset($_POST['memberS'])?filter(trim($_POST['memberS'])):'';
 						$barkode = isset($_POST['barkodeS'])?filter(trim($_POST['barkodeS'])):'';
 						$judul   = isset($_POST['judulS'])?filter(trim($_POST['judulS'])):'';
-						// $tgl1   = isset($_POST['tgl1TB'])?filter(trim($_POST['tgl1TB'])):'';
-						// $tgl2   = isset($_POST['tgl2TB'])?filter(trim($_POST['tgl2TB'])):'';
+						$tgl1   = isset($_POST['tgl1TB'])?tgl_indo6($_POST['tgl1TB']):'';
+						$tgl2   = isset($_POST['tgl2TB'])?tgl_indo6($_POST['tgl2TB']):'';
 
 						$sql       = 'SELECT
 											tanggal1 tgl_pinjam,
@@ -127,8 +127,13 @@
 									WHERE 
 										member like "%'.$member.'%" AND
 										judul like "%'.$judul.'%" AND
-										barkode like "%'.$barkode.'%"';
-						// print_r($sql);exit(); 	
+										barkode like "%'.$barkode.'%" AND
+										pj.tanggal1 between "'.$tgl1.'" AND "'.$tgl2.'" 
+
+										';
+										// tgl_pinjam between "'.tgl_indo6($_POST['tgl1TB']).'" AND "'.tgl_indo6($_POST['tgl2TB']).'" 
+						// print_r($sql);exit();
+						// var_dump($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
@@ -155,14 +160,15 @@
 								}else{
 									$anggota = $res['pegawai'].'<br>No ID :'.$res['idmember'];
 								}
-								$tgl2 = isset($res['tanggal2']);
-								$tgl3 = isset($res['tanggal3']);
+								$tgl2 = isset($res['pengembalian'])?tgl_indo6($res['pengembalian']):'';
+								$tgl3 = isset($res['dikembalikan'])?tgl_indo6($res['dikembalikan']):' ';
 						
+									// var_dump($res);exit();
 								//tgl pengembalian
 								$tgl_pengembalian=fftgl($tgl2); 
 
 								if($res['status']!=0){
-									$lewat=diffDay($res['tanggal2']);
+									$lewat=diffDay($res['pengembalian']);
 									if($lewat<0 && $res['status']!=0){
 										$tgl_pengembalian='<span style="color:red">'.$tgl_pengembalian.'</span>';
 									}
@@ -193,9 +199,9 @@
 											<td>'.$anggota.'</td>
 											<td>'.$res['barkode'].'</td>
 											<td>'.$res['judul'].'</td>
-											<td>'.tgl_indo($tgl_pengembalian).'</td>
+											<td>'.tgl_indo6($tgl_pengembalian).'</td>
 											<td>'.$res['status'].'</td>
-											<td>'.tgl_indo($tgl_dikembalikan).'</td>
+											<td>'.tgl_indo6($tgl_dikembalikan).'</td>
 											<td>'.($terlambat==0?'-':$res['telat'].' hari').'</td> 
 											<td>&nbsp</td>
 											'.$btn.'

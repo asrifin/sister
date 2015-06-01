@@ -14,7 +14,7 @@ ____________________________________________________
 	+ searching : all column, tidak ngefek ke "tabel" (C)
 	+ filtering > combo :  jenis_buku & tingkat_buku , tidak ngefek ke "table"  (C)
 	+ form (edit_mode) : tidak tampil		(+)
-	- SQL Where pengarang, penerbit, klasifikasi belum bisa
+	+ SQL Where pengarang, penerbit, klasifikasi belum bisa
 	- paging -> SQl
 
 	- sorting : all column (belum ada lib/contoh) 
@@ -27,17 +27,17 @@ ____________________________________________________
 	+ pas edit katalog nyimpan klasifikasi,pengarang, penerbit tidak bisa (+) --> SQL ditambahkan select replid pada tabel
 	+ combo lokasi pada view katalog (+) --> tambah filter pada cmblokasi
 	+ pas tambah koleksi jumlah dan sumber ga nampil --> ARRAY disamakan namanya
-	- simpan koleksi belum bisa 
-	- pas tambah katalog form edit katalog juga muncul dibawah
-	- cara membuat generate id buku( dan barcode (lokasi,tingkatbuku, tahun, urut pd pus_buku)
-	- Ketika kode barcode pd perangkat di update otomatis kode barcode pd koleksi berubah
+	+ simpan koleksi belum bisa 
+	+ pas tambah katalog form edit katalog juga muncul dibawah
+	+ cara membuat generate id buku( dan barcode (lokasi,tingkatbuku, tahun, urut pd pus_buku)
+	+ Ketika kode barcode pd perangkat di update otomatis kode barcode pd koleksi berubah
 * data anggota (P)
 	- view siswa, pegawai dan member lain hanya bisa menampilkan yang sudah pinjam aja (SQL)
 	-
 * sirkulasi (P)
 	- Peminjaman  -> cara mengatur waktu pengembalian
 	- view sirkulasi -> field peminjam, Tgl Pengembalian, Tgl dikembalikan dan terlambat tidak tampil (sudah buat fungsi selisih tgl)
-	- view sirkulasi - field aksi -> tombol aksi kalau dipinjam muncul kalau dikembalikan tidak
+	- view sirkulasi - field aksi -> tombol aksi kalau dipinjam muncul kalau tidak dikembalikan seharusnya tidak muncul
 	- view sirkulasi - filter checkbox blm bisa
 	- cara sinkron status peminjaman pada tabel pus_peminjaman dan pus_buku ?
 	- combobox peminjaman 
@@ -50,9 +50,9 @@ ____________________________________________________
 * OPAC (P)
 	- Cara Membuat menunya Gimana karena buka tab baru??
 ____________________________________________________
-* perangkat (P)
-	- cara edit dan simpan di perangkat
-	- tombol edit form check tidak muncul??
+* perangkat (C)
+	+ cara edit dan simpan di perangkat
+	+ tombol edit form check tidak muncul??
 * lokasi (C)
 * daftar penerbit (C)
 * daftar pengarang (C)

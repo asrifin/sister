@@ -35,6 +35,8 @@
     <script src="../js/docs.js"></script>
     <!--<script src="js/github.info.js"></script>-->
     <script src="../js/start-screen.js"></script>
+    <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
+
   <!-- combo grid -->
     <script src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
     <script src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>

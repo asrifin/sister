@@ -7,6 +7,11 @@ var dir2      ='models/m_'+mnu2+'.php';
 var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
 // main function load first 
     $(document).ready(function(){
+
+        $('#lokasiTB').on('change',function(){
+            autoSug($('#judulTB'),$(this).val());
+        });        
+
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });
@@ -83,28 +88,28 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
                                                 +'<button class="btn-clear"></button>'
                                             +'</div>'
                                                 +'<img id="b_photoIMG" src="../img/no_image.jpg" width="100" class="shadow" align="center">'
-                                        // '<table>'
-                                        //     +'<tr>'
-                                        //           +'<td>Nama</td>'
-                                        //         +'<td>: <b id="namaTD">Nama</b></td>'
+                                        +'<table class="table hovered bordered striped">'
+                                            +'<tr>'
+                                                +'<td>Nama</td>'
+                                                +'<td>: <b id="namaTD"></b></td>'
 
-                                        //     +'</tr>'
-                                        //     +'<tr>'
-                                        //         +'<td>No. Pendaftaran</td>'
-                                        //         +'<td>: <span id="nopendaftaranTD"></span></td>'
-                                        //     +'</tr>'
-                                        //     +'<tr>'
-                                        //         +'<td colspan="2">sebagai siswa aktif pada </td>'
-                                        //     +'</tr>'
-                                        //     +'<tr>'
-                                        //         +'<td>Departemen</td>'
-                                        //         +'<td>: <span id="departemenTD"></span></td>'
-                                        //     +'</tr>'
-                                        //     +'<tr>'
-                                        //         +'<td>Angkatan</td>'
-                                        //         +'<td>: <span id="angkatanTD"></span></td>'
-                                        //     +'</tr>'
-                                        // +'</table>'                                        
+                                            +'</tr>'
+                                            +'<tr>'
+                                                +'<td>No. Pendaftaran</td>'
+                                                +'<td>: <span id="nopendaftaranTD"></span></td>'
+                                            +'</tr>'
+                                            +'<tr>'
+                                                +'<td colspan="2">sebagai siswa aktif pada </td>'
+                                            +'</tr>'
+                                            +'<tr>'
+                                                +'<td>Departemen</td>'
+                                                +'<td>: <span id="departemenTD"></span></td>'
+                                            +'</tr>'
+                                            +'<tr>'
+                                                +'<td>Angkatan</td>'
+                                                +'<td>: <span id="angkatanTD"></span></td>'
+                                            +'</tr>'
+                                        +'</table>'                                        
                                         +'</div>'
                                         +'<div class="span5">'
                                             +'<label><b>Waktu Peminjaman</b></label>'
@@ -130,6 +135,7 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
                                                 +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                                             +'</div>'
                                         +'</div>' //end span
+                                        // +'</div>' //end span 2
                                     +'</div>' //end row
                                     
                                     // nama member
@@ -212,35 +218,18 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
             kembaliFR('');
         });
 
-        $("#statistik").on('click', function(){
-            statistikVW();
+        $("#statistik").on('change', function(){
+            // statistikVW();
         });
 
-        //search ---
-        $('#memberS').keydown(function (e){
-            if(e.keyCode == 13)
-                sirkulasiVW();
+        //search sirkulasi---
+        $('#memberS,#barkodeS,#judulS').on('keydown',function (e){ 
+            if(e.keyCode == 13)  viewTB('sirkulasi');
         });
-        $('#barkodeS').keydown(function (e){
-            if(e.keyCode == 13)
-                sirkulasiVW();
-        });$('#judulS').keydown(function (e){
-            if(e.keyCode == 13)
-                sirkulasiVW();
-        });$('#s_judulS').keydown(function (e){
-            if(e.keyCode == 13)
-                statistikVW();
-        });$('#klasifikasiS').keydown(function (e){
-            if(e.keyCode == 13)
-                statistikVW();
-        });
-        $('#pengarangS').keydown(function (e){
-            if(e.keyCode == 13)
-                statistikVW();
-        });
-        $('#penerbitS').keydown(function (e){
-            if(e.keyCode == 13)
-                statistikVW();
+        
+        //search statistik---
+        $('#s_judulS,#klasifikasiS,#pengarangS,#penerbitS').on('keydown',function (e){ 
+            if(e.keyCode == 13)  viewTB('statistik');
         });
 
         // set default this month
@@ -256,24 +245,30 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
 
         // search button
         $('#cari_sirkulasiBC').on('click',function(){
-            $('#cari_sirkulasiTR').toggle('slow');
+            $('#sirkulasiTR').toggle('slow');
             $('#memberS').val('');
             $('#barkodeS').val('');
             $('#judulS').val('');
         });
         $('#cari_statistikBC').on('click',function(){
-            $('#cari_statistikTR').toggle('slow');
+            $('#statistikTR').toggle('slow');
             $('#s_judulS').val('');
             $('#klasifikasiS').val('');
             $('#pengarangS').val('');
             $('#penerbitS').val('');
         });
 
-        // default tampilkan jurnal umum 
-        sirkulasiVW();
+        // default tampilkan 
+        // viewTB('sirkulasi');
+        loadAll();
     }); 
 // end of main function ---------
 
+     function loadAll(){
+        viewTB('sirkulasi');
+        viewTB('statistik');
+    }
+    
 //paging ---
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
@@ -329,7 +324,7 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
                 //     });
                 // }
                 $('#statistikS').html(out);
-                // statistikVW();
+                statistikVW();
             }
         });
     }
@@ -355,6 +350,7 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
                         // cmbtahunlulus2('filter',dt.departemen[0].replid,'');
                     }else{
                         $('#lokasiTB').html(out);
+                        // autoSug($('#judulTB'),$('#lokasiTB').val());
                     } 
                 }
             }
@@ -437,7 +433,7 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
         }
 
         //autocomplete
-    function autosug(el,lok){
+    function autoSug(el,lok){
         $(el).combogrid({
             debug:true,
             width:'400px',
@@ -453,7 +449,7 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
                     'width':'40',
                     'label':'Judul'
                 }],
-            url: dir+'?aksi=autocomp&subaksi=tersedia'+lok,
+            url: dir+'?aksi=autocomp&subaksi=tersedia&lokasi='+lok,
             select: function( event, ui ) { // event setelah data terpilih 
                 barangAdd(ui.item.replid,ui.item.barkode,ui.item.judul);
                 $(el).val('');
@@ -463,27 +459,27 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
         }); //End autocomplete
     }
 
-    }
+}
 
     // hapus barang terpilih
         function barangDel(id){
             $('#barangTR_'+id).fadeOut('slow',function(){
                 $('#barangTR_'+id).remove();
                 // barangExist();
-            $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=judul&lokasi='+$('#lokasiS').val()+'&brgArr='+barangArr().toString() );
-            enabledButton();
+            $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=tersedia&lokasi='+$('#lokasiTB').val()+'&brgArr='+barangArr().toString() );
+            // enabledButton();
             });
         }
     //barang record kosong --
-        function barangExist(){
-            // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
-            alert('jumlah tr: '+$('#barangTBL','.barangTR').length);return false;
-            var tr ='<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih Judul Buku ..</td></tr>';
-            if($('#barangTBL').html()=='')
-                $('#barangTBL').html(tr);
-            else
-                $('#barangTBL').html('');
-        }
+        // function barangExist(){
+        //     // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
+        //     alert('jumlah tr: '+$('#barangTBL','.barangTR').length);return false;
+        //     var tr ='<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih Judul Buku ..</td></tr>';
+        //     if($('#barangTBL').html()=='')
+        //         $('#barangTBL').html(tr);
+        //     else
+        //         $('#barangTBL').html('');
+        // }
     //end of barang record kosong --
 
     // pilih barang yg akan dipinjam ---
@@ -495,8 +491,8 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
                     +'</tr>';
             $('#barangTBL').prepend(tr); 
             barangArr();
-            $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=judul&lokasi='+$('#lokasiS').val()+'&brgArr='+barangArr().toString() );
-            enabledButton();
+            $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=tersedia&lokasi='+$('#lokasiTB').val()+'&brgArr='+barangArr().toString() );
+            // enabledButton();
             // barangExist();
         }
         
@@ -590,44 +586,77 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
 
 /*view*/
     // Sirkulasi ---
-        function sirkulasiVW(){  
-            var aksi ='aksi=tampil&subaksi=sirkulasi';
-            var cari ='&memberS='+$('#memberS').val()
-                     +'&barkodeS='+$('#barkodeS').val();
-                     +'&judulS='+$('#judulS').val();
-            $.ajax({
-                url : dir,
-                type: 'post',
-                data: aksi+cari,
-                beforeSend:function(){
-                    $('#sirkulasi_tbody').html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr></center>');
-                },success:function(dt){
-                    setTimeout(function(){
-                        $('#sirkulasi_tbody').html(dt).fadeIn();
-                    },1000);
-                }
-            });
-        }
+        function viewTB(subaksi){
+            var aksi ='aksi=tampil&subaksi='+subaksi;
+            var cari ='';
+            var el,el2;
 
-        function statistikVW(){  
-            var aksi ='aksi=tampil&subaksi=statistik';
-            var cari ='&s_judulS='+$('#s_judulS').val()
-                     +'&klasifikasiS='+$('#klasifikasiS').val();
-                     +'&pengarangS='+$('#pengarangS').val();
-                     +'&penerbitS='+$('#penerbitS').val();
+            if(subaksi!=''){ // multi paging 
+                el  = '.'+subaksi+'_cari';
+                el2 = '#'+subaksi+'_tbody';
+            }else{ // single paging
+                el  = '.cari';
+                el2 = '#tbody';
+            }
+
+            $(el).each(function(){
+                var p = $(this).attr('id');
+                var v = $(this).val();
+                cari+='&'+p+'='+v;
+            });
+
             $.ajax({
                 url : dir,
                 type: 'post',
                 data: aksi+cari,
                 beforeSend:function(){
-                    $('#statistik_tbody').html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr></center>');
+                    $('#'+subaksi+'_tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
                 },success:function(dt){
                     setTimeout(function(){
-                        $('#statistik_tbody').html(dt).fadeIn();
+                        $('#'+subaksi+'_tbody').html(dt).fadeIn();
                     },1000);
                 }
             });
-        }
+        }    
+
+        // function sirkulasiVW(){  
+        //     var aksi ='aksi=tampil&subaksi=sirkulasi';
+        //     var cari ='&memberS='+$('#memberS').val()
+        //              +'&barkodeS='+$('#barkodeS').val();
+        //              +'&judulS='+$('#judulS').val();
+        //     $.ajax({
+        //         url : dir,
+        //         type: 'post',
+        //         data: aksi+cari,
+        //         beforeSend:function(){
+        //             $('#sirkulasi_tbody').html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr></center>');
+        //         },success:function(dt){
+        //             setTimeout(function(){
+        //                 $('#sirkulasi_tbody').html(dt).fadeIn();
+        //             },1000);
+        //         }
+        //     });
+        // }
+
+        // function statistikVW(){  
+        //     var aksi ='aksi=tampil&subaksi=statistik';
+        //     var cari ='&s_judulS='+$('#s_judulS').val()
+        //              +'&klasifikasiS='+$('#klasifikasiS').val();
+        //              +'&pengarangS='+$('#pengarangS').val();
+        //              +'&penerbitS='+$('#penerbitS').val();
+        //     $.ajax({
+        //         url : dir,
+        //         type: 'post',
+        //         data: aksi+cari,
+        //         beforeSend:function(){
+        //             $('#statistik_tbody').html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr></center>');
+        //         },success:function(dt){
+        //             setTimeout(function(){
+        //                 $('#statistik_tbody').html(dt).fadeIn();
+        //             },1000);
+        //         }
+        //     });
+        // }
 
 // fungsi AJAX : asyncronous
     function ajaxFC (u,d) {

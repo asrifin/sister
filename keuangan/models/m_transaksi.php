@@ -497,7 +497,15 @@
 							$out.= '<tr align="center">
 									<td  colspan="8" ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
-						}
+						}$out.='<tr>
+							<td colspan="2" class="text-right">Jumlah : </td>
+							<td class="text-right"></td>
+							<td class="text-right"></td>
+							<td class="text-right"></td>
+							<td class="text-right"></td>
+							<td class="text-right"></td>
+							<td class="text-right"></td>
+						</tr>';
 					break;
 
 					//Laba Rugi

@@ -22,7 +22,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^transaksi/?$			   						index.php?page=transaksi
 	RewriteRule   ^kategori-modul/?$			   				index.php?page=katmodulpembayaran
 	RewriteRule   ^modul-pembayaran/?$			   				index.php?page=modulpembayaran
-	RewriteRule   ^pembayaran/?$			   					index.php?page=pembayaran
+	RewriteRule   ^penerimaan/?$			   					index.php?page=penerimaan
 	
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 

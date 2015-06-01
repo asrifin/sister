@@ -339,33 +339,39 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         +'</div>'
                     +'</form>';
 
-        koleksi_contentFR += '<form autocomplete="off" onsubmit="koleksiSV(this);return false;" id="koleksiFR">' 
-                            +'<input  id="koleksiH" type="hidden">'
-                            +'<tr>'
-                                +'<td>Judul</td>'
-                                +'<td>: <span id="judul_koleksiTD"></span></td>'
-                            +'</tr>'
+        koleksi_contentFR += '<form autocomplete="off"  style="overflow:scroll;height:600px;"  onsubmit="koleksiSV(this);return false;" id="koleksiFR">' 
+                        // hidden
+                        +'<input  id="koleksiH" type="hidden">'
+                        // judul
+                        +'<tr>'
+                            +'<td>Judul</td>'
+                            +'<td>: <span style="font-weight:bold;" id="judul_koleksiTD"></span></td>'
+                        +'</tr>'
+
+                        +'<label><b>Alokasi Lokasi</b></label>' 
+                        // lokasi
+                        +'<label>Lokasi</label>' 
+                        +'<div class="input-control select">'
+                            +'<select onchange="kode_gen();" required id="lokasiTB" name="lokasiTB">'
+                              +'</select>'
+                        +'</div>'
+                        // tingkat buku
+                        +'<label>Tingkat</label>' 
+                        +'<div class="input-control select">'
+                            +'<select onchange="kode_gen();" required id="tingkatTB" name="tingkatTB">'
+                              +'</select>'
+                        +'</div>'
+                        // jumlah 
                         +'<label>Jumlah Koleksi Baru</label>' 
-                        +'<div class="input-control text size2">'
-                            +'<input required type="text" name="jml_koleksiTB" id="jml_koleksiTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        +'<label>ID Buku</label>' 
                         +'<div class="input-control text">'
-                            +'<input  id="idbukuH" type="hidden">'
-                            +'<input readonly required type="text" name="idbukuTB" id="idbukuTB">'
-                            +'<button class="btn-clear"></button>'
+                            +'<input onchange="kode_gen();" value="1" required type="number" min="1" name="jml_koleksiTB" id="jml_koleksiTB">'
                         +'</div>'
-                        +'<label>Barcode</label>'
-                        +'<div class="input-control text size3">'
-                            +'<input readonly required type="text" name="barcodeTB" id="barcodeTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
+                        // sumber
                         +'<label>Sumber</label>'
                         +'<div>'
                             +'<div class="input-control radio margin3" >'
                                 +'<label>'
-                                    +'<input value="0" required type="radio" name="sumberTB" />'
+                                    +'<input onchange="kode_gen();" checked value="0" required type="radio" name="sumberTB" />'  /*default*/
                                     +'<span class="check"></span>'
                                     +'Beli'
                                 +'</label>'
@@ -374,36 +380,39 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         +'<div>'
                             +'<div class="input-control radio margin3" >'
                                 +'<label>'
-                                    +'<input  value="1" required type="radio" name="sumberTB"/>'
+                                    +'<input onchange="kode_gen();"  value="1" required type="radio" name="sumberTB"/>'
                                     +'<span class="check"></span>'
                                     +'Pemberian'
                                 +'</label>'
                             +'</div>'
                         +'</div>'
-                        +'<div>'
-                        +'<label>Harga</label>'
-                        +'<div class="input-control text size3">'
-                            +'<input readonly required type="text" name="hargaTB" id="hargaTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
+                        // tanggal
                         +'<label>Tanggal Diperoleh</label>'
-                        +'<div class="input-control text size2" data-role="datepicker"'
-                            +'data-format="yyyy-mm-dd"'
+                        +'<div class="input-control text" data-position="top"  data-role="datepicker"'
+                            +'data-format="dd mmmm yyyy"'
                             +'data-effect="slide">'
-                            +'<input id="tglTB" name="tglTB" type="text">'
+                            +'<input onchange="kode_gen();"onkeyup="kode_gen();" id="tglTB" name="tglTB" type="text">'
                             +'<button class="btn-date"></button>'
                         +'</div>'
-                        +'<label><b>Alokasi Lokasi</b></label>' 
-                        +'<label>Lokasi</label>' 
-                        +'<div class="input-control select size4">'
-                            +'<select id="lokasiTB" name="lokasiTB">'
-                              +'</select>'
+                        // label buku
+                        +'<label>ID Buku</label>' 
+                        +'<div class="input-control text">'
+                            +'<input  id="idbukuH" type="hidden">'
+                            +'<input readonly required type="text" name="idbukuTB" id="idbukuTB">'
                         +'</div>'
-                        +'<label>Tingkat</label>' 
-                        +'<div class="input-control select size4">'
-                            +'<select id="tingkatTB" name="tingkatTB">'
-                              +'</select>'
+                        // barcode 
+                        +'<label>Barcode</label>'
+                        +'<div class="input-control text">'
+                            +'<input readonly required type="text" name="barcodeTB" id="barcodeTB">'
+                            +'<button class="btn-clear"></button>'
                         +'</div>'
+                        // harga
+                        +'<label>Harga</label>'
+                        +'<div class="input-control text">'
+                            +'<input onclick="inputuang(this);" onfocus="inputuang(this);" required type="text" name="hargaTB" id="hargaTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        // button
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -1099,6 +1108,7 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                             });
                             $('#k_viewtbody').html(tbl);
                             $('#katalogTBL').attr('style','display:none;');
+                            $('#katalogFR').attr('style','display:none;');
                             // $('#katalogTBL').removeAttr('style');
                             $('#k_viewFR').toggle('slow');
                         }
@@ -1112,23 +1122,25 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
         }  
 
     
-// form ---
-    function kode_gen(id){
-                    titlex='<span class="icon-pencil"></span> Tambah';
-                    $.ajax({
-                        url:dir,
-                        data:'aksi=codeGen&subaksi=trans&kunci='+id,
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            $('#idbukuTB').val(dt.kode);
-
-                        }
-                    });
-               
+// generator label ---
+    function kode_gen(){
+        titlex='<span class="icon-pencil"></span> Tambah';
+        var datax   ='&sumber='+$('[name="sumberTB"]:checked').val()
+                    +'&lokasi='+$('#lokasiTB').val()
+                    +'&tanggal='+$('#tglTB').val()
+                    +'&tingkat='+$('#tingkatTB').val()
+                    +'&jml_koleksi='+$('#jml_koleksiTB').val()
+        $.ajax({
+            url:dir,
+            data:'aksi=codeGen&subaksi=trans'+datax,
+            type:'post',
+            dataType:'json',
+            success:function(dt){
+                $('#idbukuTB').val(dt.idbuku); 
+                $('#barcodeTB').val(dt.barcode); /*epiii*/
+            }
+        });
     }
-// end of form ---
-
 
 // form ---
     function koleksiFR(id){
@@ -1145,26 +1157,27 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                     var idkatalog = $('#idkatalogH').val(); // untuk nambah koleksi pada view katalog
                     $.ajax({
                         url:dir,
-                        data:'aksi=ambiledit&subaksi=koleksi&replid='+idkatalog,
+                        // data:'aksi=ambiledit&subaksi=koleksi&replid='+idkatalog,
+                        data:'aksi=ambiledit&subaksi=katalog&replid='+idkatalog, /*epiii*/
                         type:'post',
                         dataType:'json',
                         success:function(dt){
                             $('#koleksiH').val(id);
                             $('#judul_koleksiTD').html(dt.judul);
-                            $('#jml_koleksiTB').val(dt.jum);
-                            $('#idbukuTB').val(dt.kode);
-                            $('#barcodeTB').val(dt.barkode);
-                                    $.each($('input[name="sumberTB"]'),function(){
-                                        if(dt.sumber==$(this).val())
-                                            $(this).attr('checked',true);
-                                    });                            
-                            $('#hargaTB').val(dt.harga);
-                            $('#tglTB').val(dt.tanggal);
-                            $('#lokasiTB').val(dt.lokasi);
-                            $('#tingkatTB').val(dt.tingkatbuku);
+                            // $('#jml_koleksiTB').val(dt.jum);
+                            // $('#idbukuTB').val(dt.kode);
+                            // $('#barcodeTB').val(dt.barkode);
+                            // $.each($('input[name="sumberTB"]'),function(){
+                            //     if(dt.sumber==$(this).val()) $(this).attr('checked',true);
+                            // });                            
+                            // $('#hargaTB').val(dt.harga);
+                            $('#tglTB').val(getToday());
+                            // $('#lokasiTB').val(dt.lokasi);
+                            // $('#tingkatTB').val(dt.tingkatbuku);
                             
                             cmblokasi(dt.lokasi);
                             cmbtingkatbuku(dt.tingkatbuku);
+                            kode_gen();
                         }
                     });
 
@@ -1197,8 +1210,8 @@ var klasifikasi_contentFR = pengarang_contentFR = penerbit_contentFR = bahasa_co
                         }
                     });
                 }
-                    $.Dialog.title(titlex+' Koleksi');
-                    $.Dialog.content(koleksi_contentFR);
+                $.Dialog.title(titlex+' Koleksi');
+                $.Dialog.content(koleksi_contentFR);
             }
         });
     }
@@ -1540,3 +1553,77 @@ function notif(cont,clr) {
         });
     }
 //end of aktifkan process ---
+
+// input uang --------------------------
+    function inputuang(e) {
+        $(e).maskMoney({
+            precision:0,
+            prefix:'Rp. ', 
+            // allowNegative: true, 
+            thousands:'.', 
+            // decimal:',', 
+            affixesStay: true
+        });
+    }
+// end of input uang --------------------------
+
+
+//global u/ tanggal --------
+    var now  = new Date();
+    var dd   = now.getDate();
+    var mm   = now.getMonth()+1;
+    var yyyy = now.getFullYear();
+
+//tanggal terakhir : dd
+    function lastDate(m,y){
+        return 32 - new Date(y, (m-1), 32).getDate();
+    }
+// tanggal hari ini : dd mm yyyy
+    function getToday() {
+        // function addLeadingZeros (n, length){
+        return dateFormatx('id',lpadZero(dd,2),monthFormat(mm),yyyy);
+    }
+// tanggal pertama bulan ini : dd mm yyyy 
+    function getFirstDate() {
+        return dateFormatx('id','01',monthFormat(mm),yyyy);
+    }
+// tanggal terakhir bulan ini  : dd mm yyyy
+    function getLastDate() {
+        var dd = lastDate(mm,yyyy);
+        return dateFormatx('id',dd,monthFormat(mm),yyyy);
+    }
+//date format -----------------
+    function dateFormatx(typ,d,m,y){
+        if(typ=='id') // 25 Dec 2014
+            return d+' '+m+' '+y;
+        else // 2014-12-25
+            return y+'-'+m+'-'+d;
+    }
+
+// left pad (replace with 0)
+    function lpadZero (n, length){
+        var str = (n > 0 ? n : -n) + "";
+        var zeros = "";
+        for (var i = length - str.length; i > 0; i--)
+            zeros += "0";
+        zeros += str;
+        return n >= 0 ? zeros : "-" + zeros;
+    }
+
+// get month format -------------
+    function monthFormat(mon){
+        switch(mon){
+            case 1:return 'Jan';break;
+            case 2:return 'Feb';break;
+            case 3:return 'Mar';break;
+            case 4:return 'Apr';break;
+            case 5:return 'May';break;
+            case 6:return 'Jun';break;
+            case 7:return 'Jul';break;
+            case 8:return 'Aug';break;
+            case 9:return 'Sep';break;
+            case 10:return 'Oct';break;
+            case 11:return 'Nov';break;
+            case 12:return 'Dec';break;
+        }
+    }

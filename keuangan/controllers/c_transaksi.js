@@ -533,7 +533,7 @@ var rekArr=[];
                         +'</td>'
                     +'</tr>';
             }
-        }else{ // pemasukkan / pengeluaran
+        }else{ // pemasukan / pengeluaran
             if(typeof n=='undefined'){ isLoop=false; n=iTR;}
             jrek='rekitem'; // jenis rekening (income:debit, outcome:kredit)
             // jrek='"aktiva","modal","kewajiban","pendapatan","biaya"'; // jenis rekening (income:debit, outcome:kredit)
@@ -765,7 +765,6 @@ var rekArr=[];
                                 $('#uraianTB').val(dt.transaksiArr.uraian);
                                 var jurnal = dt.transaksiArr.jurnalArr;
                                 var n = jurnal.length;
-                                // console.log('banyak jurnal = '+jurnal.length);
                                 addRekTR(typx,n,jurnal);
                             });
                         }
@@ -774,7 +773,6 @@ var rekArr=[];
                         $('.rekkasDV').removeAttr('style');
                         $('#rekkasTB').attr('required',true);
                         autoSuggest('rekkas','rekkas','rek','');
-                        // autoSuggest('debit','rekkas','rek','');
                         $('#kwitansiDV').removeAttr('style');
                         
                         tr+='<tr style="color:white;"class="info">'
@@ -789,14 +787,14 @@ var rekArr=[];
                                 +'<th colspan="2"></th>'
                             +'</tr>';
                         if(typx=='in_come'){ //income
-                            $('#reklawanDV').html(' Pemasukkan');
+                            $('#reklawanDV').html(' Pemasukan');
                             if(id=='') { // add
                                 kodeTrans(typx);
                                 addRekTR(typx,1);
-                                titl='Tambah Transaksi Pemasukkan';
+                                titl='Tambah Transaksi Pemasukan';
                             }else{ //edit
                                 $('#addTRBC').attr('style','display:none;');
-                                titl ='Ubah Transaksi Pemasukkan';
+                                titl ='Ubah Transaksi Pemasukan';
                                 var url  = dir;
                                 var data = 'aksi=ambiledit&subaksi='+typx+'&replid='+id;
                                 ajax(url,data).done(function (dt) {
@@ -845,9 +843,7 @@ var rekArr=[];
                     $('#rekTBL3').html(tr3);
                     $('#subaksiH').val(typx);
 
-                    // $('#totNominalTD').html('Rp. '+totNominal);
                     $('#addTRBC').attr('onclick','addRekTR(\''+typx+'\');');
-                    // addRekTR(typ,2);
                     $.Dialog.title('<i class="fg-white icon-'+(id!=''?'pencil':'plus-2')+'"></i> '+titl); 
                 },200);
             }

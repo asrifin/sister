@@ -5,10 +5,6 @@
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 
-	$mnu  = 'perangkat';
-	
-	$tb   = 'pus_'.$mnu;
-
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
 				$page       = $_GET['page']; 
@@ -35,19 +31,6 @@
 							k.judul LIKE "%'.$searchTerm.'%" OR b.barkode LIKE "%'.$searchTerm.'%"
                       	)'.$terpilih; /*epiii*/
  
-				// $ss='SELECT *
-				// 		FROM(SELECT
-				// 					pus_katalog.replid,
-				// 					pus_buku.barkode barkode,
-				// 					pus_buku.callnumber callnumber,
-				// 					pus_katalog.judul judul
-				// 			FROM pus_katalog
-				// 			LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
-				// 			LEFT JOIN pus_lokasi ON pus_lokasi.replid = pus_buku.lokasi
-				// 			WHERE pus_lokasi.replid
-				// 			)tb
-				// 			WHERE	tb.barkode  LIKE "%'.$searchTerm.'%"
-				// 					OR tb.judul LIKE "%'.$searchTerm.'%"';
 				// print_r($ss);exit();
 				$result = mysql_query($ss) or die(mysql_error());
 				$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -91,64 +74,35 @@
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					case 'setting':
-							$sql = 'SELECT ps.nilai
-									FROM pus_detail_setting ps 
-									LEFT JOIN pus_setting2 ps2 ON ps2.replid = ps.kunci
-									WHERE 
-										ps2.kunci= "'.$_POST['kunci'].'"'
-									;
-							// print_r($sql);exit();
-							$query = mysql_query($sql);
-							// $hasil = mysql_fetch_assoc($query);
-							$row = '';
-							while ($hasil = mysql_fetch_assoc($query)) {
-								$row.=$hasil['nilai'].'/';
-							}
-							$out=json_encode(array('status'=>'sukses','row'=>$row));	
+						$out=json_encode(array('status'=>'sukses','row'=>getSettingFormat($_POST['kunci'])));	
 					break;
-					case 'judul':
-							$sql = 'SELECT ps.nilai
-									FROM pus_detail_setting ps 
-									LEFT JOIN pus_setting2 ps2 ON ps2.replid = ps.kunci
-									WHERE 
-										ps2.kunci= "'.$_POST['kunci'].'"'
-									;
-							// print_r($sql);exit();
-							$query = mysql_query($sql);
-							// $hasil = mysql_fetch_assoc($query);
-							$row = '';
-							while ($hasil = mysql_fetch_assoc($query)) {
-								$row.=$hasil['nilai'].'/';
-							}
-							$out=json_encode(array('status'=>'sukses','row'=>$row));	
-					break;
-	
+
 					case 'detSetting':
-						// setting
-						$s 	= '	SELECT ps.nilai
-								FROM pus_detail_setting ps 
-								LEFT JOIN pus_setting2 ps2 ON ps2.replid = ps.kunci
-								WHERE 
-								ps2.kunci= "'.$_POST['kunci'].'"';
+						$s   = 'SELECT 
+									d.replid,
+									d.urut,
+									d.nilai,
+									d.nilai2,
+									d.isActive,
+									d.isEdit,
+									d.keterangan
+								FROM
+									pus_detail_setting d
+									LEFT JOIN pus_setting2 s on s.replid = d.kunci
+								WHERE
+									s.kunci= "'.$_POST['kunci'].'"
+								ORDER BY 
+									urut ASC';
+						// var_dump($s);
 						$e   = mysql_query($s);
-						$row = '';
-						while ($r = mysql_fetch_assoc($s)) {
-							$row.=$hasil['nilai'].'/';
+						$row = array();
+						while ($r = mysql_fetch_assoc($e)) {
+							$row[]= $r;
 						}
 
-						// detail setting
-						$s2   = 'SELECT * 
-								FROM pus_detail_setting 
-								WHERE 
-									kunci= "'.$_POST['kunci'].'"';
-						$e2   = mysql_query($s2);
-						$row2 = array();
-						while ($r = mysql_fetch_assoc($e2)) {
-							$row2[]= $r;
-						}
 						$out=json_encode(array(
-								'status' =>'sukses',
-								'data'   =>$row2
+								'status' =>($e?'sukses':'gagal'),
+								'data'   =>$row
 							));	
 					break;
 				}
@@ -185,69 +139,57 @@
 			break;
 			// generate kode
 
-			// add / edit -----------------------------------------------------------------
+			// edit -----------------------------------------------------------------
 			case 'simpan':
-				switch ($_POST['subaksi']) {
-					case 'ju':
-						$s 		= $tb.' set 	nomer   = "'.$_POST['ju_nomerTB'].'",
-												nobukti = "'.filter($_POST['ju_nobuktiTB']).'",
-												uraian  = "'.filter($_POST['ju_uraianTB']).'",
-												tanggal = "'.tgl_indo6($_POST['ju_tanggalTB']).'"';
-						$s  = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-						// var_dump($s);exit();
-						// $e  = mysql_query($s);
-						// $id =mysql_insert_id();
-						// if(!$e){
-						// 	$stat='gagal_'.mysql_error();
-						// }else{
-							if(isset($_POST['ju_rekTB'])){
-								// var_dump(count($_POST['ju_rekTB']));
-								var_dump($_POST['ju_rekTB']);
-								// $s2	= 'keu_jurnal set 	transaksi = '.$id.',
-								// 						rek       = '.$_POST['ju_rekTB'].',
-								// 						debet     = '.$_POST['ju_debetTB'].',
-								// 						kredit    = '.$_POST['ju_kreditTB'];
-								// $s2 = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-							}
-						// }
-						// $stat 	= ($e)?'sukses':'gagal';
-						// $out 	= json_encode(array('status'=>$stat));
-					break;
+				$u='';
+				$id1=$id2=$u1=$u2=0;
+				$status1=$status2=true;
+				foreach ($_POST['detSettingH'] as $i => $v) {
+					// all : sure
+					$s1='UPDATE pus_detail_setting  
+						 SET 	nilai2   	= "'.((isset($_POST['nilai2_'.$v.'TB']) AND $_POST['nilai2_'.$v.'TB']!='')?$_POST['nilai2_'.$v.'TB']:'').'",
+								isActive 	= '.((isset($_POST['isActive_'.$v.'TB']) AND $_POST['isActive_'.$v.'TB']=='on')?1:0).'
+						 WHERE 	replid		='.$v;
+					$e1 = mysql_query($s1);
+					$status1 =!$e1?false:true;
 
-					case 'barang':
-						$s 		= $tb4.' set 	katalog    = "'.$_POST['b_katalogH2'].'",
-												tempat     = "'.$_POST['b_tempatTB'].'",
-												sumber     = "'.$_POST['b_sumberTB'].'",
-												harga      = "'.getuang($_POST['b_hargaTB']).'",
-												kondisi    = "'.$_POST['b_kondisiTB'].'",
-												keterangan = "'.filter($_POST['b_keteranganTB']).'"';
-						$stat = true;
-						if(!isset($_POST['replid'])){ //add
-							if(isset($_POST['b_jumbarangTB']) and $_POST['b_jumbarangTB']>1){ //  lebih dr 1 unit barang
-								for($i=0; $i<($_POST['b_jumbarangTB']); $i++) { // iterasi sbnyak jum barang 
-									$s2 ='INSERT INTO '.$s.', urut='.($_POST['b_urutH']+$i);
-									// var_dump($s2);exit();
-									$e  = mysql_query($s2);
-									if(!$e)$stat=false;
-								}
-							}else{ // 1 unit barang
-								$s2='INSERT INTO '.$s.', urut='.$_POST['b_urutH'];
-								// var_dump($s2);exit();
-								$e=mysql_query($s2);
-								if(!$e)$stat=false;  
-							// var_dump($e);exit();
-							}
-						}else{ //edit
-							$s2 = 'UPDATE '.$s.', urut='.$_POST['b_urutH'].' WHERE replid='.$_POST['replid'];
-							// var_dump($s2);exit();
-							$e  = mysql_query($s2);
-							if(!$e)$stat=false;  
-						}
-						$out 	= json_encode(array('status'=>($stat?'sukses':'gagal')));
-					break;
+					$sc1 = 'SELECT *  FROM pus_detail_setting WHERE replid ='.$v;
+					$ec1 = mysql_query($sc1);
+					$rc1 = mysql_fetch_assoc($ec1);
+
+					$uu1  = intval($rc1['urut']); 				// ex : 5 -> 1
+					$uu2  = intval($_POST['urut_'.$v.'TB']);  	// ex : 1 -> 5
+
+					$sc2 = 'SELECT * FROM pus_detail_setting WHERE kunci='.$rc1['kunci'].' and urut ='.$uu2;
+					$ec2 = mysql_query($sc2);
+					$rc2 = mysql_fetch_assoc($ec2);
+
+					if($uu2!=$uu1){ // jika ada perubahan urutan 
+						$u1 +=$uu1;
+						$u2 +=$uu2;
+						$id1 +=$v;
+						$id2 +=intval($rc2['replid']);
+					}
 				}
+
+				if($uu1!=0){
+					// 1
+					$s2 ='UPDATE pus_detail_setting 
+						  SET urut = '.$u2.'
+						  WHERE replid = '.$id1;
+					$e2 = mysql_query($s2);
+					// 2 
+					$s3 ='UPDATE pus_detail_setting 
+						  SET urut = '.$u1.'
+						  WHERE replid ='.$id2;
+					$e3 = mysql_query($s3);
+					$status2 =(!$e2 || !$e3)?false:true;
+				}
+				// var_dump($u);exit();
+				$stat = ($status1 && $status2)?'sukses':'gagal';
+				$out  = json_encode(array('status'=>$stat));
 			break;
-			// add / edit -----------------------------------------------------------------
+			// edit -----------------------------------------------------------------
 			
 			// delete ---------------------------------------------------------------------
 			case 'hapus':

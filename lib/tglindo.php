@@ -49,6 +49,7 @@
 		$tahun   =substr($tgl, 7,11);
 		$bulan   =substr($tgl, 3,3);
 		$tanggal =substr($tgl, 0,2);
+		// var_dump($tahun.'-'.getBulan2($bulan).'-'.$tanggal);exit();
 		return $tahun.'-'.getBulan2($bulan).'-'.$tanggal;
 	}function tgl_indo7($tgl){ //from 2012-05-09 --> 09 Sep 2012
 		$tahun   =substr($tgl,0,4);
@@ -82,7 +83,9 @@
 			'Oct'=>'10',
 			'Nov'=>'11',
 			'Dec'=>'12'
-		];return $blnArr[$b];	
+ 		];
+ 		// var_dump($blnArr[$b]);exit();	
+ 		return $blnArr[$b];	
 	}function getBulan($bln){
 				switch ($bln){
 					case 1: 

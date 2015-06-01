@@ -97,23 +97,29 @@
 						$a_keterangan = isset($_POST['a_keteranganS'])?filter($_POST['a_keteranganS']):'';
 
 						$sql = 'SELECT
-									a.replid,
-									a.nama,
-									a.keterangan,
-									d.nama namarek,
-									d.kode koderek
+									k.replid,
+									k.nama,
+									k.keterangan,
+									r.nama namarek,
+									r.kode koderek,
+									SUM(n.nominal)nominal,
+									round((IF (count(*) = 1, 0, count(*) / 12)),0) jmlItem
 								FROM
-									keu_kategorianggaran a
-									LEFT JOIN keu_detilrekening d ON d.replid = a.rekening
+									keu_kategorianggaran k
+									LEFT JOIN keu_detilrekening r ON r.replid = k.rekening
+									LEFT JOIN keu_detilanggaran d ON d.kategorianggaran = k.replid
+									LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
 								WHERE
-									a.departemen = '.$a_departemen.'
-									AND a.nama LIKE "%'.$a_nama.'%"
+									k.departemen = '.$a_departemen.'
+									AND k.nama LIKE "%'.$a_nama.'%"
 									AND (
-										d.nama LIKE "%'.$a_rekening.'%"
-										OR d.kode LIKE "%'.$a_rekening.'%"
-									)AND a.keterangan LIKE "%'.$a_keterangan.'%"
+										r.nama LIKE "%'.$a_rekening.'%"
+										OR r.kode LIKE "%'.$a_rekening.'%"
+									)AND k.keterangan LIKE "%'.$a_keterangan.'%"
+								GROUP BY
+									k.replid
 								ORDER BY
-									a.replid ASC';
+									k.replid ASC';
 						// print_r($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -147,6 +153,8 @@
 											<td>'.$res['nama'].'</td>
 											<td>'.$res['koderek'].' - '.$res['namarek'].'</td>
 											<td>'.$res['keterangan'].'</td>
+											<td class="text-center">'.$res['jmlItem'].' item</td>
+											<td class="text-right" >Rp. '.number_format($res['nominal']).'</td>
 											'.$btn.'
 										</tr>';
 								$nox++;

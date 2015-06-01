@@ -158,6 +158,7 @@
         #generate html -> PDF ------------
           $out2 = ob_get_contents();
           ob_end_clean(); 
+          // $mpdf=new mPDF('utf-8','B10','');   
           $mpdf=new mPDF('utf-8','A4','');   
           // $mpdf=new mPDF('c','A4','');   
           // $mpdf=new mPDF('c', 'A4', '', '', 4, 4, 10, 10, 0, 0);   
