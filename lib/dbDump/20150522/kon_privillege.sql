@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-22 15:21:49
+Date: 2015-06-01 19:45:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,7 +24,7 @@ CREATE TABLE `kon_privillege` (
   `id_login` int(11) NOT NULL,
   `id_menu` int(11) NOT NULL,
   PRIMARY KEY (`id_privillege`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_privillege
@@ -43,3 +43,5 @@ INSERT INTO `kon_privillege` VALUES ('13', '1', '21');
 INSERT INTO `kon_privillege` VALUES ('14', '1', '19');
 INSERT INTO `kon_privillege` VALUES ('15', '1', '22');
 INSERT INTO `kon_privillege` VALUES ('17', '1', '11');
+INSERT INTO `kon_privillege` VALUES ('18', '1', '18');
+INSERT INTO `kon_privillege` VALUES ('19', '1', '23');

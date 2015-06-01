@@ -192,20 +192,21 @@ var rekArr=[];
         
         jenisTrans(); // load checkbox jenis transaksi
         loadAll();
-        cmbbukubesar();
+        // cmbbukubesar();
     }); 
 // end of main function ---------
 
      function loadAll(){
-        viewTB('ju');
-        viewTB('ns');
-        cmbbukubesar();
-        // viewTB('bb'); 
-        viewTB('nl');
-        viewTB('ln');
-        viewTB('lr');
-        viewTB('pkb');
-        viewTB('bt');
+        viewTB('ju');   // jurnal umum 
+        viewTB('ns');   // neraca saldo 
+        cmbbukubesar(); // buku besar
+        viewTB('nl');   // neraca lajur
+        viewTB('ln');   // laporan neraca
+        viewTB('lr');   // laba /rugi
+        viewTB('pkb');  // posisi kas bank
+        viewTB('bt');   // buku tambahan 
+        viewTB('li');   // laporan income (penerimaan siswa)
+        viewTB('lo');   // laporan outcome (pengeluaran)
     }
 
 //paging ---
@@ -272,10 +273,17 @@ var rekArr=[];
             cari+='&'+p+'='+v;
         });
 
-        if(subaksi=='ju'){
+        // if(subaksi=='ju'){
             var opt = $('form#filterFR').serialize();
             cari+='&'+opt;
-        }
+        // }
+
+        // $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr>');
+        // ajax(dir,aksi+cari).done(function(dt){
+        //     // setTimeout(function(){
+        //         $(el2).html(dt).fadeIn();
+        //     // },1000);
+        // });
 
         $.ajax({
             url : dir,

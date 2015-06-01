@@ -1,11 +1,11 @@
-<script src="controllers/c_aktivitas.js"></script>
+<script src="controllers/c_keuaktivitas.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
 
 <h4 style="color:white;">Aktivitas</h4>
 <div id="loadarea"></div>
 
-<button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<!-- <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button> -->
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
 <div class="input-control select span3">
@@ -27,18 +27,8 @@
         <tr style="display:none;" id="cariTR" class="selected">
             <th></th>
             <th><div class="input-control text">    <input placeholder="cari ...." id="aktivitasS" name="aktivitasS"></div></th>
-            <th>
-            <!-- <div class="input-control text">    <input placeholder="cari ...." id="keteranganS" name="keteranganS"></div> -->
-            </th>
-            <th>
-<!--                 <div class="input-control select">    
-                    <select name="lunasS" id="lunasS">
-                        <option value="">-SEMUA-</option>
-                        <option value="1">lunas</option>
-                        <option value="0">belum</option>
-                    </select>
-                </div>
- -->            </th>
+            <th></th>
+            <th></th>
             <th><div class="input-control text">    <input placeholder="cari ...." id="keteranganS" name="keteranganS"></div></th>
             <th colspan="2"></th>
         </tr>

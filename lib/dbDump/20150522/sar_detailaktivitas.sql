@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-31 10:35:22
+Date: 2015-06-01 19:22:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,10 +29,11 @@ CREATE TABLE `sar_detailaktivitas` (
   `tglbayar` date NOT NULL,
   `tgllunas` date NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of sar_detailaktivitas
 -- ----------------------------
-INSERT INTO `sar_detailaktivitas` VALUES ('2', '20', '', '1', '50000', '0', '2015-06-02', '0000-00-00');
-INSERT INTO `sar_detailaktivitas` VALUES ('3', '20', '', '100', '10000', '0', '2015-05-05', '0000-00-00');
+INSERT INTO `sar_detailaktivitas` VALUES ('23', '30', 'pasir', '1', '100000', '85000', '2015-06-08', '2015-06-08');
+INSERT INTO `sar_detailaktivitas` VALUES ('24', '30', 'pot bunga', '50', '10000', '450000', '2015-06-09', '2015-06-10');
+INSERT INTO `sar_detailaktivitas` VALUES ('25', '30', 'semen', '2', '50000', '100000', '2015-06-08', '2015-06-09');

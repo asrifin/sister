@@ -61,20 +61,19 @@
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
-										<i class="icon-pencil on-left"></i>
-									</button>
-									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
-										<i class="icon-remove on-left"></i>
+									<button data-hint="lihat"  class="button" onclick="viewFR('.$res['replid'].');">
+										<i class="icon-zoom-in"></i>
 									</button>
 								 </td>';
-					 	if($res['biayaRealisasi']==0){
+						if($res['biayaRealisasi']==0){
 							$hint = 'pending';
 							$bg   = 'amber';
 						}else{
 							$hint = 'acc.';
 							$bg   = 'lightTeal';
 					 	}
+						
+						// $out.= '<tr  data-hint-position="left" '.($res['biayaRealisasi']==0?'data-hint="baru" class="bg-lightTeal"':'').'>
 						$out.= '<tr data-hint="'.$hint.'" data-hint-position="left"  class="bg-'.$bg.'">
 									<td class="text-center">'.tgl_indo5($res['tanggal1']).' - '.tgl_indo5($res['tanggal2']).'</td>
 									<td>'.$res['aktivitas'].'</td>
@@ -98,61 +97,16 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				// 1. simpan aktivitas
-				$totNominal = 0;
-				$c          = count($_POST['idTR']);
-				$itemArr    = $_POST['idTR'];
-				$s1 = $tb.' SET tanggal1   ="'.tgl_indo6($_POST['tanggal1TB']).'",
-								tanggal2   ="'.tgl_indo6($_POST['tanggal2TB']).'",
-								aktivitas  ="'.$_POST['aktivitasTB'].'",
-								lokasi     ="'.$_POST['lokasiH'].'",
-								keterangan ="'.$_POST['keteranganTB'].'"';
-				$s  = (isset($_POST['replid']) AND $_POST['replid']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s1;
-				$e  = mysql_query($s);
-				$id = (isset($_POST['replid']) AND $_POST['replid']!='')?$_POST['replid']:mysql_insert_id();
-				if(!$e) $stat='gagal_insert_aktivitas';
-				else{
-					// 2.a hapus item detail aktivitas (jika ada)
-					$stat22 = true;
-					if(isset($_POST['idDelTR']) AND $_POST['idDelTR']!=''){
-						$ss2  = 'DELETE FROM '.$tb3.' WHERE replid IN ('.$_POST['idDelTR'].')';
-						$ee2  = mysql_query($ss2);
-						$stat22 = !$ee2?false:true; 
-						// var_dump($ee2);exit();
-					}
-					// 2.b simpan detail aktivitas (wajib)
-					$stat2 =$stat2 = true;
-					$nomDebit = $nomKredit = 0;
-					
-					if(!$stat22) $stat='gagal_delete_detail_aktivitas'; // ada hapus detail aktivitas AND gagal 
-					else{ // tidak ada hapus detail aktivitas OR sukses hapus
-						$xx='';
-						foreach ($itemArr as $i => $v) {
-							$item     = isset($_POST['item_'.$v.'TB'])?'item="'.getuang($_POST['item_'.$v.'TB']).'",':'';
-							$jumlah   = isset($_POST['jumlah_'.$v.'TB'])?'jumlah='.getuang($_POST['jumlah_'.$v.'TB']).',':'';
-							$biaya    = isset($_POST['biaya_'.$v.'TB'])?'biaya='.getuang($_POST['biaya_'.$v.'TB']).',':'';
-							$tglbayar = (isset($_POST['tglbayar_'.$v.'TB']) && $_POST['tglbayar_'.$v.'TB']!='-' )?'tglbayar="'.tgl_indo6($_POST['tglbayar_'.$v.'TB']).'",':'';
-							$tgllunas = (isset($_POST['tgllunas_'.$v.'TB']) && $_POST['tgllunas_'.$v.'TB']!='-')?tgl_indo6($_POST['tgllunas_'.$v.'TB']):'0000-00-00';
-							$s        = $tb3.' SET 	aktivitas='.$id.', 
-													'.$biaya.'
-													'.$jumlah.'
-													'.$item.'
-													'.$tglbayar.'
-													tgllunas ="'.$tgllunas.'"';
-							if($_POST['mode'.$v.'H']=='edit')//edit
-								$s2   = 'UPDATE '.$s.' WHERE replid='.$_POST['iditem_'.$v.'H'];
-							else // add
-								$s2   ='INSERT INTO '.$s;
-// var_dump($s2);exit();
-							$xx.=$s2;
-							$e2    = mysql_query($s2);
-							$stat2 =!$e2?false:true;
-						}
-						// var_dump($xx);exit();
-						if(!$stat2)  $stat = 'gagal_simpan_detail_aktivitas';
-						else $stat = 'sukses';
-					}
-				}$out=json_encode(array('status'=>$stat));
+				$itemArr = $_POST['idTR'];
+				$stat2   =true;
+				foreach ($itemArr as $i => $v) {
+					$s    = 'UPDATE '.$tb3.' SET biaya2='.getuang($_POST['biaya2_'.$v.'TB']).' WHERE replid='.$_POST['iditem_'.$v.'H'];
+					$e    = mysql_query($s);
+					$stat2 =!$e?false:true;
+				}
+				// var_dump($xx);exit();
+				$stat =!$stat2?'gagal_simpan_detail_aktivitas':'sukses';
+				$out  =json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			

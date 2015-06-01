@@ -129,6 +129,9 @@
                     case 'penerimaan':
                         require $d.'v_penerimaan.php';
                     break;
+                    case 'aktivitas':
+                        require $d.'v_keuaktivitas.php';
+                    break;
                     case 'inventory':
                         require $d.'v_inventory.php';
                     break;

@@ -86,43 +86,84 @@
  		];
  		// var_dump($blnArr[$b]);exit();	
  		return $blnArr[$b];	
-	}function getBulan($bln){
+	}
+	// function getBulan($bln){
+	// 			switch ($bln){
+	// 				case 1: 
+	// 					return "Jan";
+	// 					break;
+	// 				case 2:
+	// 					return "Feb";
+	// 					break;
+	// 				case 3:
+	// 					return "Mar";
+	// 					break;
+	// 				case 4:
+	// 					return "Apr";
+	// 					break;
+	// 				case 5:
+	// 					return "May";
+	// 					break;
+	// 				case 6:
+	// 					return "Jun";
+	// 					break;
+	// 				case 7:
+	// 					return "Jul";
+	// 					break;
+	// 				case 8:
+	// 					return "Aug";
+	// 					break;
+	// 				case 9:
+	// 					return "Sep";
+	// 					break;
+	// 				case 10:
+	// 					return "Oct";
+	// 					break;
+	// 				case 11:
+	// 					return "Nov";
+	// 					break;
+	// 				case 12:
+	// 					return "Dec";
+	// 					break;
+	// 			}
+	// }
+	function getBulan($bln){
 				switch ($bln){
 					case 1: 
-						return "Januari";
+						return "January";
 						break;
 					case 2:
-						return "Februari";
+						return "February";
 						break;
 					case 3:
-						return "Maret";
+						return "March";
 						break;
 					case 4:
 						return "April";
 						break;
 					case 5:
-						return "Mei";
+						return "May";
 						break;
 					case 6:
-						return "Juni";
+						return "June";
 						break;
 					case 7:
-						return "Juli";
+						return "July";
 						break;
 					case 8:
-						return "Agustus";
+						return "August";
 						break;
 					case 9:
 						return "September";
 						break;
 					case 10:
-						return "Oktober";
+						return "October";
 						break;
 					case 11:
 						return "November";
 						break;
 					case 12:
-						return "Desember";
+						return "December";
 						break;
 				}
 	}
