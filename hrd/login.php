@@ -9,9 +9,9 @@ global $koneksi_db;
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link rel="stylesheet" href="themes/administrator/css/login.css" type="text/css" />
+<link rel="stylesheet" href="logincss/login.css" type="text/css" />
 <link rel="shortcut icon" href="favicon.ico" >
-<title>administrator : Login</title>
+<title>.:SISTER:.</title>
 </head>
 
 <body onload="setFocus();">
@@ -26,20 +26,17 @@ $login .= aura_login ();
 
 if (!cek_login ()){
 ?>
-<div class="login">
-<img src="themes/administrator/images/loginuser.jpg">
+<div class="LoginBox" style="display: block;"> 
+<img src="logincss/avatar.png"> 
+<div class="fields"> 
+<h2 >Please, enter your username.</h2> 
 <form action="" method="post" name="login" id="loginForm">
-<div class="form-block">
-<div class="inputlabel">Username : <input name="username" type="text" class="inputbox" size="25" /></div>
-<div class="inputlabel">Password : <input name="password" type="password" class="inputbox" size="25" /><input type="hidden" value="1" name="loguser" /></div>
-<div class="loginbutton">
-<input type="submit" name="submit_login" class="button" value="Login" /></div>
+<input name="username" type="text" class="inputbox" size="25" placeholder="Username"/>
+<input name="password" type="password" class="inputbox" size="25" placeholder="Password"/>
+<input type="hidden" value="1" name="loguser" />
+<input type="submit" name="submit_login" class="button" value="Login" />
+</form>
 </div>
-</form>
-<form action="../" method="post" name="login" id="loginForm">
-<div  class="loginbutton"><br>
-<input type="submit" name="submit_login" class="button" value="MENU UTAMA" /></div>
-</form>
 </div>
 <?php
 
