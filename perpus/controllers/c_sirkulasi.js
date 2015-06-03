@@ -8,7 +8,7 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
 // main function load first 
     $(document).ready(function(){
 
-        $('#lokasiTB').on('change',function(){
+        $('#lokasiTB').on('focus',function(){
             autoSug($('#judulTB'),$(this).val());
         });        
 
@@ -211,9 +211,9 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
 
     // button action
         //add ---
-        $("#peminjamanBC").on('click', function(){ 
-            pinjamFR('');
-        });
+        // $("#peminjamanBC").on('click', function(){ 
+        //     // pinjamFR('');
+        // });
         $("#pengembalianBC").on('click', function(){ 
             kembaliFR('');
         });
@@ -358,7 +358,7 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
     }
 
 // load form (all)
-    function loadFR(titl,cont,inpArr){        
+    function loadFR(typx,id){        
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -366,17 +366,44 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
             width: 500,
             padding: 10,
             onShow: function(){
-                $.Dialog.title(titl+' '+mnu); 
-                $.Dialog.content(cont);
-                  
-                if(inpArr!=null){ // main form : set value fields 
-                    $.each(inpArr,function (id,item) {
-                       $('#'+id).val(item);
-                    });
-                }
+                $.Dialog.content(pinjam_contentFR);
+                setTimeout(function(){
+                    $('idformH').val(typx);
+                    if (typx='peminjaman') {
+                        if (id=='') { //add
+                            titl = ' Tambah Peminjaman';
+                            cmblokasi();
+
+                        }else{
+                            titl = ' Ubah Peminjaman';
+
+                        }
+                    }
+
+                },200);  
+
             }
         });
     }
+    // function loadFR(titl,cont,inpArr){        
+    //     $.Dialog({
+    //         shadow: true,
+    //         overlay: true,
+    //         draggable: true,
+    //         width: 500,
+    //         padding: 10,
+    //         onShow: function(){
+    //             $.Dialog.title(titl+' '+mnu); 
+    //             $.Dialog.content(cont);
+                  
+    //             if(inpArr!=null){ // main form : set value fields 
+    //                 $.each(inpArr,function (id,item) {
+    //                    $('#'+id).val(item);
+    //                 });
+    //             }
+    //         }
+    //     });
+    // }
 
 //Dialog (add/edit)
 //fungsi pengembalian  ---
@@ -388,21 +415,6 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
             width: 500,
             padding: 10,
             onShow: function(){
-                    // $.ajax({
-                    //     url:dir,
-                    //     data:'aksi=ambiledit&replid='+id,
-                    //     type:'post',
-                    //     dataType:'json',
-                    //     success:function(dt){
-                    //         $('#idformH').val(id);
-                    //         $('#lokasiH').val($('#lokasiS').val());
-                    //         $('#kodeTB').val(dt.kode);
-                    //         $('#namaTB').val(dt.nama);
-                    //         $('#alamatTB').val(dt.alamat);
-                    //         $('#keteranganTB').val(dt.keterangan);
-                    //     }
-                    // });
-
                 var titl,cont;
                 if(id!=''){ 
                     cont= kembalikan_content;
@@ -421,45 +433,43 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
         });
     }
 
-/* form peminjaman (add & edit) */
-    function pinjamFR(id){
-        if(id!=''){ // edit mode
-            
-        }else{ // add  mode
-            var titl   ='<i class="icon-plus-2"></i> Tambah ';
-            var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
-            loadFR(titl,pinjam_contentFR,inpArr);
-            cmblokasi();
+        function autoSug(el,lok){
+            $(el).combogrid({
+                debug:true,
+                width:'400px',
+                colModel: [{
+                        'align':'left',
+                        'columnName':'barkode',
+                        'hide':true,
+                        'width':'55',
+                        // 'width':'8',
+                        'label':'Barkode'
+                    },{   
+                        'columnName':'judul',
+                        'width':'40',
+                        'label':'Judul'
+                    }],
+                url: dir+'?aksi=autocomp&subaksi=tersedia&lokasi='+lok,
+                select: function( event, ui ) { // event setelah data terpilih 
+                    barangAdd(ui.item.replid,ui.item.barkode,ui.item.judul);
+                    $(el).val('');
+                    // $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=judul&lokasi='+$('#lokasiS').val()+'&brgArr='+barangArr().toString() );
+                    return false;
+                }
+            }); //End autocomplete
         }
 
-        //autocomplete
-    function autoSug(el,lok){
-        $(el).combogrid({
-            debug:true,
-            width:'400px',
-            colModel: [{
-                    'align':'left',
-                    'columnName':'barkode',
-                    'hide':true,
-                    'width':'55',
-                    // 'width':'8',
-                    'label':'Barkode'
-                },{   
-                    'columnName':'judul',
-                    'width':'40',
-                    'label':'Judul'
-                }],
-            url: dir+'?aksi=autocomp&subaksi=tersedia&lokasi='+lok,
-            select: function( event, ui ) { // event setelah data terpilih 
-                barangAdd(ui.item.replid,ui.item.barkode,ui.item.judul);
-                $(el).val('');
-                // $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=judul&lokasi='+$('#lokasiS').val()+'&brgArr='+barangArr().toString() );
-                return false;
-            }
-        }); //End autocomplete
-    }
-
-}
+/* form peminjaman (add & edit) */
+    // function pinjamFR(id){
+    //     if(id!=''){ // edit mode
+            
+    //     }else{ // add  mode
+    //         var titl   ='<i class="icon-plus-2"></i> Tambah ';
+    //         var inpArr ={"tgl_pinjamTB":getToday(),"tgl_kembaliTB":getLastDate};
+    //         loadFR(titl,pinjam_contentFR,inpArr);
+    //         cmblokasi();
+    //     }
+    // }
 
     // hapus barang terpilih
         function barangDel(id){

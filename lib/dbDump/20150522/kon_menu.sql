@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-22 07:43:48
+Date: 2015-06-01 19:44:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -34,18 +34,18 @@ CREATE TABLE `kon_menu` (
 -- ----------------------------
 -- Records of kon_menu
 -- ----------------------------
-INSERT INTO `kon_menu` VALUES ('1', '1', 'Pendataan Siswa', 'pendataan-siswa', 'double', '1', '1', '');
-INSERT INTO `kon_menu` VALUES ('2', '1', 'Presensi Siswa', 'presensi-siswa', 'double', '2', '2', '');
-INSERT INTO `kon_menu` VALUES ('3', '1', 'Rapor Siswa', 'rapor-siswa', 'double', '3', '3', '');
-INSERT INTO `kon_menu` VALUES ('4', '1', 'Pendataan Alumni', 'pendataan-alumni', 'double', '4', '4', '');
-INSERT INTO `kon_menu` VALUES ('5', '1', 'Pelajaran', 'pelajaran', 'double', '5', '5', '');
-INSERT INTO `kon_menu` VALUES ('6', '1', 'Guru', 'guru', 'double', '6', '6', '');
-INSERT INTO `kon_menu` VALUES ('7', '1', 'Jadwal Pelajaran', 'jadwal-pelajaran', 'double', '7', '7', '');
-INSERT INTO `kon_menu` VALUES ('8', '5', 'Transaksi', 'transaksi', 'double', '8', '8', '');
-INSERT INTO `kon_menu` VALUES ('9', '5', 'Modul Pembayaran', 'modul-pembayaran', 'double', '9', '9', '');
-INSERT INTO `kon_menu` VALUES ('10', '5', 'Pembayaran', 'pembayaran', 'double', '10', '10', '');
-INSERT INTO `kon_menu` VALUES ('11', '5', 'Inventory', 'inventory', 'double', '11', '11', '');
-INSERT INTO `kon_menu` VALUES ('12', '6', 'Tahun Buku', 'tahun-buku', '', '12', '12', '');
+INSERT INTO `kon_menu` VALUES ('1', '1', 'Pendataan Siswa', 'pendataan-siswa', 'double', '1', '9', '');
+INSERT INTO `kon_menu` VALUES ('2', '1', 'Presensi Siswa', 'presensi-siswa', 'double', '2', '10', '');
+INSERT INTO `kon_menu` VALUES ('3', '1', 'Rapor Siswa', 'rapor-siswa', 'double', '3', '11', '');
+INSERT INTO `kon_menu` VALUES ('4', '1', 'Pendataan Alumni', 'pendataan-alumni', 'double', '4', '12', '');
+INSERT INTO `kon_menu` VALUES ('5', '1', 'Pelajaran', 'pelajaran', 'double', '5', '13', '');
+INSERT INTO `kon_menu` VALUES ('6', '1', 'Guru', 'guru', 'double', '6', '14', '');
+INSERT INTO `kon_menu` VALUES ('7', '1', 'Jadwal Pelajaran', 'jadwal-pelajaran', 'double', '7', '15', '');
+INSERT INTO `kon_menu` VALUES ('8', '5', 'Transaksi', 'transaksi', 'double', '8', '16', '');
+INSERT INTO `kon_menu` VALUES ('9', '5', 'Modul Pembayaran', 'modul-pembayaran', 'double', '9', '17', '');
+INSERT INTO `kon_menu` VALUES ('10', '5', 'Penerimaan', 'penerimaan', 'double', '10', '18', '');
+INSERT INTO `kon_menu` VALUES ('11', '5', 'Inventory', 'inventory', 'double', '11', '19', '');
+INSERT INTO `kon_menu` VALUES ('12', '6', 'Tahun Buku', 'tahun-buku', '', '12', '20', '');
 INSERT INTO `kon_menu` VALUES ('13', '6', 'Saldo Awal', 'saldo-rekening', '', '13', '13', '');
 INSERT INTO `kon_menu` VALUES ('14', '6', 'Kategori COA', 'kategori-rekening', '', '14', '14', '');
 INSERT INTO `kon_menu` VALUES ('15', '6', 'COA', 'detil-rekening', '', '15', '19', '');
@@ -55,4 +55,4 @@ INSERT INTO `kon_menu` VALUES ('19', '7', 'Warna', 'warna', '', '4', '17', '');
 INSERT INTO `kon_menu` VALUES ('20', '8', 'level', 'level', '', '5', '16', '');
 INSERT INTO `kon_menu` VALUES ('21', '8', 'user', 'user', '', '7', '15', '');
 INSERT INTO `kon_menu` VALUES ('22', '7', 'Icon', 'icon', '', '4', '13', '');
-INSERT INTO `kon_menu` VALUES ('23', '0', '', '', '', '0', '0', '');
+INSERT INTO `kon_menu` VALUES ('23', '5', 'Pendanaan Aktivitas', 'pendanaan-aktivitas', 'double', '7', '13', '');
