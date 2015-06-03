@@ -59,15 +59,20 @@
 							d.nama,
 							sum(n.nominal)nominal,
 							k.nama kategorianggaran,
-							concat(t.tingkat," (",t.keterangan,")") tingkat
+							concat(t.tingkat," (",t.keterangan,")") tingkat,
+							concat(r.nama," (",r.kode,") ")rekening,
+							r.replid idrekening
 						FROM
 							keu_detilanggaran d
 							LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
 							LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
+							LEFT JOIN keu_detilrekening r ON r.replid = k.rekening
 							LEFT JOIN aka_tingkat t ON t.replid = d.tingkat
 						WHERE
 							d.nama LIKE "%'.$searchTerm.'%"
 							OR k.nama LIKE "%'.$searchTerm.'%"
+							OR r.nama LIKE "%'.$searchTerm.'%"
+							OR r.kode LIKE "%'.$searchTerm.'%"
 						GROUP BY	
 							d.replid ';
 				}
@@ -112,6 +117,8 @@
 							'sisaBilCur'       =>'Rp. '.number_format($kuota['sisaNum']),
 							'terpakaiBilCur'   =>'Rp. '.number_format($kuota['terpakaiNum']),
 							'sisaBilNum'       => $kuota['sisaNum'],
+							'idrekening'       => $row['idrekening'],
+							'rekening'         => $row['rekening'],
 						);
 					}$rows[]=$arr; 
 				}$response=array(

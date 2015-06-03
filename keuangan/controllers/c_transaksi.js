@@ -113,32 +113,20 @@ var rekArr=[];
                             +'<textarea placeholder="uraian" name="uraianTB" id="uraianTB"></textarea>'
                         +'</div>'
 
+                        // anggaran (optional:income & outcome)
+                        // +'<label style="display:none;" class="detilanggaranDV">Anggaran </label>'
+                        // +'<div style="display:none;" class="input-control text detilanggaranDV">'
+                        //     +'<input type="hidden" name="detilanggaranV" id="detilanggaranV">'
+                        //     +'<input type="hidden" name="detilanggaranH" id="detilanggaranH">'
+                        //     +'<input placeholder="pada anggaran" id="detilanggaranTB">'
+                        //     +'<button class="btn-clear"></button>'
+                        // +'</div>'
+
                         // rekening kas (optional)
                         +'<label style="display:none;" class="rekkasDV">Rekening Kas/Bank</label>'
                         +'<div style="display:none;" class="input-control text rekkasDV">'
                             +'<input type="hidden" name="rekkasH" id="rekkasH">'
                             +'<input placeholder="rek. kas / bank" id="rekkasTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-
-                        // departemen (optional)
-                        // +'<label>Departemen</label>'
-                        // +'<div class="input-control select">'
-                        //     +'<select onchange="cmbtingkat(this.value,\'\');" name="departemenTB" id="departemenTB"></select>'
-                        // +'</div>'
-                        
-                        // tingkat / jenjang  (optional)
-                        // +'<label>Tingkat</label>'
-                        // +'<div class="input-control select">'
-                        //     +'<select name="tingkatTB" id="tingkatTB"></select>'
-                        // +'</div>'
-
-                        // anggaran (optional:income & outcome)
-                        +'<label style="display:none;" class="detilanggaranDV">Anggaran </label>'
-                        +'<div style="display:none;" class="input-control text detilanggaranDV">'
-                            +'<input type="hidden" name="detilanggaranV" id="detilanggaranV">'
-                            +'<input type="hidden" name="detilanggaranH" id="detilanggaranH">'
-                            +'<input placeholder="pada anggaran" id="detilanggaranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -547,24 +535,34 @@ var rekArr=[];
             // jrek='"aktiva","modal","kewajiban","pendapatan","biaya"'; // jenis rekening (income:debit, outcome:kredit)
             for(var i=n; i>=iTR; i--){
                 var ke = parseInt(i);//-1;
-                var idjurnal  = (typeof arr!='undefined')?arr.idjurnal:null;
-                var idrekitem = (typeof arr!='undefined')?arr.idrekitem:'';
-                var rekitem   = (typeof arr!='undefined')?arr.rekitem:'';
-                var nominal   = (typeof arr!='undefined')?arr.nominal:'Rp. 0';
-                var uraian    = (typeof arr!='undefined')?arr.uraian:'';
-                var mode      = (typeof arr!='undefined')?'edit':'add'; 
+                var idjurnal        = (typeof arr!='undefined')?arr.idjurnal:null;
+                var iddetilanggaran = (typeof arr!='undefined')?arr.iddetilanggaran:'';
+                var detilanggaran   = (typeof arr!='undefined')?arr.detilanggaran:'';
+                var idrekitem       = (typeof arr!='undefined')?arr.idrekitem:'';
+                var rekitem         = (typeof arr!='undefined')?arr.rekitem:'';
+                var nominal         = (typeof arr!='undefined')?arr.nominal:'Rp. 0';
+                var uraian          = (typeof arr!='undefined')?arr.uraian:'';
+                var mode            = (typeof arr!='undefined')?'edit':'add'; 
                 // console.log(jenis);
                 tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
+                        // anggaran
+                        +'<td align="center">'
+                            +'<span class="input-control size4 text">'
+                                +'<input type="text" name="'+typ+'_sisaanggaran'+ke+'H" id="'+typ+'_sisaanggaran'+ke+'H" value="'+detilanggaran+'" />'
+                                +'<input  type="text" value="'+iddetilanggaran+'" id="'+typ+'_detilanggaran'+ke+'H" name="'+typ+'_detilanggaran'+ke+'H" />'
+                                +'<input id="'+typ+'_detilanggaran'+ke+'TB" name="'+typ+'_detilanggaran'+ke+'TB" value="'+rekitem+'" required  onfocus="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\''+typ+'_detilanggaran'+ke+'\',\'\');" onclick="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\''+typ+'_detilanggaran'+ke+'\',\'\');" placeholder="anggaran " type="text" />'
+                                +'<button class="btn-clear"></button>'
+                            +'</span>'
+                        +'</td>'
                         // rek
                         +'<td align="center">'
                             +'<input type="hidden" name="'+typ+'_idTR[]" id="'+typ+'_idTR_'+ke+'" class="'+typ+'_idTR" value="'+ke+'" >'
                             +'<input type="hidden" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H" value="'+idjurnal+'" >'
                             +'<input type="hidden" name="'+typ+'_mode'+ke+'H" value="'+mode+'" />'
                            
-                            +'<span class="input-control size5 text">'
+                            +'<span class="input-control size3 text">'
                                 +'<input value="'+idrekitem+'" class="idrek" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
-                                +'<input value="'+rekitem+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');"  id="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
-                                +'<button class="btn-clear"></button>'
+                                +'<input readonly xdisabled  value="'+rekitem+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');"  id="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
                             +'</span>'
                         +'</td>'
                         // nominal
@@ -615,18 +613,23 @@ var rekArr=[];
                     'align':'left',
                     'columnName':'nama',
                     'hide':true,
-                    'width':'30',
+                    'width':'20',
                     'label':'Anggaran'
             },{   
                     'align':'left',
                     'columnName':'kategorianggaran',
-                    'width':'15',
+                    'width':'10',
                     'label':'Kategori'
             },{   
                     'align':'left',
                     'columnName':'tingkat',
-                    'width':'25',
+                    'width':'15',
                     'label':'Jenjang'
+            },{   
+                    'align':'left',
+                    'columnName':'rekening',
+                    'width':'25',
+                    'label':'Rekening'
             },{   
                     'align':'right',
                     'columnName':'sisaBilCur',
@@ -636,7 +639,7 @@ var rekArr=[];
                     'align':'right',
                     'columnName':'kuotaBilCur',
                     'width':'15',
-                    'label':'Nominal'
+                    'label':'Kuota'
             }];
         }
         urly = dir+urlx;
@@ -648,7 +651,7 @@ var rekArr=[];
 
         $('#'+el+'TB').combogrid({
             debug:true,
-            width:'750px',
+            width:'900px',
             colModel: col ,
             url: urly+terpilihx,
             select: function( event, ui ) { // event setelah data terpilih 
@@ -660,7 +663,10 @@ var rekArr=[];
                     console.log('terpilih in auto 1 =>'+str);
                 }else{ // anggaran 
                     $('#'+el+'TB').val(ui.item.nama+' [ sisa :'+ui.item.sisaBilCur+'  kuota : '+ui.item.kuotaBilCur+' ]');
-                    $('#detilanggaranV').val(getCurr(ui.item.sisaBilNum));
+                    var x = el.substring(22);
+                    $('#out_come_sisaanggaran'+x+'H').val(ui.item.sisaBilNum);
+                    $('#out_come_rek'+x+'TB').val(ui.item.rekening);
+                    $('#out_come_rek'+x+'H').val(ui.item.idrekening);
                 }
 
                 // validasi input (tidak sesuai data dr server)
@@ -678,10 +684,15 @@ var rekArr=[];
                             }
                         }
                     });
+
                     $('#'+el+'TB').on('blur,change',function(){
                         if($('#'+el+'H').val()=='') {
                             $('#'+el+'TB').val(''); // :: all 
-                            if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
+                            if(subaksi=='out_come'){
+                                var x = el.substring(22);
+                                $('#out_come_sisaanggaran'+x+'H').val(''); // :: out_come
+                                $('#out_come_detilanggaran'+x+'H').val(''); // :: out_come
+                            } 
                         }
                     });
                 return false;
@@ -739,7 +750,7 @@ var rekArr=[];
             shadow: true,
             overlay: true,
             draggable: true,
-            width: 800,
+            width: 900,
             padding: 10,
             onShow: function(){
                 $.Dialog.content(contentFR);
@@ -784,6 +795,7 @@ var rekArr=[];
                         $('#kwitansiDV').removeAttr('style');
                         
                         tr+='<tr style="color:white;"class="info">'
+                                +'<th class="text-center">Anggaran</th>'
                                 +'<th class="text-center">Rekening</th>'
                                 +'<th class="text-center">Nominal</th>'
                                 +'<th class="text-center">Uraian</th>'
@@ -818,9 +830,11 @@ var rekArr=[];
                             }
                         }else if(typx=='out_come'){ // outcome 
                             console.log('masuk '+typx);
+                            // $('#rekkasTB').attr('disabled',true);
                             $('.detilanggaranDV').attr('style','display:visible;');
                             $('#detilanggaranTB').attr('required',true);
                             $('#reklawanDV').html(' Pengeluaran');
+                            
                             autoSuggest('','detilanggaran','detilanggaran','');
 
                             if(id=='') { // add

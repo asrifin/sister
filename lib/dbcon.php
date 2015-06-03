@@ -3,7 +3,7 @@
 	$server   = "localhost";
 	$username = "root";
 	$password = "";
-	// $database = "sister_siadu_demo";
+	// $database = "sister_demo";
 	$database = "sister_siadu";
 	
 	//online
