@@ -4,7 +4,7 @@ var mnu2      ='lokasi';
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
 
-var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
+var pinjam_contentFR = kembalikan_contentFR = kembali_contentFR = contentFR ='';
 // main function load first 
     $(document).ready(function(){
 
@@ -23,7 +23,7 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
             $('#tgl2TB').val(getLastDate());
         });
 
-        kembalikan_content +='<form autocomplete="off" onsubmit="kembalikanSV();return false;">'
+        kembalikan_contentFR +='<form autocomplete="off" onsubmit="kembalikanSV();return false;">'
                                 +'<input  id="kembalikanH" name="kembalikanH">'
                                 +'<table>'
                                 +'<tr>'
@@ -366,10 +366,13 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
             width: 500,
             padding: 10,
             onShow: function(){
-                $.Dialog.content(pinjam_contentFR);
+                $.Dialog.content(contentFR);
                 setTimeout(function(){
                     $('idformH').val(typx);
                     if (typx='peminjaman') {
+                        console.log('masuk '+typx);
+                        contentFR=pinjam_contentFR;
+
                         if (id=='') { //add
                             titl = ' Tambah Peminjaman';
                             cmblokasi();
@@ -378,8 +381,20 @@ var pinjam_contentFR = kembalikan_content = kembali_contentFR ='';
                             titl = ' Ubah Peminjaman';
 
                         }
-                    }
+                    } 
+                    else if (typx='pengembalian') {
+                        contentFR=kembali_contentFR;
 
+                        if (id=='') {//add
+                            titl = ' Tambah Pengembalian';
+                            cmblokasi();
+
+                        } else { //Edit
+                            titl = ' Ubah Pengembalian';
+
+                        }
+                    }
+                    $.Dialog.title('<i class="fg-white icon-'+(id!=''?'pencil':'plus-2')+'"></i> '+titl); 
                 },200);  
 
             }

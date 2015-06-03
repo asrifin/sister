@@ -22,11 +22,9 @@
 
     <div class="toolbar">
         <div class="toolbar-group fg-white transparent ">
-            <a href="#"  id="peminjamanBC" onclick="loadFR('peminjaman','');" class="button bg-blue fg-white" data-hint="Peminjaman"><i class="icon-upload-3"></i>Pengembalian</a>
-            <!-- <button id="peminjamanBC"class="bg-blue" data-hint="Peminjaman"><i class="icon-upload-3"></i> Peminjaman</button> -->
-            <button id="pengembalianBC"class="bg-green" data-hint="Pengembalian"><i class="icon-download-2"></i> Pengembalian</button>
-            <!-- <button id="printBC"class="bg-amber" data-hint="Cetak"><i class="icon-printer"></i></button> -->
-            <button id="optionBC" data-hint="Selengkapnya..." class="bg-gray fg-white"><i class="icon-grid"></i></button>
+            <a href="#"  id="peminjamanBC" onclick="loadFR('peminjaman','');" class="button bg-blue fg-white" data-hint="Peminjaman"><i class="icon-upload-3"></i> Peminjaman</a>
+            <a href="#"  id="pengembalianBC" onclick="loadFR('pengembalian','');" class="button bg-blue fg-white" data-hint="Pengembalian"><i class="icon-download-2"></i> Pengembalian</a>
+            <a href="#" id="optionBC" data-hint="Selengkapnya..." class="button bg-gray fg-white"><i class="icon-grid"></i></a>
         </div>
     </div>
     
