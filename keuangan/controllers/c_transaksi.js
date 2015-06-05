@@ -9,7 +9,7 @@ var dir3 ='../akademik/models/m_'+mnu3+'.php';
 var dir4 ='../akademik/models/m_'+mnu4+'.php';
 
 var contentFR ='';
-var rekArr=[];
+var detilanggaranArr=rekArr=[];
 // main function load first 
     //print to PDF -------
     function printPDF(mn){
@@ -77,7 +77,7 @@ var rekArr=[];
         });
 
     //form content
-        contentFR +='<form style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="transSV(this); return false;">'
+        contentFR +='<form style="overflow:scroll;height:700px;" autocomplete="off" onsubmit="transSV(this); return false;">'
                         // hidden input
                         +'<input name="idformH" id="idformH" type="hidden">' 
                         +'<input name="detjenistransH" id="detjenistransH" type="hidden">' 
@@ -125,6 +125,7 @@ var rekArr=[];
                         // rekening kas (optional)
                         +'<label style="display:none;" class="rekkasDV">Rekening Kas/Bank</label>'
                         +'<div style="display:none;" class="input-control text rekkasDV">'
+                            +'<input type="text" name="rekkassisaH" id="rekkassisaH">'
                             +'<input type="hidden" name="rekkasH" id="rekkasH">'
                             +'<input placeholder="rek. kas / bank" id="rekkasTB">'
                             +'<button class="btn-clear"></button>'
@@ -507,7 +508,7 @@ var rekArr=[];
                         +'</td>'
                         // rek
                         +'<td align="center">'
-                            +'<span class="input-control size5 text">'
+                            +'<span class="input-control xsize5 text">'
                                 +'<input class="idrek" value="'+idrek+'" id="ju_rek'+ke+'H" name="ju_rek'+ke+'H" type="hidden" />'
                                 +'<input value="'+rek+'" required '
                                     // +(typeof arr=='undefined'?'disabled':' onfocus="alert(9999);"')
@@ -544,27 +545,34 @@ var rekArr=[];
                 var uraian          = (typeof arr!='undefined')?arr.uraian:'';
                 var mode            = (typeof arr!='undefined')?'edit':'add'; 
                 // console.log(jenis);
-                tr+='<tr class="rekTR" id="rekTR_'+ke+'">'
-                        // anggaran
-                        +'<td align="center">'
-                            +'<span class="input-control size4 text">'
-                                +'<input type="text" name="'+typ+'_sisaanggaran'+ke+'H" id="'+typ+'_sisaanggaran'+ke+'H" value="'+detilanggaran+'" />'
-                                +'<input  type="text" value="'+iddetilanggaran+'" id="'+typ+'_detilanggaran'+ke+'H" name="'+typ+'_detilanggaran'+ke+'H" />'
-                                +'<input id="'+typ+'_detilanggaran'+ke+'TB" name="'+typ+'_detilanggaran'+ke+'TB" value="'+rekitem+'" required  onfocus="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\''+typ+'_detilanggaran'+ke+'\',\'\');" onclick="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\''+typ+'_detilanggaran'+ke+'\',\'\');" placeholder="anggaran " type="text" />'
-                                +'<button class="btn-clear"></button>'
-                            +'</span>'
-                        +'</td>'
-                        // rek
-                        +'<td align="center">'
+                    
+                tr+='<tr class="rekTR" id="rekTR_'+ke+'">';
+                if(typ=='out_come'){
+                    // anggaran
+                    tr+='<td align="center">'
+                        +'<span class="input-control xsize4 text">'
+                            +'<input type="text" name="'+typ+'_sisaanggaran'+ke+'H" id="'+typ+'_sisaanggaran'+ke+'H" value="'+detilanggaran+'" />'
+                            +'<input class="detilanggaran" type="text" value="'+iddetilanggaran+'" id="'+typ+'_detilanggaran'+ke+'H" name="'+typ+'_detilanggaran'+ke+'H" />'
+                            +'<input id="'+typ+'_detilanggaran'+ke+'TB" name="'+typ+'_detilanggaran'+ke+'TB" value="'+rekitem+'" required  onfocus="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\'detilanggaran\',\'\');" onclick="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\'detilanggaran\',\'\');" placeholder="anggaran " type="text" />'
+                            +'<button class="btn-clear"></button>'
+                        +'</span>'
+                    +'</td>';
+                }
+                    // rek
+                    tr+='<td>'
                             +'<input type="hidden" name="'+typ+'_idTR[]" id="'+typ+'_idTR_'+ke+'" class="'+typ+'_idTR" value="'+ke+'" >'
                             +'<input type="hidden" name="'+typ+'_idjurnal'+ke+'H" id="'+typ+'_idjurnal'+ke+'H" value="'+idjurnal+'" >'
                             +'<input type="hidden" name="'+typ+'_mode'+ke+'H" value="'+mode+'" />'
                            
-                            +'<span class="input-control size3 text">'
-                                +'<input value="'+idrekitem+'" class="idrek" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="hidden" />'
-                                +'<input readonly xdisabled  value="'+rekitem+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');"  id="'+typ+'_rek'+ke+'TB" placeholder="rekening" type="text" />'
-                            +'</span>'
-                        +'</td>'
+                            +'<input value="'+idrekitem+'" class="idrek" id="'+typ+'_rek'+ke+'H" name="'+typ+'_rek'+ke+'H" type="text" />';
+                            if(typ=='out_come'){
+                                tr+='<span id="'+typ+'_rek'+ke+'TB">'+rekitem+'</span>';
+                            }else{
+                                tr+='<span class="input-control xsize3 text">'
+                                    +'<input id="'+typ+'_rek'+ke+'TB" value="'+rekitem+'" required  onfocus="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');" onclick="autoSuggest(\''+jrek+'\',\''+typ+'_rek'+ke+'\',\'rek\',\'\');"   placeholder="rekening" type="text" />';
+                                +'</span>';
+                            }
+                        tr+='</td>'
                         // nominal
                         +'<td>'
                             +'<div class="input-control text">'
@@ -644,9 +652,16 @@ var rekArr=[];
         }
         urly = dir+urlx;
         var t= terpilihx = '';
-        if(rekArr!='' || rekArr!=null){
-            t         = rekArr.filter(function(item) { return item !== ''; });
-            terpilihx = '&terpilihArr='+t.toString();
+        if(subaksi=='rek'){ // rekening 
+            if(rekArr!='' || rekArr!=null){
+                t         = rekArr.filter(function(item) { return item !== ''; });
+                terpilihx = '&rekArr='+t.toString();
+            }
+        }else{ // anggaran
+            if(detilanggaranArr!='' || detilanggaranArr!=null){
+                t         = detilanggaranArr.filter(function(item) { return item !== ''; });
+                terpilihx = '&detilanggaranArr='+t.toString();
+            }
         }
 
         $('#'+el+'TB').combogrid({
@@ -658,14 +673,14 @@ var rekArr=[];
                 $('#'+el+'H').val(ui.item.replid);
                 if (subaksi=='rek') { // rekening 
                     $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
-                    var arr = rekArrFC();
-                    var str = arr.toString();
-                    console.log('terpilih in auto 1 =>'+str);
+                    $('#'+el+'sisaH').val(ui.item.saldoSementara);
+                    collectArr();
                 }else{ // anggaran 
+                    collectArr();
                     $('#'+el+'TB').val(ui.item.nama+' [ sisa :'+ui.item.sisaBilCur+'  kuota : '+ui.item.kuotaBilCur+' ]');
                     var x = el.substring(22);
                     $('#out_come_sisaanggaran'+x+'H').val(ui.item.sisaBilNum);
-                    $('#out_come_rek'+x+'TB').val(ui.item.rekening);
+                    $('#out_come_rek'+x+'TB').html(ui.item.rekening);
                     $('#out_come_rek'+x+'H').val(ui.item.idrekening);
                 }
 
@@ -677,10 +692,10 @@ var rekArr=[];
                             if($('#'+el+'H').val()!=''){
                                 $('#'+el+'H').val('');
                                 $('#'+el+'TB').val('');
-            
-                                var str = rekArr.toString();
-                                console.log('terpilih in auto 2 =>'+str+' arr=> '+rekArr);
-                                if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
+
+                                $('#out_come_sisaanggaran'+(el.substring(22))+'H').val(''); // :: out_come
+                                $('#'+el+'sisaH').val(''); // sisa rekening :: in/out/ju/
+                                collectArr();
                             }
                         }
                     });
@@ -700,11 +715,24 @@ var rekArr=[];
         });
     }
     //himpun array rekening terpilih
-    function rekArrFC(){
+    function collectArr(){
         rekArr=[];
-        $('.idrek').each(function(id,item){
-            rekArr.push($(this).val());
-        });return rekArr;
+        detilanggaranArr=[];
+        if($('#subaksiH').val()=='out_come'){ // outcome saja
+            console.log('masuk anggaran ');
+            $('.detilanggaran').each(function(id,item){
+                detilanggaranArr.push($(this).val());
+            });
+            console.log(detilanggaranArr);
+            return detilanggaranArr;
+        }else{ // selain outcome (income,jurnal-umum)
+            console.log('masuk income dll');
+            $('.idrek').each(function(id,item){
+                rekArr.push($(this).val());
+            });
+            console.log(rekArr);
+            return rekArr;
+        }
     }
 
     function validDelRek () {
@@ -731,7 +759,8 @@ var rekArr=[];
             if(idjurnal!=null) idDelTR.push(idjurnal); //jika ada hapus (jurnal umum)
             $('#rekTR_'+ke).fadeOut('slow',function(){
                 $('#rekTR_'+ke).remove();
-                rekArrFC();
+                
+                collectArr();
                 console.log('arr terpilih in delrek=>'+rekArr);
             });
             // console.log(idDelTR);
@@ -750,7 +779,7 @@ var rekArr=[];
             shadow: true,
             overlay: true,
             draggable: true,
-            width: 900,
+            width: '100%',
             padding: 10,
             onShow: function(){
                 $.Dialog.content(contentFR);
@@ -795,14 +824,14 @@ var rekArr=[];
                         $('#kwitansiDV').removeAttr('style');
                         
                         tr+='<tr style="color:white;"class="info">'
-                                +'<th class="text-center">Anggaran</th>'
-                                +'<th class="text-center">Rekening</th>'
-                                +'<th class="text-center">Nominal</th>'
-                                +'<th class="text-center">Uraian</th>'
-                                +'<th class="text-center">Hapus</th>'
-                            +'</tr>';
+                            +(typx=='out_come'?'<th class="text-center">Anggaran</th>':'')
+                            +'<th class="text-center">Rekening</th>'
+                            +'<th class="text-center">Nominal</th>'
+                            +'<th class="text-center">Uraian</th>'
+                            +'<th class="text-center">Hapus</th>'
+                        +'</tr>';
                         tr3+='<tr style="color:white;"class="info">'
-                                +'<th></th>'
+                                +'<th '+(typx=='out_come'?'colspan="2"':'')+'></th>'
                                 +'<th id="totNominalTD" class="text-right">Rp. 0</th>'
                                 +'<th colspan="2"></th>'
                             +'</tr>';
@@ -829,7 +858,7 @@ var rekArr=[];
                                 });
                             }
                         }else if(typx=='out_come'){ // outcome 
-                            console.log('masuk '+typx);
+                            // console.log('masuk '+typx);
                             // $('#rekkasTB').attr('disabled',true);
                             $('.detilanggaranDV').attr('style','display:visible;');
                             $('#detilanggaranTB').attr('required',true);
@@ -840,7 +869,7 @@ var rekArr=[];
                             if(id=='') { // add
                                 kodeTrans(typx);
                                 addRekTR(typx,1);
-                                console.log('mode add , typxe : '+typx);
+                                // console.log('mode add , typxe : '+typx);
                                 titl='Tambah Transaksi Pengeluaran';
                             }else{ //edit
                                 titl ='Ubah Transaksi Pengeluaran';
@@ -878,6 +907,7 @@ var rekArr=[];
             iTR=1; // reset rekTR's counter
             idDelTR=[]; // reset rekTR's counter
             rekArr=[]; // reset rekArr's counter
+            detilanggaranArr=[]; // reset rekArr's counter
         }
     }
 
@@ -930,6 +960,11 @@ var rekArr=[];
                 out.status=true;
             }else{ // outcome
                 var tot=getCurr($('#totNominalTD').html());
+                // TODO
+                // validasi :: bandingkan sisa saldo rek 
+                // $('').each(function(){
+
+                // });
                 var sisa=$('#detilanggaranV').val();
                 if(tot>sisa) out.msg.push('melebihi sisa anggaran');
                 console.log('sisa'+sisa);

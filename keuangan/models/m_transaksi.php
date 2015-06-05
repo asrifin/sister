@@ -28,7 +28,8 @@
 				$sidx       = $_GET['sidx']; 
 				$sord       = $_GET['sord'];
 				$searchTerm = $_GET['searchTerm'];
-				$terpilih   = (isset($_GET['terpilihArr']) AND $_GET['terpilihArr']!='')?' AND d.replid NOT IN ('.$_GET['terpilihArr'].')':''; /*epiii*/
+				$rekArr           = (isset($_GET['rekArr']) AND $_GET['rekArr']!='')?' AND r.replid NOT IN ('.$_GET['rekArr'].')':''; /*epiii*/
+				$detilanggaranArr = (isset($_GET['detilanggaranArr']) AND $_GET['detilanggaranArr']!='')?' AND d.replid NOT IN ('.$_GET['detilanggaranArr'].')':''; /*epiii*/
 
 				if(isset($_GET['jenis']) AND $_GET['jenis']!=''){
 					if($_GET['jenis']=='rekitem') // in || out 
@@ -36,22 +37,24 @@
 					elseif($_GET['jenis']=='rekkas') // in || out
 						$jenis = ' AND k.nama IN ("kas","bank")';
 					else // ju 
-						$jenis = ' AND k.nama IN ("kas","aktiva") OR d.nama LIKE "%piutang%"';
+						$jenis = ' AND k.nama IN ("kas","aktiva") OR r.nama LIKE "%piutang%"';
 				}
 
 				if(isset($_GET['subaksi']) && $_GET['subaksi']=='rek'){ // rekening
 					$ss='SELECT
-							d.replid,
-							d.kode,
-							d.nama
+							r.replid,
+							r.kode,
+							r.nama,
+							s.nominal2 saldoSementara
 						FROM
-							keu_detilrekening d 
-							LEFT JOIN keu_kategorirekening k on k.replid = d.kategorirekening
+							keu_detilrekening r 
+							LEFT JOIN keu_kategorirekening k on k.replid = r.kategorirekening
+							LEFT JOIN keu_saldorekening s on s.rekening = r.replid
 						WHERE
 							(
-								d.kode LIKE "%'.$searchTerm.'%"
-								OR d.nama LIKE "%'.$searchTerm.'%"
-							)'.$terpilih.$jenis;
+								r.kode LIKE "%'.$searchTerm.'%"
+								OR r.nama LIKE "%'.$searchTerm.'%"
+							)'.$rekArr.$jenis;
 							// '.(isset($_GET['jenis']) AND $_GET['jenis']!=''?'k.jenis="'.$_GET['jenis'].'" AND ':'').' (
 				}else{ // detil anggaran 
 					$ss='SELECT
@@ -69,10 +72,13 @@
 							LEFT JOIN keu_detilrekening r ON r.replid = k.rekening
 							LEFT JOIN aka_tingkat t ON t.replid = d.tingkat
 						WHERE
-							d.nama LIKE "%'.$searchTerm.'%"
-							OR k.nama LIKE "%'.$searchTerm.'%"
-							OR r.nama LIKE "%'.$searchTerm.'%"
-							OR r.kode LIKE "%'.$searchTerm.'%"
+							(
+								d.nama LIKE "%'.$searchTerm.'%"
+								OR k.nama LIKE "%'.$searchTerm.'%"
+								OR r.nama LIKE "%'.$searchTerm.'%"
+								OR r.kode LIKE "%'.$searchTerm.'%" 
+							)
+							'.$detilanggaranArr.'
 						GROUP BY	
 							d.replid ';
 				}
@@ -102,9 +108,10 @@
 				while($row = mysql_fetch_assoc($result)) {
 					if($_GET['subaksi']=='rek'){
 						$arr= array(
-							'replid' =>$row['replid'],
-							'kode'   =>$row['kode'],
-							'nama'   =>$row['nama'],
+							'replid'         =>$row['replid'],
+							'kode'           =>$row['kode'],
+							'nama'           =>$row['nama'],
+							'saldoSementara' =>$row['saldoSementara']
 						);
 					}else{
 						$kuota=getKuotaAnggaran($row['replid']);
