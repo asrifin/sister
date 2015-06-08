@@ -145,7 +145,7 @@ var detilanggaranArr=rekArr=[];
                             +'<tfoot id="rekTBL3"></tfoot>'
                         +'</table>'
                         
-                  +'</form>';
+                  +'</form>'; 
 
 
         //search button

@@ -117,7 +117,7 @@ if($_GET['aksi']=="detail"){
 	$kodebarang     = $_GET['kodebarang'];  
 $tglawal = date("Y-m-01");
 $tglnow = date("Y-m-d");
-$tglmulai 		= !isset($tglmulai) ? $tglnow : $tglmulai;
+$tglmulai 		= !isset($tglmulai) ? $tglawal : $tglmulai;
 $tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
 $admin .='<div class="panel-heading"><b>Laporan Stok Produk</b></div>';
 $admin .= '<form class="form-inline" method="get" action="cetakbarang.php" enctype ="multipart/form-data" id="posts" target="_blank">
@@ -136,8 +136,8 @@ $admin .= '
 $hasil = $koneksi_db->sql_query("SELECT * FROM po_produk ORDER BY nama asc");
 $admin .= '<option value="">== Pilih Produk==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
-$pilihan = ($datas['id']==$kodebarang)?"selected":'';
-$admin .= '<option value="'.$datas['id'].'"'.$pilihan.'>'.$datas['kode'].'-'.$datas['nama'].'</option>';
+$pilihan = ($datas['kode']==$kodebarang)?"selected":'';
+$admin .= '<option value="'.$datas['kode'].'"'.$pilihan.'>'.$datas['kode'].'-'.$datas['nama'].'</option>';
 }
 $admin .='</select></td>
 </tr>';
