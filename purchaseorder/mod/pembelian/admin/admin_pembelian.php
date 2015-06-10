@@ -389,10 +389,12 @@ $admin .= '
 <th><b>Subtotal</b></</th>
 		<th><b>Aksi</b></</th>
 	</tr>';
+	if ($_GET['editdetail']){
 foreach ($_SESSION["product_id"] as $cart_itm)
         {
-		
 $nilaidiscount=cekdiscount($cart_itm["subdiscount"],$cart_itm["harga"]);
+$admin .= '
+<form method="post" action="" class="form-inline"id="posts">';
 $admin .= '	
 	<tr>
 			<td>'.$no.'</td>
@@ -409,9 +411,44 @@ $admin .= '
 		<input type="submit" value="EDIT" name="editjumlah"class="btn btn-warning" >
 		<input type="submit" value="HAPUS" name="hapusbarang"class="btn btn-danger"></td>
 	</tr>';
+$admin .= '
+</form>';
 	$total +=$cart_itm["subtotal"];
 	$no++;
 		}
+$admin .= '	
+	<tr>
+		<td colspan="8" ></td>
+		<td ><a href="./admin.php?pilih=pembelian&mod=yes" class="btn btn-success">Simpan Detail</a></td>
+	</tr>';
+	}else{
+foreach ($_SESSION["product_id"] as $cart_itm)
+        {
+$nilaidiscount=cekdiscount($cart_itm["subdiscount"],$cart_itm["harga"]);
+$admin .= '	
+	<tr>
+			<td>'.$no.'</td>
+			<td>'.$cart_itm["kode"].'</td>
+		<td>'.getnamabarang($cart_itm["kode"]).'</td>
+		<td><input align="right" type="text" name="jumlahbeli" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
+		<td>'.$cart_itm["harga"].'</td>
+		<td><input align="right" type="text" name="subdiscount" value="'.$cart_itm["subdiscount"].'"class="form-control"></td>
+	<td>'.$nilaidiscount.'</td>
+		<td>'.$cart_itm["subtotal"].'</td>
+		<td>
+		
+		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'"></td>
+	</tr>';
+	$total +=$cart_itm["subtotal"];
+	$no++;
+		}
+$admin .= '	
+	<tr>
+		<td colspan="8" ></td>
+		<td ><a href="./admin.php?pilih=pembelian&mod=yes&editdetail=ok" class="btn btn-warning">Edit Detail</a></td>
+	</tr>';		
+		
+	}
 $_SESSION['totalbeli']=$total;
 $admin .= '	
 	<tr>
@@ -565,7 +602,7 @@ $admin .= '
 		}
 $admin .= '	
 	<tr>		
-		<td colspan="7" align="right"><b>Total</b></td>
+		<td colspan="6" align="right"><b>Total</b></td>
 		<td >'.rupiah_format($total).'</td>
 	</tr>';
 /*
@@ -582,7 +619,7 @@ $admin .= '	<tr>
 	';
 */
 	$admin .= '	<tr>	
-		<td colspan="7" align="right"><b>Bayar</b></td>
+		<td colspan="6" align="right"><b>Bayar</b></td>
 		<td >'.rupiah_format($bayar).'</td>
 	</tr>
 	';

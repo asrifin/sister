@@ -63,7 +63,7 @@ echo'
             <td>Jatuh Tempo</td>
             <td width="10%">Aksi</td>
         </tr>';
-$s = mysql_query( "SELECT * FROM `pos_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgltermin asc" );
+$s = mysql_query( "SELECT * FROM `po_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgltermin asc" );
 while ($data = mysql_fetch_array($s)) { 
 $noinvoice = $data['noinvoice'];
 $hutang = $data['hutang'];

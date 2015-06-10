@@ -16,7 +16,8 @@ define('AURACMS_FUNC', true);
 
 $mysql_user = 'root';
 $mysql_password = '';
-$mysql_database = 'pemesanan';
+$mysql_database = 'sister_siadu';
+// $mysql_database = 'pemesanan';
 $mysql_host = 'localhost';
 
 /******************

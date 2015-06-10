@@ -56,7 +56,34 @@ echo '<tr class="border">
 <td>Jumlah</td>
 </tr>';
 $no =1;
-$st = mysql_query ("SELECT * FROM po_alur_stok where (kodebarang='$kodebarang') and (tgl between '$tglmulai' and '$tglakhir' )order by id asc");	
+/****************************/
+//$st2 = mysql_query ("SELECT * FROM po_alur_stok where (kodebarang='$kodebarang') and (tgl between '$tglmulai' and '$tglakhir' ) and transaksi ='Saldo Awal' limit 1");	
+$st2 = mysql_query ("SELECT * FROM po_alur_stok where (kodebarang='$kodebarang') and transaksi ='Saldo Awal' limit 1");	
+
+$datast2 = mysql_fetch_array($st2);
+$idsa = $datast2['id'];
+$tglsa = $datast2['tgl'];
+$transaksisa = $datast2['transaksi'];
+$kodesa = $datast2['kode'];
+$kodebarangsa = $datast2['kodebarang'];
+$jumlahsa = $datast2['jumlah'];
+$getnamabarangsa = getnamabarang($kodebarang);
+if($idsa){
+echo '
+<tr class="border">
+<td class="text-center">'.$no.'</td>
+<td>'.tanggalindo($tglsa).'</td>
+<td>'.$transaksisa.'</td>
+<td>'.$kodesa.'</td>
+<td>'.$kodebarangsa.'</td>
+<td>'.$getnamabarangsa.'</td>
+<td>'.$jumlahsa.'</td>
+</tr>';
+$no =2;
+$tjumlah =$jumlahsa;
+}
+/****************************/
+$st = mysql_query ("SELECT * FROM po_alur_stok where (kodebarang='$kodebarang') and (tgl between '$tglmulai' and '$tglakhir' ) and transaksi !='Saldo Awal' order by id asc");	
 while($datast = mysql_fetch_array($st)){
 $id = $datast['id'];
 $tgl = $datast['tgl'];
@@ -76,12 +103,14 @@ echo '
 <td>'.$jumlah.'</td>
 </tr>';
 $no++;
+/*
 if($transaksi=='Saldo Awal'){
 $tjumlah =$jumlah;		
 }
-if($transaksi=='Pembelian' or $transaksi=='Retur Penjualan'){
+*/
+if($transaksi=='Pembelian' or $transaksi=='Retur Penjualan' or $transaksi=='Mutasi Masuk'){
 $tjumlah +=$jumlah;}
-if($transaksi=='Penjualan' or $transaksi=='Retur Pembelian'){
+if($transaksi=='Penjualan' or $transaksi=='Retur Pembelian'or $transaksi=='Mutasi Keluar'){
 $tjumlah -=$jumlah;
 }
 
