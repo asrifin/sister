@@ -91,10 +91,12 @@
 				switch ($_POST['subaksi']) {
 					// kategori anggaran
 					case 'anggaran':
-						$a_departemen = isset($_POST['a_departemenS'])?$_POST['a_departemenS']:'';
-						$a_nama       = isset($_POST['a_namaS'])?filter($_POST['a_namaS']):'';
-						$a_rekening   = isset($_POST['a_rekeningS'])?filter($_POST['a_rekeningS']):'';
-						$a_keterangan = isset($_POST['a_keteranganS'])?filter($_POST['a_keteranganS']):'';
+						$departemen  = (isset($_POST['a_departemenS']) && $_POST['a_departemenS']!='')?' ta.departemen='.$_POST['a_departemenS'].' AND ':'';
+						$tahunajaran = (isset($_POST['a_tahunajaranS']) && $_POST['a_tahunajaranS']!='')?' t.tahunajaran='.$_POST['a_tahunajaranS'].' AND ':'';
+						$tingkat     = (isset($_POST['a_tingkatS']) && $_POST['a_tingkatS']!='')?' k.tingkat='.$_POST['a_tingkatS'].' AND ':'';
+						$nama        = isset($_POST['a_namaS'])?filter($_POST['a_namaS']):'';
+						$rekening    = isset($_POST['a_rekeningS'])?filter($_POST['a_rekeningS']):'';
+						$keterangan  = isset($_POST['a_keteranganS'])?filter($_POST['a_keteranganS']):'';
 
 						$sql = 'SELECT
 									k.replid,
@@ -106,16 +108,18 @@
 									round((IF (count(*) = 1, 0, count(*) / 12)),0) jmlItem
 								FROM
 									keu_kategorianggaran k
+									LEFT JOIN aka_tingkat t ON t.replid = k.tingkat
+									LEFT JOIN aka_tahunajaran ta ON ta.replid = t.tahunajaran
 									LEFT JOIN keu_detilrekening r ON r.replid = k.rekening
 									LEFT JOIN keu_detilanggaran d ON d.kategorianggaran = k.replid
 									LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
 								WHERE
-									k.departemen = '.$a_departemen.'
-									AND k.nama LIKE "%'.$a_nama.'%"
+									'.$departemen.$tahunajaran.$tingkat.'
+									k.nama LIKE "%'.$nama.'%"
 									AND (
-										r.nama LIKE "%'.$a_rekening.'%"
-										OR r.kode LIKE "%'.$a_rekening.'%"
-									)AND k.keterangan LIKE "%'.$a_keterangan.'%"
+										r.nama LIKE "%'.$rekening.'%"
+										OR r.kode LIKE "%'.$rekening.'%"
+									)AND k.keterangan LIKE "%'.$keterangan.'%"
 								GROUP BY
 									k.replid
 								ORDER BY
@@ -143,20 +147,23 @@
 											<button data-hint="detail"  class="button" onclick="vwHeadDetilAnggaran('.$res['replid'].');">
 												<i class="icon-zoom-in"></i>
 											</button>
-											<button data-hint="ubah"  class="button" onclick="anggaranFR('.$res['replid'].');">
+											<button data-hint="ubah"  class="button" onclick="loadFR(\'anggaran\','.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
 											<button data-hint="hapus"  class="button" onclick="anggaranDel('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
+											</button>
 										 </td>';
 								$out.= '<tr>
 											<td>'.$res['nama'].'</td>
 											<td>'.$res['koderek'].' - '.$res['namarek'].'</td>
 											<td>'.$res['keterangan'].'</td>
 											<td class="text-center">'.$res['jmlItem'].' item</td>
-											<td class="text-right" >Rp. '.number_format($res['nominal']).'</td>
+											<td class="text-right" >Rp. '.number_format(getKatAnggaran($res['replid'],'kuotaNum')).'</td>
+											<td class="text-right" >Rp. '.number_format(getKatAnggaran($res['replid'],'sisaNum')).'</td>
 											'.$btn.'
 										</tr>';
+											// <td class="text-right" >Rp. '.number_format($res['nominal']).'</td>
 								$nox++;
 							}
 						}else{ #kosong
@@ -361,19 +368,33 @@
 			case 'headinfo':
 				switch ($_POST['subaksi']) {
 					case 'detilanggaran':
-						$s = 'SELECT
-								*
-							FROM
-								keu_kategorianggaran
-							WHERE
-								replid = '.$_POST['kategorianggaran'];
+						$s = '	SELECT 
+									k.nama,
+									k.keterangan,
+									ta.tahunajaran,
+									CONCAT(t.tingkat,"(",t.keterangan,")") tingkat,
+									d.nama departemen
+								FROM keu_kategorianggaran k
+									LEFT JOIN aka_tingkat t on t.replid = k.tingkat
+									LEFT JOIN aka_tahunajaran ta on ta.replid = t.tahunajaran
+									LEFT JOIN departemen d on d.replid = ta.departemen
+								WHERE 
+									k.replid = '.$_POST['kategorianggaran'];
+							// print_r($s);exit();
 						$q    = mysql_query($s);
-						$stat = ($q)?'sukses':'gagal';
+						$stat = $q?'sukses':'gagal';
 						$r    = mysql_fetch_assoc($q);
+						$katAnggKuotaNum = getKatAnggaran($_POST['kategorianggaran'],'kuotaNum');
+						$katAnggSisaNum  = getKatAnggaran($_POST['kategorianggaran'],'sisaNum');
 						$out  = json_encode(array(
-									'status'     =>$stat,
-									'nama'       =>$r['nama'],
-									'keterangan' =>$r['keterangan']
+									'status'          =>$stat,
+									'nama'            =>$r['nama'],
+									'keterangan'      =>$r['keterangan'],
+									'tahunajaran'     =>$r['tahunajaran'],
+									'tingkat'         =>$r['tingkat'],
+									'departemen'      =>$r['departemen'],
+									'katAnggKuotaNum' =>$katAnggKuotaNum,
+									'katAnggSisaNum'  =>$katAnggSisaNum,
 								));
 					break;
 
@@ -442,10 +463,10 @@
 				switch ($_POST['subaksi']) {
 					// kategori anggaran
 					case 'anggaran':
-						$s 		= $tb.' set nama       = "'.filter($_POST['a_namaTB']).'",
-											departemen = "'.filter($_POST['a_departemenH']).'",
-											rekening   = "'.filter($_POST['a_rekeningH']).'",
-											keterangan = "'.filter($_POST['a_keteranganTB']).'"';
+						$s 		= $tb.' set nama   		= "'.filter($_POST['a_namaTB']).'",
+											tingkat 	= "'.filter($_POST['a_tingkatTB']).'",
+											rekening   	= "'.filter($_POST['a_rekeningH']).'",
+											keterangan 	= "'.filter($_POST['a_keteranganTB']).'"';
 						$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 						$e 		= mysql_query($s2);
 						$stat 	= ($e)?'sukses':'gagal';
@@ -454,10 +475,8 @@
 
 					// detil anggaran
 					case 'detilanggaran':
-						$su = 'keu_detilanggaran  set 	tingkat          = '.$_POST['d_tingkatH'].',
-														nama             = "'.$_POST['d_namaTB'].'",
-														keterangan       = "'.$_POST['d_keteranganTB'].'",
-														tahunbuku        = '.getTahunBuku('replid');
+						$su = 'keu_detilanggaran  set 	nama             = "'.$_POST['d_namaTB'].'",
+														keterangan       = "'.$_POST['d_keteranganTB'].'"';
 						if(isset($_POST['replid']) AND $_POST['replid']!=''){
 							$s1='UPDATE '.$su.' WHERE replid='.$_POST['replid'];
 						}else{
@@ -595,8 +614,13 @@
 									a.nama,
 									a.keterangan,
 									d.replid idrekening,
-									concat(d.kode," - ",d.nama)rekening
+									concat(d.kode," - ",d.nama)rekening,
+									a.tingkat,
+									t.tahunajaran,
+									ta.departemen
 								FROM '.$tb.' a
+									LEFT JOIN aka_tingkat t on t.replid = a.tingkat
+									LEFT JOIN aka_tahunajaran ta on ta.replid = t.tahunajaran
 									LEFT JOIN keu_detilrekening d on d.replid = a.rekening
 								WHERE
 									a.replid ='.$_POST['replid'];
@@ -605,12 +629,15 @@
 						$r 		= mysql_fetch_assoc($e);
 						$stat 	= ($e)?'sukses':'gagal';
 						$out 	= json_encode(array(
-									'status'     =>$stat,
-									'nama'       =>$r['nama'],
-									'idrekening' =>$r['idrekening'],
-									'rekening'   =>$r['rekening'],
-									'keterangan' =>$r['keterangan']
-								));					
+									'status'      =>$stat,
+									'nama'        =>$r['nama'],
+									'idrekening'  =>$r['idrekening'],
+									'rekening'    =>$r['rekening'],
+									'keterangan'  =>$r['keterangan'],
+									'tingkat'     =>$r['tingkat'],
+									'tahunajaran' =>$r['tahunajaran'],
+									'departemen'  =>$r['departemen']
+								));
 					break;
 
 					case 'detilanggaran';

@@ -47,9 +47,9 @@
                 $n = mysql_num_rows($e);
 
               // header's info
-              $depId           = getKatAnggaran('departemen',$kategorianggaran);
-              $katAnggaranNama = getKatAnggaran('nama',$kategorianggaran);
-              $katAnggaranKet  = getKatAnggaran('keterangan',$kategorianggaran);
+              $depId           = getKatAnggaran2('departemen',$kategorianggaran);
+              $katAnggaranNama = getKatAnggaran2('nama',$kategorianggaran);
+              $katAnggaranKet  = getKatAnggaran2('keterangan',$kategorianggaran);
               $katAnggaranThn  = getTahunAjaran('tahunajaran',$tahunajaran);
               $depNama         = getDepartemen('nama',$depId);
               $tingNama        = getTingkat('tingkat',$tingkat);

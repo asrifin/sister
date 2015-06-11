@@ -21,21 +21,29 @@
     <div class="input-control select size3">
         <select data-hint="Departemen" class="anggaran_cari" name="a_departemenS" id="a_departemenS" data-hint="Departemen" ></select>
     </div> 
+    <div class="input-control select size3">
+        <select data-hint="Tahun Ajaran" class="anggaran_cari" name="a_tahunajaranS" id="a_tahunajaranS" data-hint="Tahun Ajaran" ></select>
+    </div> 
+    <div class="input-control select size3">
+        <select data-hint="Tingkat" class="anggaran_cari" name="a_tingkatS" id="a_tingkatS" data-hint="Tingkat" ></select>
+    </div> 
 
     <table class="table hovered bordered striped">
         <thead>
             <tr style="color:white;"class="info">
                 <th class="text-center">Kategori Anggaran </th>
                 <th class="text-center">Rekening</th>
-                <th class="text-center">Keterangan</th>
+                <th class="text-center">Tujuan</th>
                 <th class="text-center">Jumlah</th>
-                <th class="text-center">Total Nominal</th>
+                <th class="text-center">Kuota Anggaran</th>
+                <th class="text-center">Sisa Anggaran</th>
                 <th class="text-center">Aksi</th>
             </tr>
             <tr style="display:none;" id="a_cariTR" class="info">
-                <th class="text-center"><input placeholder="nama" id="a_namaS" class="anggaran_cari" class="span1"></th>
-                <th class="text-center"><input placeholder="rekening" id="a_rekeningS" class="anggaran_cari"></th>
-                <th class="text-center"><input placeholder="keterangan" id="a_keteranganS" class="anggaran_cari"></th>
+                <th class="text-center"><div class="input-control text"><input placeholder="cari ..." id="a_namaS" class="anggaran_cari" class="span1"></div></th>
+                <th class="text-center"><div class="input-control text"><input placeholder="cari ..." id="a_rekeningS" class="anggaran_cari"></div></th>
+                <th class="text-center"><div class="input-control text"><input placeholder="cari ..." id="a_keteranganS" class="anggaran_cari"></th>
+                <th class="text-center"></th>
                 <th class="text-center"></th>
                 <th class="text-center"></th>
                 <th class="text-center"></th>
@@ -68,16 +76,16 @@
             <span id="d_keteranganDV"></span>
         </div>
         <div class="row">
-            <div class="span3" >Tahun Ajaran  :</div>
-            <div class="input-control select size3">
-                <select class="detilanggaran_cari" name="d_tahunajaranS" id="d_tahunajaranS" data-hint="Tahun Ajaran" ></select>
-            </div> 
+            <span class="span3">Total Anggaran:</span>
+            <span id="d_katanggkuotanumDV"></span>
         </div>
         <div class="row">
-            <div class="span3" >Tingkat  :</div>
-			<div class="input-control select size3">
-				<select class="detilanggaran_cari" name="d_tingkatS" id="d_tingkatS" data-hint="Tingkat" ></select>
-			</div> 
+            <span class="span3">Tahun Ajaran:</span>
+            <span id="d_tahunajaranDV"></span>
+        </div>
+        <div class="row">
+            <span class="span3">Tingkat:</span>
+            <span id="d_tingkatDV"></span>
         </div>
     </div>
 
@@ -106,8 +114,3 @@
     </table>
 </div>
 <!-- end of panel 2 -->
-<!-- 
-    // ---------------------- //
-    // -- created by rovi  -- //
-    // ---------------------- // 
- -->
