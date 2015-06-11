@@ -116,7 +116,8 @@ var contentFR = '';
                             +'<table>'
                             +'<tr>'
                                 +'<td>Departemen</td>'
-                                +'<td>: <b id="departemenTD"></b></td>'
+                                +'<td class="span6">: <b id="departemenTD"></b></td>'
+                                +'<td class="place-right"><button data-hint="Cetak" onclick="printPDF(\'pendataan\');"><span class="icon-printer"></span></button></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Proses Penerimaan</td>'
@@ -315,7 +316,7 @@ var contentFR = '';
             cmbagama('');
             cmbangsuran('');
             cmbdiskon('');
-            // kodeTrans($('#nopendaftaranTB').val());
+            kodeTrans();
         // $('#').on('click',switchPN);
     });$("#importBC").on('click',function(){
             switchPN2();             
@@ -327,7 +328,7 @@ var contentFR = '';
                 $('#saudara2').toggle('slow');
                 $('#saudara').toggle('slow');
         });
-        
+
     //search action
         $('#departemenS').on('change',function(){
             cmbproses($(this).val());
@@ -541,6 +542,7 @@ var contentFR = '';
             }
         // // end of simpan ke database
 
+
 // combo departemen ---
     function cmbdepartemen(dep){
         $.ajax({
@@ -620,58 +622,6 @@ var contentFR = '';
         });
     }
 //end of combo tahunajaran ---
-
-
-//save process ---
-    // function simpanSV(){
-    //     var files =new Array();
-    //     $("input:file").each(function() {
-    //         files.push($(this).get(0).files[0]); 
-    //     });
-         
-    //     // Create a formdata object and add the files
-    //     var filesAdd = new FormData();
-    //     $.each(files, function(key, value){
-    //         filesAdd.append(key, value);
-    //     });
-
-    //     if($('#photoTB').val()=='')//upload
-    //         siswaDb('');
-    //     else// ga upload
-    //         siswaUp(filesAdd);
-    //             // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
-    //     // var urlx ='&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val();
-    //     // alert(urlx);return false;
-    //     // edit mode
-    //     // if($('#idformH').val()!=''){
-    //     //     urlx += '&replid='+$('#idformH').val();
-    //     // }
-    //     // $.ajax({
-    //     //     url:dir,
-    //     //     cache:false,
-    //     //     type:'post',
-    //     //     dataType:'json',
-    //     //     data:$('form').serialize()+urlx,
-    //     //     success:function(dt){
-    //     //         if(dt.status!='sukses'){
-    //     //             cont = 'Gagal menyimpan data';
-    //     //             clr  = 'red';
-    //     //         }else{
-    //     //             $.Dialog.close();
-    //     //             kosongkan();
-    //     //             viewTB($('#kelompokS').val());
-    //     //              $('#pendataanFR').removeAttr('style');
-    //     //              $('#importFR').removeAttr('style');
-    //     //              $('#panel1').attr('style','display:none;');
-    //     //             cont = 'Berhasil menyimpan data';
-    //     //             clr  = 'green';
-    //     //         }
-    //     //         notif(cont,clr);
-    //     //     }
-    //     // });
-    // }
-//end of save process ---
-
 
 // view table ---
     function viewTB(){
@@ -1188,21 +1138,12 @@ var contentFR = '';
     // }
 // end of get uang --------------------------
 
-   function kodeTrans(typ){
-        var ret;
-        $.ajax({
-            url:dir,
-            type:'post',
-            async:false,
-            dataType:'json',
-            data :'aksi=codeGen&subaksi=transNo&tipe='+typ,
-            success:function(dt){
-                if(dt.status!='sukses')
-                    ret=dt.status;
-                else
-                    ret=dt.kode;
-            }
-        });return ret;
+   function kodeTrans(){
+        var url = dir;
+        var data = 'aksi=codeGen&subaksi=transNo';
+        ajax(url,data).done(function(dt){
+            $('#nopendaftaranTB').val(dt.kode);
+        });
     }
     
 // notifikasi
@@ -1294,3 +1235,18 @@ function notif(cont,clr) {
         });
     }
 //end of aktifkan process ---
+
+
+//end of  print to PDF -------
+    function printPDF(mn){
+        var par='',tok='',p,v;
+        $('.'+mn+'_cari').each(function(){
+            p=$(this).attr('id');
+            v=$(this).val();
+            par+='&'+p+'='+v;
+            tok+=v;
+        });var x  = $('#id_loginS').val();
+        var token = encode64(x+tok);
+        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+    }
+//end of  print to PDF -------
