@@ -192,16 +192,17 @@ unset($_SESSION['product_id'][$k]);
 
 if(isset($_POST['editjumlah'])){
 $kode 		= $_POST['kode'];
+$harga = $_POST['harga'];
 $jumlahbeli = $_POST['jumlahbeli'];
 $subdiscount = $_POST['subdiscount'];
 foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
 	{
-$harga = $_SESSION['product_id'][$k]['harga'];
-$nilaidiscount=cekdiscount($subdiscount,$harga);
 $_SESSION['product_id'][$k]['subdiscount']=$subdiscount;
 $_SESSION['product_id'][$k]['jumlah']=$jumlahbeli;
-$_SESSION['product_id'][$k]['subtotal'] = $jumlahbeli*($_SESSION['product_id'][$k]['harga']-$nilaidiscount);
+$_SESSION['product_id'][$k]['harga']=$harga;
+$nilaidiscount=cekdiscount($subdiscount,$harga);
+$_SESSION['product_id'][$k]['subtotal'] = $jumlahbeli*($harga-$nilaidiscount);
 		}
 }
 }
@@ -401,7 +402,7 @@ $admin .= '
 			<td>'.$cart_itm["kode"].'</td>
 		<td>'.getnamabarang($cart_itm["kode"]).'</td>
 		<td><input align="right" type="text" name="jumlahbeli" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
-		<td>'.$cart_itm["harga"].'</td>
+		<td><input align="right" type="text" name="harga" value="'.$cart_itm["harga"].'"class="form-control"></td>
 		<td><input align="right" type="text" name="subdiscount" value="'.$cart_itm["subdiscount"].'"class="form-control"></td>
 	<td>'.$nilaidiscount.'</td>
 		<td>'.$cart_itm["subtotal"].'</td>
@@ -430,9 +431,9 @@ $admin .= '
 			<td>'.$no.'</td>
 			<td>'.$cart_itm["kode"].'</td>
 		<td>'.getnamabarang($cart_itm["kode"]).'</td>
-		<td><input align="right" type="text" name="jumlahbeli" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
+		<td>'.$cart_itm["jumlah"].'</td>
 		<td>'.$cart_itm["harga"].'</td>
-		<td><input align="right" type="text" name="subdiscount" value="'.$cart_itm["subdiscount"].'"class="form-control"></td>
+		<td>'.$cart_itm["subdiscount"].'</td>
 	<td>'.$nilaidiscount.'</td>
 		<td>'.$cart_itm["subtotal"].'</td>
 		<td>

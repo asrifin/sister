@@ -162,16 +162,6 @@ $admin .= '
 		<td><input type="text" name="tglakhir" value="'.$tglakhir.'" class="form-control">&nbsp;'.$wktakhir.'</td>
 	</tr>';
 $admin .= '<tr>
-	<td>Jenis </td>
-	<td><select name="jenisproduk" class="form-control">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM po_jenisproduk ORDER BY nama asc");
-$admin .= '<option value="Semua"> Semua </option>';
-while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
-$admin .= '<option value="'.$datasj['id'].'">'.$datasj['nama'].'</option>';
-}
-$admin .='</select></td>
-</tr>';
-$admin .= '<tr>
 	<td></td>
 	<td>
 			<input type="hidden" name="detail" value="detail">

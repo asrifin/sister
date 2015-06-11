@@ -47,8 +47,11 @@ echo '
 <tr class="border">
 <td>No</td>
 <td>No.PO</td>
+<td>No.PR</td>
 <td>Tanggal</td>
 <td>Supplier</td>
+<td>Cara Bayar</td>
+<td>Termin</td>
 <td>Total</td>
 <td>User</td>
 </tr>';
@@ -57,20 +60,26 @@ $s = mysql_query ("SELECT * FROM `po_po` where tgl >= '$tglmulai' and tgl <= '$t
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $nopo = $datas['nopo'];
+$nopr = $datas['nopr'];
 $tgl = $datas['tgl'];
 $kodesupplier = $datas['kodesupplier'];
 $total = $datas['total'];
 $discount = $datas['discount'];
 $netto = $datas['netto'];
+$carabayar = $datas['carabayar'];
+$termin = $datas['termin'];
 $user = $datas['user'];
 $urutan = $no + 1;
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
 <td>'.$nopo.'</td>
+<td>'.$nopr.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.rupiah_format($total).'</td>
+<td>'.$carabayar.'</td>
+<td>'.$termin.'</td>
 <td>'.$user.'</td>
 </tr>';
 $no++;
@@ -80,8 +89,8 @@ $thutang+=$hutang;
 }
 echo '
 <tr class="border" align="right">
-<td colspan="4"><b>Grand Total :</b></td>
-<td colspan="2" align ="left">'.rupiah_format($ttotal).'</td>
+<td colspan="5"><b>Grand Total :</b></td>
+<td colspan="4" align ="left">'.rupiah_format($ttotal).'</td>
 
 </tr>';
 echo '</table>';
@@ -91,9 +100,9 @@ echo '
 <tr class="border">
 <td>No</td>
 <td>No.PO</td>
+<td>No.PR</td>
 <td>Tanggal</td>
 <td>Supplier</td>
-<td>Jenis</td>
 <td>Kode Barang</td>
 <td>Nama Barang</td>
 <td>Harga</td>
@@ -107,6 +116,7 @@ $s = mysql_query ("SELECT * FROM `po_po` where tgl >= '$tglmulai' and tgl <= '$t
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $nopo = $datas['nopo'];
+$nopr = $datas['nopr'];
 $tgl = $datas['tgl'];
 $kodesupplier = $datas['kodesupplier'];
 $carabayar = $datas['carabayar'];
@@ -127,9 +137,9 @@ echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
 <td>'.$nopo.'</td>
+<td>'.$nopr.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
-<td>'.getjenisbarang($kodebarang).'</td>
 <td>'.$kodebarang.'</td>
 <td>'.getnamabarang($kodebarang).'</td>
 <td>'.rupiah_format($harga).'</td>
@@ -146,9 +156,9 @@ echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
 <td>'.$nopo.'</td>
+<td>'.$nopr.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
-<td>'.getjenisbarang($kodebarang).'</td>
 <td>'.$kodebarang.'</td>
 <td>'.getnamabarang($kodebarang).'</td>
 <td>'.rupiah_format($harga).'</td>

@@ -110,6 +110,8 @@ $nopo 		= $_POST['nopo'];
 $kodepr 		= $_SESSION["kodepr"];
 $tgl 		= $_POST['tgl'];
 $kodesupplier 		= $_SESSION["kodesupplier"];
+$carabayar 		= $_POST['carabayar'];
+$termin 		= $_POST['termin'];
 $total 		= $_POST['total'];
 $discount 		= $_POST['discount'];
 $netto = $_POST['bayar'];
@@ -121,7 +123,7 @@ if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT nopr FROM po_po WHER
 if ($error){
 $admin .= '<div class="error">'.$error.'</div>';
 }else{
-$hasil  = mysql_query( "INSERT INTO `po_po` VALUES ('','$nopo','$kodepr','$tgl','$kodesupplier','$total','$discount','$netto','$user')" );
+$hasil  = mysql_query( "INSERT INTO `po_po` VALUES ('','$nopo','$kodepr','$tgl','$kodesupplier','$carabayar','$termin','$total','$discount','$netto','$user')" );
 $idpo = mysql_insert_id();
 foreach ($_SESSION["product_id"] as $cart_itm)
 {
@@ -137,6 +139,7 @@ if($hasil){
 $admin .= '<div class="sukses"><b>Berhasil Menambah PO.</b></div>';
 pocetak($nopo);
 porefresh();
+$style_include[] ='<meta http-equiv="refresh" content="2; url=admin.php?pilih=po&mod=yes" />';
 }else{
 $admin .= '<div class="error"><b>Gagal Menambah PO.</b></div>';
 		}		
@@ -222,6 +225,13 @@ $_SESSION['product_id']='';
 $_SESSION['totalpo']='';
 $_SESSION['kodesupplier'] = $_POST['kodesupplier'];
 $_SESSION['kodepr'] = $_POST['kodepr'];
+$carabayar = $_POST['carabayar'];
+$termin = $_POST['termin'];
+if (!$_POST['kodesupplier'])  	$error .= "Error:  Kode Supplier harus Di isi<br />";
+if (!$_POST['kodepr'])  	$error .= "Error:  Kode PR harus Di isi<br />";
+if ($error){
+$admin .= '<div class="error">'.$error.'</div>';
+}else{
 $hasil3 =  $koneksi_db->sql_query("SELECT * FROM po_pr WHERE nopr = '$_SESSION[kodepr]'");
 $data3 = $koneksi_db->sql_fetchrow($hasil3);
 $_SESSION['namapr'] = $data3['namapr'];	  
@@ -242,7 +252,7 @@ $_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode, 'jumlah' => $jum
 }
 }
 }
-
+}
 if($_SESSION["kodesupplier"]!=''){
 $supplier = '
 		<td>Nama Supplier</td>
@@ -259,25 +269,9 @@ $supplier = '
 if($_SESSION["kodepr"]!=''){
 $datapr = '
 		<tr>
-		<td>Nama PR</td>
-		<td>:</td>
-		<td>'.($_SESSION['namapr']).'</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		</tr>
-		<tr>
 		<td>Departemen</td>
 		<td>:</td>
 		<td>'.getdepartemen($_SESSION['departemenpr']).'</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		</tr>
-		<tr>
-		<td>Tujuan Pembelian</td>
-		<td>:</td>
-		<td>'.($_SESSION['tujuanpr']).'</td>
 		<td></td>
 		<td></td>
 		<td></td>
@@ -290,6 +284,7 @@ $datapr = '';
 
 if(isset($_POST['batalpo'])){
 porefresh();
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po&mod=yes" />';
 }
 
 $user = $_SESSION['UserName'];
@@ -300,6 +295,20 @@ $kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesuppl
 $kodepr 		= !isset($kodepr) ? $_SESSION['kodepr'] : $kodepr;
 $discount 		= !isset($discount) ? '0' : $discount; 
 $harga 		= !isset($harga) ? '0' : $harga; 
+$carabayar 		= !isset($carabayar) ? 'Tunai' : $carabayar;
+$termin 		= !isset($termin) ? '0' : $termin;
+$sel2 = '<select name="carabayar" class="form-control">';
+$arr2 = array ('Tunai','Kredit');
+foreach ($arr2 as $kk=>$vv){
+	if ($carabayar == $vv){
+	$sel2 .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';
+	}else {
+	$sel2 .= '<option value="'.$vv.'">'.$vv.'</option>';	
+}
+}
+
+$sel2 .= '</select>'; 
+ 
 $admin .= '
 <div class="panel-heading"><b>Transaksi PO</b></div>';	
 $admin .= '
@@ -326,14 +335,15 @@ $admin .= '
 		<td>Kode Supplier</td>
 		<td>:</td>
 		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" required >
+                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >
 					<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
                     <ul id="country_list_id"></ul>
                 </div>
 				</td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td>Cara Pembayaran</td>
+		<td>:</td>
+		<td>'.$sel2.'</td>
+		</tr>
 		</tr>';
 $admin .= '
 	<tr>
@@ -346,9 +356,9 @@ $admin .= '
                     <ul id="pr_list_id"></ul>
                 </div>
 				</td>
-	<td></td>
-	<td></td>
-	<td></td>
+		<td>Termin</td>
+		<td>:</td>
+		<td><input type="text" name="termin" value="'.$termin.'" class="form-control"> Hari</td>
 		</tr>
 				';
 $admin .= $datapr;
@@ -521,11 +531,14 @@ $no=1;
 $query 		= mysql_query ("SELECT * FROM `po_po` WHERE `nopo` like '$kodepo'");
 $data 		= mysql_fetch_array($query);
 $nopo  			= $data['nopo'];
+$nopr  			= $data['nopr'];
 $tgl  			= $data['tgl'];
 $kodesupplier  			= $data['kodesupplier'];
 $total  			= $data['total'];
 $discount  			= $data['discount'];
 $netto  			= $data['netto'];
+$carabayar  			= $data['carabayar'];
+$termin  			= $data['termin'];
 	$error 	= '';
 		if (!$nopo) $error .= "Error: kode PO tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
@@ -547,6 +560,14 @@ $admin .= '
 	</tr>';
 $admin .= '
 	<tr>
+		<td>Nomor PR</td>
+		<td>:</td>
+		<td>'.$nopr.'</td>
+		<td>
+		</td>
+	</tr>';
+$admin .= '
+	<tr>
 		<td>Tanggal</td>
 		<td>:</td>
 		<td>'.tanggalindo($tgl).'</td>
@@ -559,7 +580,20 @@ $admin .= '
 		<td>'.getnamasupplier($kodesupplier).'</td>
 			<td></td>
 	</tr>';	
-
+$admin .= '
+	<tr>
+		<td>Cara Bayar</td>
+		<td>:</td>
+		<td>'.($carabayar).'</td>
+			<td></td>
+	</tr>';	
+$admin .= '
+	<tr>
+		<td>Termin</td>
+		<td>:</td>
+		<td>'.($termin).' Hari</td>
+			<td></td>
+	</tr>';	
 $admin .= '</table>		</form></div>';	
 $admin .='<div class="panel panel-info">';
 $admin .= '
