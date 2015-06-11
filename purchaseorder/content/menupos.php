@@ -18,16 +18,13 @@ echo '<div class="border2">
 <a href="admin.php?pilih=mnmaster&mod=yes"><img src="images/master.jpg" width="50px"><br>MASTER</a>&nbsp;&nbsp;
 </td>
 <td>
+<a href="admin.php?pilih=mnpermintaan&mod=yes"><img src="images/order.png" width="50px"><br>PERMINTAAN</a>&nbsp;&nbsp;
+</td>
+<td>
 <a href="admin.php?pilih=mnpemesanan&mod=yes"><img src="images/order.png" width="50px"><br>PEMESANAN</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=mnpembelian&mod=yes"><img src="images/order.png" width="50px"><br>PEMBELIAN</a>&nbsp;&nbsp;
-</td>
-<td>
-<a href="admin.php?pilih=mnhutangpiutang&mod=yes"><img src="images/uang.jpg" width="50px"><br>HUTANG/PIUTANG</a>&nbsp;
-</td>
-<td>
-<a href="admin.php?pilih=mnlaporan&mod=yes"><img src="images/report.png" width="50px" height="50px"><br>LAPORAN</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=user&mod=yes"><img src="images/userlogin.jpg" width="50px"><br>USER</a>&nbsp;&nbsp;
