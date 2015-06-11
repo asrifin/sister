@@ -88,16 +88,8 @@
                   </tr>
                 </table>';
 
-                $out.='<table class="isi" width="100%">
-                        <tr class="head">
-                          <td align="center">Nama Kategori</td>
-                          <td align="center">Rekening</td>
-                          <td align="center">Tujuan</td>
-                          <td align="center">Jumlah</td>
-                          <td align="center">Kuota Anggaran</td>
-                          <td align="center">Sisa Anggaran</td>
-                        </tr>';
-                    $nox = 1;
+                $out.='<table class="isi" width="100%">';
+                $nox = 1;
                     if($n==0){
                       $out.='<tr>
                         <td>-</td>
@@ -109,6 +101,14 @@
                       </tr>';
                     }else{
                       while ($r=mysql_fetch_assoc($e)) {
+                        $out.='<tr class="head">
+                          <td align="center">Nama Kategori</td>
+                          <td align="center">Rekening</td>
+                          <td align="center">Tujuan</td>
+                          <td align="center">Jumlah</td>
+                          <td align="center">Kuota Anggaran</td>
+                          <td align="center">Sisa Anggaran</td>
+                        </tr>';
                         $out.='<tr>
                                   <td>'.$r['nama'].'</td>
                                   <td>'.$r['rekening'].'</td>
@@ -117,6 +117,41 @@
                                   <td align="right">Rp. '.number_format(getKatAnggaran($r['replid'],'kuotaNum')).'</td>
                                   <td align="right" >Rp. '.number_format(getKatAnggaran($r['replid'],'sisaNum')).'</td>
                             </tr>';
+                          $out.='<tr>
+                          <td colspan="6">';
+                            $out.='<table class="isi" width="100%">
+                              <tr class="head2">
+                                <th width="25%">Anggaran</th>
+                                <th width="25%">Nominal</th>
+                                <th width="25%">Terpakai</th>
+                                <th width="25%">Tujuan</th>
+                              </tr>';
+                            $s2 = 'SELECT 
+                                    d.replid,
+                                    d.nama,
+                                    d.keterangan,
+                                    sum(n.nominal)totNominal
+                                  FROM keu_detilanggaran d
+                                    LEFT JOIN keu_nominalanggaran n on n.detilanggaran = d.replid
+                                  WHERE 
+                                    d.kategorianggaran = '.$r['replid'].'
+                                  GROUP BY  
+                                    d.replid';
+                            $e2 = mysql_query($s2);
+                            $n2 = mysql_num_rows($e2);
+                            if($n2<=0){
+                              $out.='<tr><td width="100%" colspan="4" align="center">.. kosong ..</td></tr>';
+                            }else{
+                              while ($r2=mysql_fetch_assoc($e2)) {
+                                $out.='<tr>
+                                    <td width="25%">'.$r2['nama'].'</td>
+                                    <td align="right" width="25%">Rp. '.number_format($r2['totNominal']).'</td>
+                                    <td align="right"  width="25%">Rp. '.number_format(getDetAnggaran($r2['replid'],'terpakaiNum')).'</td>
+                                    <td width="25%">'.$r2['keterangan'].'</td>
+                                  </tr>';
+                              }
+                            }$out.='</table>';
+                            $out.='</td>';
                         $nox++;
                       }
                     }
