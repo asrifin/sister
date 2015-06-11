@@ -41,6 +41,7 @@
 		$s='SELECT '.$typ.' FROM departemen WHERE replid='.$id;
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
+		// var_dump($r);exit();
 		return $r[$typ];
 	}
 
