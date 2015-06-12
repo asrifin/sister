@@ -274,7 +274,7 @@ $discount 		= !isset($discount) ? '0' : $discount;
 $carabayar 		= !isset($carabayar) ? $_POST['carabayar'] : $carabayar;
 $termin 		= !isset($termin) ? $_POST['termin'] : $termin;
 $sel2 = '<select name="carabayar" class="form-control">';
-$arr2 = array ('Tunai','Debet Card','Hutang');
+$arr2 = array ('Tunai','Hutang');
 foreach ($arr2 as $kk=>$vv){
 	if ($carabayar == $vv){
 	$sel2 .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';

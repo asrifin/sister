@@ -298,7 +298,7 @@ $harga 		= !isset($harga) ? '0' : $harga;
 $carabayar 		= !isset($carabayar) ? 'Tunai' : $carabayar;
 $termin 		= !isset($termin) ? '0' : $termin;
 $sel2 = '<select name="carabayar" class="form-control">';
-$arr2 = array ('Tunai','Kredit');
+$arr2 = array ('Tunai','Hutang');
 foreach ($arr2 as $kk=>$vv){
 	if ($carabayar == $vv){
 	$sel2 .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';
