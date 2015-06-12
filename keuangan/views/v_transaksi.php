@@ -234,6 +234,15 @@
                     <!-- <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button> -->
+                    <label><b>Daftar label item yang dicetak :</b></label>
+                    <div class="input-control select span3">
+                        <select  data-hint="lokasi" class="barcode_cari" name="lokasiS" id="lokasiS"></select>
+                    </div>
+                    <div class="input-control text size5">
+                        <input  placeholder="barkode atau judul item" type="text" id="labelTB">
+                        <button class="btn-clear"></button>
+                    </div>
+
 
                     <table  class="table hovered bordered striped">
                         <thead>

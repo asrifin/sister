@@ -36,7 +36,7 @@
 				)da on da.kategorianggaran = k.replid
 			WHERE 
 				k.replid = '.$id;
-		// var_dump($s);exit();
+		// var_dump($s);exit();	
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r[$typ];
