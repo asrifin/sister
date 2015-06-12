@@ -53,11 +53,14 @@ $no=1;
 $query 		= mysql_query ("SELECT * FROM `po_po` WHERE `nopo` like '$kode'");
 $data 		= mysql_fetch_array($query);
 $nopo  			= $data['nopo'];
+$nopr  			= $data['nopr'];
 $tgl  			= $data['tgl'];
 $kodesupplier  			= $data['kodesupplier'];
 $total  			= $data['total'];
 $discount  			= $data['discount'];
 $netto  			= $data['netto'];
+$carabayar  			= $data['carabayar'];
+$termin  			= $data['termin'];
 	$error 	= '';
 		if (!$nopo) $error .= "Error: kode PO tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
@@ -72,6 +75,12 @@ echo '
 	</tr>';
 echo '
 	<tr>
+		<td>Nomor PR</td>
+		<td>:</td>
+		<td>'.$nopr.'</td>
+	</tr>';
+echo '
+	<tr>
 		<td>Tanggal</td>
 		<td>:</td>
 		<td>'.tanggalindo($tgl).'</td>
@@ -82,7 +91,18 @@ echo '
 		<td>:</td>
 		<td>'.getnamasupplier($kodesupplier).'</td>
 	</tr>';	
-
+echo '
+	<tr>
+		<td>Cara Bayar</td>
+		<td>:</td>
+		<td>'.($carabayar).'</td>
+	</tr>';	
+echo '
+	<tr>
+		<td>Termin</td>
+		<td>:</td>
+		<td>'.($termin).'</td>
+	</tr>';	
 echo '</table>';	
 echo '<b>Detail</b>';	
 echo '
