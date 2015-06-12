@@ -79,12 +79,7 @@ $kodesupplier 		= $_SESSION["kodesupplier"];
 $total 		= $_POST['total'];
 $user 		= $_POST['user'];
 $carabayar 		= $_POST['carabayar'];
-if($carabayar=='Potong Hutang'){
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT noinvoice FROM po_pembelian WHERE noinvoice='$noinvoice' and (carabayar='Tunai' or carabayar='Debet Card')")) > 0) $error .= "Error: Nomor Invoice ".$noinvoice." bukan merupakan Transaksi Hutang, atau Hutang telah di Lunasi
-<br>tidak dapat dilakukan Pemotongan Hutang<br />";
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT noinvoice FROM po_pembelian WHERE noinvoice='$noinvoice' and hutang='0'")) > 0) $error .= "Error: Nomor Invoice ".$noinvoice." , Hutang telah di Lunasi
-<br>tidak dapat dilakukan Pemotongan Hutang<br />";
-}
+
 if (!$_SESSION["kodesupplier"])  	$error .= "Error:  Kode Supplier harus ada <br />";
 if (!$_SESSION["product_id"])  	$error .= "Error:  Kode Barang harus ada <br />";
 if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT noretur FROM po_pembelianretur WHERE noretur='$noretur'")) > 0) $error .= "Error: Nomor Retur ".$noretur." sudah terdaftar<br />";
