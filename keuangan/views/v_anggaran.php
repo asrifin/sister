@@ -92,16 +92,20 @@
     <table class="table hovered bordered striped">
         <thead>
             <tr style="color:white;"class="info">
-                <th class="text-center">Anggaran </th>
-                <th class="text-center">Nominal</th>
+                <th rowspan="2" class="text-center">Anggaran </th>
+                <th colspan="2" class="text-center">Nominal</th>
+                <th rowspan="2">Tujuan</th>
+                <th rowspan="2" class="text-center">Aksi</th>
+            </tr>
+            <tr style="color:white;"class="info">
+                <th class="text-center">Kuota</th>
                 <th class="text-center">Terpakai</th>
-                <th class="text-center">Tujuan</th>
-                <th class="text-center">Aksi</th>
+                <!-- <th rowspan="2" class="text-center"></th> -->
             </tr>
             <tr style="display:none;" id="k_cariTR" class="info">
                 <th class="text-center"><div class="input-control text"><input placeholder="Anggaran" id="d_namaS"  class="detilanggaran_cari" class="span1"></div></th>
-                <th class="text-center"><div class="input-control text"></th>
-                <th class="text-center"><div class="input-control text"></th>
+                <th class="text-center"></th>
+                <th class="text-center"></th>
                 <th class="text-center"><div class="input-control text"><input placeholder="cari" id="d_keteranganS" class="detilanggaran_cari"></div></th>
                 <th class="text-center"></th>
             </tr>

@@ -92,74 +92,74 @@ var a_contentFR = d_contentFR  ='';
                                     +'<legend>Nominal (@bulan)</legend>'
 
                                     // ----------------------------------
-                                    +'<label>Juli :</label>'
+                                    +'<label>Juli <span class="tahunBulan1"></span> :</label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[7]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[7]" placeholder="Juli" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
 
-                                    +'<label>Agustus :</label>'
+                                    +'<label>Agustus <span class="tahunBulan1"></span></label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[8]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[8]" placeholder="Agustus" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
 
-                                    +'<label>September :</label>'
+                                    +'<label>September <span class="tahunBulan1"></span></label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[9]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[9]" placeholder="September" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
 
-                                    +'<label>Oktober :</label>'
+                                    +'<label>Oktober <span class="tahunBulan1"></span></label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[10]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[10]" placeholder="Oktober" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
 
-                                    +'<label>November :</label>'
+                                    +'<label>November <span class="tahunBulan1"></span></label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[11]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[11]" placeholder="November" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
 
-                                    +'<label>Desember :</label>'
+                                    +'<label>Desember <span class="tahunBulan1"></span></label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[12]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[12]" placeholder="Desember" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
 
 
-                                    +'<label>Januari :</label>'
+                                    +'<label>Januari <span class="tahunBulan2"></span></label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[1]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[1]" placeholder="Februari" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
                                     
-                                    +'<label>Februari :</label>'
+                                    +'<label>Februari <span class="tahunBulan2"></span></label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[2]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[2]" placeholder="Februari" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
 
-                                    +'<label>Maret :</label>'
+                                    +'<label>Maret <span class="tahunBulan2"></span></label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[3]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[3]" placeholder="Maret" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
 
-                                    +'<label>April :</label>'
+                                    +'<label>April <span class="tahunBulan2"></span></label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[4]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[4]" placeholder="April" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
 
-                                    +'<label>Mei :</label>'
+                                    +'<label>Mei <span class="tahunBulan2"></span></label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[5]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[5]" placeholder="Mei" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                     +'</div>'
 
-                                    +'<label>Juni :</label>'
+                                    +'<label>Juni <span class="tahunBulan2"></span></label>'
                                     +'<div class="input-control text size5">'
                                         +'<input type="hidden" name="d_idnominalTB[6]" />'
                                         +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[6]" placeholder="Juni" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
@@ -642,6 +642,10 @@ var a_contentFR = d_contentFR  ='';
                     $('#d_departemenDV').val(dt.departemen);
                     $('#d_tahunajaranDV').html(dt.tahunajaran);
                     $('#d_tingkatDV').html(dt.tingkat);
+                    var th1 = dt.tahunajaran.substr(0,3);
+                    var th2 = dt.tahunajaran.substr(5,8);
+                    $('.tahunBulan1').html(th1);
+                    $('.tahunBulan2').html(th2);
                     viewTB('detilanggaran');
                     switchPN(2);
                 }

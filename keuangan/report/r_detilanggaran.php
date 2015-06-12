@@ -5,9 +5,10 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
 
+  // $x     = $_SESSION['id_loginS'].$_GET[$pre.'kategorianggaranH'].$_GET[$pre.'tahunajaranS'].$_GET[$pre.'tingkatS'].$_GET[$pre.'namaS'].$_GET[$pre.'keteranganS'];
   $mnu = 'Detil Anggaran';
   $pre = 'd_';
-  $x     = $_SESSION['id_loginS'].$_GET[$pre.'kategorianggaranH'].$_GET[$pre.'tahunajaranS'].$_GET[$pre.'tingkatS'].$_GET[$pre.'namaS'].$_GET[$pre.'keteranganS'];
+  $x     = $_SESSION['id_loginS'].$_GET[$pre.'kategorianggaranH'].$_GET[$pre.'namaS'].$_GET[$pre.'keteranganS'];
   $token = base64_encode($x);
 
   if(!isset($_SESSION)){ // belum login  
@@ -16,6 +17,8 @@
     if(!isset($_GET['token']) OR  $token!==$_GET['token']){ //token salah 
       echo 'Token URL tidak sesuai';
     }else{ //token benar
+      sleep(1);
+      ob_start(); // digunakan untuk convert php ke html
       $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
             <html xmlns="http://www.w3.org/1999/xhtml">
               <head>
@@ -23,8 +26,6 @@
                 <title>SISTER::Keu - Anggaran</title>
               </head>';
                 $kategorianggaran = isset($_GET[$pre.'kategorianggaranH'])?filter($_GET[$pre.'kategorianggaranH']):'';
-                $tahunajaran      = isset($_GET[$pre.'tahunajaranS'])?filter($_GET[$pre.'tahunajaranS']):'';
-                $tingkat          = isset($_GET[$pre.'tingkatS'])?filter($_GET[$pre.'tingkatS']):'';
                 $nama             = isset($_GET[$pre.'namaS'])?filter($_GET[$pre.'namaS']):'';
                 $keterangan       = isset($_GET[$pre.'keteranganS'])?filter($_GET[$pre.'keteranganS']):'';
 
@@ -37,7 +38,6 @@
                         LEFT JOIN keu_nominalanggaran n on n.detilanggaran = d.replid
                       WHERE 
                         d.kategorianggaran ='.$kategorianggaran.' and 
-                        d.tingkat = '.$tingkat.' AND
                         d.nama LIKE"%'.$nama.'%" AND 
                         d.keterangan LIKE"%'.$keterangan.'%"
                       GROUP BY  
@@ -47,13 +47,16 @@
                 $n = mysql_num_rows($e);
 
               // header's info
-              $depId           = getKatAnggaran2('departemen',$kategorianggaran);
-              $katAnggaranNama = getKatAnggaran2('nama',$kategorianggaran);
-              $katAnggaranKet  = getKatAnggaran2('keterangan',$kategorianggaran);
-              $katAnggaranThn  = getTahunAjaran('tahunajaran',$tahunajaran);
-              $depNama         = getDepartemen('nama',$depId);
-              $tingNama        = getTingkat('tingkat',$tingkat);
-              $tingKet         = getTingkat('keterangan',$tingkat);
+              $katAnggNama = getKatAnggaran2('nama',$kategorianggaran);
+              $katAnggKet  = getKatAnggaran2('keterangan',$kategorianggaran);
+                $tingId      = getKatAnggaran2('tingkat',$kategorianggaran);
+              $tingNama    = getTingkat('tingkat',$tingId);
+              $tingKet     = getTingkat('keterangan',$tingId);
+                $tAjaranId   = getTingkat('tahunajaran',$tingId);
+              $tAjaranNama = getTahunAjaran('tahunajaran',$tAjaranId);
+                $depId       = getTahunAjaran('departemen',$tAjaranId);
+              $depNama     = getDepartemen('nama',$depId);
+
               $out.='<body>
                     <table width="100%">
                       <tr>
@@ -65,28 +68,36 @@
                         </td>
                       </tr>
                     </table><br />
+
                 <table width="100%">
-                  <tr>
-                    <td width="10%">Tahun Buku </td>
-                    <td>: '.getTahunBuku('nama').'</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td width="10%">Kategori</td>
-                    <td>: '.$katAnggaranNama.' ('.$katAnggaranKet.')</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td width="10%">Tingkat</td>
-                    <td>: '.$tingNama.'('.$tingKet.')</td>
-                    <td></td>
-                  </tr>
                   <tr>
                     <td>Departemen</td>
                     <td>: '.$depNama.'</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td width="16%">Tahun Ajaran </td>
+                    <td>: '.$tAjaranNama.'</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td width="16%">Tingkat</td>
+                    <td>: '.$tingNama.' ('.$tingKet.')</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td width="16%">Kategori</td>
+                    <td>: '.$katAnggNama.' ('.$katAnggKet.')</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td width="16%">Tot. Anggaran</td>
+                    <td>: Rp. '.number_format(getKatAnggaran($kategorianggaran,'kuotaNum')).'</td>
                     <td align="right"> Total :'.$n.' Data</td>
                   </tr>
                 </table>';
+
+
                 $out.='<table class="isi" width="100%">
                     <tr class="head">
                       <td align="center">Anggaran</td>

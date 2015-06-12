@@ -56,6 +56,13 @@
 								OR r.nama LIKE "%'.$searchTerm.'%"
 							)'.$rekArr.$jenis;
 							// '.(isset($_GET['jenis']) AND $_GET['jenis']!=''?'k.jenis="'.$_GET['jenis'].'" AND ':'').' (
+				}elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='invoice'){ // invoice pembelian dr. PO
+					$ss='SELECT p.*
+						FROM po_pembelian p
+						WHERE 
+							p.noinvoice LIKE "%'.$searchTerm.'%" OR
+							p.nopo LIKE "%'.$searchTerm.'%" OR
+							p.kodesupplier LIKE "%'.$searchTerm.'%"';
 				}else{ // detil anggaran 
 					$ss='SELECT
 							d.replid,
@@ -106,14 +113,14 @@
 				$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
 				$rows 	= array();
 				while($row = mysql_fetch_assoc($result)) {
-					if($_GET['subaksi']=='rek'){
+					if($_GET['subaksi']=='rek'){ // rekening 
 						$arr= array(
 							'replid'         =>$row['replid'],
 							'kode'           =>$row['kode'],
 							'nama'           =>$row['nama'],
 							'saldoSementara' =>$row['saldoSementara']
 						);
-					}else{
+					}elseif($_GET['subaksi']=='detilanggaran'){ // anggaran 
 						$kuota=getKuotaAnggaran($row['replid']);
 						$arr= array(
 							'replid'           =>$row['replid'],
@@ -127,6 +134,8 @@
 							'idrekening'       => $row['idrekening'],
 							'rekening'         => $row['rekening'],
 						);
+					}else{
+						$arr[]=$row;
 					}$rows[]=$arr; 
 				}$response=array(
 					'page'    =>$page,
@@ -1467,7 +1476,7 @@
 														nomer         ="'.getNoTrans2($sub).'",
 														tanggal       ="'.tgl_indo6($_POST['tanggalTB']).'",
 														detjenistrans ='.getDetJenisTrans('replid','kode',$_POST['detjenistransH']).',
-														detilanggaran ='.$_POST['detilanggaranH'].',
+														detilanggaran ='.$_POST['out_come_detilanggaran'.$v.'H'].',
 														nobukti       ="'.$_POST['nobuktiTB'].'"';
 							$s  = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1;
 							$e  = mysql_query($s);
