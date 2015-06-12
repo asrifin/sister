@@ -60,21 +60,25 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
+					 	if($res['biayaRealisasi']==0){
+							$hint = 'pending';
+							$bg   = 'amber';
+							$poBtn= '<a target="_blank" href="http://localhost/sister/purchaseorder/admin.php?pilih=po&mod=yes" data-hint="PO"  class="button"" >
+									<i class="icon-checkmark"></i>
+									</button>';
+						}else{
+							$hint = 'acc.';
+							$bg   = 'lightTeal';
+							$poBtn='';
+					 	}
 						$btn ='<td align="center">
 									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
 									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
-									</button>
+									</button>&nbsp;'.$poBtn.'
 								 </td>';
-					 	if($res['biayaRealisasi']==0){
-							$hint = 'pending';
-							$bg   = 'amber';
-						}else{
-							$hint = 'acc.';
-							$bg   = 'lightTeal';
-					 	}
 						$out.= '<tr data-hint="'.$hint.'" data-hint-position="left"  class="bg-'.$bg.'">
 									<td class="text-center">'.tgl_indo5($res['tanggal1']).' - '.tgl_indo5($res['tanggal2']).'</td>
 									<td>'.$res['aktivitas'].'</td>
