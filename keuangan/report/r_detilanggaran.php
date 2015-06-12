@@ -23,7 +23,7 @@
             <html xmlns="http://www.w3.org/1999/xhtml">
               <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                <title>SISTER::Keu - Anggaran</title>
+                <title>SISTER::Keu - Detail Anggaran</title>
               </head>';
                 $kategorianggaran = isset($_GET[$pre.'kategorianggaranH'])?filter($_GET[$pre.'kategorianggaranH']):'';
                 $nama             = isset($_GET[$pre.'namaS'])?filter($_GET[$pre.'namaS']):'';
@@ -100,7 +100,7 @@
 
                 $out.='<table class="isi" width="100%">
                     <tr class="head">
-                      <td align="center">Anggaran</td>
+                      <td align="center">Item</td>
                       <td align="center">Kuota</td>
                       <td align="center">Terpakai</td>
                       <td align="center">Keterangan</td>
