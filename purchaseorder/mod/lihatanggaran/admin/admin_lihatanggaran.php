@@ -42,7 +42,24 @@ $admin .= '
 		<td>Kategori Anggaran</td>
 		<td>:</td>
 		<td>'.getkategorianggaran($kategorianggaran).'</td>
-			<td>'.$lihatanggaran.'</td>
+	</tr>';
+$admin .= '
+	<tr>
+		<td>Kuota Anggaran</td>
+		<td>:</td>
+		<td>'.rupiah_format(getKatAnggaran($kategorianggaran,kuotaNum)).'</td>
+	</tr>';
+$admin .= '
+	<tr>
+		<td>Kuota Terpakai</td>
+		<td>:</td>
+		<td>'.rupiah_format(getKatAnggaran($kategorianggaran,terpakaiNum)).'</td>
+	</tr>';
+	$admin .= '
+	<tr>
+		<td>Sisa Anggaran</td>
+		<td>:</td>
+		<td>'.rupiah_format(getKatAnggaran($kategorianggaran,sisaNum)).'</td>
 	</tr>';
 $admin .= '</form></table></div>';	
 	}
