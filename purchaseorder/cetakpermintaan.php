@@ -71,7 +71,7 @@ echo '
 <td>'.$nopr.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.$namapr.'</td>
-<td>'.getdepartemen($departemenpr).'</td>
+<td>'.getdepartemendaritingkat($departemenpr).'-'.getdepartemen($departemenpr).'</td>
 <td>'.$tujuanpr.'</td>
 <td>'.getkategorianggaran($kategorianggaran).'</td>
 <td>'.$user.'</td>
@@ -116,7 +116,7 @@ echo '
 <td>'.$nopr.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.$namapr.'</td>
-<td>'.getdepartemen($departemenpr).'</td>
+<td>'.getdepartemendaritingkat($departemenpr).'-'.getdepartemen($departemenpr).'</td>
 <td>'.$kodebarang.'</td>
 <td>'.getnamabarang($kodebarang).'</td>
 <td>'.$jumlah.'</td>

@@ -57,6 +57,7 @@ $noretur  			= $data['noretur'];
 $tgl  			= $data['tgl'];
 $kodesupplier  			= $data['kodesupplier'];
 $total  			= $data['total'];
+$carabayar  			= $data['carabayar'];
 	$error 	= '';
 		if (!$noretur) $error .= "Error: Kode Retur tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
@@ -87,6 +88,12 @@ echo '
 		<td>:</td>
 		<td>'.getnamasupplier($kodesupplier).'</td>
 	</tr>';		
+echo '
+	<tr>
+		<td>Cara Pembayaran</td>
+		<td>:</td>
+		<td>'.($carabayar).'</td>
+	</tr>';	
 echo '</table>';	
 echo '<b>Detail Retur Pembelian</b>';	
 echo '

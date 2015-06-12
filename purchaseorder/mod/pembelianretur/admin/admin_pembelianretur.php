@@ -92,10 +92,6 @@ foreach ($_SESSION["product_id"] as $cart_itm)
 {
 $kode = $cart_itm["kode"];
 $jumlah = $cart_itm["jumlah"];
-$stokbarang=getstokbarang($kode);
-$getstokminusreturbeli = getstokminusreturbeli($_SESSION['kodeinv'],$kode);
-if ($getstokminusreturbeli < $jumlah)  	$error .= "Error:  Stok Barang Tidak Sesuai dengan Stok pada Invoice<br />";
-if ($stokbarang < $jumlah)  	$error .= "Error:  Stok Barang Tidak Mencukupi<br />";
 }
 if ($error){
 $admin .= '<div class="error">'.$error.'</div>';
@@ -139,6 +135,8 @@ $_SESSION['kodeinv'] = $_POST['kodeinv'];
 $hasil3 =  $koneksi_db->sql_query("SELECT * FROM po_pembelian WHERE noinvoice = '$_SESSION[kodeinv]'");
 $data3 = $koneksi_db->sql_fetchrow($hasil3);
 $kodesupplier = $data3['kodesupplier'];
+$carabayar = $data3['carabayar'];
+$termin = $data3['termin'];
 $_SESSION['kodesupplier']=$kodesupplier;	  
 $hasil =  $koneksi_db->sql_query( "SELECT * FROM po_pembeliandetail WHERE noinvoice='$_SESSION[kodeinv]'" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
@@ -260,16 +258,7 @@ $noretur = generatereturbeli();
 $tgl 		= !isset($tgl) ? $tglnow : $tgl;
 $kodeinv 		= !isset($kodeinv) ? $_SESSION['kodeinv'] : $kodeinv;
 $kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesupplier;
-$carabayar 		= !isset($carabayar) ? $_POST['carabayar'] : $carabayar;
-$sel2 = '<select name="carabayar" class="form-control" required>';
-$arr2 = array ('Tunai','Potong Hutang');
-foreach ($arr2 as $kk=>$vv){
-if ($carabayar == $vv){
-	$sel2 .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';
-	}else {
-	$sel2 .= '<option value="'.$vv.'">'.$vv.'</option>';	
-	}
-}
+
 $sel2 .= '</select>'; 
 $admin .= '
 <div class="panel-heading"><b>Transaksi Retur Pembelian</b></div>';	
@@ -288,9 +277,9 @@ $admin .= '
 		<td>Tanggal</td>
 		<td>:</td>
 		<td><input type="text" name="tgl" value="'.$tgl.'" class="form-control">&nbsp;'.$wkt.'</td>
-		<td>Cara Pembayaran</td>
-		<td>:</td>
-		<td>'.$sel2.'</td>
+		<td></td>
+		<td></td>
+		<td></td>
 	</tr>';
 $admin .= '
 	<tr>
@@ -302,42 +291,22 @@ $admin .= '
                     <ul id="inv_list_id"></ul>
                 </div>
 				</td>
-		<td></td>
-		<td></td>
-		<td></td>
+<td>Cara Pembayaran</td>
+		<td>:</td>
+		<td>'.$carabayar.'<input type="hidden" name="carabayar" value="'.$carabayar.'" class="form-control"></td>
 		</tr>';
 $admin .= '
 	<tr>
 		<td>Kode Supplier</td>
 		<td>:</td>
 		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >
-					<input type="submit" value="Tambah Supplier" name="tambahsupplier"class="btn btn-success" >&nbsp;<input type="submit" value="Delete" name="deletesupplier"class="btn btn-danger" >
-                    <ul id="country_list_id"></ul>
-                </div>
+                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'"class="form-control" >
 				</td>
 		<td></td>
 		<td></td>
 		<td></td>
 		</tr>';
 
-
-$admin .= '
-	<tr>
-		<td>Kode Barang</td>
-		<td>:</td>
-		<td>
-                <div class="input_container">
-                    <input type="text" id="barang_id"  name="kodebarang" value="'.$kodebarang.'" onkeyup="autocomplet2()"class="form-control" >
-					<input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" >&nbsp;
-                    <ul id="barang_list_id"></ul>
-                </div>
-				</td>
-	<td></td>
-	<td></td>
-	<td></td>
-		</tr>
-				';
 $admin .= '	
 	<tr><td colspan="5"><div id="Tbayar"></div></td>
 		<td>
@@ -471,7 +440,7 @@ $admin .= '
 		</tr>';
 $admin .= '</form></table></div>';	
 if(isset($_POST['lihatretur'])){
-
+$koderetur     = $_POST['koderetur']; 
 $no=1;
 $query 		= mysql_query ("SELECT * FROM `po_pembelianretur` WHERE `noretur` like '$koderetur'");
 $data 		= mysql_fetch_array($query);
@@ -480,6 +449,7 @@ $noretur  			= $data['noretur'];
 $tgl  			= $data['tgl'];
 $kodesupplier  			= $data['kodesupplier'];
 $total  			= $data['total'];
+$carabayar  			= $data['carabayar'];
 	$error 	= '';
 		if (!$noretur) $error .= "Error: Kode Retur tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
@@ -520,6 +490,13 @@ $admin .= '
 		<td>'.getnamasupplier($kodesupplier).'</td>
 			<td></td>
 	</tr>';	
+$admin .= '
+	<tr>
+		<td>Cara Pembayaran</td>
+		<td>:</td>
+		<td>'.($carabayar).'</td>
+			<td></td>
+	</tr>';	
 $admin .= '</table>		</form></div>';	
 $admin .='<div class="panel panel-info">';
 $admin .= '
@@ -536,7 +513,7 @@ $admin .= '
 <th><b>Discount</b></</th>
 <th><b>Subtotal</b></</th>
 	</tr>';
-$hasild = $koneksi_db->sql_query("SELECT * FROM `pos_pembelianreturdetail` WHERE `noretur` like '$koderetur'");
+$hasild = $koneksi_db->sql_query("SELECT * FROM `po_pembelianreturdetail` WHERE `noretur` like '$koderetur'");
 while ($datad =  $koneksi_db->sql_fetchrow ($hasild)){
 $admin .= '	
 	<tr>
@@ -552,7 +529,7 @@ $admin .= '
 		}
 $admin .= '	
 	<tr>		
-		<td colspan="7" align="right"><b>Total</b></td>
+		<td colspan="6" align="right"><b>Total-</b></td>
 		<td >'.rupiah_format($total).'</td>
 	</tr>';
 $admin .= '</table></div>';	

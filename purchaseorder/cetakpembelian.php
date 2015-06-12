@@ -109,7 +109,7 @@ $thutang+=$hutang;
 }
 echo '
 <tr class="border" align="right">
-<td colspan="5"><b>Grand Total :</b></td>
+<td colspan="6"><b>Grand Total :</b></td>
 <td>'.rupiah_format($ttotal).'</td>
 <td>'.rupiah_format($tbayar).'</td>
 <td>'.rupiah_format($thutang).'</td>
@@ -175,7 +175,7 @@ $grandtotal+=$subtotal;
 
 echo '
 <tr class="border" align="right">
-<td colspan="11"><b>Grand Total :</b></td>
+<td colspan="10"><b>Grand Total :</b></td>
 <td>'.rupiah_format($grandtotal).'</td>
 <td></td>
 </tr>';

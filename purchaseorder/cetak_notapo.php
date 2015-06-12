@@ -81,6 +81,14 @@ echo '
 	</tr>';
 echo '
 	<tr>
+		<td>Departemen</td>
+		<td>:</td>
+		<td>'.getdepartemendaripr($nopr).'</td>
+		<td>
+		</td>
+	</tr>';
+echo '
+	<tr>
 		<td>Tanggal</td>
 		<td>:</td>
 		<td>'.tanggalindo($tgl).'</td>
