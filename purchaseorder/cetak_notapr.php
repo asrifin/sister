@@ -86,7 +86,7 @@ echo '
 	<tr>
 		<td>Departemen</td>
 		<td>:</td>
-		<td>'.getdepartemen($departemenpr).'</td>
+		<td>'.getdepartemendaritingkat($departemenpr).' - '.getdepartemen($departemenpr).'</td>
 	</tr>';	
 	echo '
 	<tr>

@@ -185,7 +185,6 @@ $namapr 		= !isset($namapr) ? $_SESSION['namapr'] : $namapr;
 $departemenpr 		= !isset($departemenpr) ? $_SESSION['departemenpr'] : $departemenpr;
 $tujuanpr 		= !isset($tujuanpr) ? $_SESSION['tujuanpr'] : $tujuanpr;
 $kategorianggaran 		= !isset($kategorianggaran) ? $_SESSION['kategorianggaran'] : $kategorianggaran;
-$lokasibarang 		= !isset($lokasibarang) ? $_SESSION['lokasibarang'] : $lokasibarang;
 $admin .= '
 <div class="panel-heading"><b>Transaksi PR</b></div>';	
 $admin .= '
@@ -226,7 +225,7 @@ $hasil = $koneksi_db->sql_query("SELECT * FROM aka_tingkat ORDER BY keterangan a
 $admin .= '<option value="">== Departemen ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
 $pilihan = ($datas['replid']==$departemenpr)?"selected":'';
-$admin .= '<option value="'.$datas['replid'].'"'.$pilihan.'>'.$datas['keterangan'].'</option>';
+$admin .= '<option value="'.$datas['replid'].'"'.$pilihan.'>'.getdepartemendaritingkat($datas['replid']).' - '.$datas['keterangan'].'</option>';
 }
 $admin .='</select></td>
 	<td></td>
@@ -272,23 +271,6 @@ $admin .='</select></td>
 	<td></td>
 	<td></td>
 </tr>';
-
-$admin .='<tr>
-		<td>Lokasi Barang</td>
-		<td>:</td>
-	<td><select name="lokasibarang" id="lokasibarang" class="form-control" required onchange="ambil_barang($(this).val())">';
-$hasil = $koneksi_db->sql_query("SELECT * FROM sar_lokasi ORDER BY nama asc");
-$admin .= '<option value="">== Lokasi ==</option>';
-while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
-$pilihan = ($datas['kode']==$lokasibarang)?"selected":'';
-$admin .= '<option value="'.$datas['kode'].'"'.$pilihan.'>'.$datas['nama'].'</option>';
-}
-$admin .='</select></td>
-	<td></td>
-	<td></td>
-	<td></td>
-		</tr>
-				';
 
 $admin .='<tr>
 		<td>Kode Barang</td>
@@ -459,7 +441,7 @@ $admin .= '
 	<tr>
 		<td>Departemen</td>
 		<td>:</td>
-		<td>'.getdepartemen($departemenpr).'</td>
+		<td>'.getdepartemendaritingkat($departemenpr).' - '.getdepartemen($departemenpr).'</td>
 			<td></td>
 	</tr>';	
 	
@@ -470,12 +452,13 @@ $admin .= '
 		<td>'.$tujuanpr.'</td>
 			<td></td>
 	</tr>';	
+	$lihatanggaran = "<a href='admin.php?pilih=lihatanggaran&mod=yes&katanggaran=$kategorianggaran' target='new'  class='btn btn-info'>Lihat Anggaran</a>";
 $admin .= '
 	<tr>
 		<td>Kategori Anggaran</td>
 		<td>:</td>
 		<td>'.getkategorianggaran($kategorianggaran).'</td>
-			<td></td>
+			<td>'.$lihatanggaran.'</td>
 	</tr>';
 $admin .= '</table>		</form></div>';	
 $admin .='<div class="panel panel-info">';

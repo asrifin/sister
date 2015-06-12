@@ -12,6 +12,6 @@ foreach ($list as $rs) {
 	// put in bold the written text
 	$kode = str_replace($_POST['keyword'], '<b>'.$_POST['keyword'].'</b>', $rs['nopr']);
 	// add new option
-    echo '<li onclick="set_itempr(\''.str_replace("'", "\'", $rs['nopr']).'\')">'.$kode.' - '.$rs['namapr'].' - '.$rs['departemenpr'].' - '.$rs['tgl'].'</li>';
+    echo '<li onclick="set_itempr(\''.str_replace("'", "\'", $rs['nopr']).'\')">'.$kode.' - '.$rs['namapr'].' - '.$rs['tgl'].' </li>';
 }
 ?>
