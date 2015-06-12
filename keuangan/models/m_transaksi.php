@@ -63,7 +63,7 @@
 							p.noinvoice LIKE "%'.$searchTerm.'%" OR
 							p.nopo LIKE "%'.$searchTerm.'%" OR
 							p.kodesupplier LIKE "%'.$searchTerm.'%"';
-				}else{ // detil anggaran 
+				}elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='detilanggaran'){ // anggaran 
 					$ss='SELECT
 							d.replid,
 							d.nama,
@@ -88,8 +88,33 @@
 							'.$detilanggaranArr.'
 						GROUP BY	
 							d.replid ';
-				}
+				}elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='detilanggaran'){ // anggaran 
+					$ss='SELECT
+							d.replid,
+							d.nama,
+							sum(n.nominal)nominal,
+							k.nama kategorianggaran,
+							concat(t.tingkat," (",t.keterangan,")") tingkat,
+							concat(r.nama," (",r.kode,") ")rekening,
+							r.replid idrekening
+						FROM
+							keu_detilanggaran d
+							LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
+							LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
+							LEFT JOIN keu_detilrekening r ON r.replid = k.rekening
+							LEFT JOIN aka_tingkat t ON t.replid = d.tingkat
+						WHERE
+							(
+								d.nama LIKE "%'.$searchTerm.'%"
+								OR k.nama LIKE "%'.$searchTerm.'%"
+								OR r.nama LIKE "%'.$searchTerm.'%"
+								OR r.kode LIKE "%'.$searchTerm.'%" 
+							)
+							'.$detilanggaranArr.'
+						GROUP BY	
+							d.replid ';
 				
+				}
 				if(!$sidx) 
 					$sidx =1;
 				// print_r($ss);exit();
@@ -280,6 +305,7 @@
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
 					// jurnal umum 
+					// 
 					case 'li':
 						$no     = isset($_POST['li_noS'])?filter($_POST['li_noS']):'';
 						$uraian = isset($_POST['li_uraianS'])?filter($_POST['li_uraianS']):'';

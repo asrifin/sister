@@ -651,7 +651,7 @@ var detilanggaranArr=rekArr=[];
                     'width':'15',
                     'label':'Kuota'
             }];
-        }else{ // invoice (PO_pembelian)
+        }else if(subaksi=='invoice'){ // invoice (PO_pembelian)
             var urlx= '?aksi=autocomp&subaksi='+subaksi;
             var col = [{
                     'align':'left',
@@ -684,6 +684,20 @@ var detilanggaranArr=rekArr=[];
                     'columnName':'total',
                     'width':'20',
                     'label':'Nominal'
+            }];
+        }else{
+            var urlx= '?aksi=autocomp&subaksi='+subaksi+'&kategori='+$('#li_kategoriS').val();
+            var col = [{
+                    'align':'left',
+                    'columnName':'kode',
+                    'hide':true,
+                    'width':'10',
+                    'label':'Kode'
+                },{   
+                    'align':'left',
+                    'columnName':'nama',
+                    'width':'90',
+                    'label':'Rekening'
             }];
         }
         urly = dir+urlx;

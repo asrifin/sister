@@ -234,15 +234,39 @@
                     <!-- <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button> -->
-                    <label><b>Daftar label item yang dicetak :</b></label>
+                    <!-- <label><b>Kategori:</b></label>
                     <div class="input-control select span3">
-                        <select  data-hint="lokasi" class="barcode_cari" name="lokasiS" id="lokasiS"></select>
+                        <select  data-hint="kategori" class="li_cari" name="li_kategoriS" id="li_kategoriS">
+                            <option value="">-SEMUA-</option>
+                            <option value="0">Operasional</option>
+                            <option value="1">Non Operasional</option>
+                        </select>
                     </div>
                     <div class="input-control text size5">
-                        <input  placeholder="barkode atau judul item" type="text" id="labelTB">
+                        <input  placeholder="pilih rekening" type="text" id="li_rekeningS">
                         <button class="btn-clear"></button>
-                    </div>
+                    </div> -->
 
+                    <ul class="treeview" data-role="treeview">
+                        <li class="node">
+                            <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Operasional</a>
+                            <ul>
+                                <li><input onchange="loadLi();" value="1" name="liTB[1]" checked type="checkbox"> SPP</li>
+                                <li><input onchange="loadLi();" value="2" name="liTB[2]" checked type="checkbox"> GAC</a></li>
+                                <li><input onchange="loadLi();" value="3" name="liTB[3]" checked type="checkbox"> Dana Joining Fee Siswa Baru</a></li>
+                                <li><input onchange="loadLi();" value="4" name="liTB[4]" checked type="checkbox"> Denda Keterlambatan Uang sekolah</a></li>
+                                <li><input onchange="loadLi();" value="5" name="liTB[5]" checked type="checkbox"> Bunga Bank</a></li>
+                                <li><input onchange="loadLi();" value="6" name="liTB[6]" checked type="checkbox"> Titipan Tunjangna Hamba Tuhan</a></li>
+                            </ul>
+                        </li>
+                        <li class="node">
+                            <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Non Operasional</a>
+                            <ul>
+                                <li><input onchange="loadLi();" value="7" name="lilTB[7]" checked type="checkbox"> DPP</a></li>
+                                <li><input onchange="loadLi();" value="8" name="lilTB[8]" checked type="checkbox"> lainnya</a></li>
+                            </ul>
+                        </li>
+                    </ul>
 
                     <table  class="table hovered bordered striped">
                         <thead>
