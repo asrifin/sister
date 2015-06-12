@@ -1,7 +1,8 @@
 <?php
 	session_start();
 	require_once '../../lib/dbcon.php';
-	require_once 'keu_func.php';
+	require_once '../../lib/keu_func.php';
+	require_once '../../konfigurasi/models/keu_func.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	$mnu  = 'modulpembayaran';
