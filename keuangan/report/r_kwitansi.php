@@ -130,7 +130,7 @@
                     </tr>';
             if($jenisTrans=='pengeluaran'){
               $out.='<tr>
-                      <td>Anggaran</td>
+                      <td>Detail Anggaran</td>
                       <td>: '.getAnggaran($r1['detilanggaran']).'</td>
                     </tr>';
             }$out.='</table>';
