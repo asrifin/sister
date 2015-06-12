@@ -42,7 +42,7 @@ $admin .= '
 		<td>Kategori Anggaran</td>
 		<td>:</td>
 		<td>'.getkategorianggaran($kategorianggaran).'</td>
-			<td>'.$lihatanggaran.'</td>
+			<td>'.getKatAnggaran($kategorianggaran,'kuotaNum').'</td>
 	</tr>';
 $admin .= '</form></table></div>';	
 	}
