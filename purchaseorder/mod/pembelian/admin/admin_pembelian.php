@@ -211,14 +211,10 @@ if(isset($_POST['tambahbarang'])){
 $_SESSION['kodesupplier'] = $_POST['kodesupplier'];	
 $kodebarang 		= $_POST['kodebarang'];
 $jumlah 		= '1';
-$hasil =  $koneksi_db->sql_query( "SELECT * FROM po_produk WHERE kode='$kodebarang'" );
+$hasil =  $koneksi_db->sql_query( "SELECT * FROM sar_katalog WHERE kode='$kodebarang'" );
 $data = $koneksi_db->sql_fetchrow($hasil);
 $id=$data['id'];
 $kode=$data['kode'];
-$jenis=$data['jenis'];
-$stok=$data['jumlah'];
-$harga=$data['hargabeli'];
-$jenjang=$data['jenjang'];
 $error 	= '';
 if (!$_SESSION['kodesupplier'])  	$error .= "Error:  Kode Supplier Tidak di Temukan<br />";
 if (!$kode)  	$error .= "Error:  Kode Barang Tidak di Temukan<br />";
@@ -232,15 +228,17 @@ $PRODUCTID[] = $_SESSION['product_id'][$k]['kode'];
 }
 if (!in_array ($kode, $PRODUCTID)){
 $subdiscount="0";
-$subtotal=$harga;
-$_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode,'jenis' => $jenis, 'jumlah' => $jumlah, 'harga' => $harga, 'jenjang' => $jenjang, 'subdiscount' => $subdiscount, 'subtotal' => $subtotal);
+$jumlah="1";
+$harga="0";
+$subdiscount="0";
+$subtotal="0";
+$_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode,'jumlah' => $jumlah,'harga' => $harga,'subdiscount' => $subdiscount,'subtotal' => $subtotal);
 }else{
 foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
 	{
 	$subdiscount="0";
 $_SESSION['product_id'][$k]['jumlah'] = $_SESSION['product_id'][$k]['jumlah']+1;
-$_SESSION['product_id'][$k]['subtotal'] = $_SESSION['product_id'][$k]['jumlah']*$_SESSION['product_id'][$k]['harga'];
     }
 }
 		
@@ -541,6 +539,13 @@ $admin .= '
 
 		</td>
 	</tr>';
+$admin .= '
+	<tr>
+		<td>Nomor PO</td>
+		<td>:</td>
+		<td>'.($nopo).'</td>
+			<td></td>
+	</tr>';	
 $admin .= '
 	<tr>
 		<td>Tanggal</td>

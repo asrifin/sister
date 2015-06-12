@@ -119,7 +119,6 @@ echo '
 echo '	
 <tr>
 <th class="border"><b>No</b></</th>
-<th class="border"><b>Jenis</b></</th>
 <th class="border"><b>Kode</b></</th>
 <th class="border"><b>Nama</b></td>
 <th class="border"><b>Jumlah</b></</td>
@@ -132,7 +131,6 @@ while ($datad =  $koneksi_db->sql_fetchrow ($hasild)){
 echo '	
 <tr>
 <td class="border">'.$no.'</td>
-<td class="border">'.getjenisbarang($datad["kodebarang"]).'</td>
 <td class="border">'.$datad["kodebarang"].'</td>
 <td class="border">'.getnamabarang($datad["kodebarang"]).'</td>
 <td class="border">'.$datad["jumlah"].'</td>
@@ -144,7 +142,7 @@ echo '
 		}
 echo '	
 	<tr class="border">		
-		<td colspan="7" align="right"><b>Total</b></td>
+		<td colspan="6" align="right"><b>Total</b></td>
 		<td >'.rupiah_format($total).'</td>
 	</tr>';
 	/*
@@ -160,7 +158,7 @@ echo '	<tr class="border">
 	';
 	*/
 echo '	<tr class="border">	
-		<td colspan="7" align="right"><b>Bayar</b></td>
+		<td colspan="6" align="right"><b>Bayar</b></td>
 		<td >'.rupiah_format($bayar).'</td>
 	</tr>
 	';

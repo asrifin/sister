@@ -135,16 +135,17 @@ $_SESSION['product_id'][$k]['spesifikasi']=$spesifikasi;
 
 if(isset($_POST['tambahbarang'])){
 	$_SESSION['namapr'] = $_POST['namapr'];
+	
 $_SESSION['departemenpr'] = $_POST['departemenpr'];
 $_SESSION['tujuanpr'] = $_POST['tujuanpr'];
 $_SESSION['kategorianggaran'] = $_POST['kategorianggaran'];
+$_SESSION['lokasibarang'] = $_POST['lokasibarang'];
 $kodebarang 		= $_POST['kodebarang'];
 $spesifikasi 		= $_POST['spesifikasi'];
 $jumlah 		= '1';
-$hasil =  $koneksi_db->sql_query( "SELECT * FROM sar_katalog WHERE kode='$kodebarang'" );
+$hasil =  $koneksi_db->sql_query( "SELECT * FROM sar_katalog WHERE replid='$kodebarang'" );
 $data = $koneksi_db->sql_fetchrow($hasil);
-$id=$data['id'];
-$kode=$data['kode'];
+$kode=$data['replid'];
 $error 	= '';
 if (!$kode)  	$error .= "Error:  Kode Barang Tidak di Temukan<br />";
 if ($error){
@@ -184,6 +185,7 @@ $namapr 		= !isset($namapr) ? $_SESSION['namapr'] : $namapr;
 $departemenpr 		= !isset($departemenpr) ? $_SESSION['departemenpr'] : $departemenpr;
 $tujuanpr 		= !isset($tujuanpr) ? $_SESSION['tujuanpr'] : $tujuanpr;
 $kategorianggaran 		= !isset($kategorianggaran) ? $_SESSION['kategorianggaran'] : $kategorianggaran;
+$lokasibarang 		= !isset($lokasibarang) ? $_SESSION['lokasibarang'] : $lokasibarang;
 $admin .= '
 <div class="panel-heading"><b>Transaksi PR</b></div>';	
 $admin .= '
@@ -270,8 +272,25 @@ $admin .='</select></td>
 	<td></td>
 	<td></td>
 </tr>';
-$admin .= '
-	<tr>
+
+$admin .='<tr>
+		<td>Lokasi Barang</td>
+		<td>:</td>
+	<td><select name="lokasibarang" id="lokasibarang" class="form-control" required onchange="ambil_barang($(this).val())">';
+$hasil = $koneksi_db->sql_query("SELECT * FROM sar_lokasi ORDER BY nama asc");
+$admin .= '<option value="">== Lokasi ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['kode']==$lokasibarang)?"selected":'';
+$admin .= '<option value="'.$datas['kode'].'"'.$pilihan.'>'.$datas['nama'].'</option>';
+}
+$admin .='</select></td>
+	<td></td>
+	<td></td>
+	<td></td>
+		</tr>
+				';
+
+$admin .='<tr>
 		<td>Kode Barang</td>
 		<td>:</td>
 		<td>
@@ -286,6 +305,7 @@ $admin .= '
 	<td></td>
 		</tr>
 				';
+
 $admin .= '	
 </table></div>';	
 if(($_SESSION["product_id"])!=""){
@@ -340,8 +360,8 @@ $admin .= '
 			<td>'.$no.'</td>
 			<td>'.$cart_itm["kode"].'</td>
 		<td>'.getnamabarang($cart_itm["kode"]).'</td>
-		<td><input align="right" type="text" name="jumlahpr" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
-		<td><input align="right" type="text" name="spesifikasi" value="'.$cart_itm["spesifikasi"].'"class="form-control"></td>
+		<td>'.$cart_itm["jumlah"].'</td>
+		<td>'.$cart_itm["spesifikasi"].'</td>
 		<td>		
 		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'"></td>
 	</tr>';

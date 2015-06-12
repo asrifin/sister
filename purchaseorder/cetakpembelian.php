@@ -8,16 +8,12 @@ $tglmulai 		= $_GET['tglmulai'];
 $tglakhir 		= $_GET['tglakhir'];
 $carabayar 		= $_GET['carabayar'];
 $detail 		= $_GET['detail'];
-$jenisproduk 		= $_GET['jenisproduk'];
 switch ($carabayar) {
    case 'Semua':
          $wherestatus="";
          break;
    case 'Tunai':
          $wherestatus="and carabayar='Tunai'";
-         break;
-   case 'Debet Card':
-         $wherestatus="and carabayar='Debet Card'";
          break;
    case 'Hutang':
          $wherestatus="and carabayar='Hutang'";
@@ -62,6 +58,7 @@ echo '
 <tr class="border">
 <td>No</td>
 <td>No.Invoice</td>
+<td>No.PO</td>
 <td>Tanggal</td>
 <td>Supplier</td>
 <td>Cara Bayar</td>
@@ -95,6 +92,7 @@ echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
 <td>'.$noinvoice.'</td>
+<td>'.$nopo.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$carabayar.'</td>
@@ -127,7 +125,6 @@ echo '
 <td>Tanggal</td>
 <td>Supplier</td>
 <td>Cara Bayar</td>
-<td>Jenis</td>
 <td>Kode Barang</td>
 <td>Nama Barang</td>
 <td>Harga</td>
@@ -156,7 +153,6 @@ $harga = $datas2['harga'];
 $subdiscount = $datas2['subdiscount'];
 $subtotal = $datas2['subtotal'];
 $jenisbarangid = getjenisbarangid($kodebarang);
-if($jenisbarangid==$jenisproduk){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
@@ -164,27 +160,6 @@ echo '
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$carabayar.'</td>
-<td>'.getjenisbarang($kodebarang).'</td>
-<td>'.$kodebarang.'</td>
-<td>'.getnamabarang($kodebarang).'</td>
-<td>'.rupiah_format($harga).'</td>
-<td>'.$jumlah.'</td>
-<td>'.cekdiscountpersen($subdiscount).'</td>
-<td>'.rupiah_format($subtotal).'</td>
-<td>'.$user.'</td>
-</tr>';
-$no++;
-$grandtotal+=$subtotal;
-}else
-if($jenisproduk=='Semua'){
-echo '
-<tr class="border">
-<td class="text-center">'.$no.'</td>
-<td>'.$noinvoice.'</td>
-<td>'.tanggalindo($tgl).'</td>
-<td>'.getnamasupplier($kodesupplier).'</td>
-<td>'.$carabayar.'</td>
-<td>'.getjenisbarang($kodebarang).'</td>
 <td>'.$kodebarang.'</td>
 <td>'.getnamabarang($kodebarang).'</td>
 <td>'.rupiah_format($harga).'</td>
@@ -195,9 +170,6 @@ echo '
 </tr>';
 $no++;
 $grandtotal+=$subtotal;	
-	
-}
-
 }
 }
 
