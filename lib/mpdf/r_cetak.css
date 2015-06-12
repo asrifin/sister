@@ -20,6 +20,11 @@ table tr.head{
   font-weight: bold;
   /*font-color:#000000;*/
 }
+table tr.head2{
+  background-color:lightBlue;
+  font-weight: bold;
+  /*font-color:#000000;*/
+}
 .tabel1{ 
   font:Arial, Helvetica, sans-serif;
   font-size:20px;
