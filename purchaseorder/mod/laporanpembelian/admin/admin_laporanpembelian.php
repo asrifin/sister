@@ -126,7 +126,7 @@ $tglnow = date("Y-m-d");
 $tglmulai 		= !isset($tglmulai) ? $tglnow : $tglmulai;
 $tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
 $sel = '<select name="carabayar" class="form-control">';
-$arr5 = array ('Semua','Tunai','Debet Card','Hutang');
+$arr5 = array ('Semua','Tunai','Hutang');
 foreach ($arr5 as $k=>$v){
 	$sel .= '<option value="'.$v.'">'.$v.'</option>';	
 	
@@ -180,16 +180,6 @@ $admin .= '
 		<td>'.$sel.'	
 		</td>
 	</tr>';
-$admin .= '<tr>
-	<td>Jenis </td>
-	<td><select name="jenisproduk" class="form-control">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM po_jenisproduk ORDER BY nama asc");
-$admin .= '<option value="Semua"> Semua </option>';
-while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
-$admin .= '<option value="'.$datasj['id'].'">'.$datasj['nama'].'</option>';
-}
-$admin .='</select></td>
-</tr>';
 $admin .= '<tr>
 	<td></td>
 	<td>

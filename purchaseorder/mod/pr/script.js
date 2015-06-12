@@ -1,4 +1,3 @@
-
 // Barang
 function autocomplet2() {
 	var min_length = 0; // min caracters to display the autocomplete
@@ -49,4 +48,5 @@ function set_itempr(item) {
 	// hide proposition list
 	$('#pr_list_id').hide();
 }
-	
+
+/****************************************************************************/
