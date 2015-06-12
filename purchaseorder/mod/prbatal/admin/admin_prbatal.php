@@ -143,7 +143,7 @@ $admin .= '
 	<tr>
 		<td>Departemen</td>
 		<td>:</td>
-		<td>'.$departemenpr.'</td>
+		<td>'.getdepartemen($departemenpr).'</td>
 			<td></td>
 	</tr>';	
 $admin .= '
