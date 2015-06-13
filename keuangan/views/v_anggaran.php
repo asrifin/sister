@@ -17,7 +17,8 @@
 <div title="Kategori Anggaran" class="panelx" id="panel1" style="display:none;">
     <button data-hint="Tambah Data" id="a_tambahBC"><span class="icon-plus-2"></span> </button>
     <button data-hint="Field Pencarian" id="a_cariBC"><span class="icon-search"></span> </button>
-    <button data-hint="Cetak" id="a_cetakBC"><span class="icon-printer"></span> </button>
+    <button class="fg-white bg-blue" data-hint="Cetak Rencana" id="a_cetakBC"><span class="icon-printer"></span> </button>
+    <button class="fg-white bg-orange" data-hint="Cetak Realisasi" id="a_cetak2BC"><span class="icon-printer"></span> </button>
     <div class="input-control select size3">
         <select data-hint="Departemen" class="anggaran_cari" name="a_departemenS" id="a_departemenS" data-hint="Departemen" ></select>
     </div> 

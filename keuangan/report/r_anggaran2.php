@@ -20,7 +20,7 @@
             <html xmlns="http://www.w3.org/1999/xhtml">
               <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                <title>SISTER::Keu - Rencana Anggaran</title>
+                <title>SISTER::Keu - Anggaran</title>
               </head>';
                 $departemen  = (isset($_GET['a_departemenS']) && $_GET['a_departemenS']!='')?' ta.departemen='.$_GET['a_departemenS'].' AND ':'';
                 $tahunajaran = (isset($_GET['a_tahunajaranS']) && $_GET['a_tahunajaranS']!='')?' t.tahunajaran='.$_GET['a_tahunajaranS'].' AND ':'';
@@ -30,9 +30,6 @@
                 $keterangan  = isset($_GET['a_keteranganS'])?filter($_GET['a_keteranganS']):'';
 
                 $s ='SELECT
-                      ta.departemen,
-                      t.tahunajaran,
-                      k.tingkat,
                       k.replid,
                       k.nama,
                       k.keterangan,
@@ -68,7 +65,7 @@
                           <img width="100" src="../../images/logo.png" alt="" />
                         </td>
                         <td>
-                          <b>Rencana Anggaran</b>
+                          <b>Kategori Anggaran</b>
                         </td>
                       </tr>
                 </table><br />
@@ -76,17 +73,17 @@
                 <table width="100%">
                   <tr>
                     <td width="15%">Departemen</td>
-                    <td>: '.($departemen!=''?getDepartemen('nama',$_GET['a_departemenS']):'Semua').'</td>
+                    <td>: '.($departemen!=''?getDepartemen('nama',$_GET['a_departemenS']):'Semua Departemen').'</td>
                     <td></td>
                   </tr>
                   <tr>
                     <td width="15%">Tahun Ajaran </td>
-                    <td>: '.($tahunajaran!=''?getTahunAjaran('tahunajaran',$_GET['a_tahunajaranS']):'Semua').'</td>
+                    <td>: '.($tahunajaran!=''?getTahunAjaran('tahunajaran',$_GET['a_tahunajaranS']):'Semua Tahun Ajaran').'</td>
                     <td></td>
                   </tr>
                   <tr>
                     <td width="15%">Tingkat </td>
-                    <td>: '.($tingkat!=''?getTingkat('tingkat',$_GET['a_tingkatS']):'Semua').'</td>
+                    <td>: '.($tingkat!=''?getTingkat('tingkat',$_GET['a_tingkatS']):'Semua Tingkat').'</td>
                     <td align="right"> Total :'.$n.' Data</td>
                   </tr>
                 </table>';
@@ -97,54 +94,37 @@
                       $out.='<tr>
                         <td>-</td>
                         <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
                       </tr>';
                     }else{
                       while ($r=mysql_fetch_assoc($e)) {
-                        $out.='<tr>
-                          <td align="center" colspan="2" style="background-color:grey;color:white;">'.$r['nama'].'</td>
+                        $out.='<tr class="head">
+                          <td align="center">Nama Kategori</td>
+                          <td align="center">Rekening</td>
+                          <td align="center">Tujuan</td>
+                          <td align="center">Jumlah</td>
+                          <td align="center">Kuota Anggaran</td>
+                          <td align="center">Sisa Anggaran</td>
                         </tr>';
-                        if($departemen==''){
-                          $out.='<tr>
-                            <td style="background-color:grey;color:white;" align="left">Departemen</td>
-                            <td align="left">: '.getDepartemen('nama',$r['departemen']).'</td>
-                          </tr>';
-                        }if($tahunajaran==''){
-                          $out.='<tr>
-                            <td style="background-color:grey;color:white;" align="left">Tahun Ajaran</td>
-                            <td align="left">: '.getTahunAjaran('tahunajaran',$r['tahunajaran']).'</td>
-                          </tr>';
-                        }if($tingkat==''){
-                          $out.='<tr>
-                            <td style="background-color:grey;color:white;" align="left">Tingkat</td>
-                            <td align="left">: '.getTingkat('tingkat',$r['tingkat']).'</td>
-                          </tr>';
-                        }
-                        // <tr>
-                        //   <td style="background-color:grey;color:white;" align="left">Nama Kategori</td>
-                        //   <td align="left">: '.$r['nama'].'</td>
-                        // </tr>
                         $out.='<tr>
-                          <td style="background-color:grey;color:white;" align="left">Rekening </td>
-                          <td align="left">: '.$r['rekening'].'</td>
-                        </tr><tr>
-                          <td style="background-color:grey;color:white;" align="left">Tujuan</td>
-                          <td align="left">: '.$r['keterangan'].'</td>
-                        </tr><tr>
-                          <td style="background-color:grey;color:white;" align="left">Jumlah</td>
-                          <td align="left">: '.$r['jmlItem'].' item.</td>
-                        </tr><tr>
-                          <td style="background-color:grey;color:white;" align="left">Total Kuota</td>
-                          <td align="left">: Rp. '.number_format(getKatAnggaran($r['replid'],'kuotaNum')).'</td>
-                        </tr>
-                        ';
-
-                        $out.='<tr>
-                          <td width="100%" colspan="2">
-                            <table class="isi" width="100%">
+                                  <td>'.$r['nama'].'</td>
+                                  <td>'.$r['rekening'].'</td>
+                                  <td>'.$r['keterangan'].'</td>
+                                  <td align="right">'.$r['jmlItem'].'</td>
+                                  <td align="right">Rp. '.number_format(getKatAnggaran($r['replid'],'kuotaNum')).'</td>
+                                  <td align="right" >Rp. '.number_format(getKatAnggaran($r['replid'],'sisaNum')).'</td>
+                            </tr>';
+                          $out.='<tr>
+                          <td colspan="6">';
+                            $out.='<table class="isi" width="100%">
                               <tr class="head2">
-                                <th width="30%">Anggaran</th>
-                                <th width="40%">Tujuan</th>
-                                <th width="40%">Nominal</th>
+                                <th width="25%">Anggaran</th>
+                                <th width="25%">Nominal</th>
+                                <th width="25%">Terpakai</th>
+                                <th width="25%">Tujuan</th>
                               </tr>';
                             $s2 = 'SELECT 
                                     d.replid,
@@ -156,29 +136,21 @@
                                   WHERE 
                                     d.kategorianggaran = '.$r['replid'].'
                                   GROUP BY  
-                                    d.replid
-                                  ORDER BY  
-                                    d.nama ASC';
+                                    d.replid';
                             $e2 = mysql_query($s2);
                             $n2 = mysql_num_rows($e2);
                             if($n2<=0){
-                              $out.='<tr><td width="100%" colspan="3" align="center">.. kosong ..</td></tr>';
+                              $out.='<tr><td width="100%" colspan="4" align="center">.. kosong ..</td></tr>';
                             }else{
                               while ($r2=mysql_fetch_assoc($e2)) {
                                 $out.='<tr>
-                                    <td width="30%">'.$r2['nama'].'</td>
-                                    <td width="40%">'.$r2['keterangan'].'</td>
-                                    <td width="40%" align="right">Rp. '.number_format($r2['totNominal']).'</td>
+                                    <td width="25%">'.$r2['nama'].'</td>
+                                    <td align="right" width="25%">Rp. '.number_format($r2['totNominal']).'</td>
+                                    <td align="right"  width="25%">Rp. '.number_format(getDetAnggaran($r2['replid'],'terpakaiNum')).'</td>
+                                    <td width="25%">'.$r2['keterangan'].'</td>
                                   </tr>';
                               }
-                            }
-                            $out.='<tr class="head2">
-                              <th width="70%" colspan="2" align="right">Total Kuota:</th>
-                              <th  width="40%" align="right">Rp. '.number_format(getKatAnggaran($r['replid'],'kuotaNum')).'</th>
-                            </tr><tr>
-                              <td colspan="3">&nbsp;</td>
-                            </tr>';
-                            $out.='</table>';
+                            }$out.='</table>';
                             $out.='</td>';
                         $nox++;
                       }

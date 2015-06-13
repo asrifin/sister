@@ -209,6 +209,8 @@ var a_contentFR = d_contentFR  ='';
             //print----
             $('#a_cetakBC').on('click',function(){
                 printPDF('anggaran');
+            });$('#a_cetak2BC').on('click',function(){
+                printPDF('anggaran2');
             });$('#k_cetakBC').on('click',function(){
                 printPDF('detilanggaran');
             });
