@@ -23,6 +23,7 @@ var contentFR ='';
                             +'<input required id="tanggal1TB" name="tanggal1TB" type="text">'
                             +'<button class="btn-date"></button>'
                         +'</div>'
+                        
                         +'<label>Tanggal Selesai</label>'
                         +'<div class="input-control text" data-role="datepicker"'
                             +'data-format="dd mmmm yyyy"'
@@ -30,6 +31,7 @@ var contentFR ='';
                             +'<input id="tanggal2TB" name="tanggal2TB" type="text">'
                             +'<button class="btn-date"></button>'
                         +'</div>'
+
                         +'<label>Aktivitas</label>'
                         +'<div class="input-control text">'
                             +'<input placeholder="aktivitas" required type="text" name="aktivitasTB" id="aktivitasTB">'
@@ -39,6 +41,32 @@ var contentFR ='';
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
+
+                        +'<label>Tanggal tagihan</label>'
+                        +'<div class="input-control text" data-role="datepicker"'
+                            +'data-format="dd mmmm yyyy"'
+                            +'data-effect="slide">'
+                            +'<input id="tgltagihanTB" name="tgltagihanTB" type="text">'
+                            +'<button class="btn-date"></button>'
+                        +'</div>'
+
+                        +'<label>History Pelunasan</label>'
+                        +'<div class="input-control text">'
+                            +'<a target="_blank" href="/sister/keuangan/transaksi">(lihat laporan sarpras)</a>'
+                            // +'<a href="keuangan/transaksi" target="_blank" >Lihat Keuangan : tab laporan sarpras</a>'
+                        +'</div>'
+
+
+                        // +'<label for="">History Angsuran:</label>'
+                        // +'<table class="table hovered bordered striped">'
+                        //     +'<thead>'
+                        //         +'<tr style="color:white;"class="info">'
+                        //             +'<th class="text-center">Tgl Bayar</th>'
+                        //             +'<th class="text-center">Nominal</th>'
+                        //         +'</tr>'
+                        //     +'</thead>'
+                        //     +'<tbody id="angsuranTBL"></tbody>'
+                        // +'</table>'
 
                         // button 
                         +'<legend style="font-weight:bold;">Item  : '
@@ -56,8 +84,8 @@ var contentFR ='';
                                     +'<th class="text-center">Biaya Satuan</th>'
                                     +'<th class="text-center">Biaya Total</th>'
                                     // +'<th class="text-center">Biaya Total (Realisasi)</th>'
-                                    +'<th class="text-center">Tgl Tagihan</th>'
-                                    +'<th class="text-center">Tgl Pelunasan</th>'
+                                    // +'<th class="text-center">Tgl Tagihan</th>'
+                                    // +'<th class="text-center">Tgl Pelunasan</th>'
                                     +'<th class="text-center">Hapus</th>'
                                 +'</tr>'
                             +'</thead>'
@@ -229,21 +257,21 @@ var contentFR ='';
                     //     +'<span class="itemNominal3" id="biayaTot2_'+ke+'TB">'+'Rp. '+biayaTot2.setCurr()+'</span>'
                     // +'</td>'
                     // tgl wajib dibayar
-                    +'<td align="center">'
-                        +'<div class="input-control text size2 text-right" data-role="datepicker"' 
-                            +'data-format="dd mmmm yyyy" data-position="top"'
-                            +'data-effect="slide">'
-                            +'<input '+(biayaTot2!=0?'disabled':'')+' value="'+tglbayar+'" required id="tglbayar_'+ke+'TB" name="tglbayar_'+ke+'TB" type="text">'
-                        +'</div>'
-                    +'</td>'
+                    // +'<td align="center">'
+                    //     +'<div class="input-control text size2 text-right" data-role="datepicker"' 
+                    //         +'data-format="dd mmmm yyyy" data-position="top"'
+                    //         +'data-effect="slide">'
+                    //         +'<input '+(biayaTot2!=0?'disabled':'')+' value="'+tglbayar+'" required id="tglbayar_'+ke+'TB" name="tglbayar_'+ke+'TB" type="text">'
+                    //     +'</div>'
+                    // +'</td>'
                     // tgl pelunasan
-                    +'<td align="center">'
-                        +'<div xdisabled class="input-control text size2 text-right" data-role="datepicker"' 
-                            +'data-format="dd mmmm yyyy" data-position="top"'
-                            +'data-effect="slide">'
-                            +'<input '+(biayaTot2==0?'disabled':'')+' value="'+tgllunas+'" required id="tgllunas_'+ke+'TB" name="tgllunas_'+ke+'TB" type="text">'
-                        +'</div>'
-                    +'</td>'
+                    // +'<td align="center">'
+                    //     +'<div xdisabled class="input-control text size2 text-right" data-role="datepicker"' 
+                    //         +'data-format="dd mmmm yyyy" data-position="top"'
+                    //         +'data-effect="slide">'
+                    //         +'<input '+(biayaTot2==0?'disabled':'')+' value="'+tgllunas+'" required id="tgllunas_'+ke+'TB" name="tgllunas_'+ke+'TB" type="text">'
+                    //     +'</div>'
+                    // +'</td>'
                     // hapus
                     +'<td align="center">'
                         +(biayaTot2!=0?'-':'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delItemTR('+ke+','+iditem+',\'\');':'delItemTR('+ke+','+iditem+',\'\')')+'"  class="button"><i class="icon-cancel-2"></i></a>')
@@ -297,6 +325,7 @@ var contentFR ='';
                                 $('#lokasiH').val($('#lokasiS').val()); // edit by epii
                                 $('#lokasiTB').val(dt.lokasi);
                                 $('#tanggal1TB').val(dt.tanggal1);
+                                $('#tgltagihanTB').val(dt.tgltagihan);
                                 $('#tanggal2TB').val(dt.tanggal2);
                                 $('#aktivitasTB').val(dt.aktivitas);
                                 $('#keteranganTB').val(dt.keterangan);

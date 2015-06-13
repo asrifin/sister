@@ -108,6 +108,7 @@
 				$itemArr    = $_POST['idTR'];
 				$s1 = $tb.' SET tanggal1   ="'.tgl_indo6($_POST['tanggal1TB']).'",
 								tanggal2   ="'.tgl_indo6($_POST['tanggal2TB']).'",
+								tgltagihan   ="'.tgl_indo6($_POST['tgltagihanTB']).'",
 								aktivitas  ="'.$_POST['aktivitasTB'].'",
 								lokasi     ="'.$_POST['lokasiH'].'",
 								keterangan ="'.$_POST['keteranganTB'].'"';
@@ -132,17 +133,18 @@
 					else{ // tidak ada hapus detail aktivitas OR sukses hapus
 						$xx='';
 						foreach ($itemArr as $i => $v) {
-							$item     = isset($_POST['item_'.$v.'TB'])?'item="'.getuang($_POST['item_'.$v.'TB']).'",':'';
-							$jumlah   = isset($_POST['jumlah_'.$v.'TB'])?'jumlah='.getuang($_POST['jumlah_'.$v.'TB']).',':'';
 							$biaya    = isset($_POST['biaya_'.$v.'TB'])?'biaya='.getuang($_POST['biaya_'.$v.'TB']).',':'';
-							$tglbayar = (isset($_POST['tglbayar_'.$v.'TB']) && $_POST['tglbayar_'.$v.'TB']!='-' )?'tglbayar="'.tgl_indo6($_POST['tglbayar_'.$v.'TB']).'",':'';
-							$tgllunas = (isset($_POST['tgllunas_'.$v.'TB']) && $_POST['tgllunas_'.$v.'TB']!='-')?tgl_indo6($_POST['tgllunas_'.$v.'TB']):'0000-00-00';
+							$jumlah   = isset($_POST['jumlah_'.$v.'TB'])?'jumlah='.getuang($_POST['jumlah_'.$v.'TB']).',':'';
+							$item     = isset($_POST['item_'.$v.'TB'])?'item="'.getuang($_POST['item_'.$v.'TB']).'"':'';
+							// $tglbayar = (isset($_POST['tglbayar_'.$v.'TB']) && $_POST['tglbayar_'.$v.'TB']!='-' )?'tglbayar="'.tgl_indo6($_POST['tglbayar_'.$v.'TB']).'",':'';
+							// $tgllunas = (isset($_POST['tgllunas_'.$v.'TB']) && $_POST['tgllunas_'.$v.'TB']!='-')?tgl_indo6($_POST['tgllunas_'.$v.'TB']):'0000-00-00';
 							$s        = $tb3.' SET 	aktivitas='.$id.', 
 													'.$biaya.'
 													'.$jumlah.'
 													'.$item.'
-													'.$tglbayar.'
-													tgllunas ="'.$tgllunas.'"';
+													';
+													// tgllunas ="'.$tgllunas.'"
+													// '.$tglbayar.'
 							if($_POST['mode'.$v.'H']=='edit')//edit
 								$s2   = 'UPDATE '.$s.' WHERE replid='.$_POST['iditem_'.$v.'H'];
 							else // add
@@ -182,6 +184,7 @@
 								t.tanggal2,
 								t.aktivitas,
 								t.keterangan,
+								t.tgltagihan,
 								l.nama as lokasi
 							from '.$tb.' t, sar_lokasi l 
 							WHERE 
@@ -217,6 +220,7 @@
 							'lokasi'       =>$r['lokasi'],
 							'tanggal1'     =>tgl_indo5($r['tanggal1']),
 							'tanggal2'     =>tgl_indo5($r['tanggal2']),
+							'tgltagihan'     =>tgl_indo5($r['tgltagihan']),
 							'aktivitas'    =>$r['aktivitas'],
 							'keterangan'   =>$r['keterangan'],
 							'itemArr'      =>$itemArr

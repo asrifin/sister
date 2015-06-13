@@ -476,6 +476,7 @@
 					// detil anggaran
 					case 'detilanggaran':
 						$su = 'keu_detilanggaran  set 	nama             = "'.$_POST['d_namaTB'].'",
+														hargasatuan      = "'.$_POST['d_hargasatuanTB'].'",
 														keterangan       = "'.$_POST['d_keteranganTB'].'"';
 						if(isset($_POST['replid']) AND $_POST['replid']!=''){
 							$s1='UPDATE '.$su.' WHERE replid='.$_POST['replid'];
@@ -493,8 +494,9 @@
 								$cc='';
 								foreach ($_POST['d_nominalTB'] as $i => $v) {
 									$cc.=$i.',';
-									$su=' keu_nominalanggaran SET 	nominal 		='.getuang($v).',
-																	bulan   		='.$i;
+									$su=' keu_nominalanggaran SET 	nominal ='.getuang($v).',
+																	jml 	='.$_POST['d_jml'.$v.'TB'].',
+																	bulan   ='.$i;
 									$s2    =(isset($_POST['d_idnominalTB'][$i]) AND $_POST['d_idnominalTB'][$i]!='') ?'UPDATE '.$su.' WHERE replid='.$_POST['d_idnominalTB'][$i]:'INSERT INTO '.$su.', detilanggaran 	='.$id;
 									$e2    =mysql_query($s2);
 									$stat2 =!$e2?false:true;
