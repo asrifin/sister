@@ -19,8 +19,8 @@
         <tr style="color:white;"class="info">
             <th class="text-center">Tgl. Kegiatan</th>
             <th class="text-center">Aktivitas</th>
-            <th class="text-center">Pengajuan Dana</th>
-            <th class="text-center">Pencairan Dana</th>
+            <th class="text-center">Dana</th>
+            <!-- <th class="text-center">Pencairan Dana</th> -->
             <th class="text-center">Keterangan</th>
             <th class="text-center">Aksi</th>
         </tr>

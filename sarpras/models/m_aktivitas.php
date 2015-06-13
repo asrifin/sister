@@ -79,14 +79,14 @@
 										<i class="icon-remove on-left"></i>
 									</button>&nbsp;'.$poBtn.'
 								 </td>';
-						$out.= '<tr data-hint="'.$hint.'" data-hint-position="left"  class="bg-'.$bg.'">
+						$out.= '<tr data-hint="'.$hint.'" data-hint-position="left"  xclass="bg-'.$bg.'">
 									<td class="text-center">'.tgl_indo5($res['tanggal1']).' - '.tgl_indo5($res['tanggal2']).'</td>
 									<td>'.$res['aktivitas'].'</td>
 									<td align="right">Rp. '.number_format($res['biayaRencana']).'</td>
-									<td align="right">Rp. '.number_format($res['biayaRealisasi']).'</td>
 									<td><pre>'.$res['keterangan'].'</pre></td>
 									'.$btn.'
 								</tr>';
+									// <td align="right">Rp. '.number_format($res['biayaRealisasi']).'</td>
 						$nox++;
 					}
 				}else{ #kosong

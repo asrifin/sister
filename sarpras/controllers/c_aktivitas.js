@@ -225,7 +225,8 @@ var contentFR ='';
             console.log(biayaSat);
             var mode = (typeof arr!='undefined')?'edit':'add';
 
-            tr+='<tr  class="itemTR '+(biayaTot2!=0?'bg-lightTeal':'bg-amber')+'" id="itemTR_'+ke+'">'
+            tr+='<tr  class="itemTR  id="itemTR_'+ke+'">'
+            // tr+='<tr  class="itemTR '+(biayaTot2!=0?'bg-lightTeal':'bg-amber')+'" id="itemTR_'+ke+'">'
                     // item
                     +'<td align="center">'
                         +'<input type="hidden" name="mode'+ke+'H" value="'+mode+'" />'
