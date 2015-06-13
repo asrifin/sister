@@ -76,16 +76,16 @@
             <span id="d_keteranganDV"></span>
         </div>
         <div class="row">
-            <span class="span3">Total Anggaran:</span>
-            <span id="d_katanggkuotanumDV"></span>
-        </div>
-        <div class="row">
             <span class="span3">Tahun Ajaran:</span>
             <span id="d_tahunajaranDV"></span>
         </div>
         <div class="row">
             <span class="span3">Tingkat:</span>
             <span id="d_tingkatDV"></span>
+        </div>
+        <div class="row">
+            <span class="span3">Total Anggaran:</span>
+            <span xclass="fg-lightTeal" style="color:yellow;font-weight:bold;" id="d_katanggkuotanumDV"></span>
         </div>
     </div>
 
