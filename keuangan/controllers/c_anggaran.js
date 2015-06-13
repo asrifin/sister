@@ -91,6 +91,11 @@ var a_contentFR = d_contentFR  ='';
                                     // nominal angsuran anggaran
                                     +'<legend>Nominal (@bulan)</legend>'
 
+                                    +'<label>harga satuan :</label>'
+                                    +'<div class="input-control text size5">'
+                                        +'<input  name="hargasatuanTB" id="hargasatuanTB" placeholder="harga satan" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                    +'</div>'
+
                                     // ----------------------------------
                                     +'<label>Juli <span class="tahunBulan1"></span> :</label>'
                                     +'<div class="input-control text size5">'

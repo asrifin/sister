@@ -76,6 +76,7 @@
                 <li><a href="#btTAB">Buku Tambahan</a></li>
                 <li><a href="#liTAB">Laporan Penerimaan</a></li>
                 <li><a href="#loTAB">Laporan Pengeluaran</a></li>
+                <li><a href="#lsTAB">Laporan Sarpras </a></li>
             </ul>
 
             <div style="background-color:#dddddd;"  class="frames">
@@ -334,6 +335,45 @@
                         </thead>
 
                         <tbody id="lo_tbody"></tbody>
+                        <tfoot></tfoot>
+                    </table>
+                </div>
+                    
+                <!-- Laporam sarpras  -->
+                <div class="frame" id="lsTAB">    
+                    <!-- <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top"> -->
+                        <!-- <i class="icon-search" ></i> -->
+                    <!-- </button> -->
+                    <!-- <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
+                        <i class="icon-printer" ></i>
+                    </button> -->
+
+                    <table  class="table hovered bordered striped">
+                        <thead>
+                            <tr style="color:white;"class="info">
+                                <th class="text-center">Tanggal </th>
+                                <th class="text-center">No. Jurnal/Jenis Bukti/No.Bukti</th>
+                                <th class="text-center">Uraian</th>
+                                <th style="display:visible;"class="text-center  uraianCOL">Detil Jurnal</th>
+                            </tr>
+                            <tr style="display:none;" id="lsTR" class="info">
+                                <th class="text-center"></th>
+                                <th class="text-center">
+                                    <div class="input-control text">
+                                        <input class="ls_cari" placeholder="cari ..." id="ls_noS">
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="input-control text">
+                                        <input class="ls_cari" placeholder="cari ..." id="ls_uraianS" >
+                                    </div>
+                                </th>
+                                <th style="display:visible;"class="text-center uraianCOL"></th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="ls_tbody"></tbody>
                         <tfoot></tfoot>
                     </table>
                 </div>

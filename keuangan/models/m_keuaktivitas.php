@@ -72,13 +72,10 @@
 							$hint = 'acc.';
 							$bg   = 'lightTeal';
 					 	}
-						
-						// $out.= '<tr  data-hint-position="left" '.($res['biayaRealisasi']==0?'data-hint="baru" class="bg-lightTeal"':'').'>
 						$out.= '<tr data-hint="'.$hint.'" data-hint-position="left"  class="bg-'.$bg.'">
 									<td class="text-center">'.tgl_indo5($res['tanggal1']).' - '.tgl_indo5($res['tanggal2']).'</td>
 									<td>'.$res['aktivitas'].'</td>
 									<td align="right">Rp. '.number_format($res['biayaRencana']).'</td>
-									<td align="right">Rp. '.number_format($res['biayaRealisasi']).'</td>
 									<td><pre>'.$res['keterangan'].'</pre></td>
 									'.$btn.'
 								</tr>';

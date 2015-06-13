@@ -200,6 +200,7 @@ var detilanggaranArr=rekArr=[];
         viewTB('bt');   // buku tambahan 
         // viewTB('li');   // laporan income (penerimaan siswa)
         viewTB('lo');   // laporan outcome (pengeluaran)
+        viewTB('ls');   // laporan outcome (pengeluaran)
         loadLi();
     }
     
@@ -920,13 +921,13 @@ var detilanggaranArr=rekArr=[];
                             $('#reklawanDV').html(' Pengeluaran');
                             var nobuktiCB='<div class="input-control radio default-style" data-role="input-control">'
                                             +'<label>'
-                                                +'<input onchange="nobuktiFC();" id="nobuktiCB1" name="nobuktiCB" checked type="radio">'
+                                                +'<input value="0" onchange="nobuktiFC();" id="nobuktiCB1" name="nobuktiCB" checked type="radio">'
                                                 +'<span class="check"></span> no. Nota'
                                             +'</label>'
                                         +'</div>'
                                         +'<div class="input-control radio  default-style" data-role="input-control">'
                                             +'<label>'
-                                                +'<input  onchange="nobuktiFC();" id="nobuktiCB2" name="nobuktiCB" type="radio">'
+                                                +'<input  value="1" onchange="nobuktiFC();" id="nobuktiCB2" name="nobuktiCB" type="radio">'
                                                 +'<span class="check"></span> no. Invoice (supplier)'
                                             +'</label>'
                                         +'</div>';
