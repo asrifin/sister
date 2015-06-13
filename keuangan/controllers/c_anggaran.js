@@ -937,7 +937,7 @@ function jumupdate (e) {
 //end of  print to PDF -------
     function printPDF(mn){
         var par='',tok='',p,v;
-        $('.'+mn+'_cari').each(function(){
+        $('.'+(mn=='anggaran' || mn=='anggaran2'?'anggaran':mn)+'_cari').each(function(){
             p=$(this).attr('id');
             v=$(this).val();
             par+='&'+p+'='+v;
