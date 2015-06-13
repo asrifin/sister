@@ -72,7 +72,7 @@
 							$hint = 'acc.';
 							$bg   = 'lightTeal';
 					 	}
-						$out.= '<tr data-hint="'.$hint.'" data-hint-position="left"  class="bg-'.$bg.'">
+						$out.= '<tr data-hint="'.$hint.'" data-hint-position="left"  xclass="bg-'.$bg.'">
 									<td class="text-center">'.tgl_indo5($res['tanggal1']).' - '.tgl_indo5($res['tanggal2']).'</td>
 									<td>'.$res['aktivitas'].'</td>
 									<td align="right">Rp. '.number_format($res['biayaRencana']).'</td>
