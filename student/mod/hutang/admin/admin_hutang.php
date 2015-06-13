@@ -150,7 +150,7 @@ $admin.='
             <th>Bayar</th>
             <th>Kekurangan</th>
             <th>Jatuh Tempo</th>
-            <th width="10%">Aksi</th>
+            <th width="20%">Aksi</th>
         </tr>
     </thead>';
 	$admin.='<tbody>';
@@ -159,10 +159,12 @@ while ($data = $koneksi_db->sql_fetchrow($hasil)) {
 $noinvoice = $data['noinvoice'];
 $hutang = $data['hutang'];
 if($hutang>'0'){
-$tombollunas = '<a href="?pilih=hutang&amp;mod=yes&amp;aksi=bayar&amp;noinvoice='.$data['noinvoice'].'" onclick="return confirm(\'Apakah Anda Yakin Ingin Melunasi Invoice '.$noinvoice.'  ?\')"><span class="btn btn-danger">Pelunasan</span></a>';
+$tombollunas = '<a href="?pilih=hutang&amp;mod=yes&amp;aksi=bayar&amp;noinvoice='.$data['noinvoice'].'" onclick="return confirm(\'Apakah Anda Yakin Ingin Melunasi Invoice '.$noinvoice.'  ?\')"><span class="btn btn-danger">Bayar</span></a>';
 }else{
-$tombollunas = '<span class="btn btn-primary">Lunas</span>';
+$tombollunas = '<span class="btn btn-success">Lunas</span>';
 }
+$cetakslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak</span></a>';
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok" target ="blank"><span class="btn btn-primary">Lihat</span></a>';
 $admin.='<tr>
             <td>'.$data['noinvoice'].'</td>
             <td>'.tanggalindo($data['tgl']).'</td>
@@ -171,7 +173,7 @@ $admin.='<tr>
             <td>'.rupiah_format($data['bayar']).'</td>
             <td>'.rupiah_format($data['hutang']).'</td>
             <td>'.tanggalindo($data['tgltermin']).'</td>
-            <td>'.$tombollunas.'</td>
+            <td>'.$tombollunas.' '.$cetakslip.' '.$lihatslip.'</td>
         </tr>';
 $ttotal += $data['total'];
 $tbayar += $data['bayar'];

@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /pemesanan
+RewriteBase /sister/purchaseorder/
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 

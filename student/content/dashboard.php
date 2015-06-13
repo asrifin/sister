@@ -19,7 +19,7 @@ $style_include[] = '
 /*]]>*/
 </style>';
 $script_include[] = $JS_SCRIPT;
-$tengah .='<legend>Dashboard</legend>';
+$tengah .='<legend>Dashboard '.$_SESSION['LevelAkses'].'</legend>';
 
 if ($_SESSION['LevelAkses']){
 $username = $_SESSION['UserName'];

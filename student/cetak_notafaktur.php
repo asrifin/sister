@@ -156,18 +156,20 @@ echo '	<tr class="border">
 	</tr>
 	';
 	*/
+if($bayar<>'0'){
 echo '	<tr class="border">	
 		<td colspan="7" align="right"><b>Bayar</b></td>
 		<td >'.rupiah_format($bayar).'</td>
 	</tr>
 	';
+	}
 echo '</table>';	
 		}
 		echo'</td></tr></table>';
 /****************************/
 echo "</body</html>";
 
-if (!isset($_GET['detail'])){
+if (!isset($_GET['lihat'])){
 echo "<script language=javascript>
 window.print();
 </script>";

@@ -3,12 +3,15 @@ include '../../includes/pdo.php';
 
 $pdo = connect();
 $keyword = '%'.$_POST['keyword'].'%';
-$sql = "SELECT nis as kode,nama FROM aka_siswa WHERE nis LIKE (:keyword) or nama LIKE (:keyword) ORDER BY nama ASC LIMIT 0, 5";
+$sql = "
+(SELECT nis as kode,nama FROM aka_siswa WHERE nis LIKE (:keyword) or nama LIKE (:keyword) ORDER BY nama ASC LIMIT 0, 5)
+union
+(SELECT kode as kode,nama FROM pos_customer WHERE kode LIKE (:keyword) or nama LIKE (:keyword) ORDER BY nama ASC LIMIT 0, 5)";
 $query = $pdo->prepare($sql);
 $query->bindParam(':keyword', $keyword, PDO::PARAM_STR);
 $query->execute();
 $list = $query->fetchAll();
-foreach ($list as $rs) {
+foreach ($list as $rs){
 	// put in bold the written text
 	$kode = str_replace($_POST['keyword'], '<b>'.$_POST['keyword'].'</b>', $rs['kode']);
 	// add new option

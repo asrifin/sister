@@ -70,128 +70,90 @@ $wktakhir = <<<eof
 </script>
 eof;
 $script_include[] = $JS_SCRIPT;
-	$admin  .='<legend>PEMBAYARAN PIUTANG</legend>';
+	$admin  .='<legend>PEMBAYARAN PEMESANAN</legend>';
 	$admin  .= '<div class="border2">
 <table  width="25%"><tr align="center">
 <td>
-<a href="admin.php?pilih=piutang&mod=yes">HOME</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=pembayaran&mod=yes">HOME</a>&nbsp;&nbsp;
 </td>
 <td>
-<a href="admin.php?pilih=piutang&mod=yes&aksi=cetak">CETAK PIUTANG</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=pembayaran&mod=yes&aksi=cetak">CETAK PEMBAYARAN</a>&nbsp;&nbsp;
 </td>
 </tr></table>
 </div>';
 
 if($_GET['aksi']==""){
-$tglawal = date("Y-m-01");
-$tglnow = date("Y-m-d");
-$tglmulai 		= !isset($tglmulai) ? $tglawal : $tglmulai;
-$tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
-$sel = '<select name="status" class="form-control">';
-$arr5 = array ('Semua','Piutang','Lunas','Pemesanan');
-foreach ($arr5 as $k=>$v){
-	$sel .= '<option value="'.$v.'">'.$v.'</option>';	
-	
+if(isset($_POST['submit'])){
+$nofaktur 		= $_POST['nofaktur'];
+$bayar 		= $_POST['bayar'];
+$piutang 		= $_POST['piutang'];
+bayarpiutang($nofaktur,$bayar );
+if($bayar>=$piutang){
+penjualancetak($nofaktur);
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=pembayaran&amp;mod=yes" />';	
 }
-$sel .= '</select>';
-$admin .='<div class="panel panel-info">';
-$admin .='<div class="panel-heading"><b>Lihat Daftar Piutang</b></div>';
-$admin .= '<form class="form-inline" method="post" action="" enctype ="multipart/form-data" id="posts">
-<table class="table table-striped table-hover">';
-$admin .= '
-	<tr>
-		<td width="200px">Tanggal Mulai</td>
-		<td><input type="text" name="tglmulai" value="'.$tglmulai.'" class="form-control">&nbsp;'.$wktmulai.'</td>
-	</tr>';
-$admin .= '
-	<tr>
-		<td width="200px">Tanggal Akhir</td>
-		<td><input type="text" name="tglakhir" value="'.$tglakhir.'" class="form-control">&nbsp;'.$wktakhir.'</td>
-	</tr>';
-$admin .= '
-	<tr>
-		<td width="200px">Status Bayar</td>
-		<td>'.$sel.'	
-		</td>
-	</tr>';
-$admin .= '<tr>
-	<td></td>
-	<td><input type="submit" value="Lihat" name="lihat" class="btn btn-success"></td>
-	</tr>
-</table></form>';
-$admin .= '</table>';
 }
-
-if(isset($_POST['lihat'])){
-$tglmulai 		= $_POST['tglmulai'];
-$tglakhir 		= $_POST['tglakhir'];
-$status 		= $_POST['status'];
-switch ($status) {
-   case 'Semua':
-         $wherestatus="";
-         break;
-   case 'Lunas':
-         $wherestatus="and Piutang='0'";
-         break;
-   case 'Piutang':
-         $wherestatus="and Piutang<>'0'";
-         break;
-}
-$admin .= '
-<div class="panel-heading"><b>Daftar Piutang</b></div>';	
 $admin.='
-<table class="table table-striped table-bordered" cellspacing="0" width="100%">
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th>No.Faktur</th>
+            <th>Faktur</th>
             <th>Tanggal</th>
-            <th>Customer</th>
-            <th>Total</th>
-            <th>Bayar</th>
-            <th>Kekurangan</th>
-            <th>Jatuh Tempo</th>
-            <th width="10%">Aksi</th>
+            <th>Nama</th>
+			<th>Cara Bayar</th>
+           <th>Netto</th>			
+           <th>Bayar</th>
+		   <th>Piutang</th>
+		   <th>User</th>
+            <th width="20%">Aksi</th>
         </tr>
     </thead>';
 	$admin.='<tbody>';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM `pos_penjualan` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgltermin asc" );
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_penjualan" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
-$nofaktur = $data['nofaktur'];
-$piutang = $data['piutang'];
+$nofaktur=$data['nofaktur'];
+$tgl=$data['tgl'];
+$kodecustomer=$data['kodecustomer'];
+$carabayar=$data['carabayar'];
+$netto=$data['netto'];
+$piutang=$data['piutang'];
+$user=$data['user'];
 if($piutang>'0'){
-$tombollunas = '<a href="?pilih=piutang&amp;mod=yes&amp;aksi=bayar&amp;nofaktur='.$data['nofaktur'].'" onclick="return confirm(\'Apakah Anda Yakin Ingin Melunasi Faktur '.$nofaktur.'  ?\')"><span class="btn btn-danger">Pelunasan</span></a>';
+$bayar = '<form method="post" action="?pilih=pembayaran&mod=yes">
+<input type="text" name="bayar" size="5"value="'.$data['netto'].'">
+<input type="hidden" name="nofaktur" value="'.$data['nofaktur'].'">
+<input type="hidden" name="piutang" value="'.$data['piutang'].'">';
+$tombollunas = '<input type="submit" value="Bayar" name="submit"class="btn btn-danger"></form>';
 }else{
-$tombollunas = '<span class="btn btn-primary">Lunas</span>';
+$bayar=$data['bayar'];
+$tombollunas = '<span class="btn btn-success">Lunas</span>';
 }
+$cetakslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak</span></a>';
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok" target ="blank"><span class="btn btn-primary">Lihat</span></a>';
 $admin.='<tr>
-            <td>'.$data['nofaktur'].'</td>
-            <td>'.tanggalindo($data['tgl']).'</td>
-            <td>'.getnamacustomer($data['kodecustomer']).'</td>
-            <td>'.rupiah_format($data['total']).'</td>
-            <td>'.rupiah_format($data['bayar']).'</td>
-            <td>'.rupiah_format($data['piutang']).'</td>
-            <td>'.tanggalindo($data['tgltermin']).'</td>
-            <td>'.$tombollunas.'</td>
+            <td>'.$nofaktur.'</td>
+            <td>'.tanggalindo($tgl).'</td>
+            <td>'.$kodecustomer.'</td>
+            <td>'.$carabayar.'</td>
+            <td>'.$netto.'</td>
+            <td>'.$bayar.'</td>
+            <td>'.$piutang.'</td>
+            <td>'.$user.'</td>
+            <td>'.$tombollunas.' '.$cetakslip.' '.$lihatslip.'</td>
         </tr>';
-$ttotal += $data['total'];
-$tbayar += $data['bayar'];
-$tpiutang += $data['piutang'];
 }   
-$admin.='<tr>
-            <td colspan="3">Grand Total</td>
-            <td>'.rupiah_format($ttotal).'</td>
-            <td>'.rupiah_format($tbayar).'</td>
-            <td>'.rupiah_format($tpiutang).'</td>
-            <td colspan="2"></td>
-        </tr>';
 $admin.='</tbody>
 </table>';
 }
 if($_GET['aksi']=="bayar"){
 $nofaktur 		= $_GET['nofaktur'];
-lunaspiutang($nofaktur );
+$bayar 		= $_POST['bayar'];
+$piutang 		= $_POST['piutang'];
+bayarpiutang($nofaktur,$bayar );
+if($bayar>=$piutang){
 penjualancetak($nofaktur);
-$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=piutang&amp;mod=yes" />';	
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=pembayaran&amp;mod=yes" />';	
+}
 }
 if($_GET['aksi']=="cetak"){
 $tglawal = date("Y-m-01");
