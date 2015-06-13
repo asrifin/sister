@@ -3,7 +3,7 @@ include '../../includes/pdo.php';
 
 $pdo = connect();
 $keyword = '%'.$_POST['keyword'].'%';
-$sql = "SELECT pr.nopr,pr.tgl,pr.namapr,pr.tujuanpr FROM po_pr pr , po_po po WHERE pr.nopr <> po.nopr and pr.nopr LIKE (:keyword) ORDER BY pr.id desc LIMIT 0, 5";
+$sql = "SELECT pr.nopr,pr.tgl,pr.namapr,pr.tujuanpr FROM po_pr pr , po_po po WHERE pr.nopr LIKE (:keyword) ORDER BY pr.id desc LIMIT 0, 5";
 $query = $pdo->prepare($sql);
 $query->bindParam(':keyword', $keyword, PDO::PARAM_STR);
 $query->execute();
