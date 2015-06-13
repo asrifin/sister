@@ -50,12 +50,10 @@ var contentFR ='';
                             +'<button class="btn-date"></button>'
                         +'</div>'
 
-                        +'<label>Tanggal pelunasan</label>'
-                        +'<div class="input-control text" data-role="datepicker"'
-                            +'data-format="dd mmmm yyyy"'
-                            +'data-effect="slide">'
-                            +'<input id="tglpelunasan" name="tglpelunasan" type="text">'
-                            +'<button class="btn-date"></button>'
+                        +'<label>History Pelunasan</label>'
+                        +'<div class="input-control text">'
+                            +'<a target="_blank" href="/sister/keuangan/transaksi">(lihat laporan sarpras)</a>'
+                            // +'<a href="keuangan/transaksi" target="_blank" >Lihat Keuangan : tab laporan sarpras</a>'
                         +'</div>'
 
 
@@ -327,6 +325,7 @@ var contentFR ='';
                                 $('#lokasiH').val($('#lokasiS').val()); // edit by epii
                                 $('#lokasiTB').val(dt.lokasi);
                                 $('#tanggal1TB').val(dt.tanggal1);
+                                $('#tgltagihanTB').val(dt.tgltagihan);
                                 $('#tanggal2TB').val(dt.tanggal2);
                                 $('#aktivitasTB').val(dt.aktivitas);
                                 $('#keteranganTB').val(dt.keterangan);

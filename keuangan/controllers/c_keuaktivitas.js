@@ -94,10 +94,10 @@ var contentFR ='';
                             +'</tfoot>'
                         +'</table>'
                         
-                        +'<div class="form-actions">' 
-                            +'<button class="button primary">simpan</button>&nbsp;'
-                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-                        +'</div>'
+                        // +'<div class="form-actions">' 
+                        //     +'<button class="button primary">simpan</button>&nbsp;'
+                        //     +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                        // +'</div>'
                     +'</form>';
 
         //combo lokasi
