@@ -4,7 +4,7 @@ error_reporting(0);
 
 date_default_timezone_set('Asia/Jakarta');
 define('ROOTLNK','../');
-define('ROOTDIR','F:/xampp/htdocs/sisterpadu/');
+define('ROOTDIR','D:/xampp/htdocs/sister/');
 define('SHAREDDIR',ROOTDIR.'shared/');
 define('SHAREDLIB',ROOTDIR.'shared/libraries/');
 define('SHAREDSTYLE',ROOTDIR.'shared/style/');
@@ -18,7 +18,7 @@ define('DB_HRD','`vita`.`hrd_pegawai`');
 define('DB_PUS_SO','`vita`.`hrd_pegawai`');
 
 define('DBHOST','localhost');
-define('DBNAME','vita');
+define('DBNAME','sister_siadu');
 define('DBUSER','root');
 define('DBPSWD','');
 ?>
