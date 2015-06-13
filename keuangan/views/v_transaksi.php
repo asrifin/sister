@@ -246,28 +246,29 @@
                         <input  placeholder="pilih rekening" type="text" id="li_rekeningS">
                         <button class="btn-clear"></button>
                     </div> -->
-
-                    <ul class="treeview" data-role="treeview">
-                        <li class="node">
-                            <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Operasional</a>
-                            <ul>
-                                <li><input onchange="loadLi();" value="1" name="liTB[1]" checked type="checkbox"> SPP</li>
-                                <li><input onchange="loadLi();" value="2" name="liTB[2]" checked type="checkbox"> GAC</a></li>
-                                <li><input onchange="loadLi();" value="3" name="liTB[3]" checked type="checkbox"> Dana Joining Fee Siswa Baru</a></li>
-                                <li><input onchange="loadLi();" value="4" name="liTB[4]" checked type="checkbox"> Denda Keterlambatan Uang sekolah</a></li>
-                                <li><input onchange="loadLi();" value="5" name="liTB[5]" checked type="checkbox"> Bunga Bank</a></li>
-                                <li><input onchange="loadLi();" value="6" name="liTB[6]" checked type="checkbox"> Titipan Tunjangna Hamba Tuhan</a></li>
-                            </ul>
-                        </li>
-                        <li class="node">
-                            <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Non Operasional</a>
-                            <ul>
-                                <li><input onchange="loadLi();" value="7" name="lilTB[7]" checked type="checkbox"> DPP</a></li>
-                                <li><input onchange="loadLi();" value="8" name="lilTB[8]" checked type="checkbox"> lainnya</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-
+                    <form id="filterFR2">
+                        <ul  class="treeview" data-role="treeview">
+                            <li class="node">
+                                <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Operasional</a>
+                                <ul>
+                                    <li><label><input class="li_cari" onchange="loadLi();" value="spp" name="liTB[]" checked type="checkbox"> SPP </label></li>
+                                    <li><label><input class="li_cari" onchange="loadLi();" value="gac" name="liTB[]" checked type="checkbox"> GAC</label></li>
+                                    <li><label><input class="li_cari" onchange="loadLi();" value="joining" name="liTB[]" checked type="checkbox"> Dana Joining Fee Siswa Baru</label></li>
+                                    <li><label><input class="li_cari" onchange="loadLi();" value="denda keterlambatan" name="liTB[]" checked type="checkbox"> Denda Keterlambatan Uang sekolah</label></li>
+                                    <li><label><input class="li_cari" onchange="loadLi();" value="pendapatan bunga bank" name="liTB[]" checked type="checkbox"> Bunga Bank</label></li>
+                                    <li><label><input class="li_cari" onchange="loadLi();" value="titipan tunjangan hamba tuhan" name="liTB[]" checked type="checkbox"> Titipan Tunjangan Hamba Tuhan</label></li>
+                                </ul>
+                            </li>
+                            <li class="node">
+                                <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Non Operasional</a>
+                                <ul>
+                                    <li><label><input class="li_cari" onchange="loadLi();" value="dpp" name="lilTB[]" checked type="checkbox"> DPP</label></li>
+                                    <li><label><input class="li_cari" onchange="loadLi();" value="" name="lilTB[]" checked type="checkbox"> lainnya</label></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </form>
+    
                     <table  class="table hovered bordered striped">
                         <thead>
                             <tr style="color:white;"class="info">

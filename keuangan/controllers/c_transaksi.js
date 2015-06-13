@@ -48,6 +48,9 @@ var detilanggaranArr=rekArr=[];
     }
 
     $(document).ready(function(){
+        $('#li_rekeningS').on('focus',function () {
+            autoSuggest('','li_rekening','','');
+        });
     // button action
         //print ---
         $('#ju_cetakBC').on('click',function(){
@@ -195,10 +198,15 @@ var detilanggaranArr=rekArr=[];
         viewTB('lr');   // laba /rugi
         viewTB('pkb');  // posisi kas bank
         viewTB('bt');   // buku tambahan 
-        viewTB('li');   // laporan income (penerimaan siswa)
+        // viewTB('li');   // laporan income (penerimaan siswa)
         viewTB('lo');   // laporan outcome (pengeluaran)
+        loadLi();
     }
-
+    
+    function loadLi() {
+        console.log('masuk log li');
+        viewTB('li');
+    }
 //paging ---
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
@@ -259,21 +267,18 @@ var detilanggaranArr=rekArr=[];
 
         $(el).each(function(){
             var p = $(this).attr('id');
+            console.log('ini p:'+p);
             var v = $(this).val();
             cari+='&'+p+'='+v;
         });
 
-        // if(subaksi=='ju'){
-            var opt = $('form#filterFR').serialize();
-            cari+='&'+opt;
-        // }
+        //filter chcekbox jenis transksi
+        var opt = $('form#filterFR').serialize();
+        cari+='&'+opt;
 
-        // $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr>');
-        // ajax(dir,aksi+cari).done(function(dt){
-        //     // setTimeout(function(){
-        //         $(el2).html(dt).fadeIn();
-        //     // },1000);
-        // });
+        //filter chekcbox penerimaan 
+        var opt2 = $('#filterFR2').serialize();
+        cari+='&'+opt2;
 
         $.ajax({
             url : dir,

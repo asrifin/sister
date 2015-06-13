@@ -307,106 +307,105 @@
 					// jurnal umum 
 					// 
 					case 'li':
+						$out ='';
 						$no     = isset($_POST['li_noS'])?filter($_POST['li_noS']):'';
 						$uraian = isset($_POST['li_uraianS'])?filter($_POST['li_uraianS']):'';
-						$sql='SELECT
-								*
-							FROM
-								keu_transaksi
-							WHERE(
-									nomer LIKE "%'.$no.'%"
-									OR nobukti LIKE "%'.$no.'%"
-								)
-								AND uraian LIKE "%'.$uraian.'%"
-								AND tanggal BETWEEN "'.tgl_indo6($_POST['tgl1TB']).'"
-								AND "'.tgl_indo6($_POST['tgl2TB']).'"
-								and ( 
-									rekkas IN (
-										SELECT
-											d.replid
-										FROM
-											keu_detilrekening d
-										WHERE
-											d.nama LIKE "%uang sekola%" OR
-											d.nama LIKE "%gac%" OR
-											d.nama LIKE "%joining%" OR
-											d.nama LIKE "%pendapatan bunga bank%" OR
-											d.nama LIKE "%titipan hamba%" 
-									) OR rekitem IN(
-										SELECT
-											d.replid
-										FROM
-											keu_detilrekening d
-										WHERE
-											d.nama LIKE "%uang sekola%" OR
-											d.nama LIKE "%gac%" OR
-											d.nama LIKE "%joining%" OR
-											d.nama LIKE "%pendapatan bunga bank%" OR
-											d.nama LIKE "%titipan hamba%" 
-									
+						$rekArr = '';
+
+						// var_dump($_POST['libTB']);exit();
+						if(isset($_POST['liTB']) && count($_POST['liTB']>0)){
+							$rekArr.='AND rekkas IN (
+										SELECT d.replid FROM keu_detilrekening d WHERE ';
+							$c = count($_POST['liTB'])-1;
+							foreach ($_POST['liTB'] as $i => $v) {
+								if($i==$c)
+									$rekArr.='d.nama LIKE "%'.$v.'%" ';
+								else
+									$rekArr.='d.nama LIKE "%'.$v.'%" OR ';
+							}$rekArr.=') OR rekitem IN ( 
+								SELECT d.replid FROM keu_detilrekening d WHERE ';
+							foreach ($_POST['liTB'] as $i => $v) {
+								if($i==$c)
+									$rekArr.='d.nama LIKE "%'.$v.'%" ';
+								else
+									$rekArr.='d.nama LIKE "%'.$v.'%" OR ';
+							}$rekArr.=')';
+						
+							$sql='SELECT *
+								FROM keu_transaksi
+								WHERE(
+										nomer LIKE "%'.$no.'%"
+										OR nobukti LIKE "%'.$no.'%"
 									)
-								)
-							ORDER BY
-								replid DESC';
-						// print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ //nilai awal halaman
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-
-						$recpage = 5;//jumlah data per halaman
-						$aksi    ='tampil';
-						$subaksi ='li';
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';
-						if($jum!=0){	
-							$nox = $starting+1;
-							while($res = mysql_fetch_assoc($result)){	
-								$s2 = ' SELECT replid,rek,nominal,jenis
-										FROM keu_jurnal 
-										WHERE 
-											transaksi ='.$res['replid'].'
-										ORDER BY 
-											jenis ASC';
-								$e2  = mysql_query($s2);
-						// var_dump($s2);exit(); 	
-								$tb2 ='';
-								if(mysql_num_rows($e2)!=0){
-	   								$tb2.='<table class="bordered striped lightBlue" width="100%">
-												<tr class="info fg-white text-center">
-			   										<td width="60%">Rekening</td>
-													<td width="20%">Debit</td>
-													<td width="20%">Kredit</td>
-												</tr>';
-		   							while($r2=mysql_fetch_assoc($e2)){
-										$debit  =$r2['rek']==$res['rekkas']?$res['nominal']:0;
-										$kredit =$r2['rek']==$res['rekitem']?$res['nominal']:0;
-		   								$tb2.='<tr>
-			   										<td>'.getRekening($r2['rek']).'</td>
-			   										<td class="text-right">Rp. '.number_format($debit).',-</td>
-			   										<td class="text-right">Rp. '.number_format($kredit).',-</td>
-			   									</tr>';
-		   							}$tb2.='</table>';
-								}$out.= '<tr>
-											<td>'.tgl_indo($res['tanggal']).'</td>
-											<td style="font-weight:bold;">'.$res['nomer'].'<br>'.getDetJenisTrans2($res['replid']).'<br>'.$res['nobukti'].'</td>
-											<td>'.$res['uraian'].'</td>
-											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
-										</tr>';
+									AND uraian LIKE "%'.$uraian.'%"
+									AND tanggal BETWEEN "'.tgl_indo6($_POST['tgl1TB']).'"
+									AND "'.tgl_indo6($_POST['tgl2TB']).'"
+									'.$rekArr.'
+								ORDER BY
+									replid DESC';
+							// print_r($sql);exit(); 	
+							if(isset($_POST['starting'])){ //nilai awal halaman
+								$starting=$_POST['starting'];
+							}else{
+								$starting=0;
 							}
-						}else{ #kosong
+
+							$recpage = 5;//jumlah data per halaman
+							$aksi    ='tampil';
+							$subaksi ='li';
+							$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+							$result  = $obj->result;
+
+							#ada data
+							$jum = mysql_num_rows($result);
+							if($jum!=0){	
+								$nox = $starting+1;
+								while($res = mysql_fetch_assoc($result)){	
+									$s2 = ' SELECT replid,rek,nominal,jenis
+											FROM keu_jurnal 
+											WHERE 
+												transaksi ='.$res['replid'].'
+											ORDER BY 
+												jenis ASC';
+									$e2  = mysql_query($s2);
+							
+									$tb2 ='';
+									if(mysql_num_rows($e2)!=0){
+		   								$tb2.='<table class="bordered striped lightBlue" width="100%">
+													<tr class="info fg-white text-center">
+				   										<td width="60%">Rekening</td>
+														<td width="20%">Debit</td>
+														<td width="20%">Kredit</td>
+													</tr>';
+			   							while($r2=mysql_fetch_assoc($e2)){
+											$debit  =$r2['rek']==$res['rekkas']?$res['nominal']:0;
+											$kredit =$r2['rek']==$res['rekitem']?$res['nominal']:0;
+			   								$tb2.='<tr>
+				   										<td>'.getRekening($r2['rek']).'</td>
+				   										<td class="text-right">Rp. '.number_format($debit).',-</td>
+				   										<td class="text-right">Rp. '.number_format($kredit).',-</td>
+				   									</tr>';
+			   							}$tb2.='</table>';
+									}$out.= '<tr>
+												<td>'.tgl_indo($res['tanggal']).'</td>
+												<td style="font-weight:bold;">'.$res['nomer'].'<br>'.getDetJenisTrans2($res['replid']).'<br>'.$res['nobukti'].'</td>
+												<td>'.$res['uraian'].'</td>
+												<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
+											</tr>';
+								}
+							}else{ #kosong
+								$out.= '<tr align="center">
+										<td  colspan=9 ><span style="color:red;text-align:center;">
+										... data tidak ditemukan...</span></td></tr>';
+							}
+							#link paging
+							$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
+							$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+						}else{
 							$out.= '<tr align="center">
 									<td  colspan=9 ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
 						}
-						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
 					
 					// jurnal umum 
