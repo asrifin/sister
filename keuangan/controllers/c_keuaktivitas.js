@@ -33,6 +33,17 @@ var contentFR ='';
                                 +'<td style="font-weight:bold;">Keterangan </td>'
                                 +'<td >: <span id="keteranganTB"></span></td>'
                             +'</tr>'
+
+                            +'<tr>'
+                                +'<td style="font-weight:bold;">Tanggal Tagihan </td>'
+                                +'<td >: <span id="tgltagihanTB"></span></td>'
+                            +'</tr>'
+
+                            +'<tr>'
+                                +'<td style="font-weight:bold;">History Pelunasan </td>'
+                                +'<td >: <span id=""></span><a target="_blank" href="/sister/keuangan/transaksi">(lihat laporan sarpras)</a></td>'
+                            +'</tr>'
+
                         +'</table>'
                         // // kas / bank
                         // +'<label>Rekening KAS/BANK :</label>'
@@ -57,8 +68,8 @@ var contentFR ='';
                         +'<table class="table hovered bordered striped">'
                             +'<thead>'
                                 +'<tr style="color:white;"class="info">'
-                                    +'<th class="text-center">Tgl-Tagihan</th>'
-                                    +'<th class="text-center">Tgl-Pelunasan</th>'
+                                    // +'<th class="text-center">Tgl-Tagihan</th>'
+                                    // +'<th class="text-center">Tgl-Pelunasan</th>'
                                     +'<th class="text-center">Item</th>'
                                     +'<th class="text-center">Jumlah</th>'
                                     +'<th class="text-center">Biaya Satuan</th>'
@@ -73,7 +84,8 @@ var contentFR ='';
                             +'<tbody id="itemTBL"></tbody>'
                             +'<tfoot>'
                                 +'<tr style="color:white;"class="info">'
-                                    +'<th colspan="4" class="text-right">Jumlah :</th>'
+                                    +'<th class="text-right">Jumlah :</th>'
+                                    +'<th class="text-right"></th>'
                                     +'<th id="totNominal1TD" class="text-right">Rp. 0</th>'
                                     +'<th id="totNominal2TD" class="text-right">Rp. 0</th>'
                                     // +'<th id="totNominal3TD" class="text-right">Rp. 0</th>'
@@ -218,9 +230,9 @@ var contentFR ='';
 
             tr+='<tr  class="itemTR '+(biayaTot2!=0?'bg-lightTeal':'bg-amber')+'" id="itemTR_'+ke+'">'
                 // tgl wajib dibayar
-                    +'<td align="left">'+tglbayar+'</td>'
+                    // +'<td align="left">'+tglbayar+'</td>'
                 // tgl pelunasan
-                    +'<td align="center">'+tgllunas+'</td>'
+                    // +'<td align="center">'+tgllunas+'</td>'
                 // item
                     +'<td align="center">'
                         +'<input type="hidden" name="mode'+ke+'H" value="'+mode+'" />'
