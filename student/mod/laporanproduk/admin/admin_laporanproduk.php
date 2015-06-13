@@ -106,32 +106,34 @@ $admin.='<tr>
             <td>'.$kodebarang.'</td>
             <td>'.$nama.'</td>
             <td>'.$jumlah.'</td>
-            <td><a href="?pilih=laporanproduk&amp;mod=yes&amp;aksi=detail&amp;kodebarang='.$kodebarang.'" "><span class="btn btn-success">Lihat Alur Stok</span></a> </td>
+            <td><a href="?pilih=laporanproduk&amp;mod=yes&amp;aksi=detail"><span class="btn btn-success">Lihat Alur Stok</span></a> </td>
         </tr>';
 }   
 $admin.='</tbody>
 </table>';
 }
 
-if($_GET['aksi']=="detail"){
-	$kodebarang     = $_GET['kodebarang'];  
+if($_GET['aksi']=="detail"){ 
 $tglawal = date("Y-m-01");
 $tglnow = date("Y-m-d");
 $tglmulai 		= !isset($tglmulai) ? $tglnow : $tglmulai;
 $tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
+$kodebarang 		= !isset($kodebarang) ? '' : $kodebarang;
 $admin .='<div class="panel-heading"><b>Laporan Stok Produk</b></div>';
 $admin .= '<form class="form-inline" method="get" action="cetakbarang.php" enctype ="multipart/form-data" id="posts" target="_blank">
 <table class="table table-striped table-hover">';
 $admin .= '
-	<tr>
-		<td width="200px">Kode Produk</td>
-		<td><input type="text" name="kodebarang" value="'.$kodebarang.'" class="form-control"></td>
-	</tr>';
-$admin .= '
-	<tr>
-		<td width="200px">Nama</td>
-		<td>'.getnamabarang($kodebarang).'</td>
-	</tr>';
+<tr>
+	<td>Kode</td>
+	<td><select name="kodebarang" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * FROM pos_produk ORDER BY nama asc");
+$admin .= '<option value="">== Pilih Produk==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['kode']==$kodebarang)?"selected":'';
+$admin .= '<option value="'.$datas['kode'].'"'.$pilihan.'>'.$datas['kode'].'-'.$datas['nama'].'</option>';
+}
+$admin .='</select></td>
+</tr>';
 $admin .= '
 	<tr>
 		<td width="200px">Tanggal Mulai</td>
@@ -145,7 +147,9 @@ $admin .= '
 
 $admin .= '<tr>
 	<td></td>
-	<td><input type="submit" value="Cetak" name="submit" class="btn btn-success"></td>
+	<td><input type="submit" value="Cetak" name="cetak" class="btn btn-success">
+	<input type="submit" value="Lihat" name="lihat" class="btn btn-primary">
+	</td>
 	</tr>
 </table></form>';
 $admin .= '</table>';
