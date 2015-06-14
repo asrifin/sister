@@ -59,7 +59,7 @@
             <span class="element-divider"></span>
             <a class="element brand" href="./">
                 <span class="icon-home"></span>  
-                Akademik
+                Guru
             </a>
             <span class="element-divider"></span>
             <div class="element">

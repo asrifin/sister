@@ -21,12 +21,10 @@
 				$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
 				$sord       = $_GET['sord']; // get the direction
 				$searchTerm = $_GET['searchTerm'];
-				$terpilih   = (isset($_GET['brgArr']) AND $_GET['brgArr']!='')?' AND b.replid NOT IN ('.$_GET['brgArr'].')':''; /*epiii*/
+				$pinjamArr   = (isset($_GET['pinjamArr']) AND $_GET['pinjamArr']!='')?' AND b.replid NOT IN ('.$_GET['pinjamArr'].')':''; 
+				$kembaliArr   = (isset($_GET['kembaliArr']) AND $_GET['kembaliArr']!='')?' AND b.replid NOT IN ('.$_GET['kembaliArr'].')':''; 
 
-				if(!$sidx) 
-					$sidx =1;
-				if(isset($_GET['subaksi']) && $_GET['subaksi']=='tersedia'){
-
+				if(isset($_GET['subaksi']) && $_GET['subaksi']=='pinjam'){
 				$ss='SELECT *
 						FROM(SELECT
 									pus_katalog.replid,
@@ -41,7 +39,7 @@
 									OR tb.judul LIKE "%'.$searchTerm.'%")'.$terpilih;
 					// var_dump($ss);exit()
 					// print_r($ss);exit();
-				}if(isset($_GET['subaksi']) && $_GET['subaksi']=='dipinjam'){
+				}elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='kembali'){
 				$ss='SELECT *
 						FROM(SELECT
 										    pj.replid,
@@ -56,6 +54,8 @@
 									OR tb.judul LIKE "%'.$searchTerm.'%"';
 
 				}
+				if(!$sidx) 
+					$sidx =1;
 				// print_r($ss);exit();
 				$result = mysql_query($ss) or die(mysql_error());
 				$row    = mysql_fetch_array($result,MYSQL_ASSOC);

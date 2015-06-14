@@ -357,7 +357,7 @@ function cmbtingkatbuku(tgt){
                     });
 
                 }else{ // edit mode
-                    titlex='<span class="icon-pencil"></span> Tambah';
+                    titlex='<span class="icon-pencil"></span> Edit';
                     $.ajax({
                         url:dir,
                         data:'aksi=ambiledit&replid='+id,
