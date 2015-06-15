@@ -21,6 +21,9 @@ echo '<div class="border2">
 <a href="admin.php?pilih=mnpermintaan&mod=yes"><img src="images/order.png" width="50px"><br>PERMINTAAN</a>&nbsp;&nbsp;
 </td>
 <td>
+<a href="admin.php?pilih=mnpenawaran&mod=yes"><img src="images/order.png" width="50px"><br>PENAWARAN</a>&nbsp;&nbsp;
+</td>
+<td>
 <a href="admin.php?pilih=mnpemesanan&mod=yes"><img src="images/order.png" width="50px"><br>PEMESANAN</a>&nbsp;&nbsp;
 </td>
 <td>
