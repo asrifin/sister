@@ -17,6 +17,17 @@ $(document).ready(function() {
 } );
 </script>
 js;
+$JS_SCRIPT.= <<<js
+<script type="text/javascript">
+  $(function() {
+$( "#idjoiningfee" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#iddpp" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#iduangseragam" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#iduangbuku" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#iduangmaterial" ).datepicker({ dateFormat: "yy-mm-dd" } );
+  });
+  </script>
+js;
 $style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />';
 $admin .= '
 <script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
@@ -79,52 +90,52 @@ $admin .= '
 	<tr>
 		<td>kode</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'" required></td>
+		<td>'.$kode.'</td>
 	</tr>
 	<tr>
 		<td>nama</td>
 		<td>:</td>
-		<td><input type="text" name="nama" size="25"class="form-control"  value="'.$nama.'" required></td>
+		<td>'.$nama.'</td>
 	</tr>	
 	<tr>
 		<td>level</td>
 		<td>:</td>
-		<td><input type="text" name="level" size="25"class="form-control"  value="'.$level.'"required></td>
+		<td>'.$level.'</td>
 	</tr>
 	<tr>
 		<td>lokasi</td>
 		<td>:</td>
-		<td><input type="text" name="lokasi" size="25"class="form-control"  value="'.$lokasi.'" required></td>
+		<td>'.$lokasi.'</td>
 	</tr>
 	<tr>
 		<td>diterima</td>
 		<td>:</td>
-		<td><input type="text" name="diterima" size="25"class="form-control"  value="'.$diterima.'" required></td>
+		<td>'.$diterima.'</td>
 	</tr>
 	<tr>
 		<td>joiningfee</td>
 		<td>:</td>
-		<td><input type="text" name="joiningfee" size="25"class="form-control"  value="'.$joiningfee.'" required></td>
+		<td><input type="text" name="joiningfee"id="idjoiningfee" name="idjoiningfee" size="25"class="form-control"  value="'.$joiningfee.'" ></td>
 	</tr>
 	<tr>
 		<td>dpp</td>
 		<td>:</td>
-		<td><input type="text" name="dpp" size="25"class="form-control"  value="'.$dpp.'" required></td>
+		<td><input type="text" name="dpp" id="iddpp" size="25"class="form-control"  value="'.$dpp.'" ></td>
 	</tr>
 	<tr>
 		<td>uangseragam</td>
 		<td>:</td>
-		<td><input type="text" name="uangseragam" size="25"class="form-control"  value="'.$uangseragam.'" required></td>
+		<td><input type="text" name="uangseragam" id="iduangseragam" size="25"class="form-control"  value="'.$uangseragam.'" ></td>
 	</tr>
 	<tr>
 		<td>uangbuku</td>
 		<td>:</td>
-		<td><input type="text" name="uangbuku" size="25"class="form-control"  value="'.$uangbuku.'" required></td>
+		<td><input type="text" name="uangbuku" id="iduangbuku" size="25"class="form-control"  value="'.$uangbuku.'" ></td>
 	</tr>
 	<tr>
 		<td>uangmaterial</td>
 		<td>:</td>
-		<td><input type="text" name="uangmaterial" size="25"class="form-control"  value="'.$uangmaterial.'" required></td>
+		<td><input type="text" name="uangmaterial" id="iduangmaterial" size="25"class="form-control"  value="'.$uangmaterial.'" ></td>
 	</tr>
 	
 		<tr>
@@ -159,7 +170,8 @@ $admin.='
         </tr>
     </thead>';
 	$admin.='<tbody>';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa where diterima<>''" );
+//$hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa where diterima<>''" );
+$hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $kode=$data['kode'];
 $nama=$data['nama'];

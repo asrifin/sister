@@ -98,22 +98,22 @@ $admin .= '
 	<tr>
 		<td>kode</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'" required></td>
+		<td>'.$kode.'</td>
 	</tr>
 	<tr>
 		<td>nama</td>
 		<td>:</td>
-		<td><input type="text" name="nama" size="25"class="form-control"  value="'.$nama.'" required></td>
+		<td>'.$nama.'</td>
 	</tr>	
 	<tr>
 		<td>level</td>
 		<td>:</td>
-		<td><input type="text" name="level" size="25"class="form-control"  value="'.$level.'"required></td>
+		<td>'.$level.'</td>
 	</tr>
 	<tr>
 		<td>lokasi</td>
 		<td>:</td>
-		<td><input type="text" name="lokasi" size="25"class="form-control"  value="'.$lokasi.'" required></td>
+		<td>'.$lokasi.'</td>
 	</tr>
 	<tr>
 		<td>keterangan</td>
