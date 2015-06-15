@@ -829,6 +829,19 @@ var detilanggaranArr=rekArr=[];
     function addRekTR(typ,n,arr){
         $('#rekTBL').prepend(rekTR(typ,n,arr));
     }
+    function loadFR2(typx,id){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: '100%',
+            padding: 10,
+            onShow: function(){
+                $.Dialog.content(contentFR);
+                var tr=tr3='';
+            }
+        });
+    }
 
 // load form (all)
     function loadFR(typx,id){

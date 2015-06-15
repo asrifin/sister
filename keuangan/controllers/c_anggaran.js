@@ -14,188 +14,317 @@ var a_contentFR = d_contentFR  ='';
     
 // main function ---
     $(document).ready(function(){
-        //form content
-            // anggaran
-            a_contentFR += '<form autocomplete="off" onsubmit="anggaranSV();return false;" id="'+mnu+'FR">' 
-                            // hidden input
-                            +'<input id="a_idformH" type="hidden">' 
-                            +'<input type="hidden" name="a_departemenH" id="a_departemenH">'
-                            
-                            // Departemen
-                            +'<label>Departemen</label>'
-                            +'<div class="input-control select">'
-                                +'<select onchange="cmbtahunajaran(\'form\',this.value,\'\');" required type="text" id="a_departemenTB"></select>'
-                            +'</div>'
+        // anggaran
+        a_contentFR += '<form autocomplete="off" onsubmit="anggaranSV();return false;" id="'+mnu+'FR">' 
+                        // hidden input
+                        +'<input id="a_idformH" type="hidden">' 
+                        +'<input type="hidden" name="a_departemenH" id="a_departemenH">'
+                        
+                        // Departemen
+                        +'<label>Departemen</label>'
+                        +'<div class="input-control select">'
+                            +'<select onchange="cmbtahunajaran(\'form\',this.value,\'\');" required type="text" id="a_departemenTB"></select>'
+                        +'</div>'
 
-                            // Tahun Ajaran
-                            +'<label>Tahun Ajaran</label>'
-                            +'<div class="input-control select">'
-                                +'<select  onchange="cmbtingkat(\'form\',this.value,\'\');" required type="text" id="a_tahunajaranTB"></select>'
-                            +'</div>'
+                        // Tahun Ajaran
+                        +'<label>Tahun Ajaran</label>'
+                        +'<div class="input-control select">'
+                            +'<select  onchange="cmbtingkat(\'form\',this.value,\'\');" required type="text" id="a_tahunajaranTB"></select>'
+                        +'</div>'
 
-                            // Tingkat 
-                            +'<label>Tingkat</label>'
-                            +'<div class="input-control select">'
-                                +'<select required type="text" name="a_tingkatTB" id="a_tingkatTB"></select>'
-                            +'</div>'
+                        // Tingkat 
+                        +'<label>Tingkat</label>'
+                        +'<div class="input-control select">'
+                            +'<select required type="text" name="a_tingkatTB" id="a_tingkatTB"></select>'
+                        +'</div>'
 
-                            // nama kategori anggaran
-                            +'<label>Kategori Anggaran</label>'
-                            +'<div class="input-control text">'
-                                +'<input  placeholder="Kategori Anggaran" required type="text" name="a_namaTB" id="a_namaTB">'
-                                +'<button class="btn-clear"></button>'
-                            +'</div>'
+                        // nama kategori anggaran
+                        +'<label>Kategori Anggaran</label>'
+                        +'<div class="input-control text">'
+                            +'<input  placeholder="Kategori Anggaran" required type="text" name="a_namaTB" id="a_namaTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
 
-                            // rekening
-                            +'<label>Rekening</label>'
-                            +'<div class="input-control text">'
-                                +'<input type="hidden" required id="a_rekeningH" name="a_rekeningH" />'
-                                +'<input onfocus="autoSuggest(\'a_rekening\');" placeholder="Rekening" required type="text" name="a_rekeningTB" id="a_rekeningTB">'
-                                +'<button class="btn-clear"></button>'
-                            +'</div>'
+                        // rekening
+                        +'<label>Rekening</label>'
+                        +'<div class="input-control text">'
+                            +'<input type="hidden" required id="a_rekeningH" name="a_rekeningH" />'
+                            +'<input onfocus="autoSuggest(\'a_rekening\');" placeholder="Rekening" required type="text" name="a_rekeningTB" id="a_rekeningTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
 
-                            // keterangan
-                            +'<label>Tujuan</label>'
-                            +'<div class="input-control textarea">'
-                                +'<textarea placeholder="tujuan" name="a_keteranganTB" id="a_keteranganTB"></textarea>'
-                            +'</div>'
-                            
-                            // button simpan
-                            +'<div class="form-actions">' 
-                                +'<button class="button primary">simpan</button>&nbsp;'
-                                +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-                            +'</div>'
-                        +'</form>';
-            //katalog
-            d_contentFR +=' <div class="grid">'
-                                +'<form autocomplete="off" style="overflow:scroll;height:600px;" onsubmit="detilanggaranSV(); return false;" id="detilanggaranFR">' 
-                            
-                                    // hidden 
-                                    +'<input id="d_idformH" type="hidden">' 
-                                    +'<input type="hidden" id="d_kategorianggaranH2" name="d_kategorianggaranH2"/>'
-	                                +'<input type="hidden" id="d_tingkatH" name="d_tingkatH"/>'
+                        // keterangan
+                        +'<label>Tujuan</label>'
+                        +'<div class="input-control textarea">'
+                            +'<textarea placeholder="tujuan" name="a_keteranganTB" id="a_keteranganTB"></textarea>'
+                        +'</div>'
+                        
+                        // button simpan
+                        +'<div class="form-actions">' 
+                            +'<button class="button primary">simpan</button>&nbsp;'
+                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                        +'</div>'
+                    +'</form>';
+        //detail anggaran 
+        d_contentFR +=' <div class="grid">'
+                            +'<form autocomplete="off" style="overflow:scroll;height:600px;" onsubmit="detilanggaranSV(); return false;" id="detilanggaranFR">' 
+                        
+                                // hidden 
+                                +'<input id="d_idformH" type="hidden">' 
+                                +'<input type="hidden" id="d_kategorianggaranH2" name="d_kategorianggaranH2"/>'
+                                +'<input type="hidden" id="d_tingkatH" name="d_tingkatH"/>'
+                                
+                                // nama anggaran
+                                // +'<legend>Nama Anggaran</legend>'
+                                +'<label>Nama Anggaran</label>'
+	                            +'<div data-hint="nama anggaran" class="input-control text">'
+	                                +'<input placeholder="Anggaran"  required type="text" name="d_namaTB" id="d_namaTB">'
+	                                +'<button class="btn-clear"></button>'
+	                            +'</div>'
+
+                                // tujuan
+                                +'<label>Tujuan</label>'
+                                +'<div class="input-control textarea">'
+                                    +'<textarea placeholder="tujuan" name="d_keteranganTB" id="d_keteranganTB"></textarea>'
+                                +'</div>'
+
+                                // nominal angsuran anggaran
+                                // +'<legend>Nominal (@bulan)</legend>'
+
+                                +'<label>harga satuan :</label>'
+                                +'<div class="input-control text">'
+                                    +'<input onkeyup="totNominal();" class="text-right" name="d_hargasatuanTB" id="d_hargasatuanTB" placeholder="harga satan" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                +'</div>'
+
+                                +'<table class="table hovered bordered striped">'
+                                    // header
+                                    +'<tr class="fg-white bg-blue">'
+                                        +'<th>Bulan</th>'
+                                        +'<th>Jumlah</th>'
+                                        +'<th>Harga Total</th>'
+                                    +'</tr>'
+                                    // list 
                                     
-                                    // nama anggaran
-                                    +'<legend>Nama Anggaran</legend>'
-		                            +'<div data-hint="nama anggaran" class="input-control text">'
-		                                +'<input placeholder="Anggaran"  required type="text" name="d_namaTB" id="d_namaTB">'
-		                                +'<button class="btn-clear"></button>'
-		                            +'</div>'
+                                    // Juli
+                                    +'<tr>'
+                                        +'<td>Juli</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="7" />'
+                                                +'<input onfocus="inputangka(this);" onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[7]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
 
-                                    // tujuan
-                                    +'<label>Tujuan</label>'
-                                    +'<div class="input-control textarea">'
-                                        +'<textarea placeholder="tujuan" name="d_keteranganTB" id="d_keteranganTB"></textarea>'
-                                    +'</div>'
-    
-                                    // nominal angsuran anggaran
-                                    +'<legend>Nominal (@bulan)</legend>'
+                                    // Agustus
+                                    +'<tr>'
+                                        +'<td>Agustus</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="8" />'
+                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[8]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
 
-                                    +'<label>harga satuan :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input  name="d_hargasatuanTB" id="d_hargasatuanTB" placeholder="harga satan" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
-
-                                    // ----------------------------------
-                                    +'<label>Juli <span class="tahunBulan1"></span> :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[7]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[7]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[7]" placeholder="Juli" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
-
-                                    +'<label>Agustus <span class="tahunBulan1"></span></label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[8]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[8]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[8]" placeholder="Agustus" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
-
-                                    +'<label>September <span class="tahunBulan1"></span></label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[9]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[9]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[9]" placeholder="September" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
-
-                                    +'<label>Oktober <span class="tahunBulan1"></span></label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[10]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[10]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[10]" placeholder="Oktober" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
-
-                                    +'<label>November <span class="tahunBulan1"></span></label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[11]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[11]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[11]" placeholder="November" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
-
-                                    +'<label>Desember <span class="tahunBulan1"></span></label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[12]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[12]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[12]" placeholder="Desember" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
-
-
-                                    +'<label>Januari <span class="tahunBulan2"></span></label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[1]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[1]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[1]" placeholder="Februari" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // September
+                                    +'<tr>'
+                                        +'<td>Februari</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="9" />'
+                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[9]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
                                     
-                                    +'<label>Februari <span class="tahunBulan2"></span></label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[2]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[2]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[2]" placeholder="Februari" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // Oktober
+                                    +'<tr>'
+                                        +'<td>Oktober</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[1]" value="10" />'
+                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB]" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[10]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
 
-                                    +'<label>Maret <span class="tahunBulan2"></span></label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[3]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[3]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[3]" placeholder="Maret" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // November
+                                    +'<tr>'
+                                        +'<td>November</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[1]" value="11" />'
+                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB]" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[11]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
 
-                                    +'<label>April <span class="tahunBulan2"></span></label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[4]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[4]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[4]" placeholder="April" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // Desember
+                                    +'<tr>'
+                                        +'<td>Desember</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[1]" value="12" />'
+                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB]" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[12]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
 
-                                    +'<label>Mei <span class="tahunBulan2"></span></label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[5]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[5]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[5]" placeholder="Mei" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // Januari
+                                    +'<tr>'
+                                        +'<td>Januari</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="1" />'
+                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[1]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
 
-                                    +'<label>Juni <span class="tahunBulan2"></span></label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[6]" />'
-                                        +'<input onkeyup="totAnggaran();" class="size2 d_jml text-right" name="d_jmlTB[6]" value="1"  type="text" >'
-                                        +'<input onkeyup="totAnggaran();" class="size3 d_nominal text-right" name="d_nominalTB[6]" placeholder="Juni" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
-                                    // +'<hr />'
+                                    // Februari
+                                    +'<tr>'
+                                        +'<td>Februari</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="2" />'
+                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[2]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
 
-                                    // total
-                                    +'<legend>Nominal (@tahun)</legend>'
-                                    +'<div class="bg-red input-control text">'
-                                        +'<input id="d_totNominalTB" onkeyup="perBulanAnggaran();" class="bg-yellow text-right" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // Maret
+                                    +'<tr>'
+                                        +'<td>Maret</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="3" />'
+                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[3]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
 
-                                    // button simpan
-		                            +'<div class="form-actions">' 
-		                                +'<button class="button primary">simpan</button>&nbsp;'
-		                            +'</div>'
-                                +'</form>'
-                        +'</div>';
-            cmbdepartemen('filter','');
+                                    // April
+                                    +'<tr>'
+                                        +'<td>April</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="4" />'
+                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[4]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
+
+                                    // Mei
+                                    +'<tr>'
+                                        +'<td>Mei</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="5" />'
+                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[5]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
+
+                                    // Juni
+                                    +'<tr>'
+                                        +'<td>Juni</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="6" />'
+                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<div class="input-control text">'
+                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[6]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                    +'</tr>'
+
+                                    +'<tr class="fg-white bg-blue">'
+                                        +'<th>Total</th>'
+                                        +'<th>'
+                                            +'<div class="input-control text">'
+                                                +'<input id="d_totNominalTB" onkeyup="perBulanAnggaran();" class="bg-yellow text-right" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</th>'
+                                        +'<th>'
+                                            +'<div class="input-control text">'
+                                                +'<input id="d_totNominalTB" onkeyup="perBulanAnggaran();" class="bg-yellow text-right" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                            +'</div>'
+                                        +'</th>'
+                                    +'</tr>'
+                                +'</table>'
+
+                                // total
+                                // +'<legend>Nominal (@tahun)</legend>'
+                                // +'<div class="bg-red input-control text">'
+                                //     +'<input id="d_totNominalTB" onkeyup="perBulanAnggaran();" class="bg-yellow text-right" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                // +'</div>'
+
+                                // button simpan
+	                            +'<div class="form-actions">' 
+	                                +'<button class="button primary">simpan</button>&nbsp;'
+	                            +'</div>'
+                            +'</form>'
+                    +'</div>';
+        cmbdepartemen('filter','');
 
         // button action
             //add---------
@@ -570,6 +699,7 @@ var a_contentFR = d_contentFR  ='';
             
                 if(typx=='anggaran') {
                     if(id==''){ //tambah
+                        
                         cmbdepartemen('form','');
                         cmbtahunajaran('form','','');
                         cmbtingkat('form','','');
@@ -896,8 +1026,6 @@ function jumupdate (e) {
     }
 // end of form :: generate barcode & kode ----------------- 
 
-
-
 // input uang --------------------------
     function inputuang(e) {
         $(e).maskMoney({
@@ -909,7 +1037,14 @@ function jumupdate (e) {
             affixesStay: true
         });
     }
-// end of input uang --------------------------
+
+// input uang --------------------------
+    function inputangka(e) {
+        $(e).maskMoney({
+            precision:0,
+            // affixesStay: true
+        });
+    }
 
 // get uang --------------------------
     function getuang(e) {
@@ -952,8 +1087,17 @@ function jumupdate (e) {
 //end of  print to PDF -------
     
 
-    // get total nominal rekening (ex : Rp. 500.000)
-    function totAnggaran () {
+// get total nominal rekening (ex : Rp. 500.000)
+    function totJmlHarga() {
+        var tot1=0;
+        $('.d_idnominal').each(function() {
+            var idx = $(this).val();
+            var jml = $('#d_jml').val();
+            tot1+=getCurr($(this).val());
+        });$('#d_totNominalTB').val('Rp. '+tot1.setCurr());
+        console.log(tot1);
+    }
+    function totNominal() {
         var tot1=0;
         $('.d_nominal').each(function() {
             tot1+=getCurr($(this).val());
@@ -963,6 +1107,12 @@ function jumupdate (e) {
 
     function  perBulanAnggaran () {
         var x = getCurr($('#d_totNominalTB').val())/12;
+        $('.d_nominal').each(function() {
+            $(this).val('Rp. '+x.setCurr());
+        });
+    }
+    function  perBulanAnggaran2() {
+        var x = getCurr($('#d_hargasatuanTB').val())/12;
         $('.d_nominal').each(function() {
             $(this).val('Rp. '+x.setCurr());
         });
