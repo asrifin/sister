@@ -25,7 +25,7 @@ PSB V2.0
 	+ Form > scroll (view)
 	+ paging > undefined (query)
 	+ Insert > Belum Cara insert ke multiple tabel
-	- Cara membuat no otomatis pada no pendaftaran
+	+ Cara membuat no otomatis pada no pendaftaran
 	- menjumlahkan angsuran dan total uang pangkal net menggunakan Rupiah
 	+ Insert > Foto
 	+ view   > 

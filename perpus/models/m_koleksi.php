@@ -186,8 +186,8 @@
 										  pb.barkode,
 										  pb.harga,
 										  pb.tanggal,
-										  pb.lokasi,
-										  pb.tingkatbuku,
+										  l.nama lokasi,
+										  t.nama tingkatbuku,
 										  if(pb.sumber=0,"Beli","Pemberian") as sumber,
 										  pj.nama jenisbuku,
 				                          kg.callnumber,
@@ -200,6 +200,8 @@
 				                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
 				                          LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
 				                          LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+				                          LEFT JOIN pus_lokasi l ON l.replid = pb.lokasi
+				                          LEFT JOIN pus_tingkatbuku t ON t.replid = pb.tingkatbuku 
 				                        WHERE
 				                        	kg.replid = '.$_POST['replid'].'
 				                        order BY

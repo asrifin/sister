@@ -28,7 +28,7 @@
         </div>
     </div>
     
-<div id="optionPN">
+<div style="display:none;" id="optionPN">
     <div class="row">
         <div class="span9" style="color:white;"> 
             <!-- colom 1 -->
@@ -139,6 +139,7 @@
     <button id="bulan_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Bulan ini</button> -->
 </div>
 
+<div style="overflow:scroll;height:600px">  
 <div class="divider">&nbsp;</div>
 
             <button data-hint="Field Pencarian" xclass="large" id="cari_sirkulasiBC" class="sirkulasi_cari"><span class="icon-search"></span> </button>
@@ -235,3 +236,5 @@
 <!-- End Frames -->
 </div>
 <!-- End Tab -->
+</div>
+<!-- End Scroll -->
