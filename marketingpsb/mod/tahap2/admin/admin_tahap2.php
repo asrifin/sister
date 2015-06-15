@@ -10,18 +10,28 @@ if (!cek_login ()){
 $admin .='<p class="judul">Access Denied !!!!!!</p>';
 }else{
 
-
+$JS_SCRIPT= <<<js
+<script language="JavaScript" type="text/javascript">
+$(document).ready(function() {
+    $('#example').dataTable();
+} );
+</script>
+js;
 $JS_SCRIPT.= <<<js
 <script type="text/javascript">
   $(function() {
-$( "#datepicker" ).datepicker( );
+$( "#idfollowup" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#idfreetrial" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#idbeliform" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#idpsikotest" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#idtestmandarin" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#idtestenglish" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#idtestmath" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#idwawancaraortu" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#idditerima" ).datepicker({ dateFormat: "yy-mm-dd" } );
   });
   </script>
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />';
-$admin .= '
-<script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
 $script_include[] = $JS_SCRIPT;
 $admin  .='<legend>PPPDB TAHAP 2</legend>';
 $admin  .= '<div class="border2">
@@ -84,7 +94,7 @@ $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Tambah Calon Siswa</h3></div>';
 $admin .= '
 <form method="post" action="">
-<table border="0" cellspacing="0" cellpadding="0"class="table table-condensed">
+<table width="100%"class="table table-condensed">
 	<tr>
 		<td>kode</td>
 		<td>:</td>
@@ -114,46 +124,46 @@ $admin .= '
 		<td>followup</td>
 		<td>:</td>
 		<td>
-		<input type="text" name="followup" size="25"class="form-control"  id="datepicker" required>
+		<input type="text" name="followup" size="25"class="form-control"  value="'.$followup.'"id="idfollowup" >
 	<tr>
 		<td>freetrial</td>
 		<td>:</td>
-		<td><input type="text" name="freetrial" size="25"class="form-control"  value="'.$freetrial.'" required></td>
+		<td><input type="text" name="freetrial" size="25"class="form-control"  value="'.$freetrial.'" id="idfreetrial"></td>
 	</tr>
 	<tr>
 		<td>beliform</td>
 		<td>:</td>
-		<td><input type="text" name="beliform" size="25"class="form-control"  value="'.$beliform.'" required></td>
+		<td><input type="text" name="beliform" id="idbeliform" size="25"class="form-control"  value="'.$beliform.'" ></td>
 	</tr>
 	<tr>
 		<td>psikotest</td>
 		<td>:</td>
-		<td><input type="text" name="psikotest" size="25"class="form-control"  value="'.$psikotest.'" required></td>
+		<td><input type="text" name="psikotest" id="idpsikotest" size="25"class="form-control"  value="'.$psikotest.'" ></td>
 	</tr>
 	<tr>
 		<td>testmandarin</td>
 		<td>:</td>
-		<td><input type="text" name="testmandarin" size="25"class="form-control"  value="'.$testmandarin.'" required></td>
+		<td><input type="text" name="testmandarin" id="idmandarin" size="25"class="form-control"  value="'.$testmandarin.'" ></td>
 	</tr>
 	<tr>
 		<td>testenglish</td>
 		<td>:</td>
-		<td><input type="text" name="testenglish" size="25"class="form-control"  value="'.$testenglish.'" required></td>
+		<td><input type="text" name="testenglish" id="idtestenglish" size="25"class="form-control"  value="'.$testenglish.'" ></td>
 	</tr>
 	<tr>
 		<td>testmath</td>
 		<td>:</td>
-		<td><input type="text" name="testmath" size="25"class="form-control"  value="'.$testmath.'" required></td>
+		<td><input type="text" name="testmath" id="idtestmath" size="25"class="form-control"  value="'.$testmath.'" ></td>
 	</tr>
 	<tr>
 		<td>wawancaraortu</td>
 		<td>:</td>
-		<td><input type="text" name="wawancaraortu" size="25"class="form-control" value="'.$wawancaraortu.'" required></td>
+		<td><input type="text" name="wawancaraortu" id="idwawancaraortu" size="25"class="form-control" value="'.$wawancaraortu.'" ></td>
 	</tr>
 	<tr>
 		<td>diterima</td>
 		<td>:</td>
-		<td><input type="text" name="diterima" size="25"class="form-control" value="'.$diterima.'" required></td>
+		<td><input type="text" name="diterima" id="idditerima" size="25"class="form-control" value="'.$diterima.'" ></td>
 	</tr>
 		<tr>
 		<td></td>
@@ -170,7 +180,7 @@ $admin .= '</div>';
 if (in_array($_GET['aksi'],array('del',''))){
 
 $admin.='
-<table id="example"  class="table table-striped">
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
             <th>Kode</th>

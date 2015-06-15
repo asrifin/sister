@@ -10,17 +10,13 @@ if (!cek_login ()){
 $admin .='<p class="judul">Access Denied !!!!!!</p>';
 }else{
 
-$JS_SCRIPT= <<<js
+$JS_SCRIPT = <<<js
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function() {
     $('#example').dataTable();
 } );
 </script>
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />';
-$admin .= '
-<script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
 $script_include[] = $JS_SCRIPT;
 $admin  .='<legend>PPPDB TAHAP 1</legend>';
 $admin  .= '<div class="border2">
@@ -330,10 +326,10 @@ $admin .= '</div>';
 if (in_array($_GET['aksi'],array('del','','import'))){
 
 $admin.='
-<table id="example"  class="table table-striped">
+<table id="example">
     <thead>
         <tr>
-            <th>Kode</th>
+            <th>-Kode</th>
 			<th>Nama</th>
            <th>Level</th>
            <th>Lokasi</th>
