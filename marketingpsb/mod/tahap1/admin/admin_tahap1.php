@@ -17,6 +17,13 @@ $(document).ready(function() {
 } );
 </script>
 js;
+$JS_SCRIPT.= <<<js
+<script type="text/javascript">
+  $(function() {
+$( "#idtgllahir" ).datepicker({ dateFormat: "yy-mm-dd" } );
+  });
+  </script>
+js;
 $script_include[] = $JS_SCRIPT;
 $admin  .='<legend>PPPDB TAHAP 1</legend>';
 $admin  .= '<div class="border2">
@@ -109,15 +116,22 @@ $admin .= '
 		<td>:</td>
 		<td><input type="text" name="level" size="25"class="form-control" required></td>
 	</tr>
-	<tr>
-		<td>lokasi</td>
+<tr>
+	<td>Lokasi</td>
 		<td>:</td>
-		<td><input type="text" name="lokasi" size="25"class="form-control" required></td>
-	</tr>
+	<td><select name="lokasi" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * FROM departemen ORDER BY replid asc");
+$admin .= '<option value="">== Lokasi ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$lokasi)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['nama'].'</option>';
+}
+$admin .='</select></td>
+</tr>
 	<tr>
 		<td>tgllahir</td>
 		<td>:</td>
-		<td><input type="text" name="tgllahir" size="25"class="form-control" required></td>
+		<td><input type="text" name="tgllahir" size="25"class="form-control" id="idtgllahir" required></td>
 	</tr>
 	<tr>
 		<td>namaortu</td>
@@ -164,11 +178,18 @@ $admin .= '
 		<td>:</td>
 		<td><input type="text" name="kelamin" size="25"class="form-control" required></td>
 	</tr>
-	<tr>
-		<td>gelombang</td>
+<tr>
+	<td>Gelombang</td>
 		<td>:</td>
-		<td><input type="text" name="gelombang" size="25"class="form-control" required></td>
-	</tr>
+	<td><select name="gelombang" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * FROM psbcalon_gelombang ORDER BY id asc");
+$admin .= '<option value="">== Gelombang ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['id']==$gelombang)?"selected":'';
+$admin .= '<option value="'.$datas['id'].'" '.$pilihan.'>'.$datas['nama'].'</option>';
+}
+$admin .='</select></td>
+</tr>
 	<tr>
 		<td></td>
 		<td></td>
@@ -246,20 +267,35 @@ $admin .= '
 		<td>:</td>
 		<td><input type="text" name="nama" size="25"class="form-control"  value="'.$nama.'" required></td>
 	</tr>	
-	<tr>
-		<td>level</td>
+<tr>
+	<td>Level</td>
 		<td>:</td>
-		<td><input type="text" name="level" size="25"class="form-control"  value="'.$level.'"required></td>
-	</tr>
+	<td><select name="level" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * FROM psb_kelompok ORDER BY replid asc");
+$admin .= '<option value="">== Level ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$level)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['kelompok'].'</option>';
+}
+$admin .='</select></td>
+</tr>
 	<tr>
-		<td>lokasi</td>
+<tr>
+	<td>Lokasi</td>
 		<td>:</td>
-		<td><input type="text" name="lokasi" size="25"class="form-control"  value="'.$lokasi.'" required></td>
-	</tr>
+	<td><select name="lokasi" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * FROM departemen ORDER BY replid asc");
+$admin .= '<option value="">== Lokasi ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$lokasi)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['nama'].'</option>';
+}
+$admin .='</select></td>
+</tr>
 	<tr>
 		<td>tgllahir</td>
 		<td>:</td>
-		<td><input type="text" name="tgllahir" size="25"class="form-control"  value="'.$tgllahir.'" required></td>
+		<td><input type="text" name="tgllahir" size="25"class="form-control"   id="idtgllahir"value="'.$tgllahir.'" required></td>
 	</tr>
 	<tr>
 		<td>namaortu</td>
@@ -301,16 +337,30 @@ $admin .= '
 		<td>:</td>
 		<td><input type="text" name="info" size="25"class="form-control" value="'.$info.'" required></td>
 	</tr>
-	<tr>
-		<td>kelamin</td>
+<tr>
+	<td>Kelamin</td>
 		<td>:</td>
-		<td><input type="text" name="kelamin" size="25"class="form-control" value="'.$kelamin.'" required></td>
-	</tr>
-	<tr>
-		<td>gelombang</td>
+	<td><select name="kelamin" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * FROM hrd_kelamin ORDER BY id asc");
+$admin .= '<option value="">== Jenis Kelamin ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['id']==$kelamin)?"selected":'';
+$admin .= '<option value="'.$datas['id'].'" '.$pilihan.'>'.$datas['kelamin'].'</option>';
+}
+$admin .='</select></td>
+</tr>
+<tr>
+	<td>Gelombang</td>
 		<td>:</td>
-		<td><input type="text" name="gelombang" size="25"class="form-control" value="'.$gelombang.'" required></td>
-	</tr>
+	<td><select name="gelombang" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * FROM psbcalon_gelombang ORDER BY id asc");
+$admin .= '<option value="">== Gelombang ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['id']==$gelombang)?"selected":'';
+$admin .= '<option value="'.$datas['id'].'" '.$pilihan.'>'.$datas['nama'].'</option>';
+}
+$admin .='</select></td>
+</tr>
 	<tr>
 		<td></td>
 		<td></td>
@@ -326,7 +376,7 @@ $admin .= '</div>';
 if (in_array($_GET['aksi'],array('del','','import'))){
 
 $admin.='
-<table id="example">
+<table id="example"class="table table-striped table-bordered">
     <thead>
         <tr>
             <th>-Kode</th>
@@ -368,8 +418,8 @@ $gelombang=$data['gelombang'];
 $admin.='<tr>
             <td>'.$kode.'</td>
             <td>'.$nama.'</td>
-            <td>'.$level.'</td>
-            <td>'.$lokasi.'</td>
+            <td>'.getlevel($level).'</td>
+            <td>'.getlokasi($lokasi).'</td>
             <td>'.$tgllahir.'</td>
             <td>'.$namaortu.'</td>
 			<td>'.$alamat.'</td>
@@ -379,8 +429,8 @@ $admin.='<tr>
 			<td>'.$ket.'</td>
 			<td>'.$asalsekolah.'</td>
 			<td>'.$info.'</td>
-			<td>'.$kelamin.'</td>
-			<td>'.$gelombang.'</td>
+			<td>'.getkelamin($kelamin).'</td>
+			<td>'.getgelombang($gelombang).'</td>
             <td><a href="?pilih=tahap1&amp;mod=yes&amp;aksi=del&amp;id='.$data['id'].'" onclick="return confirm(\'Apakah Anda Yakin Ingin Menghapus Data Ini ?\')"><span class="btn btn-danger">Hapus</span></a> <a href="?pilih=tahap1&amp;mod=yes&amp;aksi=edit&amp;id='.$data['id'].'"><span class="btn btn-warning">Edit</span></a></td>
         </tr>';
 }   

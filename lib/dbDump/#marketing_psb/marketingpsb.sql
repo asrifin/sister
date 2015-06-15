@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 08 Jun 2015 pada 14.11
+-- Generation Time: 15 Jun 2015 pada 14.22
 -- Versi Server: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `psbcalon`
+-- Database: `sister_siadu`
 --
 
 -- --------------------------------------------------------
@@ -51,6 +51,28 @@ INSERT INTO `psbcalon_bulan` (`id`, `nama`, `bulan`) VALUES
 (10, 'Oktober', '10'),
 (11, 'Nopember', '11'),
 (12, 'Desember', '12');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `psbcalon_gelombang`
+--
+
+DROP TABLE IF EXISTS `psbcalon_gelombang`;
+CREATE TABLE IF NOT EXISTS `psbcalon_gelombang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(512) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data untuk tabel `psbcalon_gelombang`
+--
+
+INSERT INTO `psbcalon_gelombang` (`id`, `nama`) VALUES
+(1, '1'),
+(2, '2'),
+(3, '3');
 
 -- --------------------------------------------------------
 
@@ -139,14 +161,22 @@ CREATE TABLE IF NOT EXISTS `psbcalon_siswa` (
   `uangbuku` varchar(50) NOT NULL,
   `uangmaterial` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data untuk tabel `psbcalon_siswa`
 --
 
 INSERT INTO `psbcalon_siswa` (`id`, `kode`, `nama`, `level`, `lokasi`, `tgllahir`, `namaortu`, `alamat`, `kota`, `telp`, `hp`, `ket`, `asalsekolah`, `info`, `kelamin`, `gelombang`, `ket2`, `followup`, `freetrial`, `beliform`, `psikotest`, `testmandarin`, `testenglish`, `testmath`, `wawancaraortu`, `diterima`, `joiningfee`, `dpp`, `uangseragam`, `uangbuku`, `uangmaterial`) VALUES
-(1, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', 'z1', 'z2', 'z3', 'z4', 'z5', 'z6', 'z7', 'z8', 'z9', 'z10', 't1', 't1', 't1', 't1', 't1');
+(1, '1', '2', '3', '2', '2015-06-09', '6', '7', '8', '9', '0', '1', '2', '3', '2', '2', 'z1', '2015-06-15', '2015-06-10', '2015-06-17', '', '', '', '', '', '2015-06-30', '2015-06-15', '', '', '', '2015-06-30'),
+(2, 'a', 'a', '19', '1', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', '1', '2', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(3, 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'mm', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(4, 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'gg', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(5, 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(6, 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(7, 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ii', 'i', 'i', 'i', 'i', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(8, 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(9, 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', '', '', '', '', '', '', '', '', '', '', '', '', '2015-06-30', '', '');
 
 -- --------------------------------------------------------
 
@@ -184,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `psbcalon_situs` (
 --
 
 INSERT INTO `psbcalon_situs` (`id`, `email_master`, `judul_situs`, `url_situs`, `slogan`, `description`, `keywords`, `maxkonten`, `maxadmindata`, `maxdata`, `maxgalleri`, `widgetshare`, `theme`, `author`, `alamatkantor`, `publishwebsite`, `publishnews`, `maxgalleridata`, `widgetkomentar`, `widgetpenulis`) VALUES
-(1, 'rekysda@gmail.com', 'Penerimaan Peserta Didik Baru', 'http://localhost/psbcalon/', 'SISTER - PPDB', 'WebDesign dengan sistem Responsive', 'ppdb,surabaya,indonesia', 5, 50, 5, 4, 3, 'pos', 'Elyon Christian School', 'Surabaya', 1, 1, 12, 1, 2);
+(1, 'rekysda@gmail.com', 'Penerimaan Peserta Didik Baru', 'http://localhost/sister/marketingpsb', 'SISTER - PPDB', 'WebDesign dengan sistem Responsive', 'ppdb,surabaya,indonesia', 5, 50, 5, 4, 3, 'pos', 'Elyon Christian School', 'Surabaya', 1, 1, 12, 1, 2);
 
 -- --------------------------------------------------------
 
