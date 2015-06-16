@@ -115,6 +115,9 @@
                     case 'anggarantahunan':
                         require $d.'v_anggarantahunan.php';
                     break;
+                    case 'jenislaporan':
+                        require $d.'v_jenislaporan.php';
+                    break;
 
                     // transaksi
                     case 'transaksi':
