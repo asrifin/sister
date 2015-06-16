@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 16 Jun 2015 pada 10.57
+-- Generation Time: 16 Jun 2015 pada 12.27
 -- Versi Server: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -35,41 +35,25 @@ CREATE TABLE IF NOT EXISTS `po_alur_stok` (
   `kodebarang` varchar(50) NOT NULL,
   `jumlah` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
 
 --
 -- Dumping data untuk tabel `po_alur_stok`
 --
 
 INSERT INTO `po_alur_stok` (`id`, `tgl`, `transaksi`, `kode`, `kodebarang`, `jumlah`) VALUES
-(1, '2015-05-18', 'Saldo Awal', '-', 'KD001', '50'),
-(2, '2015-05-18', 'Pembelian', 'INV1805150001', 'KD001', '5'),
-(3, '2015-05-18', 'Pembelian', 'INV1805150001', 'KD001', '5'),
-(4, '2015-05-18', 'Pembelian', 'INV1805150002', 'KD001', '1'),
-(5, '2015-05-19', 'Retur Pembelian', 'RTB1905150001', 'KD001', '5'),
-(9, '2015-05-01', 'Saldo Awal', '-', 'B01', '50'),
-(10, '2015-05-07', 'Mutasi Masuk', '-', 'B01', '2'),
-(11, '2015-05-25', 'Pembelian', 'INV2505150003', 'B01', '5'),
-(12, '2015-06-01', 'Pembelian', 'INV0106150004', 'KD001', '5'),
-(13, '2015-06-01', 'Pembelian', 'INV0106150004', 'B01', '4'),
-(14, '2015-06-01', 'Retur Pembelian', 'RTB0106150002', 'KD001', '2'),
-(15, '2015-06-05', 'Pembelian', 'INV0506150005', 'KD001', '3'),
-(16, '2015-06-05', 'Pembelian', 'INV0506150005', 'B01', '1'),
-(17, '2015-06-12', 'Pembelian', 'INV1206150006', '123', '1'),
-(18, '2015-06-12', 'Pembelian', 'INV1206150007', '123', '1'),
-(19, '2015-06-12', 'Pembelian', 'INV1206150007', '14', '2'),
-(20, '2015-06-12', 'Retur Pembelian', 'RTB1206150003', '123', '1'),
-(21, '2015-06-12', 'Retur Pembelian', 'RTB1206150003', '14', '2'),
-(22, '2015-06-12', 'Retur Pembelian', 'RTB1206150004', '123', '0'),
-(23, '2015-06-12', 'Retur Pembelian', 'RTB1206150004', '14', '0'),
-(24, '2015-06-16', 'Pembelian', 'INV1606150008', 'LO', '1'),
-(25, '2015-06-16', 'Pembelian', 'INV1606150009', 'LO', '1'),
-(26, '2015-06-16', 'Pembelian', 'INV1606150009', '123', '1'),
-(27, '2015-06-16', 'Pembelian', 'INV1606150009', '123', '1'),
-(28, '2015-06-16', 'Pembelian', 'INV1606150009', '123', '1'),
 (29, '2015-06-16', 'Pembelian', 'INV1606150009', '123', '1'),
 (30, '2015-06-16', 'Pembelian', 'INV1606150009', '123', '1'),
-(31, '2015-06-16', 'Pembelian', 'INV1606150010', '123', '1');
+(31, '2015-06-16', 'Pembelian', 'INV1606150010', '123', '1'),
+(32, '2015-06-16', 'Pembelian', 'INV1606150011', '9', '1'),
+(33, '2015-06-16', 'Pembelian', 'INV1606150011', '18', '1'),
+(34, '2015-06-16', 'Pembelian', 'INV1606150012', '123', '1'),
+(35, '2015-06-16', 'Pembelian', 'INV1606150012', 'LO', '1'),
+(36, '2015-06-16', 'Pembelian', 'INV1606150013', '123', '1'),
+(37, '2015-06-16', 'Pembelian', 'INV1606150013', 'LO', '1'),
+(38, '2015-06-16', 'Pembelian', 'INV1606150001', '1', '7'),
+(39, '2015-06-16', 'Pembelian', 'INV1606150002', '1', '0'),
+(40, '2015-06-16', 'Pembelian', 'INV1606150002', '2', '2');
 
 -- --------------------------------------------------------
 
@@ -116,13 +100,6 @@ CREATE TABLE IF NOT EXISTS `po_jenisproduk` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
---
--- Dumping data untuk tabel `po_jenisproduk`
---
-
-INSERT INTO `po_jenisproduk` (`id`, `nama`) VALUES
-(4, 'ALAT SEKOLAH');
-
 -- --------------------------------------------------------
 
 --
@@ -147,23 +124,15 @@ CREATE TABLE IF NOT EXISTS `po_pembelian` (
   `tgltermin` varchar(50) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data untuk tabel `po_pembelian`
 --
 
 INSERT INTO `po_pembelian` (`id`, `noinvoice`, `nopo`, `tgl`, `kodesupplier`, `notasupplier`, `carabayar`, `total`, `discount`, `netto`, `bayar`, `hutang`, `termin`, `tgltermin`, `user`) VALUES
-(1, 'INV1805150001', 'PO1805150001', '2015-05-18', 'SUP01', '', 'Tunai', '750000', '0', '750000', '750000', '0', '0', '', 'superadmin'),
-(2, 'INV1805150002', 'PO1805150004', '2015-05-18', 'SUP01', '', 'Tunai', '50000', '0', '50000', '50000', '0', '0', '', 'superadmin'),
-(3, 'INV2505150003', 'PO2505150006', '2015-05-25', 'SUP01', '', 'Tunai', '300000', '0', '300000', '300000', '0', '0', '', 'admin'),
-(4, 'INV0106150004', 'PO0106150008', '2015-06-01', 'SUP01', '', 'Tunai', '490000', '0', '490000', '490000', '0', '0', '', 'admin'),
-(5, 'INV0506150005', 'PO0106150007', '2015-06-05', 'SUP01', '', 'Tunai', '420000', '0', '420000', '420000', '0', '30', '2015-07-5', 'admin'),
-(6, 'INV1206150006', 'PO1206150012', '2015-06-12', 'SUP01', '', 'Tunai', '55000', '0', '55000', '55000', '0', '0', '', 'admin'),
-(7, 'INV1206150007', 'PO1206150011', '2015-06-12', 'SUP01', '', 'Tunai', '20500000', '0', '20500000', '20500000', '0', '0', '', 'admin'),
-(8, 'INV1606150008', 'PO1106150010', '2015-06-16', 'SUP01', '', 'Tunai', '600000', '0', '600000', '600000', '0', '0', '', 'admin'),
-(9, 'INV1606150009', 'PO1206150012', '2015-06-16', 'SUP01', 'xxx', 'Tunai', '500000', '0', '500000', '500000', '0', '0', '', 'admin'),
-(10, 'INV1606150010', 'PO1206150012', '2015-06-16', 'SUP01', 'ghjgjgjgjg', 'Tunai', '500000', '0', '500000', '500000', '0', '0', '', 'admin');
+(14, 'INV1606150001', 'PO1606150001', '2015-06-16', 'SUP01', '', 'Tunai', '3500000', '0', '3500000', '3500000', '0', '0', '', 'admin'),
+(15, 'INV1606150002', 'PO1606150001', '2015-06-16', 'SUP01', '', 'Tunai', '4700000', '0', '4700000', '4700000', '0', '0', '', 'admin');
 
 -- --------------------------------------------------------
 
@@ -175,6 +144,7 @@ DROP TABLE IF EXISTS `po_pembeliandetail`;
 CREATE TABLE IF NOT EXISTS `po_pembeliandetail` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `noinvoice` varchar(50) NOT NULL,
+  `nopo` varchar(50) NOT NULL,
   `kodebarang` varchar(50) NOT NULL,
   `jenis` int(3) NOT NULL,
   `jumlah` varchar(50) NOT NULL,
@@ -182,31 +152,16 @@ CREATE TABLE IF NOT EXISTS `po_pembeliandetail` (
   `subdiscount` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data untuk tabel `po_pembeliandetail`
 --
 
-INSERT INTO `po_pembeliandetail` (`id`, `noinvoice`, `kodebarang`, `jenis`, `jumlah`, `harga`, `subdiscount`, `subtotal`) VALUES
-(1, 'INV1805150001', 'KD001', 0, '5', '50000', '0', '250000'),
-(2, 'INV1805150002', 'KD001', 0, '1', '50000', '0', '50000'),
-(3, 'INV2505150003', 'B01', 0, '5', '60000', '0', '300000'),
-(4, 'INV0106150004', 'KD001', 0, '5', '50000', '0', '250000'),
-(5, 'INV0106150004', 'B01', 0, '4', '60000', '0', '240000'),
-(6, 'INV0506150005', 'KD001', 0, '3', '50000', '0', '150000'),
-(7, 'INV0506150005', 'B01', 0, '1', '60000', '0', '60000'),
-(8, 'INV1206150006', '123', 0, '1', '55000', '0', '55000'),
-(9, 'INV1206150007', '123', 0, '1', '500000', '0', '500000'),
-(10, 'INV1206150007', '14', 0, '2', '10000000', '0', '20000000'),
-(11, 'INV1606150008', 'LO', 0, '1', '600000', '0', '600000'),
-(12, 'INV1606150009', 'LO', 0, '1', '600000', '0', '600000'),
-(13, 'INV1606150009', '123', 0, '1', '500000', '0', '500000'),
-(14, 'INV1606150009', '123', 0, '1', '500000', '0', '500000'),
-(15, 'INV1606150009', '123', 0, '1', '500000', '0', '500000'),
-(16, 'INV1606150009', '123', 0, '1', '500000', '0', '500000'),
-(17, 'INV1606150009', '123', 0, '1', '500000', '0', '500000'),
-(18, 'INV1606150010', '123', 0, '1', '500000', '0', '500000');
+INSERT INTO `po_pembeliandetail` (`id`, `noinvoice`, `nopo`, `kodebarang`, `jenis`, `jumlah`, `harga`, `subdiscount`, `subtotal`) VALUES
+(23, 'INV1606150001', 'PO1606150001', '1', 0, '7', '500000', '0', '3500000'),
+(24, 'INV1606150002', 'PO1606150001', '1', 0, '0', '500000', '0', '3500000'),
+(25, 'INV1606150002', 'PO1606150001', '2', 0, '2', '600000', '0', '1200000');
 
 -- --------------------------------------------------------
 
@@ -282,14 +237,14 @@ CREATE TABLE IF NOT EXISTS `po_pn` (
   `tgl` varchar(10) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data untuk tabel `po_pn`
 --
 
 INSERT INTO `po_pn` (`id`, `nopn`, `nopr`, `tgl`, `user`) VALUES
-(3, 'NPN1606150001', 'PR1606150008', '2015-06-16', 'admin');
+(4, 'NPN1606150001', 'PR1606150001', '2015-06-16', 'admin');
 
 -- --------------------------------------------------------
 
@@ -305,17 +260,15 @@ CREATE TABLE IF NOT EXISTS `po_pndetail` (
   `kodebarang` varchar(50) NOT NULL,
   `harga` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data untuk tabel `po_pndetail`
 --
 
 INSERT INTO `po_pndetail` (`id`, `nopn`, `supplier`, `kodebarang`, `harga`) VALUES
-(7, 'NPN1606150001', '', '9', ''),
-(8, 'NPN1606150001', '', '18', ''),
-(9, 'NPN1606150001', '', '9', ''),
-(10, 'NPN1606150001', '', '18', '');
+(11, 'NPN1606150001', 'CV.AAA', '1', '500000'),
+(12, 'NPN1606150001', 'CA.GGG', '2', '600000');
 
 -- --------------------------------------------------------
 
@@ -337,24 +290,14 @@ CREATE TABLE IF NOT EXISTS `po_po` (
   `netto` varchar(50) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data untuk tabel `po_po`
 --
 
 INSERT INTO `po_po` (`id`, `nopo`, `nopr`, `tgl`, `kodesupplier`, `carabayar`, `termin`, `total`, `discount`, `netto`, `user`) VALUES
-(1, 'PO1805150001', '', '2015-05-18', 'SUP01', '', '', '250000', '0', '250000', 'superadmin'),
-(2, 'PO1805150002', '', '2015-05-18', 'SUP01', '', '', '500000', '0', '500000', 'superadmin'),
-(3, 'PO1805150003', '', '2015-05-18', 'SUP01', '', '', '50000', '0', '50000', 'superadmin'),
-(4, 'PO1805150004', '', '2015-05-18', 'SUP01', '', '', '50000', '0', '50000', 'superadmin'),
-(6, 'PO2505150006', '', '2015-05-25', 'SUP01', '', '', '300000', '0', '300000', 'admin'),
-(7, 'PO0106150007', '', '2015-06-01', 'SUP01', '', '', '210000', '0', '210000', 'admin'),
-(8, 'PO0106150008', '', '2015-06-01', 'SUP01', '', '', '490000', '0', '490000', 'admin'),
-(9, 'PO1106150009', '', '2015-06-11', 'SUP01', '', '', '200000', '0', '200000', 'admin'),
-(10, 'PO1106150010', 'PR1106150005', '2015-06-11', 'SUP01', '', '', '600000', '0', '600000', 'admin'),
-(11, 'PO1206150011', 'PR1106150004', '2015-06-12', 'SUP01', '', '', '500000', '0', '500000', 'admin'),
-(12, 'PO1206150012', 'PR1006150003', '2015-06-12', 'SUP01', 'Tunai', '0', '500000', '0', '500000', 'admin');
+(13, 'PO1606150001', 'PR1606150001', '2015-06-16', 'SUP01', 'Tunai', '0', '8300000', '0', '8300000', 'admin');
 
 -- --------------------------------------------------------
 
@@ -372,26 +315,15 @@ CREATE TABLE IF NOT EXISTS `po_podetail` (
   `subdiscount` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data untuk tabel `po_podetail`
 --
 
 INSERT INTO `po_podetail` (`id`, `nopo`, `kodebarang`, `jumlah`, `harga`, `subdiscount`, `subtotal`) VALUES
-(1, 'PO1805150001', 'KD001', '5', '50000', '0', '250000'),
-(2, 'PO1805150002', 'KD001', '10', '50000', '0', '500000'),
-(3, 'PO1805150003', 'KD001', '1', '50000', '0', '50000'),
-(4, 'PO1805150004', 'KD001', '1', '50000', '0', '50000'),
-(6, 'PO2505150006', 'B01', '5', '60000', '0', '300000'),
-(7, 'PO0106150007', 'KD001', '3', '50000', '0', '150000'),
-(8, 'PO0106150007', 'B01', '1', '60000', '0', '60000'),
-(9, 'PO0106150008', 'KD001', '5', '50000', '0', '250000'),
-(10, 'PO0106150008', 'B01', '4', '60000', '0', '240000'),
-(11, 'PO1106150009', 'LO', '1', '100000', '0', '100000'),
-(12, 'PO1106150010', 'LO', '1', '600000', '0', '600000'),
-(13, 'PO1206150011', '123', '1', '500000', '0', '500000'),
-(14, 'PO1206150012', '123', '1', '500000', '0', '500000');
+(15, 'PO1606150001', '1', '7', '500000', '0', '3500000'),
+(16, 'PO1606150001', '2', '8', '600000', '0', '4800000');
 
 -- --------------------------------------------------------
 
@@ -410,20 +342,14 @@ CREATE TABLE IF NOT EXISTS `po_pr` (
   `kategorianggaran` varchar(5) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data untuk tabel `po_pr`
 --
 
 INSERT INTO `po_pr` (`id`, `nopr`, `tgl`, `namapr`, `departemenpr`, `tujuanpr`, `kategorianggaran`, `user`) VALUES
-(4, 'PR1006150002', '2015-06-10', 'asd', '8', '234', '16', 'admin'),
-(5, 'PR1006150003', '2015-06-10', '123', '8', '456', '16', 'admin'),
-(6, 'PR1106150004', '2015-06-11', 'asdasd', '8', 'asdasd', '16', 'admin'),
-(8, 'PR1206150005', '2015-06-12', 'Derri', '8', 'asdad', '16', 'admin'),
-(9, 'PR1206150006', '2015-06-12', 'asdassd', '13', 'asdad', '16', 'admin'),
-(10, 'PR1206150007', '2015-06-12', 'asdasd', '15', 'asdad', '20', 'admin'),
-(11, 'PR1606150008', '2015-06-16', 'hgfhhgf', '13', 'fhgfhg', '16', 'admin');
+(12, 'PR1606150001', '2015-06-16', 'andre', '8', 'meja rusak', '16', 'admin');
 
 -- --------------------------------------------------------
 
@@ -439,22 +365,15 @@ CREATE TABLE IF NOT EXISTS `po_prdetail` (
   `jumlah` varchar(50) NOT NULL,
   `spesifikasi` varchar(512) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data untuk tabel `po_prdetail`
 --
 
 INSERT INTO `po_prdetail` (`id`, `nopr`, `kodebarang`, `jumlah`, `spesifikasi`) VALUES
-(5, 'PR1006150002', '123', '1', 'sss'),
-(6, 'PR1006150003', '123', '1', ''),
-(7, 'PR1106150004', '123', '1', 'asdsfsdfsfd'),
-(8, 'PR1106150005', 'LO', '1', ''),
-(9, 'PR1206150005', 'MJ', '1', 'meja biasa'),
-(10, 'PR1206150006', '2', '1', ''),
-(11, 'PR1206150007', '3', '1', ''),
-(12, 'PR1606150008', '9', '1', ''),
-(13, 'PR1606150008', '18', '1', '');
+(14, 'PR1606150001', '1', '7', ''),
+(15, 'PR1606150001', '2', '8', '');
 
 -- --------------------------------------------------------
 
@@ -475,14 +394,6 @@ CREATE TABLE IF NOT EXISTS `po_produk` (
   UNIQUE KEY `kode` (`kode`),
   UNIQUE KEY `kode_2` (`kode`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data untuk tabel `po_produk`
---
-
-INSERT INTO `po_produk` (`id`, `jenis`, `kode`, `nama`, `jumlah`, `hargabeli`, `hargajual`) VALUES
-(1, 4, 'KD001', 'KURSI 2', '62', '50000', '0'),
-(2, 4, 'B01', 'BANGKU', '62', '60000', '0');
 
 -- --------------------------------------------------------
 

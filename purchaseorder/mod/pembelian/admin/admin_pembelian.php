@@ -111,7 +111,7 @@ $jumlah = $cart_itm["jumlah"];
 $harga = $cart_itm["harga"];
 $subdiscount = $cart_itm["subdiscount"];
 $subtotal = $cart_itm["subtotal"];
-$hasil  = mysql_query( "INSERT INTO `po_pembeliandetail` VALUES ('','$noinvoice','$kode','$jenis','$jumlah','$harga','$subdiscount','$subtotal')" );
+$hasil  = mysql_query( "INSERT INTO `po_pembeliandetail` VALUES ('','$noinvoice','$nopo','$kode','$jenis','$jumlah','$harga','$subdiscount','$subtotal')" );
 updatestokbeli($kode,$jumlah);
 alurstok($tgl,'Pembelian',$noinvoice,$kode,$jumlah);
 }
@@ -148,22 +148,23 @@ $data3 = $koneksi_db->sql_fetchrow($hasil3);
 $_SESSION['kodesupplier']=$kodesupplier;	  
 $hasil =  $koneksi_db->sql_query( "SELECT * FROM po_podetail WHERE nopo='$_SESSION[kodepo]'" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$nopo=$data['nopo'];
 $kode=$data['kodebarang'];
 $jenis=$data['jenis'];
 $jumlah=$data['jumlah'];
 $harga=$data['harga'];
 $subdiscount=$data['subdiscount'];
 $subtotal=$data['subtotal'];
-$hasil2 =  $koneksi_db->sql_query( "SELECT * FROM po_produk WHERE kode='$kode'" );
+$hasil2 =  $koneksi_db->sql_query( "SELECT * FROM sar_katalog WHERE replid='$kode'" );
 $data2 = $koneksi_db->sql_fetchrow($hasil2);
 $id=$data2['id'];
-$jenjang=$data2['jenjang'];
+$ceksisajum=$jumlah-ceksisajum($nopo,$kode);
 $PRODUCTID = array ();
 foreach ($_SESSION['product_id'] as $k=>$v){
 $PRODUCTID[] = $_SESSION['product_id'][$k]['kode'];
 }
 if (!in_array ($kode, $PRODUCTID)){
-$_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode,'jenis' => $jenis, 'jumlah' => $jumlah, 'harga' => $harga, 'jenjang' => $jenjang, 'subdiscount' => $subdiscount, 'subtotal' => $subtotal);
+$_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode,'jenis' => $jenis, 'jumlah' => $ceksisajum, 'harga' => $harga, 'subdiscount' => $subdiscount, 'subtotal' => $subtotal);
 }else{
 foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
@@ -325,7 +326,7 @@ $admin .= '
 		<td>:</td>
 		<td><div class="input_container">
                     <input type="text" id="po_id"  name="kodepo" value="'.$kodepo.'" onkeyup="autocompletpo()"class="form-control" >
-					<input type="submit" value="Tambah PO" name="tambahpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
+					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
                     <ul id="po_list_id"></ul>
                 </div>
 				</td>
@@ -357,7 +358,7 @@ $admin .= '
 		<td></td>
 		<td></td>
 		</tr>';
-
+/*
 $admin .= '
 	<tr>
 		<td>Kode Barang</td>
@@ -374,6 +375,7 @@ $admin .= '
 	<td></td>
 		</tr>
 				';
+				*/
 $admin .= '	
 	<tr><td colspan="5"><div id="Tbayar"></div></td>
 		<td>
