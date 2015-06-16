@@ -476,7 +476,7 @@
 					// detil anggaran
 					case 'detilanggaran':
 						$su = 'keu_detilanggaran  set 	nama             = "'.$_POST['d_namaTB'].'",
-														hargasatuan      = "'.$_POST['d_hargasatuanTB'].'",
+														hargasatuan      = "'.getuang($_POST['d_hargasatuanTB']).'",
 														keterangan       = "'.$_POST['d_keteranganTB'].'"';
 						if(isset($_POST['replid']) AND $_POST['replid']!=''){
 							$s1='UPDATE '.$su.' WHERE replid='.$_POST['replid'];
@@ -489,20 +489,18 @@
 							$stat = 'gagal_detilanggaran_'.mysql_error();
 						}else{
 							$stat='sukses';
-							if(isset($_POST['d_nominalTB'])){
+							if(isset($_POST['d_idnominalH'])){
 								$stat2=true;
-								$cc='';
-								foreach ($_POST['d_nominalTB'] as $i => $v) {
-									$cc.=$i.',';
-									$su=' keu_nominalanggaran SET 	nominal ='.getuang($v).',
-																	jml 	='.$_POST['d_jml'.$v.'TB'].',
-																	bulan   ='.$i;
-									$s2    =(isset($_POST['d_idnominalTB'][$i]) AND $_POST['d_idnominalTB'][$i]!='') ?'UPDATE '.$su.' WHERE replid='.$_POST['d_idnominalTB'][$i]:'INSERT INTO '.$su.', detilanggaran 	='.$id;
+								foreach ($_POST['d_idnominalH'] as $i => $v) {
+									$su=' keu_nominalanggaran SET 	jml 	='.$_POST['d_jml'.$v.'TB'].',
+																	bulan   ='.$v;
+									$s2    =(isset($_POST['replid']) AND $_POST['replid']!='') ?'UPDATE '.$su.' WHERE replid='.$v:'INSERT INTO '.$su.', detilanggaran 	='.$id;
 									$e2    =mysql_query($s2);
 									$stat2 =!$e2?false:true;
 								}$stat  = !$stat2?'gagal_nominal':'sukses';
 							}
-						}$out 	= json_encode(array('status'=>$stat));
+						}
+						$out 	= json_encode(array('status'=>$stat));
 					break;
 
 					case 'katalog':
@@ -646,7 +644,8 @@
 						$s = '	SELECT 
 									a.replid,
 									a.nama,
-									a.keterangan
+									a.keterangan,	
+									a.hargasatuan
 								FROM keu_detilanggaran a
 								WHERE a.replid='.$_POST['replid'];
 						// print_r($s);
@@ -656,19 +655,28 @@
 						if(!$e){
 							$stat ='gagal';
 						}else{
-							$s2     = 'SELECT replid,nominal,bulan FROM keu_nominalanggaran WHERE detilanggaran = '.$r['replid'];
+							$s2     = '	SELECT 
+											replid,
+											bulan,
+											jml,
+											(jml * '.$r['hargasatuan'].')jmlHrg 
+										FROM keu_nominalanggaran 
+										WHERE detilanggaran = '.$r['replid'];
 							$e2     = mysql_query($s2);
 							$nomArr = array();
-							$totNom=0;
+							$totJml =$totJmlHrg = 0;
 							while ($r2=mysql_fetch_assoc($e2)) {
 								$nomArr[]=$r2;
-								$totNom+=$r2['nominal'];
+								$totJml+=$r2['jml'];
+								$totJmlHrg+=$r2['jmlHrg'];
 							}
 							$dt = array(
-								'nama'       =>$r['nama'],
-								'keterangan' =>$r['keterangan'],
-								'totNom'     =>$totNom,
-								'nomArr'     =>$nomArr
+								'nama'        =>$r['nama'],
+								'hargasatuan' =>$r['hargasatuan'],
+								'keterangan'  =>$r['keterangan'],
+								'totJml'      =>$totJml,
+								'totJmlHrg'   =>$totJmlHrg,
+								'nomArr'      =>$nomArr
 							);						
 							$stat ='sukses';
 						}$out = json_encode(array(

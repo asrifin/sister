@@ -72,10 +72,9 @@ var a_contentFR = d_contentFR  ='';
                                 // hidden 
                                 +'<input id="d_idformH" type="hidden">' 
                                 +'<input type="hidden" id="d_kategorianggaranH2" name="d_kategorianggaranH2"/>'
-                                +'<input type="hidden" id="d_tingkatH" name="d_tingkatH"/>'
+                                // +'<input type="hidden" id="d_tingkatH" name="d_tingkatH"/>'
                                 
                                 // nama anggaran
-                                // +'<legend>Nama Anggaran</legend>'
                                 +'<label>Nama Anggaran</label>'
 	                            +'<div data-hint="nama anggaran" class="input-control text">'
 	                                +'<input placeholder="Anggaran"  required type="text" name="d_namaTB" id="d_namaTB">'
@@ -88,12 +87,9 @@ var a_contentFR = d_contentFR  ='';
                                     +'<textarea placeholder="tujuan" name="d_keteranganTB" id="d_keteranganTB"></textarea>'
                                 +'</div>'
 
-                                // nominal angsuran anggaran
-                                // +'<legend>Nominal (@bulan)</legend>'
-
                                 +'<label>harga satuan :</label>'
                                 +'<div class="input-control text">'
-                                    +'<input onkeyup="totNominal();" class="text-right" name="d_hargasatuanTB" id="d_hargasatuanTB" placeholder="harga satan" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                    +'<input required onkeyup="hitungAll();" class="text-right" name="d_hargasatuanTB" id="d_hargasatuanTB" placeholder="harga satuan" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
                                 +'</div>'
 
                                 +'<table class="table hovered bordered striped">'
@@ -103,220 +99,159 @@ var a_contentFR = d_contentFR  ='';
                                         +'<th>Jumlah</th>'
                                         +'<th>Harga Total</th>'
                                     +'</tr>'
-                                    // list 
                                     
+                                // list 
                                     // Juli
                                     +'<tr>'
                                         +'<td>Juli</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="7" />'
-                                                +'<input onfocus="inputangka(this);" onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'<div val="7" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="7" />'
+                                                +'<input class="d_jml text-right" id="d_jml7TB" name="d_jml7TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[7]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg7TD">Rp. 0</td>'
                                     +'</tr>'
-
-                                    // Agustus
+                                    
+                                    // agustus
                                     +'<tr>'
-                                        +'<td>Agustus</td>'
+                                        +'<td>agustus</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="8" />'
-                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'<div val="8" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="8" />'
+                                                +'<input class="d_jml text-right" id="d_jml8TB" name="d_jml8TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[8]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg8TD">Rp. 0</td>'
                                     +'</tr>'
 
                                     // September
                                     +'<tr>'
-                                        +'<td>Februari</td>'
+                                        +'<td>September</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="9" />'
-                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'<div val="9" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="9" />'
+                                                +'<input class="d_jml text-right" id="d_jml9TB" name="d_jml9TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[9]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg9TD">Rp. 0</td>'
                                     +'</tr>'
-                                    
+
                                     // Oktober
                                     +'<tr>'
                                         +'<td>Oktober</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[1]" value="10" />'
-                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB]" value="1"  type="text" >'
+                                            +'<div val="10" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="10" />'
+                                                +'<input class="d_jml text-right" id="d_jml10TB" name="d_jml10TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[10]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg10TD">Rp. 0</td>'
                                     +'</tr>'
 
                                     // November
                                     +'<tr>'
                                         +'<td>November</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[1]" value="11" />'
-                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB]" value="1"  type="text" >'
+                                            +'<div val="11" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="11" />'
+                                                +'<input class="d_jml text-right" id="d_jml11TB" name="d_jml11TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[11]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg11TD">Rp. 0</td>'
                                     +'</tr>'
 
                                     // Desember
                                     +'<tr>'
                                         +'<td>Desember</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[1]" value="12" />'
-                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB]" value="1"  type="text" >'
+                                            +'<div val="12" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="12" />'
+                                                +'<input class="d_jml text-right" id="d_jml12TB" name="d_jml12TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[12]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg12TD">Rp. 0</td>'
                                     +'</tr>'
 
                                     // Januari
                                     +'<tr>'
                                         +'<td>Januari</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="1" />'
-                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'<div val="1" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="1" />'
+                                                +'<input class="d_jml text-right" id="d_jml1TB" name="d_jml1TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[1]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg1TD">Rp. 0</td>'
                                     +'</tr>'
 
                                     // Februari
                                     +'<tr>'
                                         +'<td>Februari</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="2" />'
-                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'<div val="2" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="2" />'
+                                                +'<input class="d_jml text-right" id="d_jml2TB" name="d_jml2TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[2]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg2TD">Rp. 0</td>'
                                     +'</tr>'
 
                                     // Maret
                                     +'<tr>'
                                         +'<td>Maret</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="3" />'
-                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'<div val="3" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="3" />'
+                                                +'<input class="d_jml text-right" id="d_jml3TB" name="d_jml3TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[3]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg3TD">Rp. 0</td>'
                                     +'</tr>'
 
                                     // April
                                     +'<tr>'
                                         +'<td>April</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="4" />'
-                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'<div val="4" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="4" />'
+                                                +'<input class="d_jml text-right" id="d_jml4TB" name="d_jml4TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[4]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg4TD">Rp. 0</td>'
                                     +'</tr>'
 
                                     // Mei
                                     +'<tr>'
                                         +'<td>Mei</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="5" />'
-                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'<div val="5" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="5" />'
+                                                +'<input class="d_jml text-right" id="d_jml5TB" name="d_jml5TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[5]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg5TD">Rp. 0</td>'
                                     +'</tr>'
 
                                     // Juni
                                     +'<tr>'
                                         +'<td>Juni</td>'
                                         +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalTB[]" value="6" />'
-                                                +'<input onkeyup="totNominal();" required class="d_jml text-right" name="d_jmlTB" value="1"  type="text" >'
+                                            +'<div val="6" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="6" />'
+                                                +'<input class="d_jml text-right" id="d_jml6TB" name="d_jml6TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="1"  type="text" >'
                                             +'</div>'
                                         +'</td>'
-                                        +'<td>'
-                                            +'<div class="input-control text">'
-                                                +'<input required readonly onkeyup="totNominal();" class="d_nominal text-right" name="d_nominalTB[6]" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg6TD">Rp. 0</td>'
                                     +'</tr>'
 
+                                    // total 
                                     +'<tr class="fg-white bg-blue">'
                                         +'<th>Total</th>'
-                                        +'<th>'
-                                            +'<div class="input-control text">'
-                                                +'<input id="d_totNominalTB" onkeyup="perBulanAnggaran();" class="bg-yellow text-right" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</th>'
-                                        +'<th>'
-                                            +'<div class="input-control text">'
-                                                +'<input id="d_totNominalTB" onkeyup="perBulanAnggaran();" class="bg-yellow text-right" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                            +'</div>'
-                                        +'</th>'
+                                        +'<th align="right" id="d_totJmlTD">12</th>'
+                                        +'<th align="right" id="d_totJmlHrgTD">Rp. 0</th>'
                                     +'</tr>'
                                 +'</table>'
-
-                                // total
-                                // +'<legend>Nominal (@tahun)</legend>'
-                                // +'<div class="bg-red input-control text">'
-                                //     +'<input id="d_totNominalTB" onkeyup="perBulanAnggaran();" class="bg-yellow text-right" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                // +'</div>'
 
                                 // button simpan
 	                            +'<div class="form-actions">' 
@@ -746,19 +681,20 @@ var a_contentFR = d_contentFR  ='';
 	                        type:'post',
 	                        dataType:'json',
 	                        success:function(dt){
-                                $('#d_tingkatH').val($('#d_tingkatS').val());
                                 $('#d_kategorianggaranH2').val($('#d_kategorianggaranH').val());
                                 $('#d_idformH').val(id);
                                 $('#d_namaTB').val(dt.data.nama);
-                                $.each(dt.data.nomArr,function(id,item){
-                                    console.log(id);
-                                    var nom = parseInt(item.nominal);
-                                    var idx = parseInt(id)+1;
-                                    $('input[name="d_nominalTB['+idx+']"]').val('Rp. '+nom.setCurr());
-                                    $('input[name="d_idnominalTB['+idx+']"]').val(item.replid);
-                                });
                                 $('#d_keteranganTB').val(dt.data.keterangan);
-                                $('#d_totNominalTB').val('Rp. '+parseInt(dt.data.totNom).setCurr());
+                                $('#d_hargasatuanTB').val('Rp. '+parseInt(dt.data.hargasatuan).setCurr());
+                                $('#d_totJmlTD').html(dt.data.totJml);
+                                $('#d_totJmlHrgTD').html('Rp. '+parseInt(dt.data.totJmlHrg).setCurr());
+                                $.each(dt.data.nomArr,function(id,item){
+                                    var bulan  = item.bulan;
+                                    var jml    = item.jml;
+                                    var jmlHrg = parseInt(item.jmlHrg);
+                                    $('#d_jml'+bulan+'TB').val(jml);
+                                    $('#d_jmlHrg'+bulan+'TD').html('Rp. '+jmlHrg.setCurr());
+                                });
                             }
                         });titlex='<span class="icon-pencil"></span> Ubah ';
                     }else{ //add mode
@@ -1024,7 +960,6 @@ function jumupdate (e) {
             },
         });
     }
-// end of form :: generate barcode & kode ----------------- 
 
 // input uang --------------------------
     function inputuang(e) {
@@ -1053,7 +988,6 @@ function jumupdate (e) {
         var y = x.replace(/[r\.]/g, '');
         return y;
     }
-// end of get uang --------------------------
 
 // notifikasi
     function notif(cont,clr) {
@@ -1067,7 +1001,6 @@ function jumupdate (e) {
             },
         });
     }
-// end of notifikasi
 
 //end of  print to PDF -------
     function printPDF(mn){
@@ -1084,42 +1017,47 @@ function jumupdate (e) {
         console.log('token = '+token);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
-//end of  print to PDF -------
+
+// hitung semua
+    function hitungAll () {
+        jmlHrg();
+        totJml();
+        totJmlHrg();
+    }
+
+// hitung jumlah x harga satuan (@bulan) [horizontal]
+    function jmlHrg() {
+        var hrgSatuan = getCurr($('#d_hargasatuanTB').val());
+        $('.d_idnominal').each(function () {
+            var jml    = getCurr($('#d_jml'+$(this).val()+'TB').val());
+            var jmlHrg = 'Rp. '+(jml * hrgSatuan).setCurr();
+            $('#d_jmlHrg'+$(this).val()+'TD').html(jmlHrg);
+        });
+    }
+
+// hitung total jumlah [vertikal]
+    function totJml(){
+        var ret=0;
+        $('.d_jml').each(function () {
+            var jml = getCurr($(this).val());
+            ret+=jml;
+        });
+        $('#d_totJmlTD').html(ret);
+    }
+
+// hitung total dr. (jumlah x harga satuan) [vertikal]   
+    function totJmlHrg(){
+        var ret=0;
+        $('.d_jmlHrg').each(function () {
+            var jmlHrg = getCurr($(this).html());
+            ret+=jmlHrg;
+        });
+        $('#d_totJmlHrgTD').html('Rp. '+ret.setCurr());
+    }
     
-
-// get total nominal rekening (ex : Rp. 500.000)
-    function totJmlHarga() {
-        var tot1=0;
-        $('.d_idnominal').each(function() {
-            var idx = $(this).val();
-            var jml = $('#d_jml').val();
-            tot1+=getCurr($(this).val());
-        });$('#d_totNominalTB').val('Rp. '+tot1.setCurr());
-        console.log(tot1);
-    }
-    function totNominal() {
-        var tot1=0;
-        $('.d_nominal').each(function() {
-            tot1+=getCurr($(this).val());
-        });$('#d_totNominalTB').val('Rp. '+tot1.setCurr());
-        console.log(tot1);
-    }
-
-    function  perBulanAnggaran () {
-        var x = getCurr($('#d_totNominalTB').val())/12;
-        $('.d_nominal').each(function() {
-            $(this).val('Rp. '+x.setCurr());
-        });
-    }
-    function  perBulanAnggaran2() {
-        var x = getCurr($('#d_hargasatuanTB').val())/12;
-        $('.d_nominal').each(function() {
-            $(this).val('Rp. '+x.setCurr());
-        });
-    }
-    // currency to number (ex : Rp. 500.000 -> 500000)
+// currency to number (ex : Rp. 500.000 -> 500000)
     function getCurr(n){  
-        var x = Number(n.replace(/[^0-9\,]+/g,""));
+        var x = Number(n.replace(/[^0-9]+/g,""));
         return x;
     }
 
