@@ -33,11 +33,16 @@ $( "#idditerima" ).datepicker({ dateFormat: "yy-mm-dd" } );
   </script>
 js;
 $script_include[] = $JS_SCRIPT;
+$admin .= '<script lnguage="javascript"> function redir(mylist){ if (newurl=mylist.options[mylist.selectedIndex].value)
+document.location=newurl;}</script>';
 $admin  .='<legend>PPPDB TAHAP 2</legend>';
 $admin  .= '<div class="border2">
 <table  ><tr align="center">
 <td>
 <a href="admin.php?pilih=tahap2&mod=yes">Home</a>&nbsp;&nbsp;-
+</td>
+<td>
+<a href="admin.php?pilih=tahap2&mod=yes&aksi=cetak">&nbsp;&nbsp;Cetak PPDB Tahap 2</a>&nbsp;&nbsp;
 </td>
 </tr></table>
 </div>';
@@ -47,8 +52,6 @@ $id = int_filter ($_GET['id']);
 if(isset($_POST['submit'])){
 $kode=$_POST['kode'];
 $nama=$_POST['nama'];
-$level=$_POST['level'];
-$lokasi=$_POST['lokasi'];
 $ket2=$_POST['ket2'];
 $followup=$_POST['followup'];
 $freetrial=$_POST['freetrial'];
@@ -78,8 +81,8 @@ $query 		= mysql_query ("SELECT * FROM `psbcalon_siswa` WHERE `id`='$id'");
 $data 		= mysql_fetch_array($query);
 $kode=$data['kode'];
 $nama=$data['nama'];
-$level=$data['level'];
-$lokasi=$data['lokasi'];
+$kelompok=$data['kelompok'];
+$departemen=$data['departemen'];
 $ket2=$data['ket2'];
 $followup=$data['followup'];
 $freetrial=$data['freetrial'];
@@ -106,15 +109,16 @@ $admin .= '
 		<td>'.$nama.'</td>
 	</tr>	
 	<tr>
-		<td>level</td>
+		<td>Departemen</td>
 		<td>:</td>
-		<td>'.$level.'</td>
+		<td>'.getdepartemen($departemen).'</td>
 	</tr>
 	<tr>
-		<td>lokasi</td>
+		<td>Kelompok</td>
 		<td>:</td>
-		<td>'.$lokasi.'</td>
+		<td>'.getkelompok($kelompok).'</td>
 	</tr>
+
 	<tr>
 		<td>keterangan</td>
 		<td>:</td>
@@ -176,17 +180,15 @@ $admin .= '
 $admin .= '</div>';
 }
 
-
 if (in_array($_GET['aksi'],array('del',''))){
-
 $admin.='
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
             <th>Kode</th>
 			<th>Nama</th>
-           <th>Level</th>
-           <th>Lokasi</th>
+           <th>Departemen</th>
+           <th>Kelompok</th>
            <th>Ket</th>
            <th>Follow Up</th>
 		   <th>Free Trial</th>
@@ -205,8 +207,8 @@ $hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $kode=$data['kode'];
 $nama=$data['nama'];
-$level=$data['level'];
-$lokasi=$data['lokasi'];
+$kelompok=$data['kelompok'];
+$departemen=$data['departemen'];
 $ket2=$data['ket2'];
 $followup=$data['followup'];
 $freetrial=$data['freetrial'];
@@ -220,8 +222,8 @@ $diterima=$data['diterima'];
 $admin.='<tr>
             <td>'.$kode.'</td>
             <td>'.$nama.'</td>
-            <td>'.$level.'</td>
-            <td>'.$lokasi.'</td>
+            <td>'.getdepartemen($departemen).'</td>
+            <td>'.getkelompok($kelompok).'</td>
             <td>'.$ket2.'</td>
             <td>'.$followup.'</td>
 			<td>'.$freetrial.'</td>
@@ -237,6 +239,56 @@ $admin.='<tr>
 }   
 $admin.='</tbody>
 </table>';
+}
+
+if($_GET['aksi']=="cetak"){
+$departemen=$_GET['departemen'];
+$admin .='<div class="panel-heading"><b>Laporan Tahap 2</b></div>';
+$admin .= '<form class="form-inline" method="get" action="cetaktahap2.php" enctype ="multipart/form-data" id="posts" target="_blank">
+<table class="table table-striped table-hover">';
+$admin .= '<tr>
+	<td>Departemen</td>
+		<td>:</td>
+	<td><select name="departemen" class="form-control" id="departemen" required onchange="redir(this)">';
+$hasil = $koneksi_db->sql_query("SELECT * FROM departemen ORDER BY replid asc");
+$admin .= '<option value="">== departemen ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$departemen)?"selected":'';
+$admin .= '<option value="'.$url_situs.'/admin.php?pilih=tahap2&mod=yes&aksi=cetak&departemen='.$datas['replid'].'" '.$pilihan.'>'.$datas['nama'].'</option>';
+}
+$admin .='</select></td>
+</tr>
+<tr>
+	<td>kelompok</td>
+		<td>:</td>
+	<td><select name="kelompok" class="form-control" id="kelompok" required>';
+$hasil = $koneksi_db->sql_query("SELECT psb_kelompok.replid,psb_kelompok.kelompok FROM psb_kelompok where psb_kelompok.proses = '$departemen'");
+$admin .= '<option value="">== kelompok ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$kelompok)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['kelompok'].'</option>';
+}
+$admin .='</select></td>
+</tr>';
+$admin .= '<tr>
+	<td>gelombang</td>
+		<td>:</td>
+	<td><select name="gelombang" class="form-control" id="gelombang" required>';
+$hasil = $koneksi_db->sql_query("SELECT psb_proses.replid,psb_proses.proses FROM psb_proses where psb_proses.departemen = '$departemen'");
+$admin .= '<option value="">== gelombang ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$gelombang)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['proses'].'</option>';
+}
+$admin .='</select></td>
+</tr>';
+$admin .= '<tr>
+	<td></td>
+	<td><input type="submit" value="Cetak" name="submit" class="btn btn-success"></td>
+	</tr>
+</table></form>';
+$admin .= '</table>';
+$admin .= "* Apabila tidak dapat melakukan print, klik kanan pilih open link New Tab";
 }
 
 }

@@ -15,9 +15,6 @@ echo '<div class="border2">
 <a href="admin.php"><img src="images/home.jpg" width="50px"><br>HOME</a>&nbsp;&nbsp;
 </td>
 <td>
-<a href="admin.php?pilih=mnmaster&mod=yes"><img src="images/customer.jpg" width="50px"><br>MASTER</a>&nbsp;&nbsp;
-</td>
-<td>
 <a href="admin.php?pilih=tahap1&mod=yes"><img src="images/tahap1.png" width="50px"><br>TAHAP 1</a>&nbsp;&nbsp;
 </td>
 <td>

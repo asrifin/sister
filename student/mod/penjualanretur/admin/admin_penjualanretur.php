@@ -341,7 +341,7 @@ $admin .= '
 		</tr>';
 $admin .= '
 	<tr>
-		<td>Kode Customer</td>
+		<td>Customer</td>
 		<td>:</td>
 		<td><div class="input_container">
                     <input type="text" id="country_id"  name="kodecustomer" value="'.$kodecustomer.'" onkeyup="autocomplet()"class="form-control" >
@@ -357,7 +357,7 @@ $admin .= '
 
 $admin .= '
 	<tr>
-		<td>Kode Barang</td>
+		<td>Barang</td>
 		<td>:</td>
 		<td>
                 <div class="input_container">

@@ -255,7 +255,7 @@ $admin .= '
 	</tr>';
 $admin .= '
 	<tr>
-		<td>Kode Biaya</td>
+		<td>Biaya</td>
 		<td>:</td>
 		<td>
                 <div class="input_container">

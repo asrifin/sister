@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 3.5.2.2
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: 15 Jun 2015 pada 14.22
--- Versi Server: 5.6.16
--- PHP Version: 5.5.11
+-- Inang: 127.0.0.1
+-- Waktu pembuatan: 15 Jun 2015 pada 18.11
+-- Versi Server: 5.5.27
+-- Versi PHP: 5.4.7
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -17,109 +17,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `sister_siadu`
+-- Basis data: `sister_siadu`
 --
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `psbcalon_bulan`
---
-
-DROP TABLE IF EXISTS `psbcalon_bulan`;
-CREATE TABLE IF NOT EXISTS `psbcalon_bulan` (
-  `id` int(4) NOT NULL AUTO_INCREMENT,
-  `nama` varchar(50) NOT NULL,
-  `bulan` varchar(2) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
-
---
--- Dumping data untuk tabel `psbcalon_bulan`
---
-
-INSERT INTO `psbcalon_bulan` (`id`, `nama`, `bulan`) VALUES
-(1, 'Januari', '01'),
-(2, 'Februari', '02'),
-(3, 'Maret', '03'),
-(4, 'April', '04'),
-(5, 'Mei', '05'),
-(6, 'Juni', '06'),
-(7, 'Juli', '07'),
-(8, 'Agustus', '08'),
-(9, 'September', '09'),
-(10, 'Oktober', '10'),
-(11, 'Nopember', '11'),
-(12, 'Desember', '12');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `psbcalon_gelombang`
---
-
-DROP TABLE IF EXISTS `psbcalon_gelombang`;
-CREATE TABLE IF NOT EXISTS `psbcalon_gelombang` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nama` varchar(512) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
-
---
--- Dumping data untuk tabel `psbcalon_gelombang`
---
-
-INSERT INTO `psbcalon_gelombang` (`id`, `nama`) VALUES
-(1, '1'),
-(2, '2'),
-(3, '3');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `psbcalon_level`
---
-
-DROP TABLE IF EXISTS `psbcalon_level`;
-CREATE TABLE IF NOT EXISTS `psbcalon_level` (
-  `id` int(5) NOT NULL AUTO_INCREMENT,
-  `level` varchar(10) NOT NULL,
-  `nama` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
---
--- Dumping data untuk tabel `psbcalon_level`
---
-
-INSERT INTO `psbcalon_level` (`id`, `level`, `nama`) VALUES
-(1, 'PGA', 'PLAYGROUP A'),
-(2, 'PGB', 'PLAYGROUP B'),
-(3, 'P1', 'PRIMARY 1'),
-(4, 'KG1', 'KINDERGARDEN 1');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `psbcalon_lokasi`
---
-
-DROP TABLE IF EXISTS `psbcalon_lokasi`;
-CREATE TABLE IF NOT EXISTS `psbcalon_lokasi` (
-  `id` int(5) NOT NULL AUTO_INCREMENT,
-  `lokasi` varchar(50) NOT NULL,
-  `nama` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
-
---
--- Dumping data untuk tabel `psbcalon_lokasi`
---
-
-INSERT INTO `psbcalon_lokasi` (`id`, `lokasi`, `nama`) VALUES
-(1, 'SUKO', 'ELYON SUKOMANUNGGAL'),
-(2, 'RKT', 'ELYON RUNGKUT'),
-(3, 'KTJ', 'ELYON KERTAJAYA');
 
 -- --------------------------------------------------------
 
@@ -132,8 +31,8 @@ CREATE TABLE IF NOT EXISTS `psbcalon_siswa` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `kode` varchar(50) NOT NULL,
   `nama` varchar(50) NOT NULL,
-  `level` varchar(50) NOT NULL,
-  `lokasi` varchar(50) NOT NULL,
+  `kelompok` varchar(50) NOT NULL,
+  `departemen` varchar(50) NOT NULL,
   `tgllahir` varchar(50) NOT NULL,
   `namaortu` varchar(50) NOT NULL,
   `alamat` varchar(255) NOT NULL,
@@ -167,15 +66,15 @@ CREATE TABLE IF NOT EXISTS `psbcalon_siswa` (
 -- Dumping data untuk tabel `psbcalon_siswa`
 --
 
-INSERT INTO `psbcalon_siswa` (`id`, `kode`, `nama`, `level`, `lokasi`, `tgllahir`, `namaortu`, `alamat`, `kota`, `telp`, `hp`, `ket`, `asalsekolah`, `info`, `kelamin`, `gelombang`, `ket2`, `followup`, `freetrial`, `beliform`, `psikotest`, `testmandarin`, `testenglish`, `testmath`, `wawancaraortu`, `diterima`, `joiningfee`, `dpp`, `uangseragam`, `uangbuku`, `uangmaterial`) VALUES
-(1, '1', '2', '3', '2', '2015-06-09', '6', '7', '8', '9', '0', '1', '2', '3', '2', '2', 'z1', '2015-06-15', '2015-06-10', '2015-06-17', '', '', '', '', '', '2015-06-30', '2015-06-15', '', '', '', '2015-06-30'),
+INSERT INTO `psbcalon_siswa` (`id`, `kode`, `nama`, `kelompok`, `departemen`, `tgllahir`, `namaortu`, `alamat`, `kota`, `telp`, `hp`, `ket`, `asalsekolah`, `info`, `kelamin`, `gelombang`, `ket2`, `followup`, `freetrial`, `beliform`, `psikotest`, `testmandarin`, `testenglish`, `testmath`, `wawancaraortu`, `diterima`, `joiningfee`, `dpp`, `uangseragam`, `uangbuku`, `uangmaterial`) VALUES
+(1, '1', '2', '3', '2', '2015-06-09', '6', '7', '8', '9', '0', '1', '2', '3', '2', '3', 'z1', '2015-06-15', '2015-06-10', '2015-06-17', '', '', '', '', '', '2015-06-30', '2015-06-15', '', '', '', '2015-06-30'),
 (2, 'a', 'a', '19', '1', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', '1', '2', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
 (3, 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'mm', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
 (4, 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'gg', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
 (5, 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
 (6, 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
 (7, 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'i', 'ii', 'i', 'i', 'i', 'i', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
-(8, 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(8, 'c', 'c', '', '1', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', '1', '6', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
 (9, 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', '', '', '', '', '', '', '', '', '', '', '', '', '2015-06-30', '', '');
 
 -- --------------------------------------------------------

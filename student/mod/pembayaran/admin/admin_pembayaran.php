@@ -123,7 +123,7 @@ $bayar = '<form method="post" action="?pilih=pembayaran&mod=yes">
 <input type="text" name="bayar" size="5"value="'.$data['netto'].'">
 <input type="hidden" name="nofaktur" value="'.$data['nofaktur'].'">
 <input type="hidden" name="piutang" value="'.$data['piutang'].'">';
-$tombollunas = '<input type="submit" value="Bayar" name="submit"class="btn btn-danger"></form>';
+$tombollunas = '<input type="submit" value="Bayar" name="submit"class="btn btn-danger" onclick="return confirm(\'Apakah Anda Yakin Ingin Melunasi Data Ini ?\')"></form>';
 }else{
 $bayar=$data['bayar'];
 $tombollunas = '<span class="btn btn-success">Lunas</span>';
