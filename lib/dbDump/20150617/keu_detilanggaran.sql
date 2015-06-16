@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-06-16 17:25:10
+Date: 2015-06-17 00:01:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,13 +27,10 @@ CREATE TABLE `keu_detilanggaran` (
   `hargasatuan` double(14,0) NOT NULL DEFAULT '0',
   PRIMARY KEY (`replid`),
   KEY `kategorianggaran` (`kategorianggaran`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_detilanggaran
 -- ----------------------------
-INSERT INTO `keu_detilanggaran` VALUES ('43', '17', 'beras', 'persediaan beras untuk baksos', '0');
-INSERT INTO `keu_detilanggaran` VALUES ('44', '20', 'semen', '', '0');
-INSERT INTO `keu_detilanggaran` VALUES ('47', '17', 'tepung', 'persediaan tepung', '0');
-INSERT INTO `keu_detilanggaran` VALUES ('59', '16', 'mantap', 'wenak', '5000');
-INSERT INTO `keu_detilanggaran` VALUES ('61', '16', 'map besar', 'untuk menyimpan file dan dokumen penting', '20000');
+INSERT INTO `keu_detilanggaran` VALUES ('62', '16', 'kertas HVS A4 9', 'printer 9', '10000');
+INSERT INTO `keu_detilanggaran` VALUES ('63', '16', 'sip', 'woke', '30000');
