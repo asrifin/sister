@@ -75,7 +75,6 @@
                 <li><a href="#pkbTAB">Posisi Kas dan Bank</a></li>
                 <li><a href="#btTAB">Buku Tambahan</a></li>
                 <li><a href="#liTAB">Penerimaan & Pengeluaran</a></li>
-                <li><a href="#loTAB">Laporan Pengeluaran</a></li>
                 <li><a href="#lsTAB">Laporan Sarpras </a></li>
             </ul>
 
@@ -229,7 +228,9 @@
 
                 <!-- Laporam Penerimaan-->
                 <div class="frame" id="liTAB">
-                    <!-- combo  -->
+                    <!--filtering  -->
+                    <!-- group 2 -->
+                    <a target="_blank" href="jenis-laporan" class="button fg-white bg-blue place-right"><i class="icon-plus-2"></i> Opsi</a>
                     <div class="input-control select size3">
                         <select class="li_cari" name="li_departemenS" id="li_departemenS" data-hint="Departemen"></select>
                     </div>    
@@ -239,30 +240,38 @@
                     <div class="input-control select size3">
                         <select class="li_cari"  name="li_tingkatS" id="li_tingkatS" data-hint="Tingkat"></select>
                     </div>    
+                    <!-- group 2 -->
                     <div class="input-control select">
                         <select class="span2 li_cari" name="li_tahunS" id="li_tahunS" data-hint="Tahun"></select>
                         <select class="span2 li_cari" name="li_bulanS" id="li_bulanS" data-hint="Bulan"></select>
                     </div>    
+                    <!-- group 3 -->
+                    <div class="input-control select size3">
+                        <select class="li_cari"  name="li_jenisS" id="li_jenisS" data-hint="Jenis Transaksi">
+                            <option value="in">Penerimaan</option>
+                            <option value="out">Pengeluaran</option>
+                        </select>
+                    </div>    
 
                     <!-- centang -->
                     <form id="filterFR2">
-                        <ul  class="treeview" data-role="treeview">
+                        <ul class="treeview" data-role="treeview">
                             <li class="node">
                                 <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Operasional</a>
-                                <ul>
-                                    <li><label><input class="li_cari" onchange="loadLi();" value="spp" name="liTB[]" checked type="checkbox"> SPP </label></li>
-                                    <li><label><input class="li_cari" onchange="loadLi();" value="gac" name="liTB[]" checked type="checkbox"> GAC</label></li>
-                                    <li><label><input class="li_cari" onchange="loadLi();" value="joining" name="liTB[]" checked type="checkbox"> Dana Joining Fee Siswa Baru</label></li>
-                                    <li><label><input class="li_cari" onchange="loadLi();" value="denda keterlambatan" name="liTB[]" checked type="checkbox"> Denda Keterlambatan Uang sekolah</label></li>
-                                    <li><label><input class="li_cari" onchange="loadLi();" value="pendapatan bunga bank" name="liTB[]" checked type="checkbox"> Bunga Bank</label></li>
-                                    <li><label><input class="li_cari" onchange="loadLi();" value="titipan tunjangan hamba tuhan" name="liTB[]" checked type="checkbox"> Titipan Tunjangan Hamba Tuhan</label></li>
+                                <ul id="operUL">
+                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="spp" name="liTB[]" checked type="checkbox"> SPP </label></li> -->
+                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="gac" name="liTB[]" checked type="checkbox"> GAC</label></li> -->
+                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="joining" name="liTB[]" checked type="checkbox"> Dana Joining Fee Siswa Baru</label></li> -->
+                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="denda keterlambatan" name="liTB[]" checked type="checkbox"> Denda Keterlambatan Uang sekolah</label></li> -->
+                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="pendapatan bunga bank" name="liTB[]" checked type="checkbox"> Bunga Bank</label></li> -->
+                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="titipan tunjangan hamba tuhan" name="liTB[]" checked type="checkbox"> Titipan Tunjangan Hamba Tuhan</label></li> -->
                                 </ul>
                             </li>
                             <li class="node">
                                 <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Non Operasional</a>
-                                <ul>
-                                    <li><label><input class="li_cari" onchange="loadLi();" value="dpp" name="lilTB[]" checked type="checkbox"> DPP</label></li>
-                                    <li><label><input class="li_cari" onchange="loadLi();" value="" name="lilTB[]" checked type="checkbox"> lainnya</label></li>
+                                <ul id="nonOperUL">
+                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="dpp" name="lilTB[]" checked type="checkbox"> DPP</label></li> -->
+                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="" name="lilTB[]" checked type="checkbox"> lainnya</label></li> -->
                                 </ul>
                             </li>
                         </ul>
@@ -294,45 +303,6 @@
                         </thead>
 
                         <tbody id="li_tbody"></tbody>
-                        <tfoot></tfoot>
-                    </table>
-                </div>
-                    
-                <!-- Laporam Pengeluaran -->
-                <div class="frame" id="loTAB">    
-                    <!-- <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top"> -->
-                        <!-- <i class="icon-search" ></i> -->
-                    <!-- </button> -->
-                    <!-- <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
-                        <i class="icon-printer" ></i>
-                    </button> -->
-
-                    <table  class="table hovered bordered striped">
-                        <thead>
-                            <tr style="color:white;"class="info">
-                                <th class="text-center">Tanggal </th>
-                                <th class="text-center">No. Jurnal/Jenis Bukti/No.Bukti</th>
-                                <th class="text-center">Uraian</th>
-                                <th style="display:visible;"class="text-center  uraianCOL">Detil Jurnal</th>
-                            </tr>
-                            <tr style="display:none;" id="loTR" class="info">
-                                <th class="text-center"></th>
-                                <th class="text-center">
-                                    <div class="input-control text">
-                                        <input class="lo_cari" placeholder="cari ..." id="lo_noS">
-                                    </div>
-                                </th>
-                                <th class="text-center">
-                                    <div class="input-control text">
-                                        <input class="lo_cari" placeholder="cari ..." id="lo_uraianS" >
-                                    </div>
-                                </th>
-                                <th style="display:visible;"class="text-center uraianCOL"></th>
-                                <th class="text-center"></th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="lo_tbody"></tbody>
                         <tfoot></tfoot>
                     </table>
                 </div>

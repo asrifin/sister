@@ -13,8 +13,82 @@
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
-		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
+		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
+				$page       = $_GET['page']; 
+				$limit      = $_GET['rows'];
+				$sidx       = $_GET['sidx']; 
+				$sord       = $_GET['sord'];
+				$searchTerm = $_GET['searchTerm'];
+
+				$ss='SELECT
+						d.replid,
+						d.nama,
+						k.nama kategorianggaran,
+						concat(t.tingkat," (",t.keterangan,")") tingkat,
+						concat(r.nama," (",r.kode,") ")rekening,
+						r.replid idrekening
+					FROM
+						keu_detilanggaran d
+						LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
+						LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
+						LEFT JOIN keu_detilrekening r ON r.replid = k.rekening
+						LEFT JOIN aka_tingkat t ON t.replid = k.tingkat
+					WHERE
+						d.nama LIKE "%'.$searchTerm.'%"
+						OR k.nama LIKE "%'.$searchTerm.'%"
+						OR r.nama LIKE "%'.$searchTerm.'%"
+						OR r.kode LIKE "%'.$searchTerm.'%" 
+					GROUP BY	
+						d.replid ';
+				if(!$sidx) 
+					$sidx =1;
+				// print_r($ss);exit();
+				$result = mysql_query($ss);
+				$row    = mysql_fetch_array($result,MYSQL_ASSOC);
+				$count  = mysql_num_rows($result);
+
+				if( $count >0 ) {
+					$total_pages = ceil($count/$limit);
+				} else {
+					$total_pages = 0;
+				}
+				if ($page > $total_pages) $page=$total_pages;
+				$start 	= $limit*$page - $limit; // do not put $limit*($page - 1)
+				if($total_pages!=0) {
+					$ss.='ORDER BY '.$sidx.' '.$sord.' LIMIT '.$start.','.$limit;
+				}else {
+					$ss.='ORDER BY '.$sidx.' '.$sord;
+				}
+				// print_r($ss);exit();
+				$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
+				$rows 	= array();
+				while($row = mysql_fetch_assoc($result)) {
+					$kuotaNum     = getDetAnggaran($row['replid'],'kuotaNum');
+					$terpakaiPerc = getDetAnggaran($row['replid'],'terpakaiPerc');
+					$terpakaiNum  = getDetAnggaran($row['replid'],'terpakaiNum');
+					$sisaNum      = getDetAnggaran($row['replid'],'sisaNum');
+					$arr= array(
+							'replid'           =>$row['replid'],
+							'nama'             =>$row['nama'],
+							'kategorianggaran' =>$row['kategorianggaran'],
+							'tingkat'          =>$row['tingkat'],
+							'kuotaBilCur'      =>'Rp. '.number_format($kuotaNum),
+							'sisaBilCur'       =>'Rp. '.number_format($sisaNum),
+							'terpakaiBilCur'   =>'Rp. '.number_format($terpakaiNum),
+							'sisaBilNum'       => $sisaNum,
+							'idrekening'       => $row['idrekening'],
+							'rekening'         => $row['rekening'],
+						);
+				}$response=array(
+					'page'    =>$page,
+					'total'   =>$total_pages,
+					'records' =>$count,
+					'rows'    =>$rows,
+				);
+			$out=json_encode($response);
+		}else{
+			$out=json_encode(array('status'=>'invalid_no_post'));	
+		}
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------

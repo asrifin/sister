@@ -42,6 +42,13 @@ var contentFR ='';
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
 
+                        +'<label>Detail Anggaran</label>'
+                        +'<div class="input-control text">'
+                            +'<input type="hidden" id="detailanggaranH" name="detailanggaranH" />'
+                            +'<input onfocus="autoSuggest(\'detailanggaran\')" placeholder="detail anggaran" required type="text" name="detailanggaranTB" id="detailanggaranTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+
                         +'<label>Tanggal tagihan</label>'
                         +'<div class="input-control text" data-role="datepicker"'
                             +'data-format="dd mmmm yyyy"'
@@ -55,18 +62,6 @@ var contentFR ='';
                             +'<a target="_blank" href="/sister/keuangan/transaksi">(lihat laporan sarpras)</a>'
                             // +'<a href="keuangan/transaksi" target="_blank" >Lihat Keuangan : tab laporan sarpras</a>'
                         +'</div>'
-
-
-                        // +'<label for="">History Angsuran:</label>'
-                        // +'<table class="table hovered bordered striped">'
-                        //     +'<thead>'
-                        //         +'<tr style="color:white;"class="info">'
-                        //             +'<th class="text-center">Tgl Bayar</th>'
-                        //             +'<th class="text-center">Nominal</th>'
-                        //         +'</tr>'
-                        //     +'</thead>'
-                        //     +'<tbody id="angsuranTBL"></tbody>'
-                        // +'</table>'
 
                         // button 
                         +'<legend style="font-weight:bold;">Item  : '
@@ -595,6 +590,80 @@ function notif(cont,clr) {
         return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
     }
 
+    function autoSuggest(el){
+            var urlx= '?aksi=autocomp';
+            var col =[{
+                    'align':'left',
+                    'columnName':'nama',
+                    'hide':true,
+                    'width':'20',
+                    'label':'Anggaran'
+            },{   
+                    'align':'left',
+                    'columnName':'kategorianggaran',
+                    'width':'10',
+                    'label':'Kategori'
+            },{   
+                    'align':'left',
+                    'columnName':'tingkat',
+                    'width':'15',
+                    'label':'Jenjang'
+            },{   
+                    'align':'left',
+                    'columnName':'rekening',
+                    'width':'25',
+                    'label':'Rekening'
+            },{   
+                    'align':'right',
+                    'columnName':'sisaBilCur',
+                    'width':'15',
+                    'label':'Sisa'
+            },{   
+                    'align':'right',
+                    'columnName':'kuotaBilCur',
+                    'width':'15',
+                    'label':'Kuota'
+            }];
+
+        urly = dir+urlx;
+        $('#'+el+'TB').combogrid({
+            debug:true,
+            width:'900px',
+            colModel: col ,
+            url: urly,
+            select: function( event, ui ) { // event setelah data terpilih 
+                $('#'+el+'H').val(ui.item.replid);
+                $('#'+el+'TB').val(ui.item.nama+' [ sisa :'+ui.item.sisaBilCur+'  kuota : '+ui.item.kuotaBilCur+' ]');
+                var x = el.substring(22);
+                $('#out_come_sisaanggaran'+x+'H').val(ui.item.sisaBilNum);
+                $('#out_come_rek'+x+'TB').html(ui.item.rekening);
+                $('#out_come_rek'+x+'H').val(ui.item.idrekening);
+
+                // validasi input (tidak sesuai data dr server)
+                    $('#'+el+'TB').on('keyup', function(e){
+                        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+                        var keyCode = $.ui.keyCode;
+                        if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
+                            if($('#'+el+'H').val()!=''){
+                                $('#'+el+'H').val('');
+                                $('#'+el+'TB').val('');
+
+                                $('#out_come_sisaanggaran'+(el.substring(22))+'H').val(''); // :: out_come
+                                $('#'+el+'sisaH').val(''); // sisa rekening :: in/out/ju/
+                                // collectArr();
+                            }
+                        }
+                    });
+
+                    $('#'+el+'TB').on('blur,change',function(){
+                        if($('#'+el+'H').val()=='') {
+                            $('#'+el+'TB').val(''); // :: all 
+                        }
+                    });
+                return false;
+            }
+        });
+    }
 
 /*save (insert & update)*/
     /*function transSV(e){

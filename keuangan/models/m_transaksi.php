@@ -64,10 +64,10 @@
 							p.nopo LIKE "%'.$searchTerm.'%" OR
 							p.kodesupplier LIKE "%'.$searchTerm.'%"';
 				}elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='detilanggaran'){ // anggaran 
+							// sum(n.nominal)nominal,
 					$ss='SELECT
 							d.replid,
 							d.nama,
-							sum(n.nominal)nominal,
 							k.nama kategorianggaran,
 							concat(t.tingkat," (",t.keterangan,")") tingkat,
 							concat(r.nama," (",r.kode,") ")rekening,
@@ -77,7 +77,7 @@
 							LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
 							LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
 							LEFT JOIN keu_detilrekening r ON r.replid = k.rekening
-							LEFT JOIN aka_tingkat t ON t.replid = d.tingkat
+							LEFT JOIN aka_tingkat t ON t.replid = k.tingkat
 						WHERE
 							(
 								d.nama LIKE "%'.$searchTerm.'%"
@@ -88,33 +88,34 @@
 							'.$detilanggaranArr.'
 						GROUP BY	
 							d.replid ';
-				}elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='detilanggaran'){ // anggaran 
-					$ss='SELECT
-							d.replid,
-							d.nama,
-							sum(n.nominal)nominal,
-							k.nama kategorianggaran,
-							concat(t.tingkat," (",t.keterangan,")") tingkat,
-							concat(r.nama," (",r.kode,") ")rekening,
-							r.replid idrekening
-						FROM
-							keu_detilanggaran d
-							LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
-							LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
-							LEFT JOIN keu_detilrekening r ON r.replid = k.rekening
-							LEFT JOIN aka_tingkat t ON t.replid = d.tingkat
-						WHERE
-							(
-								d.nama LIKE "%'.$searchTerm.'%"
-								OR k.nama LIKE "%'.$searchTerm.'%"
-								OR r.nama LIKE "%'.$searchTerm.'%"
-								OR r.kode LIKE "%'.$searchTerm.'%" 
-							)
-							'.$detilanggaranArr.'
-						GROUP BY	
-							d.replid ';
-				
 				}
+				// elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='detilanggaran'){ // anggaran 
+				// 	// sum(n.nominal)nominal,
+				// 	$ss='SELECT
+				// 			d.replid,
+				// 			d.nama,
+				// 			k.nama kategorianggaran,
+				// 			concat(t.tingkat," (",t.keterangan,")") tingkat,
+				// 			concat(r.nama," (",r.kode,") ")rekening,
+				// 			r.replid idrekening
+				// 		FROM
+				// 			keu_detilanggaran d
+				// 			LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
+				// 			LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
+				// 			LEFT JOIN keu_detilrekening r ON r.replid = k.rekening
+				// 			LEFT JOIN aka_tingkat t ON t.replid = d.tingkat
+				// 		WHERE
+				// 			(
+				// 				d.nama LIKE "%'.$searchTerm.'%"
+				// 				OR k.nama LIKE "%'.$searchTerm.'%"
+				// 				OR r.nama LIKE "%'.$searchTerm.'%"
+				// 				OR r.kode LIKE "%'.$searchTerm.'%" 
+				// 			)
+				// 			'.$detilanggaranArr.'
+				// 		GROUP BY	
+				// 			d.replid ';
+				
+				// }
 				if(!$sidx) 
 					$sidx =1;
 				// print_r($ss);exit();
@@ -146,16 +147,19 @@
 							'saldoSementara' =>$row['saldoSementara']
 						);
 					}elseif($_GET['subaksi']=='detilanggaran'){ // anggaran 
-						$kuota=getKuotaAnggaran($row['replid']);
+						$kuotaNum     = getDetAnggaran($row['replid'],'kuotaNum');
+						$terpakaiPerc = getDetAnggaran($row['replid'],'terpakaiPerc');
+						$terpakaiNum  = getDetAnggaran($row['replid'],'terpakaiNum');
+						$sisaNum      = getDetAnggaran($row['replid'],'sisaNum');
 						$arr= array(
 							'replid'           =>$row['replid'],
 							'nama'             =>$row['nama'],
 							'kategorianggaran' =>$row['kategorianggaran'],
 							'tingkat'          =>$row['tingkat'],
-							'kuotaBilCur'      =>'Rp. '.number_format($kuota['kuotaNum']),
-							'sisaBilCur'       =>'Rp. '.number_format($kuota['sisaNum']),
-							'terpakaiBilCur'   =>'Rp. '.number_format($kuota['terpakaiNum']),
-							'sisaBilNum'       => $kuota['sisaNum'],
+							'kuotaBilCur'      =>'Rp. '.number_format($kuotaNum),
+							'sisaBilCur'       =>'Rp. '.number_format($sisaNum),
+							'terpakaiBilCur'   =>'Rp. '.number_format($terpakaiNum),
+							'sisaBilNum'       => $sisaNum,
 							'idrekening'       => $row['idrekening'],
 							'rekening'         => $row['rekening'],
 						);
@@ -174,6 +178,27 @@
 		}
 	}else{
 		switch ($_POST['aksi']) {
+			// jenis laporan  (checkbox)
+			case 'jenislaporan':
+				// if(l.kategori="o","Operasional","Non Operasional")kategori, 
+				$s = '	SELECT 
+							r.replid idrekening,
+							l.kategori,
+							concat("(",r.kode,") ",r.nama)rekening 
+						FROM 
+							keu_jenislaporan l 
+							LEFT JOIN keu_detilrekening r on r.replid = l.rekening
+						WHERE
+							l.jenis ="'.$_POST['jenis'].'"';
+				$e        = mysql_query($s);
+				// var_dump($s);exit();
+				$jenisArr =array();
+				$stat     =!$e?'gagal':'sukses';
+				while ($r=mysql_fetch_assoc($e)) {
+					$jenisArr[] =$r;
+			 	}$out=json_encode(array('status'=>$stat,'jenisArr'=>$jenisArr));
+			break;
+
 			// jenis transaksi (checkbox)
 			case 'jenistrans':
 				$s = 'SELECT replid idjenis, nama jenistrans from keu_jenistrans';
@@ -282,110 +307,7 @@
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
 					
-
-					// laporan pengeluaran  (laporan outcome)
-					case 'lo':
-						$no     = isset($_POST['lo_noS'])?filter($_POST['lo_noS']):'';
-						$uraian = isset($_POST['lo_uraianS'])?filter($_POST['lo_uraianS']):'';
-						$sql='SELECT *
-							FROM keu_transaksi
-							WHERE(
-									nomer LIKE "%'.$no.'%"
-									OR nobukti LIKE "%'.$no.'%"
-								)
-								AND uraian LIKE "%'.$uraian.'%"
-								AND tanggal BETWEEN "'.tgl_indo6($_POST['tgl1TB']).'"
-								AND "'.tgl_indo6($_POST['tgl2TB']).'"
-								and ( 
-									rekkas IN (
-										SELECT
-											d.replid
-										FROM
-											keu_detilrekening d
-										WHERE
-											d.nama LIKE "%uang sekola%" OR
-											d.nama LIKE "%gac%" OR
-											d.nama LIKE "%joining%" OR
-											d.nama LIKE "%pendapatan bunga bank%" OR
-											d.nama LIKE "%titipan hamba%" 
-									) OR rekitem IN(
-										SELECT
-											d.replid
-										FROM
-											keu_detilrekening d
-										WHERE
-											d.nama LIKE "%uang sekola%" OR
-											d.nama LIKE "%gac%" OR
-											d.nama LIKE "%joining%" OR
-											d.nama LIKE "%pendapatan bunga bank%" OR
-											d.nama LIKE "%titipan hamba%" 
-									
-									)
-								)
-							ORDER BY
-								replid DESC';
-						// print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ //nilai awal halaman
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-
-						$recpage = 5;//jumlah data per halaman
-						$aksi    ='tampil';
-						$subaksi ='lo';
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';
-						if($jum!=0){	
-							$nox = $starting+1;
-							while($res = mysql_fetch_assoc($result)){	
-								$s2 = ' SELECT replid,rek,nominal,jenis
-										FROM keu_jurnal 
-										WHERE 
-											transaksi ='.$res['replid'].'
-										ORDER BY 
-											jenis ASC';
-								$e2  = mysql_query($s2);
-						// var_dump($s2);exit(); 	
-								$tb2 ='';
-								if(mysql_num_rows($e2)!=0){
-	   								$tb2.='<table class="bordered striped lightBlue" width="100%">
-												<tr class="info fg-white text-center">
-			   										<td width="60%">Rekening</td>
-													<td width="20%">Debit</td>
-													<td width="20%">Kredit</td>
-												</tr>';
-		   							while($r2=mysql_fetch_assoc($e2)){
-										$debit  =$r2['rek']==$res['rekkas']?$res['nominal']:0;
-										$kredit =$r2['rek']==$res['rekitem']?$res['nominal']:0;
-		   								$tb2.='<tr>
-			   										<td>'.getRekening($r2['rek']).'</td>
-			   										<td class="text-right">Rp. '.number_format($debit).',-</td>
-			   										<td class="text-right">Rp. '.number_format($kredit).',-</td>
-			   									</tr>';
-		   							}$tb2.='</table>';
-								}$out.= '<tr>
-											<td>'.tgl_indo($res['tanggal']).'</td>
-											<td style="font-weight:bold;">'.$res['nomer'].'<br>'.getDetJenisTrans2($res['replid']).'<br>'.$res['nobukti'].'</td>
-											<td>'.$res['uraian'].'</td>
-											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
-										</tr>';
-							}
-						}else{ #kosong
-							$out.= '<tr align="center">
-									<td  colspan=9 ><span style="color:red;text-align:center;">
-									... data tidak ditemukan...</span></td></tr>';
-						}
-						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-					break;
-					// jurnal umum 
-
+					// laporan penerimaan & pengeluaran (custom)
 					case 'li':
 						$out ='';
 						$no     = isset($_POST['li_noS'])?filter($_POST['li_noS']):'';
@@ -393,22 +315,18 @@
 						$rekArr = '';
 
 						// var_dump($_POST['libTB']);exit();
-						if(isset($_POST['liTB']) && count($_POST['liTB']>0)){
+						if(isset($_POST['jenisLaporanCB']) && count($_POST['jenisLaporanCB']>0)){
 							$rekArr.='AND rekkas IN (
 										SELECT d.replid FROM keu_detilrekening d WHERE ';
-							$c = count($_POST['liTB'])-1;
-							foreach ($_POST['liTB'] as $i => $v) {
-								if($i==$c)
-									$rekArr.='d.nama LIKE "%'.$v.'%" ';
-								else
-									$rekArr.='d.nama LIKE "%'.$v.'%" OR ';
+							$c = count($_POST['jenisLaporanCB'])-1;
+							foreach ($_POST['jenisLaporanCB'] as $i => $v) {
+								if($i==$c) $rekArr.='d.nama LIKE "%'.$v.'%" ';
+								else $rekArr.='d.nama LIKE "%'.$v.'%" OR ';
 							}$rekArr.=') OR rekitem IN ( 
 								SELECT d.replid FROM keu_detilrekening d WHERE ';
-							foreach ($_POST['liTB'] as $i => $v) {
-								if($i==$c)
-									$rekArr.='d.nama LIKE "%'.$v.'%" ';
-								else
-									$rekArr.='d.nama LIKE "%'.$v.'%" OR ';
+							foreach ($_POST['jenisLaporanCB'] as $i => $v) {
+								if($i==$c) $rekArr.='d.nama LIKE "%'.$v.'%" ';
+								else $rekArr.='d.nama LIKE "%'.$v.'%" OR ';
 							}$rekArr.=')';
 						
 							$sql='SELECT *
