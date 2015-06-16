@@ -89,7 +89,7 @@ $('#Tbayar').html("Total : Rp."+total_bayar);
 })	
 	
 //PO
-function autocomplet3() {
+function autocompletpo() {
 	var min_length = 0; // min caracters to display the autocomplete
 	var keyword = $('#po_id').val();
 	if (keyword.length >= min_length) {
