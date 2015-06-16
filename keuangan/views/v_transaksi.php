@@ -74,7 +74,7 @@
                 <li><a href="#nlTAB">Neraca Lajur</a></li>
                 <li><a href="#pkbTAB">Posisi Kas dan Bank</a></li>
                 <li><a href="#btTAB">Buku Tambahan</a></li>
-                <li><a href="#liTAB">Laporan Penerimaan</a></li>
+                <li><a href="#liTAB">Penerimaan & Pengeluaran</a></li>
                 <li><a href="#loTAB">Laporan Pengeluaran</a></li>
                 <li><a href="#lsTAB">Laporan Sarpras </a></li>
             </ul>
@@ -228,25 +228,23 @@
                 </div>
 
                 <!-- Laporam Penerimaan-->
-                <div class="frame" id="liTAB">    
-                    <!-- <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top"> -->
-                        <!-- <i class="icon-search" ></i> -->
-                    <!-- </button> -->
-                    <!-- <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
-                        <i class="icon-printer" ></i>
-                    </button> -->
-                    <!-- <label><b>Kategori:</b></label>
-                    <div class="input-control select span3">
-                        <select  data-hint="kategori" class="li_cari" name="li_kategoriS" id="li_kategoriS">
-                            <option value="">-SEMUA-</option>
-                            <option value="0">Operasional</option>
-                            <option value="1">Non Operasional</option>
-                        </select>
-                    </div>
-                    <div class="input-control text size5">
-                        <input  placeholder="pilih rekening" type="text" id="li_rekeningS">
-                        <button class="btn-clear"></button>
-                    </div> -->
+                <div class="frame" id="liTAB">
+                    <!-- combo  -->
+                    <div class="input-control select size3">
+                        <select class="li_cari" name="li_departemenS" id="li_departemenS" data-hint="Departemen"></select>
+                    </div>    
+                    <div class="input-control select size3">
+                        <select class="li_cari"  name="li_tahunajaranS" id="li_tahunajaranS" data-hint="Tahun Ajaran"></select>
+                    </div>    
+                    <div class="input-control select size3">
+                        <select class="li_cari"  name="li_tingkatS" id="li_tingkatS" data-hint="Tingkat"></select>
+                    </div>    
+                    <div class="input-control select">
+                        <select class="span2 li_cari" name="li_tahunS" id="li_tahunS" data-hint="Tahun"></select>
+                        <select class="span2 li_cari" name="li_bulanS" id="li_bulanS" data-hint="Bulan"></select>
+                    </div>    
+
+                    <!-- centang -->
                     <form id="filterFR2">
                         <ul  class="treeview" data-role="treeview">
                             <li class="node">

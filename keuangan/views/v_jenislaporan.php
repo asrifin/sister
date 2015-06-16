@@ -27,8 +27,8 @@
             <th class="text-center"><div class="input-control select">
                 <select  class="cari" name="kategoriS" id="kategoriS">
                     <option value="">-SEMUA-</option>
-                    <option value="o">Operasional</option>
-                    <option value="n">Non Operasional</option>
+                    <option  class="bg-gray fg-white"  value="o">Operasional</option>
+                    <option  class="bg-steel fg-white"  value="n">Non Operasional</option>
                 </select>
             </div></th>
             <th class="text-center"><div class="input-control select">

@@ -126,7 +126,9 @@
 						WHERE
 							(r.nama LIKE "%'.$rekening.'%" OR r.kode LIKE "%'.$rekening.'%" ) AND
 							j.jenis LIKE "%'.$jenis.'%" AND 
-							j.kategori LIKE "%'.$kategori.'%"';
+							j.kategori LIKE "%'.$kategori.'%"
+						ORDER BY	
+							j.jenis ASC';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -157,8 +159,8 @@
 							 </td>';
 						$out.= '<tr>
 									<td>'.$res['rekening'].'</td>
-									<td>'.$res['kategori'].'</td>
-									<td>'.$res['jenis'].'</td>
+									<td class="text-center fg-white '.($res['kategori']=='operasional'?'bg-steel':'bg-gray').'">'.$res['kategori'].'</td>
+									<td class="text-center fg-white '.($res['jenis']=='Pengeluaran'?'bg-red':'bg-green').'">'.$res['jenis'].'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
