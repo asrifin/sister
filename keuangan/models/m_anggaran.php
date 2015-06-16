@@ -104,7 +104,6 @@
 									k.keterangan,
 									r.nama namarek,
 									r.kode koderek,
-									SUM(n.nominal)nominal,
 									round((IF (count(*) = 1, 0, count(*) / 12)),0) jmlItem
 								FROM
 									keu_kategorianggaran k
@@ -387,13 +386,16 @@
 								foreach ($_POST['d_idnominalH'] as $i => $v) {
 									$su=' keu_nominalanggaran SET 	jml 	='.$_POST['d_jml'.$v.'TB'].',
 																	bulan   ='.$v;
-									$s2    =(isset($_POST['replid']) AND $_POST['replid']!='') ?'UPDATE '.$su.' WHERE replid='.$v:'INSERT INTO '.$su.', detilanggaran 	='.$id;
+									if(isset($_POST['replid']) AND $_POST['replid']!=''){
+										$s2='UPDATE '.$su.' WHERE detilanggaran='.$_POST['replid'].' AND bulan ='.$v;
+									}else{
+										$s2='INSERT INTO '.$su.', detilanggaran ='.$id;
+									}
 									$e2    =mysql_query($s2);
 									$stat2 =!$e2?false:true;
 								}$stat  = !$stat2?'gagal_nominal':'sukses';
 							}
-						}
-						$out 	= json_encode(array('status'=>$stat));
+						}$out = json_encode(array('status'=>$stat));
 					break;
 
 					case 'katalog':
