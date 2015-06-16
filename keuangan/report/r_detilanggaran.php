@@ -29,11 +29,11 @@
                 $nama             = isset($_GET[$pre.'namaS'])?filter($_GET[$pre.'namaS']):'';
                 $keterangan       = isset($_GET[$pre.'keteranganS'])?filter($_GET[$pre.'keteranganS']):'';
 
+                // sum(n.nominal)totNominal
                 $s = 'SELECT 
                         d.replid,
                         d.nama,
-                        d.keterangan,
-                        sum(n.nominal)totNominal
+                        d.keterangan
                       FROM keu_detilanggaran d
                         LEFT JOIN keu_nominalanggaran n on n.detilanggaran = d.replid
                       WHERE 
@@ -42,7 +42,7 @@
                         d.keterangan LIKE"%'.$keterangan.'%"
                       GROUP BY  
                         d.replid';
-                        // print_r($kategorianggaran);exit();
+                        // print_r($s);exit();
                 $e = mysql_query($s) or die(mysql_error());
                 $n = mysql_num_rows($e);
 
@@ -114,17 +114,19 @@
                       </tr>';
                     }else{
                       while ($r=mysql_fetch_assoc($e)) {
-                        $kuota        =getKuotaAnggaran($r['replid']); 
-                        $terpakaiPerc =intval($kuota['terpakaiPerc']);
-                        // var_dump(intval($terpakaiPerc));exit();
+                        // $kuota        =getKuotaAnggaran($r['replid']); 
+                        $kuotaNum     ='Rp. '.number_format(getDetAnggaran($r['replid'],'kuotaNum')); 
+                        $terpakaiNum  ='Rp. '.number_format(getDetAnggaran($r['replid'],'terpakaiNum')); 
+                        $terpakaiPerc = getDetAnggaran($r['replid'],'terpakaiPerc'); 
+                        
                         if($terpakaiPerc>75) {$clr='red';}
                         elseif($terpakaiPerc>50) {$clr='orange';}
                         elseif($terpakaiPerc>25) {$clr='yellow';}
                         elseif($terpakaiPerc>0 OR $terpakaiPerc<25) {$clr='green';}
                         $out.='<tr>
                                   <td>'.$r['nama'].'</td>
-                                  <td align="right">Rp. '.number_format($kuota['kuotaNum']).'</td>
-                                  <td align="right"> Rp. '.number_format($kuota['terpakaiNum']).' ('.$kuota['terpakaiPerc'].' %)</td>
+                                  <td align="right">'.$kuotaNum.'</td>
+                                  <td align="right">'.$terpakaiNum.' ('.$terpakaiPerc.' %)</td>
                                   <td>'.$r['keterangan'].'</td>
                             </tr>';
                         $nox++;
