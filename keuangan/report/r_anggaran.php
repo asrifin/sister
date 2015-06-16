@@ -29,6 +29,7 @@
                 $rekening    = isset($_GET['a_rekeningS'])?filter($_GET['a_rekeningS']):'';
                 $keterangan  = isset($_GET['a_keteranganS'])?filter($_GET['a_keteranganS']):'';
 
+                // SUM(n.nominal)nominal,
                 $s ='SELECT
                       ta.departemen,
                       t.tahunajaran,
@@ -37,7 +38,6 @@
                       k.nama,
                       k.keterangan,
                       r.kode,
-                      SUM(n.nominal)nominal,
                       round((IF (count(*) = 1, 0, count(*) / 12)),0) jmlItem
                     FROM
                       keu_kategorianggaran k
@@ -126,17 +126,17 @@
                           d.replid,
                           d.nama,
                           d.keterangan,
-                          k.nama kategorianggaran,
-                          sum(n.nominal)totNominal
+                          d.hargasatuan,
+                          k.nama kategorianggaran
                         FROM keu_detilanggaran d
                           LEFT JOIN keu_kategorianggaran k on k.replid = d.kategorianggaran
-                          LEFT JOIN keu_nominalanggaran n on n.detilanggaran = d.replid
                         WHERE 
                           d.kategorianggaran = '.$r['replid'].'
                         GROUP BY  
                           d.replid
                         ORDER BY  
                           d.nama ASC';
+                          // print_r($s2);exit();
                     $e2=mysql_query($s2);
                     // if($nox==($r['jmlItem'])){
                     // if($nox==2){
@@ -145,10 +145,10 @@
                       while ($r2=mysql_fetch_assoc($e2)) {
                         $out.='<tr style="background-color:white;">
                                 <td>'.$r2['nama'].'</td>';
-                        $s3 = 'SELECT * from keu_nominalanggaran WHERE detilanggaran ='.$r2['replid'].' ORDER BY bulan ASC';
+                        $s3 = 'SELECT * from keu_nominalanggaran WHERE detilanggaran ='.$r2['replid'];
                         $e3 = mysql_query($s3);
                           while ($r3=mysql_fetch_assoc($e3)) {
-                            $out.='<td align="right">Rp. '.number_format($r3['nominal']).'</td>';
+                            $out.='<td align="right">Rp. '.number_format($r2['hargasatuan']*$r3['jml']).'</td>';
                         }
                         $out.='</tr>';
                       }

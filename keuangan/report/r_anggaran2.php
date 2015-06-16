@@ -29,6 +29,7 @@
                 $rekening    = isset($_GET['a_rekeningS'])?filter($_GET['a_rekeningS']):'';
                 $keterangan  = isset($_GET['a_keteranganS'])?filter($_GET['a_keteranganS']):'';
 
+                      // SUM(n.nominal)nominal,
                 $s ='SELECT
                       ta.departemen,
                       t.tahunajaran,
@@ -37,7 +38,6 @@
                       k.nama,
                       k.keterangan,
                       concat(r.kode," - ",r.nama)rekening,
-                      SUM(n.nominal)nominal,
                       round((IF (count(*) = 1, 0, count(*) / 12)),0) jmlItem
                     FROM
                       keu_kategorianggaran k

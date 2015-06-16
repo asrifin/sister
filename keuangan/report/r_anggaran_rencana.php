@@ -29,6 +29,7 @@
                 $rekening    = isset($_GET['a_rekeningS'])?filter($_GET['a_rekeningS']):'';
                 $keterangan  = isset($_GET['a_keteranganS'])?filter($_GET['a_keteranganS']):'';
 
+                // SUM(n.nominal)nominal,
                 $s ='SELECT
                       ta.departemen,
                       t.tahunajaran,
@@ -37,7 +38,6 @@
                       k.nama,
                       k.keterangan,
                       concat(r.kode," - ",r.nama)rekening,
-                      SUM(n.nominal)nominal,
                       round((IF (count(*) = 1, 0, count(*) / 12)),0) jmlItem
                     FROM
                       keu_kategorianggaran k
@@ -146,11 +146,11 @@
                                 <th width="40%">Tujuan</th>
                                 <th width="40%">Nominal</th>
                               </tr>';
+                                    // sum(n.nominal)totNominal
                             $s2 = 'SELECT 
                                     d.replid,
                                     d.nama,
                                     d.keterangan,
-                                    sum(n.nominal)totNominal
                                   FROM keu_detilanggaran d
                                     LEFT JOIN keu_nominalanggaran n on n.detilanggaran = d.replid
                                   WHERE 
