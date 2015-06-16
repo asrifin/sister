@@ -158,13 +158,13 @@ $subtotal=$data['subtotal'];
 $hasil2 =  $koneksi_db->sql_query( "SELECT * FROM sar_katalog WHERE replid='$kode'" );
 $data2 = $koneksi_db->sql_fetchrow($hasil2);
 $id=$data2['id'];
-$ceksisajum=$jumlah-ceksisajum($nopo,$kode);
+$ceksisajumbeli=$jumlah-ceksisajumbeli($nopo,$kode);
 $PRODUCTID = array ();
 foreach ($_SESSION['product_id'] as $k=>$v){
 $PRODUCTID[] = $_SESSION['product_id'][$k]['kode'];
 }
 if (!in_array ($kode, $PRODUCTID)){
-$_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode,'jenis' => $jenis, 'jumlah' => $ceksisajum, 'harga' => $harga, 'subdiscount' => $subdiscount, 'subtotal' => $subtotal);
+$_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode,'jenis' => $jenis, 'jumlah' => $ceksisajumbeli, 'harga' => $harga, 'subdiscount' => $subdiscount, 'subtotal' => $subtotal);
 }else{
 foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
@@ -196,8 +196,13 @@ unset($_SESSION['product_id'][$k]);
 if(isset($_POST['editjumlah'])){
 $kode 		= $_POST['kode'];
 $harga = $_POST['harga'];
+$jumlahbeliasli = $_POST['jumlahbeliasli'];
 $jumlahbeli = $_POST['jumlahbeli'];
 $subdiscount = $_POST['subdiscount'];
+if (($jumlahbeliasli<$jumlahbeli)or($jumlahbeli<'0')) $error .= "Error: Jumlah tidak sesuai , silahkan ulangi.<br />";
+if ($error){
+$admin .= '<div class="error">'.$error.'</div>';
+}else{
 foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
 	{
@@ -209,7 +214,7 @@ $_SESSION['product_id'][$k]['subtotal'] = $jumlahbeli*($harga-$nilaidiscount);
 		}
 }
 }
-
+}
 if(isset($_POST['tambahbarang'])){
 $_SESSION['kodesupplier'] = $_POST['kodesupplier'];	
 $kodebarang 		= $_POST['kodebarang'];
@@ -419,7 +424,7 @@ $admin .= '
 	<td>'.$nilaidiscount.'</td>
 		<td>'.$cart_itm["subtotal"].'</td>
 		<td>
-		
+		<input type="hidden" name="jumlahbeliasli" value="'.$cart_itm["jumlah"].'">
 		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'">
 		<input type="submit" value="EDIT" name="editjumlah"class="btn btn-warning" >
 		<input type="submit" value="HAPUS" name="hapusbarang"class="btn btn-danger"></td>
