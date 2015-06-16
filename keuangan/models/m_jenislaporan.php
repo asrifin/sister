@@ -180,6 +180,7 @@
 									kategori = "'.$_POST['kategoriTB'].'", 
 									jenis    = "'.filter($_POST['jenisTB']).'"'; 
 				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+							// var_dump($s2);exit();
 				$e    = mysql_query($s2);
 				$stat = !$e?'gagal':'sukses';
 				$out  = json_encode(array('status'=>$stat));
@@ -199,6 +200,7 @@
 				$e   = mysql_query($s);
 				$stat= $e?'sukses':'gagal';
 				$r   = mysql_fetch_assoc($e);
+				// print_r($r);exit();
 				$out = json_encode(array(
 							'status'     =>$stat,
 							'idrekening' =>$r['idrekening'],
@@ -253,7 +255,7 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['rekening']));
 			break;
 			// delete -----------------------------------------------------------------
 		}

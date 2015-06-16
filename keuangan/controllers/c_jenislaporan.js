@@ -19,7 +19,7 @@ var contentFR ='';
                         +'<label>Kategori</label>'
                         +'<div>'
                             +'<div class="input-control select" >'
-                                +'<select required name="KategoriTB" id="KategoriTB">'
+                                +'<select required name="kategoriTB" id="kategoriTB">'
                                     +'<option value="">-Pilih Kategori-</option>'
                                     +'<option value="o">Operasional</option>'
                                     +'<option value="n">Non Operasional</option>'
@@ -30,7 +30,7 @@ var contentFR ='';
                         +'<label>Jenis Transaksi</label>'
                         +'<div>'
                             +'<div class="input-control select" >'
-                                +'<select required name="sifatTB" id="sifatTB">'
+                                +'<select required name="jenisTB" id="jenisTB">'
                                     +'<option value="">-Pilih Jenis Transaksi-</option>'
                                     +'<option class="fg-white bg-green" value="in">Penerimaan</option>'
                                     +'<option  class="fg-white bg-red"  value="out">Pengeluaran</option>'
@@ -68,9 +68,8 @@ var contentFR ='';
         });
        
     }); 
-// end of main function ---
 
-  // autosuggest
+// autosuggest
     function autoSuggest(el){
         var urlx= '?aksi=autocomp';
         var col = [{
@@ -117,7 +116,6 @@ var contentFR ='';
         });
     }
 
-
 //save process ---
     function simpan(){
         var urlx ='&aksi=simpan';
@@ -145,8 +143,8 @@ var contentFR ='';
             }
         });
     }
-//end of save process ---
-    // view table ---
+
+// view table ---
     function viewTB(subaksi){
         var aksi ='aksi=tampil';
         var cari ='';
@@ -243,7 +241,6 @@ var contentFR ='';
             }
         });
     }
-//end of paging ---
 
 //del process ---
     function del(id){
@@ -266,7 +263,6 @@ var contentFR ='';
             }
         });
     }
-//end of del process ---
     
 // notifikasi
 function notif(cont,clr) {
@@ -280,7 +276,6 @@ function notif(cont,clr) {
         },
     });
 }
-// end of notifikasi
 
 //reset form ---
     function kosongkan(){
@@ -288,8 +283,3 @@ function notif(cont,clr) {
         $('#namaTB').val('');
         $('#keteranganTB').val('');
     }
-//end of reset form ---
-
-    // ---------------------- //
-    // -- created by rovi  -- //
-    // ---------------------- // 
