@@ -51,7 +51,7 @@ $admin .= '<div align="center">
 <tr align="left">
 
 <td>
-<a href="formulir/formulirpenawaran.pdf"><br>FORMULIR FISIK PENAWARAN
+<a href="formulir/formulirpenawaran.pdf"target="new"><br>FORMULIR FISIK PENAWARAN
 </a></td>
 <td></td>
 <td></td>
