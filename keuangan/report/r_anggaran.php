@@ -118,7 +118,11 @@
                   while ($r=mysql_fetch_array($e)) {
                     $out.='<tr style="background-color:white;"><td rowspan="'.($r['jmlItem']+1).'">'.$r['kode'].'</td>';
                     if($curKat!=$r['replid']){
-                      $out.='<td style="background-color:rgb(205,205,205);">'.$r['nama'].'</td>';
+                      $out.='<td style="background-color:rgb(205,205,205);">'.$r['nama'];
+                        $out.=($departemen==''?'<br />- '.getDepartemen('nama',$r['departemen']):'');
+                        $out.=($tahunajaran==''?'<br />- '.getTahunAjaran('tahunajaran',$r['tahunajaran']):'');
+                        $out.=($tingkat==''?'<br />- '.getTingkat('tingkat',$r['tingkat']):'');
+                      $out.='</td>';
                       $out.='<td colspan="13"></td>';
                     }
 
