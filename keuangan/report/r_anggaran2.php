@@ -151,17 +151,19 @@
                                 <th width="25%">Kuota</th>
                                 <th width="25%">Terpakai</th>
                               </tr>';
+
+                            // sum(n.nominal)totNominal
                             $s2 = 'SELECT 
                                     d.replid,
                                     d.nama,
-                                    d.keterangan,
-                                    sum(n.nominal)totNominal
+                                    d.keterangan
                                   FROM keu_detilanggaran d
                                     LEFT JOIN keu_nominalanggaran n on n.detilanggaran = d.replid
                                   WHERE 
                                     d.kategorianggaran = '.$r['replid'].'
                                   GROUP BY  
                                     d.replid';
+                              // print_r($s2);exit();
                             $e2 = mysql_query($s2);
                             $n2 = mysql_num_rows($e2);
                             if($n2<=0){
@@ -171,8 +173,8 @@
                                 $out.='<tr>
                                     <td width="25%">'.$r2['nama'].'</td>
                                     <td width="25%">'.$r2['keterangan'].'</td>
-                                    <td align="right" width="25%">Rp. '.number_format($r2['totNominal']).'</td>
-                                    <td align="right"  width="25%">Rp. '.number_format(getDetAnggaran($r2['replid'],'terpakaiNum')).'</td>
+                                    <td align="right" width="25%">Rp. '.number_format(getDetAnggaran($r2['replid'],'kuotaNum')).'</td>
+                                    <td align="right" width="25%">Rp. '.number_format(getDetAnggaran($r2['replid'],'terpakaiNum')).'</td>
                                   </tr>';
                               }
                             }
