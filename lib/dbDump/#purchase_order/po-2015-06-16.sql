@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 16 Jun 2015 pada 10.35
+-- Generation Time: 16 Jun 2015 pada 10.57
 -- Versi Server: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `po_alur_stok` (
   `kodebarang` varchar(50) NOT NULL,
   `jumlah` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data untuk tabel `po_alur_stok`
@@ -61,7 +61,15 @@ INSERT INTO `po_alur_stok` (`id`, `tgl`, `transaksi`, `kode`, `kodebarang`, `jum
 (20, '2015-06-12', 'Retur Pembelian', 'RTB1206150003', '123', '1'),
 (21, '2015-06-12', 'Retur Pembelian', 'RTB1206150003', '14', '2'),
 (22, '2015-06-12', 'Retur Pembelian', 'RTB1206150004', '123', '0'),
-(23, '2015-06-12', 'Retur Pembelian', 'RTB1206150004', '14', '0');
+(23, '2015-06-12', 'Retur Pembelian', 'RTB1206150004', '14', '0'),
+(24, '2015-06-16', 'Pembelian', 'INV1606150008', 'LO', '1'),
+(25, '2015-06-16', 'Pembelian', 'INV1606150009', 'LO', '1'),
+(26, '2015-06-16', 'Pembelian', 'INV1606150009', '123', '1'),
+(27, '2015-06-16', 'Pembelian', 'INV1606150009', '123', '1'),
+(28, '2015-06-16', 'Pembelian', 'INV1606150009', '123', '1'),
+(29, '2015-06-16', 'Pembelian', 'INV1606150009', '123', '1'),
+(30, '2015-06-16', 'Pembelian', 'INV1606150009', '123', '1'),
+(31, '2015-06-16', 'Pembelian', 'INV1606150010', '123', '1');
 
 -- --------------------------------------------------------
 
@@ -128,6 +136,7 @@ CREATE TABLE IF NOT EXISTS `po_pembelian` (
   `nopo` varchar(50) NOT NULL,
   `tgl` varchar(10) NOT NULL,
   `kodesupplier` varchar(50) NOT NULL,
+  `notasupplier` varchar(100) NOT NULL,
   `carabayar` enum('Tunai','Debet Card','Hutang') NOT NULL DEFAULT 'Tunai',
   `total` varchar(50) NOT NULL,
   `discount` varchar(50) NOT NULL,
@@ -138,20 +147,23 @@ CREATE TABLE IF NOT EXISTS `po_pembelian` (
   `tgltermin` varchar(50) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data untuk tabel `po_pembelian`
 --
 
-INSERT INTO `po_pembelian` (`id`, `noinvoice`, `nopo`, `tgl`, `kodesupplier`, `carabayar`, `total`, `discount`, `netto`, `bayar`, `hutang`, `termin`, `tgltermin`, `user`) VALUES
-(1, 'INV1805150001', 'PO1805150001', '2015-05-18', 'SUP01', 'Tunai', '750000', '0', '750000', '750000', '0', '0', '', 'superadmin'),
-(2, 'INV1805150002', 'PO1805150004', '2015-05-18', 'SUP01', 'Tunai', '50000', '0', '50000', '50000', '0', '0', '', 'superadmin'),
-(3, 'INV2505150003', 'PO2505150006', '2015-05-25', 'SUP01', 'Tunai', '300000', '0', '300000', '300000', '0', '0', '', 'admin'),
-(4, 'INV0106150004', 'PO0106150008', '2015-06-01', 'SUP01', 'Tunai', '490000', '0', '490000', '490000', '0', '0', '', 'admin'),
-(5, 'INV0506150005', 'PO0106150007', '2015-06-05', 'SUP01', 'Tunai', '420000', '0', '420000', '420000', '0', '30', '2015-07-5', 'admin'),
-(6, 'INV1206150006', 'PO1206150012', '2015-06-12', 'SUP01', 'Tunai', '55000', '0', '55000', '55000', '0', '0', '', 'admin'),
-(7, 'INV1206150007', 'PO1206150011', '2015-06-12', 'SUP01', 'Tunai', '20500000', '0', '20500000', '20500000', '0', '0', '', 'admin');
+INSERT INTO `po_pembelian` (`id`, `noinvoice`, `nopo`, `tgl`, `kodesupplier`, `notasupplier`, `carabayar`, `total`, `discount`, `netto`, `bayar`, `hutang`, `termin`, `tgltermin`, `user`) VALUES
+(1, 'INV1805150001', 'PO1805150001', '2015-05-18', 'SUP01', '', 'Tunai', '750000', '0', '750000', '750000', '0', '0', '', 'superadmin'),
+(2, 'INV1805150002', 'PO1805150004', '2015-05-18', 'SUP01', '', 'Tunai', '50000', '0', '50000', '50000', '0', '0', '', 'superadmin'),
+(3, 'INV2505150003', 'PO2505150006', '2015-05-25', 'SUP01', '', 'Tunai', '300000', '0', '300000', '300000', '0', '0', '', 'admin'),
+(4, 'INV0106150004', 'PO0106150008', '2015-06-01', 'SUP01', '', 'Tunai', '490000', '0', '490000', '490000', '0', '0', '', 'admin'),
+(5, 'INV0506150005', 'PO0106150007', '2015-06-05', 'SUP01', '', 'Tunai', '420000', '0', '420000', '420000', '0', '30', '2015-07-5', 'admin'),
+(6, 'INV1206150006', 'PO1206150012', '2015-06-12', 'SUP01', '', 'Tunai', '55000', '0', '55000', '55000', '0', '0', '', 'admin'),
+(7, 'INV1206150007', 'PO1206150011', '2015-06-12', 'SUP01', '', 'Tunai', '20500000', '0', '20500000', '20500000', '0', '0', '', 'admin'),
+(8, 'INV1606150008', 'PO1106150010', '2015-06-16', 'SUP01', '', 'Tunai', '600000', '0', '600000', '600000', '0', '0', '', 'admin'),
+(9, 'INV1606150009', 'PO1206150012', '2015-06-16', 'SUP01', 'xxx', 'Tunai', '500000', '0', '500000', '500000', '0', '0', '', 'admin'),
+(10, 'INV1606150010', 'PO1206150012', '2015-06-16', 'SUP01', 'ghjgjgjgjg', 'Tunai', '500000', '0', '500000', '500000', '0', '0', '', 'admin');
 
 -- --------------------------------------------------------
 
@@ -170,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `po_pembeliandetail` (
   `subdiscount` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data untuk tabel `po_pembeliandetail`
@@ -186,7 +198,15 @@ INSERT INTO `po_pembeliandetail` (`id`, `noinvoice`, `kodebarang`, `jenis`, `jum
 (7, 'INV0506150005', 'B01', 0, '1', '60000', '0', '60000'),
 (8, 'INV1206150006', '123', 0, '1', '55000', '0', '55000'),
 (9, 'INV1206150007', '123', 0, '1', '500000', '0', '500000'),
-(10, 'INV1206150007', '14', 0, '2', '10000000', '0', '20000000');
+(10, 'INV1206150007', '14', 0, '2', '10000000', '0', '20000000'),
+(11, 'INV1606150008', 'LO', 0, '1', '600000', '0', '600000'),
+(12, 'INV1606150009', 'LO', 0, '1', '600000', '0', '600000'),
+(13, 'INV1606150009', '123', 0, '1', '500000', '0', '500000'),
+(14, 'INV1606150009', '123', 0, '1', '500000', '0', '500000'),
+(15, 'INV1606150009', '123', 0, '1', '500000', '0', '500000'),
+(16, 'INV1606150009', '123', 0, '1', '500000', '0', '500000'),
+(17, 'INV1606150009', '123', 0, '1', '500000', '0', '500000'),
+(18, 'INV1606150010', '123', 0, '1', '500000', '0', '500000');
 
 -- --------------------------------------------------------
 

@@ -76,6 +76,7 @@ $noinvoice 		= $_POST['noinvoice'];
 $nopo 		= $_POST['kodepo'];
 $tgl 		= $_POST['tgl'];
 $kodesupplier 		= $_SESSION["kodesupplier"];
+$notasupplier 		= $_POST["notasupplier"];
 $carabayar 		= $_POST['carabayar'];
 $total 		= $_POST['total'];
 $discount ='0';
@@ -96,10 +97,10 @@ $admin .= '<div class="error">'.$error.'</div>';
 if($bayar=='0'){
 $carabayar ='Hutang';
 $tgltermin = tgltermin($tgl,$termin);
-$hasil  = mysql_query( "INSERT INTO `po_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$carabayar','$total','$discount','$netto','0','$netto','$termin','$tgltermin','$user')" );	
+$hasil  = mysql_query( "INSERT INTO `po_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$notasupplier','$carabayar','$total','$discount','$netto','0','$netto','$termin','$tgltermin','$user')" );	
 }
 else{
-$hasil  = mysql_query( "INSERT INTO `po_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$carabayar','$total','$discount','$netto','$bayar','0','0','','$user')" );
+$hasil  = mysql_query( "INSERT INTO `po_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$notasupplier','$carabayar','$total','$discount','$netto','$bayar','0','0','','$user')" );
 }
 $idpembelian = mysql_insert_id();
 foreach ($_SESSION["product_id"] as $cart_itm)
@@ -118,6 +119,7 @@ if($hasil){
 $admin .= '<div class="sukses"><b>Berhasil Menambah Pembelian.</b></div>';
 pembeliancetak($noinvoice);
 pembelianrefresh();
+$notasupplier ='';
 }else{
 $admin .= '<div class="error"><b>Gagal Menambah Pembelian.</b></div>';
 		}		
@@ -273,6 +275,7 @@ $kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesuppl
 $discount 		= !isset($discount) ? '0' : $discount;
 $carabayar 		= !isset($carabayar) ? $_POST['carabayar'] : $carabayar;
 $termin 		= !isset($termin) ? $_POST['termin'] : $termin;
+$notasupplier 		= !isset($notasupplier) ? $_POST['notasupplier'] : $notasupplier;
 $sel2 = '<select name="carabayar" class="form-control">';
 $arr2 = array ('Tunai','Hutang');
 foreach ($arr2 as $kk=>$vv){
@@ -344,7 +347,16 @@ $admin .= '
 		<td>:</td>
 		<td>'.$sel3.'Hari</td>
 		</tr>';
-
+$admin .= '
+	<tr>
+		<td>Nota Supplier</td>
+		<td>:</td>
+		<td><input type="text" name="notasupplier" value="'.$notasupplier.'"class="form-control" >
+				</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		</tr>';
 
 $admin .= '
 	<tr>
@@ -514,6 +526,7 @@ $noinvoice  			= $data['noinvoice'];
 $nopo  			= $data['nopo'];
 $tgl  			= $data['tgl'];
 $kodesupplier  			= $data['kodesupplier'];
+$notasupplier  			= $data['notasupplier'];
 $carabayar  			= $data['carabayar'];
 $total  			= $data['total'];
 $discount  			= $data['discount'];
@@ -560,6 +573,15 @@ $admin .= '
 		<td>'.getnamasupplier($kodesupplier).'</td>
 			<td></td>
 	</tr>';	
+if($notasupplier!=''){
+	$admin .= '
+	<tr>
+		<td>Nota Supplier</td>
+		<td>:</td>
+		<td>'.$notasupplier.'</td>
+			<td></td>
+	</tr>';	
+}
 $admin .= '
 	<tr>
 		<td>Cara Pembayaran</td>

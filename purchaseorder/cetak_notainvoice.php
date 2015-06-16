@@ -56,6 +56,7 @@ $noinvoice  			= $data['noinvoice'];
 $nopo  			= $data['nopo'];
 $tgl  			= $data['tgl'];
 $kodesupplier  			= $data['kodesupplier'];
+$notasupplier  			= $data['notasupplier'];
 $carabayar  			= $data['carabayar'];
 $total  			= $data['total'];
 $discount  			= $data['discount'];
@@ -96,6 +97,15 @@ echo '
 		<td>:</td>
 		<td>'.getnamasupplier($kodesupplier).'</td>
 	</tr>';	
+if($notasupplier!=''){
+echo '
+	<tr>
+		<td>Nota Supplier</td>
+		<td>:</td>
+		<td>'.$notasupplier.'</td>
+			<td></td>
+	</tr>';	
+}
 echo '
 	<tr>
 		<td>Cara Pembayaran</td>
