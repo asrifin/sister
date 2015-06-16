@@ -1,41 +1,46 @@
 <?php
 	function getKatAnggaran($id,$typ){
-		$s='SELECT 
-				k.*,
-				IFNULL(da.kuotaNum,0)kuotaNum,
-				IFNULL(t.totTerpakai,0)terpakaiNum,
-				IFNULL((da.kuotaNum-IFNULL(t.totTerpakai,0)),0)sisaNum
-			from 
-				keu_kategorianggaran k 
+		$s='SELECT
+				k.*, IFNULL(da.kuotaNum, 0) kuotaNum,
+				IFNULL(t.totTerpakai, 0) terpakaiNum,
+				IFNULL((da.kuotaNum - IFNULL(t.totTerpakai, 0)),0) sisaNum
+			FROM
+				keu_kategorianggaran k
 				LEFT JOIN (
 					SELECT
-						sum(t.nominal)totTerpakai,
+						sum(t.nominal) totTerpakai,
 						d.kategorianggaran
 					FROM
-						keu_transaksi t 
-						LEFT JOIN keu_detilanggaran d on d.replid = t.detilanggaran
-					GROUP BY 
+						keu_transaksi t
+					LEFT JOIN keu_detilanggaran d ON d.replid = t.detilanggaran
+					GROUP BY
 						t.detilanggaran
-				)t on t.kategorianggaran = k.replid
+				) t ON t.kategorianggaran = k.replid
 				LEFT JOIN (
-					SELECT 
+					SELECT
 						tb.kategorianggaran,
-						SUM(tb.totDetAnggaran)kuotaNum
-					FROM (
-						SELECT(
-								SELECT sum(nominal) FROM keu_nominalanggaran WHERE detilanggaran=d.replid
-							)totDetAnggaran,
-							d.kategorianggaran
-						FROM
-							keu_detilanggaran d
-						GROUP BY 
-							d.replid
-					)tb
-					GROUP BY 
+						SUM(tb.totDetAnggaran) kuotaNum
+					FROM(
+							SELECT (
+									SELECT
+										(sum(jml) * d.hargasatuan) 
+									FROM
+										keu_nominalanggaran
+									WHERE
+										detilanggaran = d.replid
+								)totDetAnggaran,
+								d.replid,
+								d.kategorianggaran
+							FROM
+								keu_detilanggaran d
+							GROUP BY
+								d.replid
+						) tb
+					GROUP BY
 						tb.kategorianggaran
-				)da on da.kategorianggaran = k.replid
-			WHERE 
-				k.replid = '.$id;
+				) da ON da.kategorianggaran = k.replid
+			WHERE
+				k.replid ='.$id;
 		// var_dump($s);exit();	
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
@@ -43,19 +48,24 @@
 	}
 	function getDetAnggaran($id,$typ){
 		$s='SELECT
-				SUM(n.nominal)kuotaNum,
-				ifnull(t1.terpakaiNum,0)terpakaiNum,
-				ifnull((SUM(n.nominal)-t1.terpakaiNum),SUM(n.nominal))sisaNum,
-				ifnull(round(((t1.terpakaiNum)/SUM(n.nominal)*100)),0)terpakaiPerc
+				(SUM(n.jml) * d.hargasatuan)kuotaNum,
+				ifnull(t1.terpakaiNum, 0) terpakaiNum,
+				ifnull(((SUM(n.jml) * d.hargasatuan) - t1.terpakaiNum),(SUM(n.jml) * d.hargasatuan)) sisaNum,
+				ifnull(round(((t1.terpakaiNum) / (SUM(n.jml) * d.hargasatuan) * 100)),0) terpakaiPerc
 			FROM
 				keu_detilanggaran d
 				LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
 				LEFT JOIN (
-					SELECT t.detilanggaran, SUM(t.nominal) terpakaiNum 
-					FROM keu_transaksi t
-					GROUP BY t.detilanggaran
-				)t1 on t1.detilanggaran = d.replid
-			WHERE d.replid='.$id;
+					SELECT
+						t.detilanggaran,
+						SUM(t.nominal) terpakaiNum
+					FROM
+						keu_transaksi t
+					GROUP BY
+						t.detilanggaran
+				) t1 ON t1.detilanggaran = d.replid
+			WHERE
+				d.replid = '.$id;
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r[$typ];

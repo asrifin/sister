@@ -185,20 +185,17 @@
 						$d_keterangan       = isset($_POST['d_keteranganS'])?filter(trim($_POST['d_keteranganS'])):'';
 
 						$sql = 'SELECT 
-									d.replid,
-									d.nama,
-									d.keterangan,
-									sum(n.nominal)totNominal
-								FROM '.$tb2.' d
-									LEFT JOIN keu_nominalanggaran n on n.detilanggaran = d.replid
+									replid,
+									nama,
+									keterangan
+								FROM '.$tb2.' 
 								WHERE 
-									d.kategorianggaran ='.$d_kategorianggaran.' and 
+									kategorianggaran ='.$d_kategorianggaran.' and 
 									'.$d_tingkat.'
-									d.nama LIKE"%'.$d_nama.'%" AND 
-									d.keterangan LIKE"%'.$d_keterangan.'%"
+									nama LIKE"%'.$d_nama.'%" AND 
+									keterangan LIKE"%'.$d_keterangan.'%"
 								GROUP BY	
-									d.replid';
-						// print_r($sql);exit(); 	
+									replid';
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
@@ -225,9 +222,9 @@
 												<i class="icon-remove on-left"></i>
 											</button>
 										 </td>';
-								$kuota        =getKuotaAnggaran($res['replid']); 
-								$terpakaiPerc =intval($kuota['terpakaiPerc']);
-								// var_dump(intval($terpakaiPerc));exit();
+								$kuota        = 'Rp. '.number_format(getDetAnggaran($res['replid'],'kuotaNum')); 
+								$terpakaiNum  ='Rp. '.number_format(getDetAnggaran($res['replid'],'terpakaiNum'));
+								$terpakaiPerc =intval(getDetAnggaran($res['replid'],'terpakaiPerc'));
 								if($terpakaiPerc>75) {$clr='red';}
 								elseif($terpakaiPerc>50) {$clr='orange';}
 								elseif($terpakaiPerc>25) {$clr='yellow';}
@@ -235,11 +232,11 @@
 								$prog='<span class="progress-bar" data-role="progress-bar" data-value="'.($terpakaiPerc==0?1:$terpakaiPerc).'" data-color="bg-'.$clr.'"></span>';
 								$out.= '<tr>
 											<td>'.$res['nama'].'</td>
-											<td align="right">Rp. '.number_format($res['totNominal']).'</td>
+											<td align="right">'.$kuota.'</td>
 											<td align="right">
 												'.$prog.'
-												<span class="place-left">'.$kuota['terpakaiPerc'].' %</span> 
-												<span class="place-right">Rp. '.number_format($kuota['terpakaiNum']).'</span>
+												<span class="place-left">'.$terpakaiPerc.' %</span> 
+												<span class="place-right">'.$terpakaiNum.'</span>
 											</td>
 											<td >'.$res['keterangan'].'</td>
 											'.$btn.'
@@ -256,110 +253,6 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-					// detil anggaran
-
-					// barang
-					case 'barang':
-						$b_katalog    = isset($_POST['b_katalogS'])?filter(trim($_POST['b_katalogS'])):'';
-						$b_kode       = isset($_POST['b_kodeS'])?filter(trim($_POST['b_kodeS'])):'';
-						$b_barkode    = isset($_POST['b_barkodeS'])?filter(trim($_POST['b_barkodeS'])):'';
-						$b_harga      = isset($_POST['b_hargaS'])?filter(trim($_POST['b_hargaS'])):'';
-						$b_kondisi    = isset($_POST['b_kondisiS'])?filter(trim($_POST['b_kondisiS'])):'';
-						$b_sumber     = isset($_POST['b_sumberS'])?filter(trim($_POST['b_sumberS'])):'';
-						$b_status     = isset($_POST['b_statusS'])?filter(trim($_POST['b_statusS'])):'';
-						$b_keterangan = isset($_POST['b_keteranganS'])?filter(trim($_POST['b_keteranganS'])):'';
-						
-						$sql = 'SELECT (
-										SELECT 
-											CONCAT(ll.kode,"/",gg.kode,"/",tt.kode,"/",kk.kode,"/",LPAD(b.urut,5,0))
-										from 
-											sar_katalog kk,
-											sar_grup gg,
-											sar_tempat tt,
-											sar_lokasi ll
-										where 
-											kk.replid = b.katalog AND
-											kk.grup   = gg.replid AND
-											b.tempat  = tt.replid AND
-											tt.lokasi = ll.replid
-									)as kode,
-									b.replid,
-									LPAD(b.urut,5,0) as barkode,(
-										case b.sumber
-											when 0 then "Beli"
-											when 1 then "Pemberian" 
-											when 2 then "Membuat Sendiri" 
-										end
-									)as sumber,
-									b.harga,
-									IF(b. STATUS=1,"Tersedia","Dipinjam")AS status,
-									k.nama as kondisi,
-									t.nama as tempat,
-									b.keterangan
-								FROM
-									sar_barang b 
-									LEFT JOIN sar_kondisi k on k.replid = b.kondisi
-									LEFT JOIN sar_tempat t on t.replid = b.tempat
-								WHERE
-									b.katalog = '.$b_katalog.' and
-									b.kode LIKE "%'.$b_kode.'%" and
-									b.barkode LIKE "%'.$b_barkode.'%" and
-									b.harga LIKE "%'.$b_harga.'%" and
-									b.sumber LIKE "%'.$b_sumber.'%" and
-									b.kondisi LIKE "%'.$b_kondisi.'%" and
-									b.status LIKE "%'.$b_status.'%" and
-									b.keterangan LIKE "%'.$b_keterangan.'%"';
-						// print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ //nilai awal halaman
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-
-						$recpage= 5;//jumlah data per halaman
-						$aksi    ='tampil';
-						$subaksi ='barang';
-					 // $obj 	= new pagination_class($sql,$starting,$recpage);  // lawas
-						$obj 	= new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);  //baru
-						$result =$obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';$totaset=0;
-						if($jum!=0){	
-							// $nox 	= $starting+1;
-							while($res = mysql_fetch_array($result)){	
-								$btn ='<td>
-											<button data-hint="ubah"  class="button" onclick="barangFR('.$res['replid'].');">
-												<i class="icon-pencil on-left"></i>
-											</button>
-											<button data-hint="hapus"  class="button" onclick="barangDel('.$res['replid'].');">
-												<i class="icon-remove on-left"></i>
-										 </td>';
-								$out.= '<tr>
-											<td>'.$res['kode'].'</td>
-											<td>'.$res['barkode'].'</td>
-											<td>'.$res['tempat'].'</td>
-											<td>'.$res['sumber'].'</td>
-											<td class="text-right">Rp. '.number_format($res['harga']).',-</td>
-											<td>'.$res['kondisi'].'</td>
-											<td>'.$res['status'].'</td>
-											<td>'.$res['keterangan'].'</td>
-											'.$btn.'
-										</tr>';
-								// $nox++;
-							}
-						}else{ #kosong
-							$out.= '<tr align="center">
-									<td  colspan=9 ><span style="color:red;text-align:center;">
-									... data tidak ditemukan...</span></td></tr>';
-						}
-						// $out.= '<tr class="info"><td colspan="10">'..'</td></tr>';
-						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-					break;
-					// barang
 				}
 			break; 
 			// tampil ---------------------------------------------------------------------
