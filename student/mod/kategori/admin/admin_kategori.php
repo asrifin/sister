@@ -136,7 +136,7 @@ $admin .= '
 	<tr>
 		<td>Nama Jenis</td>
 		<td>:</td>
-		<td><input type="text" name="nama" size="25"class="form-control" required></td>
+		<td><input type="text" name="nama" size="25"class="form-control" required autofocus></td>
 	</tr>
 	<tr>
 		<td></td>

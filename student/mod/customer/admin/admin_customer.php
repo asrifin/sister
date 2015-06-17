@@ -121,7 +121,7 @@ $admin .= '
 	<tr>
 		<td>Kode</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" required></td>
+		<td><input type="text" name="kode" size="25"class="form-control" required autofocus></td>
 	</tr>
 	<tr>
 		<td>Nama</td>

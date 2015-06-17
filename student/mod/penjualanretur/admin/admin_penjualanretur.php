@@ -330,7 +330,7 @@ $admin .= '
 		<td>Kode FAKTUR</td>
 		<td>:</td>
 		<td><div class="input_container">
-                    <input type="text" id="faktur_id"  name="kodefaktur" value="'.$kodefaktur.'" onkeyup="autocompletfaktur()"class="form-control" >
+                    <input type="text" id="faktur_id"  name="kodefaktur" value="'.$kodefaktur.'" onkeyup="autocompletfaktur()"class="form-control" autofocus>
 					<input type="submit" value="Tambah faktur" name="tambahfaktur"class="btn btn-success" >&nbsp;<input type="submit" value="Delete" name="deletecustomer"class="btn btn-danger" >
                     <ul id="faktur_list_id"></ul>
                 </div>

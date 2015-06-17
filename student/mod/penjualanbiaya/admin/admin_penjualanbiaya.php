@@ -242,7 +242,9 @@ $admin .= '
 		<td>Nomor Faktur</td>
 		<td>:</td>
 		<td><input type="text" name="nofaktur" value="'.$nofaktur.'" class="form-control"></td>
-'.$customer.'
+		<td></td>
+		<td></td>
+		<td></td>
 	</tr>';
 $admin .= '
 	<tr>
@@ -259,7 +261,7 @@ $admin .= '
 		<td>:</td>
 		<td>
                 <div class="input_container">
-                    <input type="text" id="biaya_id"  name="kodebiaya" value="'.$kodebiaya.'" onkeyup="autocomplet2()"class="form-control" >
+                    <input type="text" id="biaya_id"  name="kodebiaya" value="'.$kodebiaya.'" onkeyup="autocomplet2()"class="form-control" autofocus>
 					<input type="submit" value="Tambah biaya" name="tambahbiaya"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="bataljual"class="btn btn-danger" >
                     <ul id="biaya_list_id"></ul>
                 </div>

@@ -322,7 +322,7 @@ $admin .= '
 		<td>Kode PO</td>
 		<td>:</td>
 		<td><div class="input_container">
-                    <input type="text" id="po_id"  name="kodepo" value="'.$kodepo.'" onkeyup="autocompletpo()"class="form-control" >
+                    <input type="text" id="po_id"  name="kodepo" value="'.$kodepo.'" onkeyup="autocompletpo()"class="form-control" autofocus>
 					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
                     <ul id="po_list_id"></ul>
                 </div>

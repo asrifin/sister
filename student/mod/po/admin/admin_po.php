@@ -264,7 +264,7 @@ $admin .= '
 		<td>Supplier</td>
 		<td>:</td>
 		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >
+                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" autofocus>
 					&nbsp;<input type="submit" value="Delete" name="deletesupplier"class="btn btn-danger" >
                     <ul id="country_list_id"></ul>
                 </div>

@@ -280,7 +280,7 @@ $admin .= '
 	<tr>
 		<td>Nomor Retur</td>
 		<td>:</td>
-		<td><input type="text" name="noretur" value="'.$noretur.'" class="form-control"></td>
+		<td><input type="text" name="noretur" value="'.$noretur.'" class="form-control" ></td>
 '.$supplier.'
 	</tr>';
 $admin .= '
@@ -297,7 +297,7 @@ $admin .= '
 		<td>Kode INVOICE</td>
 		<td>:</td>
 		<td><div class="input_container">
-                    <input type="text" id="inv_id"  name="kodeinv" value="'.$kodeinv.'" onkeyup="autocompletinv()"class="form-control" >
+                    <input type="text" id="inv_id"  name="kodeinv" value="'.$kodeinv.'" onkeyup="autocompletinv()"class="form-control" autofocus >
 					<input type="submit" value="Tambah INV" name="tambahinv"class="btn btn-success" >&nbsp;<input type="submit" value="Delete" name="deletesupplier"class="btn btn-danger" >
                     <ul id="inv_list_id"></ul>
                 </div>
