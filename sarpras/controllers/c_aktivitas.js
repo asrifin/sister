@@ -44,8 +44,8 @@ var contentFR ='';
 
                         +'<label>Detail Anggaran</label>'
                         +'<div class="input-control text">'
-                            +'<input type="hidden" id="detailanggaranH" name="detailanggaranH" />'
-                            +'<input onfocus="autoSuggest(\'detailanggaran\')" placeholder="detail anggaran" required type="text" name="detailanggaranTB" id="detailanggaranTB">'
+                            +'<input type="hidden" id="detilanggaranH" name="detilanggaranH" />'
+                            +'<input onfocus="autoSuggest(\'detilanggaran\')" placeholder="detail anggaran" required type="text" name="detilanggaranTB" id="detilanggaranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
@@ -228,46 +228,29 @@ var contentFR ='';
                         +'<input type="hidden" class="iditem" value="'+iditem+'" name="iditem_'+ke+'H" id="iditem_'+ke+'H">'
                         +'<input type="hidden" class="idTR" value="'+ke+'" name="idTR[]" id="idTR_'+ke+'">'
                         +'<div class="input-control text size3">'
-                            +'<input '+(biayaTot2!=0?'disabled':'')+' value="'+item+'" required id="item_'+ke+'TB" name="item_'+ke+'TB">'
+                            +'<input  value="'+item+'" required id="item_'+ke+'TB" name="item_'+ke+'TB">'
+                            // +'<input '+(biayaTot2!=0?'disabled':'')+' value="'+item+'" required id="item_'+ke+'TB" name="item_'+ke+'TB">'
                         +'</div>' 
                     +'</td>'
                     // jumlah item 
                     +'<td align="center">'
                         +'<div class="input-control text">'
-                            +'<input '+(biayaTot2!=0?'disabled':'')+' onkeyup="itemTotNominal();" value="'+jumlah+'"  type="number" required min="1" id="jumlah_'+ke+'TB" name="jumlah_'+ke+'TB">'
+                            +'<input onkeyup="itemTotNominal();" value="'+jumlah+'"  type="number" required min="1" id="jumlah_'+ke+'TB" name="jumlah_'+ke+'TB">'
+                            // +'<input '+(biayaTot2!=0?'disabled':'')+' onkeyup="itemTotNominal();" value="'+jumlah+'"  type="number" required min="1" id="jumlah_'+ke+'TB" name="jumlah_'+ke+'TB">'
                         +'</div>' 
                     +'</td>'
                     // biaya satuan (yg diajukan) 
                     +'<td align="center">'
                         +'<span class="input-control text">'
                             +'<input onkeyup="itemTotNominal();" value="Rp. '+biayaSat.setCurr()+'" required class="text-right itemNominal1" onfocus="inputuang(this);" onclick="inputuang(this);"' 
-                                +(biayaTot2!=0?'disabled':'')+' id="biaya_'+ke+'TB" name="biaya_'+ke+'TB" >'
+                                +' id="biaya_'+ke+'TB" name="biaya_'+ke+'TB" >'
+                                // +(biayaTot2!=0?'disabled':'')+' id="biaya_'+ke+'TB" name="biaya_'+ke+'TB" >'
                         +'</span>'
                     +'</td>'
                     // biaya total (yg diajukan) 
                     +'<td align="right">'
                         +'<span class="text-right itemNominal2" id="biayaTot2_'+ke+'TB">Rp. '+biayaTot.setCurr()+'</span>'
                     +'</td>'
-                    // biaya total (realisasi)
-                    // +'<td align="right">'
-                    //     +'<span class="itemNominal3" id="biayaTot2_'+ke+'TB">'+'Rp. '+biayaTot2.setCurr()+'</span>'
-                    // +'</td>'
-                    // tgl wajib dibayar
-                    // +'<td align="center">'
-                    //     +'<div class="input-control text size2 text-right" data-role="datepicker"' 
-                    //         +'data-format="dd mmmm yyyy" data-position="top"'
-                    //         +'data-effect="slide">'
-                    //         +'<input '+(biayaTot2!=0?'disabled':'')+' value="'+tglbayar+'" required id="tglbayar_'+ke+'TB" name="tglbayar_'+ke+'TB" type="text">'
-                    //     +'</div>'
-                    // +'</td>'
-                    // tgl pelunasan
-                    // +'<td align="center">'
-                    //     +'<div xdisabled class="input-control text size2 text-right" data-role="datepicker"' 
-                    //         +'data-format="dd mmmm yyyy" data-position="top"'
-                    //         +'data-effect="slide">'
-                    //         +'<input '+(biayaTot2==0?'disabled':'')+' value="'+tgllunas+'" required id="tgllunas_'+ke+'TB" name="tgllunas_'+ke+'TB" type="text">'
-                    //     +'</div>'
-                    // +'</td>'
                     // hapus
                     +'<td align="center">'
                         +(biayaTot2!=0?'-':'<a href="#" onclick="'+(typeof arr!='undefined'?'if(confirm(\'melanjutkan untuk menghapus data?\')) delItemTR('+ke+','+iditem+',\'\');':'delItemTR('+ke+','+iditem+',\'\')')+'"  class="button"><i class="icon-cancel-2"></i></a>')
@@ -325,6 +308,8 @@ var contentFR ='';
                                 $('#tanggal2TB').val(dt.tanggal2);
                                 $('#aktivitasTB').val(dt.aktivitas);
                                 $('#keteranganTB').val(dt.keterangan);
+                                $('#detilanggaranH').val(dt.iddetilanggaran);
+                                $('#detilanggaranTB').val(dt.detilanggaran);
                                 var t1=t2=t3=0;
                                 $.each(dt.itemArr,function(id,item){
                                     t1+=parseInt(item.biayaSat);
@@ -336,6 +321,7 @@ var contentFR ='';
                                 $('#totNominal3TD').html('Rp. '+t3.setCurr());
                                 var n = dt.itemArr.length;
                                 addItemTR(n,dt.itemArr);
+                                $('#addTRBC').attr('style','display:none;');
                             }
                         });
                     }
@@ -615,12 +601,12 @@ function notif(cont,clr) {
                     'label':'Rekening'
             },{   
                     'align':'right',
-                    'columnName':'sisaBilCur',
+                    'columnName':'sisaCur',
                     'width':'15',
                     'label':'Sisa'
             },{   
                     'align':'right',
-                    'columnName':'kuotaBilCur',
+                    'columnName':'kuotaCur',
                     'width':'15',
                     'label':'Kuota'
             }];
@@ -633,9 +619,9 @@ function notif(cont,clr) {
             url: urly,
             select: function( event, ui ) { // event setelah data terpilih 
                 $('#'+el+'H').val(ui.item.replid);
-                $('#'+el+'TB').val(ui.item.nama+' [ sisa :'+ui.item.sisaBilCur+'  kuota : '+ui.item.kuotaBilCur+' ]');
+                $('#'+el+'TB').val(ui.item.nama+' [ sisa :'+ui.item.sisaCur+'  kuota : '+ui.item.kuotaCur+' ]');
                 var x = el.substring(22);
-                $('#out_come_sisaanggaran'+x+'H').val(ui.item.sisaBilNum);
+                $('#out_come_sisaanggaran'+x+'H').val(ui.item.sisaNum);
                 $('#out_come_rek'+x+'TB').html(ui.item.rekening);
                 $('#out_come_rek'+x+'H').val(ui.item.idrekening);
 

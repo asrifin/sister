@@ -28,25 +28,13 @@
             <th class="text-center">Tgl. Kegiatan</th>
             <th class="text-center">Aktivitas</th>
             <th class="text-center">Dana</th>
-            <!-- <th class="text-center">Pencairan Dana</th> -->
             <th class="text-center">Keterangan</th>
             <th class="text-center">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <th></th>
             <th><div class="input-control text">    <input placeholder="cari ...." id="aktivitasS" name="aktivitasS"></div></th>
-            <th>
-            <!-- <div class="input-control text">    <input placeholder="cari ...." id="keteranganS" name="keteranganS"></div> -->
-            </th>
-            <th>
-<!--                 <div class="input-control select">    
-                    <select name="lunasS" id="lunasS">
-                        <option value="">-SEMUA-</option>
-                        <option value="1">lunas</option>
-                        <option value="0">belum</option>
-                    </select>
-                </div>
- -->            </th>
+            <th></th>
             <th><div class="input-control text">    <input placeholder="cari ...." id="keteranganS" name="keteranganS"></div></th>
             <th colspan="2"></th>
         </tr>
