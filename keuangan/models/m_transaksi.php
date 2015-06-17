@@ -331,7 +331,7 @@
 								FROM keu_transaksi t
 								WHERE '.$rekArr.$tahun.$bulan.'
 								ORDER BY t.replid DESC';
-							print_r($sql);exit(); 	
+							// print_r($sql);exit(); 	
 							if(isset($_POST['starting'])){ //nilai awal halaman
 								$starting=$_POST['starting'];
 							}else{

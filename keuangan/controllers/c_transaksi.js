@@ -165,9 +165,8 @@ var detilanggaranArr=rekArr=[];
             viewTB('li');
         });
         $('#li_jenisS').on('change',function(){
-            viewTB('li',function(){
-                jenisLaporan();
-            });
+            jenisLaporan();
+            viewTB('li');
         });
 
         jenisTrans(); // load checkbox jenis transaksi
