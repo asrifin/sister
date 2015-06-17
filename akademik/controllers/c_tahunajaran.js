@@ -25,8 +25,7 @@ var contentFR = '';
 
                         +'<label>Tanggal Mulai</label>'
                         +'<div class="input-control text" data-role="datepicker"'
-                            +'data-date="2014-10-23"'
-                            +'data-format="yyyy-mm-dd"'
+                            +'data-format="dd mmmm yyyy"'
                             +'data-effect="slide">'
                             +'<input id="tglmulaiTB" name="tglmulaiTB" type="text">'
                             +'<button class="btn-date"></button>'
@@ -34,8 +33,7 @@ var contentFR = '';
 
                         +'<label>Tanggal Akhir</label>'
                         +'<div class="input-control text" data-role="datepicker"'
-                            +'data-date="2014-10-23"'
-                            +'data-format="yyyy-mm-dd"'
+                            +'data-format="dd mmmm yyyy"'
                             +'data-effect="slide">'
                             +'<input id="tglakhirTB" name="tglakhirTB" type="text">'
                             +'<button class="btn-date"></button>'
@@ -148,6 +146,8 @@ var contentFR = '';
                         type:'post',
                         dataType:'json',
                         success:function(dt){
+                            $('#tglmulaiTB').val(getToday());
+                            $('#tglakhirTB').val(getToday());
                             $('#departemenH').val($('#departemenS').val());
                             $('#departemenTB').val(dt.departemen[0].nama);
                         }
@@ -307,8 +307,70 @@ var contentFR = '';
             }
         });
     }
-//end of aktifkan process ---
 
-    // ---------------------- //
-    // -- created by epiii -- //
-    // ---------------------- //
+
+// left pad (replace with 0)
+    function lpadZero (n, length){
+        var str = (n > 0 ? n : -n) + "";
+        var zeros = "";
+        for (var i = length - str.length; i > 0; i--)
+            zeros += "0";
+        zeros += str;
+        return n >= 0 ? zeros : "-" + zeros;
+    }
+
+    function validUang () {
+        //TODO
+    }
+
+/*about date*/ 
+// get month format -------------
+    function monthFormat(mon){
+        switch(mon){
+            case 1:return 'Jan';break;
+            case 2:return 'Feb';break;
+            case 3:return 'Mar';break;
+            case 4:return 'Apr';break;
+            case 5:return 'May';break;
+            case 6:return 'Jun';break;
+            case 7:return 'Jul';break;
+            case 8:return 'Aug';break;
+            case 9:return 'Sep';break;
+            case 10:return 'Oct';break;
+            case 11:return 'Nov';break;
+            case 12:return 'Dec';break;
+        }
+    }
+
+//date format -----------------
+    function dateFormatx(typ,d,m,y){
+        if(typ=='id') // 25 Dec 2014
+            return d+' '+m+' '+y;
+        else // 2014-12-25
+            return y+'-'+m+'-'+d;
+    }
+
+//global u/ tanggal --------
+    var now  = new Date();
+    var dd   = now.getDate();
+    var mm   = now.getMonth()+1;
+    var yyyy = now.getFullYear();
+
+//tanggal terakhir : dd
+    function lastDate(m,y){
+        return 32 - new Date(y, (m-1), 32).getDate();
+    }
+// tanggal hari ini : dd mm yyyy
+    function getToday() {
+        // function addLeadingZeros (n, length){
+        return dateFormatx('id',lpadZero(dd,2),monthFormat(mm),yyyy);
+    }
+// tanggal pertama bulan ini : dd mm yyyy 
+    function getFirstDate() {
+        return dateFormatx('id','01',monthFormat(mm),yyyy);
+    }
+// tanggal terakhir bulan ini  : dd mm yyyy
+    function getLastDate() {
+        var dd = lastDate(mm,yyyy);
+        return dateFormatx('id',dd,monthFormat(mm),yyyy);
+    }

@@ -94,8 +94,8 @@
 			case 'simpan':
 				$s = $tb.' set 	departemen 	= "'.filter($_POST['departemenH']).'",
 								tahunajaran = "'.filter($_POST['tahunajaranTB']).'",
-								tglmulai    = "'.filter($_POST['tglmulaiTB']).'",
-								tglakhir    = "'.filter($_POST['tglakhirTB']).'",
+								tglmulai    = "'.tgl_indo6($_POST['tglmulaiTB']).'",
+								tglakhir    = "'.tgl_indo6($_POST['tglakhirTB']).'",
 								keterangan  = "'.filter($_POST['keteranganTB']).'"';
 				
 				if(!isset($_POST['replid'])){ //add
@@ -146,8 +146,8 @@
 				$out 	= json_encode(array(
 							'status'        =>$stat,
 							'tahunajaran'   =>$r['tahunajaran'],
-							'tglmulai'      =>$r['tglmulai'],
-							'tglakhir'      =>$r['tglakhir'],
+							'tglmulai'      =>tgl_indo5($r['tglmulai']),
+							'tglakhir'      =>tgl_indo5($r['tglakhir']),
 							'keterangan'    =>$r['keterangan'],
 							'id_departemen' =>$r['id_departemen'],
 							'departemen'    =>$r['departemen']
