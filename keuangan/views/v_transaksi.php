@@ -230,7 +230,8 @@
                 <div class="frame" id="liTAB">
                     <!--filtering  -->
                     <!-- group 2 -->
-                    <a target="_blank" href="jenis-laporan" class="button fg-white bg-blue place-right"><i class="icon-plus-2"></i> Opsi</a>
+                    <a data-hint="opsi rekening" target="_blank" href="jenis-laporan" class="button fg-white bg-orange place-right"><i class="icon-enter"></i></a>
+                    <button id="li_cetakBC" data-hint="cetak" class="fg-white bg-blue place-right"><i class="icon-printer"></i></button>
                     <div class="input-control select size3">
                         <select class="li_cari" name="li_departemenS" id="li_departemenS" data-hint="Departemen"></select>
                     </div>    

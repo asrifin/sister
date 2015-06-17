@@ -34,6 +34,9 @@ var detilanggaranArr=rekArr=[];
         $('#pkb_cetakBC').on('click',function(){
             printPDF('pkb');
         });
+        $('#li_cetakBC').on('click',function(){
+            printPDF('li');
+        });
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });

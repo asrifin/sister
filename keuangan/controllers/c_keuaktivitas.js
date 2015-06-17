@@ -235,7 +235,7 @@ var contentFR ='';
                 // tgl pelunasan
                     // +'<td align="center">'+tgllunas+'</td>'
                 // item
-                    +'<td align="center">'
+                    +'<td>'
                         +'<input type="hidden" name="mode'+ke+'H" value="'+mode+'" />'
                         +'<input type="hidden" class="iditem" value="'+iditem+'" name="iditem_'+ke+'H" id="iditem_'+ke+'H">'
                         +'<input type="hidden" class="idTR" value="'+ke+'" name="idTR[]" id="idTR_'+ke+'">'
@@ -304,7 +304,7 @@ var contentFR ='';
             shadow: true,
             overlay: true,
             draggable: true,
-            width: 1000,
+            width: '90%',
             padding: 10,
             onShow: function(){
                 var titlex;
@@ -333,6 +333,7 @@ var contentFR ='';
                                 $('#lokasiTB').html(dt.lokasi);
                                 $('#tanggal1TB').html(dt.tanggal1);
                                 $('#tanggal2TB').html(dt.tanggal2);
+                                $('#tgltagihanTB').html(dt.tgltagihan);
                                 $('#aktivitasTB').html(dt.aktivitas);
                                 $('#keteranganTB').html(dt.keterangan);
                                 var t1=t2=t3=0;

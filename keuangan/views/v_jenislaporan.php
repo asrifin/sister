@@ -23,7 +23,7 @@
             <th class="text-center">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-center"><div class="input-control text"><input  class="cari" placeholder="sifat" id="rekeningS" name="rekeningS"></div></th>
+            <th class="text-center"><div class="input-control text"><input  class="cari" placeholder="cari...." id="rekeningS" name="rekeningS"></div></th>
             <th class="text-center"><div class="input-control select">
                 <select  class="cari" name="kategoriS" id="kategoriS">
                     <option value="">-SEMUA-</option>
