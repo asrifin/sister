@@ -28,12 +28,7 @@
 									sum(biaya*jumlah)biayaRencana
 								from sar_detailaktivitas 
 								where aktivitas = a.replid
-							)biayaRencana,(
-								select 
-									sum(biaya2)biayaRealisasi
-								from sar_detailaktivitas 
-								where aktivitas = a.replid
-							)biayaRealisasi
+							)biaya
 						FROM
 							sar_aktivitas a
 							LEFT JOIN sar_lokasi l ON l.replid = a.lokasi
@@ -65,17 +60,10 @@
 										<i class="icon-zoom-in"></i>
 									</button>
 								 </td>';
-						if($res['biayaRealisasi']==0){
-							$hint = 'pending';
-							$bg   = 'amber';
-						}else{
-							$hint = 'acc.';
-							$bg   = 'lightTeal';
-					 	}
-						$out.= '<tr data-hint="'.$hint.'" data-hint-position="left"  xclass="bg-'.$bg.'">
+						$out.= '<tr>
 									<td class="text-center">'.tgl_indo5($res['tanggal1']).' - '.tgl_indo5($res['tanggal2']).'</td>
 									<td>'.$res['aktivitas'].'</td>
-									<td align="right">Rp. '.number_format($res['biayaRencana']).'</td>
+									<td align="right">Rp. '.number_format($res['biaya']).'</td>
 									<td><pre>'.$res['keterangan'].'</pre></td>
 									'.$btn.'
 								</tr>';
@@ -125,15 +113,16 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT 
-								t.tanggal1,
-								t.tanggal2,
-								t.aktivitas,
-								t.keterangan,
+								a.tanggal1,
+								a.tanggal2,
+								a.aktivitas,
+								a.keterangan,
+								a.tgltagihan,
 								l.nama as lokasi
-							from '.$tb.' t, sar_lokasi l 
+							from '.$tb.' a, sar_lokasi l 
 							WHERE 
-								t.lokasi= l.replid and
-								t.replid='.$_POST['replid'];
+								a.lokasi= l.replid and
+								a.replid='.$_POST['replid'];
 				// var_dump($s);exit();
 				$e       = mysql_query($s);
 				$r       = mysql_fetch_assoc($e);
@@ -150,23 +139,20 @@
 							'jumlah'    =>$r2['jumlah'],
 							'biayaSat'  =>intval($r2['biaya']),
 							'biayaTot'  =>(intval($r2['biaya']) * intval($r2['jumlah'])),
-							'biayaTot2' =>intval($r2['biaya2']),
-							'tglbayar'  =>($r2['tglbayar']=='0000-00-00'?'-':tgl_indo5($r2['tglbayar'])),
-							'tgllunas'  =>($r2['tgllunas']=='0000-00-00'?'-':tgl_indo5($r2['tgllunas'])),
 						);
 						$biayaSatSum+=intval($r2['biaya']);
 						$biayaTotSum+=(intval($r2['biaya']) * intval($r2['jumlah']));
-						$biayaTotSum2+=intval($r2['biaya2']);
 					}
 				 	$stat = ($e2)?'sukses':'gagal_ambil_detail_aktivitas';
 				}$out  = json_encode(array(
-							'status'       =>$stat,
-							'lokasi'       =>$r['lokasi'],
-							'tanggal1'     =>tgl_indo5($r['tanggal1']),
-							'tanggal2'     =>tgl_indo5($r['tanggal2']),
-							'aktivitas'    =>$r['aktivitas'],
-							'keterangan'   =>$r['keterangan'],
-							'itemArr'      =>$itemArr
+							'status'     =>$stat,
+							'lokasi'     =>$r['lokasi'],
+							'tanggal1'   =>tgl_indo5($r['tanggal1']),
+							'tanggal2'   =>tgl_indo5($r['tanggal2']),
+							'tgltagihan' =>tgl_indo5($r['tgltagihan']),
+							'aktivitas'  =>$r['aktivitas'],
+							'keterangan' =>$r['keterangan'],
+							'itemArr'    =>$itemArr
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
