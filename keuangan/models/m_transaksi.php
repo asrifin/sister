@@ -309,39 +309,29 @@
 					
 					// laporan penerimaan & pengeluaran (custom)
 					case 'li':
-						$out ='';
+						$out    = $rekArr = '';
 						$no     = isset($_POST['li_noS'])?filter($_POST['li_noS']):'';
 						$uraian = isset($_POST['li_uraianS'])?filter($_POST['li_uraianS']):'';
-						$rekArr = '';
+						$tahun  = (isset($_POST['li_tahunS']) && $_POST['li_tahunS']!='')?' AND YEAR(t.tanggal)='.$_POST['li_tahunS']:'';
+						$bulan  = (isset($_POST['li_bulanS']) && $_POST['li_bulanS']!='')?' AND MONTH(t.tanggal)='.$_POST['li_bulanS']:'';
 
-						// var_dump($_POST['libTB']);exit();
+						// echo "<pre>";
+						// print_r($_POST);
+						// echo "</pre>";
+						// exit();
 						if(isset($_POST['jenisLaporanCB']) && count($_POST['jenisLaporanCB']>0)){
-							$rekArr.='AND rekkas IN (
-										SELECT d.replid FROM keu_detilrekening d WHERE ';
 							$c = count($_POST['jenisLaporanCB'])-1;
+							$rekArr.='rekitem IN ( ';
 							foreach ($_POST['jenisLaporanCB'] as $i => $v) {
-								if($i==$c) $rekArr.='d.nama LIKE "%'.$v.'%" ';
-								else $rekArr.='d.nama LIKE "%'.$v.'%" OR ';
-							}$rekArr.=') OR rekitem IN ( 
-								SELECT d.replid FROM keu_detilrekening d WHERE ';
-							foreach ($_POST['jenisLaporanCB'] as $i => $v) {
-								if($i==$c) $rekArr.='d.nama LIKE "%'.$v.'%" ';
-								else $rekArr.='d.nama LIKE "%'.$v.'%" OR ';
+								if($i==$c) $rekArr.=$v;
+								else $rekArr.=$v.',';
 							}$rekArr.=')';
 						
-							$sql='SELECT *
-								FROM keu_transaksi
-								WHERE(
-										nomer LIKE "%'.$no.'%"
-										OR nobukti LIKE "%'.$no.'%"
-									)
-									AND uraian LIKE "%'.$uraian.'%"
-									AND tanggal BETWEEN "'.tgl_indo6($_POST['tgl1TB']).'"
-									AND "'.tgl_indo6($_POST['tgl2TB']).'"
-									'.$rekArr.'
-								ORDER BY
-									replid DESC';
-							// print_r($sql);exit(); 	
+							$sql='SELECT t.*
+								FROM keu_transaksi t
+								WHERE '.$rekArr.$tahun.$bulan.'
+								ORDER BY t.replid DESC';
+							print_r($sql);exit(); 	
 							if(isset($_POST['starting'])){ //nilai awal halaman
 								$starting=$_POST['starting'];
 							}else{
