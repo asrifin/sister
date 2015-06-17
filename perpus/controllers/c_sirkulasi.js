@@ -5,6 +5,7 @@ var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
 
 var pinjam_contentFR = kembalikan_contentFR = kembali_contentFR = contentFR ='';
+var pinjamArr= kembaliArr =[];
 // main function load first 
     $(document).ready(function(){
 
@@ -54,7 +55,7 @@ var pinjam_contentFR = kembalikan_contentFR = kembali_contentFR = contentFR ='';
                                 +'<select  name="lokasiTB" id="lokasiTB"></select>'
                             +'</div><br>'
                             +'<div class="input-control text size4">'
-                                +'<input placeholder="Barcode atau Judul item" id="judulTB">'
+                                +'<input placeholder="Barcode atau Judul item" id="judulTB" onfocus="autoSug(\'judul\',\'pinjam\',$(\'#lokasiTB\').val())">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
                             +'<table width="500" class="table hovered bordered striped">'
@@ -65,7 +66,7 @@ var pinjam_contentFR = kembalikan_contentFR = kembali_contentFR = contentFR ='';
                                         +'<th width="100"class="text-center">Aksi</th>'
                                     +'</tr>'
                                 +'</thead>'
-                                +'<tbody id="barangTBL">'
+                                +'<tbody id="bukuTBL">'
                                 +'</tbody>'
                                     // +'<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih barang.. </td></tr>'
                                 +'<tfoot>'
@@ -82,9 +83,9 @@ var pinjam_contentFR = kembalikan_contentFR = kembali_contentFR = contentFR ='';
                                             +'<label>Peminjam</label>'
                                             +'<div class="input-control select span4">'
                                                 +'<select  name="tipeTB" id="tipeTB">'
-                                                    +'<option value="0">Siswa</option>'
-                                                    +'<option value="0">Guru</option>'
-                                                    +'<option value="0">Member Luar</option>'
+                                                    +'<option value="1">Siswa</option>'
+                                                    +'<option value="2">Guru</option>'
+                                                    +'<option value="3">Member Luar</option>'
                                                 +'</select>'
                                             +'</div>'
                                             +'<div class="input-control text size4">'
@@ -178,7 +179,7 @@ var pinjam_contentFR = kembalikan_contentFR = kembali_contentFR = contentFR ='';
                            +'<legend>Daftar item yang dikembalikan</legend>'
                             +'<label>Lokasi</label>'
                             +'<div class="input-control select span4">'
-                                +'<select  name="lokasiTB" id="lokasiTB"></select>'
+                                +'<select  name="k_lokasiTB" id="k_lokasiTB"></select>'
                             +'</div><br>'
                             +'<div class="input-control text size4">'
                                 +'<input placeholder="Barcode atau Judul item" id="k_judulTB">'
@@ -407,12 +408,12 @@ var pinjam_contentFR = kembalikan_contentFR = kembali_contentFR = contentFR ='';
 
     function autoSug(el,subaksi,lok){
         if(subaksi=='pinjam'){ //rekening
-            var urlx= '?aksi=autocomp&subaksi=subaksi&lokasi='+lok;
+            var urlx= '?aksi=autocomp&subaksi=pinjam&lokasi='+lok;
             var col = [{
                     'align':'left',
                     'columnName':'barkode',
                     'hide':true,
-                    'width':'55',
+                    'width':'40',
                     'label':'Barkode'
                 },{   
                     'align':'left',
@@ -460,9 +461,10 @@ var pinjam_contentFR = kembalikan_contentFR = kembali_contentFR = contentFR ='';
             select: function( event, ui ) { // event setelah data terpilih 
                 $('#'+el+'H').val(ui.item.replid);
                 if (subaksi=='pinjam') {
-                    collectArr();
-                    $('#'+el+'TB').val(ui.item.barkode);
-                    $('#'+el+'TB').val(ui.item.judul);
+                    bukuAdd (ui.item.replid,ui.item.barkode,ui.item.judul);
+                    // collectArr();
+                    // $('#'+el+'TB').val(ui.item.barkode);
+                    // $('#'+el+'TB').val(ui.item.judul);
                 }else{
                     $('#'+el+'TB').val(ui.item.barkode);
                     $('#'+el+'TB').val(ui.item.judul);
@@ -476,8 +478,8 @@ var pinjam_contentFR = kembalikan_contentFR = kembali_contentFR = contentFR ='';
     }
 
    function collectArr(){
-        pinjamArr=[];
-        kembaliArr=[];
+        // pinjamArr=[];
+        // kembaliArr=[];
         if($('#subaksiH').val()=='kembali'){ // outcome saja
             console.log('masuk pengembalian ');
             $('#k_judulTB').each(function(id,item){
@@ -487,8 +489,9 @@ var pinjam_contentFR = kembalikan_contentFR = kembali_contentFR = contentFR ='';
             return kembaliArr;
         }else{ // selain outcome (income,jurnal-umum)
             console.log('masuk peminjaman');
-            $('#judulTB').each(function(id,item){
-                pinjamArr.push($(this).val());
+            $('.bukuTR').each(function(id,item){
+                pinjamArr.push($(this).attr('val'));
+                console.log($(this).val());
             });
             console.log(pinjamArr);
             return pinjamArr;
@@ -506,93 +509,29 @@ var pinjam_contentFR = kembalikan_contentFR = kembali_contentFR = contentFR ='';
         }
 
     // pilih barang yg akan dipinjam ---
-        function barangAdd (id,barkode,judul) {
-            var tr ='<tr val="'+id+'" class="barangTR" id="barangTR_'+id+'">'
+        function bukuAdd (id,barkode,judul) {
+            var tr ='<tr val="'+id+'" class="bukuTR" id="bukuTR_'+id+'">'
                         +'<td>'+barkode+'</td>'
                         +'<td>'+judul+'</td>'
-                        +'<td><button onclick="barangDel('+id+');"><i class="icon-remove"></button></i></td>'
+                        +'<td><button onclick="bukuDel('+id+');"><i class="icon-remove"></button></i></td>'
                     +'</tr>';
-            $('#barangTBL').prepend(tr); 
-            barangArr();
-            $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=tersedia&lokasi='+$('#lokasiTB').val()+'&brgArr='+barangArr().toString() );
+            $('#bukuTBL').prepend(tr); 
+            // collectArr();
+            // bukuArr();
+            $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=pinjam&lokasi='+$('#lokasiTB').val()+'&pinjamArr='+collectArr().toString() );
             // enabledButton();
-            // barangExist();
+            // bukuExist();
         }
         
-    //himpun array barang terpilih
-        function barangArr(){
-            var y=[];
-            $('.barangTR').each(function(id,item){
-                y.push($(this).attr('val'));
-            });return y;
-        }
+    //himpun array buku terpilih
+        // function bukuArr(){
+        //     var y=[];
+        //     $('.bukuTR').each(function(id,item){
+        //         y.push($(this).attr('val'));
+        //     });return y;
+        // }
     // end peminjaman
 
-        //autocomplete
-        $("#k_judulTB").combogrid({
-            debug:true,
-            width:'400px',
-            colModel: [{
-                    'align':'left',
-                    'columnName':'barkode',
-                    'hide':true,
-                    'width':'55',
-                    // 'width':'8',
-                    'label':'Barkode'
-                },{   
-                    'columnName':'judul',
-                    'width':'40',
-                    'label':'Judul'
-                }],
-            url: dir+'?aksi=autocomp&subaksi=dipinjam',
-            select: function( event, ui ) { // event setelah data terpilih 
-                kembaliAdd(ui.item.replid,ui.item.barkode,ui.item.judul);
-                // $('#k_judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=dipinjam&lokasi='+$('#lokasiS').val()+'&kembali='+kembaliArr() );
-                return false;
-            }
-        }); //End autocomplete
-
-    // hapus barang terpilih
-        function kembaliDel(id){
-            $('#kembaliTR_'+id).fadeOut('slow',function(){
-                $('#kembaliTR_'+id).remove();
-                // kembaliExist();
-            });
-        }
-    //Barang record kosong --
-        function kembaliExist(){
-            // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
-            alert('jumlah tr: '+$('#kembaliTBL','.kembaliTR').length);return false;
-            var tr ='<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih Judul Buku ..</td></tr>';
-            if($('#kembaliTBL').html()=='')
-                $('#kembaliTBL').html(tr);
-            else
-                $('#kembaliTBL').html('');
-        }
-    //end of kembali record kosong --
-
-    // pilih barang yg akan dipinjam ---
-        function kembaliAdd (id,barkode,judul) {
-            var tr ='<tr val="'+id+'" class="kembaliTR" id="kembaliTR_'+id+'">'
-                        +'<td>'+barkode+'</td>'
-                        +'<td>'+judul+'</td>'
-                        +'<td><button onclick="kembaliDel('+id+');"><i class="icon-remove"></button></i></td>'
-                    +'</tr>';
-            $('#kembaliTBL').append(tr); 
-            kembaliArr();
-            // $('#kembaliTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&kembali='+kembaliArr() );
-
-            // kembaliExist();
-        }
-        
-    //himpun array kembali terpilih
-        function kembaliArr(){
-            var y=[];
-            $('.kembaliTR').each(function(id,item){
-                y.push($(this).attr('val'));
-            });return y;
-        }
-    // end autocomplete
 
 /*view*/
     // Sirkulasi ---

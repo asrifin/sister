@@ -45,21 +45,6 @@
 					// while($res = mysql_fetch_array($result)){	
 					foreach ($var['judul'] as $i => $v) {
 							
-						// $btn ='<td>
-						// 			<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
-						// 				<i class="icon-pencil on-left"></i>
-						// 			</button>
-						// 			<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
-						// 				<i class="icon-remove on-left"></i>
-						// 		 </td>';
-						// $out.= '<tr>
-						// 			<td>'.$res['kode'].'</td>
-						// 			<td>'.$res['nama'].'</td>
-						// 			<td>'.$res['alamat'].'</td>
-						// 			<td>'.$res['keterangan'].'</td>
-						// 			'.$btn.'
-                                    		// <div class="email-data-text">'.$res['nama'].'</div>
-						// 		</tr>';
 						$out.='
 								    <a href="perangkat" class="tile  bg-green" data-click="transform">
 								        <div class="tile-content email">

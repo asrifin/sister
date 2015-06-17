@@ -28,6 +28,7 @@ PSB V2.0
 	+ Cara membuat no otomatis pada no pendaftaran
 	- menjumlahkan angsuran dan total uang pangkal net menggunakan Rupiah
 	+ Insert > Foto
+	- Update foto tidak tampil
 	+ view   > 
 	  + Combo Kelompok ga sesuai
 	  + menampilkan foto siswa pada view detail siswa
@@ -63,7 +64,7 @@ ____________________________________________________
 		+ event onkeydown (enter)  
 
 * Set Biaya Calon Siswa (P)
-	- Belum
+	- SQL Belum Sesuai
 
 * set angsuran (C)
 	+ view :

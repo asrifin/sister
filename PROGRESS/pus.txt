@@ -36,11 +36,14 @@ ____________________________________________________
 	-
 * sirkulasi (P)
 	- Peminjaman  -> cara mengatur waktu pengembalian
-	- view sirkulasi -> field peminjam, Tgl Pengembalian, Tgl dikembalikan dan terlambat tidak tampil (sudah buat fungsi selisih tgl)
-	- view sirkulasi - field aksi -> tombol aksi kalau dipinjam muncul kalau tidak dikembalikan seharusnya tidak muncul
+	+ view sirkulasi -> field peminjam, Tgl Pengembalian, Tgl dikembalikan dan terlambat tidak tampil (sudah buat fungsi selisih tgl)
+	- view sirkulasi - field aksi -> tombol aksi kalau dipinjam muncul kalau sudah dikembalikan seharusnya tidak muncul
 	- view sirkulasi - filter checkbox blm bisa
 	- cara sinkron status peminjaman pada tabel pus_peminjaman dan pus_buku ?
-	- combobox peminjaman 
+	- combobox siapa yang pinjam : - siswa, guru, murid.
+	- Cara nyimpan hasil autosuggesst disimpan data peminjam dulu baru buku yg dipinjam
+	  ex : sarpras/peminjaman
+	   
 	
 	* statistik
 	- menampilkan jumlah yang dipinjam (filter tanggal)

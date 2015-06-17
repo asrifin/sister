@@ -15,6 +15,15 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$kelompok  = isset($_POST['kelompokS'])?filter(trim($_POST['kelompokS'])):'';
+				// $s ='SELECT k.*
+				// 		FROM psb_setbiaya
+				// 		WHERE kel = '.$kelompok ;
+				// $e = mysql_query($s);
+				// $hasil = mysql_num_rows($e);
+
+				// if ($hasil == 0 ) {
+				// 	$s = INSERT INTO 
+				// }
 				$sql ='SELECT
 							k.*,(
 								SELECT count(*)

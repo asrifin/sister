@@ -21,13 +21,14 @@
 				$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
 				$sord       = $_GET['sord']; // get the direction
 				$searchTerm = $_GET['searchTerm'];
-				$pinjamArr   = (isset($_GET['pinjamArr']) AND $_GET['pinjamArr']!='')?' AND b.replid NOT IN ('.$_GET['pinjamArr'].')':''; 
-				$kembaliArr   = (isset($_GET['kembaliArr']) AND $_GET['kembaliArr']!='')?' AND b.replid NOT IN ('.$_GET['kembaliArr'].')':''; 
+				$pinjamArr   = (isset($_GET['pinjamArr']) AND $_GET['pinjamArr']!='')?' AND tb.replid NOT IN ('.$_GET['pinjamArr'].')':''; 
+				$kembaliArr   = (isset($_GET['kembaliArr']) AND $_GET['kembaliArr']!='')?' AND tb.replid NOT IN ('.$_GET['kembaliArr'].')':''; 
 
 				if(isset($_GET['subaksi']) && $_GET['subaksi']=='pinjam'){
 				$ss='SELECT *
 						FROM(SELECT
 									pus_katalog.replid,
+									pus_buku.lokasi,
 									pus_buku.barkode barkode,
 									pus_katalog.judul judul
 							FROM pus_katalog
@@ -35,8 +36,8 @@
 							LEFT JOIN pus_lokasi ON pus_lokasi.replid = pus_buku.lokasi
 							WHERE pus_buku.status = 1
 							)tb
-							WHERE	pus_buku.lokasi = '.$_GET['lokasi'].' AND (tb.barkode  LIKE "%'.$searchTerm.'%"
-									OR tb.judul LIKE "%'.$searchTerm.'%")'.$terpilih;
+							WHERE	tb.lokasi = '.$_GET['lokasi'].' AND (tb.barkode  LIKE "%'.$searchTerm.'%"
+									OR tb.judul LIKE "%'.$searchTerm.'%")'.$pinjamArr;
 					// var_dump($ss);exit()
 					// print_r($ss);exit();
 				}elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='kembali'){
