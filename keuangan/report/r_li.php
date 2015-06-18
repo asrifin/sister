@@ -50,17 +50,18 @@
                       </tr>
                     </table><br />';
 
+          $rekArr='';
           if(isset($_GET['jenisLaporanCB']) && count($_GET['jenisLaporanCB']>0)){
             $c = count($_GET['jenisLaporanCB'])-1;
-            $rekArr.='rekitem IN ( ';
+            $ss.='rekitem IN ( ';
             foreach ($_GET['jenisLaporanCB'] as $i => $v) {
               if($i==$c) $rekArr.=$v;
               else $rekArr.=$v.',';
-            }$rekArr.=')';
+            }$ss.=$rekArr.')';
           
             $s='SELECT t.*
               FROM keu_transaksi t
-              WHERE '.$rekArr.$tahun.$bulan.'
+              WHERE '.$ss.$tahun.$bulan.'
               ORDER BY t.tanggal ASC';
             $e = mysql_query($s) or die(mysql_error());
             $n = mysql_num_rows($e);
@@ -94,7 +95,7 @@
             $nox = 1;
             if($n==0){
               $out.='<tr>
-                <td colspan="4">.. Kosong ..</td>
+                <td align="center" colspan="4">.. Kosong ..</td>
               </tr>';
             }else{
               while ($r=mysql_fetch_assoc($e)) {
@@ -172,6 +173,54 @@
               </tr>
             </table>';
           }
+        
+
+        // grafik jpgraph & mpdf
+        if($rekArr!=''){
+          $sc = 'SELECT
+                  r.replid,
+                  concat("(",r.kode,") ",r.nama)rekFull,
+                  r.nama rekNama,
+                  r.kode rekKode,
+                  ifnull(SUM(t.nominal),0)nominal
+                FROM
+                  keu_detilrekening r 
+                  LEFT JOIN  keu_transaksi t ON t.rekitem = r.replid
+                WHERE
+                  r.replid IN ('.$rekArr.')
+                GROUP BY
+                  r.replid';
+              // var_dump($sc);exit();
+          $ec= mysql_query($sc);
+          $out.='<br />Akumulatif <table class="isi" id="grafikTBL">
+                <tr class="head">
+                  <td>Kode Akun</td>
+                  <td>(Nominal)</td>
+                  <td>Nama Akun</td>
+                </tr>';
+          while ($rc=mysql_fetch_assoc($ec)) {
+            $out.='<tr>
+                    <td>'.$rc['rekKode'].'</td>
+                    <td align="right">'.$rc['nominal'].'</td>
+                    <td>'.$rc['rekNama'].'</td>
+                  </tr>';
+          }$out.='</table>';
+          
+          $out.='<jpgraph 
+            title="Grafik '.$mnu.'" 
+            table="grafikTBL" 
+            type="pie3d" 
+            percent="1"
+            data-col-begin="2" 
+            data-row-begin="2"
+            data-col-end="2"
+            data-row-end="0"
+            show-values="1" 
+            width="700" 
+            height="300" 
+          />';
+        }
+
           $out.='</body>';
           echo $out;
   
@@ -179,6 +228,7 @@
           $out2 = ob_get_contents();
           ob_end_clean(); 
           $mpdf=new mPDF('c','A4','');   
+          $mpdf->useGraphs = true;
           $mpdf->SetDisplayMode('fullpage');   
           $stylesheet = file_get_contents('../../lib/mpdf/r_cetak.css');
           $mpdf->WriteHTML($stylesheet,1);  
@@ -186,8 +236,4 @@
           $mpdf->Output();
     }
   }
-  // ---------------------- //
-  // -- created by epiii -- //
-  // ---------------------- // 
-
 ?>

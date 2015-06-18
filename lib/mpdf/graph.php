@@ -20,7 +20,6 @@ $JpgUseSVGFormat = true;
 	}
 //==============================================================================================================
 // LOAD GRAPHS
-
 	include_once(_JPGRAPH_PATH.'jpgraph.php'); 
 	include_once(_JPGRAPH_PATH.'jpgraph_line.php' ); 
 	include_once(_JPGRAPH_PATH.'jpgraph_log.php' ); 
