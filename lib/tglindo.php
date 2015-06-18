@@ -15,6 +15,19 @@
 	// 	'Dec'=>'12'
 	// ];
 
+	function bln_nama($bln,$neg,$typ){ // (1,'id','c')
+		if ($neg=='id') {
+			if($typ=='c') //long
+				$arr=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+			else //short
+				$arr=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+		}else{
+			if($typ=='c') //long
+				$arr=['January','February','March','April','May','June','July','August','September','October','November','December'];
+			else
+				$arr=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+		}return $arr[$bln-1]; 
+	}
 	function tgl_indo($tgl){
 			$tanggal= substr($tgl,8,2);
 			$bulan 	= getBulan(substr($tgl,5,2));
@@ -69,6 +82,13 @@
 			'Nov'=>'11',
 			'Dec'=>'12'
 		];return $tanggal.' '.array_search($bulan,$bulanArr).' '.$tahun;
+	}function tgl_indo8($tgl){ //from 2012-05-09 --> 09 September 2012
+		$tahun   =substr($tgl,0,4);
+		$bul     =substr($tgl,5,2);
+		$tanggal =substr($tgl,8,2);
+		$bulan   = bln_nama($bul,'id','c');
+		// var_dump($bulan);exit();
+		return $tanggal.' '.$bulan.' '.$tahun;
 	}function getBulan2($b){
 		$blnArr=[
 			'Jan'=>'01',
