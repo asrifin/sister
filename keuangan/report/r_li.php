@@ -82,7 +82,7 @@
                       <td align="right"> Total : '.$n.' Data</td>
                     </tr>
                   </table>';
-        
+            $out.='<br /><b>Data Detail :</b>';
             $nox = 1;
             $out.='<table class="isi" width="100%">
                     <tr class="head">
@@ -192,7 +192,8 @@
                   r.replid';
               // var_dump($sc);exit();
           $ec= mysql_query($sc);
-          $out.='<br />Akumulatif <table class="isi" id="grafikTBL">
+          $out.='<br /><b>Data Akumulatif :</b>';
+          $out.='<table class="isi" id="grafikTBL">
                 <tr class="head">
                   <td>Kode Akun</td>
                   <td>(Nominal)</td>
