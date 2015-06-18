@@ -20,7 +20,7 @@
 		$s = 'SELECT '.$typ.'
 			  FROM psb_kelompok
 			  WHERE replid ='.$id;
-			  // print_r($s);exit();
+			  // var_dump($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r[$typ];

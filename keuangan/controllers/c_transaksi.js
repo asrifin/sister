@@ -18,7 +18,7 @@ var detilanggaranArr=rekArr=[];
             autoSuggest('','li_rekening','','');
         });
 
-        //print ---
+    //print ---
         $('#ju_cetakBC').on('click',function(){
             printPDF('ju');
         });
@@ -40,13 +40,14 @@ var detilanggaranArr=rekArr=[];
         $('#optionBC').on('click',function(){
             $('#optionPN').toggle('slow');
         });
-        $('#hari_iniBC').on('click',function(){
+        // set default tanggal hari ini 
+        $('#hari_iniBC').on('click',function(){ //tgl
             $('#tgl1TB,#tgl2TB').val(getToday());
-        });
-        $('#bulan_iniBC').on('click',function(){
+        });$('#bulan_iniBC').on('click',function(){ //bln
             $('#tgl1TB').val(getFirstDate());
             $('#tgl2TB').val(getLastDate());
         });
+
     //form content
         contentFR +='<form style="overflow:scroll;height:700px;" autocomplete="off" onsubmit="transSV(this); return false;">'
                         // hidden input
@@ -189,14 +190,14 @@ var detilanggaranArr=rekArr=[];
                 if(item.kategori=='o'){ // operasional
                     outO+='<li style="padding-left:20px;">'
                             +'<label>'
-                                +'<input name="jenisLaporanCB[]" xclass="li_cari" value="'+item.idrekening+'" onchange="viewTB(\'li\');" checked="checked" type="checkbox"> '
+                                +'<input name="jenisLaporanCB[]" class="jenisLaporanCB" value="'+item.idrekening+'" onchange="viewTB(\'li\');" checked="checked" type="checkbox"> '
                                     +item.rekening+''
                             +'</label>'
                         +'</li>';
                 }else{ // non operasional
                     outN+='<li style="padding-left:20px;">'
                             +'<label>'
-                                +'<input name="jenisLaporanCB[]" xclass="li_cari" value="'+item.idrekening+'" onchange="viewTB(\'li\');" checked="checked" type="checkbox"> '
+                                +'<input name="jenisLaporanCB[]" class="jenisLaporanCB" value="'+item.idrekening+'" onchange="viewTB(\'li\');" checked="checked" type="checkbox"> '
                                     +item.rekening+''
                             +'</label>'
                         +'</li>';
@@ -225,24 +226,21 @@ var detilanggaranArr=rekArr=[];
                     tok+=$(this).val();
                 } 
             });
-        }
-        // if(mn!='kwitansi'){ // bukan kwitansi
-            // par+='&tgl1TB='+$('#tgl1TB').val()+'&tgl2TB='+$('#tgl2TB').val();
-            // tok+=$('#tgl1TB').val()+$('#tgl2TB').val();
-        // }else if(mn==){
-        if(mn=='li'){
-            
-        }else{ // mn == kwitansi
-            par+='&jenistrans='+$('#subaksiH').val();
-            c = $('.rekTR').length;
-            par+='&countx='+c;
-            tok+=$('#subaksiH').val()+c;
+        }else if(mn=='li'){
+            var opt = $('form#filterFR2').serialize();
+            $('.jenisLaporanCB').each(function(id,item){
+                if($(this).is(':checked')){
+                    par+='&'+$(this).attr('name')+'='+$(this).val();
+                    tok+=$(this).val();
+                } 
+            });
         }
         var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
-        console.log('berfore encypt='+x+tok);
-        console.log('token ='+token);
+        console.log('mn  ='+mn);
         console.log('par  ='+par);
+        console.log('token berfore='+x+tok);
+        console.log('token after='+token);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 

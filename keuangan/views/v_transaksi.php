@@ -84,10 +84,10 @@
                     <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
                     </button>
-<!--                     <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
- -->
+
                     <div class="span3 place-right input-control checkbox" >
                         <label>
                             <input checked="checked" id="ju_detiljurnalCB" type="checkbox" />
