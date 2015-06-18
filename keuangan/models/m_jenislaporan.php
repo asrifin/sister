@@ -128,7 +128,9 @@
 							j.jenis LIKE "%'.$jenis.'%" AND 
 							j.kategori LIKE "%'.$kategori.'%"
 						ORDER BY	
-							j.jenis ASC';
+							j.jenis ASC,	
+							j.kategori ASC,
+							r.kode ASC';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
