@@ -10,20 +10,32 @@
 _________________________  transact  ___________________________
 
 * transaksi (P)
-	- pemasukkan 
-	+ submenu : jurnal_umum 
-	+ jurnal umum : form edit : autosuggest tidak aktif
-	+ jurnal umum : button edit blum aktif
-	+ report : buku besar : saldo rekening (sementara) @akun
+	- all menu  :untuk yg tidak aktif --> warna tetap berwarna ,hanya ada alert(tidak diizinkan akses)
+	- menu Kategori Modul : aktifkan hak akses (admin VS operator) ??
+	- menu COA : tidak belum ada icon ??
+	- menu pendanaan - aktivitas pidah ke --> inventory (masukkan ke tab)
+	* pengeluaran :
+		- edit : data (header & detail) tidak tampil di form (ambiledit)
+		- add : print kwitansi hanya tampil 1, walupun input lebih dr 1 data transaksi    
+	* pemasukkan :
+		- edit : cetak kwitansi tidak muncul setelah update-data  
+	* jurnal umum 
+		+ form edit : autosuggest tidak aktif 
+		+ button edit blum aktif
+		- report : data detail tidak muncul & nominal = 0
+		- edit : setelah update (item rek > 2), print kwitansi : detail tidak terisi (item : kosong && nominal : 0)   
 	* report :
-		- jurnal umum 	:  print 
+		- jurnal umum 	:  print & rename tab (jurnal umum --> jurnal)
 		- neraca saldo 	:  report & print & filter (tgl+jenis Trans) 
-		- buku besar 	:  report & print & filter (tgl+jenis Trans)
+		* buku besar 	:  
+			+ report : buku besar : saldo rekening (sementara) @akun
+			- report & print & filter (tgl+jenis Trans)
 		- neraca lajur 	:  report & print & filter (tgl+jenis Trans)
 		- laba/ rugi 	:  report & print & filter (tgl+jenis Trans)
 		- lap. neraca 	:  report & print & filter (tgl+jenis Trans)
 		- kas / bank 	:  report & print & filter (tgl+jenis Trans)
 		- buku tambahan	:  report & print & filter (tgl+jenis Trans)
+		- penerimaan & pengeluaran	:  jika kosong / belum ada data transaksi : print grafik eror (tidak bisa buka PDF)
 * modul pembayaran(C)
 	+ kode rekening (perlu dibuatkan tabel detilmodulpembayaran kah=> rekening multi (pendatpaan, kas, piutang) )
 * pembayaran pendaftaran(C)
@@ -34,7 +46,8 @@ _________________________  transact  ___________________________
 _____________________________________________________
 	+ Rincian nominal pembayaran uang sekolah dan uang pangkal
 * inventory(P)
-	- ALL
+	+ aktivitas-sarpras
+	- inventaris  
 ________________________   master  ____________________________
 
 * tahun buku (P)

@@ -74,7 +74,7 @@
                     <tr>
                       <td>Tahun Ajaran</td>
                       <td>: '.($tahunajaran==''?'Semua':getTahunajaran('tahunajaran',$tahunajaran)).'</td>
-                      <td align="right">Bulan : '.($_GET['li_bulanS']==''?'Semua':$_GET['li_bulanS']).'</td>
+                      <td align="right">Bulan : '.($_GET['li_bulanS']==''?'Semua':bln_nama($_GET['li_bulanS'],'id','c').' \''.substr($_GET['li_tahunS'],2)).'</td>
                     </tr>
                     <tr>
                       <td>Tingkat</td>
@@ -99,14 +99,6 @@
               </tr>';
             }else{
               while ($r=mysql_fetch_assoc($e)) {
-                $jDetTrans = getDetJenisTrans('jenistrans','replid',$r['detjenistrans']);
-                $jTrans    = getJenisTrans('kode',$jDetTrans);
-                if($jTrans=='ju'){
-                  $j='ju';
-                }else{
-                  $j=$jTrans.'_come';
-                }
-              
                 $s2 = ' SELECT replid,rek,nominal,jenis
                         FROM keu_jurnal 
                         WHERE 
@@ -127,8 +119,8 @@
                       $kredit =$r2['rek']==$r['rekitem']?$r['nominal']:0;
                       $tb2.='<tr>
                               <td>'.getRekening($r2['rek']).'</td>
-                              <td class="text-right">Rp. '.number_format($debit).',-</td>
-                              <td class="text-right">Rp. '.number_format($kredit).',-</td>
+                              <td align="right">Rp. '.number_format($debit).',-</td>
+                              <td align="right">Rp. '.number_format($kredit).',-</td>
                             </tr>';
                     }$tb2.='</table>';
                 }
@@ -188,24 +180,33 @@
                   LEFT JOIN  keu_transaksi t ON t.rekitem = r.replid
                 WHERE
                   r.replid IN ('.$rekArr.')
+                  '.$bulan.$tahun.'
                 GROUP BY
                   r.replid';
-              // var_dump($sc);exit();
+              // print_r($sc);exit();
           $ec= mysql_query($sc);
           $out.='<br /><b>Data Akumulatif :</b>';
           $out.='<table class="isi" id="grafikTBL">
                 <tr class="head">
-                  <td>Kode Akun</td>
-                  <td>(Nominal)</td>
-                  <td>Nama Akun</td>
+                  <td align="center">Kode Akun</td>
+                  <td align="center">(Nominal)</td>
+                  <td align="center">Nama Akun</td>
                 </tr>';
+          $tot=0;
           while ($rc=mysql_fetch_assoc($ec)) {
             $out.='<tr>
-                    <td>'.$rc['rekKode'].'</td>
+                    <td align="center">'.$rc['rekKode'].'</td>
                     <td align="right">'.$rc['nominal'].'</td>
                     <td>'.$rc['rekNama'].'</td>
                   </tr>';
-          }$out.='</table>';
+            $tot+=$rc['nominal'];
+          }
+          $out.='<tr class="head">
+                  <td  align="right">Total : </td>
+                  <td align="right">Rp. '.number_format($tot).'</td>
+                  <td></td>
+                </tr>';
+          $out.='</table><br />';
           
           $out.='<jpgraph 
             title="Grafik '.$mnu.'" 
@@ -215,7 +216,7 @@
             data-col-begin="2" 
             data-row-begin="2"
             data-col-end="2"
-            data-row-end="0"
+            data-row-end="-1"
             show-values="1" 
             width="700" 
             height="300" 
