@@ -259,21 +259,11 @@
                         <ul class="treeview" data-role="treeview">
                             <li class="node">
                                 <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Operasional</a>
-                                <ul id="operUL">
-                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="spp" name="liTB[]" checked type="checkbox"> SPP </label></li> -->
-                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="gac" name="liTB[]" checked type="checkbox"> GAC</label></li> -->
-                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="joining" name="liTB[]" checked type="checkbox"> Dana Joining Fee Siswa Baru</label></li> -->
-                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="denda keterlambatan" name="liTB[]" checked type="checkbox"> Denda Keterlambatan Uang sekolah</label></li> -->
-                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="pendapatan bunga bank" name="liTB[]" checked type="checkbox"> Bunga Bank</label></li> -->
-                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="titipan tunjangan hamba tuhan" name="liTB[]" checked type="checkbox"> Titipan Tunjangan Hamba Tuhan</label></li> -->
-                                </ul>
+                                <ul id="operUL"></ul>
                             </li>
                             <li class="node">
                                 <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Non Operasional</a>
-                                <ul id="nonOperUL">
-                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="dpp" name="lilTB[]" checked type="checkbox"> DPP</label></li> -->
-                                    <!-- <li><label><input class="li_cari" onchange="loadLi();" value="" name="lilTB[]" checked type="checkbox"> lainnya</label></li> -->
-                                </ul>
+                                <ul id="nonOperUL"></ul>
                             </li>
                         </ul>
                     </form>
@@ -285,21 +275,6 @@
                                 <th class="text-center">No. Jurnal/Jenis Bukti/No.Bukti</th>
                                 <th class="text-center">Uraian</th>
                                 <th style="display:visible;"class="text-center  uraianCOL">Detil Jurnal</th>
-                            </tr>
-                            <tr style="display:none;" id="liTR" class="info">
-                                <th class="text-center"></th>
-                                <th class="text-center">
-                                    <div class="input-control text">
-                                        <input class="li_cari" placeholder="cari ..." id="li_noS">
-                                    </div>
-                                </th>
-                                <th class="text-center">
-                                    <div class="input-control text">
-                                        <input class="li_cari" placeholder="cari ..." id="li_uraianS" >
-                                    </div>
-                                </th>
-                                <th style="display:visible;"class="text-center uraianCOL"></th>
-                                <th class="text-center"></th>
                             </tr>
                         </thead>
 

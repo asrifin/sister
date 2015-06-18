@@ -189,14 +189,14 @@ var detilanggaranArr=rekArr=[];
                 if(item.kategori=='o'){ // operasional
                     outO+='<li style="padding-left:20px;">'
                             +'<label>'
-                                +'<input class="jenisLaporanCB" value="'+item.idrekening+'" onchange="viewTB(\'li\');" name="jenisLaporanCB[]" checked="checked" type="checkbox"> '
+                                +'<input name="jenisLaporanCB[]" xclass="li_cari" value="'+item.idrekening+'" onchange="viewTB(\'li\');" checked="checked" type="checkbox"> '
                                     +item.rekening+''
                             +'</label>'
                         +'</li>';
                 }else{ // non operasional
                     outN+='<li style="padding-left:20px;">'
                             +'<label>'
-                                +'<input class="jenisLaporanCB" value="'+item.idrekening+'" onchange="viewTB(\'li\');" name="jenisLaporanCB[]" checked="checked" type="checkbox"> '
+                                +'<input name="jenisLaporanCB[]" xclass="li_cari" value="'+item.idrekening+'" onchange="viewTB(\'li\');" checked="checked" type="checkbox"> '
                                     +item.rekening+''
                             +'</label>'
                         +'</li>';
@@ -226,9 +226,12 @@ var detilanggaranArr=rekArr=[];
                 } 
             });
         }
-        if(mn!='kwitansi'){ // bukan kwitansi
+        // if(mn!='kwitansi'){ // bukan kwitansi
             // par+='&tgl1TB='+$('#tgl1TB').val()+'&tgl2TB='+$('#tgl2TB').val();
             // tok+=$('#tgl1TB').val()+$('#tgl2TB').val();
+        // }else if(mn==){
+        if(mn=='li'){
+            
         }else{ // mn == kwitansi
             par+='&jenistrans='+$('#subaksiH').val();
             c = $('.rekTR').length;
@@ -239,6 +242,7 @@ var detilanggaranArr=rekArr=[];
         var token = encode64(x+tok);
         console.log('berfore encypt='+x+tok);
         console.log('token ='+token);
+        console.log('par  ='+par);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 
@@ -330,8 +334,9 @@ var detilanggaranArr=rekArr=[];
         cari+='&'+opt;
 
         //filter chekcbox penerimaan+pengeluaran 
-        var opt2 = $('#filterFR2').serialize();
+        var opt2 = $('form#filterFR2').serialize();
         cari+='&'+opt2;
+        console.log(opt2);
 
         $.ajax({
             url : dir,

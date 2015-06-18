@@ -9,6 +9,7 @@
   $pre = 'joiningf_';
   $x     = $_SESSION['id_loginS'].$_GET[$pre.'nopendaftaranS'].$_GET[$pre.'namaS'].$_GET[$pre.'statusS'].$_GET['kelompokS'];
   $token = base64_encode($x);
+  print_r($_POST);exit();
   // var_dump($token);exit();
   // var_dump($$_GET['token']);exit();
 
