@@ -27,10 +27,10 @@ $admin .= '<script type="text/javascript" language="javascript">
 
 if ($_GET['aksi'] == 'hapus' && is_numeric($_GET['id'])){
 	$id = int_filter ($_GET['id']);
-$s = mysql_query ("SELECT * FROM `pos_useraura` WHERE `UserId`='$id'");	
+$s = mysql_query ("SELECT * FROM `po_useraura` WHERE `UserId`='$id'");	
 $data = mysql_fetch_array($s);
 $user = $data['user'];	
-$hapus = mysql_query ("DELETE FROM `pos_useraura` WHERE `UserId`='$id' AND `user`!='admin'");	
+$hapus = mysql_query ("DELETE FROM `po_useraura` WHERE `UserId`='$id' AND `user`!='admin'");	
 if ($hapus){
 $admin.='<div class="sukses">Data Berhasil Dihapus Dengan ID = '.$id.'</div>';	
 }else {
@@ -44,11 +44,11 @@ if (isset ($_POST['edit_users']) && is_numeric($_GET['id'])){
 	$tipe = $_POST['tipe'];
 	$email	      = text_filter($_POST['email']);
 if (!is_valid_email($email)) $error .= "Error, E-Mail address invalid!<br />";
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT email FROM useraura WHERE email='$email' and UserId!='$id'")) > 0) $error .= "Error: Email ".$email." sudah terdaftar , silahkan ulangi.<br />";
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT email FROM po_useraura WHERE email='$email' and UserId!='$id'")) > 0) $error .= "Error: Email ".$email." sudah terdaftar , silahkan ulangi.<br />";
 if ($error) {
 $admin.='<div class="error">'.$error.'</div>';
 } else {
-$up = mysql_query ("UPDATE `pos_useraura` SET `level`='$level',`tipe`='$tipe',`email`='$email' WHERE `UserId`='$id' AND `user`!='admin'");	
+$up = mysql_query ("UPDATE `po_useraura` SET `level`='$level',`tipe`='$tipe',`email`='$email' WHERE `UserId`='$id' AND `user`!='admin'");	
 $admin.='<div class="sukses">Data Berhasil Diupdate Dengan ID = '.$id.'</div>';	
 }
 }
@@ -72,18 +72,18 @@ if (empty($_POST['password']))  $error .= "Error: Formulir Password belum diisi 
 if (!$user || preg_match("/[^a-zA-Z0-9_-]/", $user)) $error .= "Error: Karakter Username tidak diizinkan kecuali a-z,A-Z,0-9,-, dan _<br />";
 if (strlen($user) > 20) $error .= "Username Terlalu Panjang Maksimal 20 Karakter<br />";
 if (strrpos($user, " ") > 0) $error .= "Username Tidak Boleh Menggunakan Spasi";
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT user FROM pos_useraura WHERE user='$user'")) > 0) $error .= "Error: Username ".$user." sudah terdaftar , silahkan ulangi.<br />";
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT email FROM pos_useraura WHERE email='$email'")) > 0) $error .= "Error: Email ".$email." sudah terdaftar , silahkan ulangi.<br />";
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT user FROM po_useraura WHERE user='$user'")) > 0) $error .= "Error: Username ".$user." sudah terdaftar , silahkan ulangi.<br />";
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT email FROM po_useraura WHERE email='$email'")) > 0) $error .= "Error: Email ".$email." sudah terdaftar , silahkan ulangi.<br />";
 if (!is_valid_email($email)) $error .= "Error: E-Mail address invalid!<br />";
 if ($error){
         $admin.='<div class="error">'.$error.'</div>';
 }else{
-$query = mysql_query ("INSERT INTO `pos_useraura` (`user`,`password`,`level`,`tipe`,`email`) VALUES ('$user',md5('$password'),'$level','$tipe','$email')");	
+$query = mysql_query ("INSERT INTO `po_useraura` (`user`,`password`,`level`,`tipe`,`email`) VALUES ('$user',md5('$password'),'$level','$tipe','$email')");	
 $admin .= '<div class="sukses">Data : '.$user.',Berhasil Di add</div>';
 }
 }	
 
-$ss = mysql_query ("SHOW FIELDS FROM pos_useraura");
+$ss = mysql_query ("SHOW FIELDS FROM po_useraura");
 while ($as = mysql_fetch_array ($ss)){
 $arrs = $as['Type'];
 if (substr($arrs,0,4) == 'enum' && $as['Field'] == 'level') break;
@@ -160,13 +160,13 @@ $admin .= '</div>';
 if ($_GET['aksi'] == 'edit_user'){
 global $qss;
 $id = int_filter($_GET['id']);
-$s = mysql_query ("SELECT * FROM `pos_useraura` WHERE `UserId`='$id'");	
+$s = mysql_query ("SELECT * FROM `po_useraura` WHERE `UserId`='$id'");	
 $data = mysql_fetch_array($s);
 $user = $data['user'];	
 $level = $data['level'];	
 $tipe = $data['tipe'];
 $email = $data['email'];
-$ss = mysql_query ("SHOW FIELDS FROM pos_useraura");
+$ss = mysql_query ("SHOW FIELDS FROM po_useraura");
 while ($as = mysql_fetch_array ($ss)){
 	 $arrs = $as['Type'];
 if (substr($arrs,0,4) == 'enum' && $as['Field'] == 'level') break;
@@ -247,7 +247,7 @@ if ($error){
 $admin.='<div class="error">'.$error.'</div>';
 }
 if ($pcheck)  $sukses .= "Sukses: user dengan UserId $pcheck  Telah di hapus !<br />";
-$koneksi_db->sql_query("DELETE FROM pos_useraura WHERE UserId in($pcheck)");
+$koneksi_db->sql_query("DELETE FROM po_useraura WHERE UserId in($pcheck)");
 if ($sukses){
 $admin.='<div class="sukses">'.$sukses.'</div>';
 }
@@ -271,9 +271,9 @@ $offset = int_filter(@$_GET['offset']);
 $pg		= int_filter(@$_GET['pg']);
 $stg	= int_filter(@$_GET['stg']);
 if($search){
-$query = $koneksi_db->sql_query("SELECT count(user) as t FROM `pos_useraura` WHERE user like '%$search%' or email like '%$search%'");
+$query = $koneksi_db->sql_query("SELECT count(user) as t FROM `po_useraura` WHERE user like '%$search%' or email like '%$search%'");
 }else{
-$query = $koneksi_db->sql_query("SELECT count(user) as t FROM `pos_useraura` where user<>'superadmin'");
+$query = $koneksi_db->sql_query("SELECT count(user) as t FROM `po_useraura` where user<>'superadmin'");
 }
 $rows = mysql_fetch_row ($query);
 $jumlah = $rows[0];
@@ -282,9 +282,9 @@ $limit = 25;
 $a = new paging ($limit);
 if ($jumlah > 0){
 if($search){
-$q = mysql_query ("SELECT * FROM `pos_useraura` WHERE user like '%$search%' or email like '%$search%' LIMIT $offset,$limit");
+$q = mysql_query ("SELECT * FROM `po_useraura` WHERE user like '%$search%' or email like '%$search%' LIMIT $offset,$limit");
 }else{
-$q = mysql_query ("SELECT * FROM `pos_useraura` where user<>'superadmin' LIMIT $offset,$limit");
+$q = mysql_query ("SELECT * FROM `po_useraura` where user<>'superadmin' LIMIT $offset,$limit");
 }
 if($offset){
 $no = $offset+1;
