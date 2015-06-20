@@ -99,7 +99,7 @@ $admin.='<form method="post" action="#">
   <tr>
     <td style="width:75px; padding:5px;">Username</td>
     <td style="width:10px; padding:5px;">:</td>
-    <td style="padding:5px;"><input type="text" name="user" size="20" class="form-control"autofocus></td>
+    <td style="padding:5px;"><input type="text" name="user" size="20" class="form-control"></td>
   </tr> 
   <tr>
     <td style="padding:5px;">Password</td>
