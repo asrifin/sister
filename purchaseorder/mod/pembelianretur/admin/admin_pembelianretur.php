@@ -56,7 +56,7 @@ $script_include[] = $JS_SCRIPT;
 	$admin  .= '<div class="border2">
 <table  width="25%"><tr align="center">
 <td>
-<a href="admin.php?pilih=pembelianretur&mod=yes">HOME</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=pembelianretur&mod=yes">RETUR PEMBELIAN</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=pembelianretur&mod=yes&aksi=cetak">CETAK RETUR PEMBELIAN</a>&nbsp;&nbsp;
@@ -135,16 +135,17 @@ $termin = $data3['termin'];
 $_SESSION['kodesupplier']=$kodesupplier;	  
 $hasil =  $koneksi_db->sql_query( "SELECT * FROM po_pembeliandetail WHERE noinvoice='$_SESSION[kodeinv]'" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$noinvoice=$data['noinvoice'];
 $kode=$data['kodebarang'];
 $jumlah=$data['jumlah'];
 $harga=$data['harga'];
 $subdiscount=$data['subdiscount'];
 $subtotal=$data['subtotal'];
-$hasil2 =  $koneksi_db->sql_query( "SELECT * FROM po_produk WHERE kode='$kode'" );
+$hasil2 =  $koneksi_db->sql_query( "SELECT * FROM sar_katalog WHERE replid='$kode'" );
 $data2 = $koneksi_db->sql_fetchrow($hasil2);
 $id=$data2['id'];
-$jenjang=$data2['jenjang'];
-$getstokminusreturbeli = getstokminusreturbeli($_SESSION['kodeinv'],$kode);
+$getstokminusreturbeli = $jumlah-cekjumreturbeli($noinvoice,$kode);
+$subtotal=$getstokminusreturbeli*$harga;
 $PRODUCTID = array ();
 foreach ($_SESSION['product_id'] as $k=>$v){
 $PRODUCTID[] = $_SESSION['product_id'][$k]['kode'];
@@ -155,7 +156,7 @@ $_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode, 'jumlah' => $get
 foreach ($_SESSION['product_id'] as $k=>$v){
 if($kode == $_SESSION['product_id'][$k]['kode'])
 	{
-$_SESSION['product_id'][$k]['jumlah'] = $getstokminusreturbeli;
+$_SESSION['product_id'][$k]['jumlah'] = $_SESSION['product_id'][$k]['jumlah'];
     }
 }
 }
@@ -188,7 +189,7 @@ unset($_SESSION['product_id'][$k]);
     }
 }
 }
-
+/*
 if(isset($_POST['editjumlah'])){
 $kode 		= $_POST['kode'];
 $jumlahbeli = $_POST['jumlahbeli'];
@@ -203,6 +204,23 @@ $_SESSION['product_id'][$k]['jumlah']=$jumlahbeli;
 $_SESSION['product_id'][$k]['subtotal'] = $jumlahbeli*($_SESSION['product_id'][$k]['harga']-$nilaidiscount);
 		}
 }
+}
+*/
+if(isset($_POST['simpandetail'])){
+foreach ($_SESSION['product_id'] as $k=>$v){
+if (($_POST['jumlahbeliasli'][$k]<$_POST['jumlahbeli'][$k])or($_POST['jumlahbeli'][$k]<'0')) $error .= "Error: Jumlah tidak sesuai , silahkan ulangi.<br />";
+if ($error){
+$admin .= '<div class="error">'.$error.'</div>';
+}else{
+$_SESSION['product_id'][$k]['subdiscount']=$_POST['subdiscount'][$k];
+$_SESSION['product_id'][$k]['jumlah']=$_POST['jumlahbeli'][$k];
+$_SESSION['product_id'][$k]['harga']=$_POST['harga'][$k];
+$_SESSION['product_id'][$k]['jumlahbeliasli']=$_POST['jumlahbeliasli'][$k];
+$nilaidiscount=cekdiscount($_SESSION['product_id'][$k]['subdiscount'],$_SESSION['product_id'][$k]['harga']);
+$_SESSION['product_id'][$k]['subtotal'] =$_SESSION['product_id'][$k]['jumlah']*($_SESSION['product_id'][$k]['harga']-$nilaidiscount);
+}
+}
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=pembelianretur&mod=yes" />';
 }
 
 if(isset($_POST['tambahbarang'])){
@@ -331,6 +349,7 @@ $admin .= '
 	if ($_GET['editdetail']){
 foreach ($_SESSION["product_id"] as $cart_itm)
         {
+$array =$no-1;
 $nilaidiscount=cekdiscount($cart_itm["subdiscount"],$cart_itm["harga"]);
 $admin .= '
 <form method="post" action="" class="form-inline"id="posts">';
@@ -339,26 +358,26 @@ $admin .= '
 			<td>'.$no.'</td>
 			<td>'.$cart_itm["kode"].'</td>
 		<td>'.getnamabarang($cart_itm["kode"]).'</td>
-		<td><input align="right" type="text" name="jumlahbeli" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
+		<td><input align="right" type="text" name="jumlahbeli['.$array.']" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
 		<td>'.$cart_itm["harga"].'</td>
-		<td><input align="right" type="text" name="subdiscount" value="'.$cart_itm["subdiscount"].'"class="form-control"></td>
+		<td><input align="right" type="text" name="subdiscount['.$array.']" value="'.$cart_itm["subdiscount"].'"class="form-control"></td>
 	<td>'.$nilaidiscount.'</td>
 		<td>'.$cart_itm["subtotal"].'</td>
 		<td>
-		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'">
-		<input type="submit" value="EDIT" name="editjumlah"class="btn btn-warning" >
-		<input type="submit" value="HAPUS" name="hapusbarang"class="btn btn-danger"></td>
+		<input type="hidden" name="harga['.$array.']" value="'.$cart_itm["harga"].'">
+<input type="hidden" name="jumlahbeliasli['.$array.']" value="'.$cart_itm["jumlah"].'">
+		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'"></td>
 	</tr>';
-$admin .= '
-</form>';
 	$total +=$cart_itm["subtotal"];
 	$no++;
 		}
 $admin .= '	
 	<tr>
 		<td colspan="8" ></td>
-		<td ><a href="./admin.php?pilih=pembelianretur&mod=yes" class="btn btn-success">Simpan Detail</a></td>
+		<td ><input type="submit" value="SIMPAN" name="simpandetail"class="btn btn-warning" ></td>
 	</tr>';
+	$admin .= '
+</form>';
 	}else{
 foreach ($_SESSION["product_id"] as $cart_itm)
         {
@@ -368,9 +387,9 @@ $admin .= '
 			<td>'.$no.'</td>
 			<td>'.$cart_itm["kode"].'</td>
 		<td>'.getnamabarang($cart_itm["kode"]).'</td>
-		<td><input align="right" type="text" name="jumlahbeli" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
+		<td>'.$cart_itm["jumlah"].'</td>
 		<td>'.$cart_itm["harga"].'</td>
-		<td><input align="right" type="text" name="subdiscount" value="'.$cart_itm["subdiscount"].'"class="form-control"></td>
+		<td>'.$cart_itm["subdiscount"].'</td>
 	<td>'.$nilaidiscount.'</td>
 		<td>'.$cart_itm["subtotal"].'</td>
 		<td>
@@ -395,13 +414,18 @@ $admin .= '
 		<td ><input type="text" name="total" id="total"   class="form-control"  value="'.$_SESSION['totalretur'].'"/></td>
 		<td></td>
 	</tr>';
-
+	if ($_GET['editdetail']){
+$admin .= '
+<tr><td colspan="7"></td>
+<td></td></tr>';
+	}else{
 $admin .= '<tr><td colspan="7"></td><td align="right"></td>
 		<td><input type="hidden" name="user" value="'.$user.'">
 		<input type="submit" value="Batal" name="batalbeliretur"class="btn btn-danger" >
 		<input type="submit" value="Simpan" name="submitpembelianretur"class="btn btn-success" >
 		</td>
 		<td></td></tr>';
+		}
 $admin .= '</table></form>';	
 $admin .='</div>';
 	}

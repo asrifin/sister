@@ -163,6 +163,7 @@ unset($_SESSION['product_id'][$k]);
     }
 }
 }
+
 /*
 if(isset($_POST['editjumlah'])){
 $kode 		= $_POST['kode'];
