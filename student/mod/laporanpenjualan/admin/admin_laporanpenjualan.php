@@ -57,8 +57,10 @@ forced_root_block : false,
 </script>
 
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />';
+$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />
+<link rel="stylesheet" href="mod/penjualan/style.css" />';
 $admin .= '
+<script type="text/javascript" src="mod/penjualan/script.js"></script>
 <script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
 <script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
 $wktmulai = <<<eof
@@ -147,6 +149,12 @@ $admin .= '
 	</tr>';
 $admin .= '
 	<tr>
+		<td width="200px">Customer</td>
+		<td><div class="input_container"><input type="text" id="country_id"  name="kodecustomer" value="'.$kodecustomer.'" onkeyup="autocomplet()"class="form-control" required >
+                    <ul id="country_list_id"></ul></div></td>
+	</tr>';
+$admin .= '
+	<tr>
 		<td width="200px">Cara Bayar</td>
 		<td>'.$sel.'	
 		</td>
@@ -172,6 +180,12 @@ $admin .= '
 	<tr>
 		<td width="200px">Tanggal Akhir</td>
 		<td><input type="text" name="tglakhir" value="'.$tglakhir.'" class="form-control">&nbsp;'.$wktakhir.'</td>
+	</tr>';
+$admin .= '
+	<tr>
+		<td width="200px">Customer</td>
+		<td><div class="input_container"><input type="text" id="country_id"  name="kodecustomer" value="'.$kodecustomer.'" onkeyup="autocomplet()"class="form-control" required >
+                    <ul id="country_list_id"></ul></div></td>
 	</tr>';
 $admin .= '
 	<tr>
