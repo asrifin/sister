@@ -50,17 +50,18 @@
                       </tr>
                     </table><br />';
 
+          $rekArr='';
           if(isset($_GET['jenisLaporanCB']) && count($_GET['jenisLaporanCB']>0)){
             $c = count($_GET['jenisLaporanCB'])-1;
-            $rekArr.='rekitem IN ( ';
+            $ss.='rekitem IN ( ';
             foreach ($_GET['jenisLaporanCB'] as $i => $v) {
               if($i==$c) $rekArr.=$v;
               else $rekArr.=$v.',';
-            }$rekArr.=')';
+            }$ss.=$rekArr.')';
           
             $s='SELECT t.*
               FROM keu_transaksi t
-              WHERE '.$rekArr.$tahun.$bulan.'
+              WHERE '.$ss.$tahun.$bulan.'
               ORDER BY t.tanggal ASC';
             $e = mysql_query($s) or die(mysql_error());
             $n = mysql_num_rows($e);
@@ -73,7 +74,7 @@
                     <tr>
                       <td>Tahun Ajaran</td>
                       <td>: '.($tahunajaran==''?'Semua':getTahunajaran('tahunajaran',$tahunajaran)).'</td>
-                      <td align="right">Bulan : '.($_GET['li_bulanS']==''?'Semua':$_GET['li_bulanS']).'</td>
+                      <td align="right">Bulan : '.($_GET['li_bulanS']==''?'Semua':bln_nama($_GET['li_bulanS'],'id','c').' \''.substr($_GET['li_tahunS'],2)).'</td>
                     </tr>
                     <tr>
                       <td>Tingkat</td>
@@ -81,7 +82,7 @@
                       <td align="right"> Total : '.$n.' Data</td>
                     </tr>
                   </table>';
-        
+            $out.='<br /><b>Data Detail :</b>';
             $nox = 1;
             $out.='<table class="isi" width="100%">
                     <tr class="head">
@@ -94,18 +95,10 @@
             $nox = 1;
             if($n==0){
               $out.='<tr>
-                <td colspan="4">.. Kosong ..</td>
+                <td align="center" colspan="4">.. Kosong ..</td>
               </tr>';
             }else{
               while ($r=mysql_fetch_assoc($e)) {
-                $jDetTrans = getDetJenisTrans('jenistrans','replid',$r['detjenistrans']);
-                $jTrans    = getJenisTrans('kode',$jDetTrans);
-                if($jTrans=='ju'){
-                  $j='ju';
-                }else{
-                  $j=$jTrans.'_come';
-                }
-              
                 $s2 = ' SELECT replid,rek,nominal,jenis
                         FROM keu_jurnal 
                         WHERE 
@@ -126,8 +119,8 @@
                       $kredit =$r2['rek']==$r['rekitem']?$r['nominal']:0;
                       $tb2.='<tr>
                               <td>'.getRekening($r2['rek']).'</td>
-                              <td class="text-right">Rp. '.number_format($debit).',-</td>
-                              <td class="text-right">Rp. '.number_format($kredit).',-</td>
+                              <td align="right">Rp. '.number_format($debit).',-</td>
+                              <td align="right">Rp. '.number_format($kredit).',-</td>
                             </tr>';
                     }$tb2.='</table>';
                 }
@@ -172,6 +165,64 @@
               </tr>
             </table>';
           }
+        
+
+        // grafik jpgraph & mpdf
+        if($rekArr!=''){
+          $sc = 'SELECT
+                  r.replid,
+                  concat("(",r.kode,") ",r.nama)rekFull,
+                  r.nama rekNama,
+                  r.kode rekKode,
+                  ifnull(SUM(t.nominal),0)nominal
+                FROM
+                  keu_detilrekening r 
+                  LEFT JOIN  keu_transaksi t ON t.rekitem = r.replid
+                WHERE
+                  r.replid IN ('.$rekArr.')
+                  '.$bulan.$tahun.'
+                GROUP BY
+                  r.replid';
+              // print_r($sc);exit();
+          $ec= mysql_query($sc);
+          $out.='<br /><b>Data Akumulatif :</b>';
+          $out.='<table class="isi" id="grafikTBL">
+                <tr class="head">
+                  <td align="center">Kode Akun</td>
+                  <td align="center">(Nominal)</td>
+                  <td align="center">Nama Akun</td>
+                </tr>';
+          $tot=0;
+          while ($rc=mysql_fetch_assoc($ec)) {
+            $out.='<tr>
+                    <td align="center">'.$rc['rekKode'].'</td>
+                    <td align="right">'.$rc['nominal'].'</td>
+                    <td>'.$rc['rekNama'].'</td>
+                  </tr>';
+            $tot+=$rc['nominal'];
+          }
+          $out.='<tr class="head">
+                  <td  align="right">Total : </td>
+                  <td align="right">Rp. '.number_format($tot).'</td>
+                  <td></td>
+                </tr>';
+          $out.='</table><br />';
+          
+          $out.='<jpgraph 
+            title="Grafik '.$mnu.'" 
+            table="grafikTBL" 
+            type="pie3d" 
+            percent="1"
+            data-col-begin="2" 
+            data-row-begin="2"
+            data-col-end="2"
+            data-row-end="-1"
+            show-values="1" 
+            width="700" 
+            height="300" 
+          />';
+        }
+
           $out.='</body>';
           echo $out;
   
@@ -179,6 +230,7 @@
           $out2 = ob_get_contents();
           ob_end_clean(); 
           $mpdf=new mPDF('c','A4','');   
+          $mpdf->useGraphs = true;
           $mpdf->SetDisplayMode('fullpage');   
           $stylesheet = file_get_contents('../../lib/mpdf/r_cetak.css');
           $mpdf->WriteHTML($stylesheet,1);  
@@ -186,8 +238,4 @@
           $mpdf->Output();
     }
   }
-  // ---------------------- //
-  // -- created by epiii -- //
-  // ---------------------- // 
-
 ?>

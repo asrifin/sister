@@ -24,7 +24,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^kategori-modul/?$			   				index.php?page=katmodulpembayaran
 	RewriteRule   ^modul-pembayaran/?$			   				index.php?page=modulpembayaran
 	RewriteRule   ^penerimaan/?$			   					index.php?page=penerimaan
-	RewriteRule   ^pendanaan-aktivitas/?$	   					index.php?page=aktivitas
+	RewriteRule   ^sarpras/?$	   								index.php?page=sarpras
 	
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 

@@ -44,7 +44,7 @@ if (isset ($_POST['edit_users']) && is_numeric($_GET['id'])){
 	$tipe = $_POST['tipe'];
 	$email	      = text_filter($_POST['email']);
 if (!is_valid_email($email)) $error .= "Error, E-Mail address invalid!<br />";
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT email FROM useraura WHERE email='$email' and UserId!='$id'")) > 0) $error .= "Error: Email ".$email." sudah terdaftar , silahkan ulangi.<br />";
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT email FROM pos_useraura WHERE email='$email' and UserId!='$id'")) > 0) $error .= "Error: Email ".$email." sudah terdaftar , silahkan ulangi.<br />";
 if ($error) {
 $admin.='<div class="error">'.$error.'</div>';
 } else {
@@ -99,7 +99,7 @@ $admin.='<form method="post" action="#">
   <tr>
     <td style="width:75px; padding:5px;">Username</td>
     <td style="width:10px; padding:5px;">:</td>
-    <td style="padding:5px;"><input type="text" name="user" size="20" class="form-control"autofocus></td>
+    <td style="padding:5px;"><input type="text" name="user" size="20" class="form-control"></td>
   </tr> 
   <tr>
     <td style="padding:5px;">Password</td>

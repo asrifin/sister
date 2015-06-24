@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-06-18 10:52:20
+Date: 2015-06-18 20:01:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -88,7 +88,7 @@ CREATE TABLE `keu_detilanggaran` (
   `hargasatuan` double(14,0) NOT NULL DEFAULT '0',
   PRIMARY KEY (`replid`),
   KEY `kategorianggaran` (`kategorianggaran`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_detilanggaran
@@ -96,6 +96,7 @@ CREATE TABLE `keu_detilanggaran` (
 INSERT INTO `keu_detilanggaran` VALUES ('62', '16', 'kertas HVS A4 9', 'printer 9', '10000');
 INSERT INTO `keu_detilanggaran` VALUES ('63', '16', 'sip', 'woke', '130000');
 INSERT INTO `keu_detilanggaran` VALUES ('64', '26', 'pebaikan mobil dinas', 'perawatan rutin', '1000000');
+INSERT INTO `keu_detilanggaran` VALUES ('65', '16', 'ok', '', '350000');
 
 -- ----------------------------
 -- Table structure for keu_detilrekening
@@ -573,7 +574,7 @@ CREATE TABLE `keu_jurnal` (
   `kredit` double(14,0) NOT NULL DEFAULT '0',
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=1229 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1231 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_jurnal
@@ -632,6 +633,8 @@ INSERT INTO `keu_jurnal` VALUES ('1225', '27', '1', '75', 'd', '0', '0', '2015-0
 INSERT INTO `keu_jurnal` VALUES ('1226', '27', '195', '75', 'k', '0', '0', '2015-06-14 03:36:03');
 INSERT INTO `keu_jurnal` VALUES ('1227', '28', '1', '65000', 'd', '0', '0', '2015-06-14 03:37:12');
 INSERT INTO `keu_jurnal` VALUES ('1228', '28', '195', '65000', 'k', '0', '0', '2015-06-14 03:37:12');
+INSERT INTO `keu_jurnal` VALUES ('1229', '29', '4', '900', 'd', '0', '0', '2015-06-18 13:39:26');
+INSERT INTO `keu_jurnal` VALUES ('1230', '29', '5', '900', 'k', '0', '0', '2015-06-18 13:39:26');
 
 -- ----------------------------
 -- Table structure for keu_kategorianggaran
@@ -833,7 +836,7 @@ CREATE TABLE `keu_nominalanggaran` (
   `bulan` int(2) NOT NULL,
   `jml` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=403 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=415 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_nominalanggaran
@@ -874,6 +877,18 @@ INSERT INTO `keu_nominalanggaran` VALUES ('399', '64', '3', '5');
 INSERT INTO `keu_nominalanggaran` VALUES ('400', '64', '4', '5');
 INSERT INTO `keu_nominalanggaran` VALUES ('401', '64', '5', '5');
 INSERT INTO `keu_nominalanggaran` VALUES ('402', '64', '6', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('403', '65', '7', '2');
+INSERT INTO `keu_nominalanggaran` VALUES ('404', '65', '8', '3');
+INSERT INTO `keu_nominalanggaran` VALUES ('405', '65', '9', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('406', '65', '10', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('407', '65', '11', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('408', '65', '12', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('409', '65', '1', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('410', '65', '2', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('411', '65', '3', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('412', '65', '4', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('413', '65', '5', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('414', '65', '6', '0');
 
 -- ----------------------------
 -- Table structure for keu_pembayaran
@@ -1327,8 +1342,8 @@ CREATE TABLE `keu_saldorekening` (
 INSERT INTO `keu_saldorekening` VALUES ('155', '1', '1', '100000', '36085075');
 INSERT INTO `keu_saldorekening` VALUES ('156', '2', '1', '100000', '20000');
 INSERT INTO `keu_saldorekening` VALUES ('157', '3', '1', '100000', '50000');
-INSERT INTO `keu_saldorekening` VALUES ('158', '4', '1', '100000', '100000');
-INSERT INTO `keu_saldorekening` VALUES ('159', '5', '1', '100000', '100000');
+INSERT INTO `keu_saldorekening` VALUES ('158', '4', '1', '100000', '100900');
+INSERT INTO `keu_saldorekening` VALUES ('159', '5', '1', '100000', '99100');
 INSERT INTO `keu_saldorekening` VALUES ('160', '6', '1', '100000', '65000');
 INSERT INTO `keu_saldorekening` VALUES ('161', '7', '1', '100000', '100000');
 INSERT INTO `keu_saldorekening` VALUES ('162', '8', '1', '100000', '100000');
@@ -1710,7 +1725,7 @@ CREATE TABLE `keu_transaksi` (
   `detilanggaran` int(10) NOT NULL,
   `isPO` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_transaksi
@@ -1741,3 +1756,4 @@ INSERT INTO `keu_transaksi` VALUES ('25', '1', 'BKK-0025/06/2015', 'INV180515000
 INSERT INTO `keu_transaksi` VALUES ('26', '1', 'BKK-0026/06/2015', 'INV1805150001', '2015-06-13', '16', '277', '80000', 'buka giro ', '0', '0', '0', '0', '0', '0', '0', '7', '39', '1');
 INSERT INTO `keu_transaksi` VALUES ('27', '1', 'BKM-0027/06/2015', '', '2015-06-13', '1', '195', '75', 'Pembayaran Joining Fee Tahun  Angkatan 2014. \r\nCalon Siswa : Sean Kennard Sebastian Ho \r\nNo. Pendaftaran : PMB2014140008', '0', '0', '3666', '0', '0', '0', '0', '2', '0', '0');
 INSERT INTO `keu_transaksi` VALUES ('28', '1', 'BKM-0028/06/2015', '', '2015-06-13', '1', '195', '65000', 'Pembayaran Joining Fee Tahun  Angkatan 2014. \r\nCalon Siswa : Sean Kennard Sebastian Ho \r\nNo. Pendaftaran : PMB2014140008', '0', '0', '3667', '0', '0', '0', '0', '2', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('29', '1', 'MMJ-0029/06/2015', '', '2015-06-18', '0', '0', '900', 'tos', '0', '0', '0', '0', '0', '0', '0', '8', '0', '0');

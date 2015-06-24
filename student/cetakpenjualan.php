@@ -9,6 +9,8 @@ $tglakhir 		= $_GET['tglakhir'];
 $carabayar 		= $_GET['carabayar'];
 $detail 		= $_GET['detail'];
 $jenisproduk 		= $_GET['jenisproduk'];
+$kodecustomer 		= $_GET['kodecustomer'];
+$wherecustomer ='';
 switch ($carabayar) {
    case 'Semua':
          $wherestatus="";
@@ -22,6 +24,9 @@ switch ($carabayar) {
    case 'Piutang':
          $wherestatus="and carabayar='Piutang'";
          break;
+}
+if(isset($_GET['kodecustomer'])){
+ $wherecustomer="and kodecustomer='$kodecustomer'";
 }
 echo "<html><head><title>Laporan Penjualan </title>";
 echo '<style type="text/css">
@@ -72,7 +77,7 @@ echo '
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `pos_penjualan` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `pos_penjualan` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus $wherecustomer order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $nofaktur = $datas['nofaktur'];
@@ -140,7 +145,7 @@ echo '
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `pos_penjualan` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `pos_penjualan` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus $wherecustomer order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $nofaktur = $datas['nofaktur'];

@@ -59,7 +59,7 @@
                     </tr>
                     <tr>
                       <td>Tanggal</td>
-                      <td>: '.tgl_indo5($r1['tanggal']).'</td>
+                      <td>: '.tgl_indo8($r1['tanggal']).'</td>
                     </tr>
                     <tr>
                       <td>Uraian</td>
@@ -122,7 +122,7 @@
                     </tr>
                     <tr>
                       <td>Tanggal</td>
-                      <td>: '.tgl_indo5($r1['tanggal']).'</td>
+                      <td>: '.tgl_indo8($r1['tanggal']).'</td>
                     </tr>
                     <tr>
                       <td>Uraian</td>
@@ -186,9 +186,4 @@
         $mpdf->Output();
       }
   }
-  // ---------------------- //
-  // -- created by epiii -- //
-  // ---------------------- // 
-
 ?>
-      }else{

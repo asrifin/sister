@@ -56,7 +56,7 @@ $script_include[] = $JS_SCRIPT;
 	$admin  .= '<div class="border2">
 <table  width="25%"><tr align="center">
 <td>
-<a href="admin.php?pilih=penawaran&mod=yes">HOME</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=penawaran&mod=yes">PENAWARAN</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=penawaran&mod=yes&aksi=cetak">CETAK PENAWARAN</a>&nbsp;&nbsp;
@@ -77,8 +77,8 @@ $nopn 		= $_POST['nopn'];
 $kodepr 		= $_SESSION["kodepr"];
 $tgl 		= $_POST['tgl'];
 $user 		= $_POST['user'];
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT nopn FROM po_pn WHERE nopn='$nopn'")) > 0) $error .= "Error: Nomor PN ".$nopn." sudah terdaftar<br />";
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT nopr FROM po_pn WHERE nopr='$kodepr'")) > 0) $error .= "Error: Nomor PR ".$kodepr." sudah terdaftar<br />";
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT nopn FROM po_pn WHERE nopn='$nopn'")) > 0) $error .= "Error: Nomor Penawaran ".$nopn." sudah terdaftar<br />";
+//if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT nopr FROM po_pn WHERE nopr='$kodepr'")) > 0) $error .= "Error: Nomor PR ".$kodepr." sudah terdaftar<br />";
 if ($error){
 $admin .= '<div class="error">'.$error.'</div>';
 }else{
@@ -93,11 +93,11 @@ $hasil  = mysql_query( "INSERT INTO `po_pndetail` VALUES ('','$nopn','$supplier'
 //updatestokbeli($kode,$jumlah);
 }
 if($hasil){
-$admin .= '<div class="sukses"><b>Berhasil Menambah PN.</b></div>';
+$admin .= '<div class="sukses"><b>Berhasil Menambah Penawaran.</b></div>';
 penawaranrefresh();
 $style_include[] ='<meta http-equiv="refresh" content="2; url=admin.php?pilih=penawaran&mod=yes" />';
 }else{
-$admin .= '<div class="error"><b>Gagal Menambah PN.</b></div>';
+$admin .= '<div class="error"><b>Gagal Menambah Penawaran.</b></div>';
 		}		
 }	
 }
@@ -129,6 +129,7 @@ $_SESSION['product_id'][] = array ('id' => $id,'nomer' => $nomer,'kode' => $kode
 }
 }
 
+/*
 if(isset($_POST['editjumlah'])){
 	$nomer 		= $_POST['nomer'];
 $kode 		= $_POST['kode'];
@@ -142,6 +143,15 @@ $_SESSION['product_id'][$k]['harga']=$harga;
 
 		}
 }
+}
+*/
+
+if(isset($_POST['simpandetail'])){
+foreach ($_SESSION['product_id'] as $k=>$v){
+$_SESSION['product_id'][$k]['supplier']=$_POST['supplier'][$k];
+$_SESSION['product_id'][$k]['harga']=$_POST['harga'][$k];
+}
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=penawaran&mod=yes" />';
 }
 
 if(isset($_POST['hapusbarang'])){
@@ -171,19 +181,13 @@ $admin .= '
 <table class="table table-striped table-hover">';
 $admin .= '
 	<tr>
-		<td>Kode PR</td>
+		<td>Nomor Penawaran</td>
 		<td>:</td>
-		<td>
-                <div class="input_container">
-                    <input type="text" id="pr_id"  name="kodepr" value="'.$kodepr.'" onkeyup="autocompletpr()"class="form-control" >&nbsp;
-                    <ul id="pr_list_id"></ul>
-                </div>
-				</td>
+		<td><input type="text" name="nopn" value="'.$nopn.'" class="form-control"></td>
+<td></td>
 		<td></td>
 		<td></td>
-		<td></td>
-		</tr>
-				';
+	</tr>';
 $admin .= '
 	<tr>
 		<td>Tanggal</td>
@@ -193,16 +197,22 @@ $admin .= '
 		<td></td>
 		<td></td>
 	</tr>';
+
 $admin .= '
 	<tr>
-		<td>Nomor Penawaran</td>
+		<td>Kode PR</td>
 		<td>:</td>
-		<td><input type="text" name="nopn" value="'.$nopn.'" class="form-control">&nbsp;<input type="submit" value="Tambah Penawaran" name="tambahpr" class="btn btn-success" ></td>
-<td></td>
+		<td>
+                <div class="input_container">
+                    <input type="text" id="pr_id"  name="kodepr" value="'.$kodepr.'" onkeyup="autocompletpr()"class="form-control" >&nbsp;&nbsp;<input type="submit" value="Tambah Penawaran" name="tambahpr" class="btn btn-success" >
+                    <ul id="pr_list_id"></ul>
+                </div>
+				</td>
 		<td></td>
 		<td></td>
-	</tr>';
-
+		<td></td>
+		</tr>
+				';
 
 $admin .= $datapr;
 $admin .= '	
@@ -226,30 +236,31 @@ $admin .= '
 	if ($_GET['editdetail']){
 foreach ($_SESSION["product_id"] as $cart_itm)
         {
+		$array =$no-1;
 $admin .= '
 <form method="post" action="" class="form-inline"id="posts">';
 $admin .= '	
 	<tr>
 			<td>'.$cart_itm["nomer"].'</td>
-		<td><input align="right" type="text" name="supplier" value="'.$cart_itm["supplier"].'"class="form-control"></td>
+		<td><input align="right" type="text" name="supplier['.$array.']" value="'.$cart_itm["supplier"].'"class="form-control"></td>
 			<td>'.$cart_itm["kode"].'</td>
 		<td>'.getnamabarang($cart_itm["kode"]).'</td>
-		<td><input align="right" type="text" name="harga" value="'.$cart_itm["harga"].'"class="form-control"></td>
+		<td><input align="right" type="text" name="harga['.$array.']" value="'.$cart_itm["harga"].'"class="form-control"></td>
 		<td>
-			<input type="hidden" name="nomer" value="'.$cart_itm["nomer"].'">	
+		<input type="hidden" name="nomer" value="'.$cart_itm["nomer"].'">
 		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'">
-		<input type="submit" value="EDIT" name="editjumlah"class="btn btn-warning" >
 		<input type="submit" value="HAPUS" name="hapusbarang"class="btn btn-danger"></td>
 	</tr>';
-$admin .= '
-</form>';
+
 $no++;
 		}
 $admin .= '	
 	<tr>
 		<td colspan="5" ></td>
-		<td ><a href="./admin.php?pilih=penawaran&mod=yes" class="btn btn-success">Simpan Detail</a></td>
+		<td ><input type="submit" value="SIMPAN" name="simpandetail"class="btn btn-warning" ></td>
 	</tr>';
+	$admin .= '
+</form>';
 	}else{
 foreach ($_SESSION["product_id"] as $cart_itm)
         {
@@ -274,18 +285,26 @@ $admin .= '
 	</tr>';	
 		
 	}
+	if ($_GET['editdetail']){
+$admin .= '
+<tr><td colspan="5"></td>
+<td></td></tr>';
+	}else{
 $admin .= '<tr><td colspan="4"></td><td align="right"></td>
 		<td><input type="hidden" name="user" value="'.$user.'">
 		<input type="submit" value="Batal" name="batalpenawaran"class="btn btn-danger" >
 		<input type="submit" value="Simpan" name="submitpenawaran"class="btn btn-success" >
 		</td></tr>';
+		}
 $admin .= '</table>';	
 	}
 $admin .= '</form></div>';	
 }
 
 if ($_GET['aksi'] == 'cetak'){
-$kodepn     = $_POST['kodepn'];  
+$kodepn     = $_POST['kodepn']; 
+$lastnota =  getlastnota("po_pn","nopn");
+$kodepn 		= !isset($kodepn) ? $lastnota : $kodepn; 
 if(isset($_POST['batalcetak'])){
 $style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=penawaran&mod=yes&aksi=cetak" />';
 }

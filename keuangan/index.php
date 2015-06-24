@@ -132,12 +132,13 @@
                     case 'penerimaan':
                         require $d.'v_penerimaan.php';
                     break;
-                    case 'aktivitas':
-                        require $d.'v_keuaktivitas.php';
+                    case 'sarpras':
+                        require $d.'v_sarpras.php';
                     break;
-                    case 'inventory':
-                        require $d.'v_inventory.php';
-                    break;
+
+                    // case 'aktivitas':
+                    //     require $d.'v_keuaktivitas.php';
+                    // break;
                     default:
                         require $d.'v_home.php';
                     break;
@@ -149,4 +150,4 @@
     <script src="../js/main.js"></script>
 
 </body>
-</html>
+</html>case
