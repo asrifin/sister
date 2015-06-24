@@ -19,14 +19,31 @@
     <div class="frame" id="sirkulasi">
  <div id="loadarea"></div>
     <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
+<div style="overflow:scroll;height:600px">  
 
-    <div class="toolbar">
+    <!-- <div class="toolbar"> -->
         <div class="toolbar-group fg-white transparent ">
-            <a href="#"  id="peminjamanBC" onclick="loadFR('peminjaman','');" class="button bg-blue fg-white" data-hint="Peminjaman"><i class="icon-upload-3"></i> Peminjaman</a>
-            <a href="#"  id="pengembalianBC" onclick="loadFR('pengembalian','');" class="button bg-blue fg-white" data-hint="Pengembalian"><i class="icon-download-2"></i> Pengembalian</a>
+            <a href="#"  id="peminjamanBC" onclick="loadFR('pinjam','');" class="button bg-blue fg-white" data-hint="Peminjaman"><i class="icon-upload-3"></i> Peminjaman</a>
+            <a href="#"  id="pengembalianBC" onclick="loadFR('kembali','');" class="button bg-blue fg-white" data-hint="Pengembalian"><i class="icon-download-2"></i> Pengembalian</a>
             <a href="#" id="optionBC" data-hint="Selengkapnya..." class="button bg-gray fg-white"><i class="icon-grid"></i></a>
         </div>
-    </div>
+
+        <div class="place-right">
+
+        <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
+            <input type="text" id="tgl1TB" name="tgl1TB" class="sirkulasi_cari">
+            <button class="btn-date"></button>
+        </div> s/d
+        <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
+            <input type="text" id="tgl2TB" name="tgl2TB" class="sirkulasi_cari">
+            <button class="btn-date"></button>
+        </div> 
+            <a href="#" onclick="viewTB('sirkulasi');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
+            <a  href="#" onclick="viewTB('sirkulasi');" id="bulan_iniBC" name="bulan_iniBC" class="button bg-gray fg-white"><i class="icon-clock"></i> Bulan ini</a>
+            <a data-hint="Tampilkan"  href="#" onclick="loadAll();" id="tampilkanBC" name="refreshBC" class="button bg-blue fg-white"><i class="icon-cycle"></i> </a>
+        
+        </div>
+    <!-- </div> Akhir toolbar -->
     
 <div style="display:none;" id="optionPN">
     <div class="row">
@@ -122,24 +139,12 @@
             <!--end of Colom 3-->
         </div>
     </div>
-    <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="tgl1TB" name="tgl1TB" class="sirkulasi_cari">
-        <button class="btn-date"></button>
-    </div> s/d
-    <div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="top" data-effect="slide">
-        <input type="text" id="tgl2TB" name="tgl2TB" class="sirkulasi_cari">
-        <button class="btn-date"></button>
-    </div> 
-        <a href="#" onclick="viewTB('sirkulasi');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
-        <a  href="#" onclick="viewTB('sirkulasi');" id="bulan_iniBC" name="bulan_iniBC" class="button bg-gray fg-white"><i class="icon-clock"></i> Bulan ini</a>
-        <a data-hint="Tampilkan"  href="#" onclick="loadAll();" id="tampilkanBC" name="refreshBC" class="button bg-blue fg-white"><i class="icon-cycle"></i> </a>
    
 <!--     <button data-hint="Tampilkan" class="bg-blue fg-white" style="font-weight:bold;" id="tampilkanBC" class="sirkulasi_cari">Tampilkan >> </button>
     <button id="hari_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Hari ini</button>
     <button id="bulan_iniBC" class="bg-gray fg-white" style="font-weight:bold;"><i class="icon-clock"></i> Bulan ini</button> -->
 </div>
 
-<div style="overflow:scroll;height:600px">  
 <div class="divider">&nbsp;</div>
 
             <button data-hint="Field Pencarian" xclass="large" id="cari_sirkulasiBC" class="sirkulasi_cari"><span class="icon-search"></span> </button>

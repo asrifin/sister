@@ -25,34 +25,77 @@
 				$kembaliArr   = (isset($_GET['kembaliArr']) AND $_GET['kembaliArr']!='')?' AND tb.replid NOT IN ('.$_GET['kembaliArr'].')':''; 
 
 				if(isset($_GET['subaksi']) && $_GET['subaksi']=='pinjam'){
-				$ss='SELECT *
-						FROM(SELECT
-									pus_katalog.replid,
-									pus_buku.lokasi,
-									pus_buku.barkode barkode,
-									pus_katalog.judul judul
-							FROM pus_katalog
-							LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
-							LEFT JOIN pus_lokasi ON pus_lokasi.replid = pus_buku.lokasi
-							WHERE pus_buku.status = 1
-							)tb
-							WHERE	tb.lokasi = '.$_GET['lokasi'].' AND (tb.barkode  LIKE "%'.$searchTerm.'%"
-									OR tb.judul LIKE "%'.$searchTerm.'%")'.$pinjamArr;
-					// var_dump($ss);exit()
-					// print_r($ss);exit();
+					$ss='SELECT *
+							FROM(SELECT
+										pus_katalog.replid,
+										pus_buku.lokasi,
+										pus_buku.barkode barkode,
+										pus_katalog.judul judul
+								FROM pus_katalog
+								LEFT JOIN pus_buku ON pus_buku.katalog = pus_katalog.replid 
+								LEFT JOIN pus_lokasi ON pus_lokasi.replid = pus_buku.lokasi
+								WHERE pus_buku.status = 1
+								)tb
+								WHERE	tb.lokasi = '.$_GET['lokasi'].' AND (tb.barkode  LIKE "%'.$searchTerm.'%"
+										OR tb.judul LIKE "%'.$searchTerm.'%")'.$pinjamArr;
+						// var_dump($ss);exit()
+						// print_r($ss);exit();
 				}elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='kembali'){
-				$ss='SELECT *
-						FROM(SELECT
-										    pj.replid,
-                                            pb.barkode barkode,                          
-										    pk.judul judul
-										FROM pus_peminjaman pj
-										LEFT JOIN pus_buku pb ON pb.replid = pj.buku
-										LEFT JOIN pus_katalog pk ON pk.replid = pb.katalog
-									WHERE pj.status = 1
-							)tb
-							WHERE	tb.barkode  LIKE "%'.$searchTerm.'%"
-									OR tb.judul LIKE "%'.$searchTerm.'%"';
+					$ss='SELECT *
+							FROM(SELECT
+											    pj.replid,
+	                                            pb.barkode barkode,                          
+											    pk.judul judul
+											FROM pus_peminjaman pj
+											LEFT JOIN pus_buku pb ON pb.replid = pj.buku
+											LEFT JOIN pus_katalog pk ON pk.replid = pb.katalog
+										WHERE pj.status = 1
+								)tb
+								WHERE	tb.barkode  LIKE "%'.$searchTerm.'%"
+										OR tb.judul LIKE "%'.$searchTerm.'%" '.$kembaliArr;
+
+				}elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='pilihan'){
+
+					if (isset($_GET['tipe']) && $_GET['tipe']==1) {
+						
+						$ss='SELECT *
+								FROM(SELECT
+											replid,
+											nis,
+											nama
+										FROM
+											psb_calonsiswa
+										WHERE `status`= 1
+									)tb
+									WHERE	tb.nis  LIKE "%'.$searchTerm.'%"
+											OR tb.nama LIKE "%'.$searchTerm.'%" ';
+					}
+					if (isset($_GET['tipe']) && $_GET['tipe']==2) {
+						
+						$ss='SELECT *
+								FROM(SELECT
+											id,
+											nip,
+											nama
+										FROM
+											hrd_karyawan
+									)tb
+									WHERE	tb.nid  LIKE "%'.$searchTerm.'%"
+											OR tb.nama LIKE "%'.$searchTerm.'%" ';
+					}
+					if (isset($_GET['tipe']) && $_GET['tipe']==3) {
+						
+						$ss='SELECT *
+								FROM(SELECT
+											replid,
+											nid,
+											nama
+										FROM
+											pus_member
+									)tb
+									WHERE	tb.nid  LIKE "%'.$searchTerm.'%"
+											OR tb.nama LIKE "%'.$searchTerm.'%" ';
+						}
 
 				}
 				if(!$sidx) 
@@ -78,11 +121,37 @@
 				$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
 				$rows 	= array();
 				while($row = mysql_fetch_assoc($result)) {
-					$rows[]= array(
-						'replid'  =>$row['replid'],
-						'barkode' =>$row['barkode'],
-						'judul'   =>$row['judul']
-					);
+					if ($_GET['subaksi']=='pinjam' or $_GET['subaksi']=='kembali') {
+						$rows[]= array(
+							'replid'  =>$row['replid'],
+							'barkode' =>$row['barkode'],
+							'judul'   =>$row['judul']
+						);
+					}				
+					elseif ($_GET['subaksi']=='pilihan') {
+
+						if ($_GET['tipe']=='siswa') {
+							$rows[]= array(
+								'replid' =>$row['replid'],
+								'nis'    =>$row['nis'],
+								'nama'   =>$row['nama']
+							);
+						}
+						elseif($_GET['tipe']=='guru') {
+							$rows[]= array(
+								'replid' =>$row['replid'],
+								'nip'    =>$row['nip'],
+								'nama'   =>$row['nama']
+							);
+						}
+						elseif($_GET['tipe']=='member_luar') {
+							$rows[]= array(
+								'replid' =>$row['replid'],
+								'nid'    =>$row['nid'],
+								'nama'   =>$row['nama']
+							);
+						}
+					}				
 				}$response=array(
 					'page'    =>$page,
 					'total'   =>$total_pages,

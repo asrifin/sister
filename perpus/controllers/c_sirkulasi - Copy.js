@@ -55,7 +55,6 @@ var pinjamArr= kembaliArr =[];
                                 +'<select  name="lokasiTB" id="lokasiTB"></select>'
                             +'</div><br>'
                             +'<div class="input-control text size4">'
-                                // +'<input placeholder="Barcode atau Judul item" id="judulTB">'
                                 +'<input placeholder="Barcode atau Judul item" id="judulTB" onfocus="autoSug(\'judul\',\'pinjam\',$(\'#lokasiTB\').val())">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
@@ -90,38 +89,29 @@ var pinjamArr= kembaliArr =[];
                                                 +'</select>'
                                             +'</div>'
                                             +'<div class="input-control text size4">'
-                                                +'<input placeholder="ID atau Nama Peminjam" id="peminjamTB" onfocus="autoSug(\'peminjam\',\'pilihan\',$(\'#tipeTB\').val(),\'\')">'
+                                                +'<input placeholder="ID atau Nama Peminjam" id="peminjamTB">'
                                                 +'<button class="btn-clear"></button>'
                                             +'</div>'
                                                 +'<img id="b_photoIMG" src="../img/no_image.jpg" width="100" class="shadow" align="center">'
                                         +'<table class="table hovered bordered striped">'
-                                            // +'<tr>'
-                                            //     +'<td colspan="2"><b id="namaTD"></b></td>'
-                                            //     // +'<td>: <b id="namaTD"></b></td>'
+                                            +'<tr>'
+                                                +'<td colspan="2"><b id="namaTD"></b></td>'
+                                                // +'<td>: <b id="namaTD"></b></td>'
 
-                                            // +'</tr>'
+                                            +'</tr>'
                                             +'<tr>'
                                                 +'<td>ID Member</td>'
-                                                +'<td>: <span id="idmemberTB"></span></td>'
+                                                +'<td>: <span id="idmemberTD"></span></td>'
                                             +'</tr>'
                                                 +'<td>Tipe Member</td>'
-                                                +'<td>: <span id="tipememberTB"></span></td>'
-                                            +'</tr>'                                            // +'<thead>'
-                                            //     +'<tr style="color:white;"class="info">'
-                                            //         +'<th width="100" class="text-center">ID Member</th>'
-                                            //     +'</tr>'
-                                            //     +'<tr style="color:white;"class="info">'
-                                            //         +'<th width="100"class="text-center">Tipe Member<</th>'
-                                            //     +'</tr>'
-                                            // +'</thead>'
-                                            // +'<tbody id="memberTBL">'
-                                            // +'</tbody>'
-                                            //     // +'<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih barang.. </td></tr>'
-                                            // +'<tfoot>'
-                                            // +'</tfoot>'
-
+                                                +'<td>: <span id="tipememberTD"></span></td>'
+                                            +'</tr>'
+                                            // +'<tr>'
+                                            //     +'<td>Kelas</td>'
+                                            //     +'<td>: <span id="kelasTD"></span></td>'
+                                            // +'</tr>'
+                                        +'</table>'                                        
                                         +'</div>'
-
                                         +'<div class="span5">'
                                             +'<label><b>Waktu Peminjaman</b></label>'
                                             +'<label>Tanggal Peminjaman</label>'
@@ -186,7 +176,7 @@ var pinjamArr= kembaliArr =[];
 
         kembali_contentFR +='<div style="overflow:scroll;height:500px;">'
                            // +'<form  class="span12" autocomplete="off" onsubmit="pinjamSV(); return false;">' 
-                                +'<input type="hidden" id="subaksiH">'
+                                +'<input type="text" id="subaksiH">'
                            +'<legend>Daftar item yang dikembalikan</legend>'
                             +'<label>Lokasi</label>'
                             +'<div class="input-control select span4">'
@@ -380,10 +370,8 @@ var pinjamArr= kembaliArr =[];
                     $('#idformH').val(typx);
                     $('#subaksiH').val(typx);
                     if (typx=='pinjam') {
-
-                        // autoSug('judul','pinjam',$('#lokasiTB').val());
                         contentFR=pinjam_contentFR;
-                            
+
                             $('#tgl_pinjamTB').val(getFirstDate());
                             $('#tgl_kembaliTB').val(getLastDate());
                         if (id=='') { //add
@@ -398,7 +386,6 @@ var pinjamArr= kembaliArr =[];
                     } 
                     else if (typx=='kembali') {
                         contentFR=kembali_contentFR;
-                        // autoSug('k_judul','kembali',$('#k_lokasiTB').val());
 
                         if (id=='') {//add
                             titl = ' Tambah Pengembalian';
@@ -409,7 +396,7 @@ var pinjamArr= kembaliArr =[];
 
                         }
                     }
-                $.Dialog.content(contentFR);
+                    $.Dialog.content(contentFR);
                     $.Dialog.title('<i class="fg-white icon-'+(id!=''?'pencil':'plus-2')+'"></i> '+titl); 
                 },100);  
 
@@ -417,10 +404,10 @@ var pinjamArr= kembaliArr =[];
         });
     }
 
-    function autoSug(el,subaksi,tipe,opsi){
+    function autoSug(el,subaksi,lok){
         // console.log(subaksi);
         if(subaksi=='pinjam'){ //rekening
-            var urlx= '?aksi=autocomp&subaksi=pinjam&lokasi='+opsi;
+            var urlx= '?aksi=autocomp&subaksi=pinjam&lokasi='+lok;
             var col = [{
                     'align':'left',
                     'columnName':'barkode',
@@ -433,8 +420,8 @@ var pinjamArr= kembaliArr =[];
                     'width':'50',
                     'label':'Judul'
             }];
-        }else if(subaksi=='kembali'){
-            var urlx= '?aksi=autocomp&subaksi=kembali&lokasi'+opsi;
+        }else{
+            var urlx= '?aksi=autocomp&subaksi=kembali&lokasi'+lok;
             var col = [{
                     'align':'left',
                     'columnName':'barkode',
@@ -448,56 +435,6 @@ var pinjamArr= kembaliArr =[];
                     'label':'Judul'
             }];
 
-        }else if(subaksi=='pilihan'){
-            if(tipe=='siswa'){
-                var urlx= '?aksi=autocomp&subaksi=pilihan&tipe=siswa&lokasi'+opsi;
-                var col = [{
-                        'align':'left',
-                        'columnName':'nis',
-                        'hide':true,
-                        'width':'35',
-                        'label':'Nis'
-                    },{   
-                        'align':'left',
-                        'columnName':'nama',
-                        'width':'40',
-                        'label':'Nama'
-                    },{   
-                        'align':'left',
-                        'columnName':'departemen',
-                        'width':'40',
-                        'label':'Departemen'
-                }];
-            }else if (tipe=='guru') {
-                var urlx= '?aksi=autocomp&subaksi=pilihan&tipe'+opsi;
-                var col = [{
-                        'align':'left',
-                        'columnName':'nip',
-                        'hide':true,
-                        'width':'35',
-                        'label':'Nip'
-                    },{   
-                        'align':'left',
-                        'columnName':'nama',
-                        'width':'40',
-                        'label':'Nama'
-                }];
-            }else if (tipe=='member_luar') {
-                var urlx= '?aksi=autocomp&subaksi=pilihan&tipe'+opsi;
-                var col = [{
-                        'align':'left',
-                        'columnName':'nid',
-                        'hide':true,
-                        'width':'35',
-                        'label':'ID Member'
-                    },{   
-                        'align':'left',
-                        'columnName':'nama',
-                        'width':'40',
-                        'label':'Nama'
-                }];
-
-            }
         }
 
         urly = dir+urlx;
@@ -528,27 +465,14 @@ var pinjamArr= kembaliArr =[];
                     // collectArr();
                     // $('#'+el+'TB').val(ui.item.barkode);
                     // $('#'+el+'TB').val(ui.item.judul);
-                }else if (subaksi=='kembali'){
-                    //untuk multi kalau untuk siswa tanpa add
+                }else{
                     kembaliAdd (ui.item.replid,ui.item.barkode,ui.item.judul);
+                    // $('#'+el+'TB').val(ui.item.barkode);
                     // $('#'+el+'TB').val(ui.item.judul);
-                }else if (subaksi=='pilihan') {
-                    // siswaAdd (ui.item.replid,ui.item.nis,ui.item.nama,ui.item.departemen);
-                    if (tipe==1) {
-                        
-                        $('#'+el+'TB').val(ui.item.nis);
-                        $('#'+el+'TB').val(ui.item.nama);
-                    }
-                    else if (tipe==2) {
-                        $('#'+el+'TB').val(ui.item.nip);
-                        $('#'+el+'TB').val(ui.item.nama);
-                    }
-                    else if (tipe==3) {
-                        $('#'+el+'TB').val(ui.item.nid);
-                        $('#'+el+'TB').val(ui.item.nama);
-                    }
-
                 }
+                // barangAdd(ui.item.replid,ui.item.barkode,ui.item.judul);
+                // $(el).val('');
+                // // $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=judul&lokasi='+$('#lokasiS').val()+'&brgArr='+barangArr().toString() );
                 return false;
             }
         }); //End autocomplete
@@ -621,18 +545,6 @@ var pinjamArr= kembaliArr =[];
             $('#k_judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=kembali&lokasi='+$('#k_lokasiTB').val()+'&kembaliArr='+collectArr('kembali').toString() );
 
         }
-        // function siswadd (id,nis,nama) {
-        //     var tr ='<tr val="'+id+'" class="siswaTR" id="siswaTR_'+id+'">'
-        //                 +'<td>'+nis+'</td>'
-        //             +'</tr>'
-        //             +'<tr>'
-        //                 +'<td>'+nama+'</td>'
-        //             +'</tr>';
-        //     $('#memberTBL').prepend(tr); 
-
-        //     $('#peminjamTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=siswa&tipe='+$('#tipeTB').val() );
-
-        // }
         
 
 
