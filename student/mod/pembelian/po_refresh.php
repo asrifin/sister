@@ -3,7 +3,7 @@ include '../../includes/pdo.php';
 
 $pdo = connect();
 $keyword = '%'.$_POST['keyword'].'%';
-$sql = "SELECT * FROM pos_po WHERE nopo LIKE (:keyword) ORDER BY nopo ASC LIMIT 0, 20";
+$sql = "SELECT * FROM pos_po WHERE nopo LIKE (:keyword) ORDER BY id DESC LIMIT 0, 20";
 $query = $pdo->prepare($sql);
 $query->bindParam(':keyword', $keyword, PDO::PARAM_STR);
 $query->execute();

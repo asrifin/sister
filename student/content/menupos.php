@@ -12,7 +12,7 @@ if ($levelakses=="Administrator"){
 echo '<div class="border2">
 <table width="100%"><tr align="center">
 <td>
-<a href="admin.php"><img src="images/home.jpg" width="50px"><br>HOME</a>&nbsp;&nbsp;
+<a href="admin.php"><img src="images/home.jpg" width="50px"><br>BERANDA</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=mnmaster&mod=yes"><img src="images/master.jpg" width="50px"><br>MASTER</a>&nbsp;&nbsp;
@@ -52,7 +52,7 @@ if ($levelakses=="Penjualan"){
 echo '<div class="border2">
 <table width="100%"><tr align="center">
 <td>
-<a href="admin.php"><img src="images/home.jpg" width="50px"><br>HOME</a>&nbsp;&nbsp;
+<a href="admin.php"><img src="images/home.jpg" width="50px"><br>BERANDA</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=mnpenjualan&mod=yes"><img src="images/order.png" width="50px"><br>PENJUALAN</a>&nbsp;&nbsp;
@@ -71,7 +71,7 @@ if ($levelakses=="Kasir"){
 echo '<div class="border2">
 <table width="100%"><tr align="center">
 <td>
-<a href="admin.php"><img src="images/home.jpg" width="50px"><br>HOME</a>&nbsp;&nbsp;
+<a href="admin.php"><img src="images/home.jpg" width="50px"><br>BERANDA</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=mnhutangpiutang&mod=yes"><img src="images/uang.jpg" width="50px"><br>PEMBAYARAN</a>&nbsp;
