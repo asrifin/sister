@@ -86,7 +86,43 @@ echo '<div class="border2">
 </div>';
 }
 
+if ($levelakses=="Gudang"){
+echo '<div class="border2">
+<table width="100%"><tr align="center">
+<td>
+<a href="admin.php"><img src="images/home.jpg" width="50px"><br>BERANDA</a>&nbsp;&nbsp;
+</td>
+<td>
+<a href="admin.php?pilih=stok&mod=yes"><img src="images/uang.jpg" width="50px"><br>STOK</a>&nbsp;
+</td>
+<td>
+<a href="admin.php?pilih=settingwebsite&mod=yes"><img src="images/password.jpg" width="50px"><br>PASSWORD</a>&nbsp;&nbsp;
+</td>
+<td>
+<a href="index.php?aksi=logout"><img src="images/logout.jpg" width="50px"><br>KELUAR</a>&nbsp;&nbsp;
+</td>
+</tr></table>
+</div>';
+}
 
+if ($levelakses=="Accounting"){
+echo '<div class="border2">
+<table width="100%"><tr align="center">
+<td>
+<a href="admin.php"><img src="images/home.jpg" width="50px"><br>BERANDA</a>&nbsp;&nbsp;
+</td>
+<td>
+<a href="admin.php?pilih=stok&mod=yes"><img src="images/uang.jpg" width="50px"><br>STOK</a>&nbsp;
+</td>
+<td>
+<a href="admin.php?pilih=settingwebsite&mod=yes"><img src="images/password.jpg" width="50px"><br>PASSWORD</a>&nbsp;&nbsp;
+</td>
+<td>
+<a href="index.php?aksi=logout"><img src="images/logout.jpg" width="50px"><br>KELUAR</a>&nbsp;&nbsp;
+</td>
+</tr></table>
+</div>';
+}
 echo $login;
 }
 ?>

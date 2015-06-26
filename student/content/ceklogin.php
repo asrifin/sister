@@ -8,21 +8,12 @@ if (cek_login ()){
 $username	= $_SESSION['UserName'];
 $levelakses = $_SESSION['LevelAkses'];
 
-if ($levelakses=="Administrator"){
+if (isset( $_SESSION['LevelAkses'] )){
 $hasil = $koneksi_db->sql_query( "SELECT * FROM useraura WHERE user='$username'" );
 $data = mysql_fetch_assoc($hasil);
 $user = $data['user'];
 $avatar = $data['avatar'];
 echo '<div class="border" align="right">Halo, <a href="admin.php">'.$user.'</a>, <a href="index.php?aksi=logout"><b>Sign Out</b></a></div>';
-}else{
-$hasil = $koneksi_db->sql_query( "SELECT * FROM useraura WHERE user='$username'" );
-$data = mysql_fetch_assoc($hasil);
-$user = $data['user'];
-$hasil2 = $koneksi_db->sql_query( "SELECT * FROM akd_dosen where nidn = '$username'" );
-$data2 = $koneksi_db->sql_fetchrow($hasil2);
-$nama 	= $data2['nama'];
-echo '<div class="border" align="right">Halo, <a href="admin.php">'.$nama.'</a>, <a href="index.php?aksi=logout"><b>Sign Out</b></a></div>';
-}
 }else{
 $login .= '
 <div class=border>
@@ -34,5 +25,6 @@ $login .= '
   </tr>
 </table></form></div>';
 echo $login;
+}
 }
 ?>
