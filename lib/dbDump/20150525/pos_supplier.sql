@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 --
 -- Struktur dari tabel `pos_supplier`
 --
-
+DROP TABLE IF EXISTS `pos_supplier`;
 CREATE TABLE IF NOT EXISTS `pos_supplier` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `kode` varchar(50) NOT NULL,
