@@ -10,7 +10,7 @@ $carabayar 		= $_GET['carabayar'];
 $detail 		= $_GET['detail'];
 $jenisproduk 		= $_GET['jenisproduk'];
 $supplier 		= $_GET['supplier'];
-if(!$supplier){
+if($supplier=='Semua'){
          $wheresupplier="";
 }else{
          $wheresupplier="and kodesupplier='$supplier'";

@@ -112,7 +112,7 @@ $admin .= '
 	<td>Jenis</td>
 		<td>:</td>
 	<td><select name="jenis" class="form-control" required>';
-$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk ORDER BY nama asc");
+$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk where jenis='BARANG' ORDER BY nama asc");
 $admin .= '<option value="">== Jenis Produk==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
 $pilihan = ($datas['id']==$jenis)?"selected":'';
@@ -213,7 +213,7 @@ $admin .= '
 	<td>Jenis</td>
 		<td>:</td>
 	<td><select name="jenis" class="form-control" required>';
-$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk ORDER BY nama asc");
+$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk where jenis='BARANG' ORDER BY nama asc");
 $admin .= '<option value="">== Jenis Produk==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
 $admin .= '<option value="'.$datas['id'].'">'.$datas['nama'].'</option>';
@@ -316,7 +316,7 @@ $admin .='
 		<td>:</td>
 		<td>
 <select name="jenis" class="form-control" required>';
-$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk ORDER BY nama");
+$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk where jenis='BARANG' ORDER BY nama");
 $admin .= '<option value="">== Pilih Jenis ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
 $admin .= '<option value="'.$datas['id'].'" '.$pilihan.'>'.$datas['nama'].'</option>';

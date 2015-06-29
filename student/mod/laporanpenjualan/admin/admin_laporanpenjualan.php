@@ -147,12 +147,16 @@ $admin .= '
 		<td width="200px">Tanggal Akhir</td>
 		<td><input type="text" name="tglakhir" value="'.$tglakhir.'" class="form-control">&nbsp;'.$wktakhir.'</td>
 	</tr>';
-$admin .= '
-	<tr>
-		<td width="200px">Customer</td>
-		<td><div class="input_container"><input type="text" id="country_id"  name="kodecustomer" value="'.$kodecustomer.'" onkeyup="autocomplet()"class="form-control" required >
-                    <ul id="country_list_id"></ul></div></td>
-	</tr>';
+$admin .= '<tr>
+	<td>Customer </td>
+	<td><select name="kodecustomer" class="form-control">';
+$hasilj = $koneksi_db->sql_query("SELECT * FROM aka_siswa ORDER BY nama asc");
+$admin .= '<option value="Semua"> Semua </option>';
+while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
+$admin .= '<option value="'.$datasj['nis'].'">'.$datasj['nama'].'&nbsp;&nbsp;('.$datasj['nis'].')</option>';
+}
+$admin .='</select></td>
+</tr>';
 $admin .= '
 	<tr>
 		<td width="200px">Cara Bayar</td>
@@ -181,12 +185,16 @@ $admin .= '
 		<td width="200px">Tanggal Akhir</td>
 		<td><input type="text" name="tglakhir" value="'.$tglakhir.'" class="form-control">&nbsp;'.$wktakhir.'</td>
 	</tr>';
-$admin .= '
-	<tr>
-		<td width="200px">Customer</td>
-		<td><div class="input_container"><input type="text" id="country_id"  name="kodecustomer" value="'.$kodecustomer.'" onkeyup="autocomplet()"class="form-control" required >
-                    <ul id="country_list_id"></ul></div></td>
-	</tr>';
+$admin .= '<tr>
+	<td>Customer </td>
+	<td><select name="kodecustomer" class="form-control">';
+$hasilj = $koneksi_db->sql_query("SELECT * FROM aka_siswa ORDER BY nama asc");
+$admin .= '<option value="Semua"> Semua </option>';
+while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
+$admin .= '<option value="'.$datasj['nis'].'">'.$datasj['nama'].'&nbsp;&nbsp;('.$datasj['nis'].')</option>';
+}
+$admin .='</select></td>
+</tr>';
 $admin .= '
 	<tr>
 		<td width="200px">Cara Bayar</td>
@@ -196,7 +204,7 @@ $admin .= '
 $admin .= '<tr>
 	<td>Jenis </td>
 	<td><select name="jenisproduk" class="form-control">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk ORDER BY nama asc");
+$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk where jenis='BARANG' ORDER BY nama asc");
 $admin .= '<option value="Semua"> Semua </option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
 $admin .= '<option value="'.$datasj['id'].'">'.$datasj['nama'].'</option>';

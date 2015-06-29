@@ -194,7 +194,7 @@ $admin .= '
 $admin .= '<tr>
 	<td>Jenis </td>
 	<td><select name="jenisproduk" class="form-control">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk  ORDER BY nama asc");
+$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk where jenis='BARANG' ORDER BY nama asc");
 $admin .= '<option value="Semua"> Semua </option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
 $admin .= '<option value="'.$datasj['id'].'">'.$datasj['nama'].'</option>';

@@ -76,26 +76,27 @@ if (!cek_login ()){
 
 global $koneksi_db,$PHP_SELF,$theme,$error;
 
-$admin  .='<legend>LAPORAN STOK AWAL</legend>';
+$admin  .='<legend>LAPORAN STOK PRODUK</legend>';
 $admin .= '<div class="panel panel-info">';
+
 if($_GET['aksi']==""){ 
 $tglawal = date("Y-m-01");
 $tglnow = date("Y-m-d");
 $tglmulai 		= !isset($tglmulai) ? $tglawal : $tglmulai;
 $tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
-$kodejenis 		= !isset($kodejenis) ? '' : $kodejenis;
-$admin .='<div class="panel-heading"><b>Laporan Stok Awal</b></div>';
-$admin .= '<form class="form-inline" method="get" action="cetakstokawal.php" enctype ="multipart/form-data" id="posts" target="_blank">
+$kodebarang 		= !isset($kodebarang) ? '' : $kodebarang;
+$admin .='<div class="panel-heading"><b>Laporan Stok Produk</b></div>';
+$admin .= '<form class="form-inline" method="get" action="cetakbarang.php" enctype ="multipart/form-data" id="posts" target="_blank">
 <table class="table table-striped table-hover">';
 $admin .= '
 <tr>
-	<td>Jenis</td>
-	<td><select name="kodejenis" class="form-control">';
-$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk ORDER BY nama asc");
-$admin .= '<option value="">== Semua Jenis==</option>';
+	<td>Kode</td>
+	<td><select name="kodebarang" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * FROM pos_produk ORDER BY nama asc");
+$admin .= '<option value="">== Pilih Produk==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
-$pilihan = ($datas['id']==$kodejenis)?"selected":'';
-$admin .= '<option value="'.$datas['id'].'"'.$pilihan.'>'.$datas['nama'].'</option>';
+$pilihan = ($datas['kode']==$kodebarang)?"selected":'';
+$admin .= '<option value="'.$datas['kode'].'"'.$pilihan.'>'.$datas['kode'].'-'.$datas['nama'].'</option>';
 }
 $admin .='</select></td>
 </tr>';
