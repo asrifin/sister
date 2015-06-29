@@ -44,17 +44,16 @@ if($_GET['aksi'] == 'edit'){
 $id = int_filter ($_GET['id']);
 if(isset($_POST['submit'])){
 	$jenjang 		= $_POST['jenjang'];
-	$kode 		= $_POST['kode'];
 	$nama 		= $_POST['nama'];
 	$jenis 		= $_POST['jenis'];
 	$hargajual 		= $_POST['hargajual'];
 	
 	$error 	= '';
-		if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produkjasa WHERE jenjang='$jenjang' and jenis='$jenis' and nama='$nama' or kode='$kode'")) > 1) $error .= "Error: jasa sudah terdaftar , silahkan ulangi.<br />";
+		if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produkjasa WHERE jenjang='$jenjang' and jenis='$jenis' and nama='$nama'")) > 1) $error .= "Error: jasa sudah terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		$tengah .= '<div class="error">'.$error.'</div>';
 	}else{
-		$hasil  = mysql_query( "UPDATE `pos_produkjasa` SET `kode`='$kode',`jenjang`='$jenjang',`nama`='$nama',`jenis`='$jenis',`hargajual`='$hargajual' WHERE `id`='$id'" );
+		$hasil  = mysql_query( "UPDATE `pos_produkjasa` SET `jenjang`='$jenjang',`nama`='$nama',`jenis`='$jenis',`hargajual`='$hargajual' WHERE `id`='$id'" );
 		if($hasil){
 			$admin .= '<div class="sukses"><b>Berhasil di Update.</b></div>';
 			$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=produkjasa&amp;mod=yes" />';	
@@ -98,11 +97,6 @@ $admin .= '<option value="'.$datasj['id'].'"'.$pilihanj.'>'.$datasj['nama'].'</o
 $admin .='</select></td>
 </tr>
 	<tr>
-		<td>Kode Jasa</td>
-		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$data['kode'].'" required></td>
-	</tr>
-	<tr>
 		<td>Nama Jasa</td>
 		<td>:</td>
 		<td><input type="text" name="nama" size="25"class="form-control" value="'.$data['nama'].'" required></td>
@@ -126,16 +120,15 @@ $admin .='</select></td>
 if($_GET['aksi']==""){
 if(isset($_POST['submit'])){
 $jenjang 		= $_POST['jenjang'];
-$kode 		= $_POST['kode'];
 $nama 		= $_POST['nama'];
 $jenis 		= $_POST['jenis'];
 $hargajual 		= int_filter($_POST['hargajual']);
 	$error 	= '';
-	if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produkjasa WHERE jenjang='$jenjang' and jenis='$jenis' and nama='$nama' or kode='$kode'")) > 0) $error .= "Error: Jasa sudah terdaftar , silahkan ulangi.<br />";
+	if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produkjasa WHERE jenjang='$jenjang' and jenis='$jenis' and nama='$nama'")) > 0) $error .= "Error: Jasa sudah terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		$admin .= '<div class="error">'.$error.'</div>';
 	}else{
-		$hasil  = mysql_query( "INSERT INTO `pos_produkjasa` VALUES ('','$jenis','$jenjang','$kode','$nama','$hargajual')" );
+		$hasil  = mysql_query( "INSERT INTO `pos_produkjasa` VALUES ('','$jenis','$jenjang','$nama','$hargajual')" );
 		if($hasil){
 			$admin .= '<div class="sukses"><b>Berhasil di Buat.</b></div>';
 		}else{
@@ -146,7 +139,6 @@ $hargajual 		= int_filter($_POST['hargajual']);
 
 }
 $jenjang     		= !isset($jenjang) ? '' : $jenjang;
-$kode     		= !isset($kode) ? '' : $kode;
 $nama     		= !isset($nama) ? '' : $nama;
 $jenis     		= !isset($jenis) ? '' : $jenis;
 $hargajual     		= !isset($hargajual) ? '0' : $hargajual;
@@ -179,11 +171,6 @@ $admin .= '<option value="'.$datasj['id'].'">'.$datasj['nama'].'</option>';
 }
 $admin .='</select></td>
 </tr>
-	<tr>
-		<td>Kode Jasa</td>
-		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" required></td>
-	</tr>
 	<tr>
 		<td>Nama Jasa</td>
 		<td>:</td>
@@ -221,11 +208,10 @@ while( $i<=$jum ){
  
    //$cell->val( baris,kolom )
  
-   $kode  = $cell->val( $i,1 );
-   $nama = $cell->val( $i,2 );
-   $hargajual = $cell->val( $i,3 );
+   $nama = $cell->val( $i,1 );
+   $hargajual = $cell->val( $i,2 );
 
-$sql ="INSERT INTO `pos_produkjasa` (`jenis`,`jenjang`,`kode`,`nama`,`hargajual`) VALUES ('$jenis','$jenjang','$kode','$nama','$hargajual')";
+$sql ="INSERT INTO `pos_produkjasa` (`jenis`,`jenjang`,`nama`,`hargajual`) VALUES ('$jenis','$jenjang','$nama','$hargajual')";
 $hasil = mysql_query( $sql );
 if($hasil){
 $sukses++;
@@ -278,7 +264,7 @@ $admin .='</select></td>
  <tr>
 	<td>Contoh File Excel </td>
 	<td>:</td>
-	<td><a href="mod/produk/admin/importprodukjasa.xls">importprodukjasa.xls</a></td>
+	<td><a href="mod/produkjasa/admin/importprodukjasa.xls">importprodukjasa.xls</a></td>
  </tr>
  <tr>
 	<td></td>
@@ -298,7 +284,6 @@ $admin.='
         <tr>
             <th>Kategori</th>
             <th>Jenjang</th>
-            <th>Kode</th>
 			<th>Nama Jasa</th>
            <th>H.Jual</th>
             <th width="30%">Aksi</th>
@@ -308,14 +293,12 @@ $admin.='
 $hasil = $koneksi_db->sql_query( "SELECT * FROM pos_produkjasa" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $jenjang=$data['jenjang'];
-$kode=$data['kode'];
 $nama=$data['nama'];
 $jenis=$data['jenis'];
 $hargajual=$data['hargajual'];
 $admin.='<tr>
             <td>'.getjenis($jenis).'</td>
             <td>'.getjenjang($jenjang).'</td>
-            <td>'.$kode.'</td>
             <td>'.$nama.'</td>
             <td>'.$hargajual.'</td>
             <td><a href="?pilih=produkjasa&amp;mod=yes&amp;aksi=del&amp;id='.$data['id'].'" onclick="return confirm(\'Apakah Anda Yakin Ingin Menghapus Data Ini ?\')"><span class="btn btn-danger">Hapus</span></a> <a href="?pilih=produkjasa&amp;mod=yes&amp;aksi=edit&amp;id='.$data['id'].'"><span class="btn btn-warning">Edit</span></a></td>

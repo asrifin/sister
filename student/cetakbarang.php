@@ -7,6 +7,7 @@ global $koneksi_db,$url_situs;
 $tglmulai 		= $_GET['tglmulai'];
 $tglakhir 		= $_GET['tglakhir'];
 $kodebarang 		= $_GET['kodebarang'];
+$mutasi 		= $_GET['mutasi'];
 echo "<html><head><title>Laporan Stok Barang </title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
@@ -58,7 +59,7 @@ echo '<tr class="border">
 $no =1;
 /****************************/
 //$st2 = mysql_query ("SELECT * FROM po_alur_stok where (kodebarang='$kodebarang') and (tgl between '$tglmulai' and '$tglakhir' ) and transaksi ='Saldo Awal' limit 1");	
-$st2 = mysql_query ("SELECT * FROM pos_alur_stok where (kodebarang='$kodebarang') and transaksi ='Saldo Awal' limit 1");	
+$st2 = mysql_query ("SELECT * FROM pos_alur_stok where transaksi ='Stok Awal' limit 1");	
 
 $datast2 = mysql_fetch_array($st2);
 $idsa = $datast2['id'];
@@ -67,8 +68,9 @@ $transaksisa = $datast2['transaksi'];
 $kodesa = $datast2['kode'];
 $kodebarangsa = $datast2['kodebarang'];
 $jumlahsa = $datast2['jumlah'];
-$getnamabarangsa = getnamabarang($kodebarang);
+$getnamabarangsa = getnamabarang($kodebarangsa);
 if($idsa){
+if($kodebarang==$kodebarangsa){	
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
@@ -81,28 +83,61 @@ echo '
 </tr>';
 $no =2;
 $tjumlah =$jumlahsa;
+break;
+}else{
+echo '
+<tr class="border">
+<td class="text-center">'.$no.'</td>
+<td>'.tanggalindo($tglsa).'</td>
+<td>'.$transaksisa.'</td>
+<td>'.$kodesa.'</td>
+<td>'.$kodebarangsa.'</td>
+<td>'.$getnamabarangsa.'</td>
+<td>'.$jumlahsa.'</td>
+</tr>';
+$no =2;
+$tjumlah =$jumlahsa;	
+}
 }
 /****************************/
-$st = mysql_query ("SELECT * FROM pos_alur_stok where (kodebarang='$kodebarang') and (tgl between '$tglmulai' and '$tglakhir' ) and transaksi !='Saldo Awal' order by id asc");	
+if($mutasi!='Stok Awal'){
+/********************************/
+$st = mysql_query ("SELECT * FROM pos_alur_stok where (tgl between '$tglmulai' and '$tglakhir' ) and transaksi !='Stok Awal' order by id asc");	
 while($datast = mysql_fetch_array($st)){
 $id = $datast['id'];
 $tgl = $datast['tgl'];
 $transaksi = $datast['transaksi'];
 $kode = $datast['kode'];
-$kodebarang = $datast['kodebarang'];
+$kodebaranga = $datast['kodebarang'];
 $jumlah = $datast['jumlah'];
-$getnamabarang = getnamabarang($kodebarang);
+$getnamabarang = getnamabarang($kodebaranga);
+if($kodebarang==$kodebarangsa){	
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.$transaksi.'</td>
 <td>'.$kode.'</td>
-<td>'.$kodebarang.'</td>
+<td>'.$kodebaranga.'</td>
 <td>'.$getnamabarang.'</td>
 <td>'.$jumlah.'</td>
 </tr>';
 $no++;
+break;
+}else{
+echo '
+<tr class="border">
+<td class="text-center">'.$no.'</td>
+<td>'.tanggalindo($tgl).'</td>
+<td>'.$transaksi.'</td>
+<td>'.$kode.'</td>
+<td>'.$kodebaranga.'</td>
+<td>'.$getnamabarang.'</td>
+<td>'.$jumlah.'</td>
+</tr>';
+$no++;	
+	
+}
 /*
 if($transaksi=='Saldo Awal'){
 $tjumlah =$jumlah;		
@@ -120,6 +155,7 @@ echo '<tr class="border">
 <td>'.$tjumlah.'</td>
 </tr>';
 echo '</table>';
+}
 /****************************/
 echo "</body</html>";
 

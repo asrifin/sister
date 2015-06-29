@@ -58,6 +58,8 @@ $kodesupplier  			= $data['kodesupplier'];
 $total  			= $data['total'];
 $discount  			= $data['discount'];
 $netto  			= $data['netto'];
+$carabayar  			= $data['carabayar'];
+$termin  			= $data['termin'];
 	$error 	= '';
 		if (!$nopo) $error .= "Error: kode PO tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
@@ -82,7 +84,18 @@ echo '
 		<td>:</td>
 		<td>'.getnamasupplier($kodesupplier).'</td>
 	</tr>';	
-
+echo '
+	<tr>
+		<td>Cara Pembayaran</td>
+		<td>:</td>
+		<td>'.($carabayar).'</td>
+	</tr>';	
+echo '
+	<tr>
+		<td>Termin</td>
+		<td>:</td>
+		<td>'.($termin).'</td>
+	</tr>';	
 echo '</table>';	
 echo '<b>Detail</b>';	
 echo '

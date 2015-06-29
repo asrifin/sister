@@ -116,37 +116,24 @@ $admin.='</tbody>
 if($_GET['aksi']=="detail"){ 
 $tglawal = date("Y-m-01");
 $tglnow = date("Y-m-d");
-$tglmulai 		= !isset($tglmulai) ? $tglawal : $tglmulai;
+$tglmulai 		= !isset($tglmulai) ? $tglnow : $tglmulai;
 $tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
 $kodebarang 		= !isset($kodebarang) ? '' : $kodebarang;
-$sel2 = '<select name="mutasi" class="form-control">';
-$arr2 = array ('Semua','Stok Awal');
-foreach ($arr2 as $kk=>$vv){
-	$sel2 .= '<option value="'.$vv.'">'.$vv.'</option>';	
-
-}
-
-$sel2 .= '</select>'; 
 $admin .='<div class="panel-heading"><b>Laporan Stok Produk</b></div>';
 $admin .= '<form class="form-inline" method="get" action="cetakbarang.php" enctype ="multipart/form-data" id="posts" target="_blank">
 <table class="table table-striped table-hover">';
 $admin .= '
 <tr>
 	<td>Kode</td>
-	<td><select name="kodebarang" class="form-control">';
+	<td><select name="kodebarang" class="form-control" required>';
 $hasil = $koneksi_db->sql_query("SELECT * FROM pos_produk ORDER BY nama asc");
-$admin .= '<option value="">== Semua Produk==</option>';
+$admin .= '<option value="">== Pilih Produk==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
 $pilihan = ($datas['kode']==$kodebarang)?"selected":'';
 $admin .= '<option value="'.$datas['kode'].'"'.$pilihan.'>'.$datas['kode'].'-'.$datas['nama'].'</option>';
 }
 $admin .='</select></td>
 </tr>';
-$admin .= '
-	<tr>
-		<td width="200px">Jenis Mutasi</td>
-		<td>'.$sel2.'</td>
-	</tr>';
 $admin .= '
 	<tr>
 		<td width="200px">Tanggal Mulai</td>
