@@ -39,7 +39,7 @@
 								WHERE	tb.lokasi = '.$_GET['lokasi'].' AND (tb.barkode  LIKE "%'.$searchTerm.'%"
 										OR tb.judul LIKE "%'.$searchTerm.'%")'.$pinjamArr;
 						// var_dump($ss);exit()
-						// print_r($ss);exit();
+						// print_r($_GET['lokasi']);exit();
 				}elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='kembali'){
 					$ss='SELECT *
 							FROM(SELECT
@@ -58,6 +58,28 @@
 
 					if (isset($_GET['tipe']) && $_GET['tipe']==1) {
 						
+						// $ss='SELECT *
+						// 		FROM(SELECT
+						// 					pc.replid
+						// 					nis,
+						// 					pc.nama,
+						// 					d.nama departemen,
+						// 					tingkat.tingkat,
+						// 					ak.kelas
+						// 				FROM
+						// 					psb_calonsiswa pc
+						// 				LEFT JOIN psb_kelompok pk ON pk.replid = pc.kelompok
+						// 				LEFT JOIN psb_proses pp ON pp.replid = pk.proses
+						// 				LEFT JOIN aka_tahunajaran tahun ON tahun.replid = pp.tahunajaran
+						// 				LEFT JOIN aka_tingkat tingkat ON tingkat.tahunajaran = tahun.replid
+						// 				LEFT JOIN aka_kelas ak ON ak.kelas = tahun.replid
+						// 				LEFT JOIN departemen d ON d.replid = pp.departemen
+						// 				WHERE
+						// 					pc.replid
+						// 				AND `status` = 1
+						// 			)tb
+						// 			WHERE	tb.nis  LIKE "%'.$searchTerm.'%"
+						// 					OR tb.nama LIKE "%'.$searchTerm.'%" ';
 						$ss='SELECT *
 								FROM(SELECT
 											replid,
@@ -65,7 +87,9 @@
 											nama
 										FROM
 											psb_calonsiswa
-										WHERE `status`= 1
+										WHERE
+											replid
+										AND `status` = 1
 									)tb
 									WHERE	tb.nis  LIKE "%'.$searchTerm.'%"
 											OR tb.nama LIKE "%'.$searchTerm.'%" ';
@@ -80,7 +104,7 @@
 										FROM
 											hrd_karyawan
 									)tb
-									WHERE	tb.nid  LIKE "%'.$searchTerm.'%"
+									WHERE	tb.nip  LIKE "%'.$searchTerm.'%"
 											OR tb.nama LIKE "%'.$searchTerm.'%" ';
 					}
 					if (isset($_GET['tipe']) && $_GET['tipe']==3) {
@@ -121,7 +145,7 @@
 				$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
 				$rows 	= array();
 				while($row = mysql_fetch_assoc($result)) {
-					if ($_GET['subaksi']=='pinjam' or $_GET['subaksi']=='kembali') {
+					if ($_GET['subaksi']=='pinjam' || $_GET['subaksi']=='kembali') {
 						$rows[]= array(
 							'replid'  =>$row['replid'],
 							'barkode' =>$row['barkode'],
@@ -130,21 +154,24 @@
 					}				
 					elseif ($_GET['subaksi']=='pilihan') {
 
-						if ($_GET['tipe']=='siswa') {
+						if ($_GET['tipe']==1) {
 							$rows[]= array(
-								'replid' =>$row['replid'],
-								'nis'    =>$row['nis'],
-								'nama'   =>$row['nama']
+								'replid'     =>$row['replid'],
+								'nis'        =>$row['nis'],
+								'nama'       =>$row['nama'],
+								// 'departemen' =>$row['departemen'],
+								// 'tingkat'    =>$row['tingkat'],
+								// 'kelas'      =>$row['kelas']
 							);
 						}
-						elseif($_GET['tipe']=='guru') {
+						elseif($_GET['tipe']==2) {
 							$rows[]= array(
-								'replid' =>$row['replid'],
+								'id' =>$row['id'],
 								'nip'    =>$row['nip'],
 								'nama'   =>$row['nama']
 							);
 						}
-						elseif($_GET['tipe']=='member_luar') {
+						elseif($_GET['tipe']==3) {
 							$rows[]= array(
 								'replid' =>$row['replid'],
 								'nid'    =>$row['nid'],

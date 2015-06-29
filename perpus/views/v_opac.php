@@ -11,7 +11,7 @@
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
  -->
 
-<div class="tile-group quadro" id="tbody">
+<div id="tbody">
 
 </div>
 
@@ -42,5 +42,5 @@
 </table> -->
 
 </div>
-
+<!--End Scroll-->
 

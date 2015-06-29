@@ -15,16 +15,33 @@
 		switch ($_POST['aksi']) {
 			// // -----------------------------------------------------------------
 			case 'tampil':
-				$kode       = isset($_POST['kodeS'])?filter(trim($_POST['kodeS'])):'';
-				$nama       = isset($_POST['namaS'])?filter(trim($_POST['namaS'])):'';
-				$alamat     = isset($_POST['alamatS'])?filter(trim($_POST['alamatS'])):'';
-				$keterangan = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
-				$sql = 'SELECT *
-						FROM '.$tb.'
+				$judul            = isset($_POST['judulS'])?filter($_POST['judulS']):'';
+				$kode_klasifikasi = isset($_POST['kode_klasifikasiS'])?filter($_POST['kode_klasifikasiS']):'';
+				$pengarang        = isset($_POST['pengarangS'])?filter($_POST['pengarangS']):'';
+				$penerbit         = isset($_POST['penerbitS'])?filter($_POST['penerbitS']):'';
+				
+				$sql = 'SELECT  pkat.replid as replid,
+								pkat.judul,
+								pkat.callnumber,
+								pkas.kode as kode_klas,
+								pkas.nama as klas,
+								pg.nama as pengarang,
+								pn.nama as penerbit,
+								 (SELECT count(*) from pus_buku where katalog=pkat.replid)jum
+								FROM pus_katalog pkat 
+								LEFT JOIN pus_klasifikasi pkas ON pkat.klasifikasi = pkas.replid 
+								LEFT JOIN pus_pengarang pg ON pkat.pengarang = pg.replid
+								LEFT JOIN pus_penerbit pn ON pkat.penerbit = pn.replid
+								LEFT JOIN pus_buku pb ON pb.katalog = pkat.replid	
 						WHERE 
-							replid
-						ORDER BY judul asc';
-				// print_r($sql);exit();
+							pkat.judul like "%'.$judul.'%" and
+							pkas.nama like "%'.$kode_klasifikasi.'%" and					
+							pg.nama like "%'.$pengarang.'%" and					
+							penerbit like "%'.$penerbit.'%"						
+						GROUP BY
+							pkat.replid						
+							ORDER BY pkat.replid asc';	
+					// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -42,21 +59,31 @@
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					// while($res = mysql_fetch_array($result)){	
-					foreach ($var['judul'] as $i => $v) {
-							
-						$out.='
-								    <a href="perangkat" class="tile  bg-green" data-click="transform">
-								        <div class="tile-content email">
-                                    		<div class="email-data-text">'.$v['judul'].'</div>
-								        </div>
-								        <div class="brand">
-								            <div class="label">Perangkat</div>
-								        </div>
-								    </a>
-							   ';
-						// $nox++;
-					}
+					$res = mysql_fetch_array($result);	
+					$sql2 = mysql_query('SELECT * 
+									FROM kon_warna');
+					$res2 = mysql_num_rows($sql2);
+
+					// $resa = $res['judul'];
+					while($res = mysql_fetch_array($result)){	
+					// if (is_array($resa)) {
+					// 	foreach ($resa as $i => $v) {
+								
+	                                    		// <div class="email-data-text">judul</div>
+									    // <a href="#" class="tile  bg-'.$res2['warna'].' data-click="transform">
+							$out.='
+									    <a href="#" onclick="viewFR('.$res['replid'].')" class="tile  bg-green data-click="transform">
+									        <div class="tile-content email">
+	                                    		<div class="email-data-text">'.$res['judul'].'</div>
+									        </div>
+									        <div class="brand">
+									            <div class="label"></div>
+									        </div>
+									    </a>
+								   ';
+							$nox++;
+						}
+					// }
 				}else{ #kosong
 					$out.= '<span style="color:red;text-align:center;">
 							... data tidak ditemukan...</span>';
@@ -92,24 +119,75 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT 
-								kode,
-								nama,
-								alamat,
-								keterangan
-							from '.$tb.' 
-							WHERE 
-							replid='.$_POST['replid'];
+						$s   = ' SELECT
+								  kg.replid as replid,
+		                          kg.judul,
+		                          kf.kode kode_klas,
+		                          kf.nama klasifikasi,
+		                          pr.nama pengarang,
+		                          pb.nama penerbit,
+		                          (SELECT count(*) 
+		                          	from pus_buku 
+		                          	where katalog=kg.replid AND
+		                          		  buku.status = 1
+		                          	)tersedia,
+							 	  if(buku.status=1,"Tersedia","Dipinjam") as statusbuku, 
+		                          kg.editor,
+		                          kg.photo2,
+		                          kg.tahunterbit,
+		                          kg.kota,
+		                          kg.isbn,
+		                          kg.issn,
+		                          kg.penerjemah,
+		                          kg.seri,
+		                          kg.edisi,
+		                          kg.volume,
+		                          kg.halaman,
+								  b.nama bahasa,
+								  pj.nama jenisbuku,
+		                          kg.callnumber,
+		                          kg.dimensi,
+		                          kg.deskripsi
+		                        FROM
+		                          pus_katalog kg
+		                          LEFT JOIN pus_buku buku ON kg.replid = buku.katalog
+		                          LEFT JOIN pus_pengarang pr ON pr.replid = kg.pengarang
+		                          LEFT JOIN pus_penerbit pb ON pb.replid = kg.penerbit
+		                          LEFT JOIN pus_klasifikasi kf ON kf.replid = kg.klasifikasi
+				                  LEFT JOIN pus_bahasa b ON b.replid = kg.bahasa
+				                  LEFT JOIN pus_jenisbuku pj ON pj.replid = kg.jenisbuku
+		                        WHERE 
+		                          kg.replid = '.$_POST['replid'].'
+		                        order BY
+		                          kg.judul asc';
 					// print_r($s);exit();
-				$e 		= mysql_query($s);
+				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'kode'       =>$r['kode'],
-							'nama'       =>$r['nama'],
-							'alamat'     =>$r['alamat'],
-							'keterangan' =>$r['keterangan']
+							'status'      =>$stat,
+							'replid'      =>$r['replid'],
+							'photo2'      =>$r['photo2'],
+							'judul'       =>$r['judul'],
+							'kode_klas'   =>$r['kode_klas'],
+							'klasifikasi' =>$r['klasifikasi'],
+							'pengarang'   =>$r['pengarang'],
+							'callnumber'  =>$r['callnumber'],
+							'penerjemah'  =>$r['penerjemah'],
+							'editor'      =>$r['editor'],
+							'penerbit'    =>$r['penerbit'],
+							'tahunterbit' =>$r['tahunterbit'],
+							'kota'        =>$r['kota'],
+							'isbn'        =>$r['isbn'],
+							'issn'        =>$r['issn'],
+							'bahasa'      =>$r['bahasa'],
+							'seri'        =>$r['seri'],
+							'volume'      =>$r['volume'],
+							'edisi'       =>$r['edisi'],
+							'jenisbuku'   =>$r['jenisbuku'],
+							'halaman'     =>$r['halaman'],
+							'dimensi'     =>$r['dimensi'],
+							'tersedia'  =>$r['tersedia'],		
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
