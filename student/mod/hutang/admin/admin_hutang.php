@@ -12,8 +12,40 @@ if (!cek_login()){
 $JS_SCRIPT.= <<<js
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function() {
-    $('#example').dataTable({
-    "iDisplayLength":50});
+    $('#example').dataTable( {
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+ 
+            // Total over all pages
+            total = api
+                .column( 4 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                } );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 4, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 4 ).footer() ).html(
+                '$'+pageTotal +' ( $'+ total +' total)'
+            );
+        }
+    } );
 } );
 </script>
 js;
@@ -140,7 +172,7 @@ switch ($status) {
 $admin .= '
 <div class="panel-heading"><b>Daftar Hutang</b></div>';	
 $admin.='
-<table class="table table-striped table-bordered" cellspacing="0" width="100%">
+<table class="table table-striped table-bordered" cellspacing="0" width="100%"id="example">
     <thead>
         <tr>
             <th>No.Invoice</th>
@@ -154,7 +186,7 @@ $admin.='
         </tr>
     </thead>';
 	$admin.='<tbody>';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM `pos_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgltermin asc" );
+$hasil = $koneksi_db->sql_query( "SELECT * FROM `pos_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl desc" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $noinvoice = $data['noinvoice'];
 $hutang = $data['hutang'];
@@ -163,8 +195,12 @@ $tombollunas = '<a href="?pilih=hutang&amp;mod=yes&amp;aksi=bayar&amp;noinvoice=
 }else{
 $tombollunas = '<span class="btn btn-success">Lunas</span>';
 }
-$cetakslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak</span></a>';
-$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok" target ="blank"><span class="btn btn-primary">Lihat</span></a>';
+$cetakslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak Slip</span></a>';
+if($hutang>'0'){
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok" target ="blank"><span class="btn btn-warning">Lihat Slip</span></a>';
+}else{
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok" target ="blank"><span class="btn btn-primary">Lihat Slip</span></a>';
+}
 $admin.='<tr>
             <td>'.$data['noinvoice'].'</td>
             <td>'.tanggalindo($data['tgl']).'</td>
@@ -173,12 +209,16 @@ $admin.='<tr>
             <td>'.rupiah_format($data['bayar']).'</td>
             <td>'.rupiah_format($data['hutang']).'</td>
             <td>'.tanggalindo($data['tgltermin']).'</td>
-            <td>'.$tombollunas.' '.$cetakslip.' '.$lihatslip.'</td>
+            <td>'.$cetakslip.' '.$lihatslip.'</td>
         </tr>';
 $ttotal += $data['total'];
 $tbayar += $data['bayar'];
 $thutang += $data['hutang'];
 }   
+$admin.='</tbody>';
+$admin.='
+</table>';
+/*
 $admin.='<tr>
             <td colspan="3">Grand Total</td>
             <td>'.rupiah_format($ttotal).'</td>
@@ -186,8 +226,8 @@ $admin.='<tr>
             <td>'.rupiah_format($thutang).'</td>
             <td colspan="2"></td>
         </tr>';
-$admin.='</tbody>
-</table>';
+$admin.='
+</table>';*/
 }
 if($_GET['aksi']=="bayar"){
 $noinvoice 		= $_GET['noinvoice'];
