@@ -79,7 +79,7 @@ $kodesupplier 		= $_SESSION["kodesupplier"];
 $carabayar 		= $_POST['carabayar'];
 $total 		= $_POST['total'];
 $discount ='0';
-$netto = $_POST['total'];
+$netto =$_POST['total'];
 $termin 		= $_POST['termin'];
 $user 		= $_POST['user'];
 if (!$_SESSION["kodesupplier"])  	$error .= "Error:  Kode Supplier harus ada <br />";
@@ -91,10 +91,10 @@ $admin .= '<div class="error">'.$error.'</div>';
 }else{
 if($carabayar=='Hutang'){
 $tgltermin = tgltermin($tgl,$termin);
-$hasil  = mysql_query( "INSERT INTO `pos_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$carabayar','$total','$discount','$netto','0','$netto','$termin','$tgltermin','$user')" );	
+$hasil  = mysql_query( "INSERT INTO `pos_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$carabayar','$total','$discount','$netto','0','$total','$termin','$tgltermin','$user')" );	
 }
 else{
-$hasil  = mysql_query( "INSERT INTO `pos_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$carabayar','$total','$discount','$netto','$netto','0','$termin','','$user')" );
+$hasil  = mysql_query( "INSERT INTO `pos_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$carabayar','$total','$discount','$netto','$total','0','$termin','','$user')" );
 }
 $idpembelian = mysql_insert_id();
 foreach ($_SESSION["product_id"] as $cart_itm)
@@ -381,7 +381,7 @@ $admin .= '
 $admin .= '	
 	<tr>
 		<td colspan="9" ></td>
-		<td ><input type="submit" value="EDIT DETAIL" name="simpandetail"class="btn btn-warning" ></td>
+		<td ><input type="submit" value="Edit Detail" name="simpandetail"class="btn btn-warning" ></td>
 	</tr>';		
 $_SESSION['totalbeli']=$total;
 $admin .= '	

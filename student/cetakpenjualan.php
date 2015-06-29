@@ -10,7 +10,11 @@ $carabayar 		= $_GET['carabayar'];
 $detail 		= $_GET['detail'];
 $jenisproduk 		= $_GET['jenisproduk'];
 $kodecustomer 		= $_GET['kodecustomer'];
-$wherecustomer ='';
+if($kodecustomer=='Semua'){
+         $wherecustomer="";
+}else{
+         $wherecustomer="and kodecustomer='$kodecustomer'";
+}
 switch ($carabayar) {
    case 'Semua':
          $wherestatus="";
@@ -24,9 +28,6 @@ switch ($carabayar) {
    case 'Piutang':
          $wherestatus="and carabayar='Piutang'";
          break;
-}
-if(isset($_GET['kodecustomer'])){
- $wherecustomer="and kodecustomer='$kodecustomer'";
 }
 echo "<html><head><title>Laporan Penjualan </title>";
 echo '<style type="text/css">
