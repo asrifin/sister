@@ -110,8 +110,8 @@ $nopo 		= $_POST['nopo'];
 $tgl 		= $_POST['tgl'];
 $kodesupplier 		= $_SESSION["kodesupplier"];
 $total 		= $_POST['total'];
-$discount 		= $_POST['discount'];
-$netto = $_POST['bayar'];
+$discount 		= '0';
+$netto = '0';
 $user 		= $_POST['user'];
 $carabayar 		= $_POST['carabayar'];
 $termin 		= $_POST['termin'];
@@ -292,7 +292,7 @@ $admin .= '
 		<td>:</td>
 		<td><div class="input_container">
                     <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >
-					&nbsp;<input type="submit" value="Hapus" name="deletesupplier"class="btn btn-danger" >
+					&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
                     <ul id="country_list_id"></ul>
                 </div>
 				</td>
@@ -414,6 +414,7 @@ $admin .= '
 		<td ><input type="text" name="total" id="total"   class="form-control"  value="'.$total.'"/></td>
 		<td></td>
 	</tr>';
+/*	
 $admin .= '	
 	<tr>
 		<td></td>
@@ -432,6 +433,7 @@ $admin .= '<td align="right"><b>Netto</b></td>
 		<td></td>
 	</tr>
 	';
+	*/
 $admin .= '<tr><td colspan="8"></td><td align="right"></td>
 		<td><input type="hidden" name="user" value="'.$user.'">
 		<input type="submit" value="Batal" name="batalpo"class="btn btn-danger" >
@@ -568,6 +570,7 @@ $admin .= '
 		<td colspan="7" align="right"><b>Total</b></td>
 		<td >'.rupiah_format($total).'</td>
 	</tr>';
+	/*
 $admin .= '	
 	<tr>	
 		<td colspan="7" align="right"><b>Discount</b></td>
@@ -577,7 +580,7 @@ $admin .= '	<tr>
 		<td colspan="7" align="right"><b>Grand Total</b></td>
 		<td >'.rupiah_format($netto).'</td>
 	</tr>
-	';
+	';*/
 $admin .= '</table></div>';	
 		}
 	}

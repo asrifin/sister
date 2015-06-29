@@ -131,6 +131,7 @@ echo '
 		<td colspan="7" align="right"><b>Total</b></td>
 		<td >'.rupiah_format($total).'</td>
 	</tr>';
+	/*
 echo '	
 	<tr class="border">	
 		<td colspan="7" align="right"><b>Discount</b></td>
@@ -141,6 +142,7 @@ echo '	<tr class="border">
 		<td >'.rupiah_format($netto).'</td>
 	</tr>
 	';
+	*/
 echo '</table>';	
 		}
 

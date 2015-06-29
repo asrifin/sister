@@ -9,6 +9,12 @@ $tglakhir 		= $_GET['tglakhir'];
 $carabayar 		= $_GET['carabayar'];
 $detail 		= $_GET['detail'];
 $jenisproduk 		= $_GET['jenisproduk'];
+$supplier 		= $_GET['supplier'];
+if(!$supplier){
+         $wheresupplier="";
+}else{
+         $wheresupplier="and kodesupplier='$supplier'";
+}
 switch ($carabayar) {
    case 'Semua':
          $wherestatus="";
@@ -57,7 +63,7 @@ echo'
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
 if(!$detail){
-echo'<tr><td colspan="7"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
+echo'<tr><td colspan="7"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Supplier '.getnamasupplier($supplier).'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
@@ -72,7 +78,7 @@ echo '
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `pos_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `pos_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus  $wheresupplier order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $noinvoice = $datas['noinvoice'];
@@ -119,7 +125,7 @@ echo '
 </tr>';
 echo '</table>';
 }else{
-echo'<tr><td colspan="8"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
+echo'<tr><td colspan="8"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Supplier '.getnamasupplier($supplier).'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
@@ -138,7 +144,7 @@ echo '
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `pos_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `pos_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus  $wheresupplier order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $noinvoice = $datas['noinvoice'];
