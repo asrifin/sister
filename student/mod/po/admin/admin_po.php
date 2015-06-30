@@ -52,14 +52,14 @@ eof;
 $script_include[] = $JS_SCRIPT;
 	
 //$index_hal=1;	
-	$admin  .='<legend>PEMESANAN PEMBELIAN</legend>';
+	$admin  .='<legend>PO PEMBELIAN</legend>';
 	$admin  .= '<div class="border2">
 <table  width="25%"><tr align="center">
 <td>
-<a href="admin.php?pilih=po&mod=yes">PO</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=po&mod=yes">PO PEMBELIAN</a>&nbsp;&nbsp;
 </td>
 <td>
-<a href="admin.php?pilih=po&mod=yes&aksi=cetak">CETAK PO</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=po&mod=yes&aksi=cetak">CETAK PO PEMBELIAN</a>&nbsp;&nbsp;
 </td>
 </tr></table>
 </div>';
@@ -138,7 +138,7 @@ updatehargabeli($kode,$harga);
 if($hasil){
 $admin .= '<div class="sukses"><b>Berhasil Menambah PO.</b></div>';
 porefresh();
-$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po&mod=yes" />';
+//$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po&mod=yes" />';
 }else{
 $admin .= '<div class="error"><b>Gagal Menambah PO.</b></div>';
 		}		
@@ -163,23 +163,7 @@ unset($_SESSION['product_id'][$k]);
 }
 $style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po&mod=yes" />';
 }
-/*
-if(isset($_POST['editjumlah'])){
-$kode 		= $_POST['kode'];
-$jumlahpo = $_POST['jumlahpo'];
-$subdiscount = $_POST['subdiscount'];
-foreach ($_SESSION['product_id'] as $k=>$v){
-    if($kode == $_SESSION['product_id'][$k]['kode'])
-	{
-$harga = $_SESSION['product_id'][$k]['harga'];
-$nilaidiscount=cekdiscount($subdiscount,$harga);
-$_SESSION['product_id'][$k]['subdiscount']=$subdiscount;
-$_SESSION['product_id'][$k]['jumlah']=$jumlahpo;
-$_SESSION['product_id'][$k]['subtotal'] = $jumlahpo*($_SESSION['product_id'][$k]['harga']-$nilaidiscount);
-		}
-}
-}
-*/
+
 if(isset($_POST['simpandetail'])){
 foreach ($_SESSION['product_id'] as $k=>$v){
 $_SESSION['product_id'][$k]['subdiscount']=$_POST['subdiscount'][$k];
@@ -190,6 +174,7 @@ $_SESSION['product_id'][$k]['subtotal'] =$_SESSION['product_id'][$k]['jumlah']*(
 }
 //$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po&mod=yes" />';
 }
+
 if(isset($_POST['tambahbarang'])){
 $_SESSION['kodesupplier'] = $_POST['kodesupplier'];	
 $kodebarang 		= $_POST['kodebarang'];
@@ -266,7 +251,7 @@ foreach ($arr2 as $kk=>$vv){
 
 $sel2 .= '</select>'; 
 $admin .= '
-<div class="panel-heading"><b>Transaksi PO</b></div>';	
+<div class="panel-heading"><b>Transaksi PO Pembelian</b></div>';	
 $admin .= '
 <form method="post" action="" class="form-inline"id="posts">
 <table class="table table-striped table-hover">';
@@ -344,30 +329,29 @@ $admin .= '
 <th><b>Subtotal</b></</th>
 		<th><b>Aksi</b></</th>
 	</tr>';
-//	if ($_GET['editdetail']){
-foreach ($_SESSION["product_id"] as $cart_itm)
-        {
-		$array =$no-1;
-$nilaidiscount=cekdiscount($cart_itm["subdiscount"],$cart_itm["harga"])*$cart_itm["jumlah"];
-//$admin .= '<form method="post" action="" class="form-inline"id="posts">';
+foreach ($_SESSION['product_id'] as $k=>$v){
+$subdiscount = $_SESSION['product_id'][$k]['subdiscount'];
+$jumlah = $_SESSION['product_id'][$k]['jumlah'];
+$harga = $_SESSION['product_id'][$k]['harga'];
+$jenjang = $_SESSION['product_id'][$k]["jenjang"];
+$kode = $_SESSION['product_id'][$k]["kode"];
+$subtotal=$_SESSION['product_id'][$k]["subtotal"];
+$nilaidiscount=cekdiscount($subdiscount,$harga)*$jumlah;
 $admin .= '	
 	<tr>
 			<td>'.$no.'</td>
-		<td>'.getjenjang($cart_itm["jenjang"]).'</td>
-			<td>'.$cart_itm["kode"].'</td>
-		<td>'.getnamabarang($cart_itm["kode"]).'</td>
-		<td><input align="right" type="text" name="jumlahpo['.$array.']" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
-		<td><input align="right" type="text" name="harga['.$array.']" value="'.$cart_itm["harga"].'"class="form-control"></td>
-		<td><input align="right" type="text" name="subdiscount['.$array.']" value="'.$cart_itm["subdiscount"].'"class="form-control"></td>
+		<td>'.getjenjang($jenjang).'</td>
+			<td>'.$kode.'</td>
+		<td>'.getnamabarang($kode).'</td>
+		<td><input align="right" type="text" name="jumlahpo['.$k.']" value="'.$jumlah.'"class="form-control"></td>
+		<td><input align="right" type="text" name="harga['.$k.']" value="'.$harga.'"class="form-control"></td>
+		<td><input align="right" type="text" name="subdiscount['.$k.']" value="'.$subdiscount.'"class="form-control"></td>
 	<td>'.$nilaidiscount.'</td>
-		<td>'.$cart_itm["subtotal"].'</td>
+		<td>'.$subtotal.'</td>
 		<td>
-		
-		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'">
-		<a href="./admin.php?pilih=po&mod=yes&hapusbarang=ok&kode='.$cart_itm["kode"].'" class="btn btn-danger">HAPUS</a></td>
+		<a href="./admin.php?pilih=po&mod=yes&hapusbarang=ok&kode='.$kode.'" class="btn btn-danger">HAPUS</a></td>
 	</tr>';
-//$admin .= '</form>';
-	$total +=$cart_itm["subtotal"];
+	$total +=$subtotal;
 	$no++;
 		}
 $admin .= '	
@@ -375,37 +359,6 @@ $admin .= '
 		<td colspan="9" ></td>
 		<td ><input type="submit" value="EDIT DETAIL" name="simpandetail"class="btn btn-warning" ></td>
 	</tr>';		
-//	}
-	/*
-	else{
-foreach ($_SESSION["product_id"] as $cart_itm)
-        {
-$nilaidiscount=cekdiscount($cart_itm["subdiscount"],$cart_itm["harga"]);
-$admin .= '	
-	<tr>
-			<td>'.$no.'</td>
-		<td>'.getjenjang($cart_itm["jenjang"]).'</td>
-			<td>'.$cart_itm["kode"].'</td>
-		<td>'.getnamabarang($cart_itm["kode"]).'</td>
-		<td>'.$cart_itm["jumlah"].'</td>
-		<td>'.$cart_itm["harga"].'</td>
-		<td>'.$cart_itm["subdiscount"].'</td>
-	<td>'.$nilaidiscount.'</td>
-		<td>'.$cart_itm["subtotal"].'</td>
-		<td>	
-		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'"></td>
-	</tr>';
-	$total +=$cart_itm["subtotal"];
-	$no++;
-		}
-$admin .= '	
-	<tr>
-		<td colspan="9" ></td>
-		<td ><a href="./admin.php?pilih=po&mod=yes&editdetail=ok" class="btn btn-warning">Edit Detail</a></td>
-	</tr>';		
-		
-	}
-	*/
 $admin .= '	
 	<tr>
 		<td></td>
@@ -414,26 +367,6 @@ $admin .= '
 		<td ><input type="text" name="total" id="total"   class="form-control"  value="'.$total.'"/></td>
 		<td></td>
 	</tr>';
-/*	
-$admin .= '	
-	<tr>
-		<td></td>
-		<td></td>		
-		<td colspan="7" align="right"><b>Discount</b></td>
-		<td ><input type="text" name="discount" id="discount"  required  class="form-control"  value="'.$discount.'"/></td>
-		<td></td>
-	</tr>';
-$nilaidiscount2=cekdiscount($discount,$total);
-$_SESSION['totalpo']=$total-$nilaidiscount2;
-$admin .= '	
-	<tr>';
-$admin .= '<td colspan="8"></td>';
-$admin .= '<td align="right"><b>Netto</b></td>
-		<td ><input type="text" id="bayar"  name="bayar" value="'.$_SESSION['totalpo'].'"class="form-control" ></td>
-		<td></td>
-	</tr>
-	';
-	*/
 $admin .= '<tr><td colspan="8"></td><td align="right"></td>
 		<td><input type="hidden" name="user" value="'.$user.'">
 		<input type="submit" value="Batal" name="batalpo"class="btn btn-danger" >

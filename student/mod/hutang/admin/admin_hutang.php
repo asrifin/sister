@@ -218,22 +218,8 @@ $thutang += $data['hutang'];
 $admin.='</tbody>';
 $admin.='
 </table>';
-/*
-$admin.='<tr>
-            <td colspan="3">Grand Total</td>
-            <td>'.rupiah_format($ttotal).'</td>
-            <td>'.rupiah_format($tbayar).'</td>
-            <td>'.rupiah_format($thutang).'</td>
-            <td colspan="2"></td>
-        </tr>';
-$admin.='
-</table>';*/
 }
-if($_GET['aksi']=="bayar"){
-$noinvoice 		= $_GET['noinvoice'];
-lunashutang($noinvoice );
-$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=hutang&amp;mod=yes" />';	
-}
+
 if($_GET['aksi']=="cetak"){
 $tglawal = date("Y-m-01");
 $tglnow = date("Y-m-d");

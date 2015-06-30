@@ -9,7 +9,10 @@ $kode 		= $_POST['kode'];
 }else{
 $kode 		= $_GET['kode'];	
 }
-
+if(isset($_GET['bayar'])){
+$nofaktur 		= $_GET['kode'];	
+lunaspiutang($nofaktur);
+	}
 echo "<html><head><title>Nota Transaksi Penjualan </title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
@@ -74,7 +77,13 @@ echo '
 		<td>:</td>
 		<td>'.$nofaktur.'</td>
 	</tr>';
-	
+	if($nopo!=''){
+echo '
+	<tr>
+		<td>Nomor PO</td>
+		<td>:</td>
+		<td>'.$nopo.'</td>
+	</tr>';}	
 echo '
 	<tr>
 		<td>Tanggal</td>
@@ -116,6 +125,7 @@ echo '
 echo '	
 <tr>
 <th class="border"><b>No</b></</th>
+<th class="border"><b>Jenis</b></</th>
 <th class="border"><b>Jenjang</b></</th>
 <th class="border"><b>Kode</b></</th>
 <th class="border"><b>Nama</b></td>
@@ -129,6 +139,7 @@ while ($datad =  $koneksi_db->sql_fetchrow ($hasild)){
 echo '	
 <tr>
 <td class="border">'.$no.'</td>
+<td class="border">'.getjenisbarang($datad["kodebarang"]).'</td>
 <td class="border">'.getjenjangbarang($datad["kodebarang"]).'</td>
 <td class="border">'.$datad["kodebarang"].'</td>
 <td class="border">'.getnamabarang($datad["kodebarang"]).'</td>
@@ -139,11 +150,6 @@ echo '
 </tr>';
 	$no++;
 		}
-echo '	
-	<tr class="border">		
-		<td colspan="7" align="right"><b>Total</b></td>
-		<td >'.rupiah_format($total).'</td>
-	</tr>';
 	/*
 echo '	
 	<tr class="border">	
@@ -156,9 +162,20 @@ echo '	<tr class="border">
 	</tr>
 	';
 	*/
-if($bayar<>'0'){
+	if(!isset($_GET['bayar']) and $bayar=='0'){
+echo '<form class="form-inline" method="POST" action="cetak_notafaktur.php?kode='.$kode.'&bayar=ok" enctype ="multipart/form-data" id="posts">';
+echo '<tr class="border">	
+		<td colspan="8" align="right"><b>Bayar</b></td>	
+	<td><input type="hidden" value="'.$total.'" name="bayarnominal">'.rupiah_format($total).'</td>
+	</tr>';
+echo '<tr>
+	<td colspan="8" align="right"></td>
+	<td>
+	<input type="submit" value="Bayar" name="bayar"onclick="return confirm(\'Apakah Anda Yakin Ingin Melunasi Data Ini ?\')"></td>
+	</tr></form>';
+	}else{
 echo '	<tr class="border">	
-		<td colspan="7" align="right"><b>Bayar</b></td>
+		<td colspan="8" align="right"><b>Bayar</b></td>
 		<td >'.rupiah_format($bayar).'</td>
 	</tr>
 	';

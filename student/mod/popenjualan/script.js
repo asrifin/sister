@@ -4,7 +4,7 @@ function autocomplet() {
 	var keyword = $('#country_id').val();
 	if (keyword.length >= min_length) {
 		$.ajax({
-			url: 'mod/penjualan/customer_refresh.php',
+			url: 'mod/pembelian/supplier_refresh.php',
 			type: 'POST',
 			data: {keyword:keyword},
 			success:function(data){
@@ -31,7 +31,7 @@ function autocomplet2() {
 	var keyword = $('#barang_id').val();
 	if (keyword.length >= min_length) {
 		$.ajax({
-			url: 'mod/penjualan/barang_refresh.php',
+			url: 'mod/pembelian/barang_refresh.php',
 			type: 'POST',
 			data: {keyword:keyword},
 			success:function(data){
@@ -43,18 +43,41 @@ function autocomplet2() {
 		$('#barang_list_id').hide();
 	}
 }
-
 function set_item2(item) {
 	// change input value
 	$('#barang_id').val(item);
 	// hide proposition list
 	$('#barang_list_id').hide();
 }
+// PO
+function autocompletpo() {
+	var min_length = 0; // min caracters to display the autocomplete
+	var keyword = $('#po_id').val();
+	if (keyword.length >= min_length) {
+		$.ajax({
+			url: 'mod/po/po_refresh.php',
+			type: 'POST',
+			data: {keyword:keyword},
+			success:function(data){
+				$('#po_list_id').show();
+				$('#po_list_id').html(data);
+			}
+		});
+	} else {
+		$('#po_list_id').hide();
+	}
+}
+// set_item : this function will be executed when we select an item
+function set_itempo(item) {
+	// change input value
+	$('#po_id').val(item);
+	// hide proposition list
+	$('#po_list_id').hide();
+}
 $(document).ready(function() {
 $('#bayar').keyup(function(){
 var bayar=parseInt($('#bayar').val());
 var total=parseInt($('#total').val());	
-/*
 var discount=parseInt($('#discount').val());	
 var nilaidiscount;
 if(discount<=100){
@@ -62,9 +85,7 @@ nilaidiscount = parseInt((total*discount)/100);
 }else{
 nilaidiscount = discount;
 }
-var grand_total=(total-nilaidiscount);
-*/
-var total_bayar=bayar - (total);
+var total_bayar=bayar-(total-nilaidiscount);
 $('#Tbayar').show();
 $('#Tbayar').html("Kembali : Rp."+total_bayar);
 			});
@@ -78,65 +99,10 @@ nilaidiscount = parseInt((total*discount)/100);
 }else{
 nilaidiscount = discount;
 }
-var grand_total=(total-nilaidiscount);
-var total_bayar=bayar - (grand_total);
-$('#netto').val(grand_total);
-$('#bayar').val(grand_total);
+var total_bayar=(total-nilaidiscount);
+$('#bayar').val(total_bayar);
 $('#Tbayar').html("Total : Rp."+total_bayar);
 		});
 
 })	
-
-//PO
-function autocompletpo() {
-	var min_length = 0; // min caracters to display the autocomplete
-	var keyword = $('#po_id').val();
-	if (keyword.length >= min_length) {
-		$.ajax({
-			url: 'mod/penjualan/po_refresh.php',
-			type: 'POST',
-			data: {keyword:keyword},
-			success:function(data){
-				$('#po_list_id').show();
-				$('#po_list_id').html(data);
-			}
-		});
-	} else {
-		$('#po_list_id').hide();
-	}
-}
-
-// set_item : this function will be executed when we select an item
-function set_itempo(item) {
-	// change input value
-	$('#po_id').val(item);
-	// hide proposition list
-	$('#po_list_id').hide();
-}
 	
-
-// FAKTUR
-function autocompletfaktur() {
-	var min_length = 0; // min caracters to display the autocomplete
-	var keyword = $('#faktur_id').val();
-	if (keyword.length >= min_length) {
-		$.ajax({
-			url: 'mod/penjualan/faktur_refresh.php',
-			type: 'POST',
-			data: {keyword:keyword},
-			success:function(data){
-				$('#faktur_list_id').show();
-				$('#faktur_list_id').html(data);
-			}
-		});
-	} else {
-		$('#faktur_list_id').hide();
-	}
-}
-// set_item : this function will be executed when we select an item
-function set_itemfaktur(item) {
-	// change input value
-	$('#faktur_id').val(item);
-	// hide proposition list
-	$('#faktur_list_id').hide();
-}

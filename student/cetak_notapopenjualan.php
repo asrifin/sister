@@ -1,4 +1,5 @@
 <?php
+
 include 'includes/config.php';
 include 'includes/mysql.php';
 include 'includes/configsitus.php';
@@ -8,11 +9,8 @@ $kode 		= $_POST['kode'];
 }else{
 $kode 		= $_GET['kode'];	
 }
-if(isset($_GET['bayar'])){
-$noinvoice 		= $_GET['kode'];	
-lunashutang($noinvoice);
-	}
-echo "<html><head><title>Nota Transaksi Pembelian </title>";
+
+echo "<html><head><title>Nota PO Penjualan</title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
     font-size: 0.9em; /* 14px/16=0.875em */
@@ -52,40 +50,28 @@ echo'<table  width="100%">
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr></table>';
 echo'</td></tr><tr><td>';
 $no=1;
-$query 		= mysql_query ("SELECT * FROM `pos_pembelian` WHERE `noinvoice` like '$kode'");
+$query 		= mysql_query ("SELECT * FROM `pos_popenjualan` WHERE `nopo` like '$kode'");
 $data 		= mysql_fetch_array($query);
-$noinvoice  			= $data['noinvoice'];
 $nopo  			= $data['nopo'];
 $tgl  			= $data['tgl'];
-$kodesupplier  			= $data['kodesupplier'];
-$carabayar  			= $data['carabayar'];
+$kodecustomer  			= $data['kodecustomer'];
 $total  			= $data['total'];
 $discount  			= $data['discount'];
 $netto  			= $data['netto'];
-$bayar  			= $data['bayar'];
+$carabayar  			= $data['carabayar'];
 $termin  			= $data['termin'];
 	$error 	= '';
-		if (!$noinvoice) $error .= "Error: kode Invoice tidak terdaftar , silahkan ulangi.<br />";
+		if (!$nopo) $error .= "Error: kode PO tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		echo '<div class="error">'.$error.'</div>';}else{
-
 		echo '
 <table>';
-echo '
-	<tr>
-		<td>Nomor Invoice</td>
-		<td>:</td>
-		<td>'.$noinvoice.'</td>
-	</tr>';
-	
-	if($nopo!=''){
 echo '
 	<tr>
 		<td>Nomor PO</td>
 		<td>:</td>
 		<td>'.$nopo.'</td>
-	</tr>';}
-	
+	</tr>';
 echo '
 	<tr>
 		<td>Tanggal</td>
@@ -94,18 +80,23 @@ echo '
 	</tr>';
 echo '
 	<tr>
-		<td>Supplier</td>
+		<td>Customer</td>
 		<td>:</td>
-		<td>'.getnamasupplier($kodesupplier).'</td>
+		<td>'.getnamacustomer($kodecustomer).'</td>
+	</tr>';	
+echo '
+	<tr>
+		<td>Kelas</td>
+		<td>:</td>
+		<td>'.getnamakelasnis($kodecustomer).'</td>
 	</tr>';	
 echo '
 	<tr>
 		<td>Cara Pembayaran</td>
 		<td>:</td>
-		<td>'.$carabayar.'</td>
-			<td></td>
+		<td>'.($carabayar).'</td>
 	</tr>';	
-if($carabayar=='Hutang'){
+if($carabayar=='Piutang'){
 echo'
 	<tr>
 		<td>Termin</td>
@@ -115,13 +106,12 @@ echo'
 	</tr>';	
 	}
 echo '</table>';	
-echo '<b>Detail Transaksi Pembelian</b>';	
+echo '<b>Detail</b>';	
 echo '
 <table>';
 echo '	
 <tr>
 <th class="border"><b>No</b></</th>
-<th class="border"><b>Jenis</b></</th>
 <th class="border"><b>Jenjang</b></</th>
 <th class="border"><b>Kode</b></</th>
 <th class="border"><b>Nama</b></td>
@@ -130,12 +120,11 @@ echo '
 <th class="border"><b>Discount</b></</th>
 <th class="border"><b>Subtotal</b></</th>
 	</tr>';
-$hasild = $koneksi_db->sql_query("SELECT * FROM `pos_pembeliandetail` WHERE `noinvoice` like '$kode'");
+$hasild = $koneksi_db->sql_query("SELECT * FROM `pos_popenjualandetail` WHERE `nopo` like '$kode'");
 while ($datad =  $koneksi_db->sql_fetchrow ($hasild)){
 echo '	
 <tr>
 <td class="border">'.$no.'</td>
-<td class="border">'.getjenisbarang($datad["kodebarang"]).'</td>
 <td class="border">'.getjenjangbarang($datad["kodebarang"]).'</td>
 <td class="border">'.$datad["kodebarang"].'</td>
 <td class="border">'.getnamabarang($datad["kodebarang"]).'</td>
@@ -148,7 +137,7 @@ echo '
 		}
 echo '	
 	<tr class="border">		
-		<td colspan="8" align="right"><b>Total</b></td>
+		<td colspan="7" align="right"><b>Total</b></td>
 		<td >'.rupiah_format($total).'</td>
 	</tr>';
 	/*
@@ -163,31 +152,14 @@ echo '	<tr class="border">
 	</tr>
 	';
 	*/
-	if(!isset($_GET['bayar']) and $bayar=='0'){
-echo '<form class="form-inline" method="POST" action="cetak_notainvoice.php?kode='.$kode.'&bayar=ok" enctype ="multipart/form-data" id="posts">';
-echo '<tr class="border">	
-		<td colspan="8" align="right"><b>Bayar</b></td>	
-	<td><input type="hidden" value="'.$total.'" name="bayarnominal">'.rupiah_format($total).'</td>
-	</tr>';
-echo '<tr>
-	<td colspan="8" align="right"></td>
-	<td>
-	<input type="submit" value="Bayar" name="bayar"onclick="return confirm(\'Apakah Anda Yakin Ingin Melunasi Data Ini ?\')"></td>
-	</tr></form>';
-	}else{
-echo '	<tr class="border">	
-		<td colspan="8" align="right"><b>Bayar</b></td>
-		<td >'.rupiah_format($bayar).'</td>
-	</tr>
-	';
-	}
 echo '</table>';	
 		}
-		echo'</td></tr></table>';
-/****************************/
+
+echo'</td></tr></table>';
+		/****************************/
 echo "</body</html>";
 
-if (!isset($_GET['lihat'])){
+if (!isset($_GET['detail'])){
 echo "<script language=javascript>
 window.print();
 </script>";

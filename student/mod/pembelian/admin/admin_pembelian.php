@@ -132,6 +132,11 @@ $_SESSION['kodesupplier'] = $_POST['kodesupplier'];
 }
 
 if(isset($_POST['tambahpo'])){
+$_SESSION['kodesupplier']='';
+$_SESSION['kodepo']='';
+$_SESSION['product_id']='';
+$_SESSION['totalbeli']='';
+
 $_SESSION['kodepo'] = $_POST['kodepo'];
 $hasil3 =  $koneksi_db->sql_query("SELECT * FROM pos_po WHERE nopo = '$_SESSION[kodepo]'");
 $data3 = $koneksi_db->sql_fetchrow($hasil3);
