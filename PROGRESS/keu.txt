@@ -22,7 +22,7 @@ _________________________  transact  ___________________________
 	* jurnal umum 
 		+ form edit : autosuggest tidak aktif 
 		+ button edit blum aktif
-		- report : data detail tidak muncul & nominal = 0
+		+ report : data detail tidak muncul & nominal = 0
 		- edit : setelah update (item rek > 2), print kwitansi : detail tidak terisi (item : kosong && nominal : 0)   
 	* report :
 		- jurnal umum 	:  print & rename tab (jurnal umum --> jurnal)

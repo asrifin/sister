@@ -49,10 +49,10 @@ var detilanggaranArr=rekArr=[];
         });
 
     //form content
-        contentFR +='<form style="overflow:scroll;height:700px;" autocomplete="off" onsubmit="transSV(this); return false;">'
+        contentFR +='<form style="overflow:scroll;height:550px;" autocomplete="off" onsubmit="transSV(this); return false;">'
                         // hidden input
                         +'<input name="idformH" id="idformH" type="hidden">' 
-                        +'<input name="detjenistransH" id="detjenistransH" type="hidden">' 
+                        +'<input class="kwitansi_cari" name="detjenistransH" id="detjenistransH" type="text">' 
                         +'<input name="subaksiH" id="subaksiH" type="hidden">' 
                         +'<input class="kwitansi_cari" name="nomerH" id="nomerH" type="hidden">' 
 
@@ -905,7 +905,7 @@ var detilanggaranArr=rekArr=[];
             shadow: true,
             overlay: true,
             draggable: true,
-            width: '90%',
+            width: '80%',
             padding: 10,
             onShow: function(){
                 $.Dialog.content(contentFR);
