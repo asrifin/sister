@@ -22,7 +22,7 @@ $admin  .='<legend>STOK</legend>';
 $admin  .= '<div class="border2">
 <table  ><tr align="center">
 <td>
-<a href="admin.php?pilih=stok&mod=yes">STOK OPNAME</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=stok&mod=yes&aksi=stokopname">STOK OPNAME</a>&nbsp;&nbsp;
 </td>
 </tr></table>
 </div>';
@@ -32,12 +32,15 @@ if(isset($_POST['submit'])){
 	$tgl 		= $_POST['tgl'];
 	$kode 		= $_POST['kode'];
 	$jumlah 		= $_POST['jumlah'];
+	$selisih 		= $_POST['selisih'];
 	$mutasi 		= $_POST['mutasi'];
 
 	$error 	= '';
 if (!$kode)  $error .= "Error: Barang belum dipilih , silahkan ulangi.<br />";
+if (!$selisih and $mutasi=='stok awal' and $jumlah=='0')  $error .= "Error: selisih belum diisi , silahkan ulangi.<br />";
+if (!$selisih and $mutasi!='stok awal')  $error .= "Error: selisih belum diisi , silahkan ulangi.<br />";
 	if ($error){
-		$tengah .= '<div class="error">'.$error.'</div>';
+		$admin .= '<div class="error">'.$error.'</div>';
 	}else{
 		if($mutasi=='mutasi masuk'){
 	$jumlahbaru = $jumlah + $selisih;
@@ -50,16 +53,21 @@ if (!$kode)  $error .= "Error: Barang belum dipilih , silahkan ulangi.<br />";
 	$hasil  = mysql_query( "UPDATE `pos_produk` SET `jumlah`='$jumlahbaru' WHERE `id`='$id'" );
 	}else{
 	$ceksaldoawal = ceksaldoawal($kode);
-if($ceksaldoawal=='0'){
+if($ceksaldoawal=='0' and $jumlah=='0'){
+alurstok($tgl,$mutasi,'-',$kode,$selisih);
+$hasil  = mysql_query( "UPDATE `pos_produk` SET `jumlah`='$selisih' WHERE `id`='$id'");
+}elseif($ceksaldoawal=='0' and $jumlah){
 alurstok($tgl,$mutasi,'-',$kode,$jumlah);
-$jumlahbaru=$jumlah;
-$hasil  = mysql_query( "UPDATE `pos_produk` SET `jumlah`='$jumlahbaru' WHERE `id`='$id'" );
+}
+
+else{
+$hasil  = mysql_query( "UPDATE `pos_alur_stok` SET `jumlah`='$jumlah' WHERE `id`='$id'" );
 }
 	}
 	//	$hasil  = mysql_query( "UPDATE `pos_produk` SET `jumlah`='$jumlahbaru' WHERE `id`='$id'" );
 		if($hasil){
 			$admin .= '<div class="sukses"><b>Berhasil di Update.</b></div>';
-			$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=stok&amp;mod=yes&aksi=stokopname" />';	
+		//	$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=produk&amp;mod=yes&aksi=stokopname" />';	
 		}else{
 			$admin .= '<div class="error"><b>Gagal di Update.</b></div>';
 		}
@@ -86,7 +94,7 @@ $admin .= '
 <form method="post" action="" id="posts"class="form-inline" >
 <table class="table table-striped table-hover">
 	<tr>
-		<td>Tanggal Stok Awal</td>
+		<td>Tanggal Stok Opname/Stok Awal</td>
 		<td>:</td>
 		<td><input type="text" name="tgl" value="'.$tgl.'"class="form-control" >&nbsp;'.$wktmulai.'</td>
 	</tr>
@@ -109,6 +117,11 @@ $admin .= '
 		<td>Tipe Mutasi</td>
 		<td>:</td>
 		<td>'.$sel2.'</td>
+	</tr>
+		<tr>
+		<td>Selisih Stok</td>
+		<td>:</td>
+		<td><input type="text" name="selisih" size="25"class="form-control"value="0"></td>
 	</tr>
 
 	<tr>

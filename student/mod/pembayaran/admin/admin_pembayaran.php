@@ -74,7 +74,7 @@ $script_include[] = $JS_SCRIPT;
 	$admin  .= '<div class="border2">
 <table  width="25%"><tr align="center">
 <td>
-<a href="admin.php?pilih=pembayaran&mod=yes">HOME</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=pembayaran&mod=yes">PEMBAYARAN</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=pembayaran&mod=yes&aksi=cetak">CETAK PEMBAYARAN</a>&nbsp;&nbsp;
@@ -121,7 +121,7 @@ $bayar=$data['bayar'];
 $user=$data['user'];
 $cetakslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak</span></a>';
 if($piutang>'0'){
-$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok" target ="blank"><span class="btn btn-warning">Lihat</span></a>';
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok&bayar=ok" target ="blank"><span class="btn btn-danger">Lihat</span></a>';
 }else{
 $lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok" target ="blank"><span class="btn btn-primary">Lihat</span></a>';
 }

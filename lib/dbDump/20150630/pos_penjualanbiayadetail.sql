@@ -23,16 +23,15 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pos_penjualandetail`
+-- Struktur dari tabel `pos_penjualanbiayadetail`
 --
 
-DROP TABLE IF EXISTS `pos_penjualandetail`;
-CREATE TABLE IF NOT EXISTS `pos_penjualandetail` (
+DROP TABLE IF EXISTS `pos_penjualanbiayadetail`;
+CREATE TABLE IF NOT EXISTS `pos_penjualanbiayadetail` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `nofaktur` varchar(50) NOT NULL,
-  `nopo` varchar(50) NOT NULL,
-  `jenis` varchar(5) NOT NULL,
-  `kodebarang` varchar(50) NOT NULL,
+  `kodebiaya` varchar(50) NOT NULL,
+  `jenis` int(2) NOT NULL,
   `jumlah` varchar(50) NOT NULL,
   `harga` varchar(50) NOT NULL,
   `hargabeli` varchar(50) NOT NULL DEFAULT '0',
@@ -42,12 +41,12 @@ CREATE TABLE IF NOT EXISTS `pos_penjualandetail` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Dumping data untuk tabel `pos_penjualandetail`
+-- Dumping data untuk tabel `pos_penjualanbiayadetail`
 --
 
-INSERT INTO `pos_penjualandetail` (`id`, `nofaktur`, `nopo`, `jenis`, `kodebarang`, `jumlah`, `harga`, `hargabeli`, `subdiscount`, `subtotal`) VALUES
-(1, 'FAK0207150001', 'POF0207150001', '1', '008', '2', '55000', '50000', '0', '110000'),
-(2, 'FAK0207150002', 'POF0207150002', '3', 'BK001', '1', '30000', '25000', '0', '30000');
+INSERT INTO `pos_penjualanbiayadetail` (`id`, `nofaktur`, `kodebiaya`, `jenis`, `jumlah`, `harga`, `hargabeli`, `subdiscount`, `subtotal`) VALUES
+(1, 'FKB0207150001', 'BTRP01', 3, '1', '1000', '0', '0', '1000'),
+(2, 'FKB0207150002', 'GURU PRAMUKA', 6, '1', '7000', '0', '0', '7000');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

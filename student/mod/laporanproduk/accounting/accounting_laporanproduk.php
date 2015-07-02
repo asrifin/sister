@@ -85,7 +85,7 @@ $tglnow = date("Y-m-d");
 $tglmulai 		= !isset($tglmulai) ? $tglawal : $tglmulai;
 $tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
 $kodebarang 		= !isset($kodebarang) ? '' : $kodebarang;
-$admin .='<div class="panel-heading"><b>Laporan Stok Produk</b></div>';
+$admin .='<div class="panel-heading"><b>Laporan Alur Stok Produk</b></div>';
 $admin .= '<form class="form-inline" method="get" action="cetakbarang.php" enctype ="multipart/form-data" id="posts" target="_blank">
 <table class="table table-striped table-hover">';
 $admin .= '
@@ -120,7 +120,30 @@ $admin .= '<tr>
 </table></form>';
 $admin .= '</table>';
 $admin .= "* Apabila tidak dapat melakukan print, klik kanan pilih open link New Tab";
-
+/***************************/
+$admin .='<div class="panel-heading"><b>Laporan Stok Awal</b></div>';
+$admin .= '<form class="form-inline" method="get" action="cetakstokawal.php" enctype ="multipart/form-data" id="posts" target="_blank">
+<table class="table table-striped table-hover">';
+$admin .= '
+<tr>
+	<td>Jenis</td>
+	<td><select name="kodejenis" class="form-control">';
+$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk where jenis='BARANG'ORDER BY nama asc");
+$admin .= '<option value="">== Pilih Jenis ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$admin .= '<option value="'.$datas['id'].'">'.$datas['nama'].'</option>';
+}
+$admin .='</select></td>
+</tr>';
+$admin .= '<tr>
+	<td></td>
+	<td><input type="submit" value="Cetak" name="cetak" class="btn btn-success">
+	<input type="submit" value="Lihat" name="lihat" class="btn btn-primary">
+	</td>
+	</tr>
+</table></form>';
+$admin .= '</table>';
+$admin .= "* Apabila tidak dapat melakukan print, klik kanan pilih open link New Tab";
 }
 
 }

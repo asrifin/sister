@@ -62,7 +62,6 @@ $no =1;
 $sa = mysql_query ("SELECT * FROM pos_alur_stok where transaksi ='Stok Awal' $wherekodebarang limit 1");	
 $datasa = mysql_fetch_array($sa);
 $getnamabarang = getnamabarang($kodebarang);
-/************** STOK AWAL */
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
@@ -76,34 +75,14 @@ echo '
 $tjumlah +=$datasa['jumlah'];
 $no++;
 /**************STOK SEBELUM********/
-/************* STOK BETWEEN ************/
-$st = mysql_query ("SELECT * FROM pos_alur_stok where tgl < '$tglmulai' and transaksi !='Stok Awal' order by id asc");	
+$st = mysql_query ("SELECT * FROM pos_alur_stok where tgl < '$tglmulai' and transaksi <>'Stok Awal' order by id asc");	
 while($datast = mysql_fetch_array($st)){
 $id = $datast['id'];
 $tgl = $datast['tgl'];
 $transaksi = $datast['transaksi'];
 $kode = $datast['kode'];
 $kodebaranga = $datast['kodebarang'];
-$jumlah = $datast['jumlah'];
-$getnamabarang = getnamabarang($kodebaranga);
-/*
-echo '
-<tr class="border">
-<td class="text-center">'.$no.'</td>
-<td>'.tanggalindo($tgl).'</td>
-<td>'.$transaksi.'</td>
-<td>'.$kode.'</td>
-<td>'.$kodebaranga.'</td>
-<td>'.$getnamabarang.'</td>
-<td>'.$jumlah.'</td>
-</tr>';
-$no++;
-*/
-if($transaksi=='Penjualan' or $transaksi=='Retur Pembelian'or $transaksi=='Mutasi Keluar'){
-$jumlah =$jumlah*(-1);
-}
-$tjumlah +=$jumlah;
-$jumlah = $tjumlah;
+$jumlahsb = $datast['jumlah'];
 }
 echo '
 <tr class="border">
@@ -113,7 +92,7 @@ echo '
 <td> - </td>
 <td>'.$kodebarang.'</td>
 <td>'.$getnamabarang.'</td>
-<td>'.$jumlah.'</td>
+<td>'.$jumlahsb.'</td>
 </tr>';
 $no++;
 /************* STOK BETWEEN ************/

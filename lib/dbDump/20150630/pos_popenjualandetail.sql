@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Inang: 127.0.0.1
--- Waktu pembuatan: 30 Jun 2015 pada 09.39
+-- Waktu pembuatan: 02 Jul 2015 pada 17.13
 -- Versi Server: 5.5.27
 -- Versi PHP: 5.4.7
 
@@ -37,7 +37,15 @@ CREATE TABLE IF NOT EXISTS `pos_popenjualandetail` (
   `subdiscount` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data untuk tabel `pos_popenjualandetail`
+--
+
+INSERT INTO `pos_popenjualandetail` (`id`, `nopo`, `kodebarang`, `jumlah`, `harga`, `hargabeli`, `subdiscount`, `subtotal`) VALUES
+(1, 'POF0207150001', '008', '2', '55000', '50000', '0', '110000'),
+(2, 'POF0207150002', 'BK001', '1', '30000', '25000', '0', '30000');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -23,35 +23,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pos_penjualan`
+-- Struktur dari tabel `pos_penjualanbiaya`
 --
 
-DROP TABLE IF EXISTS `pos_penjualan`;
-CREATE TABLE IF NOT EXISTS `pos_penjualan` (
+DROP TABLE IF EXISTS `pos_penjualanbiaya`;
+CREATE TABLE IF NOT EXISTS `pos_penjualanbiaya` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nofaktur` varchar(50) NOT NULL,
-  `nopo` varchar(50) NOT NULL,
   `tgl` varchar(10) NOT NULL,
-  `kodecustomer` varchar(50) NOT NULL,
-  `carabayar` enum('Tunai','Debet Card','Piutang','Pemesanan') NOT NULL DEFAULT 'Tunai',
+  `carabayar` enum('Tunai','Debet Card','Piutang') NOT NULL DEFAULT 'Tunai',
   `total` varchar(50) NOT NULL,
   `discount` varchar(50) NOT NULL,
   `netto` varchar(50) NOT NULL,
   `bayar` varchar(50) NOT NULL DEFAULT '0',
-  `piutang` varchar(50) NOT NULL DEFAULT '0',
-  `termin` enum('0','14','21','30','60','90','120') NOT NULL DEFAULT '0',
-  `tgltermin` varchar(50) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Dumping data untuk tabel `pos_penjualan`
+-- Dumping data untuk tabel `pos_penjualanbiaya`
 --
 
-INSERT INTO `pos_penjualan` (`id`, `nofaktur`, `nopo`, `tgl`, `kodecustomer`, `carabayar`, `total`, `discount`, `netto`, `bayar`, `piutang`, `termin`, `tgltermin`, `user`) VALUES
-(1, 'FAK0207150001', 'POF0207150001', '2015-07-02', '1005', 'Tunai', '110000', '0', '110000', '110000', '0', '0', '2015-07-2', 'admin'),
-(2, 'FAK0207150002', 'POF0207150002', '2015-07-02', '1005', 'Tunai', '30000', '0', '30000', '30000', '0', '0', '2015-07-2', 'admin');
+INSERT INTO `pos_penjualanbiaya` (`id`, `nofaktur`, `tgl`, `carabayar`, `total`, `discount`, `netto`, `bayar`, `user`) VALUES
+(1, 'FKB0207150001', '2015-07-02', 'Tunai', '1000', '0', '1000', '1000', 'admin'),
+(2, 'FKB0207150002', '2015-07-02', 'Tunai', '7000', '0', '7000', '7000', 'admin');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
