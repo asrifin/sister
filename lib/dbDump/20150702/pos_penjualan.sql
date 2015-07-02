@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Inang: 127.0.0.1
--- Waktu pembuatan: 30 Jun 2015 pada 11.03
+-- Waktu pembuatan: 02 Jul 2015 pada 17.10
 -- Versi Server: 5.5.27
 -- Versi PHP: 5.4.7
 
@@ -43,19 +43,15 @@ CREATE TABLE IF NOT EXISTS `pos_penjualan` (
   `tgltermin` varchar(50) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data untuk tabel `pos_penjualan`
 --
 
 INSERT INTO `pos_penjualan` (`id`, `nofaktur`, `nopo`, `tgl`, `kodecustomer`, `carabayar`, `total`, `discount`, `netto`, `bayar`, `piutang`, `termin`, `tgltermin`, `user`) VALUES
-(1, 'FAK2405150001', '', '2015-05-02', '599', 'Piutang', '125000', '0', '125000', '0', '125000', '0', '2015-05-2', 'penjualan'),
-(2, 'FAK0106150002', '', '2015-06-01', '633', 'Tunai', '635000', '0', '635000', '0', '635000', '0', '', 'admin'),
-(3, 'FAK0106150003', '', '2015-06-01', '1005', 'Tunai', '225000', '0', '225000', '0', '225000', '0', '2015-06-1', 'penjualan'),
-(4, 'FAK0606150004', '', '2015-06-06', '1004', 'Tunai', '30000', '0', '30000', '0', '30000', '0', '', 'admin'),
-(5, 'FAK3006150005', '', '2015-06-30', '599', 'Tunai', '130000', '0', '130000', '130000', '0', '0', '', 'admin'),
-(6, 'FAK3006150006', '', '2015-06-30', '599', 'Tunai', '260000', '0', '260000', '260000', '0', '0', '', 'admin');
+(1, 'FAK0207150001', 'POF0207150001', '2015-07-02', '1005', 'Tunai', '110000', '0', '110000', '110000', '0', '0', '2015-07-2', 'admin'),
+(2, 'FAK0207150002', 'POF0207150002', '2015-07-02', '1005', 'Tunai', '30000', '0', '30000', '30000', '0', '0', '2015-07-2', 'admin');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

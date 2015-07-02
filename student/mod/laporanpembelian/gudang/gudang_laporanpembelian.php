@@ -57,10 +57,8 @@ forced_root_block : false,
 </script>
 
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />
-<link rel="stylesheet" href="mod/penjualan/style.css" />';
+$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />';
 $admin .= '
-<script type="text/javascript" src="mod/penjualan/script.js"></script>
 <script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
 <script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
 $wktmulai = <<<eof
@@ -123,19 +121,20 @@ $admin  .='<legend>LAPORAN</legend>';
 $admin .='<div class="panel panel-info">';
 
 if($_GET['aksi']==""){
-$admin .='<div class="panel-heading"><b>Laporan Penjualan</b></div>';
 $tglawal = date("Y-m-01");
 $tglnow = date("Y-m-d");
 $tglmulai 		= !isset($tglmulai) ? $tglnow : $tglmulai;
 $tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
 $sel = '<select name="carabayar" class="form-control">';
-$arr5 = array ('Semua','Tunai','Debet Card','Pemesanan');
+$arr5 = array ('Semua','Tunai','Debet Card','Hutang');
 foreach ($arr5 as $k=>$v){
 	$sel .= '<option value="'.$v.'">'.$v.'</option>';	
 	
 }
 $sel .= '</select>';
-$admin .= '<form class="form-inline" method="get" action="cetakpenjualan.php" enctype ="multipart/form-data" id="posts" target="_blank">
+
+$admin .='<div class="panel-heading"><b>Laporan Pembelian</b></div>';
+$admin .= '<form class="form-inline" method="get" action="cetakpembelian.php" enctype ="multipart/form-data" id="posts" target="_blank">
 <table class="table table-striped table-hover">';
 $admin .= '
 	<tr>
@@ -149,16 +148,21 @@ $admin .= '
 	</tr>';
 $admin .= '
 	<tr>
-		<td width="200px">Customer</td>
-		<td><div class="input_container"><input type="text" id="country_id"  name="kodecustomer" value="'.$kodecustomer.'" onkeyup="autocomplet()"class="form-control" required >
-                    <ul id="country_list_id"></ul></div></td>
-	</tr>';
-$admin .= '
-	<tr>
 		<td width="200px">Cara Bayar</td>
 		<td>'.$sel.'	
 		</td>
 	</tr>';
+
+$admin .= '<tr>
+	<td>Supplier </td>
+	<td><select name="supplier" class="form-control">';
+$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_supplier ORDER BY nama asc");
+$admin .= '<option value="Semua"> Semua </option>';
+while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
+$admin .= '<option value="'.$datasj['kode'].'">'.$datasj['nama'].'</option>';
+}
+$admin .='</select></td>
+</tr>';
 $admin .= '<tr>
 	<td></td>
 	<td><input type="submit" value="Cetak" name="submit" class="btn btn-success"></td>
@@ -168,8 +172,8 @@ $admin .= '</table>';
 $admin .= "* Apabila tidak dapat melakukan print, klik kanan pilih open link New Tab";
 /*DETAIL*/
 
-$admin .='<div class="panel-heading"><b>Laporan Penjualan Detail</b></div>';
-$admin .= '<form class="form-inline" method="get" action="cetakpenjualan.php" enctype ="multipart/form-data" id="posts" target="_blank">
+$admin .='<div class="panel-heading"><b>Laporan Pembelian Detail</b></div>';
+$admin .= '<form class="form-inline" method="get" action="cetakpembelian.php" enctype ="multipart/form-data" id="posts" target="_blank">
 <table class="table table-striped table-hover">';
 $admin .= '
 	<tr>
@@ -180,12 +184,6 @@ $admin .= '
 	<tr>
 		<td width="200px">Tanggal Akhir</td>
 		<td><input type="text" name="tglakhir" value="'.$tglakhir.'" class="form-control">&nbsp;'.$wktakhir.'</td>
-	</tr>';
-$admin .= '
-	<tr>
-		<td width="200px">Customer</td>
-		<td><div class="input_container"><input type="text" id="country_id"  name="kodecustomer" value="'.$kodecustomer.'" onkeyup="autocomplet()"class="form-control" required >
-                    <ul id="country_list_id"></ul></div></td>
 	</tr>';
 $admin .= '
 	<tr>
@@ -196,10 +194,20 @@ $admin .= '
 $admin .= '<tr>
 	<td>Jenis </td>
 	<td><select name="jenisproduk" class="form-control">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk ORDER BY nama asc");
+$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk where jenis='BARANG' ORDER BY nama asc");
 $admin .= '<option value="Semua"> Semua </option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
 $admin .= '<option value="'.$datasj['id'].'">'.$datasj['nama'].'</option>';
+}
+$admin .='</select></td>
+</tr>';
+$admin .= '<tr>
+	<td>Supplier </td>
+	<td><select name="supplier" class="form-control">';
+$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_supplier ORDER BY nama asc");
+$admin .= '<option value="Semua"> Semua </option>';
+while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
+$admin .= '<option value="'.$datasj['kode'].'">'.$datasj['nama'].'</option>';
 }
 $admin .='</select></td>
 </tr>';

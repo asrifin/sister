@@ -128,7 +128,10 @@ $hargajual 		= int_filter($_POST['hargajual']);
 	if ($error){
 		$admin .= '<div class="error">'.$error.'</div>';
 	}else{
-		$hasil  = mysql_query( "INSERT INTO `pos_produkjasa` VALUES ('','$jenis','$jenjang','$nama','$hargajual')" );
+	$select = $koneksi_db->sql_query ("SELECT MAX(id) as sc FROM pos_produkjasa");
+$data = $koneksi_db->sql_fetchrow ($select);
+$kode = $data['sc'] + 1;
+		$hasil  = mysql_query( "INSERT INTO `pos_produkjasa` VALUES ('','$jenis','$jenjang','$kode','$nama','$hargajual')" );
 		if($hasil){
 			$admin .= '<div class="sukses"><b>Berhasil di Buat.</b></div>';
 		}else{

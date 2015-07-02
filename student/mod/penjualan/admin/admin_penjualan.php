@@ -56,7 +56,7 @@ $script_include[] = $JS_SCRIPT;
 	$admin  .= '<div class="border2">
 <table  width="25%"><tr align="center">
 <td>
-<a href="admin.php?pilih=penjualan&mod=yes">HOME</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=penjualan&mod=yes">PENJUALAN</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=penjualan&mod=yes&aksi=cetak">CETAK PENJUALAN</a>&nbsp;&nbsp;
@@ -146,7 +146,8 @@ $harga = $cart_itm["harga"];
 $hargabeli = $cart_itm["hargabeli"];
 $subdiscount = $cart_itm["subdiscount"];
 $subtotal = $cart_itm["subtotal"];
-$hasil  = mysql_query( "INSERT INTO `pos_penjualandetail` VALUES ('','$nofaktur','$nopo','$kode','$jumlah','$harga','$hargabeli','$subdiscount','$subtotal')" );
+$jenis=getidjenisbarang($cart_itm["kode"]);
+$hasil  = mysql_query( "INSERT INTO `pos_penjualandetail` VALUES ('','$nofaktur','$nopo','$jenis','$kode','$jumlah','$harga','$hargabeli','$subdiscount','$subtotal')" );
 updatestokjual($kode,$jumlah);
 alurstok($tgl,'Penjualan',$nofaktur,$kode,$jumlah);
 }
@@ -174,6 +175,7 @@ $_SESSION['kodecustomer']='';
 $_SESSION['kodepo']='';
 $_SESSION['product_id']='';
 $_SESSION['totalbeli']='';
+
 $_SESSION['kodepo'] = $_POST['kodepo'];
 $hasil3 =  $koneksi_db->sql_query("SELECT * FROM pos_popenjualan WHERE nopo = '$_SESSION[kodepo]'");
 $data3 = $koneksi_db->sql_fetchrow($hasil3);
@@ -387,7 +389,7 @@ $admin .= '
 		<td>:</td>
 		<td><div class="input_container">
                     <input type="text" id="po_id"  name="kodepo" value="'.$kodepo.'" onkeyup="autocompletpo()"class="form-control" >
-					<input type="submit" value="Tambah FAK" name="tambahpo"class="btn btn-success" >&nbsp;
+					<input type="submit" value="Tambah FAK" name="tambahpo"class="btn btn-success" >&nbsp;&nbsp;<input type="submit" value="Batal" name="deletecustomer"class="btn btn-danger" >
                     <ul id="po_list_id"></ul>
                 </div>
 				</td>
@@ -401,7 +403,7 @@ $admin .= '
 		<td>:</td>
 		<td><div class="input_container">
                     <input type="text" id="country_id"  name="kodecustomer" value="'.$kodecustomer.'" onkeyup="autocomplet()"class="form-control" >
-					&nbsp;<input type="submit" value="Batal" name="deletecustomer"class="btn btn-danger" >
+					
                     <ul id="country_list_id"></ul>
                 </div>
 		<td>Cara Pembayaran</td>

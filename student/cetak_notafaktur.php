@@ -9,9 +9,11 @@ $kode 		= $_POST['kode'];
 }else{
 $kode 		= $_GET['kode'];	
 }
-if(isset($_GET['bayar'])){
-$nofaktur 		= $_GET['kode'];	
-lunaspiutang($nofaktur);
+if(isset($_POST['bayarnominal'])){
+$nofaktur 		= $_POST['kode'];	
+$bayarnominal 		= $_POST['bayarnominal'];	
+$query 		= mysql_query ("update pos_penjualan set bayar ='$bayarnominal', piutang='0',carabayar='Tunai' where nofaktur='$nofaktur'");
+$style_include[] ='<meta http-equiv="refresh" content="1; url=cetak_notafaktur.php?kode='.$kode.'&cetak=ok" />';
 	}
 echo "<html><head><title>Nota Transaksi Penjualan </title>";
 echo '<style type="text/css">
@@ -162,11 +164,17 @@ echo '	<tr class="border">
 	</tr>
 	';
 	*/
-	if(!isset($_GET['bayar']) and $bayar=='0'){
-echo '<form class="form-inline" method="POST" action="cetak_notafaktur.php?kode='.$kode.'&bayar=ok" enctype ="multipart/form-data" id="posts">';
+echo '	<tr class="border">	
+		<td colspan="8" align="right"><b>Total</b></td>
+		<td >'.rupiah_format($total).'</td>
+	</tr>
+	';
+	if((isset($_GET['bayar']) or isset($_POST['bayar']))and($bayar=='0')){
+echo '<form class="form-inline" method="POST" action="cetak_notafaktur.php?kode='.$kode.'&cetak=ok" enctype ="multipart/form-data" id="posts">';
 echo '<tr class="border">	
-		<td colspan="8" align="right"><b>Bayar</b></td>	
-	<td><input type="hidden" value="'.$total.'" name="bayarnominal">'.rupiah_format($total).'</td>
+		<td colspan="8" align="right"><b>Bayar</b></td>	<td>
+	<input type="hidden" value="'.$nofaktur.'" name="kode">
+	<input type="hidden" value="'.$total.'" name="bayarnominal">'.rupiah_format($total).'</td>
 	</tr>';
 echo '<tr>
 	<td colspan="8" align="right"></td>

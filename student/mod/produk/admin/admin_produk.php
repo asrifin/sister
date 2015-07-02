@@ -365,9 +365,10 @@ if(isset($_POST['submit'])){
 
 	$error 	= '';
 if (!$kode)  $error .= "Error: Barang belum dipilih , silahkan ulangi.<br />";
-if (!$selisih and $mutasi!='saldo awal')  $error .= "Error: selisih belum diisi , silahkan ulangi.<br />";
+if (!$selisih and $mutasi=='stok awal' and $jumlah=='0')  $error .= "Error: selisih belum diisi , silahkan ulangi.<br />";
+if (!$selisih and $mutasi!='stok awal')  $error .= "Error: selisih belum diisi , silahkan ulangi.<br />";
 	if ($error){
-		$tengah .= '<div class="error">'.$error.'</div>';
+		$admin .= '<div class="error">'.$error.'</div>';
 	}else{
 		if($mutasi=='mutasi masuk'){
 	$jumlahbaru = $jumlah + $selisih;
@@ -380,16 +381,21 @@ if (!$selisih and $mutasi!='saldo awal')  $error .= "Error: selisih belum diisi 
 	$hasil  = mysql_query( "UPDATE `pos_produk` SET `jumlah`='$jumlahbaru' WHERE `id`='$id'" );
 	}else{
 	$ceksaldoawal = ceksaldoawal($kode);
-if($ceksaldoawal=='0'){
+if($ceksaldoawal=='0' and $jumlah=='0'){
+alurstok($tgl,$mutasi,'-',$kode,$selisih);
+$hasil  = mysql_query( "UPDATE `pos_produk` SET `jumlah`='$selisih' WHERE `id`='$id'");
+}elseif($ceksaldoawal=='0' and $jumlah){
 alurstok($tgl,$mutasi,'-',$kode,$jumlah);
-$jumlahbaru=$jumlah;
-$hasil  = mysql_query( "UPDATE `pos_produk` SET `jumlah`='$jumlahbaru' WHERE `id`='$id'" );
+}
+
+else{
+$hasil  = mysql_query( "UPDATE `pos_alur_stok` SET `jumlah`='$jumlah' WHERE `id`='$id'" );
 }
 	}
 	//	$hasil  = mysql_query( "UPDATE `pos_produk` SET `jumlah`='$jumlahbaru' WHERE `id`='$id'" );
 		if($hasil){
 			$admin .= '<div class="sukses"><b>Berhasil di Update.</b></div>';
-			$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=produk&amp;mod=yes&aksi=stokopname" />';	
+		//	$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=produk&amp;mod=yes&aksi=stokopname" />';	
 		}else{
 			$admin .= '<div class="error"><b>Gagal di Update.</b></div>';
 		}
@@ -403,7 +409,7 @@ $data 		= mysql_fetch_array($query);
 $jenis  			= $data['jenis'];
 $jenjang  			= $data['jenjang'];
 $sel2 = '<select name="mutasi" class="form-control">';
-$arr2 = array ('saldo awal','mutasi masuk','mutasi keluar');
+$arr2 = array ('stok awal','mutasi masuk','mutasi keluar');
 foreach ($arr2 as $kk=>$vv){
 	$sel2 .= '<option value="'.$vv.'">'.$vv.'</option>';	
 
@@ -416,7 +422,7 @@ $admin .= '
 <form method="post" action="" id="posts"class="form-inline" >
 <table class="table table-striped table-hover">
 	<tr>
-		<td>Tanggal Stok Opname/Saldo Awal</td>
+		<td>Tanggal Stok Opname/Stok Awal</td>
 		<td>:</td>
 		<td><input type="text" name="tgl" value="'.$tgl.'"class="form-control" >&nbsp;'.$wktmulai.'</td>
 	</tr>
@@ -509,7 +515,7 @@ $admin.='
             <th>Jenjang</th>
             <th>Kode</th>
 			<th>Nama Barang</th>
-           <th>Saldo Awal</th>			
+           <th>Stok Awal</th>			
            <th>Stok</th>
             <th width="30%">Aksi</th>
         </tr>
@@ -535,7 +541,6 @@ $admin.='<tr>
 $admin.='</tbody>
 </table>';
 }
-
 
 if($_GET['aksi']== 'deljenis'){    
 	global $koneksi_db;    

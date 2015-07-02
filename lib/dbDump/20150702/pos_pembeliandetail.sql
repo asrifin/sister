@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Inang: 127.0.0.1
--- Waktu pembuatan: 30 Jun 2015 pada 09.39
+-- Waktu pembuatan: 02 Jul 2015 pada 17.09
 -- Versi Server: 5.5.27
 -- Versi PHP: 5.4.7
 
@@ -23,21 +23,28 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pos_popenjualandetail`
+-- Struktur dari tabel `pos_pembeliandetail`
 --
 
-DROP TABLE IF EXISTS `pos_popenjualandetail`;
-CREATE TABLE IF NOT EXISTS `pos_popenjualandetail` (
+DROP TABLE IF EXISTS `pos_pembeliandetail`;
+CREATE TABLE IF NOT EXISTS `pos_pembeliandetail` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
+  `noinvoice` varchar(50) NOT NULL,
   `nopo` varchar(50) NOT NULL,
   `kodebarang` varchar(50) NOT NULL,
   `jumlah` varchar(50) NOT NULL,
   `harga` varchar(50) NOT NULL,
-  `hargabeli` varchar(50) NOT NULL,
   `subdiscount` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data untuk tabel `pos_pembeliandetail`
+--
+
+INSERT INTO `pos_pembeliandetail` (`id`, `noinvoice`, `nopo`, `kodebarang`, `jumlah`, `harga`, `subdiscount`, `subtotal`) VALUES
+(1, 'INV0207150001', 'PO0207150001', '002', '5', '127000', '0', '635000');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

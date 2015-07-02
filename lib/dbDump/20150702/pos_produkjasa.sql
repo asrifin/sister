@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Inang: 127.0.0.1
--- Waktu pembuatan: 30 Jun 2015 pada 09.38
+-- Waktu pembuatan: 02 Jul 2015 pada 09.34
 -- Versi Server: 5.5.27
 -- Versi PHP: 5.4.7
 
@@ -23,23 +23,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pos_popenjualan`
+-- Struktur dari tabel `pos_produkjasa`
 --
 
-DROP TABLE IF EXISTS `pos_popenjualan`;
-CREATE TABLE IF NOT EXISTS `pos_popenjualan` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nopo` varchar(50) NOT NULL,
-  `tgl` varchar(10) NOT NULL,
-  `kodecustomer` varchar(50) NOT NULL,
-  `carabayar` varchar(50) NOT NULL,
-  `total` varchar(50) NOT NULL,
-  `discount` varchar(50) NOT NULL,
-  `netto` varchar(50) NOT NULL,
-  `termin` varchar(50) NOT NULL,
-  `user` varchar(50) NOT NULL,
+DROP TABLE IF EXISTS `pos_produkjasa`;
+CREATE TABLE IF NOT EXISTS `pos_produkjasa` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `jenis` int(5) NOT NULL,
+  `jenjang` varchar(50) NOT NULL,
+  `kode` varchar(50) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `hargajual` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data untuk tabel `pos_produkjasa`
+--
+
+INSERT INTO `pos_produkjasa` (`id`, `jenis`, `jenjang`, `kode`, `nama`, `hargajual`) VALUES
+(7, 6, '5', '', 'PRAMUKA', '10000'),
+(8, 6, '4', '', 'BALET 01', '10000');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

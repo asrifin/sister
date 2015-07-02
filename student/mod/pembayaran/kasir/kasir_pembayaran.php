@@ -74,7 +74,7 @@ $script_include[] = $JS_SCRIPT;
 	$admin  .= '<div class="border2">
 <table  width="25%"><tr align="center">
 <td>
-<a href="admin.php?pilih=pembayaran&mod=yes">HOME</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=pembayaran&mod=yes">PEMBAYARAN</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=pembayaran&mod=yes&aksi=cetak">CETAK PEMBAYARAN</a>&nbsp;&nbsp;
@@ -117,29 +117,24 @@ $kodecustomer=$data['kodecustomer'];
 $carabayar=$data['carabayar'];
 $netto=$data['netto'];
 $piutang=$data['piutang'];
-$user=$data['user'];
-if($piutang>'0'){
-$bayar = '<form method="post" action="?pilih=pembayaran&mod=yes">
-<input type="text" name="bayar" size="5"value="'.$data['netto'].'">
-<input type="hidden" name="nofaktur" value="'.$data['nofaktur'].'">
-<input type="hidden" name="piutang" value="'.$data['piutang'].'">';
-$tombollunas = '<input type="submit" value="Bayar" name="submit"class="btn btn-danger"></form>';
-}else{
 $bayar=$data['bayar'];
-$tombollunas = '<span class="btn btn-success">Lunas</span>';
-}
+$user=$data['user'];
 $cetakslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak</span></a>';
+if($piutang>'0'){
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok&bayar=ok" target ="blank"><span class="btn btn-danger">Lihat</span></a>';
+}else{
 $lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok" target ="blank"><span class="btn btn-primary">Lihat</span></a>';
+}
 $admin.='<tr>
             <td>'.$nofaktur.'</td>
             <td>'.tanggalindo($tgl).'</td>
-            <td>'.$kodecustomer.'</td>
+            <td>'.getnamacustomer($kodecustomer).'</td>
             <td>'.$carabayar.'</td>
             <td>'.$netto.'</td>
             <td>'.$bayar.'</td>
             <td>'.$piutang.'</td>
             <td>'.$user.'</td>
-            <td>'.$tombollunas.' '.$cetakslip.' '.$lihatslip.'</td>
+            <td>'.$cetakslip.' '.$lihatslip.'</td>
         </tr>';
 }   
 $admin.='</tbody>

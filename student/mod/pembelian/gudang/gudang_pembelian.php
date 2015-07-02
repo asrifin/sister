@@ -132,6 +132,11 @@ $_SESSION['kodesupplier'] = $_POST['kodesupplier'];
 }
 
 if(isset($_POST['tambahpo'])){
+$_SESSION['kodesupplier']='';
+$_SESSION['kodepo']='';
+$_SESSION['product_id']='';
+$_SESSION['totalbeli']='';
+
 $_SESSION['kodepo'] = $_POST['kodepo'];
 $hasil3 =  $koneksi_db->sql_query("SELECT * FROM pos_po WHERE nopo = '$_SESSION[kodepo]'");
 $data3 = $koneksi_db->sql_fetchrow($hasil3);
@@ -287,7 +292,7 @@ $tgl 		= !isset($tgl) ? $tglnow : $tgl;
 $kodepo 		= !isset($kodepo) ? $_SESSION['kodepo'] : $kodepo;
 $kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesupplier;
 $discount 		= !isset($discount) ? '0' : $discount;
-$carabayar 		= !isset($carabayar) ? $_POST['carabayar'] : $carabayar;
+$carabayar 		= !isset($carabayar) ? 'Hutang' : $carabayar;
 $termin 		= !isset($termin) ?$_POST['termin'] : $termin;
 $admin .= '
 <div class="panel-heading"><b>Transaksi Pembelian</b></div>';	
@@ -316,7 +321,7 @@ $admin .= '
 		<td>:</td>
 		<td><div class="input_container">
                     <input type="text" id="po_id"  name="kodepo" value="'.$kodepo.'" onkeyup="autocompletpo()"class="form-control" >
-					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >&nbsp;
+					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >&nbsp;&nbsp;&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
                     <ul id="po_list_id"></ul>
                 </div>
 				</td>

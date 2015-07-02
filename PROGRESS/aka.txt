@@ -8,6 +8,7 @@
 
 ---------------   transact ----------------
 * pendataan siswa (P)
+	- Pendataan Siswa Ketika Siswa naik kelas pada saat nyimpan tabelnya di edit atau insert di aka_siswa_kelas?
 * presensi siswa (P)
 * rapor siswa  (P)
 * pendataan alumni (C)
