@@ -66,6 +66,7 @@
 				) t1 ON t1.detilanggaran = d.replid
 			WHERE
 				d.replid = '.$id;
+				// var_dump($s);exit();
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r[$typ];
@@ -235,9 +236,9 @@
 					GROUP BY t.detilanggaran
 				)t1 on t1.detilanggaran = d.replid
 			WHERE d.replid='.$anggaran;
+		var_dump($s);
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
-		// var_dump($s);
 		return $r;
 	}function getPembayaran($siswa,$modul){
 		$s ='SELECT max(replid) modul
