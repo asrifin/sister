@@ -8,8 +8,19 @@
  <div style="overflow:scroll;height:600px;" style="display:none;">
 
 <!-- <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
-<button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
  -->
+<div class="input-control select span3">
+    <select class="_cari" data-hint="Cari Berdasarkan" name="berdasarkanS" id="berdasarkanS">
+        <option name="judul" value="judul">Judul</option>
+        <option name="pengarang" value="pengarang">Pengarang</option>
+        <option name="penerbit" value="penerbit">Penerbit</option>
+        <option name="klasifikasi" value="klasifikasi">Klasifikasi</option>
+    </select>
+</div>
+<div class="input-control text size3">
+    <input type="text" class="_cari" id="cari_opac" name="cari_opac">
+</div>
+<button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
 <div id="tbody">
 
@@ -18,13 +29,6 @@
 
 <!-- <table class="table hovered bordered striped">
     <thead>
-        <tr style="color:white;"class="info">
-            <th class="text-center">Kode</th>
-            <th class="text-left">Nama Lokasi</th>
-            <th class="text-left">Alamat</th>
-            <th class="text-left">Keterangan</th>
-            <th class="text-left">Aksi</th>
-        </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-left"><input placeholder="kode" id="kodeS" name="kodeS"></th>
             <th class="text-left"><input placeholder="nama" id="namaS"name="namaS"></th>
@@ -34,12 +38,8 @@
         </tr>
     </thead>
 
-    <tbody id="tbody">
-    </tbody>
-    <tfoot>
-        
-    </tfoot>
 </table> -->
+
 
 </div>
 <!--End Scroll-->
