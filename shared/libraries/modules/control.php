@@ -9,20 +9,26 @@ function isSelect($a,$b){
 	if($a==$b) return ' selected ';
 	return '';
 }
-function iText($d='',$v='',$s='',$p='',$cb='',$at=''){ $bc=""; $bc2="";
-	if($cb!=""){$n=preg_match("/onblur=\".+\"/", $cb,$m); 
-	if($n>0){
-		$bc=str_replace("\"","",$m[0]);
-		$bc=";".str_replace("onblur=","",$bc);
-		$cb=str_replace($m[0],"",$cb);
-	}}
-	if($cb!=""){$n=preg_match("/onfocus=\".+\"/", $cb,$m); 
-	if($n>0){
-		$bc2=str_replace("\"","",$m[0]);
-		$bc2=";".str_replace("onfocus=","",$bc2);
-		$cb=str_replace($m[0],"",$cb);
-	}}
-	if(is_array($v)) $v=$v[$d];
+function iText($d='',$v='',$s='',$p='',$cb='',$at=''){ 
+	$bc=""; $bc2="";
+	if($cb!=""){
+		$n=preg_match("/onblur=\".+\"/", $cb,$m); 
+		if($n>0){
+			$bc=str_replace("\"","",$m[0]);
+			$bc=";".str_replace("onblur=","",$bc);
+			$cb=str_replace($m[0],"",$cb);
+		}
+	}
+	if($cb!=""){
+		$n=preg_match("/onfocus=\".+\"/", $cb,$m); 
+		if($n>0){
+			$bc2 =str_replace("\"","",$m[0]);
+			$bc2 =";".str_replace("onfocus=","",$bc2);
+			$cb  =str_replace($m[0],"",$cb);
+		}
+	}
+	if(is_array($v)) 
+		$v=$v[$d];
 	$v=str_replace('"',"''",$v);
 	$v=str_replace("\\","",$v);
 	return "<input type=\"text\" class=\"iText\"".(($d=="")?"":" id=\"".$d."\" name=\"".$d."\" ").(($s=="")?"":" style=\"".$s."\" ").(($v=="")?"":" value=\"".$v."\" ").(($p=="")?"":" placeholder=\"".$p."\" ").($cb==""?"":" ".$cb." ").($at==""?"":" ".$at." ")."onfocus=\"this.className='iTextx'".$bc2."\" onblur=\"this.className='iText'".$bc."\"/>";
@@ -97,16 +103,36 @@ function iPswd($d='',$v='',$s='',$p='',$cb='',$at=''){ $bc=""; $bc2="";
 	return "<input type=\"password\" class=\"iText\"".(($d=="")?"":" id=\"".$d."\" name=\"".$d."\" ").(($s=="")?"":" style=\"".$s."\" ").(($s=="")?"":" value=\"".$v."\" ").(($p=="")?"":" placeholder=\"".$p."\" ").($cb==""?"":" ".$cb." ").($at==""?"":" ".$at." ")."onfocus=\"this.className='iTextx'".$bc2."\" onblur=\"this.className='iText'".$bc."\"/>";
 }
 
-// iTextarea (id, array option, value, style, callback)
+// iSelect (id, array_option, selected_value, style, function, attribute)
 function iSelect($d,$a,$s='',$y='',$cb='',$atr=''){
-	if(is_array($s)) $s=$s[$d];
+	if(is_array($s)) 
+		$s=$s[$d];
 	$r="<select class=\"iSelect\" id=\"".$d."\" name=\"".$d."\" ".($y==""?"":" style=\"".$y."\" ").($cb==""?"":" onchange=\"".$cb."\" ")." onfocus=\"this.className='iSelectx'\" onblur=\"this.className='iSelect'\" ".$atr." >";
-	if(is_array($a)){if(count($a)>0){foreach($a as $k=>$v){
-		$r.="<option value=\"".$k."\"".isSelect($k,$s).">".$v."</option>";
-	}}}
-	$r.="</select>";
+	if(is_array($a)){
+		if(count($a)>0){
+			foreach($a as $k=>$v){
+				$r.="<option value=\"".$k."\"".isSelect($k,$s).">".$v."</option>";
+			}
+		}
+	}$r.="</select>";
 	return $r;
 }
+
+//iSelect(id, array option, selected, style, fungsi, atribute)
+// function iSelect($d,$a,$s='',$y='',$cb='',$atr=''){
+// 	if(is_array($s)) 
+// 		$s=$s[$d];
+// 	$r='<select class="iSelect" id="'.$d.'" name="'.$d.'" "'.($y==''?'':' style="'.$y.'"').($cb==''?'':' onchange="'.$cb.'"').' onfocus="this.className=\'iSelectx\'" onblur="this.className=\'iSelect\'" '.$atr.'>';
+// 	if(is_array($a)){
+// 		if(count($a)>0){
+// 			foreach($a as $k=>$v){
+// 				$r.='<option value="'.$k.'" '.isSelect($k,$s).'>'.$v.'</option>';
+// 			}
+// 		}
+// 	}$r.='</select>';
+// 	return $r;
+// }
+
 
 // iSOpt array option, value
 function iSelectOpt($a,$s=''){
@@ -235,12 +261,13 @@ function iLookupval($id,$v='',$v1='',$act='',$ttl='Cari',$w='250px',$sv=1,$atr='
 	return $s;
 }
 
-// iBtn(label,[class],[attribute],[style])
 function iBtn($l,$c='',$a='',$s=-1){
 	if($s==-1){
-		if(defined(SFLOATL)) $s=SFLOATL;
-		else $s='float:left;margin-right:4px';
+		if(defined(SFLOATL)) 
+			$s=SFLOATL;
+		else 
+			$s='float:left;margin-right:4px';
 	}
-	return '<button '.$a.' class="btn" style="'.$s.'">'.($c==''?$l:'<div class="'.$c.'">'.($l==''?'&nbsp':$l).'</div>').'</button>';
+	return '<button '.$a.' class="btn" style="'.$s.'">'.($c==''?$l:'<div class="'.$c.'">'.$l.'</div>').'</button>';
 }
 ?>

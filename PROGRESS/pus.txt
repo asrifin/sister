@@ -36,7 +36,6 @@ ____________________________________________________
 	-
 * sirkulasi (P)
 	- Peminjaman  -> cara mengatur waktu pengembalian
-	- Peminjaman  -> cara mengatur waktu pengembalian
 	+ combobox siapa yang pinjam :  siswa, guru, murid.
 	+ combobox siapa yg pinjam belum nampil ketika dipilih
 	+ view sirkulasi -> field peminjam, Tgl Pengembalian, Tgl dikembalikan dan terlambat tidak tampil (sudah buat fungsi selisih tgl)
@@ -53,7 +52,7 @@ ____________________________________________________
 	
 
 * OPAC (P)
-	- menu masih tampil 4
+	- menu masih tampil 4 dan gambar belum nampil
 ____________________________________________________
 * perangkat (C)
 	+ cara edit dan simpan di perangkat

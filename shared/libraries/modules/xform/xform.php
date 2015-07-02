@@ -142,21 +142,14 @@ class xform{
 	}
 	
 	function fi($a,$f){
-		$out='<div class="xrowl">
-				<div class="xlabel" style="width:'.$this->labelw.'px">
-					'.($a==''?'':$a.':').'
-				</div>
-				<div class="sfont" style="float:left;width:'.$this->fieldw.'px">';
-					$f=str_replace('<l>','<div class="xlabel">',$f);
-					$f=str_replace('</l>','</div>',$f);
-		// echo $f;
-		$out.=$f;
-		$out.= '</div>
-			</div>';
-		echo $out;
+		echo '<div class="xrowl"><div class="xlabel" style="width:'.$this->labelw.'px">'.($a==''?'':$a.':').'</div><div class="sfont" style="float:left;width:'.$this->fieldw.'px">';
+		$f=str_replace('<l>','<div class="xlabel">',$f);
+		$f=str_replace('</l>','</div>',$f);
+		echo $f;
+		echo '</div></div>';
 	}
 	
-	// by : epi ------------
+	// by : epiii ------------
 	function fi2($a,$f,$f2){
 		$out='<div class="xrowl">
 				<div class="xlabel" style="width:'.$this->labelw.'px">
@@ -168,7 +161,7 @@ class xform{
 			</div>';
 		echo $out;
 	}
-	//end of by : epi ------------
+	//end of by : epiii ------------
 
 	function fl($a,$f){
 		echo '<div class="xrowl"><div class="xlabel" style="width:'.$this->labelw.'px">'.$a.':</div><div class="xlabel" style="height:20px;width:'.$this->feildw.'px">';

@@ -2,11 +2,13 @@
 mysql_connect(DBHOST,DBUSER,DBPSWD)or die("Database connection failed: ".DBUSER."@".DBHOST);
 mysql_select_db(DBNAME)or die("Can't open database: ".DBNAME);
 function dbQsql($s){
-$_SESSION['libdb_dbQsql']=$s;
-return mysql_query($s);
+	$_SESSION['libdb_dbQsql']=$s;
+	return mysql_query($s);
 }
 function dbFA($q){
-return mysql_fetch_array($q);
+// return mysql_fetch_array($q);
+// var_dump(mysql_fetch_assoc($q));
+return mysql_fetch_assoc($q);
 }
 function dbQFA($s){
 return dbFA(dbQsql($s));
@@ -19,7 +21,7 @@ $h=array("W/","O/","D/","L/");
 $r=array(" WHERE "," ORDER BY "," DESC "," LIMIT ");
 if($f!="")$f=str_replace($h,$r,$f);
 return dbQsql("SELECT ".$s." FROM ".$t." ".$f);
-}  
+}
 function dbSFA($s,$t,$f=""){
 return dbFA(dbSel($s,$t,$f));
 }
@@ -35,8 +37,8 @@ function dbUpdate($t,$f,$r=""){
 		foreach($f as $k => $v){
 			if(!$i)$s.=",";else $i=false;
 			$s.="`".$k."`='".addslashes($v)."'";
-		}
-		$q="UPDATE ".$t." SET ".$s.($r==""?"":" WHERE ".$r);
+		}$q="UPDATE ".$t." SET ".$s.($r==""?"":" WHERE ".$r);
+		// var_dump($q);exit();
 		$_SESSION['libdb_dbUpdate']=$q;
 		return dbQsql($q);
 	}else return false;
@@ -44,27 +46,32 @@ function dbUpdate($t,$f,$r=""){
 
 function dbInsert($t,$f){
 	$i=true;
-	if(count($f)>0){$s="";
+	if(count($f)>0){
+		$s="";
 		foreach($f as $k => $v){
-			if(!$i)$s.=",";else $i=false;
+			if(!$i)
+				$s.=",";
+			else 
+				$i=false;
 			$s.="`".$k."`='".addslashes($v)."'";
-		}
-		$q="INSERT INTO ".$t." SET ".$s;
+		}$q="INSERT INTO ".$t." SET ".$s;
 		$_SESSION['libdb_dbIsert']=$q;
 		return dbQsql($q);
-	}else return false;
+	}else 
+		return false;
 }
 
 function dbDel($t,$r){
 return dbQsql("DELETE FROM ".$t." WHERE ".$r);
 }
 function dbFetch($s,$t,$f=""){
-$t=dbSel($s,$t,$f." LIMIT 0,1");if(dbNRow($t)==1){
-$r=dbFA($t);return $r[$s];
-}
-else{
-return '';
-}
+	$t=dbSel($s,$t,$f." LIMIT 0,1");
+	if(dbNRow($t)==1){
+		$r=dbFA($t);
+		return $r[$s];
+	}else{
+		return '';
+	}
 }
 /*
 function dbTF(){
