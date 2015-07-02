@@ -324,6 +324,7 @@
 						$tgl1        = isset($_POST['s_tgl1TB'])?filter(trim($_POST['s_tgl1TB'])):'';
 						$tgl2        = isset($_POST['s_tgl2TB'])?filter(trim($_POST['s_tgl2TB'])):'';
 						$lokasi      = isset($_POST['lokasiS'])?filter(trim($_POST['lokasiS'])):'';
+						$statistik   = isset($_POST['statistikS'])?filter(trim($_POST['statistikS'])):'';
 
 						$sql       = 'SELECT 
 			       							pj.replid as replid,
@@ -331,7 +332,11 @@
 											l.nama AS klasifikasi, 
 											r.nama AS penerbit, 
 											p.nama2 AS pengarang,
-											(SELECT count(*) FROM pus_peminjaman WHERE buku=b.replid) status
+											(SELECT count(*)
+												FROM pus_peminjaman 
+												WHERE 
+												buku=b.replid AND
+												status=1) dipinjam
 									FROM pus_peminjaman pj
                                     LEFT JOIN pus_buku b ON b.replid=pj.buku
                                     LEFT JOIN pus_lokasi pl ON pl.replid = b.lokasi
@@ -343,9 +348,10 @@
 									LEFT JOIN pus_jenisbuku u on u.replid=k.jenisbuku
 
 									WHERE 
+										pj.status = 1 AND
 										pj.tanggal1 >= "%'.$tgl1.'" AND
 										pj.tanggal2 <= "%'.$tgl2.'" AND
-										pl.nama <= "%'.$lokasi.'" AND
+										b.lokasi = "%'.$lokasi.'%" AND
 										k.judul like "%'.$judul.'%" OR
 										r.nama like "%'.$penerbit.'%" OR
 										p.nama like "%'.$pengarang.'%" OR
@@ -382,7 +388,7 @@
 											<td>'.$res['klasifikasi'].'</td>
 											<td>'.$res['pengarang'].'</td>
 											<td>'.$res['penerbit'].'</td>
-											<td>'.$res['status'].'</td>
+											<td>'.$res['dipinjam'].'</td>
 										</tr>';
 							}
 						}else{ #kosong
