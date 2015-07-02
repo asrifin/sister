@@ -8,8 +8,8 @@
   $countx= isset($_GET['countx'])?filter($_GET['countx']):'';
   $x     = $_SESSION['id_loginS'].$_GET['detjenistransH'].$_GET['nomerH'].$countx;
   $token = base64_encode($x);
-  // berfore=1juMMJ-0010/07/2015
-// var_dump($x);exit();
+
+  // var_dump($x);exit();
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
   }else{ // sudah login 
