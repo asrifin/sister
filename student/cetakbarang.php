@@ -7,6 +7,8 @@ global $koneksi_db,$url_situs;
 $tglmulai 		= $_GET['tglmulai'];
 $tglakhir 		= $_GET['tglakhir'];
 $kodebarang 		= $_GET['kodebarang'];
+$wherekodebarang="and kodebarang='$kodebarang'";
+
 echo "<html><head><title>Laporan Stok Barang </title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
@@ -44,7 +46,7 @@ echo'
 <tr><td colspan="7"><img src="images/logo.png" height="70px"><br>
 <b>Elyon Christian School</b><br>
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
-echo'<tr><td colspan="7"><h4>Laporan Stok Barang, Periode '.tanggalindo($tglmulai).' - '.tanggalindo($tglakhir).' ,'.$kodebarang.'</h4></td></tr>';
+echo'<tr><td colspan="7"><h4>Laporan Stok Barang, Periode '.tanggalindo($tglmulai).' - '.tanggalindo($tglakhir).' , Barang : '.getnamabarang($kodebarang).'</h4></td></tr>';
 
 echo '<tr class="border">
 <td>No</td>
@@ -56,65 +58,91 @@ echo '<tr class="border">
 <td>Jumlah</td>
 </tr>';
 $no =1;
-/****************************/
-//$st2 = mysql_query ("SELECT * FROM po_alur_stok where (kodebarang='$kodebarang') and (tgl between '$tglmulai' and '$tglakhir' ) and transaksi ='Saldo Awal' limit 1");	
-$st2 = mysql_query ("SELECT * FROM pos_alur_stok where (kodebarang='$kodebarang') and transaksi ='Saldo Awal' limit 1");	
-
-$datast2 = mysql_fetch_array($st2);
-$idsa = $datast2['id'];
-$tglsa = $datast2['tgl'];
-$transaksisa = $datast2['transaksi'];
-$kodesa = $datast2['kode'];
-$kodebarangsa = $datast2['kodebarang'];
-$jumlahsa = $datast2['jumlah'];
-$getnamabarangsa = getnamabarang($kodebarang);
-if($idsa){
+/************** STOK AWAL */
+$sa = mysql_query ("SELECT * FROM pos_alur_stok where transaksi ='Stok Awal' $wherekodebarang limit 1");	
+$datasa = mysql_fetch_array($sa);
+$getnamabarang = getnamabarang($kodebarang);
+/************** STOK AWAL */
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.tanggalindo($tglsa).'</td>
-<td>'.$transaksisa.'</td>
-<td>'.$kodesa.'</td>
-<td>'.$kodebarangsa.'</td>
-<td>'.$getnamabarangsa.'</td>
-<td>'.$jumlahsa.'</td>
+<td>'.tanggalindo($datasa['tgl']).'</td>
+<td>'.$datasa['transaksi'].'</td>
+<td>'.$datasa['kode'].'</td>
+<td>'.$kodebarang.'</td>
+<td>'.$getnamabarang.'</td>
+<td>'.$datasa['jumlah'].'</td>
 </tr>';
-$no =2;
-$tjumlah =$jumlahsa;
-}
-/****************************/
-$st = mysql_query ("SELECT * FROM pos_alur_stok where (kodebarang='$kodebarang') and (tgl between '$tglmulai' and '$tglakhir' ) and transaksi !='Saldo Awal' order by id asc");	
+$tjumlah +=$datasa['jumlah'];
+$no++;
+/**************STOK SEBELUM********/
+/************* STOK BETWEEN ************/
+$st = mysql_query ("SELECT * FROM pos_alur_stok where tgl < '$tglmulai' and transaksi !='Stok Awal' order by id asc");	
 while($datast = mysql_fetch_array($st)){
 $id = $datast['id'];
 $tgl = $datast['tgl'];
 $transaksi = $datast['transaksi'];
 $kode = $datast['kode'];
-$kodebarang = $datast['kodebarang'];
+$kodebaranga = $datast['kodebarang'];
 $jumlah = $datast['jumlah'];
-$getnamabarang = getnamabarang($kodebarang);
+$getnamabarang = getnamabarang($kodebaranga);
+/*
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.$transaksi.'</td>
 <td>'.$kode.'</td>
+<td>'.$kodebaranga.'</td>
+<td>'.$getnamabarang.'</td>
+<td>'.$jumlah.'</td>
+</tr>';
+$no++;
+*/
+if($transaksi=='Penjualan' or $transaksi=='Retur Pembelian'or $transaksi=='Mutasi Keluar'){
+$jumlah =$jumlah*(-1);
+}
+$tjumlah +=$jumlah;
+$jumlah = $tjumlah;
+}
+echo '
+<tr class="border">
+<td class="text-center">'.$no.'</td>
+<td>'.tanggalindo($tglmulai).'</td>
+<td> Stok Sebelumnya </td>
+<td> - </td>
 <td>'.$kodebarang.'</td>
 <td>'.$getnamabarang.'</td>
 <td>'.$jumlah.'</td>
 </tr>';
 $no++;
-/*
-if($transaksi=='Saldo Awal'){
-$tjumlah =$jumlah;		
-}
-*/
-if($transaksi=='Pembelian' or $transaksi=='Retur Penjualan' or $transaksi=='Mutasi Masuk'){
-$tjumlah +=$jumlah;}
+/************* STOK BETWEEN ************/
+$st = mysql_query ("SELECT * FROM pos_alur_stok where tgl between '$tglmulai' and '$tglakhir' $wherekodebarang and transaksi !='Stok Awal' order by id asc");	
+while($datast = mysql_fetch_array($st)){
+$id = $datast['id'];
+$tgl = $datast['tgl'];
+$transaksi = $datast['transaksi'];
+$kode = $datast['kode'];
+$kodebaranga = $datast['kodebarang'];
+$jumlah = $datast['jumlah'];
+$getnamabarang = getnamabarang($kodebaranga);
 if($transaksi=='Penjualan' or $transaksi=='Retur Pembelian'or $transaksi=='Mutasi Keluar'){
-$tjumlah -=$jumlah;
+$jumlah =$jumlah*(-1);
+}
+echo '
+<tr class="border">
+<td class="text-center">'.$no.'</td>
+<td>'.tanggalindo($tgl).'</td>
+<td>'.$transaksi.'</td>
+<td>'.$kode.'</td>
+<td>'.$kodebaranga.'</td>
+<td>'.$getnamabarang.'</td>
+<td>'.$jumlah.'</td>
+</tr>';
+$no++;
+$tjumlah +=$jumlah;
 }
 
-}
 echo '<tr class="border">
 <td colspan="6">Stok Akhir</td>
 <td>'.$tjumlah.'</td>

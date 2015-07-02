@@ -73,11 +73,12 @@ if($_GET['aksi'] == 'editjenis'){
 $id = int_filter ($_GET['id']);
 if(isset($_POST['submit'])){
 	$nama 		= $_POST['nama'];
+	$jenis 		= $_POST['jenis'];
 	$error 	= '';
 	if ($error){
 		$tengah .= '<div class="error">'.$error.'</div>';
 	}else{
-		$hasil  = mysql_query( "UPDATE `pos_jenisproduk` SET `nama`='$nama' WHERE `id`='$id'" );
+		$hasil  = mysql_query( "UPDATE `pos_jenisproduk` SET `nama`='$nama',`jenis`='$jenis'  WHERE `id`='$id'" );
 		if($hasil){
 			$admin .= '<div class="sukses"><b>Berhasil di Update.</b></div>';
 			$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=kategori&amp;mod=yes" />';	
@@ -89,15 +90,31 @@ if(isset($_POST['submit'])){
 }
 $query 		= mysql_query ("SELECT * FROM `pos_jenisproduk` WHERE `id`='$id'");
 $data 		= mysql_fetch_array($query);
+$jenis = $data['jenis'];
+$sel = '<select name="jenis" class="form-control">';
+$arr = array ('aktif','pasif');
+foreach ($arr as $kk=>$vv){
+	if ($jenis == $vv){
+	$sel .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';
+	}else {
+	$sel .= '<option value="'.$vv.'">'.$vv.'</option>';	
+	}
+}
+$sel .= '</select>'; 
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Edit Jenis</h3></div>';
 $admin .= '
 <form method="post" action="">
 <table border="0" cellspacing="0" cellpadding="0"class="table INFO">
 	<tr>
-		<td>Nama Jenis</td>
+		<td>Nama</td>
 		<td>:</td>
 		<td><input type="text" name="nama" value="'.$data['nama'].'" size="25"class="form-control" required></td>
+	</tr>
+	<tr>
+		<td>Jenis</td>
+		<td>:</td>
+		<td>'.$jenis.'</td>
 	</tr>
 	<tr>
 		<td></td>
@@ -112,31 +129,49 @@ $admin .= '
 if($_GET['aksi']==""){
 if(isset($_POST['submit'])){
 	$nama 		= $_POST['nama'];
+	$jenis 		= $_POST['jenis'];
 	$error 	= '';
 	if ($error){
 		$admin .= '<div class="error">'.$error.'</div>';
 	}else{
-		$hasil  = mysql_query( "INSERT INTO `pos_jenisproduk` (`nama`) VALUES ('$nama')" );
+		$hasil  = mysql_query( "INSERT INTO `pos_jenisproduk` (`nama`,`jenis`) VALUES ('$nama','$jenis')" );
 		if($hasil){
 			$admin .= '<div class="sukses"><b>Berhasil di Buat.</b></div>';
 		}else{
 			$admin .= '<div class="error"><b> Gagal di Buat.</b></div>';
 		}
 		unset($nama);
+		unset($jenis);
 	}
 
 }
 $nama     		= !isset($nama) ? '' : $nama;
+$jenis     		= !isset($jenis) ? '' : $jenis;
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Tambah Jenis</h3></div>';
+/**************************/
+$sel = '<select name="jenis" class="form-control">';
+$arr = array ('BARANG','JASA');
+foreach ($arr as $kk=>$vv){
+	$sel .= '<option value="'.$vv.'">'.$vv.'</option>';	
 
+}
+
+$sel .= '</select>';    
+
+$sel .= '</select>';  
 $admin .= '
 <form method="post" action="">
 <table border="0" cellspacing="0" cellpadding="0"class="table table-condensed">
 	<tr>
-		<td>Nama Jenis</td>
+		<td>Nama</td>
 		<td>:</td>
-		<td><input type="text" name="nama" size="25"class="form-control" required autofocus></td>
+		<td><input type="text" name="nama" size="25"class="form-control" required></td>
+	</tr>
+	<tr>
+		<td>Jenis</td>
+		<td>:</td>
+		<td>'.$sel.'</td>
 	</tr>
 	<tr>
 		<td></td>
@@ -163,10 +198,10 @@ $admin.='
 	$admin.='<tbody>';
 $hasil = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
-
+$jenis=$data['jenis'];
 $nama=$data['nama'];
 $admin.='<tr>
-            <td>'.$nama.'</td>
+            <td>'.$jenis.'/'.$nama.'</td>
             <td><a href="?pilih=kategori&amp;mod=yes&amp;aksi=deljenis&amp;id='.$data['id'].'" onclick="return confirm(\'Apakah Anda Yakin Ingin Menghapus Data Ini ?\')"><span class="btn btn-danger">Hapus</span></a> <a href="?pilih=kategori&amp;mod=yes&amp;aksi=editjenis&amp;id='.$data['id'].'"><span class="btn btn-warning">Edit</span></a></td>
         </tr>';
 }   

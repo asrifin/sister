@@ -1,5 +1,4 @@
 <?php
-
 include 'includes/config.php';
 include 'includes/mysql.php';
 include 'includes/configsitus.php';
@@ -9,7 +8,10 @@ $kode 		= $_POST['kode'];
 }else{
 $kode 		= $_GET['kode'];	
 }
-
+if(isset($_GET['bayar'])){
+$noinvoice 		= $_GET['kode'];	
+lunashutang($noinvoice);
+	}
 echo "<html><head><title>Nota Transaksi Pembelian </title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
@@ -75,7 +77,7 @@ echo '
 		<td>:</td>
 		<td>'.$noinvoice.'</td>
 	</tr>';
-	/*
+	
 	if($nopo!=''){
 echo '
 	<tr>
@@ -83,7 +85,7 @@ echo '
 		<td>:</td>
 		<td>'.$nopo.'</td>
 	</tr>';}
-	*/
+	
 echo '
 	<tr>
 		<td>Tanggal</td>
@@ -161,11 +163,24 @@ echo '	<tr class="border">
 	</tr>
 	';
 	*/
+	if(!isset($_GET['bayar']) and $bayar=='0'){
+echo '<form class="form-inline" method="POST" action="cetak_notainvoice.php?kode='.$kode.'&bayar=ok" enctype ="multipart/form-data" id="posts">';
+echo '<tr class="border">	
+		<td colspan="8" align="right"><b>Bayar</b></td>	
+	<td><input type="hidden" value="'.$total.'" name="bayarnominal">'.rupiah_format($total).'</td>
+	</tr>';
+echo '<tr>
+	<td colspan="8" align="right"></td>
+	<td>
+	<input type="submit" value="Bayar" name="bayar"onclick="return confirm(\'Apakah Anda Yakin Ingin Melunasi Data Ini ?\')"></td>
+	</tr></form>';
+	}else{
 echo '	<tr class="border">	
 		<td colspan="8" align="right"><b>Bayar</b></td>
 		<td >'.rupiah_format($bayar).'</td>
 	</tr>
 	';
+	}
 echo '</table>';	
 		}
 		echo'</td></tr></table>';

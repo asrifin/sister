@@ -31,7 +31,7 @@ $t=$db->query();
 $xtable->ndata_db($t);
 $t=$db->query($xtable->pageorder_sql('aka_mutasi.tanggal','aka_siswa:nisn,nama','aka_jenismutasi.nama'));
 
-$xtable->btnbar_f('add','print','srcbox');
+$xtable->btnbar_f('add','srcbox');
 
 if($xtable->ndata>0){
 	// Table head

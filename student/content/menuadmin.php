@@ -37,7 +37,7 @@ $menuadmin.= '<li><a href="'.$adminmenu2.'">'.$data2[1].'</a></li>';
 }
 }
 $menuadmin.= "</ul>";
-kotakjudul('<a href="admin.php">Dashboard</a>', $menuadmin);
+kotakjudul('<a href="admin.php">Halaman  Utama</a>', $menuadmin);
 }elseif (isset( $_SESSION['LevelAkses'] ) &&  $_SESSION['LevelAkses']=="Editor"){
 $username=$_SESSION['UserName'];
 $hasil = $koneksi_db->sql_query( "SELECT * FROM menu_editor where parent =0 ORDER BY ordering ASC" );

@@ -298,7 +298,7 @@ $admin .= '
 		<td>:</td>
 		<td><div class="input_container">
                     <input type="text" id="inv_id"  name="kodeinv" value="'.$kodeinv.'" onkeyup="autocompletinv()"class="form-control"  >
-					<input type="submit" value="Tambah INV" name="tambahinv"class="btn btn-success" >&nbsp;<input type="submit" value="Delete" name="deletesupplier"class="btn btn-danger" >
+					<input type="submit" value="Tambah INV" name="tambahinv"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
                     <ul id="inv_list_id"></ul>
                 </div>
 				</td>
@@ -311,9 +311,11 @@ $admin .= '
 		<td>Supplier</td>
 		<td>:</td>
 		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >
-					<input type="submit" value="Tambah Supplier" name="tambahsupplier"class="btn btn-success" >&nbsp;<input type="submit" value="Delete" name="deletesupplier"class="btn btn-danger" >
-                    <ul id="country_list_id"></ul>
+                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >';
+if($_SESSION["kodeinv"]==''){					
+$admin .= '<input type="submit" value="Tambah Supplier" name="tambahsupplier"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >';
+					}
+$admin .= '<ul id="country_list_id"></ul>
                 </div>
 				</td>
 		<td></td>
@@ -321,7 +323,7 @@ $admin .= '
 		<td></td>
 		</tr>';
 
-
+if($_SESSION["kodeinv"]==''){
 $admin .= '
 	<tr>
 		<td>Barang</td>
@@ -337,7 +339,7 @@ $admin .= '
 	<td></td>
 	<td></td>
 		</tr>
-				';
+				';}
 $admin .= '	
 	<tr><td colspan="5"><div id="Tbayar"></div></td>
 		<td>

@@ -86,6 +86,33 @@ $('#Tbayar').html("Total : Rp."+total_bayar);
 		});
 
 })	
+
+//PO
+function autocompletpo() {
+	var min_length = 0; // min caracters to display the autocomplete
+	var keyword = $('#po_id').val();
+	if (keyword.length >= min_length) {
+		$.ajax({
+			url: 'mod/penjualan/po_refresh.php',
+			type: 'POST',
+			data: {keyword:keyword},
+			success:function(data){
+				$('#po_list_id').show();
+				$('#po_list_id').html(data);
+			}
+		});
+	} else {
+		$('#po_list_id').hide();
+	}
+}
+
+// set_item : this function will be executed when we select an item
+function set_itempo(item) {
+	// change input value
+	$('#po_id').val(item);
+	// hide proposition list
+	$('#po_list_id').hide();
+}
 	
 
 // FAKTUR

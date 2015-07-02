@@ -56,7 +56,7 @@ $script_include[] = $JS_SCRIPT;
 	$admin  .= '<div class="border2">
 <table  width="25%"><tr align="center">
 <td>
-<a href="admin.php?pilih=pembelian&mod=yes">HOME</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=pembelian&mod=yes">PEMBELIAN</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=pembelian&mod=yes&aksi=cetak">CETAK PEMBELIAN</a>&nbsp;&nbsp;
@@ -79,13 +79,9 @@ $kodesupplier 		= $_SESSION["kodesupplier"];
 $carabayar 		= $_POST['carabayar'];
 $total 		= $_POST['total'];
 $discount ='0';
-$netto = $_POST['total'];
-$bayar 		= $_POST['bayar'];
+$netto =$_POST['total'];
 $termin 		= $_POST['termin'];
 $user 		= $_POST['user'];
-if ($bayar>'0' and $carabayar=='Hutang')  	$error .= "Error:  Pembayaran Harus 0, apabila cara Pembayaran Hutang<br />";
-if ($bayar>'0' and $bayar<$netto)  	$error .= "Error:  Pembayaran Harus 0 atau Lebih dari Total Netto <br />";
-if ($bayar=='0' and $termin=='0')  	$error .= "Error:  Termin harus diisi karena termasuk Hutang <br />";
 if (!$_SESSION["kodesupplier"])  	$error .= "Error:  Kode Supplier harus ada <br />";
 if (!$_SESSION["product_id"])  	$error .= "Error:  Kode Barang harus ada <br />";
 if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT noinvoice FROM pos_pembelian WHERE noinvoice='$noinvoice'")) > 0) $error .= "Error: Nomor Invoice ".$noinvoice." sudah terdaftar<br />";
@@ -93,24 +89,22 @@ if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT noinvoice FROM pos_p
 if ($error){
 $admin .= '<div class="error">'.$error.'</div>';
 }else{
-if($bayar=='0'){
-$carabayar ='Hutang';
+if($carabayar=='Hutang'){
 $tgltermin = tgltermin($tgl,$termin);
-$hasil  = mysql_query( "INSERT INTO `pos_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$carabayar','$total','$discount','$netto','0','$netto','$termin','$tgltermin','$user')" );	
+$hasil  = mysql_query( "INSERT INTO `pos_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$carabayar','$total','$discount','$netto','0','$total','$termin','$tgltermin','$user')" );	
 }
 else{
-$hasil  = mysql_query( "INSERT INTO `pos_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$carabayar','$total','$discount','$netto','$bayar','0','0','','$user')" );
+$hasil  = mysql_query( "INSERT INTO `pos_pembelian` VALUES ('','$noinvoice','$nopo','$tgl','$kodesupplier','$carabayar','$total','$discount','$netto','$total','0','$termin','','$user')" );
 }
 $idpembelian = mysql_insert_id();
 foreach ($_SESSION["product_id"] as $cart_itm)
 {
 $kode = $cart_itm["kode"];
-$jenis = $cart_itm["jenis"];
 $jumlah = $cart_itm["jumlah"];
 $harga = $cart_itm["harga"];
 $subdiscount = $cart_itm["subdiscount"];
 $subtotal = $cart_itm["subtotal"];
-$hasil  = mysql_query( "INSERT INTO `pos_pembeliandetail` VALUES ('','$noinvoice','$kode','$jenis','$jumlah','$harga','$subdiscount','$subtotal')" );
+$hasil  = mysql_query( "INSERT INTO `pos_pembeliandetail` VALUES ('','$noinvoice','$nopo','$kode','$jumlah','$harga','$subdiscount','$subtotal')" );
 updatestokbeli($kode,$jumlah);
 alurstok($tgl,'Pembelian',$noinvoice,$kode,$jumlah);
 }
@@ -138,20 +132,28 @@ $_SESSION['kodesupplier'] = $_POST['kodesupplier'];
 }
 
 if(isset($_POST['tambahpo'])){
+$_SESSION['kodesupplier']='';
+$_SESSION['kodepo']='';
+$_SESSION['product_id']='';
+$_SESSION['totalbeli']='';
+
 $_SESSION['kodepo'] = $_POST['kodepo'];
 $hasil3 =  $koneksi_db->sql_query("SELECT * FROM pos_po WHERE nopo = '$_SESSION[kodepo]'");
 $data3 = $koneksi_db->sql_fetchrow($hasil3);
   $kodesupplier = $data3['kodesupplier'];
     $discount = $data3['discount'];
-$_SESSION['kodesupplier']=$kodesupplier;	  
+$_SESSION['kodesupplier']=$kodesupplier;	 
+$carabayar=$data3['carabayar'];
+$termin=$data3['termin']; 
 $hasil =  $koneksi_db->sql_query( "SELECT * FROM pos_podetail WHERE nopo='$_SESSION[kodepo]'" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$nopo=$data['nopo'];
 $kode=$data['kodebarang'];
-$jenis=$data['jenis'];
 $jumlah=$data['jumlah'];
 $harga=$data['harga'];
 $subdiscount=$data['subdiscount'];
-$subtotal=$data['subtotal'];
+$ceksisajumbeli=$jumlah-ceksisajumbeli($nopo,$kode);
+$subtotal=$ceksisajumbeli*$harga;
 $hasil2 =  $koneksi_db->sql_query( "SELECT * FROM pos_produk WHERE kode='$kode'" );
 $data2 = $koneksi_db->sql_fetchrow($hasil2);
 $id=$data2['id'];
@@ -161,7 +163,7 @@ foreach ($_SESSION['product_id'] as $k=>$v){
 $PRODUCTID[] = $_SESSION['product_id'][$k]['kode'];
 }
 if (!in_array ($kode, $PRODUCTID)){
-$_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode,'jenis' => $jenis, 'jumlah' => $jumlah, 'harga' => $harga, 'jenjang' => $jenjang, 'subdiscount' => $subdiscount, 'subtotal' => $subtotal);
+$_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode, 'jumlah' => $ceksisajumbeli, 'harga' => $harga, 'jenjang' => $jenjang, 'subdiscount' => $subdiscount, 'subtotal' => $subtotal, 'jumlahbeliasli' => $ceksisajumbeli);
 }else{
 foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
@@ -189,7 +191,7 @@ unset($_SESSION['product_id'][$k]);
     }
 }
 }
-
+/*
 if(isset($_POST['editjumlah'])){
 $kode 		= $_POST['kode'];
 $jumlahbeli = $_POST['jumlahbeli'];
@@ -205,6 +207,24 @@ $_SESSION['product_id'][$k]['subtotal'] = $jumlahbeli*($_SESSION['product_id'][$
 		}
 }
 }
+*/
+
+if(isset($_POST['simpandetail'])){
+foreach ($_SESSION['product_id'] as $k=>$v){
+if (($_POST['jumlahbeliasli'][$k]<$_POST['jumlahbeli'][$k])or($_POST['jumlahbeli'][$k]<'0')) $error .= "Error: Jumlah tidak sesuai , silahkan ulangi.<br />";
+if ($error){
+$admin .= '<div class="error">'.$error.'</div>';
+}else{
+$_SESSION['product_id'][$k]['subdiscount']=$_POST['subdiscount'][$k];
+$_SESSION['product_id'][$k]['jumlah']=$_POST['jumlahbeli'][$k];
+$_SESSION['product_id'][$k]['harga']=$_POST['harga'][$k];
+$nilaidiscount=cekdiscount($_SESSION['product_id'][$k]['subdiscount'],$_SESSION['product_id'][$k]['harga']);
+$_SESSION['product_id'][$k]['subtotal'] =$_SESSION['product_id'][$k]['jumlah']*($_SESSION['product_id'][$k]['harga']-$nilaidiscount);
+}
+}
+//$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po&mod=yes" />';
+}
+
 
 if(isset($_POST['tambahbarang'])){
 $_SESSION['kodesupplier'] = $_POST['kodesupplier'];	
@@ -273,29 +293,7 @@ $kodepo 		= !isset($kodepo) ? $_SESSION['kodepo'] : $kodepo;
 $kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesupplier;
 $discount 		= !isset($discount) ? '0' : $discount;
 $carabayar 		= !isset($carabayar) ? $_POST['carabayar'] : $carabayar;
-$termin 		= !isset($termin) ? $_POST['termin'] : $termin;
-$sel2 = '<select name="carabayar" class="form-control">';
-$arr2 = array ('Tunai','Debet Card','Hutang');
-foreach ($arr2 as $kk=>$vv){
-	if ($carabayar == $vv){
-	$sel2 .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';
-	}else {
-	$sel2 .= '<option value="'.$vv.'">'.$vv.'</option>';	
-}
-}
-
-$sel2 .= '</select>'; 
-$sel3 = '<select name="termin" class="form-control" required>';
-$arr3 = array ('0','14','21','30','60','90','120');
-foreach ($arr3 as $kk=>$vv){
-	if ($termin == $vv){
-	$sel3 .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';
-	}else {
-	$sel3 .= '<option value="'.$vv.'">'.$vv.'</option>';	
-	}
-}
-
-$sel3 .= '</select>'; 
+$termin 		= !isset($termin) ?$_POST['termin'] : $termin;
 $admin .= '
 <div class="panel-heading"><b>Transaksi Pembelian</b></div>';	
 $admin .= '
@@ -313,9 +311,9 @@ $admin .= '
 		<td>Tanggal</td>
 		<td>:</td>
 		<td><input type="text" name="tgl" value="'.$tgl.'" class="form-control">&nbsp;'.$wkt.'</td>
-		<td>Cara Pembayaran</td>
+<td>Cara Pembayaran</td>
 		<td>:</td>
-		<td>'.$sel2.'</td>
+		<td>'.$carabayar.'<input type="hidden" name="carabayar" value="'.$carabayar.'" class="form-control"></td>		
 	</tr>';
 $admin .= '
 	<tr>
@@ -323,46 +321,14 @@ $admin .= '
 		<td>:</td>
 		<td><div class="input_container">
                     <input type="text" id="po_id"  name="kodepo" value="'.$kodepo.'" onkeyup="autocompletpo()"class="form-control" >
-					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
+					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >&nbsp;
                     <ul id="po_list_id"></ul>
-                </div>
-				</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		</tr>';
-$admin .= '
-	<tr>
-		<td>Supplier</td>
-		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >
-					&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
-                    <ul id="country_list_id"></ul>
                 </div>
 				</td>
 		<td>Termin</td>
 		<td>:</td>
-		<td>'.$sel3.'Hari</td>
+		<td>'.$termin.'<input type="hidden" name="termin" value="'.$termin.'" class="form-control"></td>
 		</tr>';
-
-
-$admin .= '
-	<tr>
-		<td> Barang</td>
-		<td>:</td>
-		<td>
-                <div class="input_container">
-                    <input type="text" id="barang_id"  name="kodebarang" value="'.$kodebarang.'" onkeyup="autocomplet2()"class="form-control" >
-					<input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" >&nbsp;
-                    <ul id="barang_list_id"></ul>
-                </div>
-				</td>
-	<td></td>
-	<td></td>
-	<td></td>
-		</tr>
-				';
 $admin .= '	
 	<tr><td colspan="5"><div id="Tbayar"></div></td>
 		<td>
@@ -392,56 +358,27 @@ $admin .= '
 <th><b>Subtotal</b></</th>
 		<th><b>Aksi</b></</th>
 	</tr>';
-	if ($_GET['editdetail']){
 foreach ($_SESSION["product_id"] as $cart_itm)
         {
+		$array =$no-1;
 $nilaidiscount=cekdiscount($cart_itm["subdiscount"],$cart_itm["harga"]);
-$admin .= '
-<form method="post" action="" class="form-inline"id="posts">';
 $admin .= '	
 	<tr>
 			<td>'.$no.'</td>
 		<td>'.getjenjang($cart_itm["jenjang"]).'</td>
 			<td>'.$cart_itm["kode"].'</td>
 		<td>'.getnamabarang($cart_itm["kode"]).'</td>
-		<td><input align="right" type="text" name="jumlahbeli" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
+		<td><input align="right" type="text" name="jumlahbeli['.$array.']" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
 		<td>'.$cart_itm["harga"].'</td>
-		<td><input align="right" type="text" name="subdiscount" value="'.$cart_itm["subdiscount"].'"class="form-control"></td>
+		<td>'.$cart_itm["subdiscount"].'</td>
 	<td>'.$nilaidiscount.'</td>
 		<td>'.$cart_itm["subtotal"].'</td>
 		<td>
-		
+<input align="right" type="hidden" name="harga['.$array.']" value="'.$cart_itm["harga"].'"class="form-control">
+<input align="right" type="hidden" name="subdiscount['.$array.']" value="'.$cart_itm["jumlah"].'"class="form-control">
+		<input align="right" type="hidden" name="jumlahbeliasli['.$array.']" value="'.$cart_itm["jumlahbeliasli"].'"class="form-control">
 		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'">
-		<input type="submit" value="EDIT" name="editjumlah"class="btn btn-warning" >
-		<input type="submit" value="HAPUS" name="hapusbarang"class="btn btn-danger"></td>
-	</tr>';
-$admin .= '
-</form>';
-	$total +=$cart_itm["subtotal"];
-	$no++;
-		}
-$admin .= '	
-	<tr>
-		<td colspan="9" ></td>
-		<td ><a href="./admin.php?pilih=pembelian&mod=yes" class="btn btn-success">Simpan Detail</a></td>
-	</tr>';		
-	}else{
-foreach ($_SESSION["product_id"] as $cart_itm)
-        {
-$nilaidiscount=cekdiscount($cart_itm["subdiscount"],$cart_itm["harga"]);
-$admin .= '	
-	<tr>
-			<td>'.$no.'</td>
-		<td>'.getjenjang($cart_itm["jenjang"]).'</td>
-			<td>'.$cart_itm["kode"].'</td>
-		<td>'.getnamabarang($cart_itm["kode"]).'</td>
-		<td><input align="right" type="text" name="jumlahbeli" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
-		<td>'.$cart_itm["harga"].'</td>
-		<td><input align="right" type="text" name="subdiscount" value="'.$cart_itm["subdiscount"].'"class="form-control"></td>
-	<td>'.$nilaidiscount.'</td>
-		<td>'.$cart_itm["subtotal"].'</td>
-		<td>	
-		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'"></td>
+</td>
 	</tr>';
 	$total +=$cart_itm["subtotal"];
 	$no++;
@@ -449,10 +386,8 @@ $admin .= '
 $admin .= '	
 	<tr>
 		<td colspan="9" ></td>
-		<td ><a href="./admin.php?pilih=pembelian&mod=yes&editdetail=ok" class="btn btn-warning">Edit Detail</a></td>
+		<td ><input type="submit" value="Edit Detail" name="simpandetail"class="btn btn-warning" ></td>
 	</tr>';		
-		
-	}
 $_SESSION['totalbeli']=$total;
 $admin .= '	
 	<tr>
@@ -462,14 +397,6 @@ $admin .= '
 		<td ><input type="text" name="total" id="total"   class="form-control"  value="'.$_SESSION['totalbeli'].'"/></td>
 		<td></td>
 	</tr>';
-$admin .= '	
-	<tr>';
-$admin .= '<td colspan="7"></td>';
-$admin .= '<td align="right"><b>Bayar</b></td>
-		<td ><input type="text" id="bayar"  name="bayar" value="'.$_SESSION['totalbeli'].'"class="form-control" ></td>
-		<td></td>
-	</tr>
-	';
 $admin .= '<tr><td colspan="7"></td><td align="right"></td>
 		<td><input type="hidden" name="user" value="'.$user.'">
 		<input type="submit" value="Batal" name="batalbeli"class="btn btn-danger" >
@@ -565,15 +492,13 @@ $admin .= '
 		<td>'.$carabayar.'</td>
 			<td></td>
 	</tr>';	
-if($carabayar=='Hutang'){
 $admin .= '
 	<tr>
 		<td>Termin</td>
 		<td>:</td>
-		<td>'.$termin.' Hari</td>
+		<td>'.$termin.'</td>
 			<td></td>
 	</tr>';	
-	}
 $admin .= '</table>		</form></div>';	
 $admin .='<div class="panel panel-info">';
 $admin .= '

@@ -56,7 +56,7 @@ var pinjamArr= kembaliArr =[];
                             +'</div><br>'
                             +'<div class="input-control text size4">'
                                 // +'<input placeholder="Barcode atau Judul item" id="judulTB">'
-                                +'<input placeholder="Barcode atau Judul item" id="judulTB" onfocus="autoSug(\'judul\',\'pinjam\',$(\'#lokasiTB\').val())">'
+                                +'<input placeholder="Barcode atau Judul item" id="judulTB" onfocus="autoSug(\'judul\',\'pinjam\',\'\',$(\'#lokasiTB\').val())">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
                             +'<table width="500" class="table hovered bordered striped">'
@@ -107,6 +107,7 @@ var pinjamArr= kembaliArr =[];
                                                 +'<td>Tipe Member</td>'
                                                 +'<td>: <span id="tipememberTB"></span></td>'
                                             +'</tr>'                                            // +'<thead>'
+                                            +'</table>'                                            // +'<thead>'
                                             //     +'<tr style="color:white;"class="info">'
                                             //         +'<th width="100" class="text-center">ID Member</th>'
                                             //     +'</tr>'
@@ -150,24 +151,24 @@ var pinjamArr= kembaliArr =[];
                                     +'</div>' //end row
                                     
                                     // nama member
-                                    +'<div class="row">'
-                                        +'<div class="span5"> '
-                                        '<table>'
-                                            +'<tr>'
-                                                  +'<td>Nama</td>'
-                                                +'<td>: <b id="namaTD"></b></td>'
+                                    // +'<div class="row">'
+                                    //     +'<div class="span5"> '
+                                    //     '<table>'
+                                    //         +'<tr>'
+                                    //               +'<td>Nama</td>'
+                                    //             +'<td>: <b id="namaTD"></b></td>'
 
-                                            +'</tr>'
-                                            +'<tr>'
-                                                +'<td>No. Pendaftaran</td>'
-                                                +'<td>: <span id="nopendaftaranTD"></span></td>'
-                                            +'</tr>'
-                                        +'</table>'    
-                                        +'</div>'
-                                        +'<div class="span5"> '
+                                    //         +'</tr>'
+                                    //         +'<tr>'
+                                    //             +'<td>No. Pendaftaran</td>'
+                                    //             +'<td>: <span id="nopendaftaranTD"></span></td>'
+                                    //         +'</tr>'
+                                    //     +'</table>'    
+                                    //     +'</div>'
+                                    //     +'<div class="span5"> '
 
-                                        +'</div>' //end span
-                                    +'</div>'//end row
+                                    //     +'</div>' //end span
+                                    // +'</div>'//end row
                                     
 
                                     +'<div class="row">'
@@ -193,8 +194,8 @@ var pinjamArr= kembaliArr =[];
                                 +'<select  name="k_lokasiTB" id="k_lokasiTB"></select>'
                             +'</div><br>'
                             +'<div class="input-control text size4">'
-                                +'<input placeholder="Barcode atau Judul item" id="k_judulTB" onfocus="autoSug(\'k_judul\',\'kembali\',9)">'
-                                // +'<input placeholder="Barcode atau Judul item" id="k_judulTB" onfocus="autoSug(\'k_judul\',\'kembali\',$(\'#k_lokasiTB\').val())">'
+                                // +'<input placeholder="Barcode atau Judul item" id="k_judulTB" onfocus="autoSug(\'k_judul\',\'kembali\',9)">'
+                                +'<input placeholder="Barcode atau Judul item" id="k_judulTB" onfocus="autoSug(\'k_judul\',\'kembali\',\'\',$(\'#k_lokasiTB\').val())">'
                                 +'<button class="btn-clear"></button>'
                             +'</div>'
                             +'<table width="500" class="table hovered bordered striped">'
@@ -384,11 +385,11 @@ var pinjamArr= kembaliArr =[];
                         // autoSug('judul','pinjam',$('#lokasiTB').val());
                         contentFR=pinjam_contentFR;
                             
-                            $('#tgl_pinjamTB').val(getFirstDate());
-                            $('#tgl_kembaliTB').val(getLastDate());
                         if (id=='') { //add
                             titl = ' Tambah Peminjaman';
                             cmblokasi();
+                            $('#tgl_pinjamTB').val(getToday());
+                            $('#tgl_kembaliTB').val(getLastDate());
 
 
                         }else{
@@ -449,27 +450,39 @@ var pinjamArr= kembaliArr =[];
             }];
 
         }else if(subaksi=='pilihan'){
-            if(tipe=='siswa'){
-                var urlx= '?aksi=autocomp&subaksi=pilihan&tipe=siswa&lokasi'+opsi;
+            if(tipe==1){
+                var urlx= '?aksi=autocomp&subaksi=pilihan&tipe=1&lokasi'+opsi;
                 var col = [{
                         'align':'left',
                         'columnName':'nis',
                         'hide':true,
-                        'width':'35',
+                        'width':'15',
                         'label':'Nis'
                     },{   
                         'align':'left',
                         'columnName':'nama',
                         'width':'40',
                         'label':'Nama'
-                    },{   
-                        'align':'left',
-                        'columnName':'departemen',
-                        'width':'40',
-                        'label':'Departemen'
-                }];
-            }else if (tipe=='guru') {
-                var urlx= '?aksi=autocomp&subaksi=pilihan&tipe'+opsi;
+                    }
+                    // {   
+                    //     'align':'left',
+                    //     'columnName':'departemen',
+                    //     'width':'25',
+                    //     'label':'Departemen'
+                    // },{   
+                    //     'align':'left',
+                    //     'columnName':'tingkat',
+                    //     'width':'20',
+                    //     'label':'Tingkat'
+                    // },{   
+                    //     'align':'left',
+                    //     'columnName':'kelas',
+                    //     'width':'10',
+                    //     'label':'Kelas'
+                    // }
+                    ];
+            }else if (tipe==2) {
+                var urlx= '?aksi=autocomp&subaksi=pilihan&tipe=2&lokasi'+opsi;
                 var col = [{
                         'align':'left',
                         'columnName':'nip',
@@ -482,8 +495,8 @@ var pinjamArr= kembaliArr =[];
                         'width':'40',
                         'label':'Nama'
                 }];
-            }else if (tipe=='member_luar') {
-                var urlx= '?aksi=autocomp&subaksi=pilihan&tipe'+opsi;
+            }else if (tipe==3) {
+                var urlx= '?aksi=autocomp&subaksi=pilihan&tipe=3&lokasi'+opsi;
                 var col = [{
                         'align':'left',
                         'columnName':'nid',
@@ -517,7 +530,7 @@ var pinjamArr= kembaliArr =[];
 
         $('#'+el+'TB').combogrid({
             debug:true,
-            width:'600px',
+            width:'700px',
             colModel : col,
             url: urly+terpilihx,
             select: function( event, ui ) { // event setelah data terpilih 
@@ -536,16 +549,21 @@ var pinjamArr= kembaliArr =[];
                     // siswaAdd (ui.item.replid,ui.item.nis,ui.item.nama,ui.item.departemen);
                     if (tipe==1) {
                         
-                        $('#'+el+'TB').val(ui.item.nis);
-                        $('#'+el+'TB').val(ui.item.nama);
+                        // $('#idmemberTB').val(ui.item.nis);
+                        // $('#tipememberTB').val(ui.item.nama);
+                        $('#'+el+'TB').html(ui.item.nis);
+                        $('#'+el+'TB').html(ui.item.nama);
+                        // $('#'+el+'TB').html(ui.item.departemen);
+                        // $('#'+el+'TB').html(ui.item.tingkat);
+                        // $('#'+el+'TB').html(ui.item.kelas);
                     }
                     else if (tipe==2) {
-                        $('#'+el+'TB').val(ui.item.nip);
-                        $('#'+el+'TB').val(ui.item.nama);
+                        $('#'+el+'TB').html(ui.item.nip);
+                        $('#'+el+'TB').html(ui.item.nama);
                     }
                     else if (tipe==3) {
-                        $('#'+el+'TB').val(ui.item.nid);
-                        $('#'+el+'TB').val(ui.item.nama);
+                        $('#'+el+'TB').html(ui.item.nid);
+                        $('#'+el+'TB').html(ui.item.nama);
                     }
 
                 }
@@ -631,7 +649,6 @@ var pinjamArr= kembaliArr =[];
         //     $('#memberTBL').prepend(tr); 
 
         //     $('#peminjamTB').combogrid( "option", "url", dir+'?aksi=autocomp&subaksi=siswa&tipe='+$('#tipeTB').val() );
-
         // }
         
 

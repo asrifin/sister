@@ -174,12 +174,12 @@ class xtable{
 	}
 	function use_db(&$db,$a=-1,$s=0){
 		$this->ndata=mysql_num_rows($db->query());
-		if($a==-1)$a=$this->page_order_sql;
+		if($a==-1)
+			$a=$this->page_order_sql;
 		$this->tbl_sql=$db->getsql();
 		if($a!=-1 && $a!=''){
 			$this->tbl_sql.=$a;
-		}
-		return $db->query($a,$s);
+		}return $db->query($a,$s);
 	}
 	// Text formatting for display
 	function format_title($a){
@@ -497,14 +497,27 @@ class xtable{
 	// columns
 	function opt_ud($id=0){
 		if($this->xtopt!='urut'){
-		if(admin_isoperator()){
-			$s='';
-			$s.='<td width="65px" align="center">';
-			$s.='<button class="btn" title="Edit" onclick="'.$this->fmod.'_form(\'uf\',\''.$id.'\')"><div class="bi_editb">&nbsp;</div></button>&nbsp;';
-			$s.='<button class="btn" title="Hapus" onclick="'.$this->fmod.'_form(\'df\',\''.$id.'\')"><div class="bi_delb">&nbsp;</div></button>';
-			$s.='</td>';
-			echo $s;
-		}}
+			if(admin_isoperator()){
+				$s='';
+				$s.='<td width="65px" align="center">';
+				$s.='<button class="btn" title="Edit" onclick="'.$this->fmod.'_form(\'uf\',\''.$id.'\')"><div class="bi_editb">&nbsp;</div></button>&nbsp;';
+				$s.='<button class="btn" title="Hapus" onclick="'.$this->fmod.'_form(\'df\',\''.$id.'\')"><div class="bi_delb">&nbsp;</div></button>';
+				$s.='</td>';
+				echo $s;
+			}
+		}
+	}
+	function opt_u($id=0){
+		if($this->xtopt!='urut'){
+			if(admin_isoperator()){
+				$s='';
+				$s.='<td width="65px" align="center">';
+				$s.='<button class="btn" title="Edit" onclick="'.$this->fmod.'_form(\'uf\',\''.$id.'\')"><div class="bi_editb">&nbsp;</div></button>&nbsp;';
+				// $s.='<button class="btn" title="Hapus" onclick="'.$this->fmod.'_form(\'df\',\''.$id.'\')"><div class="bi_delb">&nbsp;</div></button>';
+				$s.='</td>';
+				echo $s;
+			}
+		}
 	}
 	
 	function td($a='',$b='',$c='',$atr=''){
@@ -747,12 +760,10 @@ class xtable{
 		if($this->cari!=0){
 			if(!$this->search_infodisp) $this->search_info();
 			else hiddenval('xtable'.$this->xtableid.'_usesearch',$this->usesearch);
-		}
-		else {
-		if($b!=''){
-			echo '<div class="infobox2" style="margin-top:10px">'.$b.'</div>';
-		}
-		hiddenval('xtable'.$this->xtableid.'_usesearch',$this->usesearch);
+		}else {
+			if($b!=''){
+				echo '<div class="infobox2" style="margin-top:10px">'.$b.'</div>';
+			}hiddenval('xtable'.$this->xtableid.'_usesearch',$this->usesearch);
 		}
 	}
 	// button bar
@@ -761,6 +772,19 @@ class xtable{
 		echo '<div class="tbltopbar" style="width:'.$w.'">';
 		$this->btnbar_isbegin=true;
 	}
+
+	function btnbar_print2($a='',$t='',$p){
+		$par='';
+		foreach ($p as $key => $val) {
+			$par.='&'.$key.'='.$val;
+		}
+		// var_dump($par);exit();
+		$o = 'window.open(\'print/'.$a.'.php?token='.$t.$par.'\',\'_blank\');';
+		echo '<button class="btn" style="float:left;margin-right:4px" onclick="'.$o.'">
+					<div class="bi_pri">Cetak</div>
+			  </button>';
+	}
+
 	function btnbar_end(){
 		echo '</div>';
 		$this->btnbar_isbegin=false;
@@ -784,8 +808,11 @@ class xtable{
 	}
 	function btnbar_print($a=''){
 		if($this->ndata>0){
-		if($a=='')$a='E(\'xtable'.$this->xtableid.'_print_form\').submit()';
-		echo '<button class="btn" style="float:left;margin-right:4px" onclick="'.$a.'"><div class="bi_pri">Cetak</div></button>';
+			if($a=='')
+				 $a='E(\'xtable'.$this->xtableid.'_print_form\').submit()';
+			echo '<button class="btn" style="float:left;margin-right:4px" onclick="'.$a.'">
+					<div class="bi_pri">Cetak</div>
+				</button>';
 		}
 	}
 	function btnbar_help(){
@@ -804,21 +831,24 @@ class xtable{
 	function btnbar_f(){
 		echo '<div class="tbltopbar" style="width:100%">'; $this->btnbar_isbegin=true;
 		if($this->xtopt!='urut'){
-		$a=func_get_args();
-		$n=count($a);
-		for($i=0;$i<$n;$i++){
-			if($a[$i]=='add') $this->btnbar_add();
-			else if($a[$i]=='print') $this->btnbar_print();
-			else if($a[$i]=='updn') $this->btnbar_updn();
-			else if($a[$i]=='help') $this->btnbar_help();
-			else if($a[$i]=='srcbox') $this->search_box();
-			else echo $a[$i];
-		}} else {
+			$a=func_get_args();
+			$n=count($a);
+			for($i=0;$i<$n;$i++){
+				if($a[$i]=='add') $this->btnbar_add();
+				else if($a[$i]=='print') $this->btnbar_print();
+				else if($a[$i]=='updn') $this->btnbar_updn();
+				else if($a[$i]=='help') $this->btnbar_help();
+				else if($a[$i]=='srcbox') $this->search_box();
+				else echo $a[$i];
+			}
+		} else {
 			$this->btnbar_updn();
-		}
-		echo '</div>'; $this->btnbar_isbegin=false;
-		if($this->cari!=0 && !$this->search_infodisp) $this->search_info();
+		}echo '</div>'; 
+		$this->btnbar_isbegin=false;
+		if($this->cari!=0 && !$this->search_infodisp) 
+			$this->search_info();
 	}
+
 	function search_kformat($a1){
 		//$a1="nopendaftaran(no pendaftaran)=>nama:EQ-1";
 		//echo " a1:".$a1."; ";

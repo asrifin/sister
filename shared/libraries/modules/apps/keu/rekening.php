@@ -20,8 +20,7 @@ function rekening_opt($a=0){
 	$res['-']='';
 	$t=mysql_query("SELECT * FROM keu_rekening ".($a==0?"":"WHERE kategorirek='$a'")." ORDER BY kode");
 	while($r=mysql_fetch_array($t)){
-		//$res[$r['replid']]=$r['kode']."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$r['nama'];
-		$res[$r['replid']]=$r['kode']." ".$r['nama'];
+		$res[$r['replid']]=$r['kode']."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$r['nama'];
 	}
 	return $res;
 }
@@ -30,8 +29,7 @@ function rekening_nokasbank_opt(){
 	$res[0]='';
 	$t=mysql_query("SELECT * FROM keu_rekening WHERE kategorirek<>'1' && kategorirek<>'2' ORDER BY kode");
 	while($r=mysql_fetch_array($t)){
-		//$res[$r['replid']]=$r['kode']."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$r['nama'];
-		$res[$r['replid']]=$r['kode']." ".$r['nama'];
+		$res[$r['replid']]=$r['kode']."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$r['nama'];
 	}
 	return $res;
 }
@@ -39,8 +37,7 @@ function rekening_kasbank_opt(){
 	$res=Array();
 	$t=mysql_query("SELECT * FROM keu_rekening WHERE kategorirek='1' || kategorirek='2' ORDER BY kode");
 	while($r=mysql_fetch_array($t)){
-		//$res[$r['replid']]=$r['kode']."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$r['nama'];
-		$res[$r['replid']]=$r['kode']." ".$r['nama'];
+		$res[$r['replid']]=$r['kode']."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$r['nama'];
 	}
 	return $res;
 }
