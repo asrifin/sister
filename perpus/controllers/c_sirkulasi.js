@@ -238,6 +238,9 @@ var pinjamArr= kembaliArr =[];
         $('#s_judulS,#klasifikasiS,#pengarangS,#penerbitS').on('keydown',function (e){ 
             if(e.keyCode == 13)  viewTB('statistik');
         });
+        $('#lokasiS').on('change',function(){
+            viewTB('statistik');
+        });
 
         // set default this month
         $('#tgl1TB').val(getFirstDate());

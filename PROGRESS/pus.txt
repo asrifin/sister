@@ -47,8 +47,8 @@ ____________________________________________________
 	   
 	
 	* statistik
-	- menampilkan jumlah yang dipinjam (filter tanggal)
-	- cmb statistik
+	- SQL menampilkan jumlah yang sering dipinjam (filter tanggal)
+	- 
 	
 
 * OPAC (P)

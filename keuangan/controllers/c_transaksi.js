@@ -96,7 +96,7 @@ var detilanggaranArr=rekArr=[];
                         // +'</div>'
 
                         // rekening kas (optional)
-                        +'<label style="display:none;" class="rekkasDV">Rekening Kas/Bank</label>'
+                        +'<label style="display:none;" class="rekkasDV">Perkiraan Kas/Bank</label>'
                         +'<div style="display:none;" class="input-control text rekkasDV">'
                             +'<input type="hidden" name="rekkassisaH" id="rekkassisaH">'
                             +'<input type="hidden" name="rekkasH" id="rekkasH">'
@@ -105,7 +105,7 @@ var detilanggaranArr=rekArr=[];
                         +'</div>'
 
                         // rekening perkiraan 
-                        +'<legend style="font-weight:bold;">Rekening <span style="font-weight:bold;" id="reklawanDV"></span> : '
+                        +'<legend style="font-weight:bold;">Perkiraan <span style="font-weight:bold;" id="reklawanDV"></span> : '
                             +'<a id="addTRBC" href="#" class="place-right button bg-blue fg-white">'
                                 +'<i class="icon-plus-2"></i>'
                             +'</a>'
@@ -693,6 +693,11 @@ var detilanggaranArr=rekArr=[];
                     'label':'Kategori'
             },{   
                     'align':'left',
+                    'columnName':'departemen',
+                    'width':'15',
+                    'label':'Departemen'
+            },{   
+                    'align':'left',
                     'columnName':'tingkat',
                     'width':'15',
                     'label':'Jenjang'
@@ -946,7 +951,7 @@ var detilanggaranArr=rekArr=[];
                         
                         tr+='<tr style="color:white;"class="info">'
                             +(typx=='out_come'?'<th class="text-center">Detail Anggaran</th>':'')
-                            +'<th class="text-center">Rekening</th>'
+                            +'<th class="text-center">Kode dan Perkiraan</th>'
                             +'<th class="text-center">Nominal</th>'
                             +'<th class="text-center">Uraian</th>'
                             +'<th class="text-center">Hapus</th>'

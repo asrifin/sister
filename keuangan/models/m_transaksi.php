@@ -88,6 +88,7 @@
 							'.$detilanggaranArr.'
 						GROUP BY	
 							d.replid ';
+							print_r(ss);exit();
 				}
 				// elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='detilanggaran'){ // anggaran 
 				// 	// sum(n.nominal)nominal,
