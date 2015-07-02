@@ -69,6 +69,7 @@
 							d.replid,
 							d.nama,
 							k.nama kategorianggaran,
+							departemen.nama departemen,
 							concat(t.tingkat," (",t.keterangan,")") tingkat,
 							concat(r.nama," (",r.kode,") ")rekening,
 							r.replid idrekening
@@ -78,6 +79,8 @@
 							LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
 							LEFT JOIN keu_detilrekening r ON r.replid = k.rekening
 							LEFT JOIN aka_tingkat t ON t.replid = k.tingkat
+							LEFT JOIN aka_tahunajaran ta ON ta.replid = t.tahunajaran
+							LEFT JOIN departemen ON departemen.replid = ta.departemen
 						WHERE
 							(
 								d.nama LIKE "%'.$searchTerm.'%"
@@ -88,7 +91,7 @@
 							'.$detilanggaranArr.'
 						GROUP BY	
 							d.replid ';
-							print_r(ss);exit();
+							// print_r(ss);exit();
 				}
 				// elseif(isset($_GET['subaksi']) && $_GET['subaksi']=='detilanggaran'){ // anggaran 
 				// 	// sum(n.nominal)nominal,
@@ -156,6 +159,7 @@
 							'replid'           =>$row['replid'],
 							'nama'             =>$row['nama'],
 							'kategorianggaran' =>$row['kategorianggaran'],
+							'departemen'       =>$row['departemen'],
 							'tingkat'          =>$row['tingkat'],
 							'kuotaBilCur'      =>'Rp. '.number_format($kuotaNum),
 							'sisaBilCur'       =>'Rp. '.number_format($sisaNum),

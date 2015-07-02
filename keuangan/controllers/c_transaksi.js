@@ -684,7 +684,7 @@ var detilanggaranArr=rekArr=[];
                     'align':'left',
                     'columnName':'nama',
                     'hide':true,
-                    'width':'20',
+                    'width':'15',
                     'label':'Anggaran'
             },{   
                     'align':'left',
@@ -704,7 +704,7 @@ var detilanggaranArr=rekArr=[];
             },{   
                     'align':'left',
                     'columnName':'rekening',
-                    'width':'25',
+                    'width':'15',
                     'label':'Rekening'
             },{   
                     'align':'right',
@@ -777,7 +777,7 @@ var detilanggaranArr=rekArr=[];
 
         $('#'+el+'TB').combogrid({
             debug:true,
-            width:'900px',
+            width:'1200px',
             colModel: col ,
             url: urly+terpilihx,
             select: function( event, ui ) { // event setelah data terpilih 
