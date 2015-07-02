@@ -52,7 +52,7 @@ var detilanggaranArr=rekArr=[];
         contentFR +='<form style="overflow:scroll;height:550px;" autocomplete="off" onsubmit="transSV(this); return false;">'
                         // hidden input
                         +'<input name="idformH" id="idformH" type="hidden">' 
-                        +'<input class="kwitansi_cari" name="detjenistransH" id="detjenistransH" type="text">' 
+                        +'<input class="kwitansi_cari" name="detjenistransH" id="detjenistransH" type="hidden">' 
                         +'<input name="subaksiH" id="subaksiH" type="hidden">' 
                         +'<input class="kwitansi_cari" name="nomerH" id="nomerH" type="hidden">' 
 
@@ -777,7 +777,7 @@ var detilanggaranArr=rekArr=[];
 
         $('#'+el+'TB').combogrid({
             debug:true,
-            width:'1200px',
+            width:'1300px',
             colModel: col ,
             url: urly+terpilihx,
             select: function( event, ui ) { // event setelah data terpilih 
