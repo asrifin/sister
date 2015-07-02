@@ -1314,7 +1314,7 @@ var detilanggaranArr=rekArr=[];
         });
     }
 
-    function cmbbln(t,thn){
+    function cmbbln(t,thn){ // t = tahun ajaran , thn = tahun (semester)
         console.log('t = '+t);
         u = dir4;
         d ='aksi=cmb'+mnu4+(t!=''?'&replid='+t:'');
