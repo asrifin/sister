@@ -49,10 +49,10 @@ var detilanggaranArr=rekArr=[];
         });
 
     //form content
-        contentFR +='<form style="overflow:scroll;height:700px;" autocomplete="off" onsubmit="transSV(this); return false;">'
+        contentFR +='<form style="overflow:scroll;height:550px;" autocomplete="off" onsubmit="transSV(this); return false;">'
                         // hidden input
                         +'<input name="idformH" id="idformH" type="hidden">' 
-                        +'<input name="detjenistransH" id="detjenistransH" type="hidden">' 
+                        +'<input class="kwitansi_cari" name="detjenistransH" id="detjenistransH" type="hidden">' 
                         +'<input name="subaksiH" id="subaksiH" type="hidden">' 
                         +'<input class="kwitansi_cari" name="nomerH" id="nomerH" type="hidden">' 
 
@@ -234,13 +234,20 @@ var detilanggaranArr=rekArr=[];
                     tok+=$(this).val();
                 } 
             });
+        // }else if(mn=='out_come' ||mn=='in_come'){
+        }else if(mn=='kwitansi'){
+            var n = $('.rekTR').length;
+            tok+=n;
+            par+='&countx='+n;
+            console.log('kwitansi/ jmlh detail = '+n);
         }
+
         var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
-        console.log('mn  ='+mn);
-        console.log('par  ='+par);
-        console.log('token berfore='+x+tok);
-        console.log('token after='+token);
+        // console.log('mn  ='+mn);
+        // console.log('par  ='+par);
+        // console.log('token berfore='+x+tok);
+        // console.log('token after='+token);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 
@@ -322,7 +329,7 @@ var detilanggaranArr=rekArr=[];
 
         $(el).each(function(){
             var p = $(this).attr('id');
-            console.log('masuk pencarian param :'+p);
+            // console.log('masuk pencarian param :'+p);
             var v = $(this).val();
             cari+='&'+p+'='+v;
         });
@@ -334,7 +341,7 @@ var detilanggaranArr=rekArr=[];
         //filter chekcbox penerimaan+pengeluaran 
         var opt2 = $('form#filterFR2').serialize();
         cari+='&'+opt2;
-        console.log(opt2);
+        // console.log(opt2);
 
         $.ajax({
             url : dir,
@@ -387,7 +394,7 @@ var detilanggaranArr=rekArr=[];
                 m+='<span class="fg-white"><i class="icon-warning"></i> '+item+'</span><br />';
             });notif(m,'red');
         }else{ // valid 
-            console.log('masuk simpan');
+            // console.log('masuk simpan');
             ajax(url,data).done(function(dt){
                 notif(dt.status,dt.status!='sukses'?'red':'green');
                 if(dt.status=='sukses'){
@@ -606,16 +613,16 @@ var detilanggaranArr=rekArr=[];
                 var nominal         = (typeof arr!='undefined')?arr.nominal:'Rp. 0';
                 var uraian          = (typeof arr!='undefined')?arr.uraian:'';
                 var mode            = (typeof arr!='undefined')?'edit':'add'; 
-                // console.log(jenis);
+                console.log(jenis);
                     
                 tr+='<tr class="rekTR" id="rekTR_'+ke+'">';
                 if(typ=='out_come'){
                     // anggaran
                     tr+='<td align="center">'
-                        +'<div class="input-control text">'
+                        +'<div class="input-control text size7">'
                             +'<input type="hidden" name="'+typ+'_sisaanggaran'+ke+'H" id="'+typ+'_sisaanggaran'+ke+'H" value="'+detilanggaran+'" />'
                             +'<input class="detilanggaran" type="hidden" value="'+iddetilanggaran+'" id="'+typ+'_detilanggaran'+ke+'H" name="'+typ+'_detilanggaran'+ke+'H" />'
-                            +'<input onkeyup="validForm2();" id="'+typ+'_detilanggaran'+ke+'TB" name="'+typ+'_detilanggaran'+ke+'TB" value="'+rekitem+'" required  onfocus="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\'detilanggaran\',\'\');" onclick="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\'detilanggaran\',\'\');" placeholder="anggaran " type="text" />'
+                            +'<input  onkeyup="validForm2();" id="'+typ+'_detilanggaran'+ke+'TB" name="'+typ+'_detilanggaran'+ke+'TB" value="'+rekitem+'" required  onfocus="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\'detilanggaran\',\'\');" onclick="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\'detilanggaran\',\'\');" placeholder="anggaran " type="text" />'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                     +'</td>';
@@ -777,7 +784,7 @@ var detilanggaranArr=rekArr=[];
 
         $('#'+el+'TB').combogrid({
             debug:true,
-            width:'1200px',
+            width:'1300px',
             colModel: col ,
             url: urly+terpilihx,
             select: function( event, ui ) { // event setelah data terpilih 
@@ -832,18 +839,18 @@ var detilanggaranArr=rekArr=[];
         rekArr=[];
         detilanggaranArr=[];
         if($('#subaksiH').val()=='out_come'){ // outcome saja
-            console.log('masuk anggaran ');
+            // console.log('masuk anggaran ');
             $('.detilanggaran').each(function(id,item){
                 detilanggaranArr.push($(this).val());
             });
-            console.log(detilanggaranArr);
+            // console.log(detilanggaranArr);
             return detilanggaranArr;
         }else{ // selain outcome (income,jurnal-umum)
-            console.log('masuk income dll');
+            // console.log('masuk income dll');
             $('.idrek').each(function(id,item){
                 rekArr.push($(this).val());
             });
-            console.log(rekArr);
+            // console.log(rekArr);
             return rekArr;
         }
     }
@@ -865,7 +872,7 @@ var detilanggaranArr=rekArr=[];
 
 // remove TR rekening
     function delRekTR (ke,idjurnal) {
-        console.log(validDelRek());
+        // console.log(validDelRek());
         if(validDelRek().status==false){
             notif(validDelRek().msg,'red');
         }else{
@@ -874,9 +881,9 @@ var detilanggaranArr=rekArr=[];
                 $('#rekTR_'+ke).remove();
                 
                 collectArr();
-                console.log('arr terpilih in delrek=>'+rekArr);
+                // console.log('arr terpilih in delrek=>'+rekArr);
             });
-            // console.log(idDelTR);
+            console.log(idDelTR);
         }
     }
 
@@ -905,7 +912,7 @@ var detilanggaranArr=rekArr=[];
             shadow: true,
             overlay: true,
             draggable: true,
-            width: '90%',
+            width: '80%',
             padding: 10,
             onShow: function(){
                 $.Dialog.content(contentFR);
@@ -1005,7 +1012,7 @@ var detilanggaranArr=rekArr=[];
                             if(id=='') { // add
                                 kodeTrans(typx);
                                 addRekTR(typx,1);
-                                // console.log('mode add , typxe : '+typx);
+                                console.log('mode add , typxe : '+typx);
                                 titl='Tambah Transaksi Pengeluaran';
                             }else{ //edit
                                 titl ='Ubah Transaksi Pengeluaran';
@@ -1292,7 +1299,7 @@ var detilanggaranArr=rekArr=[];
 //end of combo tingkat ----
 
     function cmbthn(thn){
-        console.log('t cmthn dr thn ajaran ='+thn);
+        // console.log('t cmthn dr thn ajaran ='+thn);
         u = dir4;
         d ='aksi=cmb'+mnu4+(thn!=''?'&replid='+thn:'');
         ajax(u,d).done(function(dt){
@@ -1315,7 +1322,7 @@ var detilanggaranArr=rekArr=[];
     }
 
     function cmbbln(t,thn){ // t = tahun ajaran , thn = tahun (semester)
-        console.log('t = '+t);
+        // console.log('t = '+t);
         u = dir4;
         d ='aksi=cmb'+mnu4+(t!=''?'&replid='+t:'');
         ajax(u,d).done(function(dt){
@@ -1331,7 +1338,7 @@ var detilanggaranArr=rekArr=[];
                     }else{ // tahun terpilih 
                         var arr=new Array();
                             arr=dt.tahunajaran[0];
-                            console.log(dt.tahunajaran);
+                            // console.log(dt.tahunajaran);
                         var b1 =parseInt(arr.tglmulai.substr(5,2)); // bulan @tahun awal 
                         var b2 =parseInt(arr.tglakhir.substr(5,2)); // bulan @tahun akhir
                         var t1 =parseInt(arr.tglmulai.substr(0,4)); // tahun @tahun awal 
