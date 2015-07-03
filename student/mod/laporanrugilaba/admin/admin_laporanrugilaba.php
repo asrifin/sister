@@ -267,7 +267,7 @@ $admin .='<tr>
 $hasilj = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk where jenis='JASA'" );
 $admin .='
 <tr>
-		<td colspan="4" class="primary"><b>PENJUALAN</b></td>
+		<td colspan="4" class="warning"><b>PENJUALAN</b></td>
 		</tr>
 <tr>
 		<td width="300px"><b>Jenis</b></td>
@@ -301,6 +301,15 @@ $admin .='<tr>
 		<td><b>'.rupiah_format($grandlabarugij).'</b></td>
 		</tr>
 		';		
+			/************** TOTAL BARANG + JASA ***************/	
+$totallabarugi = $grandlabarugi+$grandlabarugij;
+$admin .='<tr class="warning">
+		<td><b>Total</b></td>
+		<td></b></td>
+		<td></b></td>
+		<td><b>'.rupiah_format($totallabarugi).'</b></td>
+		</tr>
+		';		
 		/************** BIAYA BULANAN ***************/
 $admin .='<tr >
 		<td colspan="4"class="danger"><b>Biaya Bulanan</b></td>';
@@ -323,8 +332,8 @@ $admin .='<tr>
 		<td><b>'.rupiah_format($grandtotalbb).'</b></td>
 				<td></td>
 	</tr>';
-	$labarugi = $grandtotalbayar - $grandtotalbiaya - $grandtotalbb;
-$admin .='<tr class="alert-info">
+	$labarugi = $totallabarugi - $grandtotalbb;
+$admin .='<tr class="success">
 		<td><b>Laba / Rugi :</b></td>
 				<td></td>
 		<td></td>
