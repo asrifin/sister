@@ -4,6 +4,7 @@ error_reporting(0);
 
 date_default_timezone_set('Asia/Jakarta');
 define('ROOTLNK','../');
+// define('ROOTDIR','xampp/htdocs/sister/');
 define('ROOTDIR','C:/xampp/htdocs/sister/');
 define('SHAREDDIR',ROOTDIR.'shared/');
 define('SHAREDLIB',ROOTDIR.'shared/libraries/');

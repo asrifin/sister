@@ -7,7 +7,6 @@ $db=siswa_db_byID($cid);
 $siswa=$db->gofetch();
 $kls=$siswa['idkelas'];
 
-
 if($sna!="") $db->field("(".$sna.") as TNRAPOR");
 else $db->field("0 as TNRAPOR");
 if($npeni>0) $db->field("((".$sna.")/".$npeni.") as AVGRAPOR");

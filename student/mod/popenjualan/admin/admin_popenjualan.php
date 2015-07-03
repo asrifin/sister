@@ -127,7 +127,7 @@ foreach ($_SESSION["product_id"] as $cart_itm)
 $kode = $cart_itm["kode"];
 $jumlah = $cart_itm["jumlah"];
 $stokbarang=getstokbarang($kode);
-if ($stokbarang < $jumlah)  	$error .= "Error:  Stok Barang Tidak Mencukupi<br />";
+if ($stokbarang < $jumlah)$error .= "Error:  Stok Barang Tidak Mencukupi<br />";
 }
 if ($error){
 $admin .= '<div class="error">'.$error.'</div>';
@@ -154,7 +154,7 @@ $hasil  = mysql_query( "INSERT INTO `pos_popenjualandetail` VALUES ('','$nopo','
 if($hasil){
 $admin .= '<div class="sukses"><b>Berhasil Menambah PO Penjualan.</b></div>';
 popenjualancetak($nopo);
-//popenjualanrefresh();
+popenjualanrefresh();
 
 //$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=penjualan&mod=yes" />';
 }else{
@@ -182,7 +182,7 @@ foreach ($_SESSION['product_id'] as $k=>$v){
 unset($_SESSION['product_id'][$k]);
     }
 }
-//$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=popenjualan&mod=yes" />';
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=popenjualan&mod=yes" />';
 }
 
 if(isset($_POST['simpandetail'])){
@@ -565,12 +565,12 @@ $admin .= '	<tr>
 		<td >'.rupiah_format($netto).'</td>
 	</tr>
 	';
-	*/
+	
 $admin .= '	<tr>	
 		<td colspan="7" align="right"><b>Bayar</b></td>
 		<td >'.rupiah_format($bayar).'</td>
 	</tr>
-	';
+	';*/
 $admin .= '</table></div>';	
 		}
 	}

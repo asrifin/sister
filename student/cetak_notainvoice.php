@@ -8,9 +8,11 @@ $kode 		= $_POST['kode'];
 }else{
 $kode 		= $_GET['kode'];	
 }
-if(isset($_GET['bayar'])){
-$noinvoice 		= $_GET['kode'];	
-lunashutang($noinvoice);
+if(isset($_POST['bayarnominal'])){
+$noinvoice 		= $_POST['kode'];	
+$bayarnominal 		= $_POST['bayarnominal'];	
+$query 		= mysql_query ("update pos_pembelian set bayar ='$bayarnominal', hutang='0' where noinvoice='$noinvoice'");
+$style_include[] ='<meta http-equiv="refresh" content="1; url=cetak_notainvoice.php?kode='.$kode.'&cetak=ok" />';
 	}
 echo "<html><head><title>Nota Transaksi Pembelian </title>";
 echo '<style type="text/css">
@@ -146,11 +148,6 @@ echo '
 </tr>';
 	$no++;
 		}
-echo '	
-	<tr class="border">		
-		<td colspan="8" align="right"><b>Total</b></td>
-		<td >'.rupiah_format($total).'</td>
-	</tr>';
 	/*
 echo '	
 	<tr class="border">	
@@ -163,11 +160,18 @@ echo '	<tr class="border">
 	</tr>
 	';
 	*/
-	if(!isset($_GET['bayar']) and $bayar=='0'){
-echo '<form class="form-inline" method="POST" action="cetak_notainvoice.php?kode='.$kode.'&bayar=ok" enctype ="multipart/form-data" id="posts">';
+echo '	<tr class="border">	
+		<td colspan="8" align="right"><b>Total</b></td>
+		<td >'.rupiah_format($total).'</td>
+	</tr>
+	';
+	if((isset($_GET['bayar']) or isset($_POST['bayar']))and($bayar=='0')){
+echo '<form class="form-inline" method="POST" action="cetak_notainvoice.php?kode='.$kode.'&cetak=ok" enctype ="multipart/form-data" id="posts">';
 echo '<tr class="border">	
 		<td colspan="8" align="right"><b>Bayar</b></td>	
-	<td><input type="hidden" value="'.$total.'" name="bayarnominal">'.rupiah_format($total).'</td>
+	<td>
+	<input type="hidden" value="'.$noinvoice.'" name="kode">
+	<input type="hidden" value="'.$total.'" name="bayarnominal">'.rupiah_format($total).'</td>
 	</tr>';
 echo '<tr>
 	<td colspan="8" align="right"></td>

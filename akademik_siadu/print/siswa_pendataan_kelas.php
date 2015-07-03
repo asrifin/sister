@@ -1,4 +1,4 @@
-<?php //appmod_use('aka/siswa','aka/kelas','aka/pelajaran','aka/rapor');
+<?php appmod_use('aka/siswa','aka/kelas','aka/pelajaran','aka/rapor');
 // cell($a,$w=0,$c=1,$r=1,$al='',$b=-1,$bg='',$s='',$atr='')
 $token=gets('token');
 

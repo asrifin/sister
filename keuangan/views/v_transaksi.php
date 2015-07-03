@@ -51,7 +51,7 @@
     </div>
 </form>
 
-<div style="overflow:scroll;height:600px">    
+<div style="overflow:scroll;height:550px">    
 <!-- <div style="overflow:scroll;height:450px">     -->
     <!-- <div class="divider">&nbsp;</div> -->
     <!-- tab -->

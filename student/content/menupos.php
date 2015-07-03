@@ -55,6 +55,12 @@ echo '<div class="border2">
 <a href="admin.php"><img src="images/home.jpg" width="50px"><br>BERANDA</a>&nbsp;&nbsp;
 </td>
 <td>
+<a href="admin.php?pilih=mnmaster&mod=yes"><img src="images/order.png" width="50px"><br>MASTER</a>&nbsp;&nbsp;
+</td>
+<td>
+<a href="admin.php?pilih=mnpembelian&mod=yes"><img src="images/order.png" width="50px"><br>PEMBELIAN</a>&nbsp;&nbsp;
+</td>
+<td>
 <a href="admin.php?pilih=mnpenjualan&mod=yes"><img src="images/order.png" width="50px"><br>PENJUALAN</a>&nbsp;&nbsp;
 </td>
 <td>
@@ -72,6 +78,9 @@ echo '<div class="border2">
 <table width="100%"><tr align="center">
 <td>
 <a href="admin.php"><img src="images/home.jpg" width="50px"><br>BERANDA</a>&nbsp;&nbsp;
+</td>
+<td>
+<a href="admin.php?pilih=mnpenjualanjasa&mod=yes"><img src="images/uang.jpg" width="50px"><br>JASA</a>&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=mnhutangpiutang&mod=yes"><img src="images/uang.jpg" width="50px"><br>PEMBAYARAN</a>&nbsp;
@@ -96,6 +105,12 @@ echo '<div class="border2">
 <a href="admin.php?pilih=stok&mod=yes"><img src="images/uang.jpg" width="50px"><br>STOK</a>&nbsp;
 </td>
 <td>
+<a href="admin.php?pilih=mnpembelian&mod=yes"><img src="images/order.png" width="50px"><br>PEMBELIAN</a>&nbsp;&nbsp;
+</td>
+<td>
+<a href="admin.php?pilih=mnpenjualan&mod=yes"><img src="images/order.png" width="50px"><br>PENJUALAN</a>&nbsp;&nbsp;
+</td>
+<td>
 <a href="admin.php?pilih=mnlaporan&mod=yes"><img src="images/report.png" width="50px" height="50px"><br>LAPORAN</a>&nbsp;&nbsp;
 </td>
 <td>
@@ -116,6 +131,9 @@ echo '<div class="border2">
 </td>
 <td>
 <a href="admin.php?pilih=stok&mod=yes"><img src="images/uang.jpg" width="50px"><br>STOK</a>&nbsp;
+</td>
+<td>
+<a href="admin.php?pilih=mnhutangpiutang&mod=yes"><img src="images/uang.jpg" width="50px"><br>HUTANG/PIUTANG</a>&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=mnlaporan&mod=yes"><img src="images/report.png" width="50px" height="50px"><br>LAPORAN</a>&nbsp;&nbsp;

@@ -95,7 +95,7 @@
 									s.nisn LIKE "%'.$nisn.'%" AND
 									s.tmplahir LIKE "%'.$tmplahir.'%" and
 									s.tgllahir LIKE "%'.$tgllahir.'%"';
-						print_r($sql);exit();
+						// print_r($sql);exit();
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{

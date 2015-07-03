@@ -224,10 +224,14 @@ $tglakhir 		= $_POST['tglakhir'];
 $admin .='<div class="panel-heading"><b>laporan Rugi Laba</b> , Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</div>';
 $admin .= '
 <table class="table table-striped table-hover">';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk" );
-$admin .='<tr>
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk where jenis='BARANG'" );
+$admin .='
+<tr>
+		<td colspan="4" class="warning"><b>LABA BERSIH/KOTOR BARANG</b></td>
+		</tr>
+<tr>
 		<td width="300px"><b>Jenis</b></td>
-		<td><b>Pendapatan</b></td>
+		<td><b>Laba Kotor</b></td>
 		<td><b>Biaya</b></td>
 		<td><b>Laba/Rugi</b></td>
 		</tr>
@@ -235,28 +239,17 @@ $admin .='<tr>
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $idjenis=$data['id'];
 $namajenis=$data['nama'];
-$s2 = mysql_query ("SELECT sum(pd.subtotal) as subtotal,pd.jenis as kodejenis FROM pos_penjualan p,pos_penjualandetail pd where p.tgl >= '$tglmulai'  and p.tgl <= '$tglakhir'  and p.nofaktur=pd.nofaktur and pd.jenis = '$idjenis'");
-$datas2 = mysql_fetch_array($s2);
-$subtotal = $datas2['subtotal'];
-$kodejenis = $datas2['kodejenis'];
-$subtotalbayar += $datas2['subtotal'];
-$s3 = mysql_query ("SELECT sum(pd.subtotal) as subtotal,pd.jenis as kodejenis FROM pos_penjualanjasa p,pos_penjualanjasadetail pd where p.tgl >= '$tglmulai'  and p.tgl >= '$tglakhir'  and p.nofaktur=pd.nofaktur and pd.jenis = '$idjenis'");
-$datas3 = mysql_fetch_array($s3);
-$subtotal = $datas3['subtotal'];
-$kodejenis = $datas3['kodejenis'];
-$subtotalbayar += $datas3['subtotal'];
-////////////////////////////////////////
-$s4 = mysql_query ("SELECT sum(pd.subtotal) as subtotal,pd.jenis as kodejenis FROM pos_penjualanbiaya p,pos_penjualanbiayadetail pd where  p.tgl >= '$tglmulai'  and p.tgl >= '$tglakhir' and p.nofaktur=pd.nofaktur and pd.jenis = '$idjenis'");	
-$datas4 = mysql_fetch_array($s4);
-$subtotal = $datas4['subtotal'];
-$subtotalbiaya += $datas4['subtotal'];
+$subtotalhargajual=getsubtotalhargajual($tglmulai,$tglakhir,$idjenis);
+$subtotalhargabeli=getsubtotalhargabeli($tglmulai,$tglakhir,$idjenis);
+$subtotalbiaya=getsubtotalbiaya($tglmulai,$tglakhir,$idjenis);
+$subtotalbayar = $subtotalhargajual - $subtotalhargabeli;
 $admin .='<tr>
 		<td>'.$namajenis.'</td>
 		<td>'.rupiah_format($subtotalbayar).'</td>
 		<td>'.rupiah_format($subtotalbiaya).'</td>		
 		<td>'.rupiah_format($subtotalbayar-$subtotalbiaya).'</td>		
 		';
-$grandtotalbayar +=	$subtotalbayar;
+$grandsubtotalbayar +=	$subtotalbayar;
 $grandtotalbiaya +=	$subtotalbiaya;
 $grandlabarugi += $subtotalbayar-$subtotalbiaya;
 $subtotalbayar='0';
@@ -265,13 +258,52 @@ $admin .='</tr>';
 }
 $admin .='<tr>
 		<td><b>Total</b></td>
-		<td><b>'.rupiah_format($grandtotalbayar).'</b></td>
+		<td><b>'.rupiah_format($grandsubtotalbayar).'</b></td>
 		<td><b>'.rupiah_format($grandtotalbiaya).'</b></td>
 		<td><b>'.rupiah_format($grandlabarugi).'</b></td>
 		</tr>
 		';
+		/******************  JASA ********/
+$hasilj = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk where jenis='JASA'" );
+$admin .='
+<tr>
+		<td colspan="4" class="primary"><b>PENJUALAN</b></td>
+		</tr>
+<tr>
+		<td width="300px"><b>Jenis</b></td>
+		<td><b>Penjualan</b></td>
+		<td><b>Biaya</b></td>
+		<td><b>Laba/Rugi</b></td>
+		</tr>
+		';
+while ($dataj = $koneksi_db->sql_fetchrow($hasilj)) { 
+$idjenisj=$dataj['id'];
+$namajenisj=$dataj['nama'];
+$subtotalbayarj=getsubtotalhargajualjasa($tglmulai,$tglakhir,$idjenisj);
+$subtotalbiayaj=getsubtotalbiaya($tglmulai,$tglakhir,$idjenisj);
+$admin .='<tr>
+		<td>'.$namajenisj.'</td>
+		<td>'.rupiah_format($subtotalbayarj).'</td>
+		<td>'.rupiah_format($subtotalbiayaj).'</td>		
+		<td>'.rupiah_format($subtotalbayarj-$subtotalbiayaj).'</td>		
+		';
+$grandsubtotalbayarj +=	$subtotalbayarj;
+$grandtotalbiayaj +=	$subtotalbiayaj;
+$grandlabarugij += $subtotalbayarj-$subtotalbiayaj;
+$subtotalbayarj='0';
+$subtotalbiayaj='0';
+$admin .='</tr>';
+}
+$admin .='<tr>
+		<td><b>Total</b></td>
+		<td><b>'.rupiah_format($grandsubtotalbayarj).'</b></td>
+		<td><b>'.rupiah_format($grandtotalbiayaj).'</b></td>
+		<td><b>'.rupiah_format($grandlabarugij).'</b></td>
+		</tr>
+		';		
+		/************** BIAYA BULANAN ***************/
 $admin .='<tr >
-		<td colspan="4"class="info"><b>Biaya Bulanan</b></td>';
+		<td colspan="4"class="danger"><b>Biaya Bulanan</b></td>';
 $admin .= '';
 $hasil = $koneksi_db->sql_query( "SELECT * FROM pos_biayabulanan where  tgl  BETWEEN '$tglmulai' AND '$tglakhir' " );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
@@ -300,6 +332,8 @@ $admin .='<tr class="alert-info">
 				<td></td>
 	</tr>';
 $admin .= '</table>';
+
+
 $admin .='';
 //////////////// CETAK
 $admin .= '<form class="form-inline" method="get" target="_blank" action="cetakrugilaba.php" enctype ="multipart/form-data" id="posts">
@@ -313,101 +347,7 @@ $admin .= '<tr>
 </table></form>';
 $admin .= '</div>';
 }
-/*
-if(isset($_POST['submitlihat'])){
-$bulan 		= $_POST['bulan'];
-$tahun 		= $_POST['tahun'];
-$admin .='<div class="panel-heading"><b>Pendapatan Barang dan Jasa</b></div>';
-$admin .= '
-<table class="table table-striped table-hover">';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk" );
-while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
-$idjenis=$data['id'];
-$namajenis=$data['nama'];
-//$s2 = mysql_query ("SELECT sum(subtotal) as subtotal,jenis as kodejenis FROM `pos_penjualandetail` where jenis = '$idjenis'");	
-$s2 = mysql_query ("SELECT sum(pd.subtotal) as subtotal,pd.jenis as kodejenis FROM pos_penjualan p,pos_penjualandetail pd where month(p.tgl)='$bulan' and year(p.tgl)='$tahun' and p.nofaktur=pd.nofaktur and pd.jenis = '$idjenis'");
-$datas2 = mysql_fetch_array($s2);
-$subtotal = $datas2['subtotal'];
-$kodejenis = $datas2['kodejenis'];
-$subtotalbayar += $datas2['subtotal'];
-//$s3 = mysql_query ("SELECT sum(subtotal) as subtotal,jenis as kodejenis FROM `pos_penjualanjasadetail` where jenis = '$idjenis'");	
-$s3 = mysql_query ("SELECT sum(pd.subtotal) as subtotal,pd.jenis as kodejenis FROM pos_penjualanjasa p,pos_penjualanjasadetail pd where month(p.tgl)='$bulan' and year(p.tgl)='$tahun' and p.nofaktur=pd.nofaktur and pd.jenis = '$idjenis'");
-$datas3 = mysql_fetch_array($s3);
-$subtotal = $datas3['subtotal'];
-$kodejenis = $datas3['kodejenis'];
-$subtotalbayar += $datas3['subtotal'];
-$admin .='<tr>
-		<td width="200px">Pendapatan '.$namajenis.' :</td>
-		<td>'.rupiah_format($subtotalbayar).'</td>
-	</tr>';
-$grandsubtotalbayar +=$subtotalbayar;
-$subtotalbayar='0';
-}
-$admin .='<tr>
-		<td width="200px"><b>Total :</td>
-		<td>'.rupiah_format($grandsubtotalbayar).'</b></td>
-	</tr>';
-$admin .= '</table>';
-/////////////////////////////////
-$admin .='<div class="panel-heading"><b>Biaya - Biaya</b></div>';
-$admin .= '
-<table class="table table-striped table-hover">';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk" );
-while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
-$idjenis=$data['id'];
-$namajenis=$data['nama'];
-//$s4 = mysql_query ("SELECT sum(subtotal) as subtotal,jenis as kodejenis FROM `pos_penjualanbiayadetail` where jenis = '$idjenis'");
-$s4 = mysql_query ("SELECT sum(pd.subtotal) as subtotal,pd.jenis as kodejenis FROM pos_penjualanbiaya p,pos_penjualanbiayadetail pd where month(p.tgl)='$bulan' and year(p.tgl)='$tahun' and p.nofaktur=pd.nofaktur and pd.jenis = '$idjenis'");	
-$datas4 = mysql_fetch_array($s4);
-$subtotal = $datas4['subtotal'];
-$kodejenis = $datas4['kodejenis'];
-$subtotalbiaya += $datas4['subtotal'];
-$admin .='<tr>
-		<td width="200px">Biaya '.$namajenis.' :</td>
-		<td>'.rupiah_format($subtotalbiaya).'</td>
-	</tr>';
-$grandsubtotalbiaya +=$subtotalbiaya;
-	$subtotalbiaya='0';
-}
-$admin .='<tr>
-		<td width="200px"><b>Total :</td>
-		<td>'.rupiah_format($grandsubtotalbiaya).'</b></td>
-	</tr>';
-$admin .= '</table>';
-$admin .='<div class="panel-heading"><b>Biaya Bulanan</b></div>';
-$admin .= '
-<table class="table table-striped table-hover">';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_biayabulanan where bulan='$bulan' and tahun ='$tahun'" );
-while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
-$namabb=$data['nama'];
-$subtotalbb=$data['subtotal'];
-$grandtotalbb+=$data['subtotal'];
-$admin .='<tr>
-		<td width="400px">'.$namabb.'</td>
-		<td>'.rupiah_format($subtotalbb).'</td>
-	</tr>';
-}
-$admin .='<tr>
-		<td width="200px"><b>Total :</td>
-		<td>'.rupiah_format($grandtotalbb).'</b></td>
-	</tr>';
-$admin .= '</table>';
-$labarugi = $grandsubtotalbayar - $grandsubtotalbiaya - $grandtotalbb;
-$admin .='<div class="panel-heading"><b>Laba / Rugi :  '.rupiah_format($labarugi).'</b></div>';
-$admin .='';
-//////////////// CETAK
-$admin .= '<form class="form-inline" method="get" target="_blank" action="cetakrugilaba.php" enctype ="multipart/form-data" id="posts">
-<table class="table table-striped table-hover">';
-$admin .= '<tr>
-	<td></td>
-	<td><input type="hidden" name="bulan" value="'.$bulan.'">
-	<input type="hidden" name="tahun" value="'.$tahun.'">
-	<input type="submit" value="cetak" name="Cetak" class="btn btn-success"></td>
-	</tr>
-</table></form>';
-$admin .= '</div>';
-}
-*/
+
 if($_GET['aksi']=="tambah"){
 if(isset($_POST['submitbiaya'])){
 //	$bulan 		= $_POST['bulan'];
