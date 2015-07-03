@@ -252,8 +252,8 @@ $admin .='<tr>
 $grandsubtotalbayar +=	$subtotalbayar;
 $grandtotalbiaya +=	$subtotalbiaya;
 $grandlabarugi += $subtotalbayar-$subtotalbiaya;
-$subtotalbayar='0';
-$subtotalbiaya='0';
+//$subtotalbayar='0';
+//$subtotalbiaya='0';
 $admin .='</tr>';
 }
 $admin .='<tr>
