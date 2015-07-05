@@ -58,7 +58,7 @@ var contentFR ='';
         });
     // --------------------------
     //form content
-        contentFR+= '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="pembayaranSV(this); return false;" id="'+mnu+'FR">'
+        contentFR+= '<form  style="overflow:scroll;height:550px;" autocomplete="off" onsubmit="pembayaranSV(this); return false;" id="'+mnu+'FR">'
                        
                         +'<input id="ju_idformH" type="hidden">' 
                         
@@ -308,8 +308,10 @@ var contentFR ='';
             cmbproses('filter',$('#departemenS').val());
         }else if(par=='spp'){ // spp
             cmbtahunajaran('filter',$('#departemenS').val());
-        }else{ // dpp (uang pangkal)
+        }else if(par=='dpp'){ // dpp (uang pangkal)
             cmbangkatan('filter',$('#departemenS').val());
+        }else{
+            cmbtahunajaran('filter',$('#departemenS').val());
         }
     }
 
