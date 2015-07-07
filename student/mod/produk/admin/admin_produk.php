@@ -15,6 +15,7 @@ $JS_SCRIPT= <<<js
 $(document).ready(function() {
     $('#example').dataTable();
 } );
+
 </script>
 js;
 $style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />';
@@ -195,8 +196,9 @@ $hargajual 		= $_POST['hargajual'];
 	}
 
 }
+$autokodebarang='01';
 $jenjang     		= !isset($jenjang) ? '' : $jenjang;
-$kode     		= !isset($kode) ? '' : $kode;
+$kode     		= !isset($kode) ? $autokodebarang : $kode;
 $nama     		= !isset($nama) ? '' : $nama;
 $jenis     		= !isset($jenis) ? '' : $jenis;
 $jumlah     		= !isset($jumlah) ? '0' : $jumlah;
@@ -234,7 +236,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode Barang</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" required></td>
+		<td><input type="text" name="kode"value="'.$kode.'" size="25"class="form-control" required></td>
 	</tr>
 	<tr>
 		<td>Nama Barang</td>
