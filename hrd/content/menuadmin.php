@@ -13,7 +13,7 @@ if (isset( $_SESSION['LevelAkses'] ) &&  $_SESSION['LevelAkses']=="Administrator
 
 global $koneksi_db;
 
-$hasil = $koneksi_db->sql_query( "SELECT * FROM admin where parent =0 ORDER BY ordering ASC" );
+$hasil = $koneksi_db->sql_query( "SELECT * FROM admin_hrd where parent =0 ORDER BY ordering ASC" );
 $menuadmin = "<ul>";
 while ($data = $koneksi_db->sql_fetchrow($hasil)) {
 
@@ -28,7 +28,7 @@ while ($data = $koneksi_db->sql_fetchrow($hasil)) {
 		}
 $parentid=$data[0];
 $menuadmin.= '<div class="bg2"><img src="themes/administrator/images/'.$data[6].'" align="top" style="margin-right:8px;">'.$data[1].'</div>';
-$hasil2 = $koneksi_db->sql_query( "SELECT * FROM admin where parent =$parentid ORDER BY menu ASC" );
+$hasil2 = $koneksi_db->sql_query( "SELECT * FROM admin_hrd where parent =$parentid ORDER BY menu ASC" );
 $menuadmin .= "<ul>";
 while ($data2 = $koneksi_db->sql_fetchrow($hasil2)) {
 $mod = $data2['mod'] == 1 ? '&amp;mod=yes' : '';
