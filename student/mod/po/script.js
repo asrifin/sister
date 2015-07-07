@@ -1,10 +1,10 @@
 // autocomplet : this function will be executed every time we change the text
 function autocomplet() {
 	var min_length = 0; // min caracters to display the autocomplete
-	var keyword = $('#country_id').val();
+	var keyword = $('#country_id2').val();
 	if (keyword.length >= min_length) {
 		$.ajax({
-			url: 'mod/pembelian/supplier_refresh.php',
+			url: 'mod/po/supplier_refresh.php',
 			type: 'POST',
 			data: {keyword:keyword},
 			success:function(data){
@@ -18,20 +18,20 @@ function autocomplet() {
 }
 
 // set_item : this function will be executed when we select an item
-function set_item(item) {
+function set_item(item,item2) {
 	// change input value
 	$('#country_id').val(item);
+	$('#country_id2').val(item2);
 	// hide proposition list
 	$('#country_list_id').hide();
 }
-
 // Barang
 function autocomplet2() {
 	var min_length = 0; // min caracters to display the autocomplete
-	var keyword = $('#barang_id').val();
+	var keyword = $('#barang_id2').val();
 	if (keyword.length >= min_length) {
 		$.ajax({
-			url: 'mod/pembelian/barang_refresh.php',
+			url: 'mod/po/barang_refresh.php',
 			type: 'POST',
 			data: {keyword:keyword},
 			success:function(data){
@@ -43,9 +43,10 @@ function autocomplet2() {
 		$('#barang_list_id').hide();
 	}
 }
-function set_item2(item) {
+function set_item2(item,item2) {
 	// change input value
 	$('#barang_id').val(item);
+	$('#barang_id2').val(item2);
 	// hide proposition list
 	$('#barang_list_id').hide();
 }
