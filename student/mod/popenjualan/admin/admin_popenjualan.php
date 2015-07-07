@@ -268,7 +268,7 @@ $nopo = generatepojual();
 $tgl 		= !isset($tgl) ? $tglnow : $tgl;
 $kodecustomer 		= !isset($kodecustomer) ? $_SESSION['kodecustomer'] : $kodecustomer;
 $namacustomer		= !isset($namacustomer) ? getnamacustomer($_SESSION['kodecustomer']) : $namacustomer;
-$namabarang 		= !isset($namabarang) ? $_POST['namabarang'] : $namabarang;
+//$namabarang 		= !isset($namabarang) ? $_POST['namabarang'] : $namabarang;
 $discount 		= !isset($discount) ? '0' : $discount;
 $carabayar 		= !isset($carabayar) ? $_POST['carabayar'] : $carabayar;
 $termin 		= !isset($termin) ? $_POST['termin'] : $termin;
@@ -336,7 +336,7 @@ $admin .= '
 		<td>:</td>
 		<td>
                 <div class="input_container">
-                    <input type="text" id="barang_id2"  name="namabarang" onkeyup="autocomplet2()"class="form-control" >
+                    <input type="text" id="barang_id2"  name="namabarang"value="'.$namabarang.'" onkeyup="autocomplet2()"class="form-control" >
 					<input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" >&nbsp;
                     <ul id="barang_list_id"></ul>
                 </div>
