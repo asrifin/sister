@@ -85,6 +85,40 @@ logout ();
 
 
 }
+if (isset( $_SESSION['LevelAkses'] )&&  $_SESSION['LevelAkses']=="Payroll"){
+
+include "includes/security.php";
+
+if ($old_modules == 1) {
+      //  if (!ini_get("register_globals")) @import_request_variables('GPC');
+}  
+
+ob_start();
+if(!isset($_GET['pilih'])){
+	include 'content/dashboard.php';
+	} else if (@$_GET['mod'] == 'yes'
+			&& file_exists('mod/'.$_GET['pilih'].'/payroll/payroll_'.$_GET['pilih'].'.php') 
+			&& !preg_match("/[\.\/]/",$_GET['pilih'])) {
+				include 'mod/'.$_GET['pilih'].'/payroll/payroll_'.$_GET['pilih'].'.php';	
+			} else if (!isset($_GET['mod']) 
+			&& file_exists('admin/'.$_GET['pilih'].'.php') 
+			&& !preg_match("/[\.\/]/",$_GET['pilih'])) {
+				include 'admin/'.$_GET['pilih'].'.php';	
+				}
+	else {
+	include 'content/dashboard.php';	
+	}
+
+$content = ob_get_contents();
+ob_end_clean();
+
+if ($_GET['aksi'] == 'logout') {
+logout ();
+}
+
+
+}
+
 
 else if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="User"){
 	
