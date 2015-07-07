@@ -63,10 +63,11 @@ $kodesupplier = $datas['kodesupplier'];
 $total = $datas['total'];
 $user = $datas['user'];
 $urutan = $no + 1;
+$lihatslip = '<a href="cetak_notareturbeli.php?kode='.$datas['noretur'].'&lihat=ok"target="new">'.$datas['noretur'].'</a>';
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$noretur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.$noinvoice.'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
@@ -142,10 +143,10 @@ echo '</table>';
 }
 /****************************/
 echo "</body</html>";
-
-if (isset($_GET['tglmulai'])){
+/*
+if (!isset($_GET['lihat'])){
 echo "<script language=javascript>
 window.print();
 </script>";
-}
+}*/
 ?>
