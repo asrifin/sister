@@ -85,42 +85,9 @@ logout ();
 
 
 }
-if (isset( $_SESSION['LevelAkses'] )&&  $_SESSION['LevelAkses']=="Payroll"){
-
-include "includes/security.php";
-
-if ($old_modules == 1) {
-      //  if (!ini_get("register_globals")) @import_request_variables('GPC');
-}  
-
-ob_start();
-if(!isset($_GET['pilih'])){
-	include 'content/dashboard.php';
-	} else if (@$_GET['mod'] == 'yes'
-			&& file_exists('mod/'.$_GET['pilih'].'/payroll/payroll_'.$_GET['pilih'].'.php') 
-			&& !preg_match("/[\.\/]/",$_GET['pilih'])) {
-				include 'mod/'.$_GET['pilih'].'/payroll/payroll_'.$_GET['pilih'].'.php';	
-			} else if (!isset($_GET['mod']) 
-			&& file_exists('admin/'.$_GET['pilih'].'.php') 
-			&& !preg_match("/[\.\/]/",$_GET['pilih'])) {
-				include 'admin/'.$_GET['pilih'].'.php';	
-				}
-	else {
-	include 'content/dashboard.php';	
-	}
-
-$content = ob_get_contents();
-ob_end_clean();
-
-if ($_GET['aksi'] == 'logout') {
-logout ();
-}
 
 
-}
-
-
-else if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="User"){
+else if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="hrd"){
 	
 include "includes/security.php";	
 
@@ -128,9 +95,9 @@ ob_start();
 if(!isset($_GET['pilih'])){
 	include 'content/dashboard.php';
 		}else if (@$_GET['mod'] == 'yes' 
-				  && file_exists('mod/'.$_GET['pilih'].'/user/user_'.$_GET['pilih'].'.php') 
+				  && file_exists('mod/'.$_GET['pilih'].'/hrd/hrd_'.$_GET['pilih'].'.php') 
 				  && !preg_match("/[\.\/]/",$_GET['pilih'])){
-						include 'mod/'.$_GET['pilih'].'/user/user_'.$_GET['pilih'].'.php';	
+						include 'mod/'.$_GET['pilih'].'/hrd/hrd_'.$_GET['pilih'].'.php';	
 					}else {
 	include 'content/dashboard.php';	
 					}
@@ -138,7 +105,7 @@ $content = ob_get_contents();
 ob_end_clean();
 
 }
-else if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="Editor"){
+else if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="Payroll"){
 	
 include "includes/security.php";	
 
@@ -146,9 +113,9 @@ ob_start();
 if(!isset($_GET['pilih'])){
 	include 'content/dashboard.php';
 		}else if (@$_GET['mod'] == 'yes' 
-				  && file_exists('mod/'.$_GET['pilih'].'/editor/editor_'.$_GET['pilih'].'.php') 
+				  && file_exists('mod/'.$_GET['pilih'].'/payroll/payroll_'.$_GET['pilih'].'.php') 
 				  && !preg_match("/[\.\/]/",$_GET['pilih'])){
-						include 'mod/'.$_GET['pilih'].'/editor/editor_'.$_GET['pilih'].'.php';	
+						include 'mod/'.$_GET['pilih'].'/payroll/payroll_'.$_GET['pilih'].'.php';	
 					}else {
 				//		include 'content/'.$theme.'/normal.php';
 	include 'content/dashboard.php';				
