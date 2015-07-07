@@ -93,6 +93,10 @@ penjualancetak($nofaktur);
 $style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=pembayaran&amp;mod=yes" />';	
 }
 }
+$admin .= '
+<div align="right">
+<a href="admin.php?pilih=pembayaran&mod=yes&status=semua" class="btn btn-success"> SEMUA </a>&nbsp;<a href="admin.php?pilih=pembayaran&mod=yes&status=lunas" class="btn btn-primary"> LUNAS </a>&nbsp;<a href="admin.php?pilih=pembayaran&mod=yes&status=pembayaran" class="btn btn-danger"> BELUM LUNAS </a>
+</div>';	
 $admin.='
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
@@ -109,7 +113,17 @@ $admin.='
         </tr>
     </thead>';
 	$admin.='<tbody>';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_penjualan" );
+		$status 		= $_GET['status'];
+if($status=='lunas')
+{
+         $wherestatus="where piutang='0'";
+}elseif($status=='semua')
+{
+         $wherestatus="";
+}elseif($status=='pembayaran'or !isset($_GET['status'])){
+$wherestatus="where bayar='0'";
+}
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_penjualan $wherestatus" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $nofaktur=$data['nofaktur'];
 $tgl=$data['tgl'];

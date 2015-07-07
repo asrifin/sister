@@ -118,6 +118,10 @@ if($_GET['aksi']==""){
 $admin .='<div class="panel panel-info">';
 $admin .= '
 <div class="panel-heading"><b>Daftar Hutang</b></div>';	
+$admin .= '
+<div align="right">
+<a href="admin.php?pilih=hutang&mod=yes&status=semua" class="btn btn-success"> SEMUA </a>&nbsp;<a href="admin.php?pilih=hutang&mod=yes&status=lunas" class="btn btn-primary"> LUNAS </a>&nbsp;<a href="admin.php?pilih=hutang&mod=yes&status=hutang" class="btn btn-danger"> BELUM LUNAS </a>
+</div>';
 $admin.='
 <table class="table table-striped table-bordered" cellspacing="0" width="100%"id="example">
     <thead>
@@ -132,7 +136,17 @@ $admin.='
         </tr>
     </thead>';
 	$admin.='<tbody>';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM `pos_pembelian`order by tgl desc" );
+	$status 		= $_GET['status'];
+if($status=='lunas')
+{
+         $wherestatus="where hutang='0'";
+}elseif($status=='semua')
+{
+         $wherestatus="";
+}elseif($status=='hutang'or !isset($_GET['status'])){
+$wherestatus="where bayar='0'";
+}
+$hasil = $koneksi_db->sql_query( "SELECT * FROM `pos_pembelian` $wherestatus order by tgl desc" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $noinvoice = $data['noinvoice'];
 $hutang = $data['hutang'];
