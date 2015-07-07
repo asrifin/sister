@@ -336,7 +336,7 @@ $admin .= '
 		<td>:</td>
 		<td>
                 <div class="input_container">
-                    <input type="text" id="barang_id2"  name="namabarang" value="'.$namabarang.'" onkeyup="autocomplet2()"class="form-control" >
+                    <input type="text" id="barang_id2"  name="namabarang" onkeyup="autocomplet2()"class="form-control" >
 					<input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" >&nbsp;
                     <ul id="barang_list_id"></ul>
                 </div>
