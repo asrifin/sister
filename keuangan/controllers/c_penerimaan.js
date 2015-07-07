@@ -1,22 +1,24 @@
-var mnu  ='penerimaan'; 
-var mnu2 ='departemen'; 
-var mnu3 ='angkatan'; 
-var mnu4 ='proses'; 
-var mnu5 ='kelompok'; 
-var mnu6 ='tahunajaran'; 
-var mnu7 ='tingkat'; 
-var mnu8 ='subtingkat'; 
-var mnu9 ='kelas'; 
+var mnu   ='penerimaan'; 
+var mnu2  ='departemen'; 
+var mnu3  ='angkatan'; 
+var mnu4  ='proses'; 
+var mnu5  ='kelompok'; 
+var mnu6  ='tahunajaran'; 
+var mnu7  ='tingkat'; 
+var mnu8  ='subtingkat'; 
+var mnu9  ='kelas'; 
+var mnu10 ='semester'; 
 
-var dir  ='models/m_'+mnu+'.php';
-var dir2 ='../akademik/models/m_'+mnu2+'.php';
-var dir3 ='../akademik/models/m_'+mnu3+'.php';
-var dir4 ='../psb/models/m_'+mnu4+'.php';
-var dir5 ='../psb/models/m_'+mnu5+'.php';
-var dir6 ='../akademik/models/m_'+mnu6+'.php';
-var dir7 ='../akademik/models/m_'+mnu7+'.php';
-var dir8 ='../akademik/models/m_'+mnu8+'.php';
-var dir9 ='../akademik/models/m_'+mnu9+'.php';
+var dir   ='models/m_'+mnu+'.php';
+var dir2  ='../akademik/models/m_'+mnu2+'.php';
+var dir3  ='../akademik/models/m_'+mnu3+'.php';
+var dir4  ='../psb/models/m_'+mnu4+'.php';
+var dir5  ='../psb/models/m_'+mnu5+'.php';
+var dir6  ='../akademik/models/m_'+mnu6+'.php';
+var dir7  ='../akademik/models/m_'+mnu7+'.php';
+var dir8  ='../akademik/models/m_'+mnu8+'.php';
+var dir9  ='../akademik/models/m_'+mnu9+'.php';
+var dir10 ='../akademik/models/m_'+mnu10+'.php';
 
 var contentFR ='';
 // main function load first 
@@ -307,11 +309,12 @@ var contentFR ='';
         if(par=='' || par=='pendaftaran'){ // default : pendaftaran => formulir
             cmbproses('filter',$('#departemenS').val());
         }else if(par=='spp'){ // spp
-            cmbtahunajaran('filter',$('#departemenS').val());
+            cmbtahunajaran('filter','spp',$('#departemenS').val());
         }else if(par=='dpp'){ // dpp (uang pangkal)
             cmbangkatan('filter',$('#departemenS').val());
-        }else{
-            cmbtahunajaran('filter',$('#departemenS').val());
+        }else{ // semua
+            cmbtahunajaran('filter','semua',$('#departemenS').val());
+            console.log('masuk semua');
         }
     }
 
@@ -789,30 +792,48 @@ var contentFR ='';
 //end of combo kelas---
 
 // combo tahun ajaran  ---
-    function cmbtahunajaran(typ,dep){
-        $.ajax({
-            url:dir6,
-            data:'aksi=cmb'+mnu6+'&departemen='+dep,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.tahunajaran, function(id,item){
-                        if(item.aktif=='1')
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.tahunajaran+' (aktif)</option>';
-                        else
-                            out+='<option value="'+item.replid+'"> '+item.tahunajaran+'</option>';
-                    });
-                    if(typ=='filter'){
+    // function cmbtahunajaran(typ,dep){
+    function cmbtahunajaran(typ,sub,dep){
+        var u =dir6;
+        var d ='aksi=cmb'+mnu6+'&departemen='+dep;
+        ajax(u,d).done(function(dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.tahunajaran, function(id,item){
+                    if(item.aktif=='1') out+='<option selected="selected" value="'+item.replid+'">'+item.tahunajaran+' (aktif)</option>';
+                    else out+='<option value="'+item.replid+'"> '+item.tahunajaran+'</option>';
+                });
+                if(typ=='filter'){ // filtering 
+                    if(sub=='semua') {// semua
+                        $('#semua_tahunajaranS').html(out);
+                        cmbsemester(dt.tahunajaran[0].replid);
+                        console.log('semester masuk semua ');
+                    }else{// pendaftaran & spp
                         $('#spp_tahunajaranS').html(out);
                         cmbtingkat('filter',dt.tahunajaran[0].replid);
-                    }else{
-                        $('#tahunajaranTB').html(out);
-                    }
+                    } 
+                }else{ // form
+                    $('#tahunajaranTB').html(out);
                 }
+            }
+        });
+    }
+
+    function cmbsemester(thn){
+        var u = dir10;
+        var d = 'aksi=cmb'+mnu10+'&tahunajaran='+thn;
+        ajax(u,d).done(function (dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.nama, function(id,item){
+                    out+='<option  value="'+item.replid+'"> '+item.nama+'</option>';
+                });
+                $('#semua_semesterS').html(out);
+                viewTB('semua');
             }
         });
     }

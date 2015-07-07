@@ -69,8 +69,12 @@
     <div class="grid" style="color:white;">
         <input type="hidden" id="d_kategorianggaranH" id="d_kategorianggaranH" class="detilanggaran_cari" >
         <div class="row">
-            <span class="span3">Kategori Anggaran : </span>
-            <span id="d_kategorianggaranDV"></span>
+            <!-- <span class="span3"> -->
+                <span class="span3">Kategori Anggaran : </span> 
+                <span id="d_kategorianggaranDV"></span>
+                <!-- <span class="span3">Total Anggaran:</span> -->
+                <!-- <span xclass="fg-lightTeal" style="color:yellow;font-weight:boldx;" id="d_katanggkuotanumDV"></span> -->
+            <!-- </span> -->
         </div>
         <div class="row">
             <span class="span3">Keterangan:</span>
@@ -86,7 +90,7 @@
         </div>
         <div class="row">
             <span class="span3">Total Anggaran:</span>
-            <span xclass="fg-lightTeal" style="color:yellow;font-weight:bold;" id="d_katanggkuotanumDV"></span>
+            <h1 xclass="fg-lightTeal" style="color:yellow;font-weight:boldx;" id="d_katanggkuotanumDV"></h1>
         </div>
     </div>
 
@@ -111,11 +115,8 @@
                 <th class="text-center"></th>
             </tr>
         </thead>
-
-        <tbody id="detilanggaran_tbody">
-        </tbody>
-        <tfoot>
-        </tfoot>
+        <tbody id="detilanggaran_tbody"></tbody>
+        <tfoot></tfoot>
     </table>
 </div>
 <!-- end of panel 2 -->

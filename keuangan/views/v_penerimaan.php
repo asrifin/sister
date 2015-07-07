@@ -262,16 +262,19 @@
                 <table class="table hovered bordered striped">
                     <thead>
                         <tr style="color:white;"class="info">
-                            <th class="text-center">NIS </th>
+                            <th class="text-center">No Pendaftaran </th>
                             <th class="text-center">Nama</th>
-                            <th class="text-center">Nominal</th>
-                            <th class="text-center">Aksi</th>
+                            <th class="text-center">Formulir</th>
+                            <th class="text-center">DPP</th>
+                            <th class="text-center">SPP</th>
+                            <th class="text-center">Joining Fee</th>
                         </tr>
                         <tr style="display:none;" id="semuaTR" class="info">
-                            <th class="text-center"><div class="input-control text"><input placeholder="nis" id="semua_nisS" class="semua_cari"></div></th>
+                            <th class="text-center"><div class="input-control text"><input placeholder="no pendaftaran" id="semua_nopendaftaranS" class="semua_cari"></div></th>
                             <th class="text-center"><div class="input-control text"><input placeholder="nama" id="semua_namaS" class="semua_cari"></div></th>
                             <th class="text-center"></th>
-                            <th class="text-center">
+                            <th class="text-center"></th>
+                            <!-- <th class="text-center">
                                 <div class="input-control select">
                                     <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
                                         <option value="">-Semua-</option>
@@ -279,7 +282,7 @@
                                         <option class="bg-red fg-white" value="belum">Belum</option>
                                     </select>
                                 </div>
-                            </th>
+                            </th> -->
                         </tr>
                     </thead>
 
