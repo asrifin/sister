@@ -69,7 +69,7 @@ js;
 $script_include[] = $JS_SCRIPT;
 $tengah .='<legend>Dashboard</legend>';
 
-if ($_SESSION['LevelAkses']){
+if ($_SESSION['LevelAkses']<>'Karyawan'){
 $username = $_SESSION['UserName'];
 $query =  $koneksi_db->sql_query( "SELECT * FROM useraura where user = '$username'" );
 $data = $koneksi_db->sql_fetchrow( $query );
@@ -78,7 +78,7 @@ $last_ping = datetimes($data['last_ping'],true);
 #####################################
 # Administrator
 #####################################
-if ($_SESSION['LevelAkses']=="Administrator"){
+if ($_SESSION['LevelAkses']){
 
 $tengah .='<div class="border"><font style="color:#21759B;"><b>Last Login :</b> '.$last_ping.'</font></div>';
 
@@ -105,9 +105,9 @@ $tengah .='</div>';
 $tengah .='</div>';
 /////////////////////////////////////////////////////////////////////////////////////////////
 $tengah .='<div class="col-xs-6">';
-$hasil =  $koneksi_db->sql_query( "SELECT * FROM hrd_karyawan " );
+$hasil =  $koneksi_db->sql_query( "SELECT * FROM hrd_karyawan order by tglkontrak asc" );
 $tengah .='<div class="panel panel-info">
-<div class="panel-heading"><h3 class="panel-title">Reminder Status</h3></div>
+<div class="panel-heading"><h3 class="panel-title">Reminder Status Kontrak</h3></div>
 <table class="table">';
 while ($data = $koneksi_db->sql_fetchrow($hasil)) {
 $id 	= $data['id'];
@@ -181,8 +181,37 @@ $tengah .='</div>';
 
 
 ///////////////////////////////////////////////////////////////////////////
+if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="HRD" ||  $_SESSION['LevelAkses']=="Administrator"){
+/////////////////////////////////////////////////////////////////////////////////////////////
+$tengah .='<div class="col-xs-6">';
+$hasil =  $koneksi_db->sql_query( "SELECT * FROM hrd_karyawan order by tglnaikgolongan asc" );
+$tengah .='<div class="panel panel-info">
+<div class="panel-heading"><h3 class="panel-title">Reminder Kenaikan Golongan</h3></div>
+<table class="table">';
+while ($data = $koneksi_db->sql_fetchrow($hasil)) {
+$id 	= $data['id'];
+$nip 	= $data['nip'];
+$nama 	= $data['nama'];
+$golongan 	= getgolongan($data['golongan']);
+$date1 	= $data['tglnaikgolongan'];
+$date3 = date("Y-m-d");
+$telatnaikgolongan =  daysBetween($date3, $date1);
+$tglnaikgolongan= datetimes($date1,False,False);
+if(($telatnaikgolongan<=90)and($telatnaikgolongan>=0)){
+$tengah .="<tr><td>$nama - $telatnaikgolongan Hari ($tglnaikgolongan) - $golongan</td></tr>";
+}
+
+}
+$tengah .='</table>';
+$tengah .='</div>';
+
+$tengah .='</div>';
+///////////////////////////////////////////////////////////////////////////
+}
 $tengah .='</div>';
 }
+}else{
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=penggajian&mod=yes" />';	
 }
 echo $tengah;
 ?>

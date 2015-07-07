@@ -577,7 +577,7 @@ $tengah .= '
 		<td style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 0">:</td>
 		<td style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 0"><select name="parent">';
 			$tengah .='<option value="0" selected> None </option>';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM admin where parent='0' ORDER BY ordering" );
+$hasil = $koneksi_db->sql_query( "SELECT * FROM admin_hrd where parent='0' ORDER BY ordering" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) {
 	$pilihan = ($data[0]==$parent)?"selected":'';
 	$tengah .='<option value="'.$data['0'].'" '.$pilihan.'>'.$data[1].'</option>';
@@ -1031,22 +1031,22 @@ $admin .= '<tr><td colspan="5" style="text-align:center; padding:4px 10px 4px 10
 if($_GET['aksi']=="menuadmin"){
 if($_GET['op']== 'mup'){
 $ID = int_filter ($_GET['id']);
-$select = $koneksi_db->sql_query ("SELECT MAX(ordering) as sc FROM admin where parent ='0'");
+$select = $koneksi_db->sql_query ("SELECT MAX(ordering) as sc FROM admin_hrd where parent ='0'");
 $data = $koneksi_db->sql_fetchrow ($select);
 $total = $data['sc'] + 1;
-$update = $koneksi_db->sql_query ("UPDATE admin SET ordering='$total' WHERE ordering='".($ID-1)."'"); 
-$update = $koneksi_db->sql_query ("UPDATE admin SET ordering=ordering-1 WHERE ordering='$ID'");
-$update = $koneksi_db->sql_query ("UPDATE admin SET ordering='$ID' WHERE ordering='$total'");   
+$update = $koneksi_db->sql_query ("UPDATE admin_hrd SET ordering='$total' WHERE ordering='".($ID-1)."'"); 
+$update = $koneksi_db->sql_query ("UPDATE admin_hrd SET ordering=ordering-1 WHERE ordering='$ID'");
+$update = $koneksi_db->sql_query ("UPDATE admin_hrd SET ordering='$ID' WHERE ordering='$total'");   
 header ("location:admin.php?pilih=menu&mod=yes&aksi=menuadmin");
 }
 if($_GET['op']== 'mdown'){
 $ID = int_filter ($_GET['id']);
-$select = $koneksi_db->sql_query ("SELECT MAX(ordering) as sc FROM admin where parent ='0'");
+$select = $koneksi_db->sql_query ("SELECT MAX(ordering) as sc FROM admin_hrd where parent ='0'");
 $data = $koneksi_db->sql_fetchrow ($select);
 $total = $data['sc'] + 1;
-$update = $koneksi_db->sql_query ("UPDATE admin SET ordering='$total' WHERE ordering='".($ID+1)."'"); 
-$update = $koneksi_db->sql_query ("UPDATE admin SET ordering=ordering+1 WHERE ordering='$ID'");
-$update = $koneksi_db->sql_query ("UPDATE admin SET ordering='$ID' WHERE ordering='$total'");    
+$update = $koneksi_db->sql_query ("UPDATE admin_hrd SET ordering='$total' WHERE ordering='".($ID+1)."'"); 
+$update = $koneksi_db->sql_query ("UPDATE admin_hrd SET ordering=ordering+1 WHERE ordering='$ID'");
+$update = $koneksi_db->sql_query ("UPDATE admin_hrd SET ordering='$ID' WHERE ordering='$total'");    
 header ("location:admin.php?pilih=menu&mod=yes&aksi=menuadmin");
 }
 if(isset($_POST['submit'])){
@@ -1055,9 +1055,9 @@ if(isset($_POST['submit'])){
 	$mod		= $_POST['mod'];
 	$parent		= $_POST['parent'];
 	if($parent=='0'){
-	$ceks 		= mysql_query ("SELECT MAX(ordering) as ordering FROM admin where parent='0'");
+	$ceks 		= mysql_query ("SELECT MAX(ordering) as ordering FROM admin_hrd where parent='0'");
 	}else{
-	$ceks 		= mysql_query ("SELECT MAX(ordering) as ordering FROM admin where parent = $parent");
+	$ceks 		= mysql_query ("SELECT MAX(ordering) as ordering FROM admin_hrd where parent = $parent");
 	}
     $hasil 		= mysql_fetch_array ($ceks);
     $ordering 	= $hasil['ordering'] + 1;
@@ -1067,7 +1067,7 @@ if(isset($_POST['submit'])){
 	if ($error){
 		$admin .= '<div class="error">'.$error.'</div>';
 	}else{
-		$hasil  = mysql_query( "INSERT INTO `admin` (`menu` ,`url` ,`mod` ,`ordering`,`parent`) VALUES ('$menu','$url','$mod','$ordering','$parent')" );
+		$hasil  = mysql_query( "INSERT INTO `admin_hrd` (`menu` ,`url` ,`mod` ,`ordering`,`parent`) VALUES ('$menu','$url','$mod','$ordering','$parent')" );
 		if($hasil){
 			$admin .= '<div class="sukses"><b>Menu Berhasil di Buat.</b></div>';
 		}else{
@@ -1125,9 +1125,9 @@ $admin .= '
 </table>
 </form>
 </div>';	
-$hasil = $koneksi_db->sql_query( "SELECT * FROM admin WHERE parent='0' ORDER BY ordering" );
+$hasil = $koneksi_db->sql_query( "SELECT * FROM admin_hrd WHERE parent='0' ORDER BY ordering" );
 
-$querymax = mysql_query ("SELECT MAX(`ordering`) FROM `admin` WHERE parent='0'");
+$querymax = mysql_query ("SELECT MAX(`ordering`) FROM `admin_hrd` WHERE parent='0'");
 $alhasil = mysql_fetch_row($querymax);	
 $numbers_parent = $alhasil[0];
 
@@ -1162,7 +1162,7 @@ $admin .='<tr bgcolor="#E8F8FF">
 <td style="text-align:center; padding:4px 10px 4px 10px; border-bottom:1px solid #DFDFDF;"><a href="?pilih=menu&amp;mod=yes&amp;aksi=editma&amp;id='.$data['id'].'"><img border="0" src="images/edit.gif" alt="edit" /></a></td>
 </tr>';
 
-$subhasil = $koneksi_db->sql_query( "SELECT * FROM admin WHERE parent='$parentid' ORDER BY menu ");		
+$subhasil = $koneksi_db->sql_query( "SELECT * FROM admin_hrd WHERE parent='$parentid' ORDER BY menu ");		
 $jmlsub = $koneksi_db->sql_numrows( $subhasil );	
 $querymax = mysql_query ("SELECT MAX(`ordering`) FROM `admin` WHERE parent=$parentid");
 $alhasil = mysql_fetch_row($querymax);	
