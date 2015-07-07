@@ -130,9 +130,6 @@ echo '<div class="border2">
 <a href="admin.php"><img src="images/home.jpg" width="50px"><br>BERANDA</a>&nbsp;&nbsp;
 </td>
 <td>
-<a href="admin.php?pilih=stok&mod=yes"><img src="images/uang.jpg" width="50px"><br>STOK</a>&nbsp;
-</td>
-<td>
 <a href="admin.php?pilih=mnhutangpiutang&mod=yes"><img src="images/uang.jpg" width="50px"><br>HUTANG/PIUTANG</a>&nbsp;
 </td>
 <td>
