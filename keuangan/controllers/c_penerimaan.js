@@ -58,6 +58,13 @@ var contentFR ='';
         });$('#spp_statusS').on('change',function(){
             viewTB('spp');
         });
+
+        // event filtering : semua 
+        $('#semua_tahunajaranS').on('change',function (dt){
+            cmbsemester($(this).val());
+        });$('#semua_semesterS').on('change',function (dt){
+            viewTB('belum');
+        });
     // --------------------------
     //form content
         contentFR+= '<form  style="overflow:scroll;height:550px;" autocomplete="off" onsubmit="pembayaranSV(this); return false;" id="'+mnu+'FR">'
@@ -283,6 +290,11 @@ var contentFR ='';
             $('#sppTR').toggle('slow');
             $('#spp_nisS').val('');
             $('#spp_nilaiS').val('');
+        });
+        $('#semua_cariBC').on('click',function(){
+            $('#semuaTR').toggle('slow');
+            $('#semua_nopendaftaranTR').val('');
+            $('#semua_namaS').val('');
         });
 
         //textbox search ---
