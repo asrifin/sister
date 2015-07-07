@@ -26,8 +26,8 @@ function modul($posisi){
     		$numb = 0;
     	if (isset($_GET['pilih'])) {
 	    	$pilih = mysql_real_escape_string(strip_tags($_GET['pilih']));
-	    	$numb = mysql_num_rows(mysql_query("SELECT `id` FROM `actions` WHERE `modul` = '$pilih'"));
-	    	$modulku = mysql_query("SELECT * FROM `actions` LEFT JOIN `modul` ON (`modul`.`id` = `actions`.`modul_id`) WHERE `actions`.`modul` = '$pilih' AND `actions`.`posisi` = '$posisi' ORDER BY `actions`.`order`");
+	    	$numb = mysql_num_rows(mysql_query("SELECT `id` FROM `actions` WHERE `modul_hrd` = '$pilih'"));
+	    	$modulku = mysql_query("SELECT * FROM `actions` LEFT JOIN `modul_hrd` ON (`modul_hrd`.`id` = `actions`.`modul_id`) WHERE `actions`.`modul_hrd` = '$pilih' AND `actions`.`posisi` = '$posisi' ORDER BY `actions`.`order`");
 	    	$total = mysql_num_rows($modulku);
 	    	while($viewmoduls = mysql_fetch_assoc($modulku)) {
 		    	
@@ -45,7 +45,7 @@ function modul($posisi){
     	}
 	
     	if ($total == 0 && $numb == 0) {
-    $modulku = $koneksi_db->sql_query( "SELECT * FROM modul WHERE published= 1 AND posisi= '$posisi' ORDER BY ordering" );
+    $modulku = $koneksi_db->sql_query( "SELECT * FROM modul_hrd WHERE published= 1 AND posisi= '$posisi' ORDER BY ordering" );
     	
                 while ($viewmodul = $koneksi_db->sql_fetchrow($modulku)) {
 	                if (file_exists($viewmodul['isi']) && $viewmodul['type'] == 'module'){
