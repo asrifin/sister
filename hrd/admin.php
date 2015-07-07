@@ -86,25 +86,6 @@ logout ();
 
 }
 
-
-else if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="hrd"){
-	
-include "includes/security.php";	
-
-ob_start();
-if(!isset($_GET['pilih'])){
-	include 'content/dashboard.php';
-		}else if (@$_GET['mod'] == 'yes' 
-				  && file_exists('mod/'.$_GET['pilih'].'/hrd/hrd_'.$_GET['pilih'].'.php') 
-				  && !preg_match("/[\.\/]/",$_GET['pilih'])){
-						include 'mod/'.$_GET['pilih'].'/hrd/hrd_'.$_GET['pilih'].'.php';	
-					}else {
-	include 'content/dashboard.php';	
-					}
-$content = ob_get_contents();
-ob_end_clean();
-
-}
 else if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="Payroll"){
 	
 include "includes/security.php";	
@@ -122,7 +103,51 @@ if(!isset($_GET['pilih'])){
 					}
 $content = ob_get_contents();
 ob_end_clean();
+if ($_GET['aksi'] == 'logout') {
+logout ();
+}
+}
+else if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="HRD"){
+	
+include "includes/security.php";	
 
+ob_start();
+if(!isset($_GET['pilih'])){
+	include 'content/dashboard.php';
+		}else if (@$_GET['mod'] == 'yes' 
+				  && file_exists('mod/'.$_GET['pilih'].'/hrd/hrd_'.$_GET['pilih'].'.php') 
+				  && !preg_match("/[\.\/]/",$_GET['pilih'])){
+						include 'mod/'.$_GET['pilih'].'/hrd/hrd_'.$_GET['pilih'].'.php';	
+					}else {
+				//		include 'content/'.$theme.'/normal.php';
+	include 'content/dashboard.php';				
+					}
+$content = ob_get_contents();
+ob_end_clean();
+if ($_GET['aksi'] == 'logout') {
+logout ();
+}
+}
+else if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="Karyawan"){
+	
+include "includes/security.php";	
+
+ob_start();
+if(!isset($_GET['pilih'])){
+	include 'content/dashboard.php';
+		}else if (@$_GET['mod'] == 'yes' 
+				  && file_exists('mod/'.$_GET['pilih'].'/karyawan/karyawan_'.$_GET['pilih'].'.php') 
+				  && !preg_match("/[\.\/]/",$_GET['pilih'])){
+						include 'mod/'.$_GET['pilih'].'/karyawan/karyawan_'.$_GET['pilih'].'.php';	
+					}else {
+				//		include 'content/'.$theme.'/normal.php';
+	include 'content/dashboard.php';				
+					}
+$content = ob_get_contents();
+ob_end_clean();
+if ($_GET['aksi'] == 'logout') {
+logout ();
+}
 }
 else{
 	$cek.='<table width="100%" border="0" cellspacing="0" cellpadding="0" class="middle"><tr><td><table width="100%" class="bodyline"><tr><td align="left"><img src="images/warning.gif" border="0"></td><td align="center"><font class="option">Access Denied!.... Your Level Not Much For Access This File</font></td><td align="right"><img src="images/warning.gif" border="0"></td></tr></table></td></tr></table>';
