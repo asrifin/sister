@@ -58,6 +58,7 @@ $no=1;
 $query 		= mysql_query ("SELECT * FROM `pos_penjualan` WHERE `nofaktur` like '$kode'");
 $data 		= mysql_fetch_array($query);
 $nofaktur  			= $data['nofaktur'];
+$nopo  			= $data['nopo'];
 $tgl  			= $data['tgl'];
 $kodecustomer  			= $data['kodecustomer'];
 $carabayar  			= $data['carabayar'];
@@ -80,12 +81,13 @@ echo '
 		<td>'.$nofaktur.'</td>
 	</tr>';
 	if($nopo!=''){
+	$lihatslippo = '<a href="cetak_notapopenjualan.php?kode='.$data['nopo'].'&lihat=ok"target="blank">'.$data['nopo'].'</a>';
 echo '
 	<tr>
 		<td>Nomor PO</td>
 		<td>:</td>
-		<td>'.$nopo.'</td>
-	</tr>';}	
+		<td>'.$lihatslippo.'</td>
+	</tr>';}
 echo '
 	<tr>
 		<td>Tanggal</td>

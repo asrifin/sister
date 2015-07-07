@@ -56,7 +56,7 @@ $script_include[] = $JS_SCRIPT;
 	$admin  .= '<div class="border2">
 <table  width="25%"><tr align="center">
 <td>
-<a href="admin.php?pilih=pembelianretur&mod=yes">HOME</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=pembelianretur&mod=yes">RETUR PEMBELIAN</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=pembelianretur&mod=yes&aksi=cetak">CETAK RETUR PEMBELIAN</a>&nbsp;&nbsp;
@@ -260,6 +260,8 @@ $noretur = generatereturbeli();
 $tgl 		= !isset($tgl) ? $tglnow : $tgl;
 $kodeinv 		= !isset($kodeinv) ? $_SESSION['kodeinv'] : $kodeinv;
 $kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesupplier;
+$namasupplier 		= !isset($namasupplier) ? getnamasupplier($_SESSION['kodesupplier']) : $namasupplier;
+//$namabarang 		= !isset($namabarang) ? $_POST['namabarang'] : $namabarang;
 $carabayar 		= !isset($carabayar) ? $_POST['carabayar'] : $carabayar;
 $sel2 = '<select name="carabayar" class="form-control" required>';
 $arr2 = array ('Tunai','Potong Hutang');
@@ -311,12 +313,14 @@ $admin .= '
 		<td>Supplier</td>
 		<td>:</td>
 		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >';
+                    <input type="text" id="country_id2"  name="namasupplier" value="'.$namasupplier.'" onkeyup="autocomplet()" class="form-control" >
+';
 if($_SESSION["kodeinv"]==''){					
 $admin .= '<input type="submit" value="Tambah Supplier" name="tambahsupplier"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >';
 					}
-$admin .= '<ul id="country_list_id"></ul>
+$admin .= '					<ul id="country_list_id"></ul>
                 </div>
+				<input type="hidden" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" class="form-control" >
 				</td>
 		<td></td>
 		<td></td>
@@ -330,10 +334,11 @@ $admin .= '
 		<td>:</td>
 		<td>
                 <div class="input_container">
-                    <input type="text" id="barang_id"  name="kodebarang" value="'.$kodebarang.'" onkeyup="autocomplet2()"class="form-control" >
+<input type="text" id="barang_id2"  name="namabarang" value="'.$namabarang.'" onkeyup="autocomplet2()"class="form-control" >
 					<input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" >&nbsp;
                     <ul id="barang_list_id"></ul>
                 </div>
+<input type="hidden" id="barang_id"  name="kodebarang" value="'.$kodebarang.'" class="form-control" >
 				</td>
 	<td></td>
 	<td></td>

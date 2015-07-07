@@ -178,7 +178,7 @@ $_SESSION['product_id'][$k]['subtotal'] =$_SESSION['product_id'][$k]['jumlah']*(
 if(isset($_POST['tambahbarang'])){
 $_SESSION['kodesupplier'] = $_POST['kodesupplier'];	
 $kodebarang 		= $_POST['kodebarang'];
-$jumlah 		= '1';
+$jumlah 		= $_POST['jumlah'];
 $hasil =  $koneksi_db->sql_query( "SELECT * FROM pos_produk WHERE kode='$kodebarang'" );
 $data = $koneksi_db->sql_fetchrow($hasil);
 $id=$data['id'];
@@ -205,7 +205,7 @@ foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
 	{
 	$subdiscount="0";
-$_SESSION['product_id'][$k]['jumlah'] = $_SESSION['product_id'][$k]['jumlah']+1;
+$_SESSION['product_id'][$k]['jumlah'] = $jumlah;
 $_SESSION['product_id'][$k]['subtotal'] = $_SESSION['product_id'][$k]['jumlah']*$_SESSION['product_id'][$k]['harga'];
     }
 }
@@ -236,6 +236,8 @@ $tglnow = date("Y-m-d");
 $nopo = generatepo();
 $tgl 		= !isset($tgl) ? $tglnow : $tgl;
 $kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesupplier;
+$namasupplier 		= !isset($namasupplier) ? getnamasupplier($_SESSION['kodesupplier']) : $namasupplier;
+$namabarang 		= !isset($namabarang) ? $_POST['namabarang'] : $namabarang;
 $discount 		= !isset($discount) ? '0' : $discount; 
 $carabayar = getcarabayar($kodesupplier);
 $termin = gettermin($kodesupplier);
@@ -276,10 +278,12 @@ $admin .= '
 		<td>Supplier</td>
 		<td>:</td>
 		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >
-					&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
+                    <input type="text" id="country_id2"  name="namasupplier" value="'.$namasupplier.'" onkeyup="autocomplet()"class="form-control" >
+                    <input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
                     <ul id="country_list_id"></ul>
                 </div>
+<input type="hidden" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" class="form-control" >
+					&nbsp;
 				</td>
 		<td>Termin</td>
 		<td>:</td>
@@ -293,10 +297,12 @@ $admin .= '
 		<td>:</td>
 		<td>
                 <div class="input_container">
-                    <input type="text" id="barang_id"  name="kodebarang" value="'.$kodebarang.'" onkeyup="autocomplet2()"class="form-control" >
+                    <input type="text" id="barang_id2"  name="namabarang" value="'.$namabarang.'" onkeyup="autocomplet2()"class="form-control" >, Jumlah
+					<input type="text" name="jumlah" value="1" class="form-control"placeholder="jumlah">
 					<input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" >&nbsp;
                     <ul id="barang_list_id"></ul>
                 </div>
+<input type="hidden" id="barang_id"  name="kodebarang" value="'.$kodebarang.'" class="form-control" >
 				</td>
 	<td></td>
 	<td></td>

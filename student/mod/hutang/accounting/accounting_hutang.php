@@ -123,13 +123,13 @@ $admin.='
     <thead>
         <tr>
             <th>No.Invoice</th>
+            <th>No.PO</th>
             <th>Tanggal</th>
             <th>Supplier</th>
             <th>Total</th>
             <th>Bayar</th>
             <th>Kekurangan</th>
             <th>Jatuh Tempo</th>
-            <th width="20%">Aksi</th>
         </tr>
     </thead>';
 	$admin.='<tbody>';
@@ -137,21 +137,21 @@ $hasil = $koneksi_db->sql_query( "SELECT * FROM `pos_pembelian`order by tgl desc
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $noinvoice = $data['noinvoice'];
 $hutang = $data['hutang'];
-$cetakslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak Slip</span></a>';
 if($hutang>'0'){
-$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok&bayar=ok" target ="blank"><span class="btn btn-danger">Lihat Slip</span></a>';
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok&bayar=ok">'.$data['noinvoice'].'</a>';
 }else{
-$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok" target ="blank"><span class="btn btn-primary">Lihat Slip</span></a>';
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok">'.$data['noinvoice'].'</a>';
 }
+$lihatslippo = '<a href="cetak_notapo.php?kode='.$data['nopo'].'&lihat=ok">'.$data['nopo'].'</a>';
 $admin.='<tr>
-            <td>'.$data['noinvoice'].'</td>
+            <td>'.$lihatslip.'</td>
+            <td>'.$lihatslippo.'</td>
             <td>'.tanggalindo($data['tgl']).'</td>
             <td>'.getnamasupplier($data['kodesupplier']).'</td>
             <td>'.rupiah_format($data['total']).'</td>
             <td>'.rupiah_format($data['bayar']).'</td>
             <td>'.rupiah_format($data['hutang']).'</td>
             <td>'.tanggalindo($data['tgltermin']).'</td>
-            <td>'.$cetakslip.' '.$lihatslip.'</td>
         </tr>';
 $ttotal += $data['total'];
 $tbayar += $data['bayar'];

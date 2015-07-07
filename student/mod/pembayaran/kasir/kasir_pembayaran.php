@@ -105,7 +105,7 @@ $admin.='
            <th>Bayar</th>
 		   <th>Piutang</th>
 		   <th>User</th>
-            <th width="20%">Aksi</th>
+
         </tr>
     </thead>';
 	$admin.='<tbody>';
@@ -121,12 +121,12 @@ $bayar=$data['bayar'];
 $user=$data['user'];
 $cetakslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak</span></a>';
 if($piutang>'0'){
-$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok&bayar=ok" target ="blank"><span class="btn btn-danger">Lihat</span></a>';
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok&bayar=ok">'.$nofaktur.'</a>';
 }else{
-$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok" target ="blank"><span class="btn btn-primary">Lihat</span></a>';
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok" >'.$nofaktur.'</a>';
 }
 $admin.='<tr>
-            <td>'.$nofaktur.'</td>
+            <td>'.$lihatslip.'</td>
             <td>'.tanggalindo($tgl).'</td>
             <td>'.getnamacustomer($kodecustomer).'</td>
             <td>'.$carabayar.'</td>
@@ -134,7 +134,6 @@ $admin.='<tr>
             <td>'.$bayar.'</td>
             <td>'.$piutang.'</td>
             <td>'.$user.'</td>
-            <td>'.$cetakslip.' '.$lihatslip.'</td>
         </tr>';
 }   
 $admin.='</tbody>
