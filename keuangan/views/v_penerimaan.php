@@ -272,9 +272,7 @@
                         <tr style="display:none;" id="semuaTR" class="info">
                             <th class="text-center"><div class="input-control text"><input placeholder="no pendaftaran" id="semua_nopendaftaranS" class="semua_cari"></div></th>
                             <th class="text-center"><div class="input-control text"><input placeholder="nama" id="semua_namaS" class="semua_cari"></div></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <!-- <th class="text-center">
+                            <th class="text-center">
                                 <div class="input-control select">
                                     <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
                                         <option value="">-Semua-</option>
@@ -282,7 +280,34 @@
                                         <option class="bg-red fg-white" value="belum">Belum</option>
                                     </select>
                                 </div>
-                            </th> -->
+                            </th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
 
