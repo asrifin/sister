@@ -8,20 +8,11 @@ if (!cek_login()){
     header("location: index.php");
     exit;
 } else{
-
-$JS_SCRIPT.= <<<js
-<script language="JavaScript" type="text/javascript">
-$(document).ready(function() {
-    $('#example').dataTable({
-    "iDisplayLength":50});
-} );
-</script>
-js;
 $style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />
 <link rel="stylesheet" href="mod/pembelian/style.css" />
 ';
 $admin .= '
-
+<script type="text/javascript" src="js/select.js"></script>
 <script type="text/javascript" src="mod/pembelian/script.js"></script>
 <script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
 <script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
@@ -191,23 +182,6 @@ unset($_SESSION['product_id'][$k]);
     }
 }
 }
-/*
-if(isset($_POST['editjumlah'])){
-$kode 		= $_POST['kode'];
-$jumlahbeli = $_POST['jumlahbeli'];
-$subdiscount = $_POST['subdiscount'];
-foreach ($_SESSION['product_id'] as $k=>$v){
-    if($kode == $_SESSION['product_id'][$k]['kode'])
-	{
-$harga = $_SESSION['product_id'][$k]['harga'];
-$nilaidiscount=cekdiscount($subdiscount,$harga);
-$_SESSION['product_id'][$k]['subdiscount']=$subdiscount;
-$_SESSION['product_id'][$k]['jumlah']=$jumlahbeli;
-$_SESSION['product_id'][$k]['subtotal'] = $jumlahbeli*($_SESSION['product_id'][$k]['harga']-$nilaidiscount);
-		}
-}
-}
-*/
 
 if(isset($_POST['simpandetail'])){
 foreach ($_SESSION['product_id'] as $k=>$v){
@@ -303,7 +277,7 @@ $admin .= '
 	<tr>
 		<td>Nomor Invoice</td>
 		<td>:</td>
-		<td><input type="text" name="noinvoice" value="'.$noinvoice.'" class="form-control"></td>
+		<td><input type="text" name="noinvoice" value="'.$noinvoice.'" class="form-control">&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" ></td>
 '.$supplier.'
 	</tr>';
 $admin .= '
@@ -319,11 +293,14 @@ $admin .= '
 	<tr>
 		<td>Kode PO</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="po_id"  name="kodepo" value="'.$kodepo.'" onkeyup="autocompletpo()"class="form-control" >
-					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >&nbsp;&nbsp;&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
-                    <ul id="po_list_id"></ul>
-                </div>
+		<td><select  id="myselect" name="kodepo"  class="form-control">';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_po order by id desc" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+	$admin .= '
+			<option value="'.$data['nopo'].'">'.$data['nopo'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.rupiah_format($data['total']).'</option>';
+}
+	$admin .= '</select>&nbsp;
+					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >
 				</td>
 		<td>Termin</td>
 		<td>:</td>
@@ -425,12 +402,14 @@ $admin .= '
 	<tr>
 		<td>Kode Invoice</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="invoice_id"  name="kodeinvoice" value="'.$getlastinvoice.'" onkeyup="autocompletinvoice()" required class="form-control" >
+		<td><select  id="myselect" name="kodeinvoice"  class="form-control">';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_pembelian order by id desc" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+	$admin .= '
+			<option value="'.$data['noinvoice'].'">'.$data['noinvoice'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.rupiah_format($data['netto']).'</option>';
+}
+	$admin .= '</select>
 					<input type="submit" value="Lihat Invoice" name="lihatinvoice"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
-					
-                    <ul id="invoice_list_id"></ul>
-                </div>
 				</td>
 		<td></td>
 		<td></td>

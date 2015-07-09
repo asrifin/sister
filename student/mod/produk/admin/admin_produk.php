@@ -104,6 +104,9 @@ $query 		= mysql_query ("SELECT * FROM `pos_produk` WHERE `id`='$id'");
 $data 		= mysql_fetch_array($query);
 $jenis  			= $data['jenis'];
 $jenjang  			= $data['jenjang'];
+$kode = $data['kode'];
+$generatekode=generatekode('KPR','kode','pos_produk');
+if(!$kode){$kode = $generatekode;}
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Edit Produk</h3></div>';
 $admin .= '
@@ -136,7 +139,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode Barang</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$data['kode'].'" required></td>
+		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'" required></td>
 	</tr>
 	<tr>
 		<td>Nama Barang</td>
@@ -196,9 +199,9 @@ $hargajual 		= $_POST['hargajual'];
 	}
 
 }
-$autokodebarang='01';
+$generatekode=generatekode('KPR','kode','pos_produk');
+$kode     		= !isset($kode) ? $generatekode : $kode;
 $jenjang     		= !isset($jenjang) ? '' : $jenjang;
-$kode     		= !isset($kode) ? $autokodebarang : $kode;
 $nama     		= !isset($nama) ? '' : $nama;
 $jenis     		= !isset($jenis) ? '' : $jenis;
 $jumlah     		= !isset($jumlah) ? '0' : $jumlah;
@@ -236,7 +239,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode Barang</td>
 		<td>:</td>
-		<td><input type="text" name="kode"value="'.$kode.'" size="25"class="form-control" required></td>
+		<td><input type="text" name="kode"value="'.$generatekode.'" size="25"class="form-control" required>*kode otomatis apabila tidak diisi</td>
 	</tr>
 	<tr>
 		<td>Nama Barang</td>
