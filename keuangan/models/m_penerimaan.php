@@ -526,7 +526,71 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-					// spp 
+					// spp
+					 
+					// semua 
+					case 'semua':
+						$pre           = 'semua_';
+						$status        = (isset($_POST[$pre.'statusS']) AND $_POST[$pre.'statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'statusS']).'"':'';
+						$nama          = isset($_POST[$pre.'namaS'])?filter($_POST[$pre.'namaS']):'';
+						$nopendaftaran = isset($_POST[$pre.'nopendaftaranS'])?filter($_POST[$pre.'nopendaftaranS']):'';
+						$sql    ='SELECT
+									c.replid,
+									c.nopendaftaran,
+									c.nama
+								FROM
+									psb_calonsiswa c
+								WHERE
+									c.nama LIKE "%'.$nama.'%"
+									AND c.nopendaftaran LIKE "%'.$nopendaftaran.'%"';
+						// print_r($sql);exit(); 		
+						if(isset($_POST['starting'])){
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
+
+						$recpage = 10;//jumlah data per halaman
+						$aksi    ='tampil';
+						$subaksi ='semua';
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+						$result  = $obj->result;
+
+						#ada data
+						$jum = mysql_num_rows($result);
+						$out ='';
+						$totaset=0;
+						if($jum!=0){	
+							$nox = $starting+1;
+							while($res = mysql_fetch_assoc($result)){	
+								$formulir = getStatusBayar('formulir',$res['replid']);
+								$dpp      = getStatusBayar('dpp',$res['replid']);
+								$spp      = getStatusBayar('spp',$res['replid']);
+								$joiningf = getStatusBayar('joiningf',$res['replid']);
+								// var_dump($formulir);exit();
+								
+								$out.= '<tr>
+											<td>'.$res['nopendaftaran'].'</td>
+											<td>'.$res['nama'].'</td>
+											<td align="center"><button class="fg-white bg-'.($formulir=='lunas'?'green':($formulir=='kurang'?'orange':'red')).'" data-hint="'.$formulir.'"><!--<i class="icon-battery-full"></i></button>-->'.$formulir.'</td>
+											<td align="center"><button class="fg-white bg-'.($dpp=='lunas'?'green':($dpp=='kurang'?'orange':'red')).'" data-hint="'.$dpp.'"><!--<i class="icon-battery-full"></i></button>-->'.$dpp.'</td>
+											<td align="center"><button class="fg-white bg-'.($spp=='lunas'?'green':($spp=='kurang'?'orange':'red')).'" data-hint="'.$spp.'"><!--<i class="icon-battery-full"></i></button>-->'.$spp.'</td>
+											<td align="center"><button class="fg-white bg-'.($joiningf=='lunas'?'green':($joiningf=='kurang'?'orange':'red')).'" data-hint="'.$joiningf.'"><!--<i class="icon-battery-full"></i></button>-->'.$joiningf.'</td>
+										</tr>';
+											// <td data-hint="'.$formulir.'" class="'.($formulir=='lunas'?'green':($formulir=='kurang'?'orange':'red')).'" align="center">
+											// 	<i class="icon-battery-'.($formulir=='lunas'?'full':($formulir=='kurang'?'half':'empty')).'</i>
+											// </td>
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan=9 ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
+					break;
+					// semua
 				}
 			break; 
 			// tampil ---------------------------------------------------------------------

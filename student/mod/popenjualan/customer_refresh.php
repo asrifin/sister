@@ -10,8 +10,8 @@ $query->execute();
 $list = $query->fetchAll();
 foreach ($list as $rs) {
 	// put in bold the written text
-	$kode = str_replace($_POST['keyword'], '<b>'.$_POST['keyword'].'</b>', $rs['kode']);
+	$kode = str_replace($_POST['keyword'], '<b>'.$_POST['keyword'].'</b>', $rs['nama']);
 	// add new option
-    echo '<li onclick="set_item(\''.str_replace("'", "\'", $rs['kode']).'\')">'.$kode.' - '.$rs['nama'].'</li>';
+    echo '<li onclick="set_item(\''.$rs['kode'].'\',\''.$rs['nama'].'\')">'.$rs['nama'].'-'.$rs['kode'].'</li>';
 }
 ?>

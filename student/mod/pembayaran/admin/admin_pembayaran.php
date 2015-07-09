@@ -93,6 +93,10 @@ penjualancetak($nofaktur);
 $style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=pembayaran&amp;mod=yes" />';	
 }
 }
+$admin .= '
+<div align="right">
+<a href="admin.php?pilih=pembayaran&mod=yes&status=semua" class="btn btn-success"> SEMUA </a>&nbsp;<a href="admin.php?pilih=pembayaran&mod=yes&status=lunas" class="btn btn-primary"> LUNAS </a>&nbsp;<a href="admin.php?pilih=pembayaran&mod=yes&status=pembayaran" class="btn btn-danger"> BELUM LUNAS </a>
+</div>';	
 $admin.='
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
@@ -105,11 +109,21 @@ $admin.='
            <th>Bayar</th>
 		   <th>Piutang</th>
 		   <th>User</th>
-            <th width="20%">Aksi</th>
+
         </tr>
     </thead>';
 	$admin.='<tbody>';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_penjualan" );
+		$status 		= $_GET['status'];
+if($status=='lunas')
+{
+         $wherestatus="where piutang='0'";
+}elseif($status=='semua')
+{
+         $wherestatus="";
+}elseif($status=='pembayaran'or !isset($_GET['status'])){
+$wherestatus="where bayar='0'";
+}
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_penjualan $wherestatus" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $nofaktur=$data['nofaktur'];
 $tgl=$data['tgl'];
@@ -121,12 +135,12 @@ $bayar=$data['bayar'];
 $user=$data['user'];
 $cetakslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak</span></a>';
 if($piutang>'0'){
-$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok&bayar=ok" target ="blank"><span class="btn btn-danger">Lihat</span></a>';
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok&bayar=ok">'.$nofaktur.'</a>';
 }else{
-$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok" target ="blank"><span class="btn btn-primary">Lihat</span></a>';
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok" >'.$nofaktur.'</a>';
 }
 $admin.='<tr>
-            <td>'.$nofaktur.'</td>
+            <td>'.$lihatslip.'</td>
             <td>'.tanggalindo($tgl).'</td>
             <td>'.getnamacustomer($kodecustomer).'</td>
             <td>'.$carabayar.'</td>
@@ -134,7 +148,6 @@ $admin.='<tr>
             <td>'.$bayar.'</td>
             <td>'.$piutang.'</td>
             <td>'.$user.'</td>
-            <td>'.$cetakslip.' '.$lihatslip.'</td>
         </tr>';
 }   
 $admin.='</tbody>

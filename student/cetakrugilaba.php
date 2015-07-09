@@ -115,6 +115,15 @@ echo'<tr>
 		<td><b>'.rupiah_format($grandlabarugij).'</b></td>
 		</tr>
 		';		
+			/************** TOTAL BARANG + JASA ***************/	
+$totallabarugi = $grandlabarugi+$grandlabarugij;
+$admin .='<tr>
+		<td><b>Total</b></td>
+		<td></b></td>
+		<td></b></td>
+		<td><b>'.rupiah_format($totallabarugi).'</b></td>
+		</tr>
+		';		
 		/************** BIAYA BULANAN ***************/
 echo'<tr >
 		<td colspan="4"class="danger"><b>Biaya Bulanan</b></td>';
@@ -137,7 +146,7 @@ echo'<tr>
 		<td><b>'.rupiah_format($grandtotalbb).'</b></td>
 				<td></td>
 	</tr>';
-	$labarugi = $grandtotalbayar - $grandtotalbiaya - $grandtotalbb;
+	$labarugi = $totallabarugi - $grandtotalbb;
 echo'<tr class="alert-info">
 		<td><b>Laba / Rugi :</b></td>
 				<td></td>

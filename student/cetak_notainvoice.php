@@ -81,11 +81,12 @@ echo '
 	</tr>';
 	
 	if($nopo!=''){
+	$lihatslippo = '<a href="cetak_notapo.php?kode='.$data['nopo'].'&lihat=ok"target="blank">'.$data['nopo'].'</a>';
 echo '
 	<tr>
 		<td>Nomor PO</td>
 		<td>:</td>
-		<td>'.$nopo.'</td>
+		<td>'.$lihatslippo.'</td>
 	</tr>';}
 	
 echo '

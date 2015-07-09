@@ -82,6 +82,7 @@ $s = mysql_query ("SELECT * FROM `pos_penjualan` where tgl >= '$tglmulai' and tg
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $nofaktur = $datas['nofaktur'];
+$nopo = $datas['nopo'];
 $tgl = $datas['tgl'];
 $kodecustomer = $datas['kodecustomer'];
 $carabayar = $datas['carabayar'];
@@ -96,10 +97,11 @@ $urutan = $no + 1;
 if($termin!=''){
 $termin = $termin." Hari";
 }
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$datas['nofaktur'].'&lihat=ok"target="new" >'.$nofaktur.'</a>';
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nofaktur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamacustomer($kodecustomer).'</td>
 <td>'.$carabayar.'</td>
@@ -116,7 +118,7 @@ $tpiutang+=$piutang;
 }
 echo '
 <tr class="border" align="right">
-<td colspan="5"><b>Grand Total :</b></td>
+<td colspan="6"><b>Grand Total :</b></td>
 <td>'.rupiah_format($ttotal).'</td>
 <td>'.rupiah_format($tbayar).'</td>
 <td>'.rupiah_format($tpiutang).'</td>
@@ -247,10 +249,11 @@ echo '</table>';
 }
 /****************************/
 echo "</body</html>";
-
+/*
 if (isset($_GET['tglmulai'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

@@ -159,7 +159,7 @@ echo'</td></tr></table>';
 		/****************************/
 echo "</body</html>";
 
-if (!isset($_GET['detail'])){
+if (!isset($_GET['lihat'])){
 echo "<script language=javascript>
 window.print();
 </script>";

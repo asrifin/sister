@@ -97,10 +97,11 @@ $termin = $termin." Hari";
 }
 $user = $datas['user'];
 $urutan = $no + 1;
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$datas['noinvoice'].'&lihat=ok"target="new">'.$datas['noinvoice'].'</a>';
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$noinvoice.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$carabayar.'</td>
@@ -117,7 +118,7 @@ $thutang+=$hutang;
 }
 echo '
 <tr class="border" align="right">
-<td colspan="5"><b>Grand Total :</b></td>
+<td colspan="6"><b>Grand Total :</b></td>
 <td>'.rupiah_format($ttotal).'</td>
 <td>'.rupiah_format($tbayar).'</td>
 <td>'.rupiah_format($thutang).'</td>
@@ -227,10 +228,11 @@ echo '</table>';
 }
 /****************************/
 echo "</body</html>";
-
+/*
 if (isset($_GET['tglmulai'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

@@ -1612,7 +1612,7 @@
 				switch ($_POST['subaksi']) {
 					case 'out_come';
 						$s = 'SELECT 
-								t.*, 
+								t.*,
 								j.replid idjurnal 
 							  FROM '.$tb.' t 
 							  	LEFT JOIN keu_jurnal j on j.transaksi = t.replid
@@ -1620,52 +1620,46 @@
 							  	t.replid ='.$_POST['replid'].' AND
 							  	j.jenis ="k"';
 
-  						/*$ss='SELECT
-							d.replid,
-							d.nama,
-							sum(n.nominal)nominal,
-							k.nama kategorianggaran,
-							concat(t.tingkat," (",t.keterangan,")") tingkat
-						FROM
-							keu_detilanggaran d
-							LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
-							LEFT JOIN keu_kategorianggaran k ON k.replid = d.kategorianggaran
-							LEFT JOIN aka_tingkat t ON t.replid = d.tingkat
-						WHERE
-							d.nama LIKE "%'.$searchTerm.'%"
-							OR k.nama LIKE "%'.$searchTerm.'%"
-						GROUP BY	
-							d.replid ';
-*/
 						// var_dump($s);exit();
 						$e    = mysql_query($s);
 						$r    = mysql_fetch_assoc($e);
 						$stat = ($e)?'sukses':'gagal';
 						if(!$e) $stat='gagal';
 						else{ //sukses
-							$kuota = getKuotaAnggaran($r['detilanggaran']);
-							$stat  ='sukses';
+							$kuotaNum    =getDetAnggaran($r['detilanggaran'],'kuotaNum'); 
+							$kuotaCur    =setuang(getDetAnggaran($r['detilanggaran'],'kuotaNum')); 
+							// var_dump($kuotaCur);exit();
+								$terpakaiNum =getDetAnggaran($r['detilanggaran'],'terpakaiNum');
+								$terpakaiCur =setuang(getDetAnggaran($r['detilanggaran'],'terpakaiNum'));
+							$sisaNum     =getDetAnggaran($r['detilanggaran'],'sisaNum');
+							$sisaCur     =setuang(getDetAnggaran($r['detilanggaran'],'sisaNum'));
+								$stat  ='sukses';
 
+							$nobuktiTyp =strpos($r['nobukti'],'INV')===false?'0':'1';//==TRUE?1:0;
 							$transaksiArr = array(
 								// transaksi
 								'nomer'           =>$r['nomer'],
+								'nobuktiTyp'      =>$nobuktiTyp,
 								'nobukti'         =>$r['nobukti'],
 								'tanggal'         =>tgl_indo7($r['tanggal']),
 								'idrekkas'        =>$r['rekkas'],
 								'rekkas'          =>getRekening($r['rekkas']),
-								'iddetilanggaran' =>$r['detilanggaran'],
-								'detilanggaran' =>getAnggaran($r['detilanggaran']),
-									'kuotaBilCur'      =>'Rp. '.number_format($kuota['kuotaNum']),
-									'sisaBilCur'       =>'Rp. '.number_format($kuota['sisaNum']),
-									'terpakaiBilCur'   =>'Rp. '.number_format($kuota['terpakaiNum']),
-									'sisaBilNum'       => $kuota['sisaNum'],
+								// 	'kuotaBilCur'      =>$kuota,
+								// 	'kuotaBilCur'      =>$kuota,
+								// 	'sisaBilCur'       =>setuang($kuota['sisaNum']),
+								// 	'terpakaiBilCur'   =>setuang($kuota['terpakaiNum']),
+								// 	'sisaBilNum'       => $kuota['sisaNum'],
 								//jurnal
 								'outcome' => array(
-									'idjurnal'  =>$r['idjurnal'],
-									'idrekitem' =>$r['rekitem'],
-									'rekitem'   =>getRekening($r['rekitem']),
-									'nominal'   =>setuang($r['nominal']),
-									'uraian'    =>$r['uraian']
+									'iddetilanggaran' =>$r['detilanggaran'],
+									'detilanggaran'   =>(getAnggaran($r['detilanggaran']).'[sisa :'.$sisaCur.' kuota '.$kuotaCur.']'),
+									'sisaanggaran'    =>$sisaNum,
+									'sisaanggaran'    =>$sisaNum,
+									'idjurnal'        =>$r['idjurnal'],
+									'idrekitem'       =>$r['rekitem'],
+									'rekitem'         =>getRekening($r['rekitem']),
+									'nominal'         =>setuang($r['nominal']),
+									'uraian'          =>$r['uraian']
 								),
 							);
 						}$out = json_encode(array(

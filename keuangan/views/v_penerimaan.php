@@ -25,6 +25,7 @@
             <li onclick="switchPN('pendaftaran');" class="active"><a href="#pendaftaranTAB">Pendaftaran </a></li>
             <li onclick="switchPN('dpp');"><a href="#dppTAB">DPP</a></li>
             <li onclick="switchPN('spp');"><a href="#sppTAB">SPP</a></li>
+            <li onclick="switchPN('semua');"><a href="#semuaTAB">Semua</a></li>
             <li class="place-right">
                 <div class="input-control select">
                     <select data-hint="Departemen" class="cari" name="departemenS" id="departemenS"></select>
@@ -237,6 +238,80 @@
                     </thead>
 
                     <tbody id="spp_tbody">
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- semua -->
+            <div class="frame" id="semuaTAB">
+                <button id="semua_cariBC" data-hint="Pencarian" data-hint-position="top">
+                    <i class="icon-search" ></i>
+                </button>
+                <button id="semua_cetakBC"  onclick="printPDF('semua');"  data-hint="Cetak" data-hint-position="top">
+                    <i class="icon-printer" ></i>
+                </button>
+                <div class="input-control select span3">
+                    <select data-hint="Tahun Ajaran" class="semua_cari"  id="semua_tahunajaranS"></select>
+                </div>
+                <div class="input-control select span3">
+                    <select data-hint="Semester" class="semua_cari" id="semua_semesterS"></select>
+                </div>
+
+                <table class="table hovered bordered striped">
+                    <thead>
+                        <tr style="color:white;"class="info">
+                            <th class="text-center">No Pendaftaran </th>
+                            <th class="text-center">Nama</th>
+                            <th class="text-center">Formulir</th>
+                            <th class="text-center">DPP</th>
+                            <th class="text-center">SPP</th>
+                            <th class="text-center">Joining Fee</th>
+                        </tr>
+                        <tr style="display:none;" id="semuaTR" class="info">
+                            <th class="text-center"><div class="input-control text"><input placeholder="no pendaftaran" id="semua_nopendaftaranS" class="semua_cari"></div></th>
+                            <th class="text-center"><div class="input-control text"><input placeholder="nama" id="semua_namaS" class="semua_cari"></div></th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="semua_tbody">
                     </tbody>
                     <tfoot>
                     </tfoot>

@@ -118,6 +118,10 @@ if($_GET['aksi']==""){
 $admin .='<div class="panel panel-info">';
 $admin .= '
 <div class="panel-heading"><b>Daftar Hutang</b></div>';	
+$admin .= '
+<div align="right">
+<a href="admin.php?pilih=hutang&mod=yes&status=semua" class="btn btn-success"> SEMUA </a>&nbsp;<a href="admin.php?pilih=hutang&mod=yes&status=lunas" class="btn btn-primary"> LUNAS </a>&nbsp;<a href="admin.php?pilih=hutang&mod=yes&status=hutang" class="btn btn-danger"> HUTANG </a>
+</div>';
 $admin.='
 <table class="table table-striped table-bordered" cellspacing="0" width="100%"id="example">
     <thead>
@@ -129,29 +133,37 @@ $admin.='
             <th>Bayar</th>
             <th>Kekurangan</th>
             <th>Jatuh Tempo</th>
-            <th width="20%">Aksi</th>
         </tr>
     </thead>';
 	$admin.='<tbody>';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM `pos_pembelian`order by tgl desc" );
+	$status 		= $_GET['status'];
+if($status=='lunas')
+{
+         $wherestatus="where hutang='0'";
+}elseif($status=='semua')
+{
+         $wherestatus="";
+}elseif($status=='hutang'or !isset($_GET['status'])){
+$wherestatus="where bayar='0'";
+}
+$hasil = $koneksi_db->sql_query( "SELECT * FROM `pos_pembelian` $wherestatus order by tgl desc" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $noinvoice = $data['noinvoice'];
 $hutang = $data['hutang'];
-$cetakslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak Slip</span></a>';
 if($hutang>'0'){
-$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok&bayar=ok" target ="blank"><span class="btn btn-danger">Lihat Slip</span></a>';
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok&bayar=ok">'.$data['noinvoice'].'</a>';
 }else{
-$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok" target ="blank"><span class="btn btn-primary">Lihat Slip</span></a>';
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok">'.$data['noinvoice'].'</a>';
 }
+$lihatslippo = '<a href="cetak_notapo.php?kode='.$data['nopo'].'&lihat=ok">'.$data['nopo'].'</a>';
 $admin.='<tr>
-            <td>'.$data['noinvoice'].'</td>
+            <td>'.$lihatslip.'</td>
             <td>'.tanggalindo($data['tgl']).'</td>
             <td>'.getnamasupplier($data['kodesupplier']).'</td>
             <td>'.rupiah_format($data['total']).'</td>
             <td>'.rupiah_format($data['bayar']).'</td>
             <td>'.rupiah_format($data['hutang']).'</td>
             <td>'.tanggalindo($data['tgltermin']).'</td>
-            <td>'.$cetakslip.' '.$lihatslip.'</td>
         </tr>';
 $ttotal += $data['total'];
 $tbayar += $data['bayar'];

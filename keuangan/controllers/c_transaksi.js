@@ -226,6 +226,10 @@ var detilanggaranArr=rekArr=[];
                     tok+=$(this).val();
                 } 
             });
+            tok+=$('#tgl1TB').val();
+            tok+=$('#tgl2TB').val();
+            par+='&tgl1TB='+$('#tgl1TB').val();
+            par+='&tgl2TB='+$('#tgl2TB').val();
         }else if(mn=='li'){
             var opt = $('form#filterFR2').serialize();
             $('.jenisLaporanCB').each(function(id,item){
@@ -620,9 +624,9 @@ var detilanggaranArr=rekArr=[];
                     // anggaran
                     tr+='<td align="center">'
                         +'<div class="input-control text size7">'
-                            +'<input type="hidden" name="'+typ+'_sisaanggaran'+ke+'H" id="'+typ+'_sisaanggaran'+ke+'H" value="'+detilanggaran+'" />'
+                            +'<input type="hidden" name="'+typ+'_sisaanggaran'+ke+'H" id="'+typ+'_sisaanggaran'+ke+'H" value="'+(typeof arr!='undefined'?arr.sisaangggaran:'')+'" />'
                             +'<input class="detilanggaran" type="hidden" value="'+iddetilanggaran+'" id="'+typ+'_detilanggaran'+ke+'H" name="'+typ+'_detilanggaran'+ke+'H" />'
-                            +'<input  onkeyup="validForm2();" id="'+typ+'_detilanggaran'+ke+'TB" name="'+typ+'_detilanggaran'+ke+'TB" value="'+rekitem+'" required  onfocus="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\'detilanggaran\',\'\');" onclick="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\'detilanggaran\',\'\');" placeholder="anggaran " type="text" />'
+                            +'<input value="'+detilanggaran+'" onkeyup="validForm2();" id="'+typ+'_detilanggaran'+ke+'TB" name="'+typ+'_detilanggaran'+ke+'TB" value="'+rekitem+'" required  onfocus="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\'detilanggaran\',\'\');" onclick="autoSuggest(\'\',\''+typ+'_detilanggaran'+ke+'\',\'detilanggaran\',\'\');" placeholder="anggaran " type="text" />'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                     +'</td>';
@@ -1021,12 +1025,18 @@ var detilanggaranArr=rekArr=[];
                                 ajax(url,data).done(function (dt) {
                                     $('#idformH').val(id);
                                     $('#nomerTB').html(dt.transaksiArr.nomer);
-                                    $('#detilanggaranTB').val(dt.transaksiArr.detilanggaran);
-                                    $('#detilanggaranV').val(dt.transaksiArr.sisaBilNum);
-                                    $('#detilanggaranH').val(dt.transaksiArr.iddetilanggaran);
+                                    // $('#detilanggaranTB').val(dt.transaksiArr.detilanggaran);
+                                    // $('#detilanggaranV').val(dt.transaksiArr.sisaBilNum);
+                                    // $('#detilanggaranH').val(dt.transaksiArr.iddetilanggaran);
                                     $('#rekkasTB').val(dt.transaksiArr.rekkas);
                                     $('#nobuktiTB').val(dt.transaksiArr.nobukti);
                                     $('#tanggalTB').val(dt.transaksiArr.tanggal);
+                                    $.each($('input[name="nobuktiCB"]'),function () {
+                                        if($(this).val()=='1') {
+                                            $(this).attr('checked',true);
+                                        }
+                                    });
+
                                     var outcome= dt.transaksiArr.outcome;
                                     addRekTR(typx,1,outcome);
                                 });

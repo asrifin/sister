@@ -22,20 +22,20 @@
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
-            <th class="text-left">No</th>
-            <th class="text-left">Nama </th>
-            <th class="text-left">NIS</th>
-            <th class="text-left">NISN</th>
-            <th class="text-left">Status</th>
-            <th class="text-left">Aksi</th>
+            <th class="text-center">No</th>
+            <th class="text-center">Nama </th>
+            <th class="text-center">NIS</th>
+            <th class="text-center">NISN</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-left"><input class="cari" placeholder="No Pendaftaran" id="no_pendaftaranS" name="no_pendaftaranS"></th>
-            <th class="text-left"><input class="cari" placeholder="nama" id="namaS" name="namaS"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
+            <th class="text-center"><input class="cari" placeholder="No Pendaftaran" id="no_pendaftaranS" name="no_pendaftaranS"></th>
+            <th class="text-center"><input class="cari" placeholder="nama" id="namaS" name="namaS"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
 

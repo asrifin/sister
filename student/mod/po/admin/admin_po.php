@@ -8,20 +8,11 @@ if (!cek_login()){
     header("location: index.php");
     exit;
 } else{
-
-$JS_SCRIPT.= <<<js
-<script language="JavaScript" type="text/javascript">
-$(document).ready(function() {
-    $('#example').dataTable({
-    "iDisplayLength":50});
-} );
-</script>
-js;
 $style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />
 <link rel="stylesheet" href="mod/po/style.css" />
 ';
 $admin .= '
-
+<script type="text/javascript" src="js/select.js"></script>
 <script type="text/javascript" src="mod/po/script.js"></script>
 <script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
 <script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
@@ -70,7 +61,6 @@ $admin .= '<script type="text/javascript" language="javascript">
 }
 </script>';
 if ($_GET['aksi'] == ''){
-
 if(isset($_POST['tambah'])){
 $kodecari 		= $_POST['kode'];
 $totalpo = $_SESSION["totalpo"];
@@ -178,7 +168,6 @@ $_SESSION['product_id'][$k]['subtotal'] =$_SESSION['product_id'][$k]['jumlah']*(
 if(isset($_POST['tambahbarang'])){
 $_SESSION['kodesupplier'] = $_POST['kodesupplier'];	
 $kodebarang 		= $_POST['kodebarang'];
-$jumlah 		= '1';
 $hasil =  $koneksi_db->sql_query( "SELECT * FROM pos_produk WHERE kode='$kodebarang'" );
 $data = $koneksi_db->sql_fetchrow($hasil);
 $id=$data['id'];
@@ -199,13 +188,14 @@ $PRODUCTID[] = $_SESSION['product_id'][$k]['kode'];
 if (!in_array ($kode, $PRODUCTID)){
 $subdiscount="0";
 $subtotal=$harga;
+$jumlah='1';
 $_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode, 'jumlah' => $jumlah, 'harga' => $harga, 'jenjang' => $jenjang, 'subdiscount' => $subdiscount, 'subtotal' => $subtotal, 'stok' => $stok);
 }else{
 foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
 	{
 	$subdiscount="0";
-$_SESSION['product_id'][$k]['jumlah'] = $_SESSION['product_id'][$k]['jumlah']+1;
+$_SESSION['product_id'][$k]['jumlah'] = $jumlah+1;
 $_SESSION['product_id'][$k]['subtotal'] = $_SESSION['product_id'][$k]['jumlah']*$_SESSION['product_id'][$k]['harga'];
     }
 }
@@ -231,11 +221,14 @@ if(isset($_POST['batalpo'])){
 porefresh();
 }
 
+$kodesupplier= $_POST['kodesupplier'];	
+$kodebarang= $_POST['kodebarang'];	
 $user = $_SESSION['UserName'];
 $tglnow = date("Y-m-d");
 $nopo = generatepo();
 $tgl 		= !isset($tgl) ? $tglnow : $tgl;
-$kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesupplier;
+$kodesupplier 		= !isset($kodesupplier) ? '' : $kodesupplier;
+$kodebarang 		= !isset($kodebarang) ? '' : $kodebarang;
 $discount 		= !isset($discount) ? '0' : $discount; 
 $carabayar = getcarabayar($kodesupplier);
 $termin = gettermin($kodesupplier);
@@ -259,8 +252,8 @@ $admin .= '
 	<tr>
 		<td>Nomor PO</td>
 		<td>:</td>
-		<td><input type="text" name="nopo" value="'.$nopo.'" class="form-control"></td>
-'.$supplier.'
+		<td><input type="text" name="nopo" value="'.$nopo.'" class="form-control">  <input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" ></td>
+'.$supplier.' 
 	</tr>';
 $admin .= '
 	<tr>
@@ -271,38 +264,40 @@ $admin .= '
 		<td>:</td>
 		<td>'.$sel2.'</td>
 	</tr>';
-$admin .= '
+	$admin .= '
 	<tr>
 		<td>Supplier</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >
-					&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
-                    <ul id="country_list_id"></ul>
-                </div>
-				</td>
+		<td><select  id="myselect" name="kodesupplier"  class="form-control">';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_supplier" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$pilihan = ($data['kode']==$kodesupplier)?"selected":'';
+	$admin .= '
+			<option value="'.$data['kode'].'"'.$pilihan.'>'.$data['nama'].'</option>';
+}
+	$admin .= '</select>
+			</td>
 		<td>Termin</td>
 		<td>:</td>
 		<td><input type="text" name="termin" value="'.$termin.'" class="form-control"></td>
 		</tr>';
-
-
-$admin .= '
+	$admin .= '
 	<tr>
 		<td>Barang</td>
 		<td>:</td>
-		<td>
-                <div class="input_container">
-                    <input type="text" id="barang_id"  name="kodebarang" value="'.$kodebarang.'" onkeyup="autocomplet2()"class="form-control" >
-					<input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" >&nbsp;
-                    <ul id="barang_list_id"></ul>
-                </div>
-				</td>
-	<td></td>
-	<td></td>
-	<td></td>
-		</tr>
-				';
+		<td><select name="kodebarang"  class="form-control">';
+$hasil = $koneksi_db->sql_query( "SELECT pp.nama as namaproduk,pp.kode as kode,pj.nama as jenjang FROM pos_produk pp,pos_jenjang pj WHERE pp.jenjang=pj.id " );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+
+	$admin .= '
+			<option value="'.$data['kode'].'">'.$data['namaproduk'].'</option>';
+}
+	$admin .= '</select>
+			</td>
+		<td><input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" > Termin</td>
+		<td>:</td>
+		<td><input type="text" name="termin" value="'.$termin.'" class="form-control"></td>
+		</tr>';
 $admin .= '	
 	<tr><td colspan="5"><div id="Tbayar"></div></td>
 		<td>
@@ -356,7 +351,7 @@ $admin .= '
 		}
 $admin .= '	
 	<tr>
-		<td colspan="9" ></td>
+		<td colspan="9" >*Jika melakukan perubahan jumlah atau harga pada detail transaksi klik EDIT DETAIL terlebih dahulu sebelum melakukan SIMPAN </td>
 		<td ><input type="submit" value="EDIT DETAIL" name="simpandetail"class="btn btn-warning" ></td>
 	</tr>';		
 $admin .= '	
@@ -393,12 +388,14 @@ $admin .= '
 	<tr>
 		<td>Kode PO</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="po_id"  name="kodepo" value="'.$getlastpo.'" onkeyup="autocompletpo()" required class="form-control" >
+		<td><select  id="myselect" name="kodepo"  class="form-control">';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_po order by id desc" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+	$admin .= '
+			<option value="'.$data['nopo'].'">'.$data['nopo'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.rupiah_format($data['total']).'</option>';
+}
+	$admin .= '</select>
 					<input type="submit" value="Lihat PO" name="lihatpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
-					
-                    <ul id="po_list_id"></ul>
-                </div>
 				</td>
 		<td></td>
 		<td></td>

@@ -22,7 +22,7 @@ $style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/cs
 ';
 $admin .= '
 
-<script type="text/javascript" src="mod/penjualan/script.js"></script>
+<script type="text/javascript" src="mod/popenjualan/script.js"></script>
 <script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
 <script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
 $wkt = <<<eof
@@ -267,6 +267,8 @@ $tglnow = date("Y-m-d");
 $nopo = generatepojual();
 $tgl 		= !isset($tgl) ? $tglnow : $tgl;
 $kodecustomer 		= !isset($kodecustomer) ? $_SESSION['kodecustomer'] : $kodecustomer;
+$namacustomer		= !isset($namacustomer) ? getnamacustomer($_SESSION['kodecustomer']) : $namacustomer;
+//$namabarang 		= !isset($namabarang) ? $_POST['namabarang'] : $namabarang;
 $discount 		= !isset($discount) ? '0' : $discount;
 $carabayar 		= !isset($carabayar) ? $_POST['carabayar'] : $carabayar;
 $termin 		= !isset($termin) ? $_POST['termin'] : $termin;
@@ -317,10 +319,11 @@ $admin .= '
 		<td>Customer</td>
 		<td>:</td>
 		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodecustomer" value="'.$kodecustomer.'" onkeyup="autocomplet()"class="form-control" >
+                    <input type="text" id="country_id2"  name="namacustomer" value="'.$namacustomer.'" onkeyup="autocomplet()"class="form-control" >
 					&nbsp;<input type="submit" value="Batal" name="deletecustomer"class="btn btn-danger" >
                     <ul id="country_list_id"></ul>
                 </div>
+                    <input type="hidden" id="country_id"  name="kodecustomer" value="'.$kodecustomer.'" onkeyup="autocomplet()"class="form-control" >
 		<td>Cara Pembayaran</td>
 		<td>:</td>
 		<td>'.$sel2.'</td>
@@ -333,10 +336,11 @@ $admin .= '
 		<td>:</td>
 		<td>
                 <div class="input_container">
-                    <input type="text" id="barang_id"  name="kodebarang" value="'.$kodebarang.'" onkeyup="autocomplet2()"class="form-control" >
+                    <input type="text" id="barang_id2"  name="namabarang"value="'.$namabarang.'" onkeyup="autocomplet2()"class="form-control" >
 					<input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" >&nbsp;
                     <ul id="barang_list_id"></ul>
                 </div>
+<input type="hidden" id="barang_id"  name="kodebarang" value="'.$kodebarang.'" class="form-control" >
 				</td>
 		<td>Termin</td>
 		<td>:</td>
@@ -439,7 +443,7 @@ $admin .= '
                     <input type="text" id="po_id"  name="kodepo" value="'.$getlastpo.'" onkeyup="autocompletpo()" required class="form-control" >
 					<input type="submit" value="Lihat PO" name="lihatpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
 					
-                    <ul id="faktur_list_id"></ul>
+                    <ul id="po_list_id"></ul>
                 </div>
 				</td>
 		<td></td>

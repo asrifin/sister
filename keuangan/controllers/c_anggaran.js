@@ -868,11 +868,11 @@ var a_contentFR = d_contentFR  ='';
                         });
                     }
                 }
-                if(typ=='filter') {
-                    if(dep==''){
+                if(typ=='filter') { // filtering 
+                    if(dep==''){ // add
                         $('#a_tahunajaranS').html('<option value="">-SEMUA-</option>');
                         cmbtingkat('filter','');
-                    }else{
+                    }else{ // edit
                         $('#a_tahunajaranS').html('<option value="">-SEMUA-</option>'+out);
                         cmbtingkat('filter',dt.tahunajaran[0].replid);
                     }

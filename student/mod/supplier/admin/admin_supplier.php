@@ -63,6 +63,8 @@ $alamat 		= $data['alamat'];
 $telepon 		= $data['telepon'];
 $carabayar 		= $data['carabayar'];
 $termin 		= $data['termin'];
+$generatekode=generatekode('SUP','kode','pos_supplier');
+if(!$kode){$kode = $generatekode;}
 $sel2 = '<select name="carabayar" class="form-control">';
 $arr2 = array ('Tunai','Debet Card','Hutang');
 foreach ($arr2 as $kk=>$vv){
@@ -147,8 +149,9 @@ if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT kode FROM pos_suppli
 	}
 
 }
+$generatekode=generatekode('SUP','kode','pos_supplier');
+$kode     		= !isset($kode) ? $generatekode : $kode;
 $nama     		= !isset($nama) ? '' : $nama;
-$kode     		= !isset($kode) ? '' : $kode;
 $alamat     		= !isset($alamat) ? '' : $alamat;
 $telepon     		= !isset($telepon) ? '' : $telepon;
 $carabayar     		= !isset($carabayar) ? '' : $carabayar;
@@ -173,7 +176,7 @@ $admin .= '
 	<tr>
 		<td>Kode</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" required autofocus></td>
+		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'"required ></td>
 	</tr>
 	<tr>
 		<td>Nama</td>
