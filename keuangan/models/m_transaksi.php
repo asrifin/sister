@@ -197,7 +197,7 @@
 							l.jenis ="'.$_POST['jenis'].'"
 						ORDER BY r.kode ASC';
 				$e        = mysql_query($s);
-				// var_dump($s);exit();
+				var_dump($s);exit();
 				$jenisArr =array();
 				$stat     =!$e?'gagal':'sukses';
 				while ($r=mysql_fetch_assoc($e)) {
