@@ -101,13 +101,12 @@ $admin.='
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th>Faktur</th>
+            <th>PO</th>
             <th>Tanggal</th>
             <th>Nama</th>
-			<th>Cara Bayar</th>
-           <th>Netto</th>			
-           <th>Bayar</th>
-		   <th>Piutang</th>
+		   <th>Netto</th>
+           <th>Bayar</th>			
+           <th>Piutang</th>
 		   <th>User</th>
 
         </tr>
@@ -116,34 +115,37 @@ $admin.='
 		$status 		= $_GET['status'];
 if($status=='lunas')
 {
-         $wherestatus="where piutang='0'";
+         $wherestatus="where carabayar<>'Pemesanan'";
 }elseif($status=='semua')
 {
          $wherestatus="";
 }elseif($status=='pembayaran'or !isset($_GET['status'])){
-$wherestatus="where bayar='0'";
+$wherestatus="where carabayar like'Pemesanan'";
 }
-$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_penjualan $wherestatus" );
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_popenjualan $wherestatus" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
-$nofaktur=$data['nofaktur'];
+$nopo=$data['nopo'];
 $tgl=$data['tgl'];
 $kodecustomer=$data['kodecustomer'];
 $carabayar=$data['carabayar'];
+$total=$data['total'];
+$discount=$data['discount'];
 $netto=$data['netto'];
-$piutang=$data['piutang'];
-$bayar=$data['bayar'];
 $user=$data['user'];
-$cetakslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak</span></a>';
-if($piutang>'0'){
-$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok&bayar=ok">'.$nofaktur.'</a>';
+$cetakslip = '<a href="cetak_notapo.php?kode='.$data['nopo'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak</span></a>';
+if($carabayar=='Pemesanan'){
+$lihatslip = '<a href="cetak_notapopenjualan.php?kode='.$data['nopo'].'&lihat=ok&bayar=ok">'.$nopo.'</a>';
+$bayar ='0';
+$piutang = $netto;
 }else{
-$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok" >'.$nofaktur.'</a>';
+$lihatslip = '<a href="cetak_notapopenjualan.php?kode='.$data['nopo'].'&lihat=ok" >'.$nopo.'</a>';
+$bayar =$netto;
+$piutang = '0';
 }
 $admin.='<tr>
             <td>'.$lihatslip.'</td>
             <td>'.tanggalindo($tgl).'</td>
             <td>'.getnamacustomer($kodecustomer).'</td>
-            <td>'.$carabayar.'</td>
             <td>'.$netto.'</td>
             <td>'.$bayar.'</td>
             <td>'.$piutang.'</td>
