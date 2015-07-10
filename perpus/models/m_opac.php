@@ -15,10 +15,10 @@
 		switch ($_POST['aksi']) {
 			// // -----------------------------------------------------------------
 			case 'tampil':
-				$judul            = isset($_POST['judulS'])?filter($_POST['judulS']):'';
-				$kode_klasifikasi = isset($_POST['kode_klasifikasiS'])?filter($_POST['kode_klasifikasiS']):'';
-				$pengarang        = isset($_POST['pengarangS'])?filter($_POST['pengarangS']):'';
-				$penerbit         = isset($_POST['penerbitS'])?filter($_POST['penerbitS']):'';
+				$judul            = isset($_POST['cari_opac'])?filter($_POST['cari_opac']):'';
+				// $kode_klasifikasi = isset($_POST['kode_klasifikasiS'])?filter($_POST['kode_klasifikasiS']):'';
+				// $pengarang        = isset($_POST['pengarangS'])?filter($_POST['pengarangS']):'';
+				// $penerbit         = isset($_POST['penerbitS'])?filter($_POST['penerbitS']):'';
 				
 				$sql = 'SELECT  pkat.replid as replid,
 								pkat.judul,
@@ -34,10 +34,10 @@
 								LEFT JOIN pus_penerbit pn ON pkat.penerbit = pn.replid
 								LEFT JOIN pus_buku pb ON pb.katalog = pkat.replid	
 						WHERE 
-							pkat.judul like "%'.$judul.'%" and
-							pkas.nama like "%'.$kode_klasifikasi.'%" and					
-							pg.nama like "%'.$pengarang.'%" and					
-							penerbit like "%'.$penerbit.'%"						
+							pkat.judul like "%'.$judul.'%" OR
+							pkas.nama like "%'.$judul.'%" OR					
+							pg.nama like "%'.$judul.'%" OR					
+							penerbit like "%'.$judul.'%"						
 						GROUP BY
 							pkat.replid						
 							ORDER BY pkat.replid asc';	
@@ -48,7 +48,7 @@
 					$starting=0;
 				}
 
-				$recpage = 5;
+				$recpage = 36;
 				$aksi    ='tampil';
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
@@ -60,19 +60,18 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					$res = mysql_fetch_array($result);	
-					$sql2 = mysql_query('SELECT * 
+					$ee = mysql_query('SELECT * 
 									FROM kon_warna');
-					$res2 = mysql_num_rows($sql2);
-
-					// $resa = $res['judul'];
+					$dt = array();
+					while ($rr = mysql_fetch_array($ee)) {
+						$dt[] = $rr;
+					}
+					$w = array_rand($dt,$recpage+1);
 					while($res = mysql_fetch_array($result)){	
-					// if (is_array($resa)) {
-					// 	foreach ($resa as $i => $v) {
 								
-	                                    		// <div class="email-data-text">judul</div>
 									    // <a href="#" class="tile  bg-'.$res2['warna'].' data-click="transform">
 							$out.='
-									    <a href="#" onclick="viewFR('.$res['replid'].')" class="tile  bg-green data-click="transform">
+									    <a href="#" onclick="viewFR('.$res['replid'].')" class="tile  bg-'.$dt[$w[$nox]]['warna'].' data-click="transform">
 									        <div class="tile-content email">
 	                                    		<div class="email-data-text">'.$res['judul'].'</div>
 									        </div>

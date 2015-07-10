@@ -12,7 +12,7 @@ var contentFR ='';
                                     // +'<td rowspan="4"><span id="photoTD"></span></td>'
                                 +'</tr>'
                                 +'<tr>'
-                                    +'<td class="span6"><b id="judulTD">judul</b></td>'
+                                    +'<td class="span6"><b id="judulTD"></b></td>'
                                 +'</tr>'
                                 +'<tr>'
                                     +'<td>By <span id="pengarangTD"></span> </td>'
@@ -88,12 +88,13 @@ var contentFR ='';
         $("#tambahBC").on('click', function(){
             viewFR('');
         });
+        $('#cari_opac').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });
 
         //search action
-        // $('#kodeS').keydown(function (e){
-        //     if(e.keyCode == 13)
-        //         viewTB();
-        // });$('#namaS').keydown(function (e){
+        // $('#namaS').keydown(function (e){
         //     if(e.keyCode == 13)
         //         viewTB();
         // });$('#alamatS').keydown(function (e){
@@ -193,6 +194,7 @@ var contentFR ='';
                             }else{
                                 img='../img/no_image.jpg';
                             }
+                            $('#judulTD').html(dt.judul);
                             $('#k_photoH').html(dt.photo2);
                             $('#pengarangTD').html(dt.pengarang);
                             $('#pengarang2TD').html(dt.pengarang);
