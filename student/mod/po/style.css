@@ -22,6 +22,10 @@
 	font-weight	: bold;
 	font-family	: Georgia, "Times New Roman", Times, serif;
 }
-
+.element.style {
+  text-decoration: none;
+  width: 195px;
+  height: 30px;
+}
 
 

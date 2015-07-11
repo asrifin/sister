@@ -268,7 +268,7 @@ $admin .= '
 	<tr>
 		<td>Supplier</td>
 		<td>:</td>
-		<td><select  id="myselect" name="kodesupplier"  class="form-control">';
+		<td><select class="form-select" name="kodesupplier">';
 $hasil = $koneksi_db->sql_query( "SELECT * FROM pos_supplier" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $pilihan = ($data['kode']==$kodesupplier)?"selected":'';
@@ -285,7 +285,7 @@ $pilihan = ($data['kode']==$kodesupplier)?"selected":'';
 	<tr>
 		<td>Barang</td>
 		<td>:</td>
-		<td><select name="kodebarang"  class="form-control">';
+		<td><select name="kodebarang"  class="form-select">';
 $hasil = $koneksi_db->sql_query( "SELECT pp.nama as namaproduk,pp.kode as kode,pj.nama as jenjang FROM pos_produk pp,pos_jenjang pj WHERE pp.jenjang=pj.id " );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 
@@ -383,19 +383,20 @@ $admin .= '
 <div class="panel-heading"><b>Cetak Nota Purchase Order</b></div>';	
 $admin .= '
 <form method="post" action="" class="form-inline"id="posts">
-<table class="table table-striped table-hover">';
+<table>';
 $admin .= '
 	<tr>
 		<td>Kode PO</td>
 		<td>:</td>
-		<td><select  id="myselect" name="kodepo"  class="form-control">';
+		<td><select name="kodepo" >';
 $hasil = $koneksi_db->sql_query( "SELECT * FROM pos_po order by id desc" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 	$admin .= '
 			<option value="'.$data['nopo'].'">'.$data['nopo'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.rupiah_format($data['total']).'</option>';
 }
-	$admin .= '</select>
-					<input type="submit" value="Lihat PO" name="lihatpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
+	$admin .= '
+	<input type="submit" value="Lihat PO" name="lihatpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
+	</select>
 				</td>
 		<td></td>
 		<td></td>
@@ -431,7 +432,7 @@ $admin .= '
 		<td>:</td>
 		<td>'.$nopo.'</td>
 		<td><input type="hidden" name="kode" value="'.$nopo.'">
-		<input type="submit" value="Cetak Nota" name="cetak_notapo"class="btn btn-warning" >
+		<input type="submit" value="Cetak" name="cetak_notapo"class="btn btn-warning" >
 
 		</td>
 	</tr>';

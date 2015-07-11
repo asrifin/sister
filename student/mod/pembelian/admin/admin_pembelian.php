@@ -12,8 +12,11 @@ $style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/cs
 <link rel="stylesheet" href="mod/pembelian/style.css" />
 ';
 $admin .= '
-<script type="text/javascript" src="js/select.js"></script>
-<script type="text/javascript" src="mod/pembelian/script.js"></script>
+<script src="js/external/jquery/jquery.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/jquery-combobox.js"></script>
+';
+$admin .= '
 <script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
 <script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
 $wkt = <<<eof
