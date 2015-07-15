@@ -20,25 +20,13 @@
 <div class="input-control text size3">
     <input type="text" class="_cari" id="cari_opac" name="cari_opac">
 </div>
-<button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
+<!-- <button data-hint="Field Pencarian" xclass="large" id="cariBC" name="cariBC" ><span class="icon-search"></span> </button> -->
 
 <div id="tbody">
 
 </div>
 
 
-<!-- <table class="table hovered bordered striped">
-    <thead>
-        <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-left"><input placeholder="kode" id="kodeS" name="kodeS"></th>
-            <th class="text-left"><input placeholder="nama" id="namaS"name="namaS"></th>
-            <th class="text-left"><input placeholder="alamat" id="alamatS"name="alamatS"></th>
-            <th class="text-left"><input placeholder="keterangan" id="keteranganS"name="keteranganS"></th>
-            <th class="text-left"></th>
-        </tr>
-    </thead>
-
-</table> -->
 
 
 </div>

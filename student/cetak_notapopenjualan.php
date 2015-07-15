@@ -9,7 +9,12 @@ $kode 		= $_POST['kode'];
 }else{
 $kode 		= $_GET['kode'];	
 }
-
+if(isset($_POST['bayarnominal'])){
+$nopo 		= $_POST['kode'];	
+$bayarnominal 		= $_POST['bayarnominal'];	
+$query 		= mysql_query ("update pos_popenjualan set carabayar ='Tunai' where nopo='$nopo'");
+$style_include[] ='<meta http-equiv="refresh" content="1; url=cetak_notapopenjualan.php?kode='.$kode.'&cetak=ok" />';
+	}
 echo "<html><head><title>Nota PO Penjualan</title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
@@ -96,15 +101,6 @@ echo '
 		<td>:</td>
 		<td>'.($carabayar).'</td>
 	</tr>';	
-if($carabayar=='Piutang'){
-echo'
-	<tr>
-		<td>Termin</td>
-		<td>:</td>
-		<td>'.$termin.' Hari</td>
-			<td></td>
-	</tr>';	
-	}
 echo '</table>';	
 echo '<b>Detail</b>';	
 echo '
@@ -140,18 +136,25 @@ echo '
 		<td colspan="7" align="right"><b>Total</b></td>
 		<td >'.rupiah_format($total).'</td>
 	</tr>';
-	/*
-echo '	
-	<tr class="border">	
-		<td colspan="7" align="right"><b>Discount</b></td>
-		<td >'.cekdiscountpersen($discount).'</td>
+	if((isset($_GET['bayar']) or isset($_POST['bayar']))and($carabayar=='Pemesanan')){
+echo '<form class="form-inline" method="POST" action="cetak_notapopenjualan.php?kode='.$kode.'&cetak=ok" enctype ="multipart/form-data" id="posts">';
+echo '<tr class="border">	
+		<td colspan="7" align="right"><b>Bayar</b></td>	<td>
+	<input type="hidden" value="'.$nopo.'" name="kode">
+	<input type="hidden" value="'.$total.'" name="bayarnominal">'.rupiah_format($total).'</td>
 	</tr>';
+echo '<tr>
+	<td colspan="7" align="right"></td>
+	<td>
+	<input type="submit" value="Bayar" name="bayar"onclick="return confirm(\'Apakah Anda Yakin Ingin Melunasi Pemesanan Ini ?\')"></td>
+	</tr></form>';
+	}else{
 echo '	<tr class="border">	
-		<td colspan="7" align="right"><b>Grand Total</b></td>
-		<td >'.rupiah_format($netto).'</td>
+		<td colspan="7" align="right"><b>Bayar</b></td>
+		<td >'.rupiah_format($total).'</td>
 	</tr>
 	';
-	*/
+	}
 echo '</table>';	
 		}
 
