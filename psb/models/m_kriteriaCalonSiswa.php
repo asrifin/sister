@@ -29,7 +29,7 @@
 					$starting=0;
 				}
 				// $menu='tampil';	
-				$recpage = 5;
+				$recpage = 10;
 				$aksi    ='tampil';
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);

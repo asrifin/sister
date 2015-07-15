@@ -1,12 +1,7 @@
 
 <script src="controllers/c_pendataan.js"></script>
 <script src="../js/base64.js"></script>
-<!-- <script src="js/metro/metro-button-set.js"></script>
-<script src="js/metro/metro-hint.js"></script>
-<script src="js/metro/metro-calendar.js"></script>
-<script src="js/metro/metro-datepicker.js"></script>
- -->
- <!--  <script type="../js/metro/metro-scroll.js"></script> -->
+
 <h4 style="color:white;">Pendataan Calon Siswa</h4>
 <div id="loadarea"></div>
 
