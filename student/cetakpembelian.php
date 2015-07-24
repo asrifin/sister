@@ -9,9 +9,25 @@ $tglakhir 		= $_GET['tglakhir'];
 $carabayar 		= $_GET['carabayar'];
 $detail 		= $_GET['detail'];
 $jenisproduk 		= $_GET['jenisproduk'];
+$kodebarang 		= $_GET['kodebarang'];
 $supplier 		= $_GET['supplier'];
+$namasupplier = getnamasupplier($supplier);
+if($jenisproduk!='Semua'){
+         $wherekodebarang="";
+		 $detail ='ok';
+		 $namajenisproduk = getjenis($jenisproduk);
+$namakodebarang="Semua";
+}
+if($kodebarang!='Semua'){
+         $jenisproduk="Semua";
+		 $detail ='ok';
+$wherekodebarang="and kodebarang='$kodebarang'";
+$namakodebarang=getnamabarang($kodebarang);
+		 $namajenisproduk ="Semua";
+}
 if($supplier=='Semua'){
          $wheresupplier="";
+		 $namasupplier ='SEMUA';
 }else{
          $wheresupplier="and kodesupplier='$supplier'";
 }
@@ -61,13 +77,13 @@ echo'
 <tr><td colspan="7"><img style="margin-right:5px; margin-top:5px; padding:1px; background:#ffffff; float:left;" src="images/logo.png" height="70px"><br>
 <b>Elyon Christian School</b><br>
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
-
-if(!$detail){
-echo'<tr><td colspan="7"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Supplier '.getnamasupplier($supplier).'</h4></td></tr>';
+if($detail!='ok'){
+echo'<tr><td colspan="7"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Supplier '.$namasupplier.'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
 <td>No.Invoice</td>
+<td>No.PO</td>
 <td>Tanggal</td>
 <td>Supplier</td>
 <td>Cara Bayar</td>
@@ -98,10 +114,12 @@ $termin = $termin." Hari";
 $user = $datas['user'];
 $urutan = $no + 1;
 $lihatslip = '<a href="cetak_notainvoice.php?kode='.$datas['noinvoice'].'&lihat=ok"target="new">'.$datas['noinvoice'].'</a>';
+$lihatslippo = '<a href="cetak_notapo.php?kode='.$datas['nopo'].'&lihat=ok"target="new">'.$datas['nopo'].'</a>';
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
 <td>'.$lihatslip.'</td>
+<td>'.$lihatslippo.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$carabayar.'</td>
@@ -126,11 +144,12 @@ echo '
 </tr>';
 echo '</table>';
 }else{
-echo'<tr><td colspan="8"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Supplier '.getnamasupplier($supplier).'</h4></td></tr>';
+echo'<tr><td colspan="8"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Supplier '.$namasupplier.', , Jenis / Barang : '.$namajenisproduk.'/'.$namakodebarang.'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
 <td>No.Invoice</td>
+<td>No.PO</td>
 <td>Tanggal</td>
 <td>Supplier</td>
 <td>Cara Bayar</td>
@@ -155,8 +174,10 @@ $carabayar = $datas['carabayar'];
 $user = $datas['user'];
 $netto = $datas['netto'];
 $tnetto += $netto;
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$datas['noinvoice'].'&lihat=ok"target="new">'.$datas['noinvoice'].'</a>';
+$lihatslippo = '<a href="cetak_notapo.php?kode='.$datas['nopo'].'&lihat=ok"target="new">'.$datas['nopo'].'</a>';
 $urutan = $no + 1;
-$s2 = mysql_query ("SELECT * FROM `pos_pembeliandetail` where noinvoice = '$noinvoice'order by id asc");	
+$s2 = mysql_query ("SELECT * FROM `pos_pembeliandetail` where noinvoice = '$noinvoice' $wherekodebarang order by id asc");	
 while($datas2 = mysql_fetch_array($s2)){
 $kodebarang = $datas2['kodebarang'];
 $jumlah = $datas2['jumlah'];
@@ -168,7 +189,8 @@ if($jenisbarangid==$jenisproduk){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$noinvoice.'</td>
+<td>'.$lihatslip.'</td>
+<td>'.$lihatslippo.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$carabayar.'</td>
@@ -189,7 +211,8 @@ if($jenisproduk=='Semua'){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$noinvoice.'</td>
+<td>'.$lihatslip.'</td>
+<td>'.$lihatslippo.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$carabayar.'</td>
@@ -213,7 +236,7 @@ $grandtotal+=$subtotal;
 
 echo '
 <tr class="border" align="right">
-<td colspan="12"><b>Grand Total :</b></td>
+<td colspan="13"><b>Grand Total :</b></td>
 <td>'.rupiah_format($grandtotal).'</td>
 <td></td>
 </tr>';
@@ -226,6 +249,7 @@ echo '
 </tr>';*/
 echo '</table>';
 }
+/****************************/
 /****************************/
 echo "</body</html>";
 /*

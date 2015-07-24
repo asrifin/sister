@@ -9,12 +9,34 @@ $tglakhir 		= $_GET['tglakhir'];
 $carabayar 		= $_GET['carabayar'];
 $detail 		= $_GET['detail'];
 $jenisproduk 		= $_GET['jenisproduk'];
+$kodebarang 		= $_GET['kodebarang'];
+$jenisproduk 		= $_GET['jenisproduk'];
+$kodecustomer 		= $_GET['kodecustomer'];
+$namacustomer = getnamacustomer($kodecustomer);
+if($jenisproduk!='Semua'){
+         $wherekodebarang="";
+		 $detail ='ok';
+		 $namajenisproduk = getjenis($jenisproduk);
+$namakodebarang="Semua";
+}
+if($kodebarang!='Semua'){
+         $jenisproduk="Semua";
+		 $detail ='ok';
+$wherekodebarang="and kodejasa='$kodebarang'";
+$namakodebarang=getnamabarang($kodebarang);
+		 $namajenisproduk ="Semua";
+}
+if($kodecustomer=='Semua'){
+         $wherecustomer="";
+}else{
+         $wherecustomer="and kodecustomer='$kodecustomer'";
+}
 switch ($carabayar) {
    case 'Tunai':
          $wherestatus="and carabayar='Tunai'";
          break;
 }
-echo "<html><head><title>Laporan Penjualan </title>";
+echo "<html><head><title>Laporan Penjualan Jasa</title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
     font-size: 0.8em; /* 14px/16=0.875em */
@@ -47,8 +69,8 @@ echo'
 <b>Elyon Christian School</b><br>
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
-if(!$detail){
-echo'<tr><td colspan="7"><h4>Laporan Penjualan Jasa, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
+if($detail!='ok'){
+echo'<tr><td colspan="7"><h4>Laporan Penjualan Jasa, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Customer '.$namacustomer.'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
@@ -61,7 +83,7 @@ echo '
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `pos_penjualanjasa` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `pos_penjualanjasa` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus $wherecustomer  order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $nofaktur = $datas['nofaktur'];
@@ -77,10 +99,11 @@ $urutan = $no + 1;
 if($termin!=''){
 $termin = $termin." Hari";
 }
+$lihatslip = '<a href="cetak_notafakturjasa.php?kode='.$datas['nofaktur'].'&lihat=ok"target="new" >'.$nofaktur.'</a>';
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nofaktur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamacustomer($kodecustomer).'</td>
 <td>'.$carabayar.'</td>
@@ -103,7 +126,7 @@ echo '
 </tr>';
 echo '</table>';
 }else{
-echo'<tr><td colspan="8"><h4>Laporan Penjualan Jasa, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
+echo'<tr><td colspan="8"><h4>Laporan Penjualan Jasa, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Customer '.$namacustomer.'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
@@ -122,7 +145,7 @@ echo '
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `pos_penjualanjasa` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `pos_penjualanjasa` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus  $wherecustomer order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $nofaktur = $datas['nofaktur'];
@@ -133,7 +156,7 @@ $user = $datas['user'];
 $netto = $datas['netto'];
 $tnetto += $netto;
 $urutan = $no + 1;
-$s2 = mysql_query ("SELECT * FROM `pos_penjualanjasadetail` where nofaktur = '$nofaktur'order by id asc");	
+$s2 = mysql_query ("SELECT * FROM `pos_penjualanjasadetail` where nofaktur = '$nofaktur'$wherekodebarang  order by id asc");	
 while($datas2 = mysql_fetch_array($s2)){
 $kodejasa = $datas2['kodejasa'];
 $jumlah = $datas2['jumlah'];
@@ -205,10 +228,11 @@ echo '</table>';
 }
 /****************************/
 echo "</body</html>";
-
+/*
 if (isset($_GET['tglmulai'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>
