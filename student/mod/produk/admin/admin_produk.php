@@ -9,8 +9,14 @@ if (!cek_login ()){
 	
 $admin .='<p class="judul">Access Denied !!!!!!</p>';
 }else{
-
-$JS_SCRIPT= <<<js
+$JS_SCRIPT.= <<<js
+<script type="text/javascript">
+  $(function() {
+$( "#tgl" ).datepicker({ dateFormat: "yy-mm-dd" } );
+  });
+  </script>
+js;
+$JS_SCRIPT.= <<<js
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function() {
     $('#example').dataTable();
@@ -18,43 +24,12 @@ $(document).ready(function() {
 
 </script>
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />';
-$admin .= '
-<script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
-$wktmulai = <<<eof
-<script language="JavaScript" type="text/javascript">
-    
-    /**
-    * Example callback function
-    */
-    /*<![CDATA[*/
-    function exampleCallback_ISO3(date, month, year)
-    {
-        if (String(month).length == 1) {
-            month = '0' + month;
-        }
-    
-        if (String(date).length == 1) {
-            date = '0' + date;
-        }    
-        document.forms['posts'].tgl.value = year + '-' + month + '-' + date;
-    }
-    calendar3 = new dynCalendar('calendar3', 'exampleCallback_ISO3');
-    calendar3.setMonthCombo(true);
-    calendar3.setYearCombo(true);
-/*]]>*/     
-</script>
-eof;
 $script_include[] = $JS_SCRIPT;
 $admin  .='<legend>PRODUK</legend>';
 $admin  .= '<div class="border2">
 <table  ><tr align="center">
 <td>
 <a href="admin.php?pilih=produk&mod=yes">PRODUK</a>&nbsp;&nbsp;
-</td>
-<td>
-<a href="admin.php?pilih=produk&mod=yes&aksi=import">IMPORT PRODUK</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=produk&mod=yes&aksi=stokopname">STOK OPNAME</a>&nbsp;&nbsp;
@@ -105,7 +80,7 @@ $data 		= mysql_fetch_array($query);
 $jenis  			= $data['jenis'];
 $jenjang  			= $data['jenjang'];
 $kode = $data['kode'];
-$generatekode=generatekode('KPR','kode','pos_produk');
+$generatekode=generatekodeedit('KPR','kode','pos_produk',$id);
 if(!$kode){$kode = $generatekode;}
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Edit Produk</h3></div>';
@@ -199,7 +174,7 @@ $hargajual 		= $_POST['hargajual'];
 	}
 
 }
-$generatekode=generatekode('KPR','kode','pos_produk');
+$generatekode=generatekode('KPR','kode','pos_produk',$id);
 $kode     		= !isset($kode) ? $generatekode : $kode;
 $jenjang     		= !isset($jenjang) ? '' : $jenjang;
 $nama     		= !isset($nama) ? '' : $nama;
@@ -429,7 +404,7 @@ $admin .= '
 	<tr>
 		<td>Tanggal Stok Opname/Stok Awal</td>
 		<td>:</td>
-		<td><input type="text" name="tgl" value="'.$tgl.'"class="form-control" >&nbsp;'.$wktmulai.'</td>
+		<td><input type="text" name="tgl" value="'.$tgl.'"class="form-control" id="tgl" ></td>
 	</tr>
 	<tr>
 		<td>Kode Barang</td>
