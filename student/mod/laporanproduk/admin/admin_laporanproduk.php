@@ -91,7 +91,7 @@ $admin .= '<form class="form-inline" method="get" action="cetakbarang.php" encty
 $admin .= '
 <tr>
 	<td>Kode</td>
-	<td><select name="kodebarang" class="form-control" required>';
+	<td><select id="combobox"  name="kodebarang" class="form-control" required>';
 $hasil = $koneksi_db->sql_query("SELECT * FROM pos_produk ORDER BY nama asc");
 $admin .= '<option value="">== Pilih Produk==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
