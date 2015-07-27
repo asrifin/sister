@@ -8,6 +8,21 @@ $tglmulai 		= $_GET['tglmulai'];
 $tglakhir 		= $_GET['tglakhir'];
 $detail 		= $_GET['detail'];
 $jenisproduk 		= $_GET['jenisproduk'];
+$kodebarang 		= $_GET['kodebarang'];
+$jenisproduk 		= $_GET['jenisproduk'];
+if($jenisproduk!='Semua'){
+         $wherekodebarang="";
+		 $detail ='ok';
+		 $namajenisproduk = getjenis($jenisproduk);
+$namakodebarang="Semua";
+}
+if($kodebarang!='Semua'){
+         $jenisproduk="Semua";
+		 $detail ='ok';
+$wherekodebarang="and kodebiaya='$kodebarang'";
+$namakodebarang=getnamabarang($kodebarang);
+		 $namajenisproduk ="Semua";
+}
 switch ($carabayar) {
    case 'Tunai':
          $wherestatus="and carabayar='Tunai'";
@@ -46,7 +61,7 @@ echo'
 <b>Elyon Christian School</b><br>
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
-if(!$detail){
+if($detail!='ok'){
 echo'<tr><td colspan="7"><h4>Laporan Biaya, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
 echo '
 <tr class="border">
@@ -124,7 +139,7 @@ $user = $datas['user'];
 $netto = $datas['netto'];
 $tnetto += $netto;
 $urutan = $no + 1;
-$s2 = mysql_query ("SELECT * FROM `pos_penjualanbiayadetail` where nofaktur = '$nofaktur'order by id asc");	
+$s2 = mysql_query ("SELECT * FROM `pos_penjualanbiayadetail` where nofaktur = '$nofaktur'$wherekodebarang order by id asc");	
 while($datas2 = mysql_fetch_array($s2)){
 $kodebiaya = $datas2['kodebiaya'];
 $jenis = $datas2['jenis'];

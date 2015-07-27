@@ -8,38 +8,13 @@ if (!cek_login()){
     header("location: index.php");
     exit;
 } else{
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />
-<link rel="stylesheet" href="mod/po/style.css" />
-';
-$admin .= '
-<script type="text/javascript" src="js/select.js"></script>
-<script type="text/javascript" src="mod/po/script.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
-$wkt = <<<eof
-<script language="JavaScript" type="text/javascript">
-    
-    /**
-    * Example callback function
-    */
-    /*<![CDATA[*/
-    function exampleCallback_ISO3(date, month, year)
-    {
-        if (String(month).length == 1) {
-            month = '0' + month;
-        }
-    
-        if (String(date).length == 1) {
-            date = '0' + date;
-        }    
-        document.forms['posts'].tgl.value = year + '-' + month + '-' + date;
-    }
-    calendar3 = new dynCalendar('calendar3', 'exampleCallback_ISO3');
-    calendar3.setMonthCombo(true);
-    calendar3.setYearCombo(true);
-/*]]>*/     
-</script>
-eof;
+$JS_SCRIPT.= <<<js
+<script type="text/javascript">
+  $(function() {
+$( "#tgl" ).datepicker({ dateFormat: "yy-mm-dd" } );
+  });
+  </script>
+js;
 $script_include[] = $JS_SCRIPT;
 	
 //$index_hal=1;	
@@ -259,7 +234,7 @@ $admin .= '
 	<tr>
 		<td>Tanggal</td>
 		<td>:</td>
-		<td><input type="text" name="tgl" value="'.$tgl.'" class="form-control">&nbsp;'.$wkt.'</td>
+		<td><input type="text" name="tgl" id="tgl" value="'.$tgl.'" class="form-control">&nbsp;</td>
 <td>Cara Pembayaran</td>
 		<td>:</td>
 		<td>'.$sel2.'</td>
@@ -268,7 +243,7 @@ $admin .= '
 	<tr>
 		<td>Supplier</td>
 		<td>:</td>
-		<td><select class="form-select" name="kodesupplier">';
+		<td><select class="form-select" name="kodesupplier"id="combobox">';
 $hasil = $koneksi_db->sql_query( "SELECT * FROM pos_supplier" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $pilihan = ($data['kode']==$kodesupplier)?"selected":'';
@@ -285,7 +260,7 @@ $pilihan = ($data['kode']==$kodesupplier)?"selected":'';
 	<tr>
 		<td>Barang</td>
 		<td>:</td>
-		<td><select name="kodebarang"  class="form-select">';
+		<td><select name="kodebarang"  class="form-select"id="combobox2">';
 $hasil = $koneksi_db->sql_query( "SELECT pp.nama as namaproduk,pp.kode as kode,pj.nama as jenjang FROM pos_produk pp,pos_jenjang pj WHERE pp.jenjang=pj.id " );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 
@@ -383,22 +358,21 @@ $admin .= '
 <div class="panel-heading"><b>Cetak Nota Purchase Order</b></div>';	
 $admin .= '
 <form method="post" action="" class="form-inline"id="posts">
-<table>';
+<table  class="table table-striped table-hover">';
 $admin .= '
 	<tr>
 		<td>Kode PO</td>
 		<td>:</td>
-		<td><select name="kodepo" >';
+		<td><select name="kodepo" id="combobox">';
 $hasil = $koneksi_db->sql_query( "SELECT * FROM pos_po order by id desc" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 	$admin .= '
-			<option value="'.$data['nopo'].'">'.$data['nopo'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.rupiah_format($data['total']).'</option>';
+			<option value="'.$data['nopo'].'">'.$data['nopo'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.rupiah_format($data['total']).' ~ '.tanggalindo($data['tgl']).'</option>';
 }
 	$admin .= '
-	<input type="submit" value="Lihat PO" name="lihatpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
-	</select>
+	</select>&nbsp;<input type="submit" value="Lihat PO" name="lihatpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
 				</td>
-		<td></td>
+		<td>	</td>
 		<td></td>
 		<td></td>
 		</tr>';
