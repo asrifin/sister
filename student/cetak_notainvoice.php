@@ -12,7 +12,11 @@ if(isset($_POST['bayarnominal'])){
 $noinvoice 		= $_POST['kode'];	
 $bayarnominal 		= $_POST['bayarnominal'];	
 $query 		= mysql_query ("update pos_pembelian set bayar ='$bayarnominal', hutang='0' where noinvoice='$noinvoice'");
-$style_include[] ='<meta http-equiv="refresh" content="1; url=cetak_notainvoice.php?kode='.$kode.'&cetak=ok" />';
+echo '<meta http-equiv="refresh" content="1; url=admin.php?pilih=hutang&mod=yes" />';
+echo "<script type=\"text/javascript\">
+        window.open('cetak_notainvoice.php?kode=".$kode."&lihat=ok', '_blank')
+    </script>";	
+//$style_include[] ='<meta http-equiv="refresh" content="1; url=cetak_notainvoice.php?kode='.$kode.'&cetak=ok" />';
 	}
 echo "<html><head><title>Nota Transaksi Pembelian </title>";
 echo '<style type="text/css">
@@ -167,7 +171,7 @@ echo '	<tr class="border">
 	</tr>
 	';
 	if((isset($_GET['bayar']) or isset($_POST['bayar']))and($bayar=='0')){
-echo '<form class="form-inline" method="POST" action="cetak_notainvoice.php?kode='.$kode.'&cetak=ok" enctype ="multipart/form-data" id="posts">';
+echo '<form class="form-inline" method="POST" action="cetak_notainvoice.php?kode='.$kode.'&lihat=ok" enctype ="multipart/form-data" id="posts">';
 echo '<tr class="border">	
 		<td colspan="8" align="right"><b>Bayar</b></td>	
 	<td>
