@@ -66,8 +66,7 @@ $data 		= mysql_fetch_array($query);
 $jenis  			= $data['jenis'];
 $jenjang  			= $data['jenjang'];
 $kode = $data['kode'];
-$generatekode=generatekode('KPB','kode','pos_produkbiaya');
-if(!$kode){$kode = $generatekode;}
+$generatekode=generatekodeedit('KBB','kode','pos_produkbiaya',$id);
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Edit Biaya</h3></div>';
 $admin .= '
@@ -141,13 +140,17 @@ $hargajual 		= int_filter($_POST['hargajual']);
 		}else{
 			$admin .= '<div class="error"><b> Gagal di Buat.</b></div>';
 		}
-		unset($nama);
+		unset($jenjang);
+		unset($kode);
+			unset($nama);
+		unset($jenis);
+		unset($hargajual);
 	}
 
 }
-$generatekode=generatekode('KPB','kode','pos_produkbiaya');
-$kode     		= !isset($kode) ? $generatekode : $kode;
+$generatekode=generatekode('KBB','kode','pos_produkbiaya');
 $jenjang     		= !isset($jenjang) ? '' : $jenjang;
+$kode     		= !isset($kode) ? $generatekode : $kode;
 $nama     		= !isset($nama) ? '' : $nama;
 $jenis     		= !isset($jenis) ? '' : $jenis;
 $hargajual     		= !isset($hargajual) ? '0' : $hargajual;
@@ -183,7 +186,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"value="'.$kode.'"class="form-control" required></td>
+		<td><input type="text" name="kode" size="25"class="form-control"value="'.$kode.'" required></td>
 	</tr>
 	<tr>
 		<td>Nama Biaya</td>
