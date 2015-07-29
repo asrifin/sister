@@ -204,7 +204,7 @@
 						// AND t.replid = p.tahunajaran
 						// AND t.replid = '.$_POST['tahunajaran'].'
 				// print_r($s);exit();
-				$e  = mysql_query($s);
+				$e  = mysql_query($s) or die(mysql_error());
 				$n  = mysql_num_rows($e);
 				$ar = $dt=array();
 

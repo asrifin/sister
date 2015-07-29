@@ -154,12 +154,12 @@
 						$out.= '<tr>
 									<td>'.$no['full'].'</td>
 									<td>'.$r['nama'].'</td>
-									<td align="right">'.setuang(getBiaya('registration',$r['replid'])).'</td>
+									<td align="right">'.setuang(getBiaya('dpp',$r['replid'])).'</td>
 									<td align="right">'.setuang(getDisc('discsubsidi',$r['replid'])).'</td>
 									<td align="right">'.setuang(getDisc('discsaudara',$r['replid'])).'</td>
 									<td align="right">'.setuang(getDisc('disctunai',$r['replid'])).'</td>
 									<td align="right">'.setuang(getDisc('discangsuran',$r['replid'])).'</td>
-									<td align="right" class="bg-green fg-white">'.setuang(getBiayaNet('registration',$r['replid'])).'</td>
+									<td align="right" class="bg-green fg-white">'.setuang(getBiayaNet('dpp',$r['replid'])).'</td>
 									'.$btn.'
 								</tr>';
 									// <td align="center">'.($r['cicilan']==1?'Cash':'Angsur '.$r['cicilan'].' x').'</td>
@@ -183,11 +183,12 @@
 				}else{
 					$biaya = getSetBiaya($_POST['kelompok'],$_POST['kriteria'],$_POST['golongan']);
 					$o     = array(
-								'status'       =>(($biaya!=null || $biaya!='')?'sukses':'gagal'),
-								'replid'       =>$biaya['replid'],
-								'registration' =>$biaya['registration'],
-								'material'     =>$biaya['material'],
-								'tuition'      =>$biaya['tuition'],
+								'status'   =>(($biaya!=null || $biaya!='')?'sukses':'gagal'),
+								'replid'   =>$biaya['replid'],
+								'nilai'    =>$biaya['nilai'],
+								'joiningf' =>$biaya['joiningf'],
+								'daftar'   =>$biaya['daftar'],
+								'spp'      =>$biaya['spp'],
 							);				
 				}$out = json_encode($o);
 			break;
@@ -242,6 +243,7 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$siswa = $tb.' set 	kriteria 	  = "'.filter($_POST['kriteriaTB']).'",
+									proses        = "'.filter($_POST['prosesTB']).'",
 									golongan      = "'.filter($_POST['golonganTB']).'",
 									kelompok      = "'.filter($_POST['kelompokTB']).'",
 									discsubsidi   = "'.getuang(filter($_POST['discsubsidiTB'])).'",
@@ -391,9 +393,10 @@
 							c.nama namaSiswa,
 							
 							/* pembayaran*/
-							b.material,
-							b.tuition,
-							b.registration,
+							b.joiningf,
+							b.spp,
+							b.nilai dpp,
+							b.daftar,
 							
 							/* Data Ortu*/
 							a.nama namaAyah,
@@ -433,8 +436,8 @@
 				$r 		= mysql_fetch_assoc($e);
 				// print_r($r);exit();
 				$stat          = ($e)?'sukses':'gagal';
-				$regNum        = setuang(getBiaya('registration',$_POST['replid']));
-				$regNumNet     = setuang(getBiayaNet('registration',$_POST['replid']));
+				$regNum        = setuang(getBiaya('dpp',$_POST['replid']));
+				$regNumNet     = setuang(getBiayaNet('dpp',$_POST['replid']));
 				$nopendaftaran = getNoPendaftaran($_POST['replid'],$r['kelompok'])['full'];
 				$proses        = getField('proses','psb_kelompok','replid',$r['kelompok']);
 				$discangsuran  = setuang(getDiscAngsuran($regNum, $r['angsuran']));
@@ -444,7 +447,7 @@
 							'status'          =>$stat,
 						// pembayaran
 							'setbiaya'        =>$r['setbiaya'],
-							'registration'    =>$regNum,
+							'dpp'    		  =>$regNum,
 							'angsuran'        =>$r['angsuran'],
 							'discangsuran'    =>$discangsuran,
 							'discsubsidi'     =>setuang($r['discsubsidi']),
@@ -452,9 +455,10 @@
 							'iddisctunai'     =>$r['disctunai'],
 							'disctunai'       =>$disctunai,
 							'disctotal'       =>setuang(getDiscTotal($_POST['replid'])),
-							'registrationnet' =>$regNumNet,
-							'material'        =>setuang($r['material']),
-							'tuition'         =>setuang($r['tuition']),
+							'dppnet' 		  =>$regNumNet,
+							'joiningf'        =>setuang($r['joiningf']),
+							'spp'         	  =>setuang($r['spp']),
+							'daftar'         =>setuang($r['daftar']),
 						// data siswa
 							
 							'nopendaftaranH'  =>$r['nopendaftaran'],

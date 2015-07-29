@@ -11,6 +11,7 @@ PENAMBAHAN TABEL atau PENAMBAHAN FIELD
 	- tambah -> field nama(varchar 50 -> not null) di tabel psb_disctunai
 	- tambah -> Pendataan Calon Siswa -> field photo2(longtext) di tabel psb_calonsiswa
 	- ubah	 -> Perubahan tabel psb_calonsiswa, dll -> Folder 20150412
+	- tambah -> PENAMBAHAN field diskon
 * Keuangan
 	- Tambah -> tabel kon_ -> Folder 20150402
 	- Tambah -> tabel keu_anggarantahunan, keu_detailanggaran, keu_kategorianggaran

@@ -1,7 +1,8 @@
 var mnu       = 'pendataan';
 var mnu2      = 'departemen';
 var mnu3      = 'proses';
-var mnu4      = 'tingkat';
+// var mnu4      = 'tingkat';
+var mnu4      = 'kriteriaCalonSiswa';
 var mnu5      = 'golonganCalonSiswa';
 var mnu6      = 'setAngsuran'; 
 var mnu7      = 'setDiskon';
@@ -10,7 +11,7 @@ var mnu_kel   = 'kelompok';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
 var dir3      = 'models/m_'+mnu3+'.php';
-var dir4      = '../akademik/models/m_'+mnu4+'.php';
+var dir4      = 'models/m_'+mnu4+'.php';
 var dir5      = 'models/m_'+mnu5+'.php';
 var dir6      = 'models/m_'+mnu6+'.php';
 var dir7      = 'models/m_'+mnu7+'.php';
@@ -463,13 +464,14 @@ var contentFR = '';
             $('.cari').attr('style','display:none;');
             
             if(id==''){ // add mode 
+                cmbproses('form',$('#departemenS').val(),'');
                 cmbkriteria('');
-                cmbgolongan('');
+                cmbkelompok('');
+                // cmbgolongan('');
                 cmbdisctunai('');
                 cmbgolongan('');
                 cmbagama('');
                 cmbangsuran('');
-                cmbproses('form',$('#departemenS').val(),'');
             }else{ //edit mode
                 var u =dir;
                 var d ='aksi=ambiledit&replid='+id;
@@ -507,17 +509,18 @@ var contentFR = '';
                     $('#photoH').val(dt.photo);
                 // pembayaran
                     $('#setbiayaTB').val(dt.setbiaya);
-                    $('#registrationTD').html(dt.registration);
+                    $('#dppTD').html(dt.nilai);
                     cmbangsuran(dt.angsuran);
                     $('#discangsuranTD').html(dt.discangsuran);
                     $('#discsubsidiTB').val(dt.discsubsidi);
                     $('#discsaudaraTB').val(dt.discsaudara);
                     $('#disctotalTD').html(dt.disctotal);
-                    $('#registrationnetTD').html(dt.registrationnet);
+                    $('#dppnetTD').html(dt.nilainet);
                     cmbdisctunai(dt.iddisctunai);
                     $('#disctunai2TD').html(dt.disctunai);
-                    $('#materialTD').html(dt.material);
-                    $('#tuitionTD').html(dt.tuition);
+                    $('#joiningfeeTD').html(dt.joiningf);
+                    $('#sppTD').html(dt.spp);
+                    $('#formulirTD').html(dt.daftar);
                 //ayah
                     $('#ayahTB').val(dt.namaAyah);
                     $('#kebangsaan_ayahTB').val(dt.kebangsaanAyah);
@@ -805,7 +808,7 @@ var contentFR = '';
                 $('#diskon_saudaraTB').val(dt.discsaudara);
                 $('#diskon_tunaiTB').val(dt.disctunai);
                 $('#diskon_totalTB').val(dt.disctotal);
-                $('#joiningTB').val(dt.joining);
+                $('#joiningfeeTD').val(dt.joiningf);
                 $('#nopendaftaranTB').val(dt.nopendaftaran);
                 $('#namaTB').val(dt.siswa);
                 $('#tempatlahirTB').val(dt.tmplahir);
@@ -981,7 +984,7 @@ var contentFR = '';
                 opt+='<option value="">'+dt.status+'</option>'
             }else{
                 var opt = '';
-                $.each(dt.angsuran,function(id,item){
+                $.each(dt.cicilan,function(id,item){
                     opt+='<option '+(ang==item.replid?'selected':'')+' value="'+item.replid+'">'+item.cicilan+' x </option>'
                 });
             }
@@ -1018,9 +1021,10 @@ var contentFR = '';
                     +'&golongan='+$('#golonganTB').val();
             ajax(u,d).done(function (dt){
                 $('#setbiayaTB').val(dt.replid);
-                $('#registrationTD').html('Rp. '+parseInt(dt.registration).setCurr());
-                $('#materialTD').html('Rp. '+parseInt(dt.material).setCurr());
-                $('#tuitionTD').html('Rp. '+parseInt(dt.tuition).setCurr());
+                $('#dppTD').html('Rp. '+parseInt(dt.nilai).setCurr());
+                $('#joiningfeeTD').html('Rp. '+parseInt(dt.joiningf).setCurr());
+                $('#sppTD').html('Rp. '+parseInt(dt.spp).setCurr());
+                $('#formulirdaftarTD').html('Rp. '+parseInt(dt.daftar).setCurr());
                 getDiscTotal();
             });            
         }
@@ -1034,7 +1038,7 @@ var contentFR = '';
             var u = dir;
             var d ='aksi=getDisc&replid='+replid;
             ajax(u,d).done(function (dt) {
-                var regVal    = $('#registrationTD').html();
+                var regVal    = $('#dppTD').html();
                 var regNum    = getCurr((typeof regVal=='NaN' || regVal=='' || regVal=='Rp. 0')?0:regVal);
                 var discNum   = parseInt(dt.nilai);
                 var discTunai = regNum*discNum/100;
@@ -1048,7 +1052,7 @@ var contentFR = '';
         var u = dir;
         var d ='aksi=getDiscAngsuran'
                 +'&discAngsuran='+$('#angsuranTB').val()
-                +'&regNum='+$('#registrationTD').html();
+                +'&regNum='+$('#dppTD').html();
         ajax(u,d).done(function (dt) {
             var discNum = 'Rp. '+dt.discNum.setCurr();
             $('#discangsuranTD').html(discNum);
@@ -1086,10 +1090,10 @@ var contentFR = '';
 
 // biaya  : registration net
      function getRegistrationNet(){
-        var regNum       = getCurr($('#registrationTD').html());
+        var regNum       = getCurr($('#dppTD').html());
         var disctotalNum = getCurr($('#disctotalTD').html());
         var regNetNum    = 'Rp. '+(regNum - disctotalNum).setCurr();
-        $('#registrationnetTD').html(regNetNum);
+        $('#dppnetTD').html(regNetNum);
      }
 
     function pagination(page,aksix,subaksi){ 
@@ -1295,17 +1299,17 @@ function notif(cont,clr) {
         $('#photoH').val('');
     // pembayaran
         $('#setbiayaTB').val('');
-        $('#registrationTD').html('');
+        $('#dppTD').html('');
         $('#angsuranTB').val('');
         $('#discangsuranTD').html('');
         $('#discsubsidiTB').val('');
         $('#discsaudaraTB').val('');
         $('#disctotalTD').html('');
-        $('#registrationnetTD').html('');
+        $('#dppnetTD').html('');
         $('#disctunaiTB').val('');
         $('#disctunai2TD').html('');
-        $('#materialTD').html('');
-        $('#tuitionTD').html('');
+        $('#joiningfeeTD').html('');
+        $('#sppTD').html('');
     //ayah
         $('#ayahTB').val('');
         $('#kebangsaan_ayahTB').val('');

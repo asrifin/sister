@@ -156,6 +156,10 @@
                           <td colspan="2"  >Joining Fee:</td>
                           <td align="right" id="joiningfeeTD">Rp. 0</td>
                         </tr>
+                        <tr class="bg-lightTeal" >
+                          <td colspan="2"  >Formulir Pendaftaran :</td>
+                          <td align="right" id="formulirdaftarTD">Rp. 0</td>
+                        </tr>
 
                       </table>
                     </div>

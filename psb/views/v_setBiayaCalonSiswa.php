@@ -16,7 +16,7 @@
     <select data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
 </div>
 
-<div  style="overflow:scroll;height:600px;" >
+<div  style="overflow:scroll;height:500px;" >
     <form autocomplete="off" onsubmit="simpan();return false;"> 
         <button data-hint="Simpan" id="simpanBC"><span class="icon-floppy"></span> </button>
         <table class="table hovered bordered striped">
