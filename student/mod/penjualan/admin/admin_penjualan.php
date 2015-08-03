@@ -136,6 +136,8 @@ if($bayar=='0'){
 $carabayar ='Pemesanan';
 $tgltermin = tgltermin($tgl,$termin);
 $hasil  = mysql_query( "INSERT INTO `pos_penjualan` VALUES ('','$nofaktur','$nopo','$tgl','$kodecustomer','$carabayar','$total','$discount','$netto','0','$netto','$termin','$tgltermin','$user')" );	
+}else{
+$hasil  = mysql_query( "INSERT INTO `pos_penjualan` VALUES ('','$nofaktur','$nopo','$tgl','$kodecustomer','$carabayar','$total','$discount','$netto','$bayar','0','0','','$user')" );
 }
 $idpenjualan = mysql_insert_id();
 foreach ($_SESSION["product_id"] as $cart_itm)

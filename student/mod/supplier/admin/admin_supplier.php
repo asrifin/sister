@@ -52,6 +52,7 @@ if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT kode FROM pos_suppli
 		}else{
 			$admin .= '<div class="error"><b>Gagal di Update.</b></div>';
 		}
+		unset($kode);
 	}
 
 }
@@ -63,7 +64,7 @@ $alamat 		= $data['alamat'];
 $telepon 		= $data['telepon'];
 $carabayar 		= $data['carabayar'];
 $termin 		= $data['termin'];
-$generatekode=generatekode('SUP','kode','pos_supplier');
+$generatekode=generatekodeedit('SUP','kode','pos_supplier',$id);
 if(!$kode){$kode = $generatekode;}
 $sel2 = '<select name="carabayar" class="form-control">';
 $arr2 = array ('Tunai','Debet Card','Hutang');

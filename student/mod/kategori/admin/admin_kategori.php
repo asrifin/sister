@@ -92,7 +92,7 @@ $query 		= mysql_query ("SELECT * FROM `pos_jenisproduk` WHERE `id`='$id'");
 $data 		= mysql_fetch_array($query);
 $jenis = $data['jenis'];
 $sel = '<select name="jenis" class="form-control">';
-$arr = array ('aktif','pasif');
+$arr = array ('BARANG','JASA');
 foreach ($arr as $kk=>$vv){
 	if ($jenis == $vv){
 	$sel .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';

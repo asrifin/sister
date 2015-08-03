@@ -28,39 +28,25 @@ var contentFR = '';
             width:'400px',
             colModel: [{
                     'align':'left',
-                    'columnName':'nis',
+                    'columnName':'siswa',
                     'hide':true,
                     'width':'55',
                     // 'width':'8',
-                    'label':'NIS'
-                },{   
-                    'columnName':'nama',
-                    'width':'40',
                     'label':'Nama'
+                },{   
+                    'columnName':'sekolah',
+                    'width':'40',
+                    'label':'Sekolah'
                 }],
             url: dir+'?aksi=autocomp',
             select: function( event, ui ) { // event setelah data terpilih 
-                saudaraAdd(ui.item.replid,ui.item.nis,ui.item.nama);
+                saudaraAdd(ui.item.replid,ui.item.siswa,ui.item.sekolah);
                 // $('#judulTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&barang='+barangArr() );
                 $('#nama_saudaraTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&saudara='+saudaraArr() );
                 return false;
             }
         }); //End autocomplete
 
-        $.each(dt.data.saudaraArr,function(id,item){
-                // +'<td><input '+(item.status==3||item.status==4?'disabled':'')+' type="checkbox" dp="'+item.iddpeminjaman+'" brg="'+item.idbarang+'" /></td>'
-            var btn;
-            tbl+='<tr>'
-                +'<td>'+item.nis+'</td>'
-                +'<td>'+item.nama+'</td>'
-                +'<td>'
-                    +'<button style="background-color:'+item.color+'" '
-                        +(item.status==3||item.status==4?'onclick="alert(\'sudah dikembalikan\')"':'onclick="kembalikanFC('+item.iddpeminjaman+','+item.idbarang+')"')+'>'
-                        +'<i style="color:white;" class="icon-undo"></i>'
-                    +'</button>'
-                +'</td>'
-            +'</tr>';
-        });$('saudaraTBL').html(tbl);
 
     }
 
@@ -90,10 +76,10 @@ var contentFR = '';
     //end of saudara record kosong --  
 
     // pilih saudara yg akan dipinjam ---
-        function saudaraAdd (id,nis,nama) {
+        function saudaraAdd (id,siswa,sekolah) {
             var tr ='<tr val="'+id+'" class="saudaraTR" id="saudaraTR_'+id+'">'
-                        +'<td>'+nis+'</td>'
-                        +'<td>'+nama+'</td>'
+                        +'<td>'+siswa+'</td>'
+                        +'<td>'+sekolah+'</td>'
                         // +'<td><button xhref="#" xonclick="saudaraDel('+id+');"onclick="alert('+id+');"><i class="icon-remove"></i></button></td>'
                         +'<td>'
                             +'<a href="#" onclick="saudaraDelx('+id+');" xonclick="alert('+id+');">'
@@ -130,7 +116,8 @@ var contentFR = '';
                             +'<table>'
                             +'<tr>'
                                 +'<td>Departemen</td>'
-                                +'<td>: <b id="departemenTD"></b></td>'
+                                +'<td class="span6">: <b id="departemenTD"></b></td>'
+                                +'<td class="place-right"><button data-hint="Cetak" onclick="printPDF(\'pendataan\');"><span class="icon-printer"></span></button></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Proses Penerimaan</td>'
@@ -329,7 +316,7 @@ var contentFR = '';
             cmbagama('');
             cmbangsuran('');
             cmbdiskon('');
-            // kodeTrans($('#nopendaftaranTB').val());
+            kodeTrans();
         // $('#').on('click',switchPN);
     });$("#importBC").on('click',function(){
             switchPN2();             
@@ -341,7 +328,7 @@ var contentFR = '';
                 $('#saudara2').toggle('slow');
                 $('#saudara').toggle('slow');
         });
-        
+
     //search action
         $('#departemenS').on('change',function(){
             cmbproses($(this).val());
@@ -373,9 +360,11 @@ var contentFR = '';
         $("#diskon_subsidiTB,#diskon_saudaraTB").keyup(function(){
         // // $("#diskon_subsidiTB").keydown(function(){
              hitung_diskon();
+            hitung_dpp();
         }); $("#diskon_tunai").change(function(){
             setdiskon();
             hitung_diskon();
+            hitung_dpp();
         });
         $("#kriteriaTB,#golonganTB").change(function(){
             getbiaya();
@@ -505,14 +494,16 @@ var contentFR = '';
         // simpan ke database
             function siswaDb(filex){
                  // alert('db');return false;
-                if(barangArr().length<=0){
-                    $('#nama_saudaraTB').focus();
-                    return false;
-                }else{
-                    var data ='&aksi=simpan';
-                    $.each(barangArr(),function(id,item){
-                        data+='&barang[]='+item;  
-                    });
+                 //Simpan Saudara
+                // if(saudaraArr().length<=0){
+                //     $('#nama_saudaraTB').focus();
+                //     return false;
+                // }else{
+                //     var data ='&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val();
+                //     $.each(saudaraArr(),function(id,item){
+                //         data+='&saudara[]='+item;  
+                //     });
+                // }
 
                 var formData = $('#siswa_form').serialize();
                 if($('#idformH').val()!=''){
@@ -531,8 +522,8 @@ var contentFR = '';
                     // url: dir+'?aksi=simpan&subaksi=siswa',
                     url: dir,
                     type:'POST',
-                    data:formData+'&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val(),
-                    // data:'aksi=simpan&subaksi=siswa'+formData+$('#siswa_form').serialize(),
+                    // data:formData+data,
+                    data:formData+'&aksi=simpan&subaksi=siswa'+$('#siswa_form').serialize()+'&kelompokS='+$('#kelompokS').val(),
                     cache:false,
                     dataType: 'json',
                     success: function(data, textStatus, jqXHR){
@@ -550,6 +541,7 @@ var contentFR = '';
                 });
             }
         // // end of simpan ke database
+
 
 // combo departemen ---
     function cmbdepartemen(dep){
@@ -630,58 +622,6 @@ var contentFR = '';
         });
     }
 //end of combo tahunajaran ---
-
-
-//save process ---
-    // function simpanSV(){
-    //     var files =new Array();
-    //     $("input:file").each(function() {
-    //         files.push($(this).get(0).files[0]); 
-    //     });
-         
-    //     // Create a formdata object and add the files
-    //     var filesAdd = new FormData();
-    //     $.each(files, function(key, value){
-    //         filesAdd.append(key, value);
-    //     });
-
-    //     if($('#photoTB').val()=='')//upload
-    //         siswaDb('');
-    //     else// ga upload
-    //         siswaUp(filesAdd);
-    //             // var urlx ='&aksi=simpan&departemen='+$('#departemenS').val();
-    //     // var urlx ='&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val();
-    //     // alert(urlx);return false;
-    //     // edit mode
-    //     // if($('#idformH').val()!=''){
-    //     //     urlx += '&replid='+$('#idformH').val();
-    //     // }
-    //     // $.ajax({
-    //     //     url:dir,
-    //     //     cache:false,
-    //     //     type:'post',
-    //     //     dataType:'json',
-    //     //     data:$('form').serialize()+urlx,
-    //     //     success:function(dt){
-    //     //         if(dt.status!='sukses'){
-    //     //             cont = 'Gagal menyimpan data';
-    //     //             clr  = 'red';
-    //     //         }else{
-    //     //             $.Dialog.close();
-    //     //             kosongkan();
-    //     //             viewTB($('#kelompokS').val());
-    //     //              $('#pendataanFR').removeAttr('style');
-    //     //              $('#importFR').removeAttr('style');
-    //     //              $('#panel1').attr('style','display:none;');
-    //     //             cont = 'Berhasil menyimpan data';
-    //     //             clr  = 'green';
-    //     //         }
-    //     //         notif(cont,clr);
-    //     //     }
-    //     // });
-    // }
-//end of save process ---
-
 
 // view table ---
     function viewTB(){
@@ -766,6 +706,15 @@ var contentFR = '';
 
                         $('#kakekTB').val(dt.kakek);
                         $('#nenekTB').val(dt.nenek);
+
+                        // var tbl='';
+                        // $.each(dt.saudaraArr,function(id,item){
+                        //     var btn;
+                        //     tbl+='<tr>'
+                        //         +'<td>'+item.nis+'</td>'
+                        //         +'<td>'+item.nama+'</td>'
+                        //     +'</tr>';
+                        // });$('saudaraTBL').html(tbl);
 
                         // $('#kakekTB').val(dt.kakek-nama);
                         // $('#nenekTB').val(dt.nenek-nama);
@@ -927,10 +876,11 @@ var contentFR = '';
         }        
 
         function getbiaya(){
+                // console.log($('#kelompokS').val());
                 $.ajax({
                     url : dir,
                     type: 'post',
-                    data:'aksi=getbiaya&kriteria='+$('#kriteriaTB').val()+'&golongan='+$('#golonganTB').val()+'&kelompok='+$('#prosesS').val(),
+                    data:'aksi=getbiaya&kriteria='+$('#kriteriaTB').val()+'&golongan='+$('#golonganTB').val()+'&kelompok='+$('#kelompokS').val(),
                     dataType:'json',
                     success:function(dt){
                         $('#uang_pangkalTB').val(dt.nilai);
@@ -979,7 +929,6 @@ var contentFR = '';
         }
         function hitung_diskon(){
             var pangkal       = $("#uang_pangkalTB").val();
-            var pangkalnet    = $("#uang_pangkalnetTB").val();
             var disc_subsidi  = parseInt($("#diskon_subsidiTB").val());
             var disc_saudara  = parseInt($("#diskon_saudaraTB").val());
             var diskon_total  = parseInt($("#diskon_totalTB").val());
@@ -994,14 +943,16 @@ var contentFR = '';
                 $("#diskon_totalTB").val(total_diskon);
             // alert(diskon_tunaiTB); 
             // return false;
-                var total_dpp    = parseInt(pangkalnet)-parseInt(diskon_total);
-                //Hitung Total DPP
-                $("#uang_pangkalnetTB").val(total_dpp);
-
-
             // }
         }
-
+        function hitung_dpp (){
+            var pangkalnet    = $("#uang_pangkalnetTB").val();
+            var diskon_total  = parseInt($("#diskon_totalTB").val());
+            var total_dpp    = parseInt(pangkalnet)-parseInt(diskon_total);
+            
+                //Hitung Total DPP
+                $("#uang_pangkalnetTB").val(total_dpp);
+        }
 
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
@@ -1187,21 +1138,12 @@ var contentFR = '';
     // }
 // end of get uang --------------------------
 
-   function kodeTrans(typ){
-        var ret;
-        $.ajax({
-            url:dir,
-            type:'post',
-            async:false,
-            dataType:'json',
-            data :'aksi=codeGen&subaksi=transNo&tipe='+typ,
-            success:function(dt){
-                if(dt.status!='sukses')
-                    ret=dt.status;
-                else
-                    ret=dt.kode;
-            }
-        });return ret;
+   function kodeTrans(){
+        var url = dir;
+        var data = 'aksi=codeGen&subaksi=transNo';
+        ajax(url,data).done(function(dt){
+            $('#nopendaftaranTB').val(dt.kode);
+        });
     }
     
 // notifikasi
@@ -1293,3 +1235,18 @@ function notif(cont,clr) {
         });
     }
 //end of aktifkan process ---
+
+
+//end of  print to PDF -------
+    function printPDF(mn){
+        var par='',tok='',p,v;
+        $('.'+mn+'_cari').each(function(){
+            p=$(this).attr('id');
+            v=$(this).val();
+            par+='&'+p+'='+v;
+            tok+=v;
+        });var x  = $('#id_loginS').val();
+        var token = encode64(x+tok);
+        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+    }
+//end of  print to PDF -------
