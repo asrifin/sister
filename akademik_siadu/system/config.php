@@ -7,8 +7,8 @@ define('IMGR',ROOTLNK.'shared/images/');
 define('DBNAME','sister_siadu');
 
 /* System Directory */
-define('ROTDIR',ROOTDIR.'akademik/');
-// define('ROTDIR',ROOTDIR.'akademik_siadu/');
+// define('ROTDIR',ROOTDIR.'akademik/');
+define('ROTDIR',ROOTDIR.'akademik_siadu/');
 define('SYSDIR',ROTDIR.'system/');
 
 /* Apps Directory */
