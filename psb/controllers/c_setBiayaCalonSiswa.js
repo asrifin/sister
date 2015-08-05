@@ -8,12 +8,12 @@ var dir2      = '../akademik/models/m_'+mnu2+'.php';
 var dir3      = 'models/m_'+mnu3+'.php';
 var dir4      = 'models/m_'+mnu4+'.php';
 var contentFR = '';
-var ko,
+// var ko,
 // add line code
 // fsdjfksjddfs  
 // main function ---
 
-cmblokasi();
+// cmblokasi();
     $(document).ready(function(){
         // contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
         //                 +'<input id="idformH" type="hidden">' 

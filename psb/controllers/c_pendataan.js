@@ -804,7 +804,7 @@ var contentFR = '';
                 $('#uang_pangkalnetTB').val(dt.sumnet);
                 $('#angsuranTB').val(dt.angsuran);
                 $('#sppTB').val(dt.sppbulan);
-                $('#diskon_subsidiTB').val(dt.disctb);
+                $('#diskon_subsidiTB').val(dt.discsubsidi);
                 $('#diskon_saudaraTB').val(dt.discsaudara);
                 $('#diskon_tunaiTB').val(dt.disctunai);
                 $('#diskon_totalTB').val(dt.disctotal);

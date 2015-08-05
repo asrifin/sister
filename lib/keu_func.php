@@ -392,7 +392,8 @@
 		// var_dump(getSiswaBy('discsaudara',$siswa));exit(); 	150.000
 		// var_dump(getSiswaBy('disctb',$siswa));exit(); 		0
 		// var_dump(getDiscTunai($typ,$siswa));exit();			750.000
-		$ret = getDisc('discangsuran',$siswa)+getDisc('disctunai',$siswa)+getDiscTunai($typ,$siswa)+getSiswaBy('disctb',$siswa)+getSiswaBy('discsaudara',$siswa);
+		$ret = getDisc('discangsuran',$siswa)+getDisc('disctunai',$siswa)+getSiswaBy('discsubsidi',$siswa)+getSiswaBy('discsaudara',$siswa);
+		// $ret = getDisc('discangsuran',$siswa)+getDisc('disctunai',$siswa)+getDiscTunai($typ,$siswa)+getSiswaBy('disctb',$siswa)+getSiswaBy('discsaudara',$siswa);
 		// var_dump($ret);exit();
 		return $ret;
 	}function getOperator($id){
