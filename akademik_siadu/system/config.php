@@ -1,6 +1,6 @@
 <?php
 /* Links */
-define('RLNK',ROOTLNK.'akademik_siadu/');
+define('RLNK',ROOTLNK.'akademik/');
 define('IMGR',ROOTLNK.'shared/images/');
 
 /* Database */
