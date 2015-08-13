@@ -21,9 +21,9 @@
 			<h2 class="loginMessage"></h2> 
 			<div class="fields"> 
 				<form autocomplete="off" id="frmLogin" /> 
-					<input type="hidden" id="pass2TB" name="pass2TB" /> <p /> 
 					<input type="text" id="userTB" name="userTB" placeholder="Username" /> <p /> 
-					<input type="password" id="passTB" xname="passTB" placeholder="Password" /> 
+					<!-- <input type="text" id="pass2TB" name="pass2TB" /> <p />  -->
+					<input type="password" id="passTB" name="passTB" placeholder="Password" /> 
 					<button id="botLogIn"></button> 
 					<img src="img/eye.png" class="seePass" /> 
 				</form> 

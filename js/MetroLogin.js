@@ -42,7 +42,7 @@ $(".loginMessage").text(UserEnterMessage);
 content = '<div id="BackgroundUp"></div>';
 $("body").append(content);
 content  = '<input type="hidden" id="HiddenPass" name="HiddenPass"/>';
-content += '<div class="squaredTwo"><input type="checkbox" value="None" id="squaredTwo" name="chkRemember"/><label for="squaredTwo" class="color"></label></div><input type="hidden" id="txtRememberMe" name="txtRememberMe" value="0"/><span class="lblRemember">'+ RememberMeLabel +'</span>';
+// content += '<div class="squaredTwo"><input type="checkbox" value="None" id="squaredTwo" name="chkRemember"/><label for="squaredTwo" class="color"></label></div><input type="hidden" id="txtRememberMe" name="txtRememberMe" value="0"/><span class="lblRemember">'+ RememberMeLabel +'</span>';
 content += '<input type="hidden" id="txtCurrentColor" name="txtCurrentColor"/>';
 content += '<input type="hidden" id="txtCurrentBack" name="txtCurrentBack"/>';
 $("#frmLogin").append(content);
@@ -298,21 +298,21 @@ $(document).ready(function() {
     	$(".seePass").css("top", "-24");
   	}
 
- $("#squaredTwo").click(function(){
+ // $("#squaredTwo").click(function(){
 
- 	if(Checked==0)
- 	{
- 		$("#txtRememberMe").val("1");
- 		Checked=1;
- 	}
- 	else
- 	{
- 		$("#txtRememberMe").val("0");
- 		Checked=0;
- 	}
+ // 	if(Checked==0)
+ // 	{
+ // 		$("#txtRememberMe").val("1");
+ // 		Checked=1;
+ // 	}
+ // 	else
+ // 	{
+ // 		$("#txtRememberMe").val("0");
+ // 		Checked=0;
+ // 	}
  	
 
- });
+ // });
 
 
 // Function that create the color bar engine
