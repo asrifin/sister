@@ -1,10 +1,12 @@
 <?php
 	// sleep(1);
 	require_once 'dbcon.php';
+	require_once 'func.php';
 	// $out  = array();
 	$user = $_POST['userTB'];
-	$pass = base64_encode($_POST['pass2TB']);
-	
+	// $pass = base64_encode($_POST['pass2TB']);
+	$pass = base64_encode(md5($_POST['passTB']));
+	// vdump($pass);exit();
 	// authentication login 
 	$s1   = 'SELECT 
 				lg.*,
@@ -180,6 +182,7 @@
 				WHERE ld.id_login ='.$r1['id_login'];
 		$e6 = mysql_query($s6);
 		$departemenArr = array();
+		// vdump($s6);
 		while ($r6 = mysql_fetch_assoc($e6)) {
 			$departemenArr[]=$r6;
 		} 
