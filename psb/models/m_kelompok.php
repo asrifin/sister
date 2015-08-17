@@ -15,7 +15,7 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-					$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
+				$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
 				$tahunajaran = isset($_POST['prosesS'])?filter($_POST['prosesS']):'';
 				$kelompok    = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
@@ -66,7 +66,7 @@
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
+					while($res = mysql_fetch_assoc($result)){	
 						if($res['aktif']=1){
 							$dis  = 'disabled';
 							$ico  = 'checkmark';
@@ -87,11 +87,10 @@
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
+									// <td>'.$res['biaya'].'</td>
 						$out.= '<tr>
 									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelompok'].'</td>
-									
 									<td>'.tgl_indo($res['tglmulai']).' s/d '.tgl_indo($res['tglselesai']).'</td>
-									<td>'.$res['biaya'].'</td>
 									<td>'.$res['calonsiswa'].'</td>
 									<td>'.$res['siswaditerima'].'</td>
 									<td>'.$res['keterangan'].'</td>

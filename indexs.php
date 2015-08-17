@@ -98,6 +98,9 @@
                                 </div>
                             </a>';
                     } //end of looping modul
+                    $out.='</div>';
+                } ///end of looping grup modul
+                echo $out;
 
 /*                    foreach ($v['modul'] as $ii => $vv) {
                         $out.='<a id="mod-'.$vv['link'].'" 
@@ -126,9 +129,6 @@
                             </a>';
                     } //end of looping modul
 */
-                    $out.='</div>';
-                } ///end of looping grup modul
-                echo $out;
             ?>
         </div>
         <!--<script src="js/main.js"></script>

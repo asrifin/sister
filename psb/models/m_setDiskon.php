@@ -40,7 +40,7 @@
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
+					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td>
 									<button class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -51,6 +51,7 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$nox.'</td>
+									<td>'.$res['nama'].'</td>
 									<td>'.$res['nilai'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'

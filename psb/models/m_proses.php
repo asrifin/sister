@@ -222,7 +222,7 @@
 						from '.$tb.'
 						'.$w.'		
 						ORDER  BY '.$mnu.' asc';
-				// var_dump($s);exit();
+				// pr($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar = $dt=array();
