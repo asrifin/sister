@@ -49,14 +49,14 @@
         </script>
 
         <!-- <title>Metro UI CSS : Metro Bootstrap CSS Library</title> -->
-        <title>SISTERMETTA</title>
+        <title>SISTER</title>
     </head>
     
     <body class="metro">
         <!--menu utama / module-->
         <div class="tile-area tile-area-dark" id="tile-module">
         <div class="container">
-            <h1 class="tile-area-title fg-white">SISTERMETTA</h1>
+            <h1 class="tile-area-title fg-white">SISTER</h1>
             <div class="user-id">
                 <div class="user-id-image">
                     <span class="icon-user no-display1"></span>
