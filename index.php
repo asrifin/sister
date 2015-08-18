@@ -1,11 +1,5 @@
 <?php
-	session_start();// ini script PHP untuk memulai sesi di browser client 
-
-//     session_start();
-//     echo '<pre>';
-//         print_r($_SESSION['grupmodulS']);
-//     echo '</pre>';
-// exit();
+	session_start();
 	if(isset($_SESSION['loginS']) and !empty($_SESSION['loginS']) ){
 		require_once 'indexs.php';
 	}else{

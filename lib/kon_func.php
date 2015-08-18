@@ -40,8 +40,9 @@
             foreach ($v['modul'] as $i2 => $v2) {
                 foreach ($v2['grupmenu'] as $i3 => $v3) {
                     foreach ($v3['menu'] as $i4 => $v4) {
-                        if($v2['modul']==$md and $v4['menu']==$mn and $v4['statmenu']==1){
+                        if($v2['modul']==$md and $v4['menu']==$mn){
                             $menu=true;
+                        // if($v2['modul']==$md and $v4['menu']==$mn and $v4['statmenu']==1){
                         } // end of checking menu
                     }// end of menu looping
                 } // end of grupmenu looping
@@ -72,7 +73,12 @@
         return (isAksi($mn,$ak)==false?'disabled':'');
     }
     function isMenu($mod,$menu){
-        if(isMenuPriv($mod,$menu)==false || $_SESSION['loginS']=='') echo '<script>location.href="./"</script>';
+        if(isMenuPriv($mod,$menu)==false || $_SESSION['loginS']=='') 
+            echo '<script>location.href="./"</script>';
+        //     echo 'salah';
+        // else
+        //     echo 'benar';
+
     }
     function isModul($mod){
         $out=0; $o='';

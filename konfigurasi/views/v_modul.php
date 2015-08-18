@@ -1,4 +1,9 @@
-<?php $mnu='modul'; isMenu($modul,$mnu); ?>
+<?php
+// vd($modul);
+ // vd(isMenu($modul,'modul')); 
+isMenu($modul,'modul');
+ // exit();
+ ?>
 <script src="controllers/c_modul.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
@@ -6,7 +11,7 @@
 <nav class="breadcrumbs">
     <ul>
         &nbsp;
-        <button <?php echo isDisabled($mnu,'c'); ?> class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
+        <button <?php echo isDisabled('modul','c'); ?> class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
         <li><a href="grup-modul">Grup Modul</a></li>
         <li class="active"><a href="#"><b>Modul</b></a></li>
         <li><a href="grup-menu">Grup Menu</a></li>
