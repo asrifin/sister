@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50620
 File Encoding         : 65001
 
-Date: 2015-08-03 20:31:58
+Date: 2015-08-18 17:44:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -707,7 +707,7 @@ CREATE TABLE `pos_useraura` (
 -- ----------------------------
 -- Records of pos_useraura
 -- ----------------------------
-INSERT INTO `pos_useraura` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@elyon.sch.id', 'af0675a9e843c6c8f78163a9118efc78.jpg', 'Administrator', 'aktif', '0', '2015-08-03 09:58:18', '2010-08-27 00:00:00', '2034-08-27 00:00:00', '<p><b>none</b></p>');
+INSERT INTO `pos_useraura` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@elyon.sch.id', 'af0675a9e843c6c8f78163a9118efc78.jpg', 'Administrator', 'aktif', '0', '2015-08-10 14:24:28', '2010-08-27 00:00:00', '2034-08-27 00:00:00', '<p><b>none</b></p>');
 INSERT INTO `pos_useraura` VALUES ('28', 'superadmin', 'b11d5ece6353d17f85c5ad30e0a02360', 'rekysda@gmail.com', '', 'Administrator', 'aktif', '1', '2015-03-21 23:05:28', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '');
 INSERT INTO `pos_useraura` VALUES ('29', 'penjualan', '13bf2c8effae21d17a277520aa9b9277', 'penjualan@penjualan.com', '', 'Penjualan', 'aktif', '0', '2015-06-01 09:03:46', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '');
 INSERT INTO `pos_useraura` VALUES ('30', 'kasir', 'c7911af3adbd12a035b289556d96470a', 'kasir@kasir.com', '', 'Kasir', 'aktif', '0', '2015-07-07 14:56:07', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '');
