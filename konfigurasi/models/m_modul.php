@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu= 'grupmodul';
+	$mnu= 'modul';
 	$tb = 'kon_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -12,15 +12,31 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$grupmodul = isset($_POST['grupmodulS'])?filter($_POST['grupmodulS']):'';
-				$size      = isset($_POST['sizeS'])?filter($_POST['sizeS']):'';
-				$sql = 'SELECT *
-						FROM '.$tb.'
+				$grupmodul = isset($_POST['grupmodulS']) && $_POST['grupmodulS']!=''?' m.id_grupmodul='.filter($_POST['grupmodulS']).' AND ':'';
+				$warna     = isset($_POST['warnaS']) && $_POST['warnaS']!=''?' m.id_warna='.filter($_POST['warnaS']).' AND ':'';
+				$icon      = isset($_POST['iconS']) && $_POST['iconS']!=''?' m.id_icon='.filter($_POST['iconS']).' AND ':'';
+				$modul     = isset($_POST['modulS'])?filter($_POST['modulS']):'';
+				$link      = isset($_POST['linkS'])?filter($_POST['linkS']):'';
+				$sql = 'SELECT 
+							m.id_modul,
+							gm.grupmodul,
+							m.link,
+							w.warna,
+							i.icon,
+							m.modul,
+							if(m.size="double","kecil","besar") size
+						FROM '.$tb.' m 
+							LEFT JOIN kon_grupmodul gm on gm.id_grupmodul = m.id_grupmodul
+							LEFT JOIN kon_warna w on w.id_warna = m.id_warna
+							LEFT JOIN kon_icon i on i.id_icon = m.id_icon
 						WHERE 
-							grupmodul like "%'.$grupmodul.'%" and 
-							size like "%'.$size.'%"
+							'.$grupmodul.$warna.$icon.'
+							m.modul like "%'.$modul.'%" and 
+							m.link like "%'.$link.'%" 
 						ORDER BY	
-							grupmodul ASC'; 
+							gm.grupmodul ASC,
+							m.modul ASC
+							'; 
 				// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -28,7 +44,7 @@
 					$starting=0;
 				}
 
-				$recpage = 5;//jumlah data per halaman
+				$recpage = 10;//jumlah data per halaman
 				$aksi    ='tampil';
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
@@ -39,14 +55,18 @@
 				if($jum!=0){	
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['id_grupmodul'].');">
+									<button '.isDisabled($mnu,'u').' data-hint="ubah"  class="button" onclick="viewFR('.$res['id_modul'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus"  class="button" onclick="del('.$res['id_grupmodul'].');">
+									<button '.isDisabled($mnu,'d').' data-hint="hapus"  class="button" onclick="del('.$res['id_modul'].');">
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
 									<td>'.$res['grupmodul'].'</td>
+									<td>'.$res['modul'].'</td>
+									<td>'.$res['link'].'</td>
+									<td><button class="bg-'.$res['warna'].'"></button> '.$res['warna'].'</td>
+									<td><i class="icon-'.$res['icon'].'"></i> '.$res['icon'].'</td>
 									<td>'.$res['size'].'</td>
 									'.$btn.'
 								</tr>';
@@ -64,9 +84,13 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	grupmodul 	= "'.filter($_POST['grupmodulTB']).'",
-										size 	= "'.filter($_POST['sizeTB']).'"';
-				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE id_grupmodul='.$_POST['replid']:'INSERT INTO '.$s;
+				$s 		= $tb.' set id_grupmodul = "'.filter($_POST['grupmodulTB']).'",
+									modul     = "'.filter($_POST['modulTB']).'",
+									link      = "'.filter($_POST['linkTB']).'",
+									id_warna  = "'.filter($_POST['warnaTB']).'",
+									id_icon   = "'.filter($_POST['iconTB']).'",
+									size      = "'.filter($_POST['sizeTB']).'"';
+				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE id_'.$mnu.'='.$_POST['replid']:'INSERT INTO '.$s;
 				// pr($s2);
 				$e    = mysql_query($s2);
 				$stat = ($e)?'sukses':'gagal';
@@ -76,25 +100,30 @@
 			
 			// delete -----------------------------------------------------------------
 			case 'hapus':
-				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where id_grupmodul='.$_POST['replid']));
-				$s    = 'DELETE from '.$tb.' WHERE id_grupmodul='.$_POST['replid'];
+				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where id_modul='.$_POST['replid']));
+				$s    = 'DELETE from '.$tb.' WHERE id_modul='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['grupmodul']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT *
-							from '.$tb.'  
-							WHERE id_grupmodul='.$_POST['replid'];
+				$s = '	SELECT *
+					  	FROM '.$tb.' 
+					 	WHERE id_modul='.$_POST['id_modul'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'    =>$stat,
-							'grupmodul' =>$r['grupmodul'],
+							'grupmodul' =>$r['id_grupmodul'],
+							'modul'     =>$r['modul'],
+							'link'      =>$r['link'],
+							'warna'     =>$r['id_warna'],
+							'icon'      =>$r['id_icon'],
+							'modul'     =>$r['modul'],
 							'size'      =>$r['size'],
 						));
 			break;
@@ -103,15 +132,19 @@
 			// cmbdepartemen -----------------------------------------------------------------
 			case 'cmb'.$mnu:
 				$w='';
-				if(isset($_POST['replid'])){
-					$w='where id_'.$mnu.' ='.$_POST['replid'];
+				if(isset($_POST['id_'.$mnu])){
+					$w='where id_'.$mnu.'='.$_POST[$mnu];
+				}else{
+					if(isset($_POST['id_grupmodul'])){
+						$w='where id_grupmodul='.$_POST['id_grupmodul'];
+					}
 				}
-
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
 						ORDER  BY 
-							'.$mnu.' asc';
+							modul asc';
+
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
@@ -128,7 +161,8 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses',$mnu=>$dt);
+						}
+						$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;
@@ -163,6 +197,11 @@
 							'status'  =>$stat,
 						));
 			break;
+			// urutan ------			
 		}
 	}echo $out;
+
+	// ---------------------- //
+	// -- created by epiii -- //
+	// ---------------------- //
 ?>

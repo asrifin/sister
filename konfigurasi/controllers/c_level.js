@@ -1,11 +1,11 @@
-var mnu       = 'level';
-var dir       = 'models/m_'+mnu+'.php';
+var mnu = 'level';
+var dir = 'models/m_'+mnu+'.php';
 var aksiFR = levelFR = contentFR = '';
 
 // main function ---
     $(document).ready(function(){
         levelFR += '<form autocomplete="off" id="levelFR" onsubmit="simpan(\'level\');return false;" >' 
-                        +'<input id="idformlevelH" type="hidden">' 
+                        +'<input name="idformlevelH" id="idformlevelH" type="hidden">' 
 
                         +'<label>'+mnu+'</label>'
                         +'<div class="input-control text">'
@@ -23,7 +23,8 @@ var aksiFR = levelFR = contentFR = '';
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
-        aksiFR += '<form autocomplete="off" id="levelaksiFR" onsubmit="simpan(\'levelaksi\'); return false;">' 
+
+        aksiFR += '<form  autocomplete="off" id="levelaksiFR" onsubmit="simpan(\'levelaksi\'); return false;">' 
                         +'<input id="idformlevelaksiH" type="hidden">' 
                         +'<table>'
                             +'<tr>'
@@ -33,15 +34,38 @@ var aksiFR = levelFR = contentFR = '';
                         +'</table>'
                         //detail Aksi per kategori menu 
                         +'<legend></legend>'
-                        +'<div style="overflow:scroll;height:250px;">'
-                           +'<ul id="katgrupmenuDV" class="treeview" data-role="treeview">'
-                           +'</ul>'
-                        +'</div>'               
+                        // +'<div xstyle="overflow:scroll;height:400px;">'
+                            // +'<div class="grid-fluid">'
+                            //     +'<div id="katgrupmenuDV" class="row">'
 
-                        +'<div class="form-actions">' 
-                            +'<button class="button primary">simpan</button>&nbsp;'
-                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-                        +'</div>'
+                            //     +'</div>'
+                            // +'</div>'
+                            +'<div style="overflow:scroll;height:400px;" class="grid fluid">'
+                                +'<div id="katgrupmenuDV" class="row">'
+                                    // +'<div class="span3">'
+                                    //     +'<div class="notice">'
+                                    //         +'<div class="fg-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>'
+                                    //     +'</div>'
+                                    // +'</div>'
+                                    // +'<div class="span3">'
+                                    //     +'<div class="notice marker-on-top bg-amber">'
+                                    //         +'<div class="fg-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>'
+                                    //     +'</div>'
+                                    // +'</div>'
+                                    // +'<div class="span3">'
+                                    //     +'<div class="notice marker-on-right bg-pink">'
+                                    //         +'<div class="fg-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>'
+                                    //     +'</div>'
+                                    // +'</div>'
+                                    // +'<div class="span3">'
+                                    //     +'<div class="notice marker-on-bottom bg-darkRed fg-white">'
+                                    //         +'<div class="">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>'
+                                    //     +'</div>'
+                                    // +'</div>'
+                                +'</div>'
+                            +'</div>'
+                        // +'</div>'               
+
                     +'</form>';
         viewTB();
 
@@ -66,12 +90,10 @@ var aksiFR = levelFR = contentFR = '';
 
 //save process ---
     function simpan(subaksi){
-        // var x = $('#'+subaksi+'FR').serialize();
         var urlx ='&aksi=simpan&subaksi='+subaksi;
         if($('#idform'+subaksi+'H').val()!='') 
            urlx += '&id_'+mnu+'='+$('#idform'+subaksi+'H').val();
 
-        // alert(urlx);return false;
         $.ajax({
             url:dir,
             cache:false,
@@ -160,69 +182,65 @@ var aksiFR = levelFR = contentFR = '';
 
 // form ---
     function viewFR(menu,idlevel){
-        // alert(menu+','+idlevel);return false;
         $.Dialog({
             shadow: true,
             overlay: true,
             draggable: true,
-            width: 500,
-            // heigth:200,
+            width: '40%',
             padding: 10,
             onShow: function(){
                 var titlex=contentFR='';
-                if(idlevel==''){  //add mode
-                    alert('masuk levelaksi - add');
-                    // titlex='<span class="icon-plus-2"></span> Tambah ';
-                    // contentFR = levelFR;
-                }else{ // edit mode
-                    if(menu=='levelaksi'){ // aksi
-                        titlex='<span class="icon-search"></span> Detail Aksi ';
-                        $.ajax({
-                            url:dir,
-                            data:'aksi=tampil&subaksi=levelaksi&id_level='+idlevel,
-                            type:'post',
-                            dataType:'json',
-                            success:function(dt){
-                                if(dt.status!='sukses'){
-                                    notif(dt.status,'red');
-                                }else{
-                                    $('#idformlevelaksiH').val(idlevel);
-                                    $('#levelTD').html(': '+dt.data.keterangan+'('+dt.data.level+')');
-                                    var out='';
-                                    $.each(dt.data.katgrupmenuArr,function(id,item){
-                                        out+='<li class="node">'
-                                                +'<a href="#"><span class="node-toggle"></span>'+item.keterangan+'</a>'
-                                                    +'<ul>'
-                                            $.each(item.aksiArr, function (id,item) {
-                                                out+='<li style="padding-left:20px;">'
-                                                        +'<label>'
-                                                            +'<input value="'+item.id_aksi+'" id="aksi'+item.id_levelaksi+'_TB" name="aksiTB['+item.id_katgrupmenu+'][]" '+(item.stataksi==1?'checked':'')+' type="checkbox"  /> '
-                                                                +item.keterangan+''
-                                                        +'</label>'
-                                                    +'</li>';
-                                            }); out+='</ul>'
-                                            +'</li>';
-                                    });$('#katgrupmenuDV').html(out);
-                                }
+                if(menu=='level'){ // level 
+                    if(idlevel!=''){
+                        var u = dir;
+                        var d ='aksi=ambiledit&id_level='+idlevel;
+                        ajax(u,d).done(function  (dt) {
+                            if(dt.status!='sukses'){
+                                notif(dt.status,'red');
+                            }else{
+                                $('#idformlevelH').val(idlevel);
+                                $('#levelTB').val(dt.level);
+                                $('#keteranganTB').val(dt.keterangan);
                             }
                         });
-                        contentFR += aksiFR;
-                    }else{ // level
-                        alert('masuk level - edit');
-
-                        // $.ajax({
-                        //     url:dir,
-                        //     data:'aksi=ambiledit&id_'+mnu+'='+idlevel,
-                        //     type:'post',
-                        //     dataType:'json',
-                        //     success:function(dt){
-                        //         $('#idformH').val(id);
-                        //         $('#'+mnu+'TB').val(dt.level);
-                        //         $('#actionTB').val(dt.action);
-                        //         $('#keteranganTB').val(dt.keterangan);
-                        //     }
-                        // });contentFR = levelFR;
                     }
+                    contentFR+=levelFR;
+                    titlex='<span class="icon-plus-2"></span> Tambah ';
+                }else{ // aksi 
+                    titlex='<span class="icon-search"></span> Detail Aksi ';
+                    var u=dir;
+                    var d ='aksi=tampil&subaksi=levelaksi&id_level='+idlevel;
+                    ajax(u,d).done(function (dt){
+                        if(dt.status!='sukses'){
+                            notif(dt.status,'red');
+                        }else{
+                            $('#idformlevelaksiH').val(idlevel);
+                            $('#levelTD').html(dt.data.level);
+                            var out='';
+                            $.each(dt.data.katgrupmenuArr,function(id,item){
+                                out+='<div class="bg-grey span5">'
+                                        +'<ul class="treeview" data-role="treeview">'
+                                            +'<li class="node">'
+                                                +'<a href="#"><span class="node-toggle"></span>'+item.keterangan+' (Modul '+(item.isDefault==1?'Default':'Tambahan')+')</a>'
+                                                +'<ul>';
+                                                var isDefault = item.isDefault;
+                                                $.each(item.aksiArr, function (id,item) {
+                                                    out+='<li style="padding-left:20px;">'
+                                                            +'<label>'
+                                                                +'<input onclick="simpan(\'levelaksi\')" name="aksiTB['+item.id_katgrupmenu+']['+item.id_aksi+']['+isDefault+']" '+(item.stataksi==1?'checked':'')+' type="checkbox"  /> '
+                                                                // +'<input onclick="simpan(\'levelaksi\')" name="aksiTB['+item.id_katgrupmenu+']['+item.id_aksi+']" '+(item.stataksi==1?'checked':'')+' type="checkbox"  /> '
+                                                                +item.keterangan+''
+                                                            +'</label>'
+                                                        +'</li>';
+                                                }); 
+                                            out+='</ul>'
+                                            +'</li>'
+                                        +'</ul>'
+                                    +'</div>';
+                            });
+                            $('#katgrupmenuDV').html(out);
+                        }
+                    });contentFR += aksiFR;
                 }
                 $.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
@@ -337,3 +355,29 @@ var aksiFR = levelFR = contentFR = '';
         });
     }
 //end of aktifkan process ---
+
+
+    function ajax (u,d) {
+        return $.ajax({
+            url:u,
+            data:d,
+            dataType:'json',
+            type:'post',
+        });
+    }
+    // urutan tabel
+    function urutFC (e) {
+        var u = dir;
+        var d ='aksi=urutan&replid1='+$(e).attr('replid1')+'&urutan2='+$(e).val();
+        ajax(u,d).done(function(dt){
+            var cont,clr;
+            if(dt.status!='sukses'){
+                cont = '..Gagal Merubah urutan ';
+                clr  ='red';
+            }else{
+                viewTB();
+                cont = '..Berhasil Merubah Urutan ';
+                clr  ='green';
+            }notif(cont,clr);
+        });
+    }

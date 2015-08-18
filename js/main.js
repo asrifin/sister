@@ -12,9 +12,10 @@ $(document).ready(function(){
 	// });
 });
 
-function logout () {
+function logout (par) {
 	$.ajax({
-		url:'lib/dblogout.php',
+		url:(typeof par=='undefined'?'../':'')+'lib/dblogout.php',
+		// url:(typeof par==undefined?'../':'')+'lib/dblogout.php',
 		dataType:'html',
 		success:function(data){
 			if(data=1){

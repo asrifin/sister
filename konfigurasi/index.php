@@ -1,6 +1,7 @@
 <?php
     session_start();
     require_once '../lib/func.php';
+    require_once '../lib/tglindo.php';
     $modul = basename(dirname(__FILE__));
     isModul($modul);
 ?>
@@ -10,7 +11,7 @@
     <meta charset="utf-8">
     <meta name="product" content="Metro UI CSS Framework">
     <meta name="description" content="Simple responsive css framework">
-    <meta name="author" content="Sergey S. Pimenov, Ukraine, Kiev">
+    <meta name="author" content="sister">
 
     <link href="../css/metro-bootstrap.css" rel="stylesheet">
     <link href="../css/metro-bootstrap-responsive.css" rel="stylesheet">
@@ -22,20 +23,27 @@
     <script src="../js/jquery/jquery.min.js"></script>
     <script src="../js/jquery/jquery.widget.min.js"></script>
     <script src="../js/jquery/jquery.mousewheel.js"></script>   
-    <script src="../js/prettify/prettify.js"></script>
+<!--    <script src="../js/prettify/prettify.js"></script>-->
 
     <!-- Metro UI CSS JavaScript plugins -->
     <script src="../js/load-metro.js"></script>
-     <script src="js/metro.min.js"></script>
-     <!-- // <script src="../js/metro-scroll.js"></script> -->
-
+    <script src="js/metro.min.js"></script>
+    <script>
+          // function showDialog(id){
+          //       var dialog = $("#"+id).data('dialog');
+          //       if (!dialog.element.data('opened')) {
+          //           dialog.open();
+          //       } else {
+          //           dialog.close();
+          //       }
+          //   }
+    </script>
     <!-- Local JavaScript -->
     <script src="../js/docs.js"></script>
-    <!--<script src="js/github.info.js"></script>-->
     <script src="../js/start-screen.js"></script>
     <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
 
-    <title>.:SISTER:.</title>
+    <title>.:SISTER METTA:.</title>
 </head>
 
 <body class="metro">
@@ -44,60 +52,21 @@
         <nav class="navigation-bar-content">
             <a class="element brand" href="../">
                 <span class="icon-grid-view"></span>  
-                Start Menu
+                Menu Utama
             </a>
+            
+            <!-- nama modul-->
             <span class="element-divider"></span>
             <a class="element brand" href="./">
                 <span class="icon-home"></span>  
                 <?php echo $modul;?>
             </a>
+
+            <!-- list menu -->
             <span class="element-divider"></span>
             <?php
-                $out='';
-                // looping grup menu
-                foreach ($_SESSION['grupmodulS']as $i => $v) {
-                    foreach ($v['modul'] as $i2 => $v2) {
-                        if($v2['modul']==$modul and $v2['statmod']==1) {
-                            foreach ($v2['grupmenu'] as $i3 => $v3) {
-                                $out.='<div class="element">                
-                                        <a class="dropdown-toggle" href="#">'.$v3['grupmenu'].'</a>
-                                        <ul class="dropdown-menu" data-role="dropdown">';
-                                foreach ($v3['menu'] as $i4 => $v4) {
-                                    $out.='<li '.($v4['statmenu']==0?'class="disabled"':'').'> 
-                                                <a href="'.($v4['statmenu']!=0?$v4['link']:'#').'">'.$v4['menu'].'</a>
-                                            </li>';
-                                }// end of menu looping
-                                $out.='</ul>
-                                    </div>';
-                            } // end of grupmenu looping
-                        } // end of modul checking
-                    } // end of  modul looping
-                } // grup grupmodul looping 
-                echo $out;
-                // exit();
+                topMenu($modul);
             ?>
-            <!-- <div class="element">
-                <a class="dropdown-toggle" href="#">Transaksi Keuangan</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="transaksi">Transaksi</a></li>
-                    <li><a href="modul-pembayaran">Modul Pembayaran</a></li>
-                    <li><a href="pembayaran">Pembayaran</a></li>
-                    <li><a href="inventory">Inventory</a></li>                
-                </ul>
-            </div>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Referensi</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="tahun-buku">Tahun Buku</a></li>
-                    <li><a href="kategori-rekening">Kategori Rekening</a></li>
-                    <li><a href="detil-rekening">Rekening</a></li>
-                    <li><a href="saldo-rekening">Saldo Rekening</a></li>
-                    <li><a href="set-anggaran">Set Anggaran</a></li>
-                    <li><a href="anggaran-tahunan">Anggaran Tahunan</a></li>
-                    <li><a href="kategori-modul">Ketegori Modul Pembayaran</a></li>
-                </ul>
-            </div> -->
-             
             <span class="element-divider place-right"></span>
             <div class="element place-right">
                 <a class="dropdown-toggle" href="#">
@@ -119,6 +88,10 @@
                     </li>
                 </ul>
             </div>
+            <div class="element place-right">
+                <?php echo 'Last Login : '.tgl_indo2($_SESSION['lastloginS']).' ( '.$_SESSION['counterlogS'].'x )';?>
+                <i class="icon-clock"></i>
+            </div>
         </nav>
     </nav>
 
@@ -135,6 +108,18 @@
                     break;
                     case 'icon':
                         require $d.'v_icon.php';
+                    break;
+                    case 'grupmodul':
+                        require $d.'v_grupmodul.php';
+                    break;
+                    case 'modul':
+                        require $d.'v_modul.php';
+                    break;
+                    case 'grupmenu':
+                        require $d.'v_grupmenu.php';
+                    break;
+                    case 'menu':
+                        require $d.'v_menu.php';
                     break;
 
                     // user
@@ -157,6 +142,5 @@
     </div>
     <!-- // <script src="js/hitua.js"></script> -->
     <script src="../js/main.js"></script>
-
 </body>
 </html>

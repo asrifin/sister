@@ -49,14 +49,14 @@
         </script>
 
         <!-- <title>Metro UI CSS : Metro Bootstrap CSS Library</title> -->
-        <title>SISTER</title>
+        <title>SISTERMETTA</title>
     </head>
     
     <body class="metro">
         <!--menu utama / module-->
         <div class="tile-area tile-area-dark" id="tile-module">
         <div class="container">
-            <h1 class="tile-area-title fg-white">SISTER</h1>
+            <h1 class="tile-area-title fg-white">SISTERMETTA</h1>
             <div class="user-id">
                 <div class="user-id-image">
                     <span class="icon-user no-display1"></span>
@@ -66,32 +66,31 @@
                     <span class="first-name"><?php echo $_SESSION['namaS'];?></span>
                     <span class="last-name"><?php echo $_SESSION['levelS'];?></span>
                 </div>
-                <button class="button inverse" onclick="logout();">logout</button>
+                <button class="button inverse" onclick="logout(1);">logout</button>
             </div>
             
             <?php 
+                require_once 'lib/func.php';
                 $out='';
                 // looping grup modul
                 foreach ($_SESSION['grupmodulS'] as $i => $v) {
                     $out.='<div class="tile-group '.$v['size'].'">';
                     // looping modul
                     foreach ($v['modul'] as $ii => $vv) {
-                        $link = $vv['link']=='akademik'?'akademik_siadu':$vv['link'];
-                        // $out.='<a id="mod-'.$vv['link'].'" href="'.$vv['link'].'" class="tile '.$vv['size'].' bg-'.$vv['warna'].' live" data-role="live-tile" '.($vv['statmod']!=0?'data-effect="slideUp"':'').' data-click="transform">
-                        $out.='<a id="mod-'.$vv['link'].'" href="'.$link.'" class="tile '.$vv['size'].' bg-'.$vv['warna'].' live" data-role="live-tile" '.($vv['statmod']!=0?'data-effect="slideUp"':'').' data-click="transform">
+                        $out.='<a id="mod-'.$vv['link'].'" '.($vv['statmod']==0?'onclick="warning(\''.$vv['modul'].'\');"':'href="'.$vv['link']).'" class="tile '.$vv['size'].' bg-'.$vv['warna'].' live" data-role="live-tile" '.($vv['statmod']!=0?'data-effect="slideUp"':'').' data-click="transform">
                                 <div style="align:center;" class="tile-content icon">
                                     <center>
-                                        <span class="icon-'.$vv['icon'].'"></span>
+                                        <span class="icon-'.($vv['statmod']==0?'locked-2':$vv['icon']).'"></span>
                                     </center>
                                 </div>
-                                <div class="tile-content email">
+                                <div class="tile-content email ">
                                     <div class="email-data-text">Keterangan :</div>
                                     <div class="email-data-text">'.$vv['keterangan'].'</div>
                                 </div>
                                 <div class="brand">
                                     <div class="label">
                                         <h4 class="no-margin fg-white">
-                                            '.$vv['modul'].'
+                                            '.$vv['modul'].($vv['statmod']==0?' [locked]':'').'
                                         </h4>
                                     </div>
                                     <!--<div class="badge">3</div>-->
@@ -100,36 +99,7 @@
                     } //end of looping modul
                     $out.='</div>';
                 } ///end of looping grup modul
-                echo $out;
-
-/*                    foreach ($v['modul'] as $ii => $vv) {
-                        $out.='<a id="mod-'.$vv['link'].'" 
-                                '.($vv['statmod']==0?' onclick="warning(\''.$vv['modul'].'\');"':' 
-                                href="'.$vv['link'].'"').' class="tile '.$vv['size'].' 
-                                bg-'.($vv['statmod']!=0?$vv['warna']:'grey').' live" data-role="live-tile" 
-                                '.($vv['statmod']!=0?'data-effect="slideUp"':'').' 
-                                data-click="transform">
-                                <div style="align:center;" class="tile-content icon">
-                                    <center>
-                                        <span class="icon-'.($vv['statmod']==0?'locked-2':$vv['icon']).'"></span>
-                                    </center>
-                                </div>
-                                <div class="tile-content email">
-                                    <div class="email-data-text">Keterangan :</div>
-                                    <div class="email-data-text">'.$vv['keterangan'].'</div>
-                                </div>
-                                <div class="brand">
-                                    <div class="label">
-                                        <h4 class="no-margin fg-white">
-                                            '.$vv['modul'].'
-                                        </h4>
-                                    </div>
-                                    <!--<div class="badge">3</div>-->
-                                </div>
-                            </a>';
-                    } //end of looping modul
-*/
-            ?>
+                echo $out;            ?>
         </div>
         <!--<script src="js/main.js"></script>
         <script src="js/hitua.js"></script>-->

@@ -14,69 +14,56 @@
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					case 'levelaksi':
-						$s1 = 'SELECT * FROM kon_level WHERE id_level='.$_POST['id_level'];
-						$e1 = mysql_query($s1);
-						$r1 = mysql_fetch_assoc($e1);
+						$l = getField('level','kon_level','id_level',$_POST['id_level']);
+						$k = getField('keterangan','kon_level','id_level',$_POST['id_level']);
+						$level = $k.' ('.$l.')';
 
-						$s2 = 'SELECT
-									k.id_katgrupmenu,
-									k.katgrupmenu,
-									k.keterangan,
-									IF (tbk.id_katgrupmenu IS NULL,0,1) statgrupmenu
-								FROM
-									kon_katgrupmenu k
-									LEFT JOIN (
-										SELECT
-											kg.keterangan,
-											kg.id_katgrupmenu
-										FROM
-											kon_levelkatgrupmenu lkg
-										LEFT JOIN kon_katgrupmenu kg ON kg.id_katgrupmenu = lkg.id_katgrupmenu
-										WHERE
-											lkg.id_level = '.$_POST['id_level'].'
-									) tbk ON tbk.id_katgrupmenu = k.id_katgrupmenu';
+						$s2 = '	SELECT lk.*,kg.keterangan 
+								FROM kon_levelkatgrupmenu lk 
+									JOIN kon_katgrupmenu kg on kg.id_katgrupmenu = lk.id_katgrupmenu  
+								WHERE lk.id_level ='.$_POST['id_level'].'
+								ORDER BY lk.isDefault DESC';
+								// pr($s2);
 						$e2 = mysql_query($s2);
+						$stat=!$e2?'gagal':'sukses';
 						$katgrupmenuArr=array();
 						while ($r2=mysql_fetch_assoc($e2)) {
-							$s3 = 'SELECT 
-										tba.id_katgrupmenu,	
-										tba.id_levelaksi,	
-										ka.id_aksi,	
-										ka.aksi,	
-										ka.keterangan,
-										IF(tba.id_aksi IS NOT NULL,1,0)stataksi
-									FROM kon_aksi ka 
-									LEFT JOIN (
-										SELECT
-											la.id_levelaksi,	
-											a.id_aksi,	
-											a.aksi,	
-											a.keterangan,
-											kg.id_katgrupmenu
-										FROM
-											kon_aksi a 
-											left JOIN kon_levelaksi la on la.id_aksi = a.id_aksi 
-											LEFT JOIN kon_levelkatgrupmenu lkg on lkg.id_levelkatgrupmenu = la.id_levelkatgrupmenu
-											LEFT JOIN kon_katgrupmenu kg on kg.id_katgrupmenu = lkg.id_katgrupmenu
-										WHERE	
-											lkg.id_level = '.$_POST['id_level'].' and
-											lkg.id_katgrupmenu= '.$r2['id_katgrupmenu'].'
-										) tba on tba.id_aksi = ka.id_aksi';
-							// var_dump($s3);exit();
-							$e3   = mysql_query($s3);
-							$stat = $e3?'sukses':'gagal';
+							$s3 = 'SELECT
+										a.*,
+										if((
+											SELECT id_levelaksi 
+											FROM kon_levelaksi 
+											WHERE 
+												id_aksi = a.id_aksi and 
+												id_levelkatgrupmenu='.$r2['id_levelkatgrupmenu'].'
+											) IS null ,0,1)stataksi
+									FROM
+										kon_aksi a';
+										// LEFT JOIN kon_levelaksi la ON la.id_aksi = a.id_aksi';
+							// pr($s3);
+							$e3      = mysql_query($s3);
+							$stat    = $e3?'sukses':'gagal';
 							$aksiArr = array();
 							while($r3 = mysql_fetch_assoc($e3)){
-								$aksiArr[] = $r3;	
-							}$katgrupmenuArr[]=array(
+								$aksiArr[] = array(
+									'id_aksi'             =>$r3['id_aksi'],
+									'aksi'                =>$r3['aksi'],
+									'keterangan'          =>$r3['keterangan'],
+									'stataksi'            =>$r3['stataksi'],
+									'id_levelkatgrupmenu' =>$r2['id_levelkatgrupmenu'],
+									'id_katgrupmenu'      =>$r2['id_katgrupmenu'],
+								);		
+							}
+							$katgrupmenuArr[]=array(
 								'keterangan' =>$r2['keterangan'],
+								'isDefault'  =>$r2['isDefault'],
 								'aksiArr'    =>$aksiArr
 							);
-						}$out = json_encode(array(
+						}
+						$out = json_encode(array(
 							'status' =>$stat,
 							'data'   =>array(
-								'level'          =>$r1['level'],
-								'keterangan'     =>$r1['keterangan'],
+								'level'          =>$level,
 								'katgrupmenuArr' =>$katgrupmenuArr
 							)
 						));
@@ -92,7 +79,7 @@
 									level like "%'.$level.'%" and
 									keterangan like "%'.$keterangan.'%" 
 								ORDER 
-									BY '.$mnu.' asc';
+									BY urutan asc';
 						// print_r($sql);exit();
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -108,11 +95,18 @@
 						$jum = mysql_num_rows($result);
 						$out ='';
 						if($jum!=0){	
-							$nox 	= $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
+								$nox = '<span class="input-control select"><select class="text-center" replid1="'.$res['id_level'].'" urutan1="'.$res['urutan'].'" onchange="urutFC(this);" >';
+								for($i=1; $i<=$jum; $i++){
+									if($i==$res['urutan'])
+										$nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
+									else
+										$nox.='<option value="'.$i.'">'.$i.'</option>';
+								}$nox.='</select></span>';
+
 								// <button data-hint="detail"  onclick="viewFR(\'aksi\','.$res['id_'.$mnu].');">
 								$btn ='<td align="center">
-											<button data-hint="detail"  onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');">
+											<button '.isDisabled($mnu,'u').' data-hint="detail"  onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');">
 												<i class="icon-zoom-in"></i>
 											</button>
 											<button '.isDisabled($mnu,'u').' data-hint="ubah"  onclick="viewFR(\'level\','.$res['id_'.$mnu].');">
@@ -147,45 +141,76 @@
 			case 'simpan':
 				switch ($_POST['subaksi']) {
 					case 'levelaksi':
-						/*search id_levelkatgrupmenu 
-						delete levelaksi by id_levelkatgrupmenu
-						insert levelaksi set id_levelkatgrupmenu & id_aksi*/
-						
-						// $c = count($_POST['aksiTB']);
-						// var_dump($_POST['aksiTB'][1]);
-							// var_dump($_POST['id_level']);
-						$stat2 = true;
-							var_dump($_POST['aksiTB']);exit();
-						foreach ($_POST['aksiTB'] as $i => $v) {
-							// get id_levelkatgrupmenu
-							// $xx.=$v.
-							// $s1 = 'SELECT id_levelkatgrupmenu FROM kon_levelkatgrupmenu WHERE id_katgrupmenu ='.$i.' AND id_level='.$_POST['id_level'];
-							// $e1 = mysql_query($s1) or die('gagal_pilih_idlevelkatgrupmenu_'.mysql_error());
-							// $r1 = mysql_fetch_assoc($e1);
-							
-							// // delete levelaksi by id_leveljatgrupmenu
-							// $s2 = 'DELETE FROM kon_levelaksi WHERE id_levelkatgrupmenu='.$r1['id_levelkatgrupmenu']; 
-							// $e2 = mysql_query($s2) or die('gagal_hapus_levelaksi_ke_'.$i);
+						$stat2=true;
+						$s1 = '	DELETE 
+								from kon_levelaksi 
+								WHERE id_levelkatgrupmenu IN (
+										SELECT id_levelkatgrupmenu 
+										FROM kon_levelkatgrupmenu 
+										WHERE id_level = '.$_POST['id_level'].'
+									)';	
+						$e1 = mysql_query($s1);
+						if(!$e1){
+							$stat2=false;
+						}else{
+							if(isset($_POST['aksiTB'])){
+								foreach ($_POST['aksiTB'] as $i => $v) { // katgrupmenu 2 :(M,T)
+									foreach ($_POST['aksiTB'][$i] as $ii => $vv) { // aksi 6 :(c,r,u,d,s,p)
+										foreach ($_POST['aksiTB'][$i][$ii] as $iii => $vvv) { // kelmpok modul 2:(default, tambahan)
+											$sl = ' SELECT id_levelkatgrupmenu from kon_levelkatgrupmenu 
+													where 
+														id_level       ='.$_POST['id_level'].' AND
+														id_katgrupmenu ='.$i.' AND
+														isDefault      ='.$iii;
+											// vd($sl);e
+											$el=mysql_query($sl);
+											$rl=mysql_fetch_assoc($el);
 
-							// $stat2 = !$e1?false:true;
-							// foreach ($v as $i2 => $v2) {
-							// 	// insert new levelaksi by idlevelkatgrupmenu
-							// 	$s3 = 'INSERT INTO kon_levelaksi SET id_aksi='.$v2x.', id_levelkatgrupmenu ='.$r1['id_levelkatgrupmenu'];
-							// 	$e3 = mysql_query($s3);
-							// 	// var_dump($r1);
-							// 	// exit();
-							// 	$stat2 = !$e3?false:true;
-							// }
-						}$stat=!$stat2?'gagal':'sukses';
+											$s2= 'INSERT INTO kon_levelaksi SET id_levelkatgrupmenu ='.$rl['id_levelkatgrupmenu'].',
+																				id_aksi            ='.$ii;
+											$e2= mysql_query($s2);
+											$stat2=!$e2?false:true;
+										}
+									}
+								}
+							}
+						}
+						$stat=!$stat2?'gagal':'sukses';
 						$out=json_encode(array('status'=>$stat));
 					break;
 
 					case 'level':
-						$s 	  = $tb.' set 	'.$mnu.' 	= "'.filter($_POST[''.$mnu.'TB']).'",
-											keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-						$s2   = isset($_POST['id_'.$mnu])?'UPDATE '.$s.' WHERE id_'.$mnu.'='.$_POST['id_'.$mnu]:'INSERT INTO '.$s;
-						$e    = mysql_query($s2);
-						$stat = ($e)?'sukses':'gagal';
+						$stat2 =true;
+						$s = $tb.' set 	'.$mnu.' 	= "'.filter($_POST[''.$mnu.'TB']).'",
+										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
+						if(isset($_POST['id_'.$mnu])){
+							$s = 'UPDATE '.$s.' WHERE id_'.$mnu.'='.$_POST['id_'.$mnu];
+							$e = mysql_query($s);
+							if(!$e){
+								$stat2 = false;
+							}
+						}else{
+							$s2 ='INSERT INTO '.$s.', urutan=(SELECT (COUNT(*)+1) FROM kon_level l)';
+							$e  = mysql_query($s2);
+							$id = mysql_insert_id();
+
+							if(!$e){
+								$stat2=false;
+							}else{
+								$s1 = 'SELECT * from kon_katgrupmenu ';
+								$e1 = mysql_query($s1);
+								while ($r1=mysql_fetch_assoc($e1)) {
+									for ($i=0; $i<=1 ; $i++) { 
+										$s2 = 'INSERT INTO kon_levelkatgrupmenu set id_level 		= '.$id.',
+																					id_katgrupmenu  = '.$r1['id_katgrupmenu'].
+																					($i==1?',isDefault=0':'');
+										$e2 = mysql_query($s2);
+										$stat2=!$e2?false:true;
+									}
+								}
+							}
+						}
+						$stat = ($stat2)?'sukses':'gagal';
 						$out  = json_encode(array('status'=>$stat));
 					break;
 					
@@ -242,7 +267,7 @@
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['id_'.$mnu])){
-					$w.='where id_ .$mnu='.$_POST['id_'.$mnu];
+					$w.='where id_'.$mnu.'='.$_POST['id_'.$mnu];
 				}else{
 					if(isset($_POST[$mnu])){
 						$w.='where '.$mnu.'='.$_POST[$mnu];
@@ -254,9 +279,7 @@
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY 
-							aktif desc,
-							nama desc';
+						ORDER  BY urutan ASC';
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
@@ -279,6 +302,37 @@
 				}$out=json_encode($ar);
 			break;
 			// cmbtahunajaran -----------------------------------------------------------------
+
+			// urutan -----------------------------------------------------------------
+			case 'urutan':
+				// 1 = asal
+				// 2 = tujuan
+				$_1 = mysql_fetch_assoc(mysql_query('SELECT urutan from '.$tb.' WHERE id_level='.$_POST['replid1']));
+				$_2 = mysql_fetch_assoc(mysql_query('SELECT id_level from '.$tb.' WHERE urutan='.$_POST['urutan2']));
+				$s1		= ' UPDATE '.$tb.' 
+							SET urutan = '.$_POST['urutan2'].'  
+							WHERE 
+								id_level='.$_POST['replid1'];
+				$s2		= ' UPDATE '.$tb.' 
+							SET urutan = '.$_1['urutan'].'  
+							WHERE 
+								id_level='.$_2['id_level'];
+				// var_dump($s1);exit();
+				$e1 	= mysql_query($s1);
+				if(!$e1){
+					$stat='gagal ubah urutan semula ';
+				}else{
+					$e2 = mysql_query($s2);
+					if(!$e2)
+						$stat = 'gagal ubah urutan kedua';
+					else
+						$stat= 'sukses';
+				}
+				$out 	= json_encode(array(
+							'status'  =>$stat,
+						));
+			break;
+			// urutan ------			
 
 		}
 	}echo $out;

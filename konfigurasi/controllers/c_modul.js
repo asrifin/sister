@@ -1,28 +1,63 @@
-var mnu ='grupmodul';
-var dir ='models/m_'+mnu+'.php';
+var mnu  ='modul';
+var mnu2 ='grupmodul';
+var mnu3 ='warna';
+var mnu4 ='icon';
+
+var dir  ='models/m_'+mnu+'.php';
+var dir2 ='models/m_'+mnu2+'.php';
+var dir3 ='models/m_'+mnu3+'.php';
+var dir4 ='models/m_'+mnu4+'.php';
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        viewTB();
+        cmbgrupmodul('filter','');
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
 
                         +'<input id="idformH" type="hidden">' 
                         
-                        // grupm Modul
+                        // grup Modul
                         +'<label>Grup Modul</label>'
+                        +'<div class="input-control select">'
+                            +'<select required id="grupmodulTB"name="grupmodulTB"></select>'
+                        +'</div>'
+
+                        // modul
+                        +'<label>modul</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="grup modul" required type="text" name="grupmodulTB" id="grupmodulTB">'
+                            +'<input required type="text"  placeholder="modul" name="modulTB" id="modulTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
-                        // size
-                        +'<label>Size</label>'
+                        //link
+                        +'<label>Link</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text"  placeholder="size" name="sizeTB" id="sizeTB">'
+                            +'<input required type="text"  placeholder="link" name="linkTB" id="linkTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
+                        //warna
+                        +'<label>Warna</label>'
+                        +'<div class="input-control select">'
+                            +'<select required id="warnaTB" name="warnaTB"></select>'
+                        +'</div>'
+                        
+                        //icon
+                        +'<label>icon</label>'
+                        +'<div class="input-control select">'
+                            +'<select required id="iconTB" name="iconTB"></select>'
+                        +'</div>'
+
+                        //size
+                        +'<label>size</label>'
+                        +'<div class="input-control select">'
+                            +'<select required id="sizeTB" name="sizeTB">'
+                                +'<option value="double">kecil</option>'
+                                +'<option value="double double-vertical">Besar</option>'
+                            +'</select>'
+                        +'</div>'
+
+                        // button
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                         +'</div>'
@@ -33,8 +68,11 @@ var contentFR ='';
             viewFR('');
         });
 
+        // $('#grupmodulS').on('change',function(){
+        //     viewTB();
+        // });
         //search action
-        $('#grupmodulS,#sizeS').keydown(function (e){
+        $('#modulS,#warnaS,#iconS,#linkS').keydown(function (e){
             if(e.keyCode == 13) viewTB();
         })
     }); 
@@ -116,17 +154,23 @@ var contentFR ='';
                 var titlex;
                 if(id==''){  //add mode
                     titlex='<span class="icon-plus-2"></span> Tambah ';
+                    cmbgrupmodul('form','');
+                    cmbwarna('form','');
+                    cmbicon('form','');
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({
                         url:dir,
-                        data:'aksi=ambiledit&replid='+id,
+                        data:'aksi=ambiledit&id_modul='+id,
                         type:'post',
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#grupmodulTB').val(dt.grupmodul);
-                            $('#sizeTB').val(dt.size);
+                            $('#modulTB').val(dt.modul);
+                            $('#linkTB').val(dt.link);
+                            cmbwarna('form',dt.warna);
+                            cmbicon('form',dt.icon);
+                            cmbgrupmodul('form',dt.grupmodul);
                         }
                     });
                 }$.Dialog.title(titlex+' '+mnu);
@@ -254,24 +298,77 @@ var contentFR ='';
 //end of urutan tabel
 
 
+// combo icon ---
+    function cmbicon(typ,ico){
+        var u = dir4;
+        var d ='aksi=cmb'+mnu4;
+        ajax(u,d).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.icon, function(id,item){
+                    out+='<option '+(ico!='' && ico==item.id_icon?'selected':'')+' value="'+item.id_icon+'">'+item.icon+'</option>';
+                });
+            }
+            if(typ=='filter'){
+                $('#iconS').html('<option value="">-SEMUA-</option>'+out);
+                viewTB();
+            }else{
+                $('#iconTB').html('<option value="">-Pilih Icon-</option>'+out);
+            }
+        });
+    }
+
+// combo warna ---
+    function cmbwarna(typ,war){
+        var u = dir3;
+        var d ='aksi=cmb'+mnu3;
+        ajax(u,d).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.warna, function(id,item){
+                    out+='<option '+(war!='' && war==item.id_warna?'selected':'')+' value="'+item.id_warna+'">'+item.warna+'</option>';
+                });
+            }
+            if(typ=='filter'){
+                $('#warnaS').html('<option value="">-SEMUA-</option>'+out);
+                cmbicon('filter','');
+            }else{
+                $('#warnaTB').html('<option value="">-Pilih Warna-</option>'+out);
+            }
+        });
+    }
+
 // combo grupmodul ---
     function cmbgrupmodul(typ,gm){
         var u = dir2;
-        var d ='aksi=cmb'+mnu2+(gm!=''?'&replid='+gm:'');
+        var d ='aksi=cmb'+mnu2;
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){
                 out+='<option value="">'+dt.status+'</option>';
             }else{
                 $.each(dt.grupmodul, function(id,item){
-                    out+='<option '+(gm!='' && gm==item.replid?'selected':'')+' value="'+item.replid+'">'+item.grupmodul+'</option>';
+                    out+='<option '+(gm!='' && gm==item.id_grupmodul?'selected':'')+' value="'+item.id_grupmodul+'">'+item.grupmodul+'</option>';
                 });
             }
             if(typ=='filter'){
-                $('#grupmodulS').html(out);
-                viewTB();
+                $('#grupmodulS').html('<option value="">-SEMUA-</option>'+out);
+                cmbwarna('filter','');
             }else{
                 $('#grupmodulTB').html('<option value="">-Pilih Grup Modul-</option>'+out);
             }
+        });
+    }
+
+    function ajax (u,d) {
+        return $.ajax({
+            url:u,
+            data:d,
+            dataType:'json',
+            type:'post',
         });
     }

@@ -132,21 +132,13 @@
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['id_'.$mnu])){
-					$w.='where id_ .$mnu='.$_POST['id_'.$mnu];
-				}else{
-					if(isset($_POST[$mnu])){
-						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST['departemen'])){
-						$w.='where departemen ='.$_POST['departemen'];
-					}
+					$w.='where id_'.$mnu.'='.$_POST['id_'.$mnu];
 				}
-				
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
 						ORDER  BY 
-							aktif desc,
-							nama desc';
+							icon ASC';
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);

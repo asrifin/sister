@@ -1,3 +1,4 @@
+<?php $mnu='warna'; isMenu($modul,$mnu); ?>
 <script src="controllers/c_warna.js"></script>
 <script src="../js/metro/metro-button-set.js"></script>
 <script src="../js/metro/metro-hint.js"></script>
@@ -5,7 +6,7 @@
 <h4 style="color:white;">Warna</h4>
 <div id="loadarea"></div>
 
-<button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<button <?php echo isDisabled($mnu,'c');?> data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 <table class="table hovered bordered striped">
     <thead>

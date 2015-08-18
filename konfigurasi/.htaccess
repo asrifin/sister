@@ -10,11 +10,14 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^home/?$   									index.php?page=vhome
 	RewriteRule   ^warna/?$	   									index.php?page=warna
 	RewriteRule   ^icon/?$	   									index.php?page=icon
+	RewriteRule   ^grup-modul/?$	   							index.php?page=grupmodul
+	RewriteRule   ^modul/?$	   									index.php?page=modul
+	RewriteRule   ^grup-menu/?$	   								index.php?page=grupmenu
+	RewriteRule   ^menu/?$	   									index.php?page=menu
 	
 	#User
 	RewriteRule   ^level/?$				   						index.php?page=level
 	RewriteRule   ^user/?$					   					index.php?page=user
-	RewriteRule   ^grup-modul/?$			   					index.php?page=grupmodul
 	
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 

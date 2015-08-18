@@ -1,28 +1,59 @@
-var mnu ='grupmodul';
-var dir ='models/m_'+mnu+'.php';
+var mnu  ='grupmenu';
+var mnu2 ='grupmodul';
+var mnu3 ='warna';
+var mnu4 ='icon';
+var mnu5 ='modul';
+var mnu6 ='katgrupmenu';
+
+var dir  ='models/m_'+mnu+'.php';
+var dir2 ='models/m_'+mnu2+'.php';
+var dir3 ='models/m_'+mnu3+'.php';
+var dir4 ='models/m_'+mnu4+'.php';
+var dir5 ='models/m_'+mnu5+'.php';
+var dir6 ='models/m_'+mnu6+'.php';
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        viewTB();
+        cmbgrupmodul('filter','');
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
-
                         +'<input id="idformH" type="hidden">' 
                         
-                        // grupm Modul
+                        // grup Modul
                         +'<label>Grup Modul</label>'
+                        +'<div class="input-control select">'
+                            +'<select onchange="cmbmodul(\'form\',$(this).val());" required id="grupmodulTB"name="grupmodulTB"></select>'
+                        +'</div>'
+
+                        // modul
+                        +'<label>modul</label>'
+                        +'<div class="input-control select">'
+                            +'<select required id="modulTB"name="modulTB"></select>'
+                        +'</div>'
+
+                        // kateg
+                        +'<label>Kategori</label>'
+                        +'<div class="input-control select">'
+                            +'<select required id="katgrupmenuTB"name="katgrupmenuTB"></select>'
+                        +'</div>'
+
+                        //link
+                        +'<label>Grup Menu</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="grup modul" required type="text" name="grupmodulTB" id="grupmodulTB">'
+                            +'<input required type="text"  placeholder="grup menu" name="grupmenuTB" id="grupmenuTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
-                        // size
-                        +'<label>Size</label>'
-                        +'<div class="input-control text">'
-                            +'<input required type="text"  placeholder="size" name="sizeTB" id="sizeTB">'
-                            +'<button class="btn-clear"></button>'
+                        //size
+                        +'<label>size</label>'
+                        +'<div class="input-control select">'
+                            +'<select id="sizeTB" name="sizeTB">'
+                                +'<option value="">kecil</option>'
+                                +'<option value="four">Besar</option>'
+                            +'</select>'
                         +'</div>'
 
+                        // button
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                         +'</div>'
@@ -33,8 +64,14 @@ var contentFR ='';
             viewFR('');
         });
 
+        $('#grupmodulS').on('change',function(){
+            cmbmodul('filter',$(this).val(),'');
+        });
+        $('#modulS,#katgrupmenuS').on('change',function(){
+            viewTB();
+        });
         //search action
-        $('#grupmodulS,#sizeS').keydown(function (e){
+        $('#grupmenuS').keydown(function (e){
             if(e.keyCode == 13) viewTB();
         })
     }); 
@@ -116,17 +153,22 @@ var contentFR ='';
                 var titlex;
                 if(id==''){  //add mode
                     titlex='<span class="icon-plus-2"></span> Tambah ';
+                    cmbgrupmodul('form','');
+                    cmbmodul('form','');
+                    cmbkatgrupmenu('form','');
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({
                         url:dir,
-                        data:'aksi=ambiledit&replid='+id,
+                        data:'aksi=ambiledit&id_grupmenu='+id,
                         type:'post',
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#grupmodulTB').val(dt.grupmodul);
-                            $('#sizeTB').val(dt.size);
+                            $('#grupmenuTB').val(dt.grupmenu);
+                            cmbgrupmodul('form',dt.grupmodul);
+                            cmbmodul('form',dt.grupmodul,dt.modul);
+                            cmbkatgrupmenu('form',dt.katgrupmenu);
                         }
                     });
                 }$.Dialog.title(titlex+' '+mnu);
@@ -215,63 +257,83 @@ var contentFR ='';
         $('#angkatanTB').val('');
         $('#keteranganTB').val('');
     }
-//end of reset form ---
 
-// urutan tabel
-    function urutFC (e) {
-        // alert(id1);return false;
-        // if(confirm('melanjutkan untuk merubah urutan ?')){
-            $.ajax({
-                url:dir,
-                dataType:'json',
-                type:'post',
-                data:'aksi=urutan&replid1='+$(e).attr('replid1')+'&urutan2='+$(e).val(),
-                beforeSend:function(){
-                    $('#tbody').html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
-                },success:function(dt){
-                    var cont,clr;
-                    // cont = '..Gagal Merubah urutan '+$('#'+mnu+'TD_'+$(e).attr('replid1')).html()+' ..';
-                    if(dt.status!='sukses'){
-                        cont = '..Gagal Merubah urutan ';
-                        clr  ='red';
-                    }else{
-                        viewTB();
-                        cont = '..Berhasil Merubah Urutan ';
-                        clr  ='green';
-                    }
-                    // alert($(e).attr('urutan1'));return false;
-                    // var idx = $(e).attr('urutan1');
-                    // $('#TR_'+idx).addClass('success');
-                    // $('#TR_2').html('<td>aseeeeeeeeem</td>');
-                    // $('#TR_'+idx).html('<td>aseeeeeeeeem</td>');
-                    notif(cont,clr);
+// combo icon ---
+    function cmbkatgrupmenu(typ,kat){
+        var u = dir6;
+        var d ='aksi=cmb'+mnu6;
+        ajax(u,d).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.katgrupmenu, function(id,item){
+                    out+='<option '+(kat!='' && kat==item.id_katgrupmenu?'selected':'')+' value="'+item.id_katgrupmenu+'">'+item.keterangan+'</option>';
+                });
+            }
+            if(typ=='filter'){
+                $('#katgrupmenuS').html('<option value="">-SEMUA-</option>'+out);
+                viewTB();
+            }else{
+                $('#katgrupmenuTB').html('<option value="">-Pilih Kategori-</option>'+out);
+            }
+        });
+    }
+
+// combo modul---
+    function cmbmodul(typ,gm,mod){
+        if(gm==''){
+            $('#modulS').html('<option value="">-SEMUA-</option>');
+            cmbkatgrupmenu('filter','');
+        }else{
+            var u = dir5;
+            var d ='aksi=cmb'+mnu5+(gm!=''?'&id_grupmodul='+gm:'');
+            ajax(u,d).done(function (dt) {
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.modul, function(id,item){
+                        out+='<option '+(mod!='' && mod==item.id_modul?'selected':'')+' value="'+item.id_modul+'">'+item.modul+'</option>';
+                    });
+                }
+                if(typ=='filter'){
+                    $('#modulS').html('<option value="">-SEMUA-</option>'+out);
+                    cmbkatgrupmenu('filter','');
+                }else{
+                    $('#modulTB').html('<option value="">-Pilih Modul-</option>'+out);
                 }
             });
-        // }else{
-        //     alert('gak sido');
-        // }
+        }
     }
-//end of urutan tabel
-
 
 // combo grupmodul ---
     function cmbgrupmodul(typ,gm){
         var u = dir2;
-        var d ='aksi=cmb'+mnu2+(gm!=''?'&replid='+gm:'');
+        var d ='aksi=cmb'+mnu2;
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){
                 out+='<option value="">'+dt.status+'</option>';
             }else{
                 $.each(dt.grupmodul, function(id,item){
-                    out+='<option '+(gm!='' && gm==item.replid?'selected':'')+' value="'+item.replid+'">'+item.grupmodul+'</option>';
+                    out+='<option '+(gm!='' && gm==item.id_grupmodul?'selected':'')+' value="'+item.id_grupmodul+'">'+item.grupmodul+'</option>';
                 });
             }
             if(typ=='filter'){
-                $('#grupmodulS').html(out);
-                viewTB();
+                $('#grupmodulS').html('<option value="">-SEMUA-</option>'+out);
+                cmbmodul('filter','','');
             }else{
                 $('#grupmodulTB').html('<option value="">-Pilih Grup Modul-</option>'+out);
             }
+        });
+    }
+
+    function ajax (u,d) {
+        return $.ajax({
+            url:u,
+            data:d,
+            dataType:'json',
+            type:'post',
         });
     }
