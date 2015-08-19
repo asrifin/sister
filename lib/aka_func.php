@@ -1,4 +1,19 @@
 <?php
+	function checkDetailKelas($thn){
+		$kel  = getField('count(*)','aka_kelas','','');
+		$dkel = getField('count(*)','aka_detailkelas','tahunajaran',$thn);
+		// vdump($kel);
+		if($dkel<=0 || $kel!=$dkel) addDetailKelas($thn);
+	}
+	function addDetailKelas($thn){
+		$sk = 'SELECT replid FROM aka_kelas ORDER BY replid ASC';
+		$ek = mysql_query($sk);
+		while ($rk = mysql_fetch_assoc($ek)) {
+			$ss ='INSERT INTO aka_detailkelas SET  	kelas       ='.$rk['replid'].',
+													tahunajaran ='.$thn;
+			$es = mysql_query($ss);
+		}
+	}
 
 /*aka*/
 	function getTahunAjaran($typ,$id){

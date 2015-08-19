@@ -1,13 +1,8 @@
 <?php
     session_start();
-    // echo '<pre>';
-    //     print_r($_SESSION);exit();
-    // echo '</pre>';
-
-    if(!isset($_SESSION['loginS'])){
-        header('location:../');
-    }else{
-        // echo 'ada';
+    require_once '../lib/func.php';
+    $modul = basename(dirname(__FILE__));
+    isModul($modul);
 ?>
 <!DOCTYPE html>
 <html>
@@ -54,50 +49,21 @@
         <nav class="navigation-bar-content">
             <a class="element brand" href="../">
                 <span class="icon-grid-view"></span>  
-                Start Menu
+                Menu Utama
             </a>
+            <!-- nama modul-->
             <span class="element-divider"></span>
             <a class="element brand" href="./">
                 <span class="icon-home"></span>  
-                Akademik
+                <?php echo $modul;?>
             </a>
+
+            <!-- list menu -->
             <span class="element-divider"></span>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Kesiswaan</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="pendataan-siswa">Pendataan Siswa</a></li>
-                    <li><a href="presensi-siswa">Presensi Siswa</a></li>
-                    <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
-                    <!-- <li><a href="ni">ni</a></li> -->
-                    <li><a href="mutasi">Pendataan Mutasi Siswa</a></li>
-                </ul>
-            </div>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Guru dan Pelajaran</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="pelajaran">Pelajaran</a></li>
-                    <li><a href="guru">guru</a></li>
-                    <li><a href="jadwal-pelajaran">Jadwal Pelajaran</a></li>
-                    <li><a href="presensi-guru">Presensi Guru</a></li>
-                    <li><a href="kegiatan-akademik">Kegiatan Akademik</a></li>
-                </ul>
-            </div>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Referensi</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="departemen">Departemen</a></li>
-                    <li><a href="angkatan">Angkatan</a></li>
-                    <li><a href="tahun-ajaran">Tahun Ajaran</a></li>
-                    <li><a href="tingkat">Tingkat </a></li>
-                    <li><a href="kelas">Kelas </a></li>
-                    <li><a href="semester">Semester </a></li>
-                    <li><a href="jenis-mutasi">Jenis Mutasi</a></li>
-                    <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
-                    <li><a href="tahun-lulus">Tahun Lulus</a></li>
-                    <li><a href="subtingkat">Sub Tingkat</a></li>
-                </ul>
-            </div>
-             
+            <?php
+                topMenu($modul);
+            ?>
+            
             <span class="element-divider place-right"></span>
             <div class="element place-right">
                 <a class="dropdown-toggle" href="#">
@@ -129,7 +95,7 @@
                 require $d.'v_home.php';
             }else{
                 switch ($_GET['page']) {
-                    // referensi
+                    // master
                     case 'vdepartemen':
                         require $d.'v_departemen.php';
                     break;
@@ -154,6 +120,9 @@
                     case 'vtahunlulus':
                         require $d.'v_tahunlulus.php';
                     break;
+                    case 'vdetailpelajaran':
+                        require $d.'v_detailpelajaran.php';
+                    break;
 
                     // guru dan pelajaran
                     case 'vguru':
@@ -171,6 +140,11 @@
                     case 'vkegiatan':
                         require $d.'v_kegiatan.php';
                     break;
+                    case 'vdetailkelas':
+                        require $d.'v_detailkelas.php';
+                    break;
+
+                    // kesiswaan
                     case 'vmutasi':
                         require $d.'v_mutasi.php';
                     break;
@@ -184,7 +158,6 @@
                         require $d.'v_subtingkat.php';
                     break;
                     case 'vpresensisiswa':
-                        // echo 'asem';
                         require $d.'v_presensisiswa.php';
                     break;
 
@@ -201,5 +174,3 @@
 
 </body>
 </html>
-
-<?php } ?>

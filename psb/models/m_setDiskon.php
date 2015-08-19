@@ -50,9 +50,8 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
 									<td>'.$res['nama'].'</td>
-									<td>'.$res['nilai'].'</td>
+									<td class="text-right">'.$res['nilai'].' %</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';

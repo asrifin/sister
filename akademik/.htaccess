@@ -13,6 +13,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^tahun-ajaran/?$   							index.php?page=vtahunajaran
 	RewriteRule   ^tingkat/?$   								index.php?page=vtingkat
 	RewriteRule   ^kelas/?$   									index.php?page=vkelas
+	RewriteRule   ^detail-kelas/?$   							index.php?page=vdetailkelas
 	RewriteRule   ^semester/?$   								index.php?page=vsemester
 	RewriteRule   ^jenis-mutasi/?$								index.php?page=vjenismutasi
 	RewriteRule   ^tahun-lulus/?$								index.php?page=vtahunlulus
