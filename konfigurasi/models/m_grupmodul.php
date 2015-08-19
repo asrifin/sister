@@ -39,10 +39,10 @@
 				if($jum!=0){	
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['id_grupmodul'].');">
+									<button data-hint="ubah"  class="button" '.(isAksi('grupmodul','u')?'onclick="viewFR('.$res['id_grupmodul'].');"':'disabled').'>
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus"  class="button" onclick="del('.$res['id_grupmodul'].');">
+									<button data-hint="hapus"  class="button" '.(isAksi('grupmodul','d')?'onclick="del('.$res['id_grupmodul'].');"':'disabled').' onclick="del('.$res['id_grupmodul'].');">
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>

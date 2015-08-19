@@ -1,4 +1,4 @@
-<?php // isMenu($modul,'grupmenu'); ?>
+<?php isMenu($modul,'grupmenu'); ?>
 <script src="controllers/c_grupmenu.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
@@ -6,7 +6,7 @@
 <nav class="breadcrumbs">
     <ul>
         &nbsp;
-        <button <?php //echo isDisabled('grupmenu','c'); ?>  class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
+        <button class="place-left" <?php echo isAksi('grupmenu','c')?'onclick="viewFR(\'\')"':'disabled'; ?> data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
         <li><a href="grup-modul">Grup Modul</a></li>
         <li><a href="modul">Modul</a></li>
         <li class="active"><a href="#"><b>Grup Menu</b></a></li>

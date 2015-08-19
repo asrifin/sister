@@ -55,10 +55,10 @@
 				if($jum!=0){	
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button '.isDisabled($mnu,'u').' data-hint="ubah"  class="button" onclick="viewFR('.$res['id_modul'].');">
+									<button '.(isAksi('grupmenu','u')?'onclick="viewFR('.$res['id_modul'].');"':'disabled').' data-hint="ubah"  class="button" >
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button '.isDisabled($mnu,'d').' data-hint="hapus"  class="button" onclick="del('.$res['id_modul'].');">
+									<button '.(isAksi('grupmenu','d')?'onclick="del('.$res['id_modul'].');"':'disabled').' data-hint="hapus"  class="button" >
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>

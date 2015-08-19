@@ -55,7 +55,7 @@
 									// 	<i class="icon-pencil"></i>
 									// </button>
 						$btn ='<td align="center">
-									<button '.isDisabled('user','d').' data-hint="hapus" onclick="del('.$res['id_'.$mnu].');">
+									<button '.(isAksi('user','d')?'onclick="del('.$res['id_'.$mnu].');"':'disabled').' data-hint="hapus">
 										<i class="icon-remove"></i>
 									</button>
 								 </td>';
@@ -75,7 +75,7 @@
 									<td align="center">'.$res['username'].'</td>
 									<td align="center">'.$res['level'].'</td>
 									<td align="center">
-										<button '.isDisabled('user','u').' onclick="aktifkan('.$res['id_login'].');" class="fg-white bg-'.$clr.'" data-hint="'.$hint.'"><i class="icon-'.$icon.'"></i></button>
+										<button '.(isAksi('user','d')?'onclick="aktifkan('.$res['id_login'].');"':'disabled').'  class="fg-white bg-'.$clr.'" data-hint="'.$hint.'"><i class="icon-'.$icon.'"></i></button>
 									</td>
 									'.$btn.'
 								</tr>';

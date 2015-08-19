@@ -15,65 +15,50 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
-				$semester = isset($_POST['semesterS'])?filter(trim($_POST['semesterS'])):'';
-				$keterangan = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
-				$sql = 'SELECT *
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
+				$sql = 'SELECT 
+							replid,
+							IF(semester=1,"Ganjil","Genap")semester,
+							tglMulai,
+							tglSelesai
 						FROM '.$tb.'
 						WHERE 
-							tahunajaran like "%'.$tahunajaran.'%" and
-							nama like "%'.$semester.'%" and
-							keterangan like "%'.$keterangan.'%"
+							tahunajaran ='.$tahunajaran.' 
 						ORDER 
-							BY urut asc';
+							BY tglMulai asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
 
+				$recpage = 5;//jumlah data per halaman
 				$aksi    ='tampil';
-				$subaksi ='';
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
-				$result =$obj->result;
+				$subaksi ='ju';
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$result  = $obj->result;
 
 				#ada data
-				$jum	= mysql_num_rows($result);
-				$out ='';
+				$out='';
+				$jum = mysql_num_rows($result);
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
-						if($res['aktif']=1){
-							$dis  = 'disabled';
-							$ico  = 'checkmark';
-							$hint = 'telah Aktif';
-							$func = '';
-						}else{
-							$dis  = '';
-							$ico  = 'blocked';
-							$hint = 'Aktifkan';
-							$func = 'onclick="aktifkan('.$res['replid'].');"';
-						}
-						$btn ='<td>
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+					while($r = mysql_fetch_assoc($result)){	
+						$btn ='<td align="center">
+									<button data-hint="ubah"  onclick="viewFR('.$r['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button data-hint="hapus" onclick="del('.$r['replid'].');">
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
-									<td>'.$res['keterangan'].'</td>
+									<td>'.$r['semester'].'</td>
+									<td align="center">'.tgl_indo5($r['tglMulai']).' - '.tgl_indo5($r['tglSelesai']).'</td>
 									'.$btn.'
 								</tr>';
-						$nox++;
+						// $nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -88,9 +73,10 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
-								nama    	= "'.filter($_POST['semesterTB']).'",
-								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
+				$s = $tb.' set 	tahunajaran = "'.$_POST['tahunajaranH'].'",
+								semester    = "'.$_POST['semesterTB'].'",
+								tglMulai    = "'.tgl_indo6($_POST['tglMulaiTB']).'",
+								tglSelesai  = "'.tgl_indo6($_POST['tglSelesaiTB']).'"';
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2 = mysql_query($s2);
@@ -98,7 +84,7 @@
 					$stat = 'gagal menyimpan';
 				}else{
 					$stat = 'sukses';
-				}$out  = json_encode(array('status'=>$stat));
+				}$out = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -108,44 +94,55 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['semester']));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT *
-							from '.$tb.'
-							WHERE 
-								replid='.$_POST['replid'];
+				$s = ' SELECT
+						s.replid,
+						s.semester,
+						s.tglMulai,
+						s.tglSelesai,
+						t.tahunajaran
+					FROM
+						aka_semester s
+						LEFT JOIN aka_tahunajaran t ON t.replid = s.tahunajaran
+					WHERE
+						s.replid='.$_POST['replid'];
+					// var_dump($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'semester'   =>$r['nama'],
-							'keterangan' =>$r['keterangan'],
+							'status'      =>$stat,
+							'tahunajaran' =>$r['tahunajaran'],
+							'semester'    =>$r['semester'],
+							'tglMulai'    =>tgl_indo5($r['tglMulai']),
+							'tglSelesai'  =>tgl_indo5($r['tglSelesai']),
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 			// cmbsemester -----------------------------------------------------------------
 			case 'cmbsemester':
-				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
 				}else{
-					if(isset($_POST[$mnu])){
-						$w='where '.$mnu.'='.$_POST[$mnu];
-					}else{ /*epiii*/
-						$w='where tahunajaran ='.$_POST['tahunajaran']; /*epiii*/
-					} /*epiii*/
+					if(isset($_POST[$mnu])) $w='where '.$mnu.'='.$_POST[$mnu];
+					elseif(isset($_POST['tahunajaran'])) $w='where tahunajaran ='.$_POST['tahunajaran']; 
+					else $w=''; 
 				}
 				
-				$s	= ' SELECT *
+				$s	= ' SELECT 
+							replid,
+							if(semester=1,"Ganjil","Genap")semester,
+							tglMulai,
+							tglSelesai
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY replid asc';
-
+						ORDER  BY semester asc';
+// var_dump($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
@@ -162,7 +159,8 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','nama'=>$dt);
+						}
+						$ar = array('status'=>'sukses','semester'=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;

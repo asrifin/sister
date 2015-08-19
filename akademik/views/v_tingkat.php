@@ -1,3 +1,4 @@
+<?php isMenu($modul,'tingkat'); ?>
 <script src="controllers/c_tingkat.js"></script>
 <script src="js/metro/metro-hint.js"></script>
 <script src="js/metro/metro-calendar.js"></script>
@@ -6,7 +7,7 @@
 <nav class="breadcrumbs">
     <ul>
         &nbsp;
-        <button class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
+        <button <?php echo isAksi('tingkat','c')?'onclick="viewFR(\'\')"':'disabled'; ?> class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
         <li class="active"><a href="#"><b>Tingkat</b></a></li>
         <li><a href="subtingkat">Sub Tingkat</a></li>
         <li><a href="kelas">Kelas</a></li>

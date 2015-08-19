@@ -6,7 +6,7 @@
 <h4 style="color:white;">Level</h4>
 <div id="loadarea"></div>
 
-<button <?php echo isDisabled('level','c');?> data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<button <?php echo isAksi('level','c')?'onclick="viewFR(\'\')"':'disabled'; ?> data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">

@@ -1,9 +1,10 @@
+<?php isMenu($modul,'subtingkat'); ?>
 <script src="controllers/c_subtingkat.js"></script>
 
 <nav class="breadcrumbs">
     <ul>
         &nbsp;
-        <button class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
+        <button <?php echo isAksi('subtingkat','c')?'onclick="viewFR(\'\')"':'disabled'; ?> class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
         <li><a href="tingkat">Tingkat</a></li>
         <li class="active"><a href="#"><b>Sub Tingkat</b></a></li>
         <li><a href="kelas">Kelas</a></li>

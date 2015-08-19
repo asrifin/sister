@@ -4,31 +4,31 @@
 <script src="js/metro/metro-calendar.js"></script>
 <script src="js/metro/metro-datepicker.js"></script>
 
-<h4 style="color:white;">Semester</h4>
-<div id="loadarea"></div>
 
-<button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
-<button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
+<nav class="breadcrumbs">
+    <ul>
+        &nbsp;
+        <button class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
+        <li><a href="tahun-ajaran">Tahun Ajaran</a></li>
+        <li class="active"><a href="#"><b>Semester</b></a></li>
+    </ul>
+</nav>
+
 <div class="input-control select span3">
-    <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
-</div>
-<div class="input-control select span3">
-    <select data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
+    <select class="cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
 
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
-            <th class="text-center">No.</th>
-            <th class="text-left">Semester </th>
-            <th class="text-left">Keterangan</th>
-            <th class="text-left">Aksi</th>
+            <th class="text-center">Semester </th>
+            <th class="text-center">Bulan</th>
+            <th class="text-center">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-left"></th>
-            <th class="text-left"><input placeholder="semester" id="semesterS" name="semesterS"></th>
-            <th class="text-left"><input placeholder="keterangan" id="keteranganS" name="keteranganS"></th>
-            <th class="text-left"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
 

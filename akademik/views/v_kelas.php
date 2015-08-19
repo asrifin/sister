@@ -1,3 +1,5 @@
+<?php isMenu($modul,'kelas'); ?>
+
 <script src="controllers/c_kelas.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
@@ -5,7 +7,7 @@
 <nav class="breadcrumbs">
     <ul>
         &nbsp;
-        <button class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
+        <button <?php echo isAksi('kelas','c')?'onclick="viewFR(\'\')"':'disabled'; ?>  class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
         <li><a href="tingkat">Tingkat</a></li>
         <li><a href="subtingkat">Sub Tingkat</a></li>
         <li class="active"><a href="#"><b>Kelas</b></a></li>

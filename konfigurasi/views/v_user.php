@@ -6,7 +6,7 @@
 <h4 style="color:white;">User</h4>
 <div id="loadarea"></div>
 
-<button onclick="viewFR('');" <?php echo isDisabled('user','c');?> data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<button <?php echo isAksi('user','c')?'onclick="viewFR(\'\')"':'disabled'; ?> data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">

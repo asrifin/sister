@@ -44,7 +44,7 @@
 					$nox = $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
 						// urutan
-							$nox = '<select class="text-center" replid1="'.$res['replid'].'" urutan1="'.$res['urutan'].'" onchange="urutFC(this);" >';
+							$nox = '<select '.(isAksi('tingkat','u')?'onchange="urutFC(this);"':'disabled').' class="text-center" replid1="'.$res['replid'].'" urutan1="'.$res['urutan'].'" >';
 							for($i=1; $i<=$jum; $i++){
 								if($i==$res['urutan']) $nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
 								else $nox.='<option value="'.$i.'">'.$i.'</option>';
@@ -52,10 +52,10 @@
 						// end of urutan
 
 						$btn ='<td>
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+									<button '.(isAksi('tingkat','u')?'onclick="viewFR('.$res['replid'].');"':'disabled').' data-hint="ubah"  >
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button  '.(isAksi('tingkat','d')?'onclick="del('.$res['replid'].');"':'disabled').' data-hint="hapus" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';

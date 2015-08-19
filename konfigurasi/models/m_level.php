@@ -96,7 +96,7 @@
 						$out ='';
 						if($jum!=0){	
 							while($res = mysql_fetch_assoc($result)){	
-								$nox = '<span class="input-control select"><select class="text-center" replid1="'.$res['id_level'].'" urutan1="'.$res['urutan'].'" onchange="urutFC(this);" >';
+								$nox = '<span  class="input-control select"><select '.(isAksi('level','u')?'onchange="urutFC(this);"':'disabled').' class="text-center" replid1="'.$res['id_level'].'" urutan1="'.$res['urutan'].'"  >';
 								for($i=1; $i<=$jum; $i++){
 									if($i==$res['urutan'])
 										$nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
@@ -106,13 +106,13 @@
 
 								// <button data-hint="detail"  onclick="viewFR(\'aksi\','.$res['id_'.$mnu].');">
 								$btn ='<td align="center">
-											<button '.isDisabled($mnu,'u').' data-hint="detail"  onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');">
+											<button '.(isAksi('level','u')?'onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');"':'disabled').'  data-hint="detail"  >
 												<i class="icon-zoom-in"></i>
 											</button>
-											<button '.isDisabled($mnu,'u').' data-hint="ubah"  onclick="viewFR(\'level\','.$res['id_'.$mnu].');">
+											<button '.(isAksi('level','u')?'onclick="viewFR(\'level\','.$res['id_'.$mnu].');"':'disabled').' data-hint="ubah"  >
 												<i class="icon-pencil"></i>
 											</button>
-											<button '.isDisabled($mnu,'d').' data-hint="hapus" onclick="del('.$res['id_'.$mnu].');">
+											<button '.(isAksi('level','d')?'onclick="del('.$res['id_'.$mnu].');"':'disabled').' data-hint="hapus" >
 												<i class="icon-remove"></i>
 											</button>
 										 </td>';

@@ -48,10 +48,10 @@
 						// 	$func = 'onclick="aktifkan('.$res['id_'.$mnu].');"';
 						// }
 						$btn ='<td align="center">
-									<button data-hint="ubah"  onclick="viewFR('.$res['id_'.$mnu].');">
+									<button data-hint="ubah" '.(isAksi('icon','d')?'onclick="viewFR('.$res['id_'.$mnu].');"':'disabled').' >
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$res['id_'.$mnu].');">
+									<button data-hint="hapus" '.(isAksi('icon','d')?'onclick="del('.$res['id_'.$mnu].');"':'disabled').' >
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
