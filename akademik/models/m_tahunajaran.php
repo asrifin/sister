@@ -6,18 +6,16 @@
 	require_once '../../lib/tglindo.php';
 	$mnu = 'tahunajaran';
 	$tb  = 'aka_'.$mnu;
-	// $out=array();
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$keterangan  = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
-				$sql = 'SELECT *
+				$sql = 'SELECT replid,concat(tahunajaran," - ",tahunajaran+1)tahunajaran,keterangan
 						FROM '.$tb.'
 						WHERE 
 							tahunajaran like "%'.$tahunajaran.'%" and
@@ -41,10 +39,10 @@
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+									<button data-hint="ubah" '.(isAksi('tahunajaran','u')?'onclick="viewFR('.$res['replid'].');"':'disabled').'  >
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button  data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button  data-hint="hapus" '.(isAksi('tahunajaran','d')?'onclick="del('.$res['replid'].');"':'disabled').'>
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';

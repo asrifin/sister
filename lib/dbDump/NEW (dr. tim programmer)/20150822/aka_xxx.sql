@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-19 23:34:43
+Date: 2015-08-22 05:59:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -155,12 +155,12 @@ CREATE TABLE `aka_detailkelas` (
   `tahunajaran` int(11) NOT NULL,
   `wali` int(11) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_detailkelas
 -- ----------------------------
-INSERT INTO `aka_detailkelas` VALUES ('93', '6', '3', '2');
+INSERT INTO `aka_detailkelas` VALUES ('93', '6', '3', '13');
 INSERT INTO `aka_detailkelas` VALUES ('94', '7', '3', '3');
 INSERT INTO `aka_detailkelas` VALUES ('95', '8', '3', '12');
 INSERT INTO `aka_detailkelas` VALUES ('96', '9', '3', '0');
@@ -179,7 +179,7 @@ INSERT INTO `aka_detailkelas` VALUES ('108', '21', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('109', '22', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('110', '23', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('111', '24', '3', '0');
-INSERT INTO `aka_detailkelas` VALUES ('112', '25', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('112', '25', '3', '1');
 INSERT INTO `aka_detailkelas` VALUES ('113', '26', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('114', '27', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('115', '28', '3', '0');
@@ -206,6 +206,98 @@ INSERT INTO `aka_detailkelas` VALUES ('135', '48', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('136', '49', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('137', '50', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('138', '51', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('139', '6', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('140', '7', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('141', '8', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('142', '9', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('143', '10', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('144', '11', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('145', '12', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('146', '13', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('147', '14', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('148', '15', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('149', '16', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('150', '17', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('151', '18', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('152', '19', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('153', '20', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('154', '21', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('155', '22', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('156', '23', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('157', '24', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('158', '25', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('159', '26', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('160', '27', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('161', '28', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('162', '29', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('163', '30', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('164', '31', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('165', '32', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('166', '33', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('167', '34', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('168', '35', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('169', '36', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('170', '37', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('171', '38', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('172', '39', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('173', '40', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('174', '41', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('175', '42', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('176', '43', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('177', '44', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('178', '45', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('179', '46', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('180', '47', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('181', '48', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('182', '49', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('183', '50', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('184', '51', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('185', '6', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('186', '7', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('187', '8', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('188', '9', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('189', '10', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('190', '11', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('191', '12', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('192', '13', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('193', '14', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('194', '15', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('195', '16', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('196', '17', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('197', '18', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('198', '19', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('199', '20', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('200', '21', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('201', '22', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('202', '23', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('203', '24', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('204', '25', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('205', '26', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('206', '27', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('207', '28', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('208', '29', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('209', '30', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('210', '31', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('211', '32', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('212', '33', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('213', '34', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('214', '35', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('215', '36', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('216', '37', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('217', '38', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('218', '39', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('219', '40', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('220', '41', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('221', '42', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('222', '43', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('223', '44', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('224', '45', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('225', '46', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('226', '47', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('227', '48', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('228', '49', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('229', '50', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('230', '51', '3', '0');
 
 -- ----------------------------
 -- Table structure for aka_grading
@@ -678,11 +770,11 @@ CREATE TABLE `aka_ruang` (
 DROP TABLE IF EXISTS `aka_semester`;
 CREATE TABLE `aka_semester` (
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `nama` varchar(50) NOT NULL,
+  `semester` varchar(50) NOT NULL,
   `tahunajaran` int(10) unsigned NOT NULL,
   `aktif` enum('1','0') NOT NULL DEFAULT '1',
-  `keterangan` varchar(255) DEFAULT NULL,
-  `urut` int(11) unsigned NOT NULL DEFAULT '1',
+  `tglMulai` date DEFAULT NULL,
+  `tglSelesai` date NOT NULL,
   PRIMARY KEY (`replid`),
   KEY `FK_semester_departemen` (`tahunajaran`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
@@ -690,12 +782,12 @@ CREATE TABLE `aka_semester` (
 -- ----------------------------
 -- Records of aka_semester
 -- ----------------------------
-INSERT INTO `aka_semester` VALUES ('1', 'Ganjil', '1', '0', 'Juli-Desember', '1');
-INSERT INTO `aka_semester` VALUES ('2', 'Genap', '1', '1', 'Januari-Juni', '2');
-INSERT INTO `aka_semester` VALUES ('3', 'Ganjil', '2', '0', 'Juli-Desember', '3');
-INSERT INTO `aka_semester` VALUES ('4', 'Genap', '2', '1', 'Januari-Juni', '4');
-INSERT INTO `aka_semester` VALUES ('5', 'Ganjil', '3', '0', 'Juli-Desember', '5');
-INSERT INTO `aka_semester` VALUES ('6', 'Genap', '3', '1', 'Januari-Juni', '6');
+INSERT INTO `aka_semester` VALUES ('1', 'Ganjil', '1', '0', '0000-00-00', '0000-00-00');
+INSERT INTO `aka_semester` VALUES ('2', 'Genap', '1', '1', '0000-00-00', '0000-00-00');
+INSERT INTO `aka_semester` VALUES ('3', 'Ganjil', '2', '0', '0000-00-00', '0000-00-00');
+INSERT INTO `aka_semester` VALUES ('4', 'Genap', '2', '1', '0000-00-00', '0000-00-00');
+INSERT INTO `aka_semester` VALUES ('5', '1', '3', '0', '2014-07-01', '2014-12-31');
+INSERT INTO `aka_semester` VALUES ('6', '2', '3', '1', '2015-01-01', '2015-06-30');
 
 -- ----------------------------
 -- Table structure for aka_setting
@@ -5439,25 +5531,18 @@ DROP TABLE IF EXISTS `aka_tahunajaran`;
 CREATE TABLE `aka_tahunajaran` (
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `tahunajaran` varchar(50) NOT NULL,
-  `departemen` int(10) unsigned NOT NULL,
-  `tglmulai` date NOT NULL,
-  `tglakhir` date NOT NULL,
-  `aktif` enum('1','0') NOT NULL DEFAULT '1',
   `keterangan` varchar(255) DEFAULT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`replid`),
-  KEY `FK_tahunajaran_departemen` (`departemen`),
+  KEY `FK_tahunajaran_departemen` (`tahunajaran`),
   KEY `IX_tahunajaran_ts` (`ts`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of aka_tahunajaran
 -- ----------------------------
-INSERT INTO `aka_tahunajaran` VALUES ('1', '2014-2015', '1', '2014-07-01', '2015-06-30', '1', 'ok', '2014-01-22 23:49:44');
-INSERT INTO `aka_tahunajaran` VALUES ('2', '2014-2015', '2', '2014-07-15', '2015-06-15', '1', '', '2014-03-19 04:36:55');
-INSERT INTO `aka_tahunajaran` VALUES ('3', '2014-2015', '3', '2014-07-15', '2015-06-15', '1', '', '2014-03-19 04:37:57');
-INSERT INTO `aka_tahunajaran` VALUES ('4', '2013-2014', '1', '2013-05-01', '2014-06-30', '0', 'ok', '2014-12-04 08:24:04');
-INSERT INTO `aka_tahunajaran` VALUES ('5', '2015-2016', '3', '2015-01-01', '2016-02-01', '0', 'tes bro', '2015-01-28 08:57:00');
+INSERT INTO `aka_tahunajaran` VALUES ('3', '2014', '--', '2014-03-19 04:37:57');
+INSERT INTO `aka_tahunajaran` VALUES ('5', '2015', '-', '2015-01-28 08:57:00');
 
 -- ----------------------------
 -- Table structure for aka_tahunlulus
@@ -5521,7 +5606,7 @@ CREATE TABLE `aka_tingkat` (
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`replid`),
   KEY `IX_tingkat_ts` (`ts`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of aka_tingkat

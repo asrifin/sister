@@ -7,11 +7,11 @@
 <button onclick="switchPN('form','');" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button onclick="switchPN('view','');"  data-hint="Lihat Data" id="lihatBC" style="display:none;"><span class="icon-list"></span> </button>
 <button onclick="cariFC();" data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
-<div class="input-control select span3">
+<div style="display:none;" class="input-control select span3">
     <select class="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
-    <select  onchange="cmbkelompok('filter',$(this).val(),'');"  class="cari" data-hint="Tahun Ajaran" name="prosesS" id="prosesS"></select>
+    <select  onchange="cmbkelompok('filter',$(this).val(),'');"  class="cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
 <div class="input-control select span3">
     <select onchange="viewTB();" class="cari" data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
@@ -21,15 +21,17 @@
 <table id="pendataanTBL" class="table hovered bordered striped panelx" >
     <thead>
         <tr style="color:white;" class="info">
-            <th class="text-center" rowspan="2">Nomor Pendaftaran</th>
+            <th class="text-center" rowspan="2">No Pendaftaran</th>
             <th class="text-center" rowspan="2">Nama</th>
-            <th class="text-center" rowspan="2">DPP</th>
-            <th class="text-center" colspan="4">Discount</th>
-            <th class="text-center" rowspan="2">DPP (Net)</th>
+            <th class="text-center" rowspan="2">Tingkat</th>
+            <th class="text-center" rowspan="2">Registration Fee</th>
+            <th class="text-center" colspan="3">Discount</th>
+            <th class="text-center" rowspan="2">Registration Fee(Net)</th>
+            <th class="text-center" rowspan="2">Bayar</th>
             <th class="text-center" rowspan="2">Aksi</th>
         </tr>
         <tr style="color:white;" class="info">
-            <th class="text-center">Subsidi</th>
+            <!-- <th class="text-center">Subsidi</th> -->
             <th class="text-center">Saudara</th>
             <th class="text-center">Tunai</th>
             <th class="text-center">Angsuran</th>
@@ -37,6 +39,8 @@
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ..." id="nopendaftaranS" name="nopendaftaranS"></div></th>
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ...." id="namaS" name="namaS"></div></th>
+            <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ...." id="tingkatS" name="tingkatS"></div></th>
+            <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
@@ -75,9 +79,9 @@
                         <select onchange="getNoPendaftaran(this);" required id="kelompokTB" name="kelompokTB"></select>
                         <!-- <select onchange="getBiaya();" required id="kelompokTB" name="kelompokTB"></select> -->
                       </div>
-                      <label>Kriteria :</label>
+                      <label>Tingkat :</label>
                       <div class="input-control select size3">
-                        <select onchange="getBiaya();" required id="kriteriaTB" name="kriteriaTB"></select>
+                        <select onchange="getBiaya();" required id="tingkatTB" name="tingkatTB"></select>
                       </div>
 
                       <label>Golongan :</label>
@@ -97,8 +101,8 @@
                           <th width="30%">Nominal</th>
                         </tr>
                         <tr>
-                          <td colspan="2">DPP</td>
-                          <td align="right" id="dppTD">Rp. 0</td>
+                          <td colspan="2">Registration Fee</td>
+                          <td align="right" id="registrationTD">Rp. 0</td>
                         </tr>
                         <tr>
                           <td width="30%" >Jumlah Angsuran</td>
@@ -145,23 +149,20 @@
                           <td align="right" id="disctotalTD">Rp. 0</td>
                         </tr>
                         <tr class="bg-lightTeal" >
-                          <td colspan="2"  >DPP (Net) :</td>
-                          <td align="right" id="dppnetTD">Rp. 0</td>
+                          <td colspan="2"  >Registration Fee (Net) :</td>
+                          <td align="right" id="registrationnetTD">Rp. 0</td>
                         </tr>
                         <tr class="bg-lightTeal" >
-                          <td colspan="2"  >SPP :</td>
-                          <td align="right" id="sppTD">Rp. 0</td>
+                          <td colspan="2"  >Material Fee (@semester) :</td>
+                          <td align="right" id="materialTD">Rp. 0</td>
                         </tr>
                         <tr class="bg-lightTeal" >
-                          <td colspan="2"  >Joining Fee:</td>
-                          <td align="right" id="joiningfeeTD">Rp. 0</td>
-                        </tr>
-                        <tr class="bg-lightTeal" >
-                          <td colspan="2"  >Formulir Pendaftaran :</td>
-                          <td align="right" id="formulirdaftarTD">Rp. 0</td>
+                          <td colspan="2"  >Tuition Fee(@bulan) :</td>
+                          <td align="right" id="tuitionTD">Rp. 0</td>
                         </tr>
 
                       </table>
+
                     </div>
                   </div>
 

@@ -9,24 +9,26 @@
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$kelompok  = isset($_POST['kelompokS'])?filter(trim($_POST['kelompokS'])):'';
+				$kelompok = isset($_POST['kelompokS'])?$_POST['kelompokS']:'';
 				$nGol     = getNumRows('golongan');
-				$nKrit    = getNumRows('kriteria');
-
+				$nTing    = getNumRows2('tingkat');
+				
 				checkSetBiaya($kelompok);
-				$sql ='SELECT 
-							k.kriteria,
-							k.replid,(
-								SELECT count(*)
-								FROM psb_golongan
+				$sql ='SELECT
+							k.tingkat,
+							k.replid,
+							(
+								SELECT
+									count(*)
+								FROM
+									psb_golongan
 							) jumgol
-						FROM 
-							psb_kriteria k';
+						FROM
+							aka_tingkat k';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){
 					$starting=$_POST['starting'];
@@ -34,67 +36,48 @@
 					$starting=0;
 				}
 
-				// $recpage = 16;//jumlah data per halaman
-				$recpage = ($nGol*$nKrit);//jumlah data per halaman
+				$recpage = ($nGol*$nTing);//jumlah data per halaman
 				$aksi    = 'tampil';
 				$subaksi = '';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result  =$obj->result;
 
-				#ada data
 				$jum = mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
+
 					while($r1 = mysql_fetch_assoc($result)){	
 						$out.= '<tr>
-									<td valign="middle" rowspan="'.($r1['jumgol']+1).'">'.$nox.'. '.$r1['kriteria'].'</td>';
-						// $sql2= 'SELECT 
-						// 			ps.replid, 
-						// 			ps.daftar, 
-						// 			ps.spp, 
-						// 			ps.nilai dpp, 
-						// 			ps.joiningf,	
-						// 			g.golongan, 
-						// 			g.keterangan 
-						// 		FROM 
-						// 			psb_setbiaya ps
-						// 			LEFT JOIN psb_kriteria pk ON pk.replid = ps.krit
-						// 			LEFT JOIN psb_golongan g ON g.replid = ps.gol
-						// 		WHERE
-						// 			pk.replid = '.$res['replid'].'
-						// 		GROUP by
-						// 			ps.gol';
+									<td valign="middle" rowspan="'.($r1['jumgol']+1).'">
+										'.$nox.'. '.$r1['tingkat'].'
+									</td>';
+									// g.replid,
 						$s2 ='	SELECT
 									s.replid,
 									g.golongan,
 									g.keterangan,
-									s.daftar,
-									s.nilai dpp,
-									s.spp,
-									s.joiningf
+									s.registration,
+									s.tuition,
+									s.material
 								FROM
 									psb_golongan g
 									LEFT JOIN (
 										SELECT * 
 										FROM  psb_setbiaya s 
 										WHERE 
-											krit ='.$r1['replid'].' AND 
+											ting ='.$r1['replid'].' AND 
 											kel = '.$kelompok.'
 									)s ON s.gol = g.replid
 									';
 						// print_r($s2);exit();
-
-						$e2 = mysql_query($s2);
-						// $num  = mysql_num_rows($qry2);
-
+						$e2  = mysql_query($s2);
 						while ($r2=mysql_fetch_assoc($e2)) {
 							$out.= '<tr>
-										<td>'.$r2['golongan'].' ('.$r2['keterangan'].')<input name="golongan[]" value="'.$r2['replid'].'" type="hidden"></td> 
-										<td align="right"><input value="Rp. '.number_format($r2['daftar']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="daftarTB_'.$r2['replid'].'"></td> 
-										<td align="right"><input value="Rp. '.number_format($r2['dpp']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="dppTB_'.$r2['replid'].'"></td> 
-										<td align="right"><input value="Rp. '.number_format($r2['spp']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="sppTB_'.$r2['replid'].'"></td> 
-										<td align="right"><input value="Rp. '.number_format($r2['joiningf']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="joiningfTB_'.$r2['replid'].'"></td> 
+										<td>'.$r2['golongan'].' ('.$r2['keterangan'].') <input name="golongan[]" value="'.$r2['replid'].'" type="hidden"></td> 
+										<td align="right"><div class="input-control text"><input class="text-right" value="Rp. '.number_format($r2['registration']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="registrationTB_'.$r2['replid'].'"></div></td> 
+										<td align="right"><div class="input-control text"><input class="text-right"value="Rp. '.number_format($r2['tuition']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="tuitionTB_'.$r2['replid'].'"></div></td> 
+										<td align="right"><div class="input-control text"><input class="text-right"value="Rp. '.number_format($r2['material']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="materialTB_'.$r2['replid'].'"></div></td> 
 									</tr>';
 						}
 						$out.= '</tr>';
@@ -113,13 +96,11 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				// print_r($_POST['biaya']);exit();
 				$stat2= true;
 				foreach ($_POST['golongan'] as $i => $v) {
-					$s = 'UPDATE '.$tb.' set 	daftar 	 = '.filter(getuang($_POST['daftarTB_'.$i])).',
-												spp      = '.filter(getuang($_POST['sppTB_'.$i])).',
-												joiningf = '.filter(getuang($_POST['joiningfTB_'.$i])).',
-												nilai    = '.filter(getuang($_POST['dppTB_'.$i])).'
+					$s = 'UPDATE '.$tb.' set 	tuition      = '.filter(getuang($_POST['tuitionTB_'.$v])).',
+												material     = '.filter(getuang($_POST['materialTB_'.$v])).',
+												registration = '.filter(getuang($_POST['registrationTB_'.$v])).'
 										WHERE 	replid 	 = '.$v;
 					// print_r($s);exit();
 					$e     = mysql_query($s);

@@ -12,48 +12,23 @@ function tahunFC (argument) {
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
-                        // +'<label>Departemen</label>'
-                        // +'<div class="input-control text">'
-                            +'<input type="hidden" name="departemenH" id="departemenH">'
-                            // +'<input disabled type="text" name="departemenTB" id="departemenTB">'
-                            // +'<button class="btn-clear"></button>'
-                        // +'</div>'
-                        
+                        // tahun ajaran
                         +'<label>Tahun Ajaran</label>'
-                        // +'<div class="span3">'
-                            // +'<div class="input-control xtext" >'
-                                +'<input onkeyup="tahunFC();" size="4" required min="1990" max="9999" maxlength="4" placeholder="ex : 2011" name="tahunajaranTB" id="tahunajaranTB" type="number">'
-                                +' - '
-                                +'<input disabled  id="tahunajaran2TB">'
-                            // +'</div>'
-                        // +'</div>'
+                        +'<div class="input-control xtext" >'
+                            +'<input onkeyup="tahunFC();" size="4" required min="1990" max="9999" maxlength="4" placeholder="ex : 2011" name="tahunajaranTB" id="tahunajaranTB" type="number">'
+                            +' - '
+                            +'<input disabled  id="tahunajaran2TB">'
+                        +'</div>'
 
-                        // +'<label>Tanggal Mulai</label>'
-                        // +'<div class="input-control text" data-role="datepicker"'
-                        //     +'data-date="2014-10-23"'
-                        //     +'data-format="yyyy-mm-dd"'
-                        //     +'data-effect="slide">'
-                        //     +'<input id="tglmulaiTB" name="tglmulaiTB" type="text">'
-                        //     +'<button class="btn-date"></button>'
-                        // +'</div>'
-
-                        // +'<label>Tanggal Akhir</label>'
-                        // +'<div class="input-control text" data-role="datepicker"'
-                        //     +'data-date="2014-10-23"'
-                        //     +'data-format="yyyy-mm-dd"'
-                        //     +'data-effect="slide">'
-                        //     +'<input id="tglakhirTB" name="tglakhirTB" type="text">'
-                        //     +'<button class="btn-date"></button>'
-                        // +'</div>'
-
+                        // keterangan
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'
                         
+                        // button
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
-                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
 

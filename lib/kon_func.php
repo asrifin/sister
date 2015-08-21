@@ -34,16 +34,23 @@
         } // grup grupmodul looping 
         echo $out;
 	}
-	function isMenuPriv($md,$mn){
+    function  joinWord($w){
+        $w1=strtolower(str_replace(' ', '', $w));
+        $w2=strtolower(str_replace('-', '', $w1));
+        return $w2;
+    }
+    function isMenuPriv($md,$mn){
         $menu=false;
+        $jo='';
         foreach ($_SESSION['grupmodulS']as $i => $v) {
             foreach ($v['modul'] as $i2 => $v2) {
                 foreach ($v2['grupmenu'] as $i3 => $v3) {
                     foreach ($v3['menu'] as $i4 => $v4) {
-                        $mod  =strtolower(str_replace(' ', '', $v2['modul']));
-                        $mod2 =strtolower(str_replace(' ', '', $md));
-                        $men  =strtolower(str_replace(' ', '', $v4['menu']));
-                        $men2 =strtolower(str_replace(' ', '', $mn));
+                        $mod  =joinWord($v2['link']);
+                        $mod2 =joinWord($md);
+                        $men  =joinWord($v4['menu']);
+                        $men2 =joinWord($mn);
+                        // $jo.=$mod.'='.$men.'<br>'; 
                         if($mod==$mod2  and $men==$men2){
                             $menu=true;
                         // if($v2['modul']==$md and $v4['menu']==$mn and $v4['statmenu']==1){
@@ -52,8 +59,7 @@
                 } // end of grupmenu looping
             } // end of  modul looping
         } // grup grupmodul looping 
-        // return 'asem';
-        // vd($mn);
+        // pr($jo);
         return $menu;
     }
     function isAksi($mn,$ak){

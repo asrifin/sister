@@ -6,11 +6,9 @@
 	require_once '../../lib/tglindo.php';
 	$mnu = 'semester';
 	$tb  = 'aka_'.$mnu;
-	// $out=array();
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
@@ -46,10 +44,10 @@
 					$nox 	= $starting+1;
 					while($r = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button data-hint="ubah"  onclick="viewFR('.$r['replid'].');">
+									<button data-hint="ubah" '.(isAksi('semester','u')?'onclick="viewFR('.$r['replid'].');"':'disabled').'  >
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$r['replid'].');">
+									<button data-hint="hapus" '.(isAksi('semester','d')?'onclick="del('.$r['replid'].');"':'disabled').'>
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';

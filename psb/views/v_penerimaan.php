@@ -9,11 +9,11 @@
 
 <!-- <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button> -->
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
-<div class="input-control select span3">
+<div style="display:none;"class="input-control select span3">
     <select data-hint="Departemen" class="cari" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Tahun Ajaran" class="cari" name="prosesS" id="prosesS"></select>
+    <select data-hint="Tahun Ajaran" class="cari" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
 <div class="input-control select span3">
     <select data-hint="Kelompok" class="cari" name="kelompokS" id="kelompokS"></select>
@@ -27,12 +27,9 @@
             <th class="text-center">NIS</th>
             <th class="text-center">NISN</th>
             <th class="text-center">Status</th>
-            <th class="text-center">Aksi</th>
-        </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-center"><input class="cari" placeholder="No Pendaftaran" id="no_pendaftaranS" name="no_pendaftaranS"></th>
-            <th class="text-center"><input class="cari" placeholder="nama" id="namaS" name="namaS"></th>
-            <th class="text-center"></th>
+            <th class="text-center"><div class="input-control text"><input class="cari" placeholder="No Pendaftaran" id="no_pendaftaranS" name="no_pendaftaranS"></div></th>
+            <th class="text-center"><div class="input-control text"><input class="cari" placeholder="nama" id="namaS" name="namaS"></div></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center"></th>

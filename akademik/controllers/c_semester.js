@@ -59,7 +59,6 @@ var contentFR = '';
                         // button
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
-                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
 
@@ -101,7 +100,7 @@ var contentFR = '';
                 out+='<option value="">'+dt.status+'</option>';
             }else{
                 $.each(dt.tahunajaran, function(id,item){
-                    out+='<option '+(item.repld==thn?'selected':'')+' value="'+item.replid+'">'+item.tahunajaran+'</option>';
+                    out+='<option '+(item.repld==thn?'selected':'')+' value="'+item.replid+'">'+item.tahunajaran+' - '+(parseInt(item.tahunajaran)+1)+'</option>';
                 });
             }
             if(typ=='filter'){ // filter

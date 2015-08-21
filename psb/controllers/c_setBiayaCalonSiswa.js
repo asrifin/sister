@@ -1,77 +1,17 @@
 var mnu       = 'setBiayaCalonSiswa';
 var mnu2      = 'departemen';
-var mnu3      = 'proses';
+var mnu3      = 'tahunajaran';
 var mnu4      = 'kelompok';
 
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
-var dir3      = 'models/m_'+mnu3+'.php';
+var dir3      = '../akademik/models/m_'+mnu3+'.php';
 var dir4      = 'models/m_'+mnu4+'.php';
 var contentFR = '';
-// var ko,
-// add line code
-// fsdjfksjddfs  
+
 // main function ---
-
-// cmblokasi();
     $(document).ready(function(){
-        // contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
-        //                 +'<input id="idformH" type="hidden">' 
-                        
-        //                 +'<label>Departemen</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input type="hidden" name="departemenH" id="departemenH">'
-        //                     +'<input disabled type="text" name="departemenTB" id="departemenTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
-                        
-        //                 +'<label>Tahun Ajaran</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
-        //                     +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
-                        
-        //                 // +'<label>Tingkat</label>'
-        //                 // +'<div class="input-control text">'
-        //                 //     +'<input disabled placeholder="tingkat" required type="text" name="tingkatTB" id="tingkatTB">'
-        //                 //     +'<button class="btn-clear"></button>'
-        //                 // +'</div>'
-                        
-        //                 +'<label>Kapasitas</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input class="span1" placeholder="kapasitas" required type="text" name="kapasitasTB" id="kapasitasTB">'
-        //                     +'<button class="btn-clear"></button> siswa'
-        //                 +'</div>'
-
-        //                 +'<label>Kelas</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input class="span2" placeholder="kelas" required type="text" name="kelasTB" id="kelasTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
-
-        //                 +'<label>Wali Kelas</label>'
-        //                 +'<div class="input-control text">'
-        //                     +'<input disabled class="span2" placeholder="NIP" required name="nipTB" id="nipTB">'
-        //                     +' <input class="span4" placeholder="wali kelas" required type="text" name="waliTB" id="waliTB">'
-        //                     +'<button class="btn-clear"></button>'
-        //                 +'</div>'
-
-        //                 // oninvalid="this.setCustomValidity(\'isi dulu gan\');"
-        //                 +'<label>Keterangan</label>'
-        //                 +'<div class="input-control textarea">'
-        //                     +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
-        //                 +'</div>'
-                        
-        //                 +'<div class="form-actions">' 
-        //                     +'<button class="button primary">simpan</button>&nbsp;'
-        //                     +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-        //                 +'</div>'
-        //             +'</form>';
-
-        // combo departemen
         cmbdepartemenS('');
-        // cmbdepartemen(false,'');
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -80,9 +20,9 @@ var contentFR = '';
 
         //search action
         $('#departemenS').on('change',function(){
-            cmbprosesS($(this).val());
-        });$('#prosesS').on('change',function (){
-            cmbkelompokS($(this).val());
+            cmbtahunajaranS($(this).val());
+        });$('#tahunajaranS').on('change',function (){
+            cmbkelompok($(this).val());
         });$('#kelompokS').on('change',function (){
             viewTB();
         });
@@ -95,7 +35,6 @@ var contentFR = '';
         });
 
     }); 
-// end of save process ---
 
 // fetch data list : department 
     function deplist(){
@@ -110,7 +49,7 @@ var contentFR = '';
     function thnlist(dep){
         return $.ajax({
             url:dir3,
-            data:'aksi=cmbproses&departemen='+dep,
+            data:'aksi=cmbtahunajaran&departemen='+dep,
             dataType:'json',
             type:'post'
         });
@@ -119,7 +58,7 @@ var contentFR = '';
     function kellist(thn){
         return $.ajax({
             url:dir4,
-            data:'aksi=cmbkelompok&proses='+thn,
+            data:'aksi=cmbkelompok&tahunajaran='+thn,
             dataType:'json',
             type:'post'
         });
@@ -135,38 +74,50 @@ var contentFR = '';
                     opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
                 });
                 $('#departemenS').html(opt);
-                cmbprosesS($('#departemenS').val());
+                cmbtahunajaranS($('#departemenS').val());
             }
         });
     }
 // combobox filtering : tahun ajaran
-    function cmbprosesS(dep){
-        thnlist(dep).done(function(res){
-            var opt='';
-            if(res.status!='sukses'){
-                notif(res.status,'red');
-            }else{
-                $.each(res.proses, function(id,item){
-                    if(item.aktif=='1')
-                        opt+='<option selected="selected" value="'+item.replid+'">'+item.proses +' (aktif)</option>';
-                    else
-                        opt+='<option value="'+item.replid+'">'+item.proses+'</option>';
-                });$('#prosesS').html(opt);
-                cmbkelompokS($('#prosesS').val());
+    function cmbtahunajaranS(dep){
+        $.ajax({
+            url:dir3,
+            data:'aksi=cmbtahunajaran&departemen='+dep,
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.tahunajaran, function(id,item){
+                        if(item.aktif=='1'){
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.tahunajaran+' (aktif)</option>';
+                        }else{
+                            out+='<option value="'+item.replid+'">'+item.tahunajaran+'</option>';
+                        }
+                    });
+                }$('#tahunajaranS').html(out);
+                cmbkelompok(dt.tahunajaran[0].replid);
+                // }$('#tahunajaranS').html('<option="">--Semua--</option>'+out);
+                // viewTB();
             }
         });
     }
+
 // combobox filtering : kelompok pendaftaran
-    function cmbkelompokS(thn){
-        kellist(thn).done(function(res){
+    function cmbkelompok(thn){
+        var u = dir4;
+        var d = 'aksi=cmb'+mnu4+'&tahunajaran='+thn;
+        ajax(u,d).done(function(res){
             var opt='';
             if(res.status!='sukses'){
                 notif(res.status,'red');
             }else{
                 $.each(res.kelompok, function(id,item){
                     opt+='<option value="'+item.replid+'">'+item.kelompok+'</option>';
-                });$('#kelompokS').html(opt);
-                viewTB($('#kelompokS').val());
+                }); $('#kelompokS').html(opt);
+                viewTB();
             }
         });
     }
@@ -176,7 +127,6 @@ var contentFR = '';
         var urlx ='&aksi=simpan';
         $.ajax({
             url:dir,
-            cache:false,
             type:'post',
             dataType:'json',
             data:$('form').serialize()+urlx,
@@ -194,7 +144,7 @@ var contentFR = '';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#departemenS').val());
+                    viewTB();
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }
@@ -204,18 +154,36 @@ var contentFR = '';
     }
 //end of save process ---
 
-// view table ---
-    function viewTB(){
+    // view table ---
+    function viewTB(subaksi){
         var aksi ='aksi=tampil';
-        var cari =  '&departemenS='+$('#departemenS').val()
-                    +'&prosesS='+$('#prosesS').val()
-                    +'&kelompokS='+$('#kelompokS').val();
+        console.log('ini subaksi='+subaksi);
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
+        }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+        console.log('cari='+cari);
         $.ajax({
             url : dir,
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7">'
+                $(el2).html('<tr><td align="center" colspan="7">'
                     +'<img src="../img/w8loader.gif">'
                 +'</td></tr>'
                 +'<tr><td colspan="7" align="center">'
@@ -223,11 +191,36 @@ var contentFR = '';
                 +'</td></tr>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
     }
+
+// view table ---
+    // function viewTB(){
+    //     var aksi ='aksi=tampil';
+    //     var cari =  '&departemenS='+$('#departemenS').val()
+    //                 +'&prosesS='+$('#prosesS').val()
+    //                 +'&kelompokS='+$('#kelompokS').val();
+    //     $.ajax({
+    //         url : dir,
+    //         type: 'post',
+    //         data: aksi+cari,
+    //         beforeSend:function(){
+    //             $('#tbody').html('<tr><td align="center" colspan="7">'
+    //                 +'<img src="../img/w8loader.gif">'
+    //             +'</td></tr>'
+    //             +'<tr><td colspan="7" align="center">'
+    //                 +'<span style="color:white;padding:5px;background-color:orange;">Memuat Data</span>'
+    //             +'</td></tr>');
+    //         },success:function(dt){
+    //             setTimeout(function(){
+    //                 $('#tbody').html(dt).fadeIn();
+    //             },1000);
+    //         }
+    //     });
+    // }
 // end of view table ---
     
 // form ---
@@ -279,7 +272,7 @@ var contentFR = '';
                                 // form :: tingkat (disabled field) --------------
                                     $.ajax({
                                         url:dir4,
-                                        data:'aksi=cmbtingkat&replid='+$('#tingkatS').val(),
+                                        data:'aksi=cmbkelompok&replid='+$('#kelompokS').val(),
                                         dataType:'json',
                                         type:'post',
                                         success:function(dt3){
@@ -288,8 +281,8 @@ var contentFR = '';
                                             if(dt3.status!='sukses'){
                                                 out3=dt3.status;
                                             }else{
-                                                out3=dt3.tingkat[0].tingkat;
-                                            }$('#tingkatTB').val(out3);
+                                                out3=dt3.kelompok[0].kelompok;
+                                            }$('#kelompokTB').val(out3);
                                             
                                             if (id!='') { // edit mode
                                             // form :: edit :: tampilkan data 
@@ -332,24 +325,56 @@ var contentFR = '';
 // end of form ---
 
 //paging ---
-    function pagination(page,aksix){
-        var datax = 'starting='+page+'&aksi='+aksix;
-        var cari =  '&tingkatS='+$('#tingkatS').val()
-                    +'&kelasS='+$('#kelasS').val()
-                    +'&waliS='+$('#waliS').val();
+    function pagination(page,aksix,subaksi){ 
+        var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
+        var cari ='';
+        var el,el2;
+
+        if(subaksi!=''){ // multi paging 
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
         $.ajax({
             url:dir,
             type:"post",
-            data: datax+cari,
+            data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7"><img src="../img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="10"><img src="../img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
-    }   
+    }
+    // function pagination(page,aksix){
+    //     var datax = 'starting='+page+'&aksi='+aksix;
+    //     var cari =  '&tingkatS='+$('#tingkatS').val()
+    //                 +'&kelasS='+$('#kelasS').val()
+    //                 +'&waliS='+$('#waliS').val();
+    //     $.ajax({
+    //         url:dir,
+    //         type:"post",
+    //         data: datax+cari,
+    //         beforeSend:function(){
+    //             $('#tbody').html('<tr><td align="center" colspan="7"><img src="../img/w8loader.gif"></td></tr></center>');
+    //         },success:function(dt){
+    //             setTimeout(function(){
+    //                 $('#tbody').html(dt).fadeIn();
+    //             },1000);
+    //         }
+    //     });
+    // }   
 //end of paging ---
     
 //del process ---
@@ -366,7 +391,7 @@ var contentFR = '';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#departemenS').val());
+                    viewTB();
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }
@@ -416,7 +441,7 @@ function notif(cont,clr) {
                     cont = '..Gagal Mengaktifkan '+th+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#departemenS').val());
+                    viewTB();
                     cont = '..Berhasil Mengaktifkan '+th+' ..';
                     clr  ='green';
                 }notif(cont,clr);
@@ -437,9 +462,13 @@ function notif(cont,clr) {
             affixesStay: true
         });
     }
-// end of input uang --------------------------
 
-
-    // ---------------------- //
-    // -- created by epiii -- //
-    // ---------------------- //
+// normal ajax 
+    function ajax (u,d) {
+        return $.ajax({
+            url:u,
+            data:d,
+            dataType:'json',
+            type:'post',
+        });
+    }

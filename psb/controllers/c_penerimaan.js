@@ -1,12 +1,12 @@
 var mnu  = 'penerimaan';
 var mnu2 = 'departemen';
-var mnu3 = 'proses';
+var mnu3 = 'tahunajaran';
 var mnu4 = 'kelompok';
 var mnu5 = 'angkatan';
 
 var dir  = 'models/m_'+mnu+'.php';
 var dir2 = '../akademik/models/m_'+mnu2+'.php';
-var dir3 = 'models/m_'+mnu3+'.php';
+var dir3 = '../akademik/models/m_'+mnu3+'.php';
 var dir4 = 'models/m_'+mnu4+'.php';
 var dir5 = '../akademik/models/m_'+mnu5+'.php';
 
@@ -22,7 +22,7 @@ var content_stat = content_det = '';
         content_stat += '<form autocomplete="off" onsubmit="terima(this);return false;" id="'+mnu+'FR">' 
                         +'<table>'
                             +'<tr>'
-                                +'<td colspan="2">Terima calon siswa berikut ini </td>'
+                                +'<td colspan="2"><b>Terima calon siswa berikut ini </b></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Nama</td>'
@@ -33,15 +33,10 @@ var content_stat = content_det = '';
                                 +'<td>: <span id="nopendaftaranTD"></span></td>'
                             +'</tr>'
                             +'<tr>'
-                                +'<td colspan="2">sebagai siswa aktif pada </td>'
-                            +'</tr>'
-                            +'<tr>'
-                                +'<td>Departemen</td>'
-                                +'<td>: <span id="departemenTD"></span></td>'
+                                +'<td colspan="2"><b>sebagai siswa aktif pada</b> </td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Angkatan</td>'
-                                +'<input id="idformH_angkatan" name="idformH_angkatan" type="text">' 
                                 +'<td>: <span id="angkatanTD"></span></td>'
                             +'</tr>'
                         +'</table>'
@@ -49,15 +44,13 @@ var content_stat = content_det = '';
                         +'<input id="idformH_terima" name="idformH_terima" type="hidden">' 
                         +'<legend>Silahkan lengkapi data berikut:</legend>'
                         +'<label>No Induk</label>'
-                        +'<div class="input-control text size2">'
-                            +'<input required type="text" name="nisTB" id="nisTB">'
-                            +'<button class="btn-clear"></button>'
+                        +'<div class="input-control text">'
+                            +'<input placeholder="NIS" required type="number" min="1" max="99999" name="nisTB" id="nisTB">'
                         +'</div>'
 
                         +'<label>NISN</label>'
-                        +'<div class="input-control text size3">'
-                            +'<input required type="text" name="nisnTB" id="nisnTB">'
-                            +'<button class="btn-clear"></button>'
+                        +'<div class="input-control text">'
+                            +'<input   placeholder="NIS" required type="number" min="1" max="99999" name="nisnTB" id="nisnTB">'
                         +'</div>'
                         
                         +'<div class="form-actions">' 
@@ -77,10 +70,6 @@ var content_stat = content_det = '';
                                 +'<td>: <b id="nama_batalTD"></b></td>'
                             +'</tr>'
                         +'</table>'
-                        // +'<div class="input-control text">'
-                        //     +'<input disabled type="text" name="namaTB" id="namaTB">'
-                        //     +'<button class="btn-clear"></button>'
-                        // +'</div>'
                                                 
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
@@ -90,9 +79,9 @@ var content_stat = content_det = '';
 
         //search action
         $('#departemenS').on('change',function(){
-            cmbproses($(this).val());
+            cmbtahunajaran($(this).val());
         });
-        $('#prosesS').on('change',function (){
+        $('#tahunajaranS').on('change',function (){
             cmbkelompok($(this).val());
         });
         $('#kelompokS').on('change',function(){
@@ -127,7 +116,7 @@ var content_stat = content_det = '';
     function thnlist(dep){
         return $.ajax({
             url:dir3,
-            data:'aksi=cmbproses&departemen='+dep,
+            data:'aksi=cmbtahunajaran&departemen='+dep,
             dataType:'json',
             type:'post'
         });
@@ -152,55 +141,26 @@ var content_stat = content_det = '';
                     opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
                 });
                 $('#departemenS').html(opt);
-                cmbproses($('#departemenS').val());
+                cmbtahunajaran($('#departemenS').val());
             }
         });
     }
 
-// combo tahunajaran ---
-    // function cmbproses(dep){
-    //     $.ajax({
-    //         url:dir3,
-    //         data:'aksi=cmbproses&departemen='+dep,
-    //         dataType:'json',
-    //         type:'post',
-    //         success:function(dt){
-    //             var out='';
-    //             if(dt.status!='sukses'){
-    //                 out+='<option value="">'+dt.status+'</option>';
-    //             }else{
-    //                 $.each(dt.proses, function(id,item){
-    //                     if(item.aktif=='1'){
-    //                         out+='<option selected="selected" value="'+item.replid+'">'+item.proses+' (aktif)</option>';
-    //                     }else{
-    //                         out+='<option value="'+item.replid+'">'+item.proses+'</option>';
-    //                     }
-    //                 });
-    //                 // viewTB(dep,dt.proses[0].replid); 
-    //             }
-    //             $('#prosesS').html(out);
-    //             cmbkelompok(dt.proses[0].replid);
-
-    //             // viewTB(); 
-    //         }
-    //     });
-    // }
-//end of combo tahunajaran ---
 
 // combobox filtering : tahun ajaran
-    function cmbproses(dep){
+    function cmbtahunajaran(dep){
         thnlist(dep).done(function(res){
             var opt='';
             if(res.status!='sukses'){
                 notif(res.status,'red');
             }else{
-                $.each(res.proses, function(id,item){
+                $.each(res.tahunajaran, function(id,item){
                     if(item.aktif=='1')
-                        opt+='<option selected="selected" value="'+item.replid+'">'+item.proses +' (aktif)</option>';
+                        opt+='<option selected="selected" value="'+item.replid+'">'+item.tahunajaran +' (aktif)</option>';
                     else
-                        opt+='<option value="'+item.replid+'">'+item.proses+'</option>';
-                });$('#prosesS').html(opt);
-                cmbkelompok($('#prosesS').val());
+                        opt+='<option value="'+item.replid+'">'+item.tahunajaran+'</option>';
+                });$('#tahunajaranS').html(opt);
+                cmbkelompok($('#tahunajaranS').val());
             }
         });
     }
@@ -220,10 +180,10 @@ var content_stat = content_det = '';
     }
 
 // combo tahunajaran ---
-    // function cmbproses(dep){
+    // function cmbtahunajaran(dep){
     //     $.ajax({
     //         url:dir3,
-    //         data:'aksi=cmbproses&departemen='+dep,
+    //         data:'aksi=cmbtahunajaran&departemen='+dep,
     //         dataType:'json',
     //         type:'post',
     //         success:function(dt){
@@ -237,8 +197,8 @@ var content_stat = content_det = '';
     //                     else
     //                         out+='<option value="'+item.replid+'">'+item.proses+'</option>';
     //                 });cmbkelompok(dt.proses[0].replid);
-    //             }$('#prosesS').html(out);
-    //             cmbkelompok($('#prosesS').val());
+    //             }$('#tahunajaranS').html(out);
+    //             cmbkelompok($('#tahunajaranS').val());
     //             viewTB(); 
     //         }
     //     });
@@ -276,31 +236,28 @@ var content_stat = content_det = '';
     function terima(e){
         var datax = $(e).serialize()+'&aksi=simpan&subaksi=penerimaan';
         ajax(dir,datax).done(function(res){
-                    viewTB();
-                    if(res.status == "gagal"){
-                        clr = "red";
-                    }else{
-                        clr = "green"
-                    }
-                notif(res.status,clr);
-                // alert(res.status);
+            if(res.status == "gagal") clr = "red";
+            else {
+                clr = "green";
+                viewTB();
+                $.Dialog.close();   
+            }notif(res.status,clr);
         });
     }
     
 //save process ---
     function tolak(e){ //Tombol Terima
-        // var urlx ='&aksi=terima&subaksi=tidak_terima';
         var datax = $(e).serialize()+'&aksi=simpan&subaksi=tidak_terima';
-// alert(datax); return false;
         ajax(dir,datax).done(function(res){
-                    viewTB();
-                    if(res.status == "gagal"){
-                        clr = "red";
-                    }else{
-                        clr = "green"
-                    }
-                notif(res.status,clr);
-                // alert(res.status);
+            viewTB();
+            if(res.status == "gagal"){
+                clr = "red";
+            }else{
+                clr = "green"
+                viewTB();
+                $.Dialog.close();   
+            }
+            notif(res.status,clr);
         });       
     }
 //end of save process ---
@@ -310,7 +267,7 @@ var content_stat = content_det = '';
         var aksi ='aksi=tampil';
         var cari = '&no_pendaftaranS='+$('#no_pendaftaranS').val()
                     +'&departemenS='+$('#departemenS').val()
-                    +'&prosesS='+$('#prosesS').val()
+                    +'&tahunajaranS='+$('#tahunajaranS').val()
                     +'&kelompokS='+$('#kelompokS').val()
                     +'&namaS='+$('#namaS').val();
         $.ajax({
@@ -362,22 +319,18 @@ var content_stat = content_det = '';
             onShow: function(){
                 var titl,cont;
                 if(typ=='belum'){ //form mode : belum diterima 
-                    // alert(calon);
+                    console.log('masuk belum ');
                     cont= content_stat;
                     titl= 'Calon Siswa (belum dikonfirmasi)';
-                    // url : dir,'aksi=ambiledit&subaksi=status&replid='+calon);
                     ajax(dir,'aksi=ambiledit&subaksi=status&replid='+calon).done(function(dt){
-
                         $('#idformH_terima').val(calon);
-                        $('#idformH_angkatan').val(dt.data.idangkatan);
                         $('#namaTD').html(dt.data.nama);
                         $('#nopendaftaranTD').html(dt.data.nopendaftaran);
                         $('#departemenTD').html(dt.data.departemen);
                         $('#angkatanTD').html(dt.data.angkatan);
                     });
-                    // setTimeout(function(){
-                    // },200);
                 }else if(typ='sudah'){ // form mode : sudah diterima
+                    console.log('masuk belum sudah');
                     cont= content_det;
                     titl= 'Batalkan Penerimaan Siswa';
                     ajax(dir,'aksi=ambiledit&subaksi=batal&replid='+calon).done(function(res){
@@ -498,3 +451,11 @@ function notif(cont,clr) {
     }
 //end of aktifkan process ---
 
+
+// input angka --------------------------
+    function inputangka(e) {
+        $(e).maskMoney({
+            precision:0,
+            affixesStay: true
+        });
+    }

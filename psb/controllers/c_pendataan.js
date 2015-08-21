@@ -1,8 +1,7 @@
 var mnu       = 'pendataan';
 var mnu2      = 'departemen';
-var mnu3      = 'proses';
-// var mnu4      = 'tingkat';
-var mnu4      = 'kriteriaCalonSiswa';
+var mnu3      = 'tahunajaran';
+var mnu4      = 'tingkat';
 var mnu5      = 'golonganCalonSiswa';
 var mnu6      = 'setAngsuran'; 
 var mnu7      = 'setDiskon';
@@ -10,8 +9,8 @@ var mnu_kel   = 'kelompok';
 
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
-var dir3      = 'models/m_'+mnu3+'.php';
-var dir4      = 'models/m_'+mnu4+'.php';
+var dir3      = '../akademik/models/m_'+mnu3+'.php';
+var dir4      = '../akademik/models/m_'+mnu4+'.php';
 var dir5      = 'models/m_'+mnu5+'.php';
 var dir6      = 'models/m_'+mnu6+'.php';
 var dir7      = 'models/m_'+mnu7+'.php';
@@ -235,9 +234,9 @@ var contentFR = '';
 
     //search action
         // $('#departemenS').on('change',function(){
-        //     cmbproses('filter',$(this).val(),'');
+        //     cmbtahunajaran('filter',$(this).val(),'');
         // });
-        // $('#prosesS').on('change',function (){
+        // $('#tahunajaranS').on('change',function (){
         //     cmbkelompok('filter',$(this).val(),'');
         // });
         // $('#kelompokS').on('change',function (){
@@ -249,8 +248,10 @@ var contentFR = '';
         $('#nopendaftaranS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
-
         });$('#namaS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });$('#tingkatS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
         });
@@ -275,6 +276,7 @@ var contentFR = '';
         $('#cariTR').toggle('slow');
         $('#namaS').val('');
         $('#nopendaftaranS').val('');
+        $('#tingkatS').val('');
     }
         
 //preview image sebelum upload -------
@@ -464,10 +466,10 @@ var contentFR = '';
             $('.cari').attr('style','display:none;');
             
             if(id==''){ // add mode 
-                cmbproses('form',$('#departemenS').val(),'');
-                cmbkriteria('');
+                getNoPendaftaran('');
+                cmbtahunajaran('form',$('#departemenS').val(),'');
                 cmbkelompok('');
-                // cmbgolongan('');
+                cmbtingkat('');
                 cmbdisctunai('');
                 cmbgolongan('');
                 cmbagama('');
@@ -478,9 +480,9 @@ var contentFR = '';
                 ajax(u,d).done(function  (dt) {
                     $('#idformH').val(id);
                 // data siswa
-                    cmbproses('form',$('#departemenS').val(),dt.proses);
-                    cmbkelompok('form',dt.proses,dt.kelompok);
-                    cmbkriteria(dt.kriteria);
+                    cmbtahunajaran('form',$('#departemenS').val(),dt.tahunajaran);
+                    cmbkelompok('form',dt.tahunajaran,dt.kelompok);
+                    cmbtingkat(dt.tingkat);
                     cmbgolongan(dt.golongan);
                     $('#nopendaftaranH').val(dt.nopendaftaranH);
                     $('#nopendaftaranTB').val(dt.nopendaftaran);
@@ -509,18 +511,17 @@ var contentFR = '';
                     $('#photoH').val(dt.photo);
                 // pembayaran
                     $('#setbiayaTB').val(dt.setbiaya);
-                    $('#dppTD').html(dt.nilai);
+                    $('#registrationTD').html(dt.registration);
                     cmbangsuran(dt.angsuran);
                     $('#discangsuranTD').html(dt.discangsuran);
                     $('#discsubsidiTB').val(dt.discsubsidi);
                     $('#discsaudaraTB').val(dt.discsaudara);
                     $('#disctotalTD').html(dt.disctotal);
-                    $('#dppnetTD').html(dt.nilainet);
+                    $('#registrationnetTD').html(dt.registrationnet);
                     cmbdisctunai(dt.iddisctunai);
                     $('#disctunai2TD').html(dt.disctunai);
-                    $('#joiningfeeTD').html(dt.joiningf);
-                    $('#sppTD').html(dt.spp);
-                    $('#formulirTD').html(dt.daftar);
+                    $('#materialTD').html(dt.material);
+                    $('#tuitionTD').html(dt.tuition);
                 //ayah
                     $('#ayahTB').val(dt.namaAyah);
                     $('#kebangsaan_ayahTB').val(dt.kebangsaanAyah);
@@ -698,24 +699,24 @@ var contentFR = '';
                 });
             }
             $('#departemenS').html(out);
-            cmbproses('filter',dt.departemen[0].replid,'');
+            cmbtahunajaran('filter',dt.departemen[0].replid,'');
         });
     }
 
-// combo proses ---
-    function cmbproses(typ,dep,pros){
+// combo Tahunajaran ---
+    function cmbtahunajaran(typ,dep,thn){
         var u = dir3;
-        var d ='aksi=cmbproses&departemen='+dep;
+        var d ='aksi=cmbtahunajaran&departemen='+dep;
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){
                 out+='<option value="">'+dt.status+'</option>';
             }else{
-                $.each(dt.proses, function(id,item){
+                $.each(dt.tahunajaran, function(id,item){
                     if(typ=='filter' && item.aktif=='1') 
-                        out+='<option selected value="'+item.replid+'">'+item.proses+' (aktif)</option>';
+                        out+='<option selected value="'+item.replid+'">'+item.tahunajaran+' (aktif)</option>';
                     else 
-                        out+='<option '+(pros==item.replid?'selected':'')+' value="'+item.replid+'">'+item.proses+'</option>';
+                        out+='<option '+(thn==item.replid?'selected':'')+' value="'+item.replid+'">'+item.tahunajaran+'</option>';
                 });
             }
             if(typ=='form'){ // form add || edit 
@@ -724,8 +725,8 @@ var contentFR = '';
                     cmbkelompok('form','','');
                 }
             }else{ // filtering
-                $('#prosesS').html(out);
-                cmbkelompok('filter',dt.proses[0].replid,'');
+                $('#tahunajaranS').html(out);
+                cmbkelompok('filter',dt.tahunajaran[0].replid,'');
             }
         });
     }
@@ -733,7 +734,7 @@ var contentFR = '';
 // combo kelompok ---
     function cmbkelompok(typ,thn,kel){
         var u = dir_kel;
-        var d = 'aksi=cmbkelompok&'+(thn!=''?'proses='+thn:'');
+        var d = 'aksi=cmbkelompok&'+(thn!=''?'tahunajaran='+thn:'');
         ajax(u,d).done(function (dt){
             var out='';
             if(dt.status!='sukses'){
@@ -784,7 +785,7 @@ var contentFR = '';
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="10"><img src="../img/w8loader.gif"></td></tr>');
+                $(el2).html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr>');
             },success:function(dt){
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();
@@ -804,11 +805,11 @@ var contentFR = '';
                 $('#uang_pangkalnetTB').val(dt.sumnet);
                 $('#angsuranTB').val(dt.angsuran);
                 $('#sppTB').val(dt.sppbulan);
-                $('#diskon_subsidiTB').val(dt.discsubsidi);
+                $('#diskon_subsidiTB').val(dt.disctb);
                 $('#diskon_saudaraTB').val(dt.discsaudara);
                 $('#diskon_tunaiTB').val(dt.disctunai);
                 $('#diskon_totalTB').val(dt.disctotal);
-                $('#joiningfeeTD').val(dt.joiningf);
+                $('#joiningTB').val(dt.joining);
                 $('#nopendaftaranTB').val(dt.nopendaftaran);
                 $('#namaTB').val(dt.siswa);
                 $('#tempatlahirTB').val(dt.tmplahir);
@@ -872,27 +873,31 @@ var contentFR = '';
 
         }
     }  
-
-// combo  ktriteria
-    function cmbkriteria (kriteria) {
-        var u = dir4;
-        var d ='aksi=cmb'+mnu4;
-        ajax(u,d).done(function(dt){
-            var opt='';
-            if (dt.status!='sukses') {
-                notif(dt.status,'red');
-                opt+='<option value="">'+dt.status+'</option>'
-            }else{
-                var opt = '';
-                $.each(dt.kriteria,function(id,item){
-                    if(kriteria==item.replid)
-                        opt+='<option selected="selected" value="'+item.replid+'">'+item.kriteria+'</option>'
-                    else
-                        opt+='<option value="'+item.replid+'">'+item.kriteria+'</option>'
-                });$('#kriteriaTB').html('<option value="">Pilih Kriteria ..</option>'+opt);
-            }
+  function cmbtingkat (tingkat) {
+        $.ajax({
+            url:dir4,   
+            type:'post',
+            dataType:'json',
+            data:'aksi=cmb'+mnu4,
+            success:function(dt){
+                var opt='';
+                if (dt.status!='sukses') {
+                    notif(dt.status,'red');
+                    opt+='<option value="">'+dt.status+'</option>'
+                }else{
+                    // alert(id);return false;
+                    var opt = '';
+                    $.each(dt.tingkat,function(id,item){
+                        if(tingkat==item.replid)
+                            opt+='<option selected="selected" value="'+item.replid+'">'+item.tingkat+'</option>'
+                        else
+                            opt+='<option value="'+item.replid+'">'+item.tingkat+'</option>'
+                    });$('#tingkatTB').html('<option value="">Pilih Tingkat ..</option>'+opt);
+                }
+            },
         });
-    }
+    }   
+
 
 // cmbo golongan 
     function cmbgolongan (golongan) {
@@ -984,7 +989,7 @@ var contentFR = '';
                 opt+='<option value="">'+dt.status+'</option>'
             }else{
                 var opt = '';
-                $.each(dt.cicilan,function(id,item){
+                $.each(dt.angsuran,function(id,item){
                     opt+='<option '+(ang==item.replid?'selected':'')+' value="'+item.replid+'">'+item.cicilan+' x </option>'
                 });
             }
@@ -1013,18 +1018,17 @@ var contentFR = '';
 
 // combo get biaya
     function getBiaya(){
-        if($('#kelompokS').val()!='' && $('#kriteriaTB').val()!='' && $('#golonganTB').val()!=''){
+        if($('#kelompokS').val()!='' && $('#tingkatTB').val()!='' && $('#golonganTB').val()!=''){
             var u = dir;
             var d ='aksi=getBiaya'
                     +'&kelompok='+$('#kelompokS').val()
-                    +'&kriteria='+$('#kriteriaTB').val()
+                    +'&tingkat='+$('#tingkatTB').val()
                     +'&golongan='+$('#golonganTB').val();
             ajax(u,d).done(function (dt){
                 $('#setbiayaTB').val(dt.replid);
-                $('#dppTD').html('Rp. '+parseInt(dt.nilai).setCurr());
-                $('#joiningfeeTD').html('Rp. '+parseInt(dt.joiningf).setCurr());
-                $('#sppTD').html('Rp. '+parseInt(dt.spp).setCurr());
-                $('#formulirdaftarTD').html('Rp. '+parseInt(dt.daftar).setCurr());
+                $('#registrationTD').html('Rp. '+parseInt(dt.registration).setCurr());
+                $('#materialTD').html('Rp. '+parseInt(dt.material).setCurr());
+                $('#tuitionTD').html('Rp. '+parseInt(dt.tuition).setCurr());
                 getDiscTotal();
             });            
         }
@@ -1038,7 +1042,7 @@ var contentFR = '';
             var u = dir;
             var d ='aksi=getDisc&replid='+replid;
             ajax(u,d).done(function (dt) {
-                var regVal    = $('#dppTD').html();
+                var regVal    = $('#registrationTD').html();
                 var regNum    = getCurr((typeof regVal=='NaN' || regVal=='' || regVal=='Rp. 0')?0:regVal);
                 var discNum   = parseInt(dt.nilai);
                 var discTunai = regNum*discNum/100;
@@ -1052,7 +1056,7 @@ var contentFR = '';
         var u = dir;
         var d ='aksi=getDiscAngsuran'
                 +'&discAngsuran='+$('#angsuranTB').val()
-                +'&regNum='+$('#dppTD').html();
+                +'&regNum='+$('#registrationTD').html();
         ajax(u,d).done(function (dt) {
             var discNum = 'Rp. '+dt.discNum.setCurr();
             $('#discangsuranTD').html(discNum);
@@ -1061,11 +1065,11 @@ var contentFR = '';
     }
 
     // function getSetBiaya () {
-    //     if($('#kriteriaTB').val()!='' & $('#kriteriaTB').val()!=''){
+    //     if($('#tingkatTB').val()!='' & $('#tingkatTB').val()!=''){
     //         var u = dir;
     //         var d = 'aksi=getSetBiaya'
     //                 +'&kelompok='+$('#kelompokS').val()
-    //                 +'&kriteria='+$('#kriteriaTB').val()
+    //                 +'&kriteria='+$('#tingkatTB').val()
     //                 +'&golongan='+$('#golonganTB').val();
     //         ajax(u,d).done(function (dt) {
     //             $('#setbiayaTB').val(dt.setbiaya);
@@ -1090,10 +1094,10 @@ var contentFR = '';
 
 // biaya  : registration net
      function getRegistrationNet(){
-        var regNum       = getCurr($('#dppTD').html());
+        var regNum       = getCurr($('#registrationTD').html());
         var disctotalNum = getCurr($('#disctotalTD').html());
         var regNetNum    = 'Rp. '+(regNum - disctotalNum).setCurr();
-        $('#dppnetTD').html(regNetNum);
+        $('#registrationnetTD').html(regNetNum);
      }
 
     function pagination(page,aksix,subaksi){ 
@@ -1279,7 +1283,7 @@ function notif(cont,clr) {
     function kosongkan(){
         $('#idformH').val('');
     // data siswa
-        $('#kriteriaTB').val('');
+        $('#tingkatTB').val('');
         $('#golonganTB').val('');
         $('#nopendaftaranTB').val('');
         $('#namaTB').val('');
@@ -1299,17 +1303,17 @@ function notif(cont,clr) {
         $('#photoH').val('');
     // pembayaran
         $('#setbiayaTB').val('');
-        $('#dppTD').html('');
+        $('#registrationTD').html('');
         $('#angsuranTB').val('');
         $('#discangsuranTD').html('');
         $('#discsubsidiTB').val('');
         $('#discsaudaraTB').val('');
         $('#disctotalTD').html('');
-        $('#dppnetTD').html('');
+        $('#registrationnetTD').html('');
         $('#disctunaiTB').val('');
         $('#disctunai2TD').html('');
-        $('#joiningfeeTD').html('');
-        $('#sppTD').html('');
+        $('#materialTD').html('');
+        $('#tuitionTD').html('');
     //ayah
         $('#ayahTB').val('');
         $('#kebangsaan_ayahTB').val('');

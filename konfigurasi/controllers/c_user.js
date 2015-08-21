@@ -510,6 +510,7 @@ var aksiFR = levelFR = contentFR = '';
             type:'post',
         });
     }
+    
     // urutan tabel
     function urutFC (e) {
         var u = dir;

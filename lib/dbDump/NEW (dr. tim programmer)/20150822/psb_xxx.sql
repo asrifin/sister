@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
-Source Server Version : 50620
-Source Host           : localhost:3306
+Source Server         : lumba2
+Source Server Version : 50625
+Source Host           : 127.0.0.1:3306
 Source Database       : sister_siadu
 
 Target Server Type    : MYSQL
-Target Server Version : 50620
+Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-18 17:43:19
+Date: 2015-08-22 05:59:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,25 +23,24 @@ CREATE TABLE `psb_angsuran` (
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cicilan` int(11) NOT NULL,
   `keterangan` varchar(200) NOT NULL,
-  `diskon` float(4,2) NOT NULL,
   PRIMARY KEY (`replid`,`cicilan`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_angsuran
 -- ----------------------------
-INSERT INTO `psb_angsuran` VALUES ('1', '1', 'in house pertama', '15.00');
-INSERT INTO `psb_angsuran` VALUES ('2', '2', 'in house kedua', '12.00');
-INSERT INTO `psb_angsuran` VALUES ('3', '3', 'in house ketiga', '10.00');
-INSERT INTO `psb_angsuran` VALUES ('4', '4', '', '8.00');
-INSERT INTO `psb_angsuran` VALUES ('5', '5', '', '6.00');
-INSERT INTO `psb_angsuran` VALUES ('6', '6', '', '4.00');
-INSERT INTO `psb_angsuran` VALUES ('7', '7', '', '2.00');
-INSERT INTO `psb_angsuran` VALUES ('8', '8', '', '1.00');
-INSERT INTO `psb_angsuran` VALUES ('9', '9', '', '0.00');
-INSERT INTO `psb_angsuran` VALUES ('10', '10', '', '0.00');
-INSERT INTO `psb_angsuran` VALUES ('11', '11', '', '0.00');
-INSERT INTO `psb_angsuran` VALUES ('12', '12', '', '0.00');
+INSERT INTO `psb_angsuran` VALUES ('1', '1', 'in house pertama');
+INSERT INTO `psb_angsuran` VALUES ('2', '2', 'in house kedua');
+INSERT INTO `psb_angsuran` VALUES ('3', '3', 'in house ketiga');
+INSERT INTO `psb_angsuran` VALUES ('4', '4', '');
+INSERT INTO `psb_angsuran` VALUES ('5', '5', '');
+INSERT INTO `psb_angsuran` VALUES ('6', '6', '');
+INSERT INTO `psb_angsuran` VALUES ('7', '7', '');
+INSERT INTO `psb_angsuran` VALUES ('8', '8', '');
+INSERT INTO `psb_angsuran` VALUES ('9', '9', '');
+INSERT INTO `psb_angsuran` VALUES ('10', '10', '');
+INSERT INTO `psb_angsuran` VALUES ('11', '11', '');
+INSERT INTO `psb_angsuran` VALUES ('12', '12', '');
 
 -- ----------------------------
 -- Table structure for psb_calonsiswa
@@ -4783,28 +4782,43 @@ CREATE TABLE `psb_calonsiswa_syarat` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for psb_disctunai
+-- Table structure for psb_detaildiskontunai
 -- ----------------------------
-DROP TABLE IF EXISTS `psb_disctunai`;
-CREATE TABLE `psb_disctunai` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `nama` varchar(50) NOT NULL DEFAULT '',
-  `nilai` decimal(10,0) unsigned NOT NULL,
-  `keterangan` varchar(200) NOT NULL,
-  PRIMARY KEY (`replid`,`nilai`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `psb_detaildiskontunai`;
+CREATE TABLE `psb_detaildiskontunai` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `diskontunai` int(11) NOT NULL DEFAULT '0',
+  `nilai` float(5,0) NOT NULL,
+  `departemen` int(11) NOT NULL,
+  `tahunajaran` int(11) NOT NULL,
+  `isAktif` int(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`replid`),
+  KEY `diskontunai` (`diskontunai`) USING BTREE,
+  CONSTRAINT `diskontunaiFK` FOREIGN KEY (`diskontunai`) REFERENCES `psb_diskontunai` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Records of psb_disctunai
+-- Records of psb_detaildiskontunai
 -- ----------------------------
-INSERT INTO `psb_disctunai` VALUES ('1', '', '10', '( DPP ) Second Intake // ( SPP ) untuk anak ke 3 berdasarkan urutan kelahiran // ( SPP ) untuk ortu jemaat aktif GKA Elyon // ( SPP ) untuk anak sekolah minggu aktif GKA Elyon');
-INSERT INTO `psb_disctunai` VALUES ('2', '', '5', 'Tambahan subsidi ( DPP ) untuk anak ke 2 dan selanjutnya // ( SPP ) untuk anak ke 2 berdasarkan urutan kelahiran');
-INSERT INTO `psb_disctunai` VALUES ('3', '', '50', 'Subsidi ( DPP ) untuk hamba Tuhan di luar GKA Elyon & Calon Siswa Baru Secondary\n\n// ( DPP ) untuk : Guru full timer,staff,Kepsek, dengan masa kerja kurang dari 2 th');
-INSERT INTO `psb_disctunai` VALUES ('5', '', '15', '( DPP ) First Intake, Siswa Baru High School // ( SPP ) anak ke 4 sesuai urutan kelahiran, High School 2 th ajaran, siswa secondary suko 1 th ajaran');
-INSERT INTO `psb_disctunai` VALUES ('6', '', '20', '( DPP ) second intake untuk siswa dalam // ( SPP ) ortu jemaat & anak sekolah minggu ELYON, secondary rungkut 2 th ajaran // Permohonan khusus melalui disposisi untuk siswa baru yg memiliki sibling');
-INSERT INTO `psb_disctunai` VALUES ('7', '', '25', '( DPP ) First Intake naik jenjang');
-INSERT INTO `psb_disctunai` VALUES ('8', '', '40', '( DPP ) JAPRES');
-INSERT INTO `psb_disctunai` VALUES ('9', '', '80', '( SPP ) pengurus PPK Elyon, Hamba Tuhan GKA Elyon, Guru Full Timer, Staff, Kepsek');
+INSERT INTO `psb_detaildiskontunai` VALUES ('10', '6', '0', '0', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('11', '6', '0', '0', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('12', '6', '0', '1', '3', '1');
+
+-- ----------------------------
+-- Table structure for psb_diskontunai
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_diskontunai`;
+CREATE TABLE `psb_diskontunai` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `diskontunai` varchar(50) NOT NULL DEFAULT '',
+  `keterangan` varchar(200) NOT NULL,
+  PRIMARY KEY (`replid`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of psb_diskontunai
+-- ----------------------------
+INSERT INTO `psb_diskontunai` VALUES ('6', 'diskon ramayana', 'mantep 90%');
 
 -- ----------------------------
 -- Table structure for psb_golongan
