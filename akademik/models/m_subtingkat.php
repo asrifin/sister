@@ -57,7 +57,7 @@
 						$out.= '<tr>
 									<td align="center">'.$res['tingkat'].'</td>
 									<td align="center">'.$res['subtingkat'].'</td>
-									<td align="center">'.$res['keterangan'].'</td>
+									<td align="center">'.$res['keterangan'].' tahun</td>
 									'.$btn.'
 								</tr>';
 						// $nox++;

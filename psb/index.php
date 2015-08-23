@@ -44,7 +44,7 @@
     <script src="../js/start-screen.js"></script>
     <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
 
-    <title>.:SISTERMETTA PSB:.</title>
+    <title>.:SISTER PSB:.</title>
 </head>
 
 <body class="metro">
@@ -100,14 +100,14 @@
             }else{
                 switch ($_GET['page']) {
                     // master
-                    case 'vgolonganCalonSiswa':
-                        require $d.'v_golonganCalonSiswa.php';
+                    case 'vgolongan':
+                        require $d.'v_golongan.php';
                     break;
                     case 'vangsuran':
                         require $d.'v_angsuran.php';
                     break;
-                     case 'vsetBiayaCalonSiswa':
-                        require $d.'v_setBiayaCalonSiswa.php';
+                     case 'vbiaya':
+                        require $d.'v_biaya.php';
                     break;
                     case 'vdiskontunai':
                         require $d.'v_diskontunai.php';
@@ -120,8 +120,11 @@
                     case 'vproses':
                         require $d.'v_proses.php';
                     break;
-                    case 'vkelompok':
-                        require $d.'v_kelompok.php';
+                    case 'vgelombang':
+                        require $d.'v_gelombang.php';
+                    break;
+                    case 'vdetailgelombang':
+                        require $d.'v_detailgelombang.php';
                     break;
                     case 'vpendataan':
                         require $d.'v_pendataan.php';

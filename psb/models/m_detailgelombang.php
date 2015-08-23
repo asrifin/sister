@@ -2,8 +2,9 @@
 	session_start();
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
+	require_once '../../lib/tglindo.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu = 'diskontunai';
+	$mnu = 'detailgelombang';
 	$tb  = 'psb_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -12,24 +13,28 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$diskontunai = isset($_POST['diskontunaiS'])?$_POST['diskontunaiS']:'';
-				$keterangan  = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
-				$sql = 'SELECT *
-						FROM  '.$tb.' 
+				$departemen  = isset($_POST['departemenS'])?$_POST['departemenS']:'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?$_POST['tahunajaranS']:'';
+				$sql = 'SELECT 
+							dg.replid,
+							dg.tglmulai,
+							dg.tglselesai,
+							g.gelombang
+						FROM  '.$tb.' dg
+							JOIN psb_gelombang g on g.replid = dg.gelombang
 						WHERE 
-							diskontunai LIKE "%'.$diskontunai.'%" AND
-							keterangan LIKE "%'.$keterangan.'%"
+							dg.departemen ='.$departemen.' AND
+							dg.tahunajaran ='.$tahunajaran.'
 						ORDER BY 
-							diskontunai asc
-							';
-				// print_r($sql);exit();
+							g.urutan asc';
+							// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
 
-				$recpage = 10;//jumlah data per halaman
+				$recpage = 5;//jumlah data per halaman
 				$aksi    ='tampil';
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
@@ -42,16 +47,13 @@
 					// $nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+									<button '.(isAksi('detailgelombang','u')?'onclick="viewFR('.$res['replid'].');"':'disabled').' data-hint="ubah">
 										<i class="icon-pencil on-left"></i>
-									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
-										<i class="icon-remove on-left"></i>
-									</button>
-								 </td>';
+									</button>';
 						$out.= '<tr>
-									<td align="center">'.$res['diskontunai'].'</td>
-									<td>'.$res['keterangan'].'</td>
+									<td align="center">'.$res['gelombang'].'</td>
+									<td align="center">'.($res['tglmulai']=='0000-00-00'?'-':tgl_indo5($res['tglmulai'])).'</td>
+									<td align="center">'.($res['tglselesai']=='0000-00-00'?'-':tgl_indo5($res['tglselesai'])).'</td>
 									'.$btn.'
 								</tr>';
 						// $nox++;
@@ -69,8 +71,8 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	diskontunai = "'.filter($_POST['diskontunaiTB']).'",
-								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
+				$s = $tb.' set 	tglmulai 	= "'.tgl_indo6($_POST['tglmulaiTB']).'",
+								tglselesai 	= "'.tgl_indo6($_POST['tglselesaiTB']).'"';
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				// pr($s2);
 				$e2 = mysql_query($s2);
@@ -94,38 +96,52 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT *
-							from '.$tb.'
-							WHERE  replid='.$_POST['replid'];
+				$s 		= ' SELECT 
+								g.gelombang,
+								dg.tahunajaran,
+								dg.departemen,
+								dg.tglmulai,
+								dg.tglselesai
+							from '.$tb.' dg 
+								JOIN psb_gelombang g on g.replid = dg.gelombang
+							WHERE dg.replid='.$_POST['replid'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'diskontunai' =>$r['diskontunai'],
-							'keterangan'  =>$r['keterangan'],
+							'status'      =>$stat,
+							'gelombang'   =>$r['gelombang'],
+							'departemen'  =>$r['departemen'],
+							'tahunajaran' =>$r['tahunajaran'],
+							'tglmulai'    =>($r['tglmulai']=='0000-00-00'?'-':tgl_indo5($r['tglmulai'])),
+							'tglselesai'  =>($r['tglselesai']=='0000-00-00'?'-':tgl_indo5($r['tglselesai'])),
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
-			// cmbsubtingkat -----------------------------------------------------------------
-			case 'cmbsubtingkat':
+
+			// cmbdetailgelombang -----------------------------------------------------------------
+			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
 				}else{
-					if(isset($_POST[$mnu])){
-						$w='where '.$mnu.'='.$_POST[$mnu];
-					}else{
-						$w='where tingkat='.$_POST['tingkat'];
+					if(isset($_POST['tahunajaran']) && isset($_POST['departemen'])){
+						$w='where 	tahunajaran ='.$_POST['tahunajaran'].' AND
+									departemen  ='.$_POST['departemen'];
 					}
 				}
 				
-				$s	= ' SELECT *
-						from '.$tb.'
+				$s	= ' SELECT 
+							dg.replid,
+							g.gelombang,
+							dg.tglmulai,
+							dg.tglselesai
+						from '.$tb.' dg 
+							JOIN psb_gelombang g ON g.replid = dg.gelombang
 						'.$w.'		
-						ORDER  BY subtingkat asc';
-				// print_r($s);exit();
-
+						ORDER BY 
+							g.urutan ASC';
+				// pr($s);
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
@@ -142,8 +158,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}
-						$ar = array('status'=>'sukses',$mnu=>$dt);
+						}$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;

@@ -136,10 +136,10 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$res['tingkat'].'</td>
-									<td>'.$res['subtingkat'].'</td>
-									<td>'.$res['kelas'].'</td>
-									<td>'.$res['kapasitas'].'</td>
+									<td align="center">'.$res['subtingkat'].'</td>
+									<td align="center">'.$res['kelas'].'</td>
 									<td>'.$res['keterangan'].'</td>
+									<td align="center">'.$res['kapasitas'].' siswa</td>
 									'.$btn.'
 								</tr>';
 						$nox++;

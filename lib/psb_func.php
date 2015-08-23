@@ -1,20 +1,20 @@
 <?php
-	function checkDetailDiskonTunai($dep,$thn){
-		$dtun  = getField('count(*)','psb_diskontunai','','');
-		$ddtun = getField2('count(*)','psb_DetailDiskonTunai',array('tahunajaran'=>$thn,'departemen'=>$dep),'');
-		if($ddtun<=0 || $dtun!=$ddtun) addDetailDiskonTunai($dep,$thn);
-	}
-	function addDetailDiskonTunai($dep,$thn){
-		// pr($dep);
-		$sk = 'SELECT replid FROM psb_diskontunai ORDER BY replid ASC';
-		$ek = mysql_query($sk);
-		while ($rk = mysql_fetch_assoc($ek)) {
-			$ss ='INSERT INTO psb_detaildiskontunai SET diskontunai ='.$rk['replid'].',
-														departemen 	='.$dep.',
-														tahunajaran ='.$thn;
-			$es = mysql_query($ss);
-		}
-	}
+	// function checkDetailDiskonTunai($dep,$thn){
+	// 	$dtun  = getField('count(*)','psb_diskontunai','','');
+	// 	$ddtun = getField2('count(*)','psb_DetailDiskonTunai',array('tahunajaran'=>$thn,'departemen'=>$dep),'');
+	// 	if($ddtun<=0 || $dtun!=$ddtun) addDetailDiskonTunai($dep,$thn);
+	// }
+	// function addDetailDiskonTunai($dep,$thn){
+	// 	// pr($dep);
+	// 	$sk = 'SELECT replid FROM psb_diskontunai ORDER BY replid ASC';
+	// 	$ek = mysql_query($sk);
+	// 	while ($rk = mysql_fetch_assoc($ek)) {
+	// 		$ss ='INSERT INTO psb_detaildiskontunai SET diskontunai ='.$rk['replid'].',
+	// 													departemen 	='.$dep.',
+	// 													tahunajaran ='.$thn;
+	// 		$es = mysql_query($ss);
+	// 	}
+	// }
 
 
 	function getAgama($id){

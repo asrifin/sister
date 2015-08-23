@@ -75,14 +75,15 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
+				$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$tingkat     = isset($_POST['tingkatS']) && $_POST['tingkatS']!=''?' s.tingkat='.$_POST['tingkatS'].' AND ':'';
 				$subtingkat  = isset($_POST['subtingkatS']) && $_POST['subtingkatS']!=''?' k.subtingkat='.$_POST['subtingkatS'].' AND ':'';
 				$kelas       = isset($_POST['kelasS'])?filter($_POST['kelasS']):'';
 				$nama        = isset($_POST['namaS']) && $_POST['namaS']!=''?' h.nama LIKE"%'.$_POST['namaS'].'%" AND':'';
 				$kapasitas   = isset($_POST['kapasitasS']) && $_POST['kapasitasS']!=''?' d.kapasitas LIKE"%'.$_POST['kapasitasS'].'%" AND':'';
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 
-				checkDetailKelas($tahunajaran);
+				// checkDetailKelas($tahunajaran);
 				$sql =' SELECT 
 							d.replid,
 							t.tingkat,
@@ -107,7 +108,8 @@
 						WHERE
 							'.$tingkat.$subtingkat.$kapasitas.'   
 							k.kelas LIKE"%'.$kelas.'%" AND
-							'.$nama.'
+							'.$nama.' 
+							k.departemen = '.$departemen.' AND
 							d.tahunajaran = '.$tahunajaran.' 
 						ORDER BY
 							t.urutan ASC, 
@@ -138,8 +140,8 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$res['tingkat'].'</td>
-									<td>'.$res['subtingkat'].'</td>
-									<td>'.$res['kelas'].'</td>
+									<td align="center">'.$res['subtingkat'].'</td>
+									<td align="center">'.$res['kelas'].'</td>
 									<td>'.$res['wali'].'</td>
 									'.$btn.'
 								</tr>';
@@ -180,13 +182,13 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-							// -- ,if(d.kapasitas=0,"",d.kapasitas)kapasitas 
+				// -- ,if(d.kapasitas=0,"",d.kapasitas)kapasitas 
 				$s 	= ' SELECT 
 							ta.tahunajaran
 							,t.tingkat   
 							,s.subtingkat
 							,k.kelas 
-							    
+							,k.departemen    
 							,if(d.wali=0,"",d.wali)idwali 
 							,h.nip
 							,h.nama
@@ -207,13 +209,14 @@
 				$out  = json_encode(array(
 							'status' =>$stat,
 							'datax'  =>array(
-								'tahunajaran' =>$r['tahunajaran'],
-								'tingkat'     =>$r['tingkat'],
-								'subtingkat'  =>$r['subtingkat'],
-								'kelas'       =>$r['kelas'],
-								// 'kapasitas'   =>$r['kapasitas'],
-								'wali'        =>($r['idwali']==0 || $r['idwali']==null?'':$r['nip'].' / '.$r['nama']),
-								'idwali'      =>$r['idwali']
+								'departemen'   =>$r['departemen'],
+								'tahunajaran'  =>$r['tahunajaran'],
+								'tingkat'      =>$r['tingkat'],
+								'subtingkat'   =>$r['subtingkat'],
+								'kelas'        =>$r['kelas'],
+								// 'kapasitas' =>$r['kapasitas'],
+								'wali'         =>($r['idwali']==0 || $r['idwali']==null?'':$r['nip'].' / '.$r['nama']),
+								'idwali'       =>$r['idwali']
 						)));
 			break;
 			// ambiledit -----------------------------------------------------------------

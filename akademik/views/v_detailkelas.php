@@ -23,6 +23,9 @@
 </nav>
 
 <div class="input-control select size3">
+    <select class="cari" data-hint="departemen" name="departemenS" id="departemenS"></select>
+</div>
+<div class="input-control select size3">
     <select class="cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
 

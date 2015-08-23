@@ -9,11 +9,11 @@ var dir3 ='../akademik/models/m_'+mnu3+'.php';
 var contentFR ='';
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form onsubmit="simpan();return false;" id="diskonFR">' 
+        contentFR += '<form onsubmit="simpan();return false;" style="overflow:scroll;height:500px;"  id="diskonFR">' 
                         +'<input  id="idformH" type="hidden">' 
                         
                         // departemen 
-                        +'<table>'
+                        +'<table class="table hovered bordered striped">'
                             +'<tr>'
                                 +'<td>Departemen </td>'
                                 +'<td id="departemenDV"></td>'
@@ -150,8 +150,10 @@ var contentFR ='';
                     var d='aksi=ambiledit&replid='+id;
                     ajax(u,d).done(function (dt){
                         $('#idformH').val(id);
-                        $('#departemenDV').text(':'+dt.departemen);
-                        $('#tahunajaranDV').text(':'+dt.tahunajaran);
+                        cmbdepartemen('form',dt.departemen);
+                        cmbtahunajaran('form',dt.tahunajaran);
+                        // $('#departemenDV').text(':'+cmbdt.departemen);
+                        // $('#tahunajaranDV').text(':'+dt.tahunajaran);
                         $('#diskontunaiDV').text(':'+dt.diskontunai);
                         $('#keteranganDV').text(':'+dt.keterangan);
                         $('#nilaiTB').val(dt.nilai);
@@ -230,7 +232,7 @@ var contentFR ='';
 // combo departemen ---
     function cmbdepartemen(typ,dep){
         var u = dir2;
-        var d ='aksi=cmb'+mnu2;
+        var d ='aksi=cmb'+mnu2+(dep!=''?'&replid='+dep:'');
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){
@@ -244,14 +246,14 @@ var contentFR ='';
                 $('#departemenS').html(out);
                 cmbtahunajaran('filter','');
             }else{
-                $('#departemenTB').html('<option value="">-Pilih '+mnu2+'-</option>'+out);
+                $('#departemenDV').text(': '+dt.departemen[0].nama);
             }
         });
     }
 // combo tahunajaran ---
     function cmbtahunajaran(typ,thn){
         var u = dir3;
-        var d ='aksi=cmb'+mnu3;
+        var d ='aksi=cmb'+mnu3+(thn!=''?'&replid='+thn:'');
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){
@@ -265,7 +267,9 @@ var contentFR ='';
                 $('#tahunajaranS').html(out);
                 viewTB();
             }else{
-                $('#tahunajaranTB').html('<option value="">-Pilih '+mnu2+'-</option>'+out);
+                var tahun  = dt.tahunajaran[0].tahunajaran;
+                var tahun2 = parseInt(tahun)+1;
+                $('#tahunajaranDV').text(': '+tahun+' - '+tahun2);
             }
         });
     }
@@ -286,3 +290,38 @@ var contentFR ='';
             notif(dt.status,(dt.status=='sukses'?'green':'red'));
         });
     }
+
+//aktifkan process ---
+    function aktifkan(id){
+        if(confirm(' ubah status ?')){
+            var u = dir;
+            var d ='aksi=aktifkan&id_'+mnu+'='+id;
+            ajax(u,d).done(function (dt){
+                var cont,clr;
+                if(dt.status!='sukses'){
+                    cont = '..Gagal Mengaktifkan user.';
+                    clr  ='red';
+                }else{
+                    cont = '..Berhasil Mengaktifkan user.';
+                    clr  ='green';
+                    viewTB();
+                }notif(cont,clr);
+            });
+        }
+    }
+//end of aktifkan process ---
+
+
+// notifikasi
+    function notif(cont,clr) {
+        var not = $.Notify({
+            caption : "<b>Notifikasi</b>",
+            content : cont,
+            timeout : 3000,
+            style :{
+                background: clr,
+                color:'white'
+            },
+        });
+    }
+// end of notifikasi

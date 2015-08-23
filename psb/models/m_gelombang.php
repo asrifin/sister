@@ -4,8 +4,8 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'tahunajaran';
-	$tb  = 'aka_'.$mnu;
+	$mnu = 'gelombang';
+	$tb  = 'psb_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
@@ -13,44 +13,56 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$keterangan  = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
-				$sql = 'SELECT replid,concat(tahunajaran," - ",tahunajaran+1)tahunajaran,keterangan
+				$gelombang  = isset($_POST['gelombangS'])?filter(trim($_POST['gelombangS'])):'';
+				$keterangan = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
+				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
-							tahunajaran like "%'.$tahunajaran.'%" and
-							keterangan like "%'.$keterangan.'%" 
+							gelombang like "%'.$gelombang.'%" and
+							keterangan like "%'.$keterangan.'%"
 						ORDER 
-							BY tahunajaran desc';
-							// vdump($sql);
-				if(isset($_POST['starting'])) $starting=$_POST['starting'];
-				else  $starting=0;
+							BY urutan asc';
+				// print_r($sql);exit();
+				if(isset($_POST['starting'])){ //nilai awal halaman
+					$starting=$_POST['starting'];
+				}else{
+					$starting=0;
+				}
 
-				$recpage = 5;//jumlah data per halaman
+				$recpage = 10;//jumlah data per halaman
 				$aksi    ='tampil';
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
 				$result  =$obj->result;
 
-				#ada data
 				$jum	= mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
-					$nox 	= $starting+1;
+					$nox = $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
-						$btn ='<td align="center">
-									<button data-hint="ubah" '.(isAksi('tahunajaran','u')?'onclick="viewFR('.$res['replid'].');"':'disabled').'  >
+						// urutan
+							$nox = '<select '.(isAksi('gelombang','u')?'onchange="urutFC(this);"':'disabled').' class="text-center" replid1="'.$res['replid'].'" urutan1="'.$res['urutan'].'" >';
+							for($i=1; $i<=$jum; $i++){
+								if($i==$res['urutan']) $nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
+								else $nox.='<option value="'.$i.'">'.$i.'</option>';
+							}$nox.='</select>';
+						// end of urutan
+
+						$btn ='<td>
+									<button '.(isAksi('gelombang','u')?'onclick="viewFR('.$res['replid'].');"':'disabled').' data-hint="ubah"  >
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button  data-hint="hapus" '.(isAksi('tahunajaran','d')?'onclick="del('.$res['replid'].');"':'disabled').'>
+									<button  '.(isAksi('gelombang','d')?'onclick="del('.$res['replid'].');"':'disabled').' data-hint="hapus" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
-						$out.= '<tr>
-									<td align="center">'.$res['tahunajaran'].'</td>
+						$out.= '<tr align="center">
+									<td><div class="input-control select">'.$nox.'</div></td>
+									<td>'.$res['gelombang'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
+						$nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -65,20 +77,17 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranTB']).'",
-								keterangan  = "'.filter($_POST['keteranganTB']).'"';
-				if(!isset($_POST['replid'])){ //add
-					$s2 = 'INSERT INTO '.$s;
-				}else{ //edit
+				$s = $tb.' set  gelombang 	= "'.filter($_POST['gelombangTB']).'",
+								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
+				if(isset($_POST['replid'])){
 					$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
-				}
-				// pr($s2);
-				$e2 = mysql_query($s2);
-				if(!$e2){
-					$stat = 'gagal menyimpan';
 				}else{
-					$stat = 'sukses';
+					$n  = mysql_num_rows(mysql_query('SELECT * from '.$tb));
+					$s2 = 'INSERT INTO '.$s.', urutan='.($n+1);
 				}
+
+				$e2   = mysql_query($s2);
+				$stat =!$e2?'gagal menyimpan':'sukses';
 				$out  = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
@@ -89,22 +98,22 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['tahunajaran']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 		= ' SELECT *
-							from '.$tb.'
+							from '.$tb.' 
 							WHERE replid='.$_POST['replid'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'      =>$stat,
-							'tahunajaran' =>$r['tahunajaran'],
-							'keterangan'  =>$r['keterangan'],
+							'status'     =>$stat,
+							'gelombang'  =>$r['gelombang'],
+							'keterangan' =>$r['keterangan'],
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
@@ -123,35 +132,35 @@
 						$stat='sukses';
 					}
 				}$out  = json_encode(array('status'=>$stat));
+				//var_dump($stat);exit();
 			break;
 			// aktifkan -----------------------------------------------------------------
 
-			// cmbtahunajaran -----------------------------------------------------------------
+			// cmbtingkat -----------------------------------------------------------------
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
-					$w.='where replid ='.$_POST['replid'];
+					$w='where replid ='.$_POST['replid'];
 				}else{
 					if(isset($_POST[$mnu])){
-						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST['departemen'])){
-						$w.='where departemen ='.$_POST['departemen'];
+						$w='where'.$mnu.'='.$_POST[$mnu];
 					}
 				}
 				
-				$s	= ' SELECT *
+				$s	= ' SELECT * 
 						from '.$tb.'
-						'.$w.' 
-						ORDER BY tahunajaran DESC';
-						// pr($s);
-				$e 	= mysql_query($s);
-				$n 	= mysql_num_rows($e);
-				$ar=$dt=array();
+						'.$w.'		
+						ORDER  BY 
+							urutan asc';
+				// var_dump($s);exit();
+				$e  = mysql_query($s);
+				$n  = mysql_num_rows($e);
+				$ar = $dt=array();
 
 				if(!$e){ //error
 					$ar = array('status'=>'error');
 				}else{
-					if($n=0){ // kosong 
+					if($n==0){ // kosong 
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
 						if(!isset($_POST['replid'])){
@@ -160,16 +169,44 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','tahunajaran'=>$dt);
-					}
+						}
+					}$ar = array('status'=>'sukses','tingkat'=>$dt);
 				}$out=json_encode($ar);
 			break;
-			// cmbtahunajaran -----------------------------------------------------------------
+			// cmbtingkat -----------------------------------------------------------------
+			// urutan -----------------------------------------------------------------
+			case 'urutan':
+				// 1 = asal
+				// 2 = tujuan
+				$_1 = mysql_fetch_assoc(mysql_query('SELECT urutan from '.$tb.' WHERE replid='.$_POST['replid1']));
+				$_2 = mysql_fetch_assoc(mysql_query('SELECT replid from '.$tb.' WHERE urutan='.$_POST['urutan2']));
+				$s1		= ' UPDATE '.$tb.' 
+							SET urutan = '.$_POST['urutan2'].'  
+							WHERE 
+								replid='.$_POST['replid1'];
+				$s2		= ' UPDATE '.$tb.' 
+							SET urutan = '.$_1['urutan'].'  
+							WHERE 
+								replid='.$_2['replid'];
+				// var_dump($s1);exit();
+				$e1 	= mysql_query($s1);
+				if(!$e1){
+					$stat='gagal ubah urutan semula ';
+				}else{
+					$e2 = mysql_query($s2);
+					if(!$e2)
+						$stat = 'gagal ubah urutan kedua';
+					else
+						$stat= 'sukses';
+				}
+				$out 	= json_encode(array(
+							'status'  =>$stat,
+						));
+			break;
+			// urutan ------			
+
 
 		}
-	}echo $out;
-
-	// ---------------------- //
-	// -- created by epiii -- //
-	// ---------------------- //
+	}
+	echo $out;
 ?>

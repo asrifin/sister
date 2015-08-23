@@ -1,7 +1,7 @@
-var mnu       = 'setBiayaCalonSiswa';
+var mnu       = 'biaya';
 var mnu2      = 'departemen';
 var mnu3      = 'tahunajaran';
-var mnu4      = 'kelompok';
+var mnu4      = 'detailgelombang';
 
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
@@ -11,7 +11,7 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-        cmbdepartemenS('');
+        cmbdepartemen('filter','');
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -20,103 +20,70 @@ var contentFR = '';
 
         //search action
         $('#departemenS').on('change',function(){
-            cmbtahunajaranS($(this).val());
+            cmbtahunajaran();
         });$('#tahunajaranS').on('change',function (){
-            cmbkelompok($(this).val());
-        });$('#kelompokS').on('change',function (){
+            cmbdetailgelombang();
+        });$('#detailgelombangS').on('change',function (){
             viewTB();
         });
 
         // search button
-        $('#cariBC').on('click',function(){
-            $('#cariTR').toggle('slow');
-            $('#kelasS').val('');
-            $('#waliS').val('');
-        });
+        // $('#cariBC').on('click',function(){
+        //     $('#cariTR').toggle('slow');
+        //     $('#kelasS').val('');
+        //     $('#waliS').val('');
+        // });
 
     }); 
 
-// fetch data list : department 
-    function deplist(){
-        return $.ajax({
-            url:dir2,
-            data:'aksi=cmbdepartemen',
-            dataType:'json',
-            type:'post'
-        });
-    }
-// fetch data list : tahun ajaran 
-    function thnlist(dep){
-        return $.ajax({
-            url:dir3,
-            data:'aksi=cmbtahunajaran&departemen='+dep,
-            dataType:'json',
-            type:'post'
-        });
-    }
-// fetch data list : kelompok 
-    function kellist(thn){
-        return $.ajax({
-            url:dir4,
-            data:'aksi=cmbkelompok&tahunajaran='+thn,
-            dataType:'json',
-            type:'post'
-        });
-    }
 // combobox filtering : department
-    function cmbdepartemenS(){
-        deplist().done(function(res){
+    function cmbdepartemen(){
+        var u = dir2;
+        var d = 'aksi=cmb'+mnu2;
+        ajax(u,d).done(function (dt){
             var opt='';
-            if(res.status!='sukses'){
-                notif(res.status,'red');
+            if(dt.status!='sukses'){
+                notif(dt.status,'red');
             }else{
-                $.each(res.departemen, function(id,item){
+                $.each(dt.departemen, function(id,item){
                     opt+='<option value="'+item.replid+'">'+item.nama+'</option>'
                 });
                 $('#departemenS').html(opt);
-                cmbtahunajaranS($('#departemenS').val());
-            }
-        });
-    }
-// combobox filtering : tahun ajaran
-    function cmbtahunajaranS(dep){
-        $.ajax({
-            url:dir3,
-            data:'aksi=cmbtahunajaran&departemen='+dep,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.tahunajaran, function(id,item){
-                        if(item.aktif=='1'){
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.tahunajaran+' (aktif)</option>';
-                        }else{
-                            out+='<option value="'+item.replid+'">'+item.tahunajaran+'</option>';
-                        }
-                    });
-                }$('#tahunajaranS').html(out);
-                cmbkelompok(dt.tahunajaran[0].replid);
-                // }$('#tahunajaranS').html('<option="">--Semua--</option>'+out);
-                // viewTB();
+                cmbtahunajaran('filter','');
             }
         });
     }
 
-// combobox filtering : kelompok pendaftaran
-    function cmbkelompok(thn){
-        var u = dir4;
-        var d = 'aksi=cmb'+mnu4+'&tahunajaran='+thn;
-        ajax(u,d).done(function(res){
+// combo tahunajaran
+    function cmbtahunajaran(){
+        var u = dir3;
+        var d = 'aksi=cmb'+mnu3;
+        ajax(u,d).done(function (dt){
             var opt='';
-            if(res.status!='sukses'){
-                notif(res.status,'red');
+            if(dt.status!='sukses'){
+                notif(dt.status,'red');
             }else{
-                $.each(res.kelompok, function(id,item){
-                    opt+='<option value="'+item.replid+'">'+item.kelompok+'</option>';
-                }); $('#kelompokS').html(opt);
+                $.each(dt.tahunajaran, function(id,item){
+                    opt+='<option value="'+item.replid+'">'+item.tahunajaran+' - '+(parseInt(item.tahunajaran)+1)+'</option>'
+                });
+                $('#tahunajaranS').html(opt);
+                cmbdetailgelombang();
+            }
+        });
+    }
+
+// combobox detailgelombang pendaftaran
+    function cmbdetailgelombang(){
+        var u = dir4;
+        var d = 'aksi=cmb'+mnu4+'&tahunajaran='+$('#tahunajaranS').val()+'&departemen='+$('#departemenS').val();
+        ajax(u,d).done(function (dt){
+            var opt='';
+            if(dt.status!='sukses'){
+                notif(dt.status,'red');
+            }else{
+                $.each(dt.detailgelombang, function(id,item){
+                    opt+='<option value="'+item.replid+'">'+item.gelombang+'</option>';
+                }); $('#detailgelombangS').html(opt);
                 viewTB();
             }
         });

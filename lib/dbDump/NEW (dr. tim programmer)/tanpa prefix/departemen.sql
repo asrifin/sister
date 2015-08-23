@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
-Source Server Version : 50620
-Source Host           : localhost:3306
+Source Server         : lumba2
+Source Server Version : 50625
+Source Host           : 127.0.0.1:3306
 Source Database       : sister_siadu
 
 Target Server Type    : MYSQL
-Target Server Version : 50620
+Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-13 04:44:55
+Date: 2015-08-24 01:12:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `departemen`;
 CREATE TABLE `departemen` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
   `nama` varchar(50) NOT NULL,
   `kepsek` int(10) unsigned NOT NULL DEFAULT '0',
   `urut` int(10) unsigned NOT NULL DEFAULT '1',

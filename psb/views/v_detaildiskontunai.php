@@ -4,7 +4,6 @@
 <nav class="breadcrumbs">
     <ul>
         &nbsp;
-        <button <?php echo isAksi('detaildiskontunai','c')?'onclick="viewFR(\'\')"':'disabled'; ?> class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
         <li><a href="diskon-tunai">Diskon Tunai</a></li>
         <li class="active"><a href="#"><b>Detail Diskon Tunai</b></a></li>
     </ul>
@@ -29,7 +28,9 @@
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari..." id="nilaiS"></div></th>
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari..." id="keteranganS"></div></th>
             <th class="text-center"><div class="input-control select"><select class="cari" id="isAktifS"><option value="">-SEMUA-</option><option class="fg-white bg-green"  value="1">AKtif</option><option class="fg-white bg-red" value="0">Tidak Aktif</option></select></div></th>
-            <th><button data-hint="refresh" onclick="refreshBC();" class="fg-white bg-orange"><i class="icon-reply"></i></button></th>
+            <th>
+                <!-- <button data-hint="refresh" onclick="refreshBC();" class="fg-white bg-orange"><i class="icon-reply"></i></button> -->
+            </th>
         </tr>
     </thead>
     <tbody id="tbody">

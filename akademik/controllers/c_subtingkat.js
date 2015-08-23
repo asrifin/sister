@@ -24,7 +24,7 @@ var contentFR = '';
                         +'</div>'
                         
                         // keterangan
-                        +'<label>Keterangan</label>'
+                        +'<label>Usia</label>'
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan"  name="keteranganTB" id="keteranganTB"></textarea>'
                         +'</div>'

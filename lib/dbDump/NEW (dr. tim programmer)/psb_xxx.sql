@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-22 05:59:52
+Date: 2015-08-24 01:12:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,7 +32,7 @@ CREATE TABLE `psb_angsuran` (
 INSERT INTO `psb_angsuran` VALUES ('1', '1', 'in house pertama');
 INSERT INTO `psb_angsuran` VALUES ('2', '2', 'in house kedua');
 INSERT INTO `psb_angsuran` VALUES ('3', '3', 'in house ketiga');
-INSERT INTO `psb_angsuran` VALUES ('4', '4', '');
+INSERT INTO `psb_angsuran` VALUES ('4', '4', '-\r\n');
 INSERT INTO `psb_angsuran` VALUES ('5', '5', '');
 INSERT INTO `psb_angsuran` VALUES ('6', '6', '');
 INSERT INTO `psb_angsuran` VALUES ('7', '7', '');
@@ -41,6 +41,679 @@ INSERT INTO `psb_angsuran` VALUES ('9', '9', '');
 INSERT INTO `psb_angsuran` VALUES ('10', '10', '');
 INSERT INTO `psb_angsuran` VALUES ('11', '11', '');
 INSERT INTO `psb_angsuran` VALUES ('12', '12', '');
+
+-- ----------------------------
+-- Table structure for psb_biaya
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_biaya`;
+CREATE TABLE `psb_biaya` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `formulir` decimal(14,0) NOT NULL DEFAULT '0',
+  `spp` decimal(14,0) NOT NULL DEFAULT '0',
+  `dpp` decimal(14,0) NOT NULL DEFAULT '0',
+  `joiningf` decimal(14,0) NOT NULL DEFAULT '0',
+  `tingkat` int(11) NOT NULL DEFAULT '0',
+  `golongan` int(11) NOT NULL DEFAULT '0',
+  `detailgelombang` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `detailgelombang` (`detailgelombang`) USING BTREE,
+  KEY `tingkat` (`tingkat`) USING BTREE,
+  KEY `golongan` (`golongan`) USING BTREE,
+  CONSTRAINT `golonganFK2` FOREIGN KEY (`golongan`) REFERENCES `psb_golongan` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tingkatFK5` FOREIGN KEY (`tingkat`) REFERENCES `aka_tingkat` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1262 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of psb_biaya
+-- ----------------------------
+INSERT INTO `psb_biaya` VALUES ('542', '0', '0', '0', '0', '1', '1', '10');
+INSERT INTO `psb_biaya` VALUES ('543', '0', '0', '0', '0', '1', '2', '10');
+INSERT INTO `psb_biaya` VALUES ('544', '0', '0', '0', '0', '1', '3', '10');
+INSERT INTO `psb_biaya` VALUES ('545', '0', '0', '0', '0', '1', '4', '10');
+INSERT INTO `psb_biaya` VALUES ('546', '0', '0', '0', '0', '1', '5', '10');
+INSERT INTO `psb_biaya` VALUES ('547', '0', '0', '0', '0', '1', '6', '10');
+INSERT INTO `psb_biaya` VALUES ('548', '0', '0', '0', '0', '1', '7', '10');
+INSERT INTO `psb_biaya` VALUES ('549', '0', '0', '0', '0', '1', '9', '10');
+INSERT INTO `psb_biaya` VALUES ('550', '0', '0', '0', '0', '1', '10', '10');
+INSERT INTO `psb_biaya` VALUES ('552', '0', '0', '0', '0', '2', '1', '10');
+INSERT INTO `psb_biaya` VALUES ('553', '0', '0', '0', '0', '2', '2', '10');
+INSERT INTO `psb_biaya` VALUES ('554', '0', '0', '0', '0', '2', '3', '10');
+INSERT INTO `psb_biaya` VALUES ('555', '0', '0', '0', '0', '2', '4', '10');
+INSERT INTO `psb_biaya` VALUES ('556', '0', '0', '0', '0', '2', '5', '10');
+INSERT INTO `psb_biaya` VALUES ('557', '0', '0', '0', '0', '2', '6', '10');
+INSERT INTO `psb_biaya` VALUES ('558', '0', '0', '0', '0', '2', '7', '10');
+INSERT INTO `psb_biaya` VALUES ('559', '0', '0', '0', '0', '2', '9', '10');
+INSERT INTO `psb_biaya` VALUES ('560', '0', '0', '0', '0', '2', '10', '10');
+INSERT INTO `psb_biaya` VALUES ('562', '0', '0', '0', '0', '3', '1', '10');
+INSERT INTO `psb_biaya` VALUES ('563', '0', '0', '0', '0', '3', '2', '10');
+INSERT INTO `psb_biaya` VALUES ('564', '0', '0', '0', '0', '3', '3', '10');
+INSERT INTO `psb_biaya` VALUES ('565', '0', '0', '0', '0', '3', '4', '10');
+INSERT INTO `psb_biaya` VALUES ('566', '0', '0', '0', '0', '3', '5', '10');
+INSERT INTO `psb_biaya` VALUES ('567', '0', '0', '0', '0', '3', '6', '10');
+INSERT INTO `psb_biaya` VALUES ('568', '0', '0', '0', '0', '3', '7', '10');
+INSERT INTO `psb_biaya` VALUES ('569', '0', '0', '0', '0', '3', '9', '10');
+INSERT INTO `psb_biaya` VALUES ('570', '0', '0', '0', '0', '3', '10', '10');
+INSERT INTO `psb_biaya` VALUES ('572', '0', '0', '0', '0', '6', '1', '10');
+INSERT INTO `psb_biaya` VALUES ('573', '0', '0', '0', '0', '6', '2', '10');
+INSERT INTO `psb_biaya` VALUES ('574', '0', '0', '0', '0', '6', '3', '10');
+INSERT INTO `psb_biaya` VALUES ('575', '0', '0', '0', '0', '6', '4', '10');
+INSERT INTO `psb_biaya` VALUES ('576', '0', '0', '0', '0', '6', '5', '10');
+INSERT INTO `psb_biaya` VALUES ('577', '0', '0', '0', '0', '6', '6', '10');
+INSERT INTO `psb_biaya` VALUES ('578', '0', '0', '0', '0', '6', '7', '10');
+INSERT INTO `psb_biaya` VALUES ('579', '0', '0', '0', '0', '6', '9', '10');
+INSERT INTO `psb_biaya` VALUES ('580', '0', '0', '0', '0', '6', '10', '10');
+INSERT INTO `psb_biaya` VALUES ('582', '0', '0', '0', '0', '7', '1', '10');
+INSERT INTO `psb_biaya` VALUES ('583', '0', '0', '0', '0', '7', '2', '10');
+INSERT INTO `psb_biaya` VALUES ('584', '0', '0', '0', '0', '7', '3', '10');
+INSERT INTO `psb_biaya` VALUES ('585', '0', '0', '0', '0', '7', '4', '10');
+INSERT INTO `psb_biaya` VALUES ('586', '0', '0', '0', '0', '7', '5', '10');
+INSERT INTO `psb_biaya` VALUES ('587', '0', '0', '0', '0', '7', '6', '10');
+INSERT INTO `psb_biaya` VALUES ('588', '0', '0', '0', '0', '7', '7', '10');
+INSERT INTO `psb_biaya` VALUES ('589', '0', '0', '0', '0', '7', '9', '10');
+INSERT INTO `psb_biaya` VALUES ('590', '0', '0', '0', '0', '7', '10', '10');
+INSERT INTO `psb_biaya` VALUES ('592', '0', '0', '0', '0', '8', '1', '10');
+INSERT INTO `psb_biaya` VALUES ('593', '0', '0', '0', '0', '8', '2', '10');
+INSERT INTO `psb_biaya` VALUES ('594', '0', '0', '0', '0', '8', '3', '10');
+INSERT INTO `psb_biaya` VALUES ('595', '0', '0', '0', '0', '8', '4', '10');
+INSERT INTO `psb_biaya` VALUES ('596', '0', '0', '0', '0', '8', '5', '10');
+INSERT INTO `psb_biaya` VALUES ('597', '0', '0', '0', '0', '8', '6', '10');
+INSERT INTO `psb_biaya` VALUES ('598', '0', '0', '0', '0', '8', '7', '10');
+INSERT INTO `psb_biaya` VALUES ('599', '0', '0', '0', '0', '8', '9', '10');
+INSERT INTO `psb_biaya` VALUES ('600', '0', '0', '0', '0', '8', '10', '10');
+INSERT INTO `psb_biaya` VALUES ('602', '90900', '0', '450000', '550000', '1', '1', '11');
+INSERT INTO `psb_biaya` VALUES ('603', '0', '0', '0', '0', '1', '2', '11');
+INSERT INTO `psb_biaya` VALUES ('604', '0', '0', '0', '0', '1', '3', '11');
+INSERT INTO `psb_biaya` VALUES ('605', '0', '0', '0', '0', '1', '4', '11');
+INSERT INTO `psb_biaya` VALUES ('606', '0', '0', '0', '0', '1', '5', '11');
+INSERT INTO `psb_biaya` VALUES ('607', '0', '0', '0', '0', '1', '6', '11');
+INSERT INTO `psb_biaya` VALUES ('608', '0', '0', '0', '0', '1', '7', '11');
+INSERT INTO `psb_biaya` VALUES ('609', '0', '0', '0', '0', '1', '9', '11');
+INSERT INTO `psb_biaya` VALUES ('610', '0', '0', '0', '0', '1', '10', '11');
+INSERT INTO `psb_biaya` VALUES ('612', '0', '0', '0', '0', '2', '1', '11');
+INSERT INTO `psb_biaya` VALUES ('613', '0', '0', '0', '0', '2', '2', '11');
+INSERT INTO `psb_biaya` VALUES ('614', '0', '0', '0', '0', '2', '3', '11');
+INSERT INTO `psb_biaya` VALUES ('615', '0', '0', '0', '0', '2', '4', '11');
+INSERT INTO `psb_biaya` VALUES ('616', '0', '0', '0', '0', '2', '5', '11');
+INSERT INTO `psb_biaya` VALUES ('617', '0', '0', '0', '0', '2', '6', '11');
+INSERT INTO `psb_biaya` VALUES ('618', '0', '0', '0', '0', '2', '7', '11');
+INSERT INTO `psb_biaya` VALUES ('619', '0', '0', '0', '0', '2', '9', '11');
+INSERT INTO `psb_biaya` VALUES ('620', '0', '0', '0', '0', '2', '10', '11');
+INSERT INTO `psb_biaya` VALUES ('622', '550000', '0', '0', '0', '3', '1', '11');
+INSERT INTO `psb_biaya` VALUES ('623', '0', '0', '0', '0', '3', '2', '11');
+INSERT INTO `psb_biaya` VALUES ('624', '0', '0', '0', '0', '3', '3', '11');
+INSERT INTO `psb_biaya` VALUES ('625', '0', '0', '0', '0', '3', '4', '11');
+INSERT INTO `psb_biaya` VALUES ('626', '0', '0', '0', '0', '3', '5', '11');
+INSERT INTO `psb_biaya` VALUES ('627', '0', '0', '0', '0', '3', '6', '11');
+INSERT INTO `psb_biaya` VALUES ('628', '0', '0', '0', '0', '3', '7', '11');
+INSERT INTO `psb_biaya` VALUES ('629', '0', '0', '0', '0', '3', '9', '11');
+INSERT INTO `psb_biaya` VALUES ('630', '0', '0', '0', '0', '3', '10', '11');
+INSERT INTO `psb_biaya` VALUES ('632', '0', '0', '0', '0', '6', '1', '11');
+INSERT INTO `psb_biaya` VALUES ('633', '0', '0', '0', '0', '6', '2', '11');
+INSERT INTO `psb_biaya` VALUES ('634', '0', '0', '0', '0', '6', '3', '11');
+INSERT INTO `psb_biaya` VALUES ('635', '0', '0', '0', '0', '6', '4', '11');
+INSERT INTO `psb_biaya` VALUES ('636', '0', '0', '0', '0', '6', '5', '11');
+INSERT INTO `psb_biaya` VALUES ('637', '0', '0', '0', '0', '6', '6', '11');
+INSERT INTO `psb_biaya` VALUES ('638', '0', '0', '0', '0', '6', '7', '11');
+INSERT INTO `psb_biaya` VALUES ('639', '0', '0', '0', '0', '6', '9', '11');
+INSERT INTO `psb_biaya` VALUES ('640', '0', '0', '0', '0', '6', '10', '11');
+INSERT INTO `psb_biaya` VALUES ('642', '0', '0', '0', '0', '7', '1', '11');
+INSERT INTO `psb_biaya` VALUES ('643', '0', '0', '0', '0', '7', '2', '11');
+INSERT INTO `psb_biaya` VALUES ('644', '0', '0', '0', '0', '7', '3', '11');
+INSERT INTO `psb_biaya` VALUES ('645', '0', '0', '0', '0', '7', '4', '11');
+INSERT INTO `psb_biaya` VALUES ('646', '0', '0', '0', '0', '7', '5', '11');
+INSERT INTO `psb_biaya` VALUES ('647', '0', '0', '0', '0', '7', '6', '11');
+INSERT INTO `psb_biaya` VALUES ('648', '0', '0', '0', '0', '7', '7', '11');
+INSERT INTO `psb_biaya` VALUES ('649', '0', '0', '0', '0', '7', '9', '11');
+INSERT INTO `psb_biaya` VALUES ('650', '0', '0', '0', '0', '7', '10', '11');
+INSERT INTO `psb_biaya` VALUES ('652', '0', '0', '0', '0', '8', '1', '11');
+INSERT INTO `psb_biaya` VALUES ('653', '0', '0', '0', '0', '8', '2', '11');
+INSERT INTO `psb_biaya` VALUES ('654', '0', '0', '0', '0', '8', '3', '11');
+INSERT INTO `psb_biaya` VALUES ('655', '0', '0', '0', '0', '8', '4', '11');
+INSERT INTO `psb_biaya` VALUES ('656', '0', '0', '0', '0', '8', '5', '11');
+INSERT INTO `psb_biaya` VALUES ('657', '0', '0', '0', '0', '8', '6', '11');
+INSERT INTO `psb_biaya` VALUES ('658', '0', '0', '0', '0', '8', '7', '11');
+INSERT INTO `psb_biaya` VALUES ('659', '0', '0', '0', '0', '8', '9', '11');
+INSERT INTO `psb_biaya` VALUES ('660', '0', '0', '0', '0', '8', '10', '11');
+INSERT INTO `psb_biaya` VALUES ('662', '0', '0', '0', '0', '1', '1', '12');
+INSERT INTO `psb_biaya` VALUES ('663', '0', '0', '0', '0', '1', '2', '12');
+INSERT INTO `psb_biaya` VALUES ('664', '0', '0', '0', '0', '1', '3', '12');
+INSERT INTO `psb_biaya` VALUES ('665', '0', '0', '0', '0', '1', '4', '12');
+INSERT INTO `psb_biaya` VALUES ('666', '0', '0', '0', '0', '1', '5', '12');
+INSERT INTO `psb_biaya` VALUES ('667', '0', '0', '0', '0', '1', '6', '12');
+INSERT INTO `psb_biaya` VALUES ('668', '0', '0', '0', '0', '1', '7', '12');
+INSERT INTO `psb_biaya` VALUES ('669', '0', '0', '0', '0', '1', '9', '12');
+INSERT INTO `psb_biaya` VALUES ('670', '0', '0', '0', '0', '1', '10', '12');
+INSERT INTO `psb_biaya` VALUES ('672', '0', '0', '0', '0', '2', '1', '12');
+INSERT INTO `psb_biaya` VALUES ('673', '0', '0', '0', '0', '2', '2', '12');
+INSERT INTO `psb_biaya` VALUES ('674', '0', '0', '0', '0', '2', '3', '12');
+INSERT INTO `psb_biaya` VALUES ('675', '0', '0', '0', '0', '2', '4', '12');
+INSERT INTO `psb_biaya` VALUES ('676', '0', '0', '0', '0', '2', '5', '12');
+INSERT INTO `psb_biaya` VALUES ('677', '0', '0', '0', '0', '2', '6', '12');
+INSERT INTO `psb_biaya` VALUES ('678', '0', '0', '0', '0', '2', '7', '12');
+INSERT INTO `psb_biaya` VALUES ('679', '0', '0', '0', '0', '2', '9', '12');
+INSERT INTO `psb_biaya` VALUES ('680', '0', '0', '0', '0', '2', '10', '12');
+INSERT INTO `psb_biaya` VALUES ('682', '0', '0', '0', '0', '3', '1', '12');
+INSERT INTO `psb_biaya` VALUES ('683', '0', '0', '0', '0', '3', '2', '12');
+INSERT INTO `psb_biaya` VALUES ('684', '0', '0', '0', '0', '3', '3', '12');
+INSERT INTO `psb_biaya` VALUES ('685', '0', '0', '0', '0', '3', '4', '12');
+INSERT INTO `psb_biaya` VALUES ('686', '0', '0', '0', '0', '3', '5', '12');
+INSERT INTO `psb_biaya` VALUES ('687', '0', '0', '0', '0', '3', '6', '12');
+INSERT INTO `psb_biaya` VALUES ('688', '0', '0', '0', '0', '3', '7', '12');
+INSERT INTO `psb_biaya` VALUES ('689', '0', '0', '0', '0', '3', '9', '12');
+INSERT INTO `psb_biaya` VALUES ('690', '0', '0', '0', '0', '3', '10', '12');
+INSERT INTO `psb_biaya` VALUES ('692', '0', '0', '0', '0', '6', '1', '12');
+INSERT INTO `psb_biaya` VALUES ('693', '0', '0', '0', '0', '6', '2', '12');
+INSERT INTO `psb_biaya` VALUES ('694', '0', '0', '0', '0', '6', '3', '12');
+INSERT INTO `psb_biaya` VALUES ('695', '0', '0', '0', '0', '6', '4', '12');
+INSERT INTO `psb_biaya` VALUES ('696', '0', '0', '0', '0', '6', '5', '12');
+INSERT INTO `psb_biaya` VALUES ('697', '0', '0', '0', '0', '6', '6', '12');
+INSERT INTO `psb_biaya` VALUES ('698', '0', '0', '0', '0', '6', '7', '12');
+INSERT INTO `psb_biaya` VALUES ('699', '0', '0', '0', '0', '6', '9', '12');
+INSERT INTO `psb_biaya` VALUES ('700', '0', '0', '0', '0', '6', '10', '12');
+INSERT INTO `psb_biaya` VALUES ('702', '0', '0', '0', '0', '7', '1', '12');
+INSERT INTO `psb_biaya` VALUES ('703', '0', '0', '0', '0', '7', '2', '12');
+INSERT INTO `psb_biaya` VALUES ('704', '0', '0', '0', '0', '7', '3', '12');
+INSERT INTO `psb_biaya` VALUES ('705', '0', '0', '0', '0', '7', '4', '12');
+INSERT INTO `psb_biaya` VALUES ('706', '0', '0', '0', '0', '7', '5', '12');
+INSERT INTO `psb_biaya` VALUES ('707', '0', '0', '0', '0', '7', '6', '12');
+INSERT INTO `psb_biaya` VALUES ('708', '0', '0', '0', '0', '7', '7', '12');
+INSERT INTO `psb_biaya` VALUES ('709', '0', '0', '0', '0', '7', '9', '12');
+INSERT INTO `psb_biaya` VALUES ('710', '0', '0', '0', '0', '7', '10', '12');
+INSERT INTO `psb_biaya` VALUES ('712', '0', '0', '0', '0', '8', '1', '12');
+INSERT INTO `psb_biaya` VALUES ('713', '0', '0', '0', '0', '8', '2', '12');
+INSERT INTO `psb_biaya` VALUES ('714', '0', '0', '0', '0', '8', '3', '12');
+INSERT INTO `psb_biaya` VALUES ('715', '0', '0', '0', '0', '8', '4', '12');
+INSERT INTO `psb_biaya` VALUES ('716', '0', '0', '0', '0', '8', '5', '12');
+INSERT INTO `psb_biaya` VALUES ('717', '0', '0', '0', '0', '8', '6', '12');
+INSERT INTO `psb_biaya` VALUES ('718', '0', '0', '0', '0', '8', '7', '12');
+INSERT INTO `psb_biaya` VALUES ('719', '0', '0', '0', '0', '8', '9', '12');
+INSERT INTO `psb_biaya` VALUES ('720', '0', '0', '0', '0', '8', '10', '12');
+INSERT INTO `psb_biaya` VALUES ('722', '0', '0', '0', '0', '1', '1', '13');
+INSERT INTO `psb_biaya` VALUES ('723', '0', '0', '0', '0', '1', '2', '13');
+INSERT INTO `psb_biaya` VALUES ('724', '0', '0', '0', '0', '1', '3', '13');
+INSERT INTO `psb_biaya` VALUES ('725', '0', '0', '0', '0', '1', '4', '13');
+INSERT INTO `psb_biaya` VALUES ('726', '0', '0', '0', '0', '1', '5', '13');
+INSERT INTO `psb_biaya` VALUES ('727', '0', '0', '0', '0', '1', '6', '13');
+INSERT INTO `psb_biaya` VALUES ('728', '0', '0', '0', '0', '1', '7', '13');
+INSERT INTO `psb_biaya` VALUES ('729', '0', '0', '0', '0', '1', '9', '13');
+INSERT INTO `psb_biaya` VALUES ('730', '0', '0', '0', '0', '1', '10', '13');
+INSERT INTO `psb_biaya` VALUES ('732', '0', '0', '0', '0', '2', '1', '13');
+INSERT INTO `psb_biaya` VALUES ('733', '0', '0', '0', '0', '2', '2', '13');
+INSERT INTO `psb_biaya` VALUES ('734', '0', '0', '0', '0', '2', '3', '13');
+INSERT INTO `psb_biaya` VALUES ('735', '0', '0', '0', '0', '2', '4', '13');
+INSERT INTO `psb_biaya` VALUES ('736', '0', '0', '0', '0', '2', '5', '13');
+INSERT INTO `psb_biaya` VALUES ('737', '0', '0', '0', '0', '2', '6', '13');
+INSERT INTO `psb_biaya` VALUES ('738', '0', '0', '0', '0', '2', '7', '13');
+INSERT INTO `psb_biaya` VALUES ('739', '0', '0', '0', '0', '2', '9', '13');
+INSERT INTO `psb_biaya` VALUES ('740', '0', '0', '0', '0', '2', '10', '13');
+INSERT INTO `psb_biaya` VALUES ('742', '0', '0', '0', '0', '3', '1', '13');
+INSERT INTO `psb_biaya` VALUES ('743', '0', '0', '0', '0', '3', '2', '13');
+INSERT INTO `psb_biaya` VALUES ('744', '0', '0', '0', '0', '3', '3', '13');
+INSERT INTO `psb_biaya` VALUES ('745', '0', '0', '0', '0', '3', '4', '13');
+INSERT INTO `psb_biaya` VALUES ('746', '0', '0', '0', '0', '3', '5', '13');
+INSERT INTO `psb_biaya` VALUES ('747', '0', '0', '0', '0', '3', '6', '13');
+INSERT INTO `psb_biaya` VALUES ('748', '0', '0', '0', '0', '3', '7', '13');
+INSERT INTO `psb_biaya` VALUES ('749', '0', '0', '0', '0', '3', '9', '13');
+INSERT INTO `psb_biaya` VALUES ('750', '0', '0', '0', '0', '3', '10', '13');
+INSERT INTO `psb_biaya` VALUES ('752', '0', '0', '0', '0', '6', '1', '13');
+INSERT INTO `psb_biaya` VALUES ('753', '0', '0', '0', '0', '6', '2', '13');
+INSERT INTO `psb_biaya` VALUES ('754', '0', '0', '0', '0', '6', '3', '13');
+INSERT INTO `psb_biaya` VALUES ('755', '0', '0', '0', '0', '6', '4', '13');
+INSERT INTO `psb_biaya` VALUES ('756', '0', '0', '0', '0', '6', '5', '13');
+INSERT INTO `psb_biaya` VALUES ('757', '0', '0', '0', '0', '6', '6', '13');
+INSERT INTO `psb_biaya` VALUES ('758', '0', '0', '0', '0', '6', '7', '13');
+INSERT INTO `psb_biaya` VALUES ('759', '0', '0', '0', '0', '6', '9', '13');
+INSERT INTO `psb_biaya` VALUES ('760', '0', '0', '0', '0', '6', '10', '13');
+INSERT INTO `psb_biaya` VALUES ('762', '0', '0', '0', '0', '7', '1', '13');
+INSERT INTO `psb_biaya` VALUES ('763', '0', '0', '0', '0', '7', '2', '13');
+INSERT INTO `psb_biaya` VALUES ('764', '0', '0', '0', '0', '7', '3', '13');
+INSERT INTO `psb_biaya` VALUES ('765', '0', '0', '0', '0', '7', '4', '13');
+INSERT INTO `psb_biaya` VALUES ('766', '0', '0', '0', '0', '7', '5', '13');
+INSERT INTO `psb_biaya` VALUES ('767', '0', '0', '0', '0', '7', '6', '13');
+INSERT INTO `psb_biaya` VALUES ('768', '0', '0', '0', '0', '7', '7', '13');
+INSERT INTO `psb_biaya` VALUES ('769', '0', '0', '0', '0', '7', '9', '13');
+INSERT INTO `psb_biaya` VALUES ('770', '0', '0', '0', '0', '7', '10', '13');
+INSERT INTO `psb_biaya` VALUES ('772', '0', '0', '0', '0', '8', '1', '13');
+INSERT INTO `psb_biaya` VALUES ('773', '0', '0', '0', '0', '8', '2', '13');
+INSERT INTO `psb_biaya` VALUES ('774', '0', '0', '0', '0', '8', '3', '13');
+INSERT INTO `psb_biaya` VALUES ('775', '0', '0', '0', '0', '8', '4', '13');
+INSERT INTO `psb_biaya` VALUES ('776', '0', '0', '0', '0', '8', '5', '13');
+INSERT INTO `psb_biaya` VALUES ('777', '0', '0', '0', '0', '8', '6', '13');
+INSERT INTO `psb_biaya` VALUES ('778', '0', '0', '0', '0', '8', '7', '13');
+INSERT INTO `psb_biaya` VALUES ('779', '0', '0', '0', '0', '8', '9', '13');
+INSERT INTO `psb_biaya` VALUES ('780', '0', '0', '0', '0', '8', '10', '13');
+INSERT INTO `psb_biaya` VALUES ('782', '0', '0', '0', '0', '1', '1', '14');
+INSERT INTO `psb_biaya` VALUES ('783', '0', '0', '0', '0', '1', '2', '14');
+INSERT INTO `psb_biaya` VALUES ('784', '0', '0', '0', '0', '1', '3', '14');
+INSERT INTO `psb_biaya` VALUES ('785', '0', '0', '0', '0', '1', '4', '14');
+INSERT INTO `psb_biaya` VALUES ('786', '0', '0', '0', '0', '1', '5', '14');
+INSERT INTO `psb_biaya` VALUES ('787', '0', '0', '0', '0', '1', '6', '14');
+INSERT INTO `psb_biaya` VALUES ('788', '0', '0', '0', '0', '1', '7', '14');
+INSERT INTO `psb_biaya` VALUES ('789', '0', '0', '0', '0', '1', '9', '14');
+INSERT INTO `psb_biaya` VALUES ('790', '0', '0', '0', '0', '1', '10', '14');
+INSERT INTO `psb_biaya` VALUES ('792', '0', '0', '0', '0', '2', '1', '14');
+INSERT INTO `psb_biaya` VALUES ('793', '0', '0', '0', '0', '2', '2', '14');
+INSERT INTO `psb_biaya` VALUES ('794', '0', '0', '0', '0', '2', '3', '14');
+INSERT INTO `psb_biaya` VALUES ('795', '0', '0', '0', '0', '2', '4', '14');
+INSERT INTO `psb_biaya` VALUES ('796', '0', '0', '0', '0', '2', '5', '14');
+INSERT INTO `psb_biaya` VALUES ('797', '0', '0', '0', '0', '2', '6', '14');
+INSERT INTO `psb_biaya` VALUES ('798', '0', '0', '0', '0', '2', '7', '14');
+INSERT INTO `psb_biaya` VALUES ('799', '0', '0', '0', '0', '2', '9', '14');
+INSERT INTO `psb_biaya` VALUES ('800', '0', '0', '0', '0', '2', '10', '14');
+INSERT INTO `psb_biaya` VALUES ('802', '0', '0', '0', '0', '3', '1', '14');
+INSERT INTO `psb_biaya` VALUES ('803', '0', '0', '0', '0', '3', '2', '14');
+INSERT INTO `psb_biaya` VALUES ('804', '0', '0', '0', '0', '3', '3', '14');
+INSERT INTO `psb_biaya` VALUES ('805', '0', '0', '0', '0', '3', '4', '14');
+INSERT INTO `psb_biaya` VALUES ('806', '0', '0', '0', '0', '3', '5', '14');
+INSERT INTO `psb_biaya` VALUES ('807', '0', '0', '0', '0', '3', '6', '14');
+INSERT INTO `psb_biaya` VALUES ('808', '0', '0', '0', '0', '3', '7', '14');
+INSERT INTO `psb_biaya` VALUES ('809', '0', '0', '0', '0', '3', '9', '14');
+INSERT INTO `psb_biaya` VALUES ('810', '0', '0', '0', '0', '3', '10', '14');
+INSERT INTO `psb_biaya` VALUES ('812', '0', '0', '0', '0', '6', '1', '14');
+INSERT INTO `psb_biaya` VALUES ('813', '0', '0', '0', '0', '6', '2', '14');
+INSERT INTO `psb_biaya` VALUES ('814', '0', '0', '0', '0', '6', '3', '14');
+INSERT INTO `psb_biaya` VALUES ('815', '0', '0', '0', '0', '6', '4', '14');
+INSERT INTO `psb_biaya` VALUES ('816', '0', '0', '0', '0', '6', '5', '14');
+INSERT INTO `psb_biaya` VALUES ('817', '0', '0', '0', '0', '6', '6', '14');
+INSERT INTO `psb_biaya` VALUES ('818', '0', '0', '0', '0', '6', '7', '14');
+INSERT INTO `psb_biaya` VALUES ('819', '0', '0', '0', '0', '6', '9', '14');
+INSERT INTO `psb_biaya` VALUES ('820', '0', '0', '0', '0', '6', '10', '14');
+INSERT INTO `psb_biaya` VALUES ('822', '0', '0', '0', '0', '7', '1', '14');
+INSERT INTO `psb_biaya` VALUES ('823', '0', '0', '0', '0', '7', '2', '14');
+INSERT INTO `psb_biaya` VALUES ('824', '0', '0', '0', '0', '7', '3', '14');
+INSERT INTO `psb_biaya` VALUES ('825', '0', '0', '0', '0', '7', '4', '14');
+INSERT INTO `psb_biaya` VALUES ('826', '0', '0', '0', '0', '7', '5', '14');
+INSERT INTO `psb_biaya` VALUES ('827', '0', '0', '0', '0', '7', '6', '14');
+INSERT INTO `psb_biaya` VALUES ('828', '0', '0', '0', '0', '7', '7', '14');
+INSERT INTO `psb_biaya` VALUES ('829', '0', '0', '0', '0', '7', '9', '14');
+INSERT INTO `psb_biaya` VALUES ('830', '0', '0', '0', '0', '7', '10', '14');
+INSERT INTO `psb_biaya` VALUES ('832', '0', '0', '0', '0', '8', '1', '14');
+INSERT INTO `psb_biaya` VALUES ('833', '0', '0', '0', '0', '8', '2', '14');
+INSERT INTO `psb_biaya` VALUES ('834', '0', '0', '0', '0', '8', '3', '14');
+INSERT INTO `psb_biaya` VALUES ('835', '0', '0', '0', '0', '8', '4', '14');
+INSERT INTO `psb_biaya` VALUES ('836', '0', '0', '0', '0', '8', '5', '14');
+INSERT INTO `psb_biaya` VALUES ('837', '0', '0', '0', '0', '8', '6', '14');
+INSERT INTO `psb_biaya` VALUES ('838', '0', '0', '0', '0', '8', '7', '14');
+INSERT INTO `psb_biaya` VALUES ('839', '0', '0', '0', '0', '8', '9', '14');
+INSERT INTO `psb_biaya` VALUES ('840', '0', '0', '0', '0', '8', '10', '14');
+INSERT INTO `psb_biaya` VALUES ('842', '0', '0', '0', '0', '1', '1', '15');
+INSERT INTO `psb_biaya` VALUES ('843', '0', '0', '0', '0', '1', '2', '15');
+INSERT INTO `psb_biaya` VALUES ('844', '550000', '0', '0', '0', '1', '3', '15');
+INSERT INTO `psb_biaya` VALUES ('845', '0', '0', '0', '0', '1', '4', '15');
+INSERT INTO `psb_biaya` VALUES ('846', '0', '0', '0', '0', '1', '5', '15');
+INSERT INTO `psb_biaya` VALUES ('847', '0', '0', '0', '0', '1', '6', '15');
+INSERT INTO `psb_biaya` VALUES ('848', '0', '0', '0', '0', '1', '7', '15');
+INSERT INTO `psb_biaya` VALUES ('849', '0', '0', '0', '0', '1', '9', '15');
+INSERT INTO `psb_biaya` VALUES ('850', '0', '0', '0', '0', '1', '10', '15');
+INSERT INTO `psb_biaya` VALUES ('852', '0', '0', '0', '0', '2', '1', '15');
+INSERT INTO `psb_biaya` VALUES ('853', '0', '0', '0', '0', '2', '2', '15');
+INSERT INTO `psb_biaya` VALUES ('854', '0', '0', '0', '0', '2', '3', '15');
+INSERT INTO `psb_biaya` VALUES ('855', '0', '0', '0', '0', '2', '4', '15');
+INSERT INTO `psb_biaya` VALUES ('856', '0', '0', '0', '0', '2', '5', '15');
+INSERT INTO `psb_biaya` VALUES ('857', '0', '0', '0', '0', '2', '6', '15');
+INSERT INTO `psb_biaya` VALUES ('858', '0', '0', '0', '0', '2', '7', '15');
+INSERT INTO `psb_biaya` VALUES ('859', '0', '0', '0', '0', '2', '9', '15');
+INSERT INTO `psb_biaya` VALUES ('860', '0', '0', '0', '0', '2', '10', '15');
+INSERT INTO `psb_biaya` VALUES ('862', '0', '0', '0', '0', '3', '1', '15');
+INSERT INTO `psb_biaya` VALUES ('863', '0', '0', '0', '0', '3', '2', '15');
+INSERT INTO `psb_biaya` VALUES ('864', '0', '0', '0', '0', '3', '3', '15');
+INSERT INTO `psb_biaya` VALUES ('865', '0', '0', '0', '0', '3', '4', '15');
+INSERT INTO `psb_biaya` VALUES ('866', '0', '0', '0', '0', '3', '5', '15');
+INSERT INTO `psb_biaya` VALUES ('867', '0', '0', '0', '0', '3', '6', '15');
+INSERT INTO `psb_biaya` VALUES ('868', '0', '0', '0', '0', '3', '7', '15');
+INSERT INTO `psb_biaya` VALUES ('869', '0', '0', '0', '0', '3', '9', '15');
+INSERT INTO `psb_biaya` VALUES ('870', '0', '0', '0', '0', '3', '10', '15');
+INSERT INTO `psb_biaya` VALUES ('872', '0', '0', '0', '0', '6', '1', '15');
+INSERT INTO `psb_biaya` VALUES ('873', '0', '0', '0', '0', '6', '2', '15');
+INSERT INTO `psb_biaya` VALUES ('874', '0', '0', '0', '0', '6', '3', '15');
+INSERT INTO `psb_biaya` VALUES ('875', '0', '0', '0', '0', '6', '4', '15');
+INSERT INTO `psb_biaya` VALUES ('876', '0', '0', '0', '0', '6', '5', '15');
+INSERT INTO `psb_biaya` VALUES ('877', '0', '0', '0', '0', '6', '6', '15');
+INSERT INTO `psb_biaya` VALUES ('878', '0', '0', '0', '0', '6', '7', '15');
+INSERT INTO `psb_biaya` VALUES ('879', '0', '0', '0', '0', '6', '9', '15');
+INSERT INTO `psb_biaya` VALUES ('880', '0', '0', '0', '0', '6', '10', '15');
+INSERT INTO `psb_biaya` VALUES ('882', '0', '0', '0', '0', '7', '1', '15');
+INSERT INTO `psb_biaya` VALUES ('883', '0', '0', '0', '0', '7', '2', '15');
+INSERT INTO `psb_biaya` VALUES ('884', '0', '0', '0', '0', '7', '3', '15');
+INSERT INTO `psb_biaya` VALUES ('885', '0', '0', '0', '0', '7', '4', '15');
+INSERT INTO `psb_biaya` VALUES ('886', '0', '0', '0', '0', '7', '5', '15');
+INSERT INTO `psb_biaya` VALUES ('887', '0', '0', '0', '0', '7', '6', '15');
+INSERT INTO `psb_biaya` VALUES ('888', '0', '0', '0', '0', '7', '7', '15');
+INSERT INTO `psb_biaya` VALUES ('889', '0', '0', '0', '0', '7', '9', '15');
+INSERT INTO `psb_biaya` VALUES ('890', '0', '0', '0', '0', '7', '10', '15');
+INSERT INTO `psb_biaya` VALUES ('892', '0', '0', '0', '0', '8', '1', '15');
+INSERT INTO `psb_biaya` VALUES ('893', '0', '0', '0', '0', '8', '2', '15');
+INSERT INTO `psb_biaya` VALUES ('894', '0', '0', '0', '0', '8', '3', '15');
+INSERT INTO `psb_biaya` VALUES ('895', '0', '0', '0', '0', '8', '4', '15');
+INSERT INTO `psb_biaya` VALUES ('896', '0', '0', '0', '0', '8', '5', '15');
+INSERT INTO `psb_biaya` VALUES ('897', '0', '0', '0', '0', '8', '6', '15');
+INSERT INTO `psb_biaya` VALUES ('898', '0', '0', '0', '0', '8', '7', '15');
+INSERT INTO `psb_biaya` VALUES ('899', '0', '0', '0', '0', '8', '9', '15');
+INSERT INTO `psb_biaya` VALUES ('900', '0', '0', '0', '0', '8', '10', '15');
+INSERT INTO `psb_biaya` VALUES ('902', '0', '0', '0', '0', '1', '1', '16');
+INSERT INTO `psb_biaya` VALUES ('903', '0', '0', '0', '0', '1', '2', '16');
+INSERT INTO `psb_biaya` VALUES ('904', '0', '0', '0', '0', '1', '3', '16');
+INSERT INTO `psb_biaya` VALUES ('905', '0', '0', '0', '0', '1', '4', '16');
+INSERT INTO `psb_biaya` VALUES ('906', '0', '0', '0', '0', '1', '5', '16');
+INSERT INTO `psb_biaya` VALUES ('907', '0', '0', '0', '0', '1', '6', '16');
+INSERT INTO `psb_biaya` VALUES ('908', '0', '0', '0', '0', '1', '7', '16');
+INSERT INTO `psb_biaya` VALUES ('909', '0', '0', '0', '0', '1', '9', '16');
+INSERT INTO `psb_biaya` VALUES ('910', '0', '0', '0', '0', '1', '10', '16');
+INSERT INTO `psb_biaya` VALUES ('912', '0', '0', '0', '0', '2', '1', '16');
+INSERT INTO `psb_biaya` VALUES ('913', '0', '0', '0', '0', '2', '2', '16');
+INSERT INTO `psb_biaya` VALUES ('914', '0', '0', '0', '0', '2', '3', '16');
+INSERT INTO `psb_biaya` VALUES ('915', '0', '0', '0', '0', '2', '4', '16');
+INSERT INTO `psb_biaya` VALUES ('916', '0', '0', '0', '0', '2', '5', '16');
+INSERT INTO `psb_biaya` VALUES ('917', '0', '0', '0', '0', '2', '6', '16');
+INSERT INTO `psb_biaya` VALUES ('918', '0', '0', '0', '0', '2', '7', '16');
+INSERT INTO `psb_biaya` VALUES ('919', '0', '0', '0', '0', '2', '9', '16');
+INSERT INTO `psb_biaya` VALUES ('920', '0', '0', '0', '0', '2', '10', '16');
+INSERT INTO `psb_biaya` VALUES ('922', '0', '0', '0', '0', '3', '1', '16');
+INSERT INTO `psb_biaya` VALUES ('923', '0', '0', '0', '0', '3', '2', '16');
+INSERT INTO `psb_biaya` VALUES ('924', '0', '0', '0', '0', '3', '3', '16');
+INSERT INTO `psb_biaya` VALUES ('925', '0', '0', '0', '0', '3', '4', '16');
+INSERT INTO `psb_biaya` VALUES ('926', '0', '0', '0', '0', '3', '5', '16');
+INSERT INTO `psb_biaya` VALUES ('927', '0', '0', '0', '0', '3', '6', '16');
+INSERT INTO `psb_biaya` VALUES ('928', '0', '0', '0', '0', '3', '7', '16');
+INSERT INTO `psb_biaya` VALUES ('929', '0', '0', '0', '0', '3', '9', '16');
+INSERT INTO `psb_biaya` VALUES ('930', '0', '0', '0', '0', '3', '10', '16');
+INSERT INTO `psb_biaya` VALUES ('932', '0', '0', '0', '0', '6', '1', '16');
+INSERT INTO `psb_biaya` VALUES ('933', '0', '0', '0', '0', '6', '2', '16');
+INSERT INTO `psb_biaya` VALUES ('934', '0', '0', '0', '0', '6', '3', '16');
+INSERT INTO `psb_biaya` VALUES ('935', '0', '0', '0', '0', '6', '4', '16');
+INSERT INTO `psb_biaya` VALUES ('936', '0', '0', '0', '0', '6', '5', '16');
+INSERT INTO `psb_biaya` VALUES ('937', '0', '0', '0', '0', '6', '6', '16');
+INSERT INTO `psb_biaya` VALUES ('938', '0', '0', '0', '0', '6', '7', '16');
+INSERT INTO `psb_biaya` VALUES ('939', '0', '0', '0', '0', '6', '9', '16');
+INSERT INTO `psb_biaya` VALUES ('940', '0', '0', '0', '0', '6', '10', '16');
+INSERT INTO `psb_biaya` VALUES ('942', '0', '0', '0', '0', '7', '1', '16');
+INSERT INTO `psb_biaya` VALUES ('943', '0', '0', '0', '0', '7', '2', '16');
+INSERT INTO `psb_biaya` VALUES ('944', '0', '0', '0', '0', '7', '3', '16');
+INSERT INTO `psb_biaya` VALUES ('945', '0', '0', '0', '0', '7', '4', '16');
+INSERT INTO `psb_biaya` VALUES ('946', '0', '0', '0', '0', '7', '5', '16');
+INSERT INTO `psb_biaya` VALUES ('947', '0', '0', '0', '0', '7', '6', '16');
+INSERT INTO `psb_biaya` VALUES ('948', '0', '0', '0', '0', '7', '7', '16');
+INSERT INTO `psb_biaya` VALUES ('949', '0', '0', '0', '0', '7', '9', '16');
+INSERT INTO `psb_biaya` VALUES ('950', '0', '0', '0', '0', '7', '10', '16');
+INSERT INTO `psb_biaya` VALUES ('952', '0', '0', '0', '0', '8', '1', '16');
+INSERT INTO `psb_biaya` VALUES ('953', '0', '0', '0', '0', '8', '2', '16');
+INSERT INTO `psb_biaya` VALUES ('954', '0', '0', '0', '0', '8', '3', '16');
+INSERT INTO `psb_biaya` VALUES ('955', '0', '0', '0', '0', '8', '4', '16');
+INSERT INTO `psb_biaya` VALUES ('956', '0', '0', '0', '0', '8', '5', '16');
+INSERT INTO `psb_biaya` VALUES ('957', '0', '0', '0', '0', '8', '6', '16');
+INSERT INTO `psb_biaya` VALUES ('958', '0', '0', '0', '0', '8', '7', '16');
+INSERT INTO `psb_biaya` VALUES ('959', '0', '0', '0', '0', '8', '9', '16');
+INSERT INTO `psb_biaya` VALUES ('960', '0', '0', '0', '0', '8', '10', '16');
+INSERT INTO `psb_biaya` VALUES ('962', '7000000', '0', '0', '0', '1', '1', '17');
+INSERT INTO `psb_biaya` VALUES ('963', '0', '0', '0', '0', '1', '2', '17');
+INSERT INTO `psb_biaya` VALUES ('964', '0', '0', '0', '0', '1', '3', '17');
+INSERT INTO `psb_biaya` VALUES ('965', '0', '0', '0', '0', '1', '4', '17');
+INSERT INTO `psb_biaya` VALUES ('966', '0', '0', '0', '0', '1', '5', '17');
+INSERT INTO `psb_biaya` VALUES ('967', '0', '0', '0', '0', '1', '6', '17');
+INSERT INTO `psb_biaya` VALUES ('968', '0', '0', '0', '0', '1', '7', '17');
+INSERT INTO `psb_biaya` VALUES ('969', '0', '0', '0', '0', '1', '9', '17');
+INSERT INTO `psb_biaya` VALUES ('970', '0', '0', '0', '0', '1', '10', '17');
+INSERT INTO `psb_biaya` VALUES ('972', '0', '0', '0', '0', '2', '1', '17');
+INSERT INTO `psb_biaya` VALUES ('973', '0', '0', '0', '0', '2', '2', '17');
+INSERT INTO `psb_biaya` VALUES ('974', '0', '0', '0', '0', '2', '3', '17');
+INSERT INTO `psb_biaya` VALUES ('975', '0', '0', '0', '0', '2', '4', '17');
+INSERT INTO `psb_biaya` VALUES ('976', '0', '0', '0', '0', '2', '5', '17');
+INSERT INTO `psb_biaya` VALUES ('977', '0', '0', '0', '0', '2', '6', '17');
+INSERT INTO `psb_biaya` VALUES ('978', '0', '0', '0', '0', '2', '7', '17');
+INSERT INTO `psb_biaya` VALUES ('979', '0', '0', '0', '0', '2', '9', '17');
+INSERT INTO `psb_biaya` VALUES ('980', '0', '0', '0', '0', '2', '10', '17');
+INSERT INTO `psb_biaya` VALUES ('982', '0', '0', '0', '0', '3', '1', '17');
+INSERT INTO `psb_biaya` VALUES ('983', '0', '0', '0', '0', '3', '2', '17');
+INSERT INTO `psb_biaya` VALUES ('984', '0', '0', '0', '0', '3', '3', '17');
+INSERT INTO `psb_biaya` VALUES ('985', '0', '0', '0', '0', '3', '4', '17');
+INSERT INTO `psb_biaya` VALUES ('986', '0', '0', '0', '0', '3', '5', '17');
+INSERT INTO `psb_biaya` VALUES ('987', '0', '0', '0', '0', '3', '6', '17');
+INSERT INTO `psb_biaya` VALUES ('988', '0', '0', '0', '0', '3', '7', '17');
+INSERT INTO `psb_biaya` VALUES ('989', '0', '0', '0', '0', '3', '9', '17');
+INSERT INTO `psb_biaya` VALUES ('990', '0', '0', '0', '0', '3', '10', '17');
+INSERT INTO `psb_biaya` VALUES ('992', '0', '0', '0', '0', '6', '1', '17');
+INSERT INTO `psb_biaya` VALUES ('993', '0', '0', '0', '0', '6', '2', '17');
+INSERT INTO `psb_biaya` VALUES ('994', '0', '0', '0', '0', '6', '3', '17');
+INSERT INTO `psb_biaya` VALUES ('995', '0', '0', '0', '0', '6', '4', '17');
+INSERT INTO `psb_biaya` VALUES ('996', '0', '0', '0', '0', '6', '5', '17');
+INSERT INTO `psb_biaya` VALUES ('997', '0', '0', '0', '0', '6', '6', '17');
+INSERT INTO `psb_biaya` VALUES ('998', '0', '0', '0', '0', '6', '7', '17');
+INSERT INTO `psb_biaya` VALUES ('999', '0', '0', '0', '0', '6', '9', '17');
+INSERT INTO `psb_biaya` VALUES ('1000', '0', '0', '0', '0', '6', '10', '17');
+INSERT INTO `psb_biaya` VALUES ('1002', '0', '0', '0', '0', '7', '1', '17');
+INSERT INTO `psb_biaya` VALUES ('1003', '0', '0', '0', '0', '7', '2', '17');
+INSERT INTO `psb_biaya` VALUES ('1004', '0', '0', '0', '0', '7', '3', '17');
+INSERT INTO `psb_biaya` VALUES ('1005', '0', '0', '0', '0', '7', '4', '17');
+INSERT INTO `psb_biaya` VALUES ('1006', '0', '0', '0', '0', '7', '5', '17');
+INSERT INTO `psb_biaya` VALUES ('1007', '0', '0', '0', '0', '7', '6', '17');
+INSERT INTO `psb_biaya` VALUES ('1008', '0', '0', '0', '0', '7', '7', '17');
+INSERT INTO `psb_biaya` VALUES ('1009', '0', '0', '0', '0', '7', '9', '17');
+INSERT INTO `psb_biaya` VALUES ('1010', '0', '0', '0', '0', '7', '10', '17');
+INSERT INTO `psb_biaya` VALUES ('1012', '0', '0', '0', '0', '8', '1', '17');
+INSERT INTO `psb_biaya` VALUES ('1013', '0', '0', '0', '0', '8', '2', '17');
+INSERT INTO `psb_biaya` VALUES ('1014', '0', '0', '0', '0', '8', '3', '17');
+INSERT INTO `psb_biaya` VALUES ('1015', '0', '0', '0', '0', '8', '4', '17');
+INSERT INTO `psb_biaya` VALUES ('1016', '0', '0', '0', '0', '8', '5', '17');
+INSERT INTO `psb_biaya` VALUES ('1017', '0', '0', '0', '0', '8', '6', '17');
+INSERT INTO `psb_biaya` VALUES ('1018', '0', '0', '0', '0', '8', '7', '17');
+INSERT INTO `psb_biaya` VALUES ('1019', '0', '0', '0', '0', '8', '9', '17');
+INSERT INTO `psb_biaya` VALUES ('1020', '0', '0', '0', '0', '8', '10', '17');
+INSERT INTO `psb_biaya` VALUES ('1022', '0', '0', '0', '0', '1', '1', '18');
+INSERT INTO `psb_biaya` VALUES ('1023', '0', '0', '0', '0', '1', '2', '18');
+INSERT INTO `psb_biaya` VALUES ('1024', '0', '0', '0', '0', '1', '3', '18');
+INSERT INTO `psb_biaya` VALUES ('1025', '0', '0', '0', '0', '1', '4', '18');
+INSERT INTO `psb_biaya` VALUES ('1026', '0', '0', '0', '0', '1', '5', '18');
+INSERT INTO `psb_biaya` VALUES ('1027', '0', '0', '0', '0', '1', '6', '18');
+INSERT INTO `psb_biaya` VALUES ('1028', '0', '0', '0', '0', '1', '7', '18');
+INSERT INTO `psb_biaya` VALUES ('1029', '0', '0', '0', '0', '1', '9', '18');
+INSERT INTO `psb_biaya` VALUES ('1030', '0', '0', '0', '0', '1', '10', '18');
+INSERT INTO `psb_biaya` VALUES ('1032', '0', '0', '0', '0', '2', '1', '18');
+INSERT INTO `psb_biaya` VALUES ('1033', '0', '0', '0', '0', '2', '2', '18');
+INSERT INTO `psb_biaya` VALUES ('1034', '0', '0', '0', '0', '2', '3', '18');
+INSERT INTO `psb_biaya` VALUES ('1035', '0', '0', '0', '0', '2', '4', '18');
+INSERT INTO `psb_biaya` VALUES ('1036', '0', '0', '0', '0', '2', '5', '18');
+INSERT INTO `psb_biaya` VALUES ('1037', '0', '0', '0', '0', '2', '6', '18');
+INSERT INTO `psb_biaya` VALUES ('1038', '0', '0', '0', '0', '2', '7', '18');
+INSERT INTO `psb_biaya` VALUES ('1039', '0', '0', '0', '0', '2', '9', '18');
+INSERT INTO `psb_biaya` VALUES ('1040', '0', '0', '0', '0', '2', '10', '18');
+INSERT INTO `psb_biaya` VALUES ('1042', '0', '0', '0', '0', '3', '1', '18');
+INSERT INTO `psb_biaya` VALUES ('1043', '0', '0', '0', '0', '3', '2', '18');
+INSERT INTO `psb_biaya` VALUES ('1044', '0', '0', '0', '0', '3', '3', '18');
+INSERT INTO `psb_biaya` VALUES ('1045', '0', '0', '0', '0', '3', '4', '18');
+INSERT INTO `psb_biaya` VALUES ('1046', '0', '0', '0', '0', '3', '5', '18');
+INSERT INTO `psb_biaya` VALUES ('1047', '0', '0', '0', '0', '3', '6', '18');
+INSERT INTO `psb_biaya` VALUES ('1048', '0', '0', '0', '0', '3', '7', '18');
+INSERT INTO `psb_biaya` VALUES ('1049', '0', '0', '0', '0', '3', '9', '18');
+INSERT INTO `psb_biaya` VALUES ('1050', '0', '0', '0', '0', '3', '10', '18');
+INSERT INTO `psb_biaya` VALUES ('1052', '0', '0', '0', '0', '6', '1', '18');
+INSERT INTO `psb_biaya` VALUES ('1053', '0', '0', '0', '0', '6', '2', '18');
+INSERT INTO `psb_biaya` VALUES ('1054', '0', '0', '0', '0', '6', '3', '18');
+INSERT INTO `psb_biaya` VALUES ('1055', '0', '0', '0', '0', '6', '4', '18');
+INSERT INTO `psb_biaya` VALUES ('1056', '0', '0', '0', '0', '6', '5', '18');
+INSERT INTO `psb_biaya` VALUES ('1057', '0', '0', '0', '0', '6', '6', '18');
+INSERT INTO `psb_biaya` VALUES ('1058', '0', '0', '0', '0', '6', '7', '18');
+INSERT INTO `psb_biaya` VALUES ('1059', '0', '0', '0', '0', '6', '9', '18');
+INSERT INTO `psb_biaya` VALUES ('1060', '0', '0', '0', '0', '6', '10', '18');
+INSERT INTO `psb_biaya` VALUES ('1062', '0', '0', '0', '0', '7', '1', '18');
+INSERT INTO `psb_biaya` VALUES ('1063', '0', '0', '0', '0', '7', '2', '18');
+INSERT INTO `psb_biaya` VALUES ('1064', '0', '0', '0', '0', '7', '3', '18');
+INSERT INTO `psb_biaya` VALUES ('1065', '0', '0', '0', '0', '7', '4', '18');
+INSERT INTO `psb_biaya` VALUES ('1066', '0', '0', '0', '0', '7', '5', '18');
+INSERT INTO `psb_biaya` VALUES ('1067', '0', '0', '0', '0', '7', '6', '18');
+INSERT INTO `psb_biaya` VALUES ('1068', '0', '0', '0', '0', '7', '7', '18');
+INSERT INTO `psb_biaya` VALUES ('1069', '0', '0', '0', '0', '7', '9', '18');
+INSERT INTO `psb_biaya` VALUES ('1070', '0', '0', '0', '0', '7', '10', '18');
+INSERT INTO `psb_biaya` VALUES ('1072', '0', '0', '0', '0', '8', '1', '18');
+INSERT INTO `psb_biaya` VALUES ('1073', '0', '0', '0', '0', '8', '2', '18');
+INSERT INTO `psb_biaya` VALUES ('1074', '0', '0', '0', '0', '8', '3', '18');
+INSERT INTO `psb_biaya` VALUES ('1075', '0', '0', '0', '0', '8', '4', '18');
+INSERT INTO `psb_biaya` VALUES ('1076', '0', '0', '0', '0', '8', '5', '18');
+INSERT INTO `psb_biaya` VALUES ('1077', '0', '0', '0', '0', '8', '6', '18');
+INSERT INTO `psb_biaya` VALUES ('1078', '0', '0', '0', '0', '8', '7', '18');
+INSERT INTO `psb_biaya` VALUES ('1079', '0', '0', '0', '0', '8', '9', '18');
+INSERT INTO `psb_biaya` VALUES ('1080', '0', '0', '0', '0', '8', '10', '18');
+INSERT INTO `psb_biaya` VALUES ('1082', '0', '0', '0', '0', '1', '1', '19');
+INSERT INTO `psb_biaya` VALUES ('1083', '0', '0', '0', '0', '1', '2', '19');
+INSERT INTO `psb_biaya` VALUES ('1084', '0', '0', '0', '0', '1', '3', '19');
+INSERT INTO `psb_biaya` VALUES ('1085', '0', '0', '0', '0', '1', '4', '19');
+INSERT INTO `psb_biaya` VALUES ('1086', '0', '0', '0', '0', '1', '5', '19');
+INSERT INTO `psb_biaya` VALUES ('1087', '0', '0', '0', '0', '1', '6', '19');
+INSERT INTO `psb_biaya` VALUES ('1088', '0', '0', '0', '0', '1', '7', '19');
+INSERT INTO `psb_biaya` VALUES ('1089', '0', '0', '0', '0', '1', '9', '19');
+INSERT INTO `psb_biaya` VALUES ('1090', '0', '0', '0', '0', '1', '10', '19');
+INSERT INTO `psb_biaya` VALUES ('1092', '0', '0', '0', '0', '2', '1', '19');
+INSERT INTO `psb_biaya` VALUES ('1093', '0', '0', '0', '0', '2', '2', '19');
+INSERT INTO `psb_biaya` VALUES ('1094', '0', '0', '0', '0', '2', '3', '19');
+INSERT INTO `psb_biaya` VALUES ('1095', '0', '0', '0', '0', '2', '4', '19');
+INSERT INTO `psb_biaya` VALUES ('1096', '0', '0', '0', '0', '2', '5', '19');
+INSERT INTO `psb_biaya` VALUES ('1097', '0', '0', '0', '0', '2', '6', '19');
+INSERT INTO `psb_biaya` VALUES ('1098', '0', '0', '0', '0', '2', '7', '19');
+INSERT INTO `psb_biaya` VALUES ('1099', '0', '0', '0', '0', '2', '9', '19');
+INSERT INTO `psb_biaya` VALUES ('1100', '0', '0', '0', '0', '2', '10', '19');
+INSERT INTO `psb_biaya` VALUES ('1102', '0', '0', '0', '0', '3', '1', '19');
+INSERT INTO `psb_biaya` VALUES ('1103', '0', '0', '0', '0', '3', '2', '19');
+INSERT INTO `psb_biaya` VALUES ('1104', '0', '0', '0', '0', '3', '3', '19');
+INSERT INTO `psb_biaya` VALUES ('1105', '0', '0', '0', '0', '3', '4', '19');
+INSERT INTO `psb_biaya` VALUES ('1106', '0', '0', '0', '0', '3', '5', '19');
+INSERT INTO `psb_biaya` VALUES ('1107', '0', '0', '0', '0', '3', '6', '19');
+INSERT INTO `psb_biaya` VALUES ('1108', '0', '0', '0', '0', '3', '7', '19');
+INSERT INTO `psb_biaya` VALUES ('1109', '0', '0', '0', '0', '3', '9', '19');
+INSERT INTO `psb_biaya` VALUES ('1110', '0', '0', '0', '0', '3', '10', '19');
+INSERT INTO `psb_biaya` VALUES ('1112', '0', '0', '0', '0', '6', '1', '19');
+INSERT INTO `psb_biaya` VALUES ('1113', '0', '0', '0', '0', '6', '2', '19');
+INSERT INTO `psb_biaya` VALUES ('1114', '0', '0', '0', '0', '6', '3', '19');
+INSERT INTO `psb_biaya` VALUES ('1115', '0', '0', '0', '0', '6', '4', '19');
+INSERT INTO `psb_biaya` VALUES ('1116', '0', '0', '0', '0', '6', '5', '19');
+INSERT INTO `psb_biaya` VALUES ('1117', '0', '0', '0', '0', '6', '6', '19');
+INSERT INTO `psb_biaya` VALUES ('1118', '0', '0', '0', '0', '6', '7', '19');
+INSERT INTO `psb_biaya` VALUES ('1119', '0', '0', '0', '0', '6', '9', '19');
+INSERT INTO `psb_biaya` VALUES ('1120', '0', '0', '0', '0', '6', '10', '19');
+INSERT INTO `psb_biaya` VALUES ('1122', '0', '0', '0', '0', '7', '1', '19');
+INSERT INTO `psb_biaya` VALUES ('1123', '0', '0', '0', '0', '7', '2', '19');
+INSERT INTO `psb_biaya` VALUES ('1124', '0', '0', '0', '0', '7', '3', '19');
+INSERT INTO `psb_biaya` VALUES ('1125', '0', '0', '0', '0', '7', '4', '19');
+INSERT INTO `psb_biaya` VALUES ('1126', '0', '0', '0', '0', '7', '5', '19');
+INSERT INTO `psb_biaya` VALUES ('1127', '0', '0', '0', '0', '7', '6', '19');
+INSERT INTO `psb_biaya` VALUES ('1128', '0', '0', '0', '0', '7', '7', '19');
+INSERT INTO `psb_biaya` VALUES ('1129', '0', '0', '0', '0', '7', '9', '19');
+INSERT INTO `psb_biaya` VALUES ('1130', '0', '0', '0', '0', '7', '10', '19');
+INSERT INTO `psb_biaya` VALUES ('1132', '0', '0', '0', '0', '8', '1', '19');
+INSERT INTO `psb_biaya` VALUES ('1133', '0', '0', '0', '0', '8', '2', '19');
+INSERT INTO `psb_biaya` VALUES ('1134', '0', '0', '0', '0', '8', '3', '19');
+INSERT INTO `psb_biaya` VALUES ('1135', '0', '0', '0', '0', '8', '4', '19');
+INSERT INTO `psb_biaya` VALUES ('1136', '0', '0', '0', '0', '8', '5', '19');
+INSERT INTO `psb_biaya` VALUES ('1137', '0', '0', '0', '0', '8', '6', '19');
+INSERT INTO `psb_biaya` VALUES ('1138', '0', '0', '0', '0', '8', '7', '19');
+INSERT INTO `psb_biaya` VALUES ('1139', '0', '0', '0', '0', '8', '9', '19');
+INSERT INTO `psb_biaya` VALUES ('1140', '0', '0', '0', '0', '8', '10', '19');
+INSERT INTO `psb_biaya` VALUES ('1142', '0', '0', '0', '0', '1', '1', '20');
+INSERT INTO `psb_biaya` VALUES ('1143', '0', '0', '0', '0', '1', '2', '20');
+INSERT INTO `psb_biaya` VALUES ('1144', '0', '0', '0', '0', '1', '3', '20');
+INSERT INTO `psb_biaya` VALUES ('1145', '0', '0', '0', '0', '1', '4', '20');
+INSERT INTO `psb_biaya` VALUES ('1146', '0', '0', '0', '0', '1', '5', '20');
+INSERT INTO `psb_biaya` VALUES ('1147', '0', '0', '0', '0', '1', '6', '20');
+INSERT INTO `psb_biaya` VALUES ('1148', '0', '0', '0', '0', '1', '7', '20');
+INSERT INTO `psb_biaya` VALUES ('1149', '0', '0', '0', '0', '1', '9', '20');
+INSERT INTO `psb_biaya` VALUES ('1150', '0', '0', '0', '0', '1', '10', '20');
+INSERT INTO `psb_biaya` VALUES ('1152', '0', '0', '0', '0', '2', '1', '20');
+INSERT INTO `psb_biaya` VALUES ('1153', '0', '0', '0', '0', '2', '2', '20');
+INSERT INTO `psb_biaya` VALUES ('1154', '0', '0', '0', '0', '2', '3', '20');
+INSERT INTO `psb_biaya` VALUES ('1155', '0', '0', '0', '0', '2', '4', '20');
+INSERT INTO `psb_biaya` VALUES ('1156', '0', '0', '0', '0', '2', '5', '20');
+INSERT INTO `psb_biaya` VALUES ('1157', '0', '0', '0', '0', '2', '6', '20');
+INSERT INTO `psb_biaya` VALUES ('1158', '0', '0', '0', '0', '2', '7', '20');
+INSERT INTO `psb_biaya` VALUES ('1159', '0', '0', '0', '0', '2', '9', '20');
+INSERT INTO `psb_biaya` VALUES ('1160', '0', '0', '0', '0', '2', '10', '20');
+INSERT INTO `psb_biaya` VALUES ('1162', '0', '0', '0', '0', '3', '1', '20');
+INSERT INTO `psb_biaya` VALUES ('1163', '0', '0', '0', '0', '3', '2', '20');
+INSERT INTO `psb_biaya` VALUES ('1164', '0', '0', '0', '0', '3', '3', '20');
+INSERT INTO `psb_biaya` VALUES ('1165', '0', '0', '0', '0', '3', '4', '20');
+INSERT INTO `psb_biaya` VALUES ('1166', '0', '0', '0', '0', '3', '5', '20');
+INSERT INTO `psb_biaya` VALUES ('1167', '0', '0', '0', '0', '3', '6', '20');
+INSERT INTO `psb_biaya` VALUES ('1168', '0', '0', '0', '0', '3', '7', '20');
+INSERT INTO `psb_biaya` VALUES ('1169', '0', '0', '0', '0', '3', '9', '20');
+INSERT INTO `psb_biaya` VALUES ('1170', '0', '0', '0', '0', '3', '10', '20');
+INSERT INTO `psb_biaya` VALUES ('1172', '0', '0', '0', '0', '6', '1', '20');
+INSERT INTO `psb_biaya` VALUES ('1173', '0', '0', '0', '0', '6', '2', '20');
+INSERT INTO `psb_biaya` VALUES ('1174', '0', '0', '0', '0', '6', '3', '20');
+INSERT INTO `psb_biaya` VALUES ('1175', '0', '0', '0', '0', '6', '4', '20');
+INSERT INTO `psb_biaya` VALUES ('1176', '0', '0', '0', '0', '6', '5', '20');
+INSERT INTO `psb_biaya` VALUES ('1177', '0', '0', '0', '0', '6', '6', '20');
+INSERT INTO `psb_biaya` VALUES ('1178', '0', '0', '0', '0', '6', '7', '20');
+INSERT INTO `psb_biaya` VALUES ('1179', '0', '0', '0', '0', '6', '9', '20');
+INSERT INTO `psb_biaya` VALUES ('1180', '0', '0', '0', '0', '6', '10', '20');
+INSERT INTO `psb_biaya` VALUES ('1182', '0', '0', '0', '0', '7', '1', '20');
+INSERT INTO `psb_biaya` VALUES ('1183', '0', '0', '0', '0', '7', '2', '20');
+INSERT INTO `psb_biaya` VALUES ('1184', '0', '0', '0', '0', '7', '3', '20');
+INSERT INTO `psb_biaya` VALUES ('1185', '0', '0', '0', '0', '7', '4', '20');
+INSERT INTO `psb_biaya` VALUES ('1186', '0', '0', '0', '0', '7', '5', '20');
+INSERT INTO `psb_biaya` VALUES ('1187', '0', '0', '0', '0', '7', '6', '20');
+INSERT INTO `psb_biaya` VALUES ('1188', '0', '0', '0', '0', '7', '7', '20');
+INSERT INTO `psb_biaya` VALUES ('1189', '0', '0', '0', '0', '7', '9', '20');
+INSERT INTO `psb_biaya` VALUES ('1190', '0', '0', '0', '0', '7', '10', '20');
+INSERT INTO `psb_biaya` VALUES ('1192', '0', '0', '0', '0', '8', '1', '20');
+INSERT INTO `psb_biaya` VALUES ('1193', '0', '0', '0', '0', '8', '2', '20');
+INSERT INTO `psb_biaya` VALUES ('1194', '0', '0', '0', '0', '8', '3', '20');
+INSERT INTO `psb_biaya` VALUES ('1195', '0', '0', '0', '0', '8', '4', '20');
+INSERT INTO `psb_biaya` VALUES ('1196', '0', '0', '0', '0', '8', '5', '20');
+INSERT INTO `psb_biaya` VALUES ('1197', '0', '0', '0', '0', '8', '6', '20');
+INSERT INTO `psb_biaya` VALUES ('1198', '0', '0', '0', '0', '8', '7', '20');
+INSERT INTO `psb_biaya` VALUES ('1199', '0', '0', '0', '0', '8', '9', '20');
+INSERT INTO `psb_biaya` VALUES ('1200', '0', '0', '0', '0', '8', '10', '20');
+INSERT INTO `psb_biaya` VALUES ('1202', '0', '0', '0', '0', '1', '1', '21');
+INSERT INTO `psb_biaya` VALUES ('1203', '0', '0', '0', '0', '1', '2', '21');
+INSERT INTO `psb_biaya` VALUES ('1204', '0', '0', '0', '0', '1', '3', '21');
+INSERT INTO `psb_biaya` VALUES ('1205', '0', '0', '0', '0', '1', '4', '21');
+INSERT INTO `psb_biaya` VALUES ('1206', '0', '0', '0', '0', '1', '5', '21');
+INSERT INTO `psb_biaya` VALUES ('1207', '0', '0', '0', '0', '1', '6', '21');
+INSERT INTO `psb_biaya` VALUES ('1208', '0', '0', '0', '0', '1', '7', '21');
+INSERT INTO `psb_biaya` VALUES ('1209', '0', '0', '0', '0', '1', '9', '21');
+INSERT INTO `psb_biaya` VALUES ('1210', '0', '0', '0', '0', '1', '10', '21');
+INSERT INTO `psb_biaya` VALUES ('1212', '0', '0', '0', '0', '2', '1', '21');
+INSERT INTO `psb_biaya` VALUES ('1213', '0', '0', '0', '0', '2', '2', '21');
+INSERT INTO `psb_biaya` VALUES ('1214', '0', '0', '0', '0', '2', '3', '21');
+INSERT INTO `psb_biaya` VALUES ('1215', '0', '0', '0', '0', '2', '4', '21');
+INSERT INTO `psb_biaya` VALUES ('1216', '0', '0', '0', '0', '2', '5', '21');
+INSERT INTO `psb_biaya` VALUES ('1217', '0', '0', '0', '0', '2', '6', '21');
+INSERT INTO `psb_biaya` VALUES ('1218', '0', '0', '0', '0', '2', '7', '21');
+INSERT INTO `psb_biaya` VALUES ('1219', '0', '0', '0', '0', '2', '9', '21');
+INSERT INTO `psb_biaya` VALUES ('1220', '0', '0', '0', '0', '2', '10', '21');
+INSERT INTO `psb_biaya` VALUES ('1222', '0', '0', '0', '0', '3', '1', '21');
+INSERT INTO `psb_biaya` VALUES ('1223', '0', '0', '0', '0', '3', '2', '21');
+INSERT INTO `psb_biaya` VALUES ('1224', '0', '0', '0', '0', '3', '3', '21');
+INSERT INTO `psb_biaya` VALUES ('1225', '0', '0', '0', '0', '3', '4', '21');
+INSERT INTO `psb_biaya` VALUES ('1226', '0', '0', '0', '0', '3', '5', '21');
+INSERT INTO `psb_biaya` VALUES ('1227', '0', '0', '0', '0', '3', '6', '21');
+INSERT INTO `psb_biaya` VALUES ('1228', '0', '0', '0', '0', '3', '7', '21');
+INSERT INTO `psb_biaya` VALUES ('1229', '0', '0', '0', '0', '3', '9', '21');
+INSERT INTO `psb_biaya` VALUES ('1230', '0', '0', '0', '0', '3', '10', '21');
+INSERT INTO `psb_biaya` VALUES ('1232', '0', '0', '0', '0', '6', '1', '21');
+INSERT INTO `psb_biaya` VALUES ('1233', '0', '0', '0', '0', '6', '2', '21');
+INSERT INTO `psb_biaya` VALUES ('1234', '0', '0', '0', '0', '6', '3', '21');
+INSERT INTO `psb_biaya` VALUES ('1235', '0', '0', '0', '0', '6', '4', '21');
+INSERT INTO `psb_biaya` VALUES ('1236', '0', '0', '0', '0', '6', '5', '21');
+INSERT INTO `psb_biaya` VALUES ('1237', '0', '0', '0', '0', '6', '6', '21');
+INSERT INTO `psb_biaya` VALUES ('1238', '0', '0', '0', '0', '6', '7', '21');
+INSERT INTO `psb_biaya` VALUES ('1239', '0', '0', '0', '0', '6', '9', '21');
+INSERT INTO `psb_biaya` VALUES ('1240', '0', '0', '0', '0', '6', '10', '21');
+INSERT INTO `psb_biaya` VALUES ('1242', '0', '0', '0', '0', '7', '1', '21');
+INSERT INTO `psb_biaya` VALUES ('1243', '0', '0', '0', '0', '7', '2', '21');
+INSERT INTO `psb_biaya` VALUES ('1244', '0', '0', '0', '0', '7', '3', '21');
+INSERT INTO `psb_biaya` VALUES ('1245', '0', '0', '0', '0', '7', '4', '21');
+INSERT INTO `psb_biaya` VALUES ('1246', '0', '0', '0', '0', '7', '5', '21');
+INSERT INTO `psb_biaya` VALUES ('1247', '0', '0', '0', '0', '7', '6', '21');
+INSERT INTO `psb_biaya` VALUES ('1248', '0', '0', '0', '0', '7', '7', '21');
+INSERT INTO `psb_biaya` VALUES ('1249', '0', '0', '0', '0', '7', '9', '21');
+INSERT INTO `psb_biaya` VALUES ('1250', '0', '0', '0', '0', '7', '10', '21');
+INSERT INTO `psb_biaya` VALUES ('1252', '0', '0', '0', '0', '8', '1', '21');
+INSERT INTO `psb_biaya` VALUES ('1253', '0', '0', '0', '0', '8', '2', '21');
+INSERT INTO `psb_biaya` VALUES ('1254', '0', '0', '0', '0', '8', '3', '21');
+INSERT INTO `psb_biaya` VALUES ('1255', '0', '0', '0', '0', '8', '4', '21');
+INSERT INTO `psb_biaya` VALUES ('1256', '0', '0', '0', '0', '8', '5', '21');
+INSERT INTO `psb_biaya` VALUES ('1257', '0', '0', '0', '0', '8', '6', '21');
+INSERT INTO `psb_biaya` VALUES ('1258', '0', '0', '0', '0', '8', '7', '21');
+INSERT INTO `psb_biaya` VALUES ('1259', '0', '0', '0', '0', '8', '9', '21');
+INSERT INTO `psb_biaya` VALUES ('1260', '0', '0', '0', '0', '8', '10', '21');
 
 -- ----------------------------
 -- Table structure for psb_calonsiswa
@@ -4794,15 +5467,103 @@ CREATE TABLE `psb_detaildiskontunai` (
   `isAktif` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`replid`),
   KEY `diskontunai` (`diskontunai`) USING BTREE,
-  CONSTRAINT `diskontunaiFK` FOREIGN KEY (`diskontunai`) REFERENCES `psb_diskontunai` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+  KEY `tahunajaran` (`tahunajaran`) USING BTREE,
+  KEY `departemen` (`departemen`) USING BTREE,
+  CONSTRAINT `departemenFK2` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `diskontunaiFK` FOREIGN KEY (`diskontunai`) REFERENCES `psb_diskontunai` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tahunajaranFK` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_detaildiskontunai
 -- ----------------------------
-INSERT INTO `psb_detaildiskontunai` VALUES ('10', '6', '0', '0', '3', '1');
-INSERT INTO `psb_detaildiskontunai` VALUES ('11', '6', '0', '0', '5', '1');
-INSERT INTO `psb_detaildiskontunai` VALUES ('12', '6', '0', '1', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('19', '20', '10', '1', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('20', '20', '24', '1', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('21', '20', '50', '2', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('22', '20', '0', '2', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('23', '20', '0', '3', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('24', '20', '0', '3', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('25', '21', '5', '1', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('26', '21', '0', '1', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('27', '21', '0', '2', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('28', '21', '0', '2', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('29', '21', '0', '3', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('30', '21', '0', '3', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('31', '22', '50', '1', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('32', '22', '0', '1', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('33', '22', '0', '2', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('34', '22', '0', '2', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('35', '22', '0', '3', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('36', '22', '0', '3', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('37', '23', '15', '1', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('38', '23', '0', '1', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('39', '23', '0', '2', '3', '0');
+INSERT INTO `psb_detaildiskontunai` VALUES ('40', '23', '0', '2', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('41', '23', '0', '3', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('42', '23', '0', '3', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('43', '24', '25', '1', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('44', '24', '0', '1', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('45', '24', '0', '2', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('46', '24', '0', '2', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('47', '24', '0', '3', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('48', '24', '0', '3', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('49', '25', '40', '1', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('50', '25', '0', '1', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('51', '25', '0', '2', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('52', '25', '0', '2', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('53', '25', '0', '3', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('54', '25', '0', '3', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('55', '26', '80', '1', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('56', '26', '0', '1', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('57', '26', '0', '2', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('58', '26', '0', '2', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('59', '26', '0', '3', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('60', '26', '0', '3', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('61', '27', '20', '1', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('62', '27', '0', '1', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('63', '27', '0', '2', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('64', '27', '0', '2', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('65', '27', '0', '3', '3', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('66', '27', '0', '3', '5', '1');
+
+-- ----------------------------
+-- Table structure for psb_detailgelombang
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_detailgelombang`;
+CREATE TABLE `psb_detailgelombang` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `gelombang` int(11) NOT NULL,
+  `departemen` int(11) NOT NULL,
+  `tahunajaran` int(11) NOT NULL,
+  `tglmulai` date NOT NULL DEFAULT '0000-00-00',
+  `tglselesai` date NOT NULL DEFAULT '0000-00-00',
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`replid`),
+  KEY `gelombang` (`gelombang`) USING BTREE,
+  KEY `departemen` (`departemen`) USING BTREE,
+  KEY `tahunajaran` (`tahunajaran`) USING BTREE,
+  KEY `tahunajaran_2` (`tahunajaran`),
+  KEY `departemen_2` (`departemen`),
+  CONSTRAINT `departemenFK` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `gelombangFK` FOREIGN KEY (`gelombang`) REFERENCES `psb_gelombang` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tahunajaranFK3` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of psb_detailgelombang
+-- ----------------------------
+INSERT INTO `psb_detailgelombang` VALUES ('10', '42', '1', '3', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('11', '42', '1', '5', '2015-08-06', '2015-08-28', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('12', '42', '2', '3', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('13', '42', '2', '5', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('14', '42', '3', '3', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('15', '42', '3', '5', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('16', '43', '1', '3', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('17', '43', '1', '5', '2015-11-12', '2017-07-06', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('18', '43', '2', '3', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('19', '43', '2', '5', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('20', '43', '3', '3', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('21', '43', '3', '5', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
 
 -- ----------------------------
 -- Table structure for psb_diskontunai
@@ -4811,94 +5572,174 @@ DROP TABLE IF EXISTS `psb_diskontunai`;
 CREATE TABLE `psb_diskontunai` (
   `replid` int(11) NOT NULL AUTO_INCREMENT,
   `diskontunai` varchar(50) NOT NULL DEFAULT '',
-  `keterangan` varchar(200) NOT NULL,
+  `keterangan` text NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_diskontunai
 -- ----------------------------
-INSERT INTO `psb_diskontunai` VALUES ('6', 'diskon ramayana', 'mantep 90%');
+INSERT INTO `psb_diskontunai` VALUES ('20', 'jemaat GKA', '( DPP ) Second Intake // ( SPP ) untuk anak ke 3 berdasarkan urutan kelahiran // ( SPP ) untuk ortu jemaat aktif GKA Elyon // ( SPP ) untuk anak sekolah minggu aktif GKA Elyon\r\n');
+INSERT INTO `psb_diskontunai` VALUES ('21', 'anak ke-2', 'Tambahan subsidi ( DPP ) untuk anak ke 2 dan selanjutnya // ( SPP ) untuk anak ke 2 berdasarkan urutan kelahiran');
+INSERT INTO `psb_diskontunai` VALUES ('22', 'hamba Tuhan', 'Subsidi ( DPP ) untuk hamba Tuhan di luar GKA Elyon &amp;amp; Calon Siswa Baru Secondary\\n\\n// ( DPP ) untuk : Guru full timer,staff,Kepsek, dengan masa kerja kurang dari 2 th');
+INSERT INTO `psb_diskontunai` VALUES ('23', 'anak ke-4', '( DPP ) First Intake, Siswa Baru High School // ( SPP ) anak ke 4 sesuai urutan kelahiran, High School 2 th ajaran, siswa secondary suko 1 th ajaran');
+INSERT INTO `psb_diskontunai` VALUES ('24', 'naik jenjang', 'first intake naik jenjang');
+INSERT INTO `psb_diskontunai` VALUES ('25', 'JAPRES', 'siswa jalur prestasi');
+INSERT INTO `psb_diskontunai` VALUES ('26', 'pengurus', 'pengurus PPK Elyon, Hamba Tuhan GKA Elyon, Guru Full Timer, Staff, Kepsek');
+INSERT INTO `psb_diskontunai` VALUES ('27', 'DPP ', '( DPP ) second intake untuk siswa dalam // ( SPP ) ortu jemaat &amp; anak sekolah minggu ELYON, secondary rungkut 2 th ajaran // Permohonan khusus melalui disposisi untuk siswa baru yg memiliki sibling');
+
+-- ----------------------------
+-- Table structure for psb_gelombang
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_gelombang`;
+CREATE TABLE `psb_gelombang` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `gelombang` varchar(100) NOT NULL,
+  `keterangan` varchar(255) NOT NULL,
+  `urutan` int(11) NOT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`replid`),
+  KEY `IX_kelompokcalonsiswa_ts` (`ts`)
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of psb_gelombang
+-- ----------------------------
+INSERT INTO `psb_gelombang` VALUES ('42', 'First Intake', 'gelombang pendaftaran pertama', '1', '2015-08-22 23:08:35');
+INSERT INTO `psb_gelombang` VALUES ('43', 'Second Intake', 'gelombang pendaftaran kedua', '2', '2015-08-22 23:10:14');
+
+-- ----------------------------
+-- Table structure for psb_gelombang_copy
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_gelombang_copy`;
+CREATE TABLE `psb_gelombang_copy` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `gelombang` varchar(100) NOT NULL,
+  `tahunajaran` int(11) unsigned NOT NULL,
+  `tglmulai` date NOT NULL DEFAULT '0000-00-00',
+  `tglselesai` date NOT NULL DEFAULT '0000-00-00',
+  `keterangan` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`replid`),
+  KEY `FK_kelompokcalonsiswa_prosespenerimaansiswa` (`tahunajaran`),
+  KEY `IX_kelompokcalonsiswa_ts` (`ts`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of psb_gelombang_copy
+-- ----------------------------
+INSERT INTO `psb_gelombang_copy` VALUES ('2', 'First Intake (Toodler - PG - KG)', '2', '2013-10-01', '2013-12-31', 'Uang Formulir / Registration Form Fee', '2014-03-19 05:50:05');
+INSERT INTO `psb_gelombang_copy` VALUES ('3', 'Second Intake  (Toodler - PG - KG)', '2', '2014-01-01', '2014-06-30', 'Uang Formulir/Registration Form Fee', '2014-03-19 05:50:47');
+INSERT INTO `psb_gelombang_copy` VALUES ('4', 'Second Intake (Primary Level)', '2', '2014-01-01', '2014-06-30', 'Uang Formulir/Registration Form Fee', '2014-03-19 05:51:16');
+INSERT INTO `psb_gelombang_copy` VALUES ('5', 'First Intake', '3', '2013-09-01', '0000-00-00', '', '2014-03-19 05:51:43');
+INSERT INTO `psb_gelombang_copy` VALUES ('6', 'Second Intake', '3', '2013-11-01', '0000-00-00', '', '2014-03-19 05:52:06');
+INSERT INTO `psb_gelombang_copy` VALUES ('7', 'Third Intake', '3', '2014-01-01', '0000-00-00', '', '2014-03-19 05:52:32');
+INSERT INTO `psb_gelombang_copy` VALUES ('9', 'First Intake (Primary Level)', '2', '2013-10-01', '2013-12-31', 'Uang Formulir/Registration Form Fee', '2014-03-24 02:24:39');
+INSERT INTO `psb_gelombang_copy` VALUES ('10', 'First Intake (High School)', '2', '2013-10-01', '2013-12-01', 'Uang Formulir/Registration Form Fee', '2014-03-24 02:26:33');
+INSERT INTO `psb_gelombang_copy` VALUES ('11', 'Second Intake ( High School)', '2', '2014-01-01', '2014-06-30', 'Uang Formulir/Registration Form Fee', '2014-03-24 02:34:59');
+INSERT INTO `psb_gelombang_copy` VALUES ('12', 'First Intake (Secondary level)', '2', '2013-10-01', '2014-12-31', 'Uang Formulir/ Registration Form Fee', '2014-04-15 06:40:49');
+INSERT INTO `psb_gelombang_copy` VALUES ('13', 'Second Intake ( Secondary Level)', '2', '2014-01-01', '2014-06-30', 'Uang Formulir/Registration Form Fee', '2014-04-15 06:44:31');
+INSERT INTO `psb_gelombang_copy` VALUES ('14', 'First Intake (High School)', '6', '2014-10-01', '2014-12-01', '', '2014-12-09 03:11:37');
+INSERT INTO `psb_gelombang_copy` VALUES ('15', 'First Intake (Primary Level)', '6', '2014-10-01', '2014-12-31', '', '2014-12-09 03:14:14');
+INSERT INTO `psb_gelombang_copy` VALUES ('16', 'First Intake (Secondary level)', '6', '2014-10-01', '2014-12-31', '', '2014-12-09 03:14:15');
+INSERT INTO `psb_gelombang_copy` VALUES ('17', 'First Intake (Toodler)', '6', '2014-10-01', '2014-12-31', '', '2014-12-09 03:15:23');
+INSERT INTO `psb_gelombang_copy` VALUES ('18', 'Second Intake (Toodler - PG - KG)', '6', '2015-01-01', '2015-06-30', '', '2014-12-09 03:15:24');
+INSERT INTO `psb_gelombang_copy` VALUES ('19', 'Second Intake ( High School)', '6', '2015-01-01', '2015-06-30', '', '2014-12-09 03:16:22');
+INSERT INTO `psb_gelombang_copy` VALUES ('20', 'Second Intake ( Secondary Level)', '6', '2015-01-01', '2015-06-30', '', '2014-12-09 03:17:59');
+INSERT INTO `psb_gelombang_copy` VALUES ('21', 'Second Intake (Primary Level)', '6', '2015-01-01', '2015-06-30', '', '2014-12-09 03:19:01');
+INSERT INTO `psb_gelombang_copy` VALUES ('24', 'Gelombang 1', '8', '2014-09-01', '2015-12-31', 'promo DPP disc 15% dan potongan Joining Fee 250.000', '2015-01-26 02:47:07');
+INSERT INTO `psb_gelombang_copy` VALUES ('25', 'Playgroup A1', '2', '2013-10-01', '2014-06-30', '', '2015-01-26 04:43:33');
+INSERT INTO `psb_gelombang_copy` VALUES ('26', 'Playgroup A2', '2', '2013-10-01', '2014-06-30', '', '2015-01-26 05:10:08');
+INSERT INTO `psb_gelombang_copy` VALUES ('27', 'Playgroup A3', '2', '2013-09-01', '2014-06-30', '', '2015-01-26 05:45:55');
+INSERT INTO `psb_gelombang_copy` VALUES ('28', 'Playgroup B1', '2', '2013-09-01', '2014-06-30', '', '2015-01-26 06:02:00');
+INSERT INTO `psb_gelombang_copy` VALUES ('29', 'gel 2', '10', '2013-09-01', '2014-08-01', 'epii', '2015-02-03 09:54:27');
+INSERT INTO `psb_gelombang_copy` VALUES ('30', 'Playgroup B2', '2', '2013-09-01', '2014-06-30', '', '2015-02-11 04:56:47');
+INSERT INTO `psb_gelombang_copy` VALUES ('31', 'Playgroup B3', '2', '2013-09-01', '2014-06-30', '', '2015-02-17 06:12:41');
+INSERT INTO `psb_gelombang_copy` VALUES ('32', 'Kindergarden A1', '2', '2013-09-01', '2014-06-30', '', '2015-02-17 06:14:12');
+INSERT INTO `psb_gelombang_copy` VALUES ('33', 'Kindergarden A2', '2', '2013-09-01', '2014-06-30', '', '2015-02-18 01:35:37');
+INSERT INTO `psb_gelombang_copy` VALUES ('34', 'Kindergarden A3', '2', '2013-09-01', '2014-06-30', '', '2015-02-18 01:36:18');
+INSERT INTO `psb_gelombang_copy` VALUES ('35', 'Kindergarden B1', '2', '2013-09-01', '2014-06-30', '', '2015-02-18 01:37:05');
+INSERT INTO `psb_gelombang_copy` VALUES ('37', 'Kindergarden B2', '2', '2013-09-01', '2014-06-30', '', '2015-02-18 01:39:11');
+INSERT INTO `psb_gelombang_copy` VALUES ('38', 'Kindergarden B3', '2', '2013-09-01', '2014-06-30', '', '2015-02-18 01:39:37');
 
 -- ----------------------------
 -- Table structure for psb_golongan
 -- ----------------------------
 DROP TABLE IF EXISTS `psb_golongan`;
 CREATE TABLE `psb_golongan` (
-  `replid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
   `golongan` varchar(150) DEFAULT NULL,
   `keterangan` varchar(250) DEFAULT NULL,
-  `urut` int(10) unsigned DEFAULT '1',
+  `urutan` int(10) unsigned DEFAULT '1',
   UNIQUE KEY `replid` (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_golongan
 -- ----------------------------
-INSERT INTO `psb_golongan` VALUES ('1', 'Anak Guru & Staf', 'Anak guru, staf, karyawan aktif Elyon dengan masa kerja lebih dari 2 tahun', '1');
-INSERT INTO `psb_golongan` VALUES ('2', 'Umum', 'Masyarakat umum', '1');
-INSERT INTO `psb_golongan` VALUES ('3', 'Ortu Jemaat Elyon', 'Anggota jemaat GKA Elyon', '1');
-INSERT INTO `psb_golongan` VALUES ('4', 'Anak Hamba Tuhan', 'Anak hamba Tuhan, Pendeta aktif dari gereja lain.', '1');
-INSERT INTO `psb_golongan` VALUES ('5', 'Anak Pengurus PPKE', 'Anak Pengurus aktif dari Perhimpunan Pendidikan Kristen Elyon', '1');
-INSERT INTO `psb_golongan` VALUES ('6', 'Jalur Prestasi', 'Akademik, sports, musik', '1');
-INSERT INTO `psb_golongan` VALUES ('7', 'Anak Guru & Staf', 'Anak guru, staf, karyawan aktif Elyon dengan masa kerja kurang dan sama dengan 2 tahun', '1');
-INSERT INTO `psb_golongan` VALUES ('9', 'Anak SM Elyon', 'Anggota jemaat GKA Elyon', '1');
-INSERT INTO `psb_golongan` VALUES ('10', 'Ortu &amp; Anak Jemaat Elyon', 'Anggota jemaat GKA Elyon', '1');
+INSERT INTO `psb_golongan` VALUES ('1', 'Anak Guru &amp; Staf ', 'Anak guru, staf, karyawan aktif Elyon dengan masa kerja lebih dari 2 tahun ', '1');
+INSERT INTO `psb_golongan` VALUES ('2', 'Umum', 'Masyarakat umum', '2');
+INSERT INTO `psb_golongan` VALUES ('3', 'Ortu Jemaat Elyon', 'Anggota jemaat GKA Elyon', '3');
+INSERT INTO `psb_golongan` VALUES ('4', 'Anak Hamba Tuhan', 'Anak hamba Tuhan, Pendeta aktif dari gereja lain.', '4');
+INSERT INTO `psb_golongan` VALUES ('5', 'Anak Pengurus PPKE', 'Anak Pengurus aktif dari Perhimpunan Pendidikan Kristen Elyon', '5');
+INSERT INTO `psb_golongan` VALUES ('6', 'Jalur Prestasi', 'Akademik, sports, musik', '6');
+INSERT INTO `psb_golongan` VALUES ('7', 'Anak Guru & Staf', 'Anak guru, staf, karyawan aktif Elyon dengan masa kerja kurang dan sama dengan 2 tahun', '7');
+INSERT INTO `psb_golongan` VALUES ('9', 'Anak SM Elyon', 'Anggota jemaat GKA Elyon', '8');
+INSERT INTO `psb_golongan` VALUES ('10', 'Ortu &amp; Anak Jemaat Elyon', 'Anggota jemaat GKA Elyon', '9');
 
 -- ----------------------------
--- Table structure for psb_kelompok
+-- Table structure for psb_kelompok_copy
 -- ----------------------------
-DROP TABLE IF EXISTS `psb_kelompok`;
-CREATE TABLE `psb_kelompok` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `psb_kelompok_copy`;
+CREATE TABLE `psb_kelompok_copy` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
   `kelompok` varchar(100) NOT NULL,
-  `proses` int(10) unsigned NOT NULL,
+  `tahunajaran` int(11) unsigned NOT NULL,
   `tglmulai` date NOT NULL DEFAULT '0000-00-00',
   `tglselesai` date NOT NULL DEFAULT '0000-00-00',
-  `biaya` decimal(10,0) NOT NULL DEFAULT '0',
   `keterangan` varchar(255) DEFAULT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`replid`),
-  KEY `FK_kelompokcalonsiswa_prosespenerimaansiswa` (`proses`),
+  KEY `FK_kelompokcalonsiswa_prosespenerimaansiswa` (`tahunajaran`),
   KEY `IX_kelompokcalonsiswa_ts` (`ts`)
 ) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of psb_kelompok
+-- Records of psb_kelompok_copy
 -- ----------------------------
-INSERT INTO `psb_kelompok` VALUES ('2', 'First Intake (Toodler - PG - KG)', '2', '2013-10-01', '2013-12-31', '300000', 'Uang Formulir / Registration Form Fee', '2014-03-19 05:50:05');
-INSERT INTO `psb_kelompok` VALUES ('3', 'Second Intake  (Toodler - PG - KG)', '2', '2014-01-01', '2014-06-30', '300000', 'Uang Formulir/Registration Form Fee', '2014-03-19 05:50:47');
-INSERT INTO `psb_kelompok` VALUES ('4', 'Second Intake (Primary Level)', '2', '2014-01-01', '2014-06-30', '400000', 'Uang Formulir/Registration Form Fee', '2014-03-19 05:51:16');
-INSERT INTO `psb_kelompok` VALUES ('5', 'First Intake', '3', '2013-09-01', '0000-00-00', '350000', '', '2014-03-19 05:51:43');
-INSERT INTO `psb_kelompok` VALUES ('6', 'Second Intake', '3', '2013-11-01', '0000-00-00', '350000', '', '2014-03-19 05:52:06');
-INSERT INTO `psb_kelompok` VALUES ('7', 'Third Intake', '3', '2014-01-01', '0000-00-00', '350000', '', '2014-03-19 05:52:32');
-INSERT INTO `psb_kelompok` VALUES ('9', 'First Intake (Primary Level)', '2', '2013-10-01', '2013-12-31', '400000', 'Uang Formulir/Registration Form Fee', '2014-03-24 02:24:39');
-INSERT INTO `psb_kelompok` VALUES ('10', 'First Intake (High School)', '2', '2013-10-01', '2013-12-01', '500000', 'Uang Formulir/Registration Form Fee', '2014-03-24 02:26:33');
-INSERT INTO `psb_kelompok` VALUES ('11', 'Second Intake ( High School)', '2', '2014-01-01', '2014-06-30', '500000', 'Uang Formulir/Registration Form Fee', '2014-03-24 02:34:59');
-INSERT INTO `psb_kelompok` VALUES ('12', 'First Intake (Secondary level)', '2', '2013-10-01', '2014-12-31', '400000', 'Uang Formulir/ Registration Form Fee', '2014-04-15 06:40:49');
-INSERT INTO `psb_kelompok` VALUES ('13', 'Second Intake ( Secondary Level)', '2', '2014-01-01', '2014-06-30', '400000', 'Uang Formulir/Registration Form Fee', '2014-04-15 06:44:31');
-INSERT INTO `psb_kelompok` VALUES ('14', 'First Intake (High School)', '6', '2014-10-01', '2014-12-01', '500000', '', '2014-12-09 03:11:37');
-INSERT INTO `psb_kelompok` VALUES ('15', 'First Intake (Primary Level)', '6', '2014-10-01', '2014-12-31', '400000', '', '2014-12-09 03:14:14');
-INSERT INTO `psb_kelompok` VALUES ('16', 'First Intake (Secondary level)', '6', '2014-10-01', '2014-12-31', '400000', '', '2014-12-09 03:14:15');
-INSERT INTO `psb_kelompok` VALUES ('17', 'First Intake (Toodler)', '6', '2014-10-01', '2014-12-31', '300000', '', '2014-12-09 03:15:23');
-INSERT INTO `psb_kelompok` VALUES ('18', 'Second Intake (Toodler - PG - KG)', '6', '2015-01-01', '2015-06-30', '300000', '', '2014-12-09 03:15:24');
-INSERT INTO `psb_kelompok` VALUES ('19', 'Second Intake ( High School)', '6', '2015-01-01', '2015-06-30', '500000', '', '2014-12-09 03:16:22');
-INSERT INTO `psb_kelompok` VALUES ('20', 'Second Intake ( Secondary Level)', '6', '2015-01-01', '2015-06-30', '400000', '', '2014-12-09 03:17:59');
-INSERT INTO `psb_kelompok` VALUES ('21', 'Second Intake (Primary Level)', '6', '2015-01-01', '2015-06-30', '400000', '', '2014-12-09 03:19:01');
-INSERT INTO `psb_kelompok` VALUES ('24', 'Gelombang 1', '8', '2014-09-01', '2015-12-31', '350000', 'promo DPP disc 15% dan potongan Joining Fee 250.000', '2015-01-26 02:47:07');
-INSERT INTO `psb_kelompok` VALUES ('25', 'Playgroup A1', '2', '2013-10-01', '2014-06-30', '0', '', '2015-01-26 04:43:33');
-INSERT INTO `psb_kelompok` VALUES ('26', 'Playgroup A2', '2', '2013-10-01', '2014-06-30', '0', '', '2015-01-26 05:10:08');
-INSERT INTO `psb_kelompok` VALUES ('27', 'Playgroup A3', '2', '2013-09-01', '2014-06-30', '0', '', '2015-01-26 05:45:55');
-INSERT INTO `psb_kelompok` VALUES ('28', 'Playgroup B1', '2', '2013-09-01', '2014-06-30', '0', '', '2015-01-26 06:02:00');
-INSERT INTO `psb_kelompok` VALUES ('29', 'gel 2', '10', '2013-09-01', '2014-08-01', '300000', 'epii', '2015-02-03 09:54:27');
-INSERT INTO `psb_kelompok` VALUES ('30', 'Playgroup B2', '2', '2013-09-01', '2014-06-30', '0', '', '2015-02-11 04:56:47');
-INSERT INTO `psb_kelompok` VALUES ('31', 'Playgroup B3', '2', '2013-09-01', '2014-06-30', '0', '', '2015-02-17 06:12:41');
-INSERT INTO `psb_kelompok` VALUES ('32', 'Kindergarden A1', '2', '2013-09-01', '2014-06-30', '300000', '', '2015-02-17 06:14:12');
-INSERT INTO `psb_kelompok` VALUES ('33', 'Kindergarden A2', '2', '2013-09-01', '2014-06-30', '0', '', '2015-02-18 01:35:37');
-INSERT INTO `psb_kelompok` VALUES ('34', 'Kindergarden A3', '2', '2013-09-01', '2014-06-30', '0', '', '2015-02-18 01:36:18');
-INSERT INTO `psb_kelompok` VALUES ('35', 'Kindergarden B1', '2', '2013-09-01', '2014-06-30', '0', '', '2015-02-18 01:37:05');
-INSERT INTO `psb_kelompok` VALUES ('37', 'Kindergarden B2', '2', '2013-09-01', '2014-06-30', '0', '', '2015-02-18 01:39:11');
-INSERT INTO `psb_kelompok` VALUES ('38', 'Kindergarden B3', '2', '2013-09-01', '2014-06-30', '0', '', '2015-02-18 01:39:37');
+INSERT INTO `psb_kelompok_copy` VALUES ('2', 'First Intake (Toodler - PG - KG)', '2', '2013-10-01', '2013-12-31', 'Uang Formulir / Registration Form Fee', '2014-03-19 05:50:05');
+INSERT INTO `psb_kelompok_copy` VALUES ('3', 'Second Intake  (Toodler - PG - KG)', '2', '2014-01-01', '2014-06-30', 'Uang Formulir/Registration Form Fee', '2014-03-19 05:50:47');
+INSERT INTO `psb_kelompok_copy` VALUES ('4', 'Second Intake (Primary Level)', '2', '2014-01-01', '2014-06-30', 'Uang Formulir/Registration Form Fee', '2014-03-19 05:51:16');
+INSERT INTO `psb_kelompok_copy` VALUES ('5', 'First Intake', '3', '2013-09-01', '0000-00-00', '', '2014-03-19 05:51:43');
+INSERT INTO `psb_kelompok_copy` VALUES ('6', 'Second Intake', '3', '2013-11-01', '0000-00-00', '', '2014-03-19 05:52:06');
+INSERT INTO `psb_kelompok_copy` VALUES ('7', 'Third Intake', '3', '2014-01-01', '0000-00-00', '', '2014-03-19 05:52:32');
+INSERT INTO `psb_kelompok_copy` VALUES ('9', 'First Intake (Primary Level)', '2', '2013-10-01', '2013-12-31', 'Uang Formulir/Registration Form Fee', '2014-03-24 02:24:39');
+INSERT INTO `psb_kelompok_copy` VALUES ('10', 'First Intake (High School)', '2', '2013-10-01', '2013-12-01', 'Uang Formulir/Registration Form Fee', '2014-03-24 02:26:33');
+INSERT INTO `psb_kelompok_copy` VALUES ('11', 'Second Intake ( High School)', '2', '2014-01-01', '2014-06-30', 'Uang Formulir/Registration Form Fee', '2014-03-24 02:34:59');
+INSERT INTO `psb_kelompok_copy` VALUES ('12', 'First Intake (Secondary level)', '2', '2013-10-01', '2014-12-31', 'Uang Formulir/ Registration Form Fee', '2014-04-15 06:40:49');
+INSERT INTO `psb_kelompok_copy` VALUES ('13', 'Second Intake ( Secondary Level)', '2', '2014-01-01', '2014-06-30', 'Uang Formulir/Registration Form Fee', '2014-04-15 06:44:31');
+INSERT INTO `psb_kelompok_copy` VALUES ('14', 'First Intake (High School)', '6', '2014-10-01', '2014-12-01', '', '2014-12-09 03:11:37');
+INSERT INTO `psb_kelompok_copy` VALUES ('15', 'First Intake (Primary Level)', '6', '2014-10-01', '2014-12-31', '', '2014-12-09 03:14:14');
+INSERT INTO `psb_kelompok_copy` VALUES ('16', 'First Intake (Secondary level)', '6', '2014-10-01', '2014-12-31', '', '2014-12-09 03:14:15');
+INSERT INTO `psb_kelompok_copy` VALUES ('17', 'First Intake (Toodler)', '6', '2014-10-01', '2014-12-31', '', '2014-12-09 03:15:23');
+INSERT INTO `psb_kelompok_copy` VALUES ('18', 'Second Intake (Toodler - PG - KG)', '6', '2015-01-01', '2015-06-30', '', '2014-12-09 03:15:24');
+INSERT INTO `psb_kelompok_copy` VALUES ('19', 'Second Intake ( High School)', '6', '2015-01-01', '2015-06-30', '', '2014-12-09 03:16:22');
+INSERT INTO `psb_kelompok_copy` VALUES ('20', 'Second Intake ( Secondary Level)', '6', '2015-01-01', '2015-06-30', '', '2014-12-09 03:17:59');
+INSERT INTO `psb_kelompok_copy` VALUES ('21', 'Second Intake (Primary Level)', '6', '2015-01-01', '2015-06-30', '', '2014-12-09 03:19:01');
+INSERT INTO `psb_kelompok_copy` VALUES ('24', 'Gelombang 1', '8', '2014-09-01', '2015-12-31', 'promo DPP disc 15% dan potongan Joining Fee 250.000', '2015-01-26 02:47:07');
+INSERT INTO `psb_kelompok_copy` VALUES ('25', 'Playgroup A1', '2', '2013-10-01', '2014-06-30', '', '2015-01-26 04:43:33');
+INSERT INTO `psb_kelompok_copy` VALUES ('26', 'Playgroup A2', '2', '2013-10-01', '2014-06-30', '', '2015-01-26 05:10:08');
+INSERT INTO `psb_kelompok_copy` VALUES ('27', 'Playgroup A3', '2', '2013-09-01', '2014-06-30', '', '2015-01-26 05:45:55');
+INSERT INTO `psb_kelompok_copy` VALUES ('28', 'Playgroup B1', '2', '2013-09-01', '2014-06-30', '', '2015-01-26 06:02:00');
+INSERT INTO `psb_kelompok_copy` VALUES ('29', 'gel 2', '10', '2013-09-01', '2014-08-01', 'epii', '2015-02-03 09:54:27');
+INSERT INTO `psb_kelompok_copy` VALUES ('30', 'Playgroup B2', '2', '2013-09-01', '2014-06-30', '', '2015-02-11 04:56:47');
+INSERT INTO `psb_kelompok_copy` VALUES ('31', 'Playgroup B3', '2', '2013-09-01', '2014-06-30', '', '2015-02-17 06:12:41');
+INSERT INTO `psb_kelompok_copy` VALUES ('32', 'Kindergarden A1', '2', '2013-09-01', '2014-06-30', '', '2015-02-17 06:14:12');
+INSERT INTO `psb_kelompok_copy` VALUES ('33', 'Kindergarden A2', '2', '2013-09-01', '2014-06-30', '', '2015-02-18 01:35:37');
+INSERT INTO `psb_kelompok_copy` VALUES ('34', 'Kindergarden A3', '2', '2013-09-01', '2014-06-30', '', '2015-02-18 01:36:18');
+INSERT INTO `psb_kelompok_copy` VALUES ('35', 'Kindergarden B1', '2', '2013-09-01', '2014-06-30', '', '2015-02-18 01:37:05');
+INSERT INTO `psb_kelompok_copy` VALUES ('37', 'Kindergarden B2', '2', '2013-09-01', '2014-06-30', '', '2015-02-18 01:39:11');
+INSERT INTO `psb_kelompok_copy` VALUES ('38', 'Kindergarden B3', '2', '2013-09-01', '2014-06-30', '', '2015-02-18 01:39:37');
 
 -- ----------------------------
 -- Table structure for psb_kondisisiswa
@@ -4998,10 +5839,10 @@ INSERT INTO `psb_proses` VALUES ('9', '2016 - 2017', 'PMB2016', '4', '0000-00-00
 INSERT INTO `psb_proses` VALUES ('10', 'Tahun Ajaran 2014-2015', 'PMB2014', '6', '0000-00-00', '0000-00-00', '100', '3', '1', 'ok (epii)', '2015-02-03 09:53:49', null);
 
 -- ----------------------------
--- Table structure for psb_setbiaya
+-- Table structure for psb_setbiaya_copy
 -- ----------------------------
-DROP TABLE IF EXISTS `psb_setbiaya`;
-CREATE TABLE `psb_setbiaya` (
+DROP TABLE IF EXISTS `psb_setbiaya_copy`;
+CREATE TABLE `psb_setbiaya_copy` (
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `departemen` int(10) unsigned NOT NULL,
   `daftar` decimal(10,0) NOT NULL DEFAULT '0',
@@ -5016,456 +5857,456 @@ CREATE TABLE `psb_setbiaya` (
 ) ENGINE=InnoDB AUTO_INCREMENT=449 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of psb_setbiaya
+-- Records of psb_setbiaya_copy
 -- ----------------------------
-INSERT INTO `psb_setbiaya` VALUES ('1', '0', '0', '0', '0', '0', '1', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('2', '0', '0', '0', '0', '0', '1', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('3', '0', '0', '0', '0', '0', '1', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('4', '0', '300000', '0', '0', '1750000', '1', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('5', '0', '0', '0', '0', '0', '1', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('6', '0', '0', '0', '0', '0', '1', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('7', '0', '0', '0', '0', '0', '1', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('8', '0', '0', '0', '0', '0', '5', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('9', '0', '0', '0', '0', '0', '5', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('10', '0', '0', '0', '0', '0', '5', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('11', '0', '0', '0', '0', '0', '5', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('12', '0', '0', '0', '0', '0', '5', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('13', '0', '0', '0', '0', '0', '5', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('14', '0', '400000', '0', '0', '1750000', '5', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('15', '0', '0', '0', '0', '0', '6', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('16', '0', '0', '0', '0', '0', '6', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('17', '0', '0', '0', '0', '0', '6', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('18', '0', '0', '0', '0', '0', '6', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('19', '0', '400000', '0', '0', '1750000', '6', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('20', '0', '0', '0', '0', '0', '6', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('21', '0', '0', '0', '0', '0', '6', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('22', '0', '0', '0', '0', '0', '7', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('23', '0', '0', '0', '0', '0', '7', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('24', '0', '400000', '0', '0', '1750000', '7', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('25', '0', '0', '0', '0', '0', '7', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('26', '0', '0', '0', '0', '0', '7', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('27', '0', '0', '0', '0', '0', '7', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('28', '0', '0', '0', '0', '0', '7', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('29', '0', '400000', '0', '0', '1750000', '8', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('30', '0', '0', '0', '0', '0', '8', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('31', '0', '0', '0', '0', '0', '8', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('32', '0', '0', '0', '0', '0', '8', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('33', '0', '0', '0', '0', '0', '8', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('34', '0', '0', '0', '0', '0', '8', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('35', '0', '0', '0', '0', '0', '8', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('36', '0', '0', '0', '0', '0', '9', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('37', '0', '0', '0', '0', '0', '9', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('38', '0', '0', '0', '0', '0', '9', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('39', '0', '0', '0', '0', '0', '9', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('40', '0', '0', '0', '0', '0', '9', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('41', '0', '400000', '0', '0', '1750000', '9', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('42', '0', '0', '0', '0', '0', '9', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('43', '0', '0', '0', '0', '0', '10', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('44', '0', '0', '0', '0', '0', '10', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('45', '0', '0', '0', '0', '0', '10', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('46', '0', '300000', '0', '0', '1750000', '10', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('47', '0', '0', '0', '0', '0', '10', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('48', '0', '0', '0', '0', '0', '10', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('49', '0', '0', '0', '0', '0', '10', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('50', '0', '0', '0', '0', '0', '12', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('51', '0', '300000', '0', '0', '1750000', '12', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('52', '0', '0', '0', '0', '0', '12', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('53', '0', '0', '0', '0', '0', '12', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('54', '0', '0', '0', '0', '0', '12', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('55', '0', '0', '0', '0', '0', '12', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('56', '0', '0', '0', '0', '0', '12', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('57', '0', '0', '0', '0', '0', '13', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('58', '0', '0', '0', '0', '0', '13', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('59', '0', '0', '0', '0', '0', '13', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('60', '0', '0', '0', '0', '0', '13', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('61', '0', '0', '0', '0', '0', '13', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('62', '0', '300000', '1200000', '8000000', '1750000', '13', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('63', '0', '500000', '0', '0', '1750000', '13', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('64', '0', '0', '0', '0', '0', '14', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('65', '0', '0', '0', '0', '0', '14', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('66', '0', '0', '0', '0', '0', '14', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('67', '0', '0', '0', '0', '0', '14', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('68', '0', '500000', '0', '0', '1750000', '14', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('69', '0', '0', '0', '0', '0', '14', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('70', '0', '0', '0', '0', '0', '14', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('71', '0', '0', '0', '0', '0', '15', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('72', '0', '0', '0', '0', '0', '15', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('73', '0', '400000', '0', '0', '1750000', '15', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('74', '0', '0', '0', '0', '0', '15', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('75', '0', '0', '0', '0', '0', '15', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('76', '0', '0', '0', '0', '0', '15', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('77', '0', '0', '0', '0', '0', '15', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('78', '0', '0', '0', '0', '1750000', '16', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('79', '0', '0', '0', '0', '0', '16', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('80', '0', '0', '0', '0', '0', '16', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('81', '0', '0', '0', '0', '0', '16', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('82', '0', '0', '0', '0', '0', '16', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('83', '0', '0', '0', '0', '0', '16', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('84', '0', '0', '0', '0', '0', '16', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('85', '0', '0', '0', '0', '0', '17', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('86', '0', '0', '0', '0', '0', '17', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('87', '0', '0', '0', '0', '0', '17', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('88', '0', '0', '0', '0', '0', '17', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('89', '0', '0', '0', '0', '0', '17', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('90', '0', '0', '0', '0', '0', '17', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('91', '0', '0', '0', '0', '0', '17', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('92', '0', '0', '0', '0', '0', '22', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('93', '0', '0', '0', '0', '0', '22', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('94', '0', '0', '0', '0', '0', '22', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('95', '0', '0', '0', '0', '0', '22', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('96', '0', '0', '0', '0', '0', '22', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('97', '0', '0', '0', '0', '0', '22', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('98', '0', '0', '0', '0', '0', '22', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('99', '0', '0', '0', '0', '0', '23', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('100', '0', '400000', '0', '0', '1750000', '23', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('101', '0', '0', '0', '0', '0', '23', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('102', '0', '0', '0', '0', '0', '23', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('103', '0', '0', '0', '0', '0', '23', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('104', '0', '0', '0', '0', '0', '23', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('105', '0', '0', '0', '0', '0', '23', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('106', '0', '0', '0', '0', '0', '25', '1', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('107', '0', '0', '0', '0', '0', '25', '2', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('108', '0', '0', '0', '0', '0', '25', '3', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('109', '0', '0', '0', '0', '0', '25', '4', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('110', '0', '0', '0', '0', '0', '25', '5', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('111', '0', '0', '0', '0', '0', '25', '6', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('112', '0', '0', '0', '0', '0', '25', '7', '14', '0');
-INSERT INTO `psb_setbiaya` VALUES ('113', '0', '300000', '1000000', '10000000', '500000', '1', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('114', '0', '300000', '1000000', '10000000', '500000', '1', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('115', '0', '300000', '1000000', '10000000', '500000', '1', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('116', '0', '0', '0', '0', '0', '1', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('117', '0', '0', '0', '0', '0', '1', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('118', '0', '0', '0', '0', '0', '1', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('119', '0', '0', '0', '0', '0', '1', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('120', '0', '0', '0', '0', '0', '5', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('121', '0', '0', '0', '0', '0', '5', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('122', '0', '0', '0', '0', '0', '5', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('123', '0', '0', '0', '0', '0', '5', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('124', '0', '0', '0', '0', '0', '5', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('125', '0', '0', '0', '0', '0', '5', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('126', '0', '0', '0', '0', '0', '5', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('127', '0', '0', '0', '0', '0', '6', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('128', '0', '0', '0', '0', '0', '6', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('129', '0', '0', '0', '0', '0', '6', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('130', '0', '0', '0', '0', '0', '6', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('131', '0', '0', '0', '0', '0', '6', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('132', '0', '0', '0', '0', '0', '6', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('133', '0', '0', '0', '0', '0', '6', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('134', '0', '0', '0', '0', '0', '7', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('135', '0', '0', '0', '0', '0', '7', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('136', '0', '0', '0', '0', '0', '7', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('137', '0', '0', '0', '0', '0', '7', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('138', '0', '0', '0', '0', '0', '7', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('139', '0', '0', '0', '0', '0', '7', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('140', '0', '0', '0', '0', '0', '7', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('141', '0', '0', '0', '0', '0', '8', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('142', '0', '0', '0', '0', '0', '8', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('143', '0', '0', '0', '0', '0', '8', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('144', '0', '0', '0', '0', '0', '8', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('145', '0', '0', '0', '0', '0', '8', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('146', '0', '0', '0', '0', '0', '8', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('147', '0', '0', '0', '0', '0', '8', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('148', '0', '0', '0', '0', '0', '9', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('149', '0', '0', '0', '0', '0', '9', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('150', '0', '0', '0', '0', '0', '9', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('151', '0', '0', '0', '0', '0', '9', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('152', '0', '0', '0', '0', '0', '9', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('153', '0', '0', '0', '0', '0', '9', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('154', '0', '0', '0', '0', '0', '9', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('155', '0', '0', '0', '0', '0', '10', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('156', '0', '0', '0', '0', '0', '10', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('157', '0', '0', '0', '0', '0', '10', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('158', '0', '0', '0', '0', '0', '10', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('159', '0', '0', '0', '0', '0', '10', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('160', '0', '0', '0', '0', '0', '10', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('161', '0', '0', '0', '0', '0', '10', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('162', '0', '0', '0', '0', '0', '12', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('163', '0', '0', '0', '0', '0', '12', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('164', '0', '0', '0', '0', '0', '12', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('165', '0', '0', '0', '0', '0', '12', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('166', '0', '0', '0', '0', '0', '12', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('167', '0', '0', '0', '0', '0', '12', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('168', '0', '0', '0', '0', '0', '12', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('169', '0', '0', '0', '0', '0', '13', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('170', '0', '0', '0', '0', '0', '13', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('171', '0', '0', '0', '0', '0', '13', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('172', '0', '0', '0', '0', '0', '13', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('173', '0', '0', '0', '0', '0', '13', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('174', '0', '0', '0', '0', '0', '13', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('175', '0', '0', '0', '0', '0', '13', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('176', '0', '0', '0', '0', '0', '14', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('177', '0', '0', '0', '0', '0', '14', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('178', '0', '0', '0', '0', '0', '14', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('179', '0', '0', '0', '0', '0', '14', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('180', '0', '0', '0', '0', '0', '14', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('181', '0', '0', '0', '0', '0', '14', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('182', '0', '0', '0', '0', '0', '14', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('183', '0', '0', '0', '0', '0', '15', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('184', '0', '0', '0', '0', '0', '15', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('185', '0', '0', '0', '0', '0', '15', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('186', '0', '0', '0', '0', '0', '15', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('187', '0', '0', '0', '0', '0', '15', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('188', '0', '0', '0', '0', '0', '15', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('189', '0', '0', '0', '0', '0', '15', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('190', '0', '0', '0', '0', '0', '16', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('191', '0', '0', '0', '0', '0', '16', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('192', '0', '0', '0', '0', '0', '16', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('193', '0', '0', '0', '0', '0', '16', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('194', '0', '0', '0', '0', '0', '16', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('195', '0', '0', '0', '0', '0', '16', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('196', '0', '0', '0', '0', '0', '16', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('197', '0', '0', '0', '0', '0', '17', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('198', '0', '0', '0', '0', '0', '17', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('199', '0', '0', '0', '0', '0', '17', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('200', '0', '0', '0', '0', '0', '17', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('201', '0', '0', '0', '0', '0', '17', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('202', '0', '0', '0', '0', '0', '17', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('203', '0', '0', '0', '0', '0', '17', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('204', '0', '0', '0', '0', '0', '22', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('205', '0', '0', '0', '0', '0', '22', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('206', '0', '0', '0', '0', '0', '22', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('207', '0', '0', '0', '0', '0', '22', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('208', '0', '0', '0', '0', '0', '22', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('209', '0', '0', '0', '0', '0', '22', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('210', '0', '0', '0', '0', '0', '22', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('211', '0', '0', '0', '0', '0', '23', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('212', '0', '0', '0', '0', '0', '23', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('213', '0', '0', '0', '0', '0', '23', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('214', '0', '0', '0', '0', '0', '23', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('215', '0', '0', '0', '0', '0', '23', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('216', '0', '0', '0', '0', '0', '23', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('217', '0', '0', '0', '0', '0', '23', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('218', '0', '0', '0', '0', '0', '25', '1', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('219', '0', '0', '0', '0', '0', '25', '2', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('220', '0', '0', '0', '0', '0', '25', '3', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('221', '0', '0', '0', '0', '0', '25', '4', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('222', '0', '0', '0', '0', '0', '25', '5', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('223', '0', '0', '0', '0', '0', '25', '6', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('224', '0', '0', '0', '0', '0', '25', '7', '10', '0');
-INSERT INTO `psb_setbiaya` VALUES ('225', '0', '0', '0', '0', '0', '1', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('226', '0', '0', '0', '0', '0', '1', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('227', '0', '0', '0', '0', '0', '1', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('228', '0', '0', '0', '0', '0', '1', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('229', '0', '0', '0', '0', '0', '1', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('230', '0', '0', '0', '0', '0', '1', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('231', '0', '0', '0', '0', '0', '1', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('232', '0', '0', '0', '0', '0', '5', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('233', '0', '0', '0', '0', '0', '5', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('234', '0', '0', '0', '0', '0', '5', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('235', '0', '0', '0', '0', '0', '5', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('236', '0', '0', '0', '0', '0', '5', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('237', '0', '0', '0', '0', '0', '5', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('238', '0', '0', '0', '0', '0', '5', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('239', '0', '0', '0', '0', '0', '6', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('240', '0', '0', '0', '0', '0', '6', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('241', '0', '0', '0', '0', '0', '6', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('242', '0', '0', '0', '0', '0', '6', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('243', '0', '0', '0', '0', '0', '6', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('244', '0', '0', '0', '0', '0', '6', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('245', '0', '0', '0', '0', '0', '6', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('246', '0', '0', '0', '0', '0', '7', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('247', '0', '0', '0', '0', '0', '7', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('248', '0', '0', '0', '0', '0', '7', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('249', '0', '0', '0', '0', '0', '7', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('250', '0', '0', '0', '0', '0', '7', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('251', '0', '0', '0', '0', '0', '7', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('252', '0', '0', '0', '0', '0', '7', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('253', '0', '0', '0', '0', '0', '8', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('254', '0', '0', '0', '0', '0', '8', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('255', '0', '0', '0', '0', '0', '8', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('256', '0', '0', '0', '0', '0', '8', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('257', '0', '0', '0', '0', '0', '8', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('258', '0', '0', '0', '0', '0', '8', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('259', '0', '0', '0', '0', '0', '8', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('260', '0', '0', '0', '0', '0', '9', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('261', '0', '0', '0', '0', '0', '9', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('262', '0', '0', '0', '0', '0', '9', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('263', '0', '0', '0', '0', '0', '9', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('264', '0', '0', '0', '0', '0', '9', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('265', '0', '0', '0', '0', '0', '9', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('266', '0', '0', '0', '0', '0', '9', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('267', '0', '0', '0', '0', '0', '10', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('268', '0', '0', '0', '0', '0', '10', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('269', '0', '0', '0', '0', '0', '10', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('270', '0', '0', '0', '0', '0', '10', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('271', '0', '0', '0', '0', '0', '10', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('272', '0', '0', '0', '0', '0', '10', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('273', '0', '0', '0', '0', '0', '10', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('274', '0', '0', '0', '0', '0', '12', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('275', '0', '0', '0', '0', '0', '12', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('276', '0', '0', '0', '0', '0', '12', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('277', '0', '0', '0', '0', '0', '12', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('278', '0', '0', '0', '0', '0', '12', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('279', '0', '0', '0', '0', '0', '12', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('280', '0', '0', '0', '0', '0', '12', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('281', '0', '0', '0', '0', '0', '13', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('282', '0', '0', '0', '0', '0', '13', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('283', '0', '0', '0', '0', '0', '13', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('284', '0', '0', '0', '0', '0', '13', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('285', '0', '0', '0', '0', '0', '13', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('286', '0', '0', '0', '0', '0', '13', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('287', '0', '0', '0', '0', '0', '13', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('288', '0', '0', '0', '0', '0', '14', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('289', '0', '0', '0', '0', '0', '14', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('290', '0', '0', '0', '0', '0', '14', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('291', '0', '0', '0', '0', '0', '14', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('292', '0', '0', '0', '0', '0', '14', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('293', '0', '0', '0', '0', '0', '14', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('294', '0', '0', '0', '0', '0', '14', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('295', '0', '0', '0', '0', '0', '15', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('296', '0', '0', '0', '0', '0', '15', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('297', '0', '0', '0', '0', '0', '15', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('298', '0', '0', '0', '0', '0', '15', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('299', '0', '0', '0', '0', '0', '15', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('300', '0', '0', '0', '0', '0', '15', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('301', '0', '0', '0', '0', '0', '15', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('302', '0', '0', '0', '0', '0', '16', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('303', '0', '0', '0', '0', '0', '16', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('304', '0', '0', '0', '0', '0', '16', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('305', '0', '0', '0', '0', '0', '16', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('306', '0', '0', '0', '0', '0', '16', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('307', '0', '0', '0', '0', '0', '16', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('308', '0', '0', '0', '0', '0', '16', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('309', '0', '0', '0', '0', '0', '17', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('310', '0', '0', '0', '0', '0', '17', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('311', '0', '0', '0', '0', '0', '17', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('312', '0', '0', '0', '0', '0', '17', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('313', '0', '0', '0', '0', '0', '17', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('314', '0', '0', '0', '0', '0', '17', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('315', '0', '0', '0', '0', '0', '17', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('316', '0', '0', '0', '0', '0', '22', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('317', '0', '0', '0', '0', '0', '22', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('318', '0', '0', '0', '0', '0', '22', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('319', '0', '0', '0', '0', '0', '22', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('320', '0', '0', '0', '0', '0', '22', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('321', '0', '0', '0', '0', '0', '22', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('322', '0', '0', '0', '0', '0', '22', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('323', '0', '0', '0', '0', '0', '23', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('324', '0', '0', '0', '0', '0', '23', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('325', '0', '0', '0', '0', '0', '23', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('326', '0', '0', '0', '0', '0', '23', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('327', '0', '0', '0', '0', '0', '23', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('328', '0', '0', '0', '0', '0', '23', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('329', '0', '0', '0', '0', '0', '23', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('330', '0', '0', '0', '0', '0', '25', '1', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('331', '0', '0', '0', '0', '0', '25', '2', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('332', '0', '0', '0', '0', '0', '25', '3', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('333', '0', '0', '0', '0', '0', '25', '4', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('334', '0', '0', '0', '0', '0', '25', '5', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('335', '0', '0', '0', '0', '0', '25', '6', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('336', '0', '0', '0', '0', '0', '25', '7', '5', '0');
-INSERT INTO `psb_setbiaya` VALUES ('337', '0', '0', '0', '0', '0', '1', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('338', '0', '0', '0', '0', '0', '1', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('339', '0', '0', '0', '0', '0', '1', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('340', '0', '0', '0', '0', '0', '1', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('341', '0', '0', '0', '0', '0', '1', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('342', '0', '0', '0', '0', '0', '1', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('343', '0', '0', '0', '0', '0', '1', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('344', '0', '0', '0', '0', '0', '5', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('345', '0', '0', '0', '0', '0', '5', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('346', '0', '0', '0', '0', '0', '5', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('347', '0', '0', '0', '0', '0', '5', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('348', '0', '0', '0', '0', '0', '5', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('349', '0', '0', '0', '0', '0', '5', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('350', '0', '0', '0', '0', '0', '5', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('351', '0', '0', '0', '0', '0', '6', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('352', '0', '0', '0', '0', '0', '6', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('353', '0', '0', '0', '0', '0', '6', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('354', '0', '0', '0', '0', '0', '6', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('355', '0', '0', '0', '0', '0', '6', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('356', '0', '0', '0', '0', '0', '6', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('357', '0', '0', '0', '0', '0', '6', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('358', '0', '0', '0', '0', '0', '7', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('359', '0', '0', '0', '0', '0', '7', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('360', '0', '0', '0', '0', '0', '7', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('361', '0', '0', '0', '0', '0', '7', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('362', '0', '0', '0', '0', '0', '7', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('363', '0', '0', '0', '0', '0', '7', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('364', '0', '0', '0', '0', '0', '7', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('365', '0', '0', '0', '0', '0', '8', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('366', '0', '0', '0', '0', '0', '8', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('367', '0', '0', '0', '0', '0', '8', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('368', '0', '0', '0', '0', '0', '8', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('369', '0', '0', '0', '0', '0', '8', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('370', '0', '0', '0', '0', '0', '8', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('371', '0', '0', '0', '0', '0', '8', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('372', '0', '0', '0', '0', '0', '9', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('373', '0', '0', '0', '0', '0', '9', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('374', '0', '0', '0', '0', '0', '9', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('375', '0', '0', '0', '0', '0', '9', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('376', '0', '0', '0', '0', '0', '9', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('377', '0', '0', '0', '0', '0', '9', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('378', '0', '0', '0', '0', '0', '9', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('379', '0', '0', '0', '0', '0', '10', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('380', '0', '0', '0', '0', '0', '10', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('381', '0', '0', '0', '0', '0', '10', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('382', '0', '0', '0', '0', '0', '10', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('383', '0', '0', '0', '0', '0', '10', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('384', '0', '0', '0', '0', '0', '10', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('385', '0', '0', '0', '0', '0', '10', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('386', '0', '0', '0', '0', '0', '12', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('387', '0', '0', '0', '0', '0', '12', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('388', '0', '0', '0', '0', '0', '12', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('389', '0', '0', '0', '0', '0', '12', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('390', '0', '0', '0', '0', '0', '12', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('391', '0', '0', '0', '0', '0', '12', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('392', '0', '0', '0', '0', '0', '12', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('393', '0', '0', '0', '0', '0', '13', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('394', '0', '0', '0', '0', '0', '13', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('395', '0', '0', '0', '0', '0', '13', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('396', '0', '0', '0', '0', '0', '13', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('397', '0', '0', '0', '0', '0', '13', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('398', '0', '0', '0', '0', '0', '13', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('399', '0', '0', '0', '0', '0', '13', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('400', '0', '0', '0', '0', '0', '14', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('401', '0', '0', '0', '0', '0', '14', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('402', '0', '0', '0', '0', '0', '14', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('403', '0', '0', '0', '0', '0', '14', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('404', '0', '0', '0', '0', '0', '14', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('405', '0', '0', '0', '0', '0', '14', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('406', '0', '0', '0', '0', '0', '14', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('407', '0', '0', '0', '0', '0', '15', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('408', '0', '0', '0', '0', '0', '15', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('409', '0', '0', '0', '0', '0', '15', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('410', '0', '0', '0', '0', '0', '15', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('411', '0', '0', '0', '0', '0', '15', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('412', '0', '0', '0', '0', '0', '15', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('413', '0', '0', '0', '0', '0', '15', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('414', '0', '0', '0', '0', '0', '16', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('415', '0', '0', '0', '0', '0', '16', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('416', '0', '0', '0', '0', '0', '16', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('417', '0', '0', '0', '0', '0', '16', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('418', '0', '0', '0', '0', '0', '16', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('419', '0', '0', '0', '0', '0', '16', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('420', '0', '0', '0', '0', '0', '16', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('421', '0', '0', '0', '0', '0', '17', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('422', '0', '0', '0', '0', '0', '17', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('423', '0', '0', '0', '0', '0', '17', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('424', '0', '0', '0', '0', '0', '17', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('425', '0', '0', '0', '0', '0', '17', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('426', '0', '0', '0', '0', '0', '17', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('427', '0', '0', '0', '0', '0', '17', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('428', '0', '0', '0', '0', '0', '22', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('429', '0', '0', '0', '0', '0', '22', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('430', '0', '0', '0', '0', '0', '22', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('431', '0', '0', '0', '0', '0', '22', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('432', '0', '0', '0', '0', '0', '22', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('433', '0', '0', '0', '0', '0', '22', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('434', '0', '0', '0', '0', '0', '22', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('435', '0', '0', '0', '0', '0', '23', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('436', '0', '0', '0', '0', '0', '23', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('437', '0', '0', '0', '0', '0', '23', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('438', '0', '0', '0', '0', '0', '23', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('439', '0', '0', '0', '0', '0', '23', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('440', '0', '0', '0', '0', '0', '23', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('441', '0', '0', '0', '0', '0', '23', '7', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('442', '0', '0', '0', '0', '0', '25', '1', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('443', '0', '0', '0', '0', '0', '25', '2', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('444', '0', '0', '0', '0', '0', '25', '3', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('445', '0', '0', '0', '0', '0', '25', '4', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('446', '0', '0', '0', '0', '0', '25', '5', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('447', '0', '0', '0', '0', '0', '25', '6', '15', '0');
-INSERT INTO `psb_setbiaya` VALUES ('448', '0', '0', '0', '0', '0', '25', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('1', '0', '0', '0', '0', '0', '1', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('2', '0', '0', '0', '0', '0', '1', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('3', '0', '0', '0', '0', '0', '1', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('4', '0', '300000', '0', '0', '1750000', '1', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('5', '0', '0', '0', '0', '0', '1', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('6', '0', '0', '0', '0', '0', '1', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('7', '0', '0', '0', '0', '0', '1', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('8', '0', '0', '0', '0', '0', '5', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('9', '0', '0', '0', '0', '0', '5', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('10', '0', '0', '0', '0', '0', '5', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('11', '0', '0', '0', '0', '0', '5', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('12', '0', '0', '0', '0', '0', '5', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('13', '0', '0', '0', '0', '0', '5', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('14', '0', '400000', '0', '0', '1750000', '5', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('15', '0', '0', '0', '0', '0', '6', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('16', '0', '0', '0', '0', '0', '6', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('17', '0', '0', '0', '0', '0', '6', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('18', '0', '0', '0', '0', '0', '6', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('19', '0', '400000', '0', '0', '1750000', '6', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('20', '0', '0', '0', '0', '0', '6', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('21', '0', '0', '0', '0', '0', '6', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('22', '0', '0', '0', '0', '0', '7', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('23', '0', '0', '0', '0', '0', '7', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('24', '0', '400000', '0', '0', '1750000', '7', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('25', '0', '0', '0', '0', '0', '7', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('26', '0', '0', '0', '0', '0', '7', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('27', '0', '0', '0', '0', '0', '7', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('28', '0', '0', '0', '0', '0', '7', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('29', '0', '400000', '0', '0', '1750000', '8', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('30', '0', '0', '0', '0', '0', '8', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('31', '0', '0', '0', '0', '0', '8', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('32', '0', '0', '0', '0', '0', '8', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('33', '0', '0', '0', '0', '0', '8', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('34', '0', '0', '0', '0', '0', '8', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('35', '0', '0', '0', '0', '0', '8', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('36', '0', '0', '0', '0', '0', '9', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('37', '0', '0', '0', '0', '0', '9', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('38', '0', '0', '0', '0', '0', '9', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('39', '0', '0', '0', '0', '0', '9', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('40', '0', '0', '0', '0', '0', '9', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('41', '0', '400000', '0', '0', '1750000', '9', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('42', '0', '0', '0', '0', '0', '9', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('43', '0', '0', '0', '0', '0', '10', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('44', '0', '0', '0', '0', '0', '10', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('45', '0', '0', '0', '0', '0', '10', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('46', '0', '300000', '0', '0', '1750000', '10', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('47', '0', '0', '0', '0', '0', '10', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('48', '0', '0', '0', '0', '0', '10', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('49', '0', '0', '0', '0', '0', '10', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('50', '0', '0', '0', '0', '0', '12', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('51', '0', '300000', '0', '0', '1750000', '12', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('52', '0', '0', '0', '0', '0', '12', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('53', '0', '0', '0', '0', '0', '12', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('54', '0', '0', '0', '0', '0', '12', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('55', '0', '0', '0', '0', '0', '12', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('56', '0', '0', '0', '0', '0', '12', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('57', '0', '0', '0', '0', '0', '13', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('58', '0', '0', '0', '0', '0', '13', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('59', '0', '0', '0', '0', '0', '13', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('60', '0', '0', '0', '0', '0', '13', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('61', '0', '0', '0', '0', '0', '13', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('62', '0', '300000', '1200000', '8000000', '1750000', '13', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('63', '0', '500000', '0', '0', '1750000', '13', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('64', '0', '0', '0', '0', '0', '14', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('65', '0', '0', '0', '0', '0', '14', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('66', '0', '0', '0', '0', '0', '14', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('67', '0', '0', '0', '0', '0', '14', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('68', '0', '500000', '0', '0', '1750000', '14', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('69', '0', '0', '0', '0', '0', '14', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('70', '0', '0', '0', '0', '0', '14', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('71', '0', '0', '0', '0', '0', '15', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('72', '0', '0', '0', '0', '0', '15', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('73', '0', '400000', '0', '0', '1750000', '15', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('74', '0', '0', '0', '0', '0', '15', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('75', '0', '0', '0', '0', '0', '15', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('76', '0', '0', '0', '0', '0', '15', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('77', '0', '0', '0', '0', '0', '15', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('78', '0', '0', '0', '0', '1750000', '16', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('79', '0', '0', '0', '0', '0', '16', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('80', '0', '0', '0', '0', '0', '16', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('81', '0', '0', '0', '0', '0', '16', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('82', '0', '0', '0', '0', '0', '16', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('83', '0', '0', '0', '0', '0', '16', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('84', '0', '0', '0', '0', '0', '16', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('85', '0', '0', '0', '0', '0', '17', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('86', '0', '0', '0', '0', '0', '17', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('87', '0', '0', '0', '0', '0', '17', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('88', '0', '0', '0', '0', '0', '17', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('89', '0', '0', '0', '0', '0', '17', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('90', '0', '0', '0', '0', '0', '17', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('91', '0', '0', '0', '0', '0', '17', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('92', '0', '0', '0', '0', '0', '22', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('93', '0', '0', '0', '0', '0', '22', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('94', '0', '0', '0', '0', '0', '22', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('95', '0', '0', '0', '0', '0', '22', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('96', '0', '0', '0', '0', '0', '22', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('97', '0', '0', '0', '0', '0', '22', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('98', '0', '0', '0', '0', '0', '22', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('99', '0', '0', '0', '0', '0', '23', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('100', '0', '400000', '0', '0', '1750000', '23', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('101', '0', '0', '0', '0', '0', '23', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('102', '0', '0', '0', '0', '0', '23', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('103', '0', '0', '0', '0', '0', '23', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('104', '0', '0', '0', '0', '0', '23', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('105', '0', '0', '0', '0', '0', '23', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('106', '0', '0', '0', '0', '0', '25', '1', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('107', '0', '0', '0', '0', '0', '25', '2', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('108', '0', '0', '0', '0', '0', '25', '3', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('109', '0', '0', '0', '0', '0', '25', '4', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('110', '0', '0', '0', '0', '0', '25', '5', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('111', '0', '0', '0', '0', '0', '25', '6', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('112', '0', '0', '0', '0', '0', '25', '7', '14', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('113', '0', '300000', '1000000', '10000000', '500000', '1', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('114', '0', '300000', '1000000', '10000000', '500000', '1', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('115', '0', '300000', '1000000', '10000000', '500000', '1', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('116', '0', '0', '0', '0', '0', '1', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('117', '0', '0', '0', '0', '0', '1', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('118', '0', '0', '0', '0', '0', '1', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('119', '0', '0', '0', '0', '0', '1', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('120', '0', '0', '0', '0', '0', '5', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('121', '0', '0', '0', '0', '0', '5', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('122', '0', '0', '0', '0', '0', '5', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('123', '0', '0', '0', '0', '0', '5', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('124', '0', '0', '0', '0', '0', '5', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('125', '0', '0', '0', '0', '0', '5', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('126', '0', '0', '0', '0', '0', '5', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('127', '0', '0', '0', '0', '0', '6', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('128', '0', '0', '0', '0', '0', '6', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('129', '0', '0', '0', '0', '0', '6', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('130', '0', '0', '0', '0', '0', '6', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('131', '0', '0', '0', '0', '0', '6', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('132', '0', '0', '0', '0', '0', '6', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('133', '0', '0', '0', '0', '0', '6', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('134', '0', '0', '0', '0', '0', '7', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('135', '0', '0', '0', '0', '0', '7', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('136', '0', '0', '0', '0', '0', '7', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('137', '0', '0', '0', '0', '0', '7', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('138', '0', '0', '0', '0', '0', '7', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('139', '0', '0', '0', '0', '0', '7', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('140', '0', '0', '0', '0', '0', '7', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('141', '0', '0', '0', '0', '0', '8', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('142', '0', '0', '0', '0', '0', '8', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('143', '0', '0', '0', '0', '0', '8', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('144', '0', '0', '0', '0', '0', '8', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('145', '0', '0', '0', '0', '0', '8', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('146', '0', '0', '0', '0', '0', '8', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('147', '0', '0', '0', '0', '0', '8', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('148', '0', '0', '0', '0', '0', '9', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('149', '0', '0', '0', '0', '0', '9', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('150', '0', '0', '0', '0', '0', '9', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('151', '0', '0', '0', '0', '0', '9', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('152', '0', '0', '0', '0', '0', '9', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('153', '0', '0', '0', '0', '0', '9', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('154', '0', '0', '0', '0', '0', '9', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('155', '0', '0', '0', '0', '0', '10', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('156', '0', '0', '0', '0', '0', '10', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('157', '0', '0', '0', '0', '0', '10', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('158', '0', '0', '0', '0', '0', '10', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('159', '0', '0', '0', '0', '0', '10', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('160', '0', '0', '0', '0', '0', '10', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('161', '0', '0', '0', '0', '0', '10', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('162', '0', '0', '0', '0', '0', '12', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('163', '0', '0', '0', '0', '0', '12', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('164', '0', '0', '0', '0', '0', '12', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('165', '0', '0', '0', '0', '0', '12', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('166', '0', '0', '0', '0', '0', '12', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('167', '0', '0', '0', '0', '0', '12', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('168', '0', '0', '0', '0', '0', '12', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('169', '0', '0', '0', '0', '0', '13', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('170', '0', '0', '0', '0', '0', '13', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('171', '0', '0', '0', '0', '0', '13', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('172', '0', '0', '0', '0', '0', '13', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('173', '0', '0', '0', '0', '0', '13', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('174', '0', '0', '0', '0', '0', '13', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('175', '0', '0', '0', '0', '0', '13', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('176', '0', '0', '0', '0', '0', '14', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('177', '0', '0', '0', '0', '0', '14', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('178', '0', '0', '0', '0', '0', '14', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('179', '0', '0', '0', '0', '0', '14', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('180', '0', '0', '0', '0', '0', '14', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('181', '0', '0', '0', '0', '0', '14', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('182', '0', '0', '0', '0', '0', '14', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('183', '0', '0', '0', '0', '0', '15', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('184', '0', '0', '0', '0', '0', '15', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('185', '0', '0', '0', '0', '0', '15', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('186', '0', '0', '0', '0', '0', '15', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('187', '0', '0', '0', '0', '0', '15', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('188', '0', '0', '0', '0', '0', '15', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('189', '0', '0', '0', '0', '0', '15', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('190', '0', '0', '0', '0', '0', '16', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('191', '0', '0', '0', '0', '0', '16', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('192', '0', '0', '0', '0', '0', '16', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('193', '0', '0', '0', '0', '0', '16', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('194', '0', '0', '0', '0', '0', '16', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('195', '0', '0', '0', '0', '0', '16', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('196', '0', '0', '0', '0', '0', '16', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('197', '0', '0', '0', '0', '0', '17', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('198', '0', '0', '0', '0', '0', '17', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('199', '0', '0', '0', '0', '0', '17', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('200', '0', '0', '0', '0', '0', '17', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('201', '0', '0', '0', '0', '0', '17', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('202', '0', '0', '0', '0', '0', '17', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('203', '0', '0', '0', '0', '0', '17', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('204', '0', '0', '0', '0', '0', '22', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('205', '0', '0', '0', '0', '0', '22', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('206', '0', '0', '0', '0', '0', '22', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('207', '0', '0', '0', '0', '0', '22', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('208', '0', '0', '0', '0', '0', '22', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('209', '0', '0', '0', '0', '0', '22', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('210', '0', '0', '0', '0', '0', '22', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('211', '0', '0', '0', '0', '0', '23', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('212', '0', '0', '0', '0', '0', '23', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('213', '0', '0', '0', '0', '0', '23', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('214', '0', '0', '0', '0', '0', '23', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('215', '0', '0', '0', '0', '0', '23', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('216', '0', '0', '0', '0', '0', '23', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('217', '0', '0', '0', '0', '0', '23', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('218', '0', '0', '0', '0', '0', '25', '1', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('219', '0', '0', '0', '0', '0', '25', '2', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('220', '0', '0', '0', '0', '0', '25', '3', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('221', '0', '0', '0', '0', '0', '25', '4', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('222', '0', '0', '0', '0', '0', '25', '5', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('223', '0', '0', '0', '0', '0', '25', '6', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('224', '0', '0', '0', '0', '0', '25', '7', '10', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('225', '0', '0', '0', '0', '0', '1', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('226', '0', '0', '0', '0', '0', '1', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('227', '0', '0', '0', '0', '0', '1', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('228', '0', '0', '0', '0', '0', '1', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('229', '0', '0', '0', '0', '0', '1', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('230', '0', '0', '0', '0', '0', '1', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('231', '0', '0', '0', '0', '0', '1', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('232', '0', '0', '0', '0', '0', '5', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('233', '0', '0', '0', '0', '0', '5', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('234', '0', '0', '0', '0', '0', '5', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('235', '0', '0', '0', '0', '0', '5', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('236', '0', '0', '0', '0', '0', '5', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('237', '0', '0', '0', '0', '0', '5', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('238', '0', '0', '0', '0', '0', '5', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('239', '0', '0', '0', '0', '0', '6', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('240', '0', '0', '0', '0', '0', '6', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('241', '0', '0', '0', '0', '0', '6', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('242', '0', '0', '0', '0', '0', '6', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('243', '0', '0', '0', '0', '0', '6', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('244', '0', '0', '0', '0', '0', '6', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('245', '0', '0', '0', '0', '0', '6', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('246', '0', '0', '0', '0', '0', '7', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('247', '0', '0', '0', '0', '0', '7', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('248', '0', '0', '0', '0', '0', '7', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('249', '0', '0', '0', '0', '0', '7', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('250', '0', '0', '0', '0', '0', '7', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('251', '0', '0', '0', '0', '0', '7', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('252', '0', '0', '0', '0', '0', '7', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('253', '0', '0', '0', '0', '0', '8', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('254', '0', '0', '0', '0', '0', '8', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('255', '0', '0', '0', '0', '0', '8', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('256', '0', '0', '0', '0', '0', '8', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('257', '0', '0', '0', '0', '0', '8', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('258', '0', '0', '0', '0', '0', '8', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('259', '0', '0', '0', '0', '0', '8', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('260', '0', '0', '0', '0', '0', '9', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('261', '0', '0', '0', '0', '0', '9', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('262', '0', '0', '0', '0', '0', '9', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('263', '0', '0', '0', '0', '0', '9', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('264', '0', '0', '0', '0', '0', '9', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('265', '0', '0', '0', '0', '0', '9', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('266', '0', '0', '0', '0', '0', '9', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('267', '0', '0', '0', '0', '0', '10', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('268', '0', '0', '0', '0', '0', '10', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('269', '0', '0', '0', '0', '0', '10', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('270', '0', '0', '0', '0', '0', '10', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('271', '0', '0', '0', '0', '0', '10', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('272', '0', '0', '0', '0', '0', '10', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('273', '0', '0', '0', '0', '0', '10', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('274', '0', '0', '0', '0', '0', '12', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('275', '0', '0', '0', '0', '0', '12', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('276', '0', '0', '0', '0', '0', '12', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('277', '0', '0', '0', '0', '0', '12', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('278', '0', '0', '0', '0', '0', '12', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('279', '0', '0', '0', '0', '0', '12', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('280', '0', '0', '0', '0', '0', '12', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('281', '0', '0', '0', '0', '0', '13', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('282', '0', '0', '0', '0', '0', '13', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('283', '0', '0', '0', '0', '0', '13', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('284', '0', '0', '0', '0', '0', '13', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('285', '0', '0', '0', '0', '0', '13', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('286', '0', '0', '0', '0', '0', '13', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('287', '0', '0', '0', '0', '0', '13', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('288', '0', '0', '0', '0', '0', '14', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('289', '0', '0', '0', '0', '0', '14', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('290', '0', '0', '0', '0', '0', '14', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('291', '0', '0', '0', '0', '0', '14', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('292', '0', '0', '0', '0', '0', '14', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('293', '0', '0', '0', '0', '0', '14', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('294', '0', '0', '0', '0', '0', '14', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('295', '0', '0', '0', '0', '0', '15', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('296', '0', '0', '0', '0', '0', '15', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('297', '0', '0', '0', '0', '0', '15', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('298', '0', '0', '0', '0', '0', '15', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('299', '0', '0', '0', '0', '0', '15', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('300', '0', '0', '0', '0', '0', '15', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('301', '0', '0', '0', '0', '0', '15', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('302', '0', '0', '0', '0', '0', '16', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('303', '0', '0', '0', '0', '0', '16', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('304', '0', '0', '0', '0', '0', '16', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('305', '0', '0', '0', '0', '0', '16', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('306', '0', '0', '0', '0', '0', '16', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('307', '0', '0', '0', '0', '0', '16', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('308', '0', '0', '0', '0', '0', '16', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('309', '0', '0', '0', '0', '0', '17', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('310', '0', '0', '0', '0', '0', '17', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('311', '0', '0', '0', '0', '0', '17', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('312', '0', '0', '0', '0', '0', '17', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('313', '0', '0', '0', '0', '0', '17', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('314', '0', '0', '0', '0', '0', '17', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('315', '0', '0', '0', '0', '0', '17', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('316', '0', '0', '0', '0', '0', '22', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('317', '0', '0', '0', '0', '0', '22', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('318', '0', '0', '0', '0', '0', '22', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('319', '0', '0', '0', '0', '0', '22', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('320', '0', '0', '0', '0', '0', '22', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('321', '0', '0', '0', '0', '0', '22', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('322', '0', '0', '0', '0', '0', '22', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('323', '0', '0', '0', '0', '0', '23', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('324', '0', '0', '0', '0', '0', '23', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('325', '0', '0', '0', '0', '0', '23', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('326', '0', '0', '0', '0', '0', '23', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('327', '0', '0', '0', '0', '0', '23', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('328', '0', '0', '0', '0', '0', '23', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('329', '0', '0', '0', '0', '0', '23', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('330', '0', '0', '0', '0', '0', '25', '1', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('331', '0', '0', '0', '0', '0', '25', '2', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('332', '0', '0', '0', '0', '0', '25', '3', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('333', '0', '0', '0', '0', '0', '25', '4', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('334', '0', '0', '0', '0', '0', '25', '5', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('335', '0', '0', '0', '0', '0', '25', '6', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('336', '0', '0', '0', '0', '0', '25', '7', '5', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('337', '0', '0', '0', '0', '0', '1', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('338', '0', '0', '0', '0', '0', '1', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('339', '0', '0', '0', '0', '0', '1', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('340', '0', '0', '0', '0', '0', '1', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('341', '0', '0', '0', '0', '0', '1', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('342', '0', '0', '0', '0', '0', '1', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('343', '0', '0', '0', '0', '0', '1', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('344', '0', '0', '0', '0', '0', '5', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('345', '0', '0', '0', '0', '0', '5', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('346', '0', '0', '0', '0', '0', '5', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('347', '0', '0', '0', '0', '0', '5', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('348', '0', '0', '0', '0', '0', '5', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('349', '0', '0', '0', '0', '0', '5', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('350', '0', '0', '0', '0', '0', '5', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('351', '0', '0', '0', '0', '0', '6', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('352', '0', '0', '0', '0', '0', '6', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('353', '0', '0', '0', '0', '0', '6', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('354', '0', '0', '0', '0', '0', '6', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('355', '0', '0', '0', '0', '0', '6', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('356', '0', '0', '0', '0', '0', '6', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('357', '0', '0', '0', '0', '0', '6', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('358', '0', '0', '0', '0', '0', '7', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('359', '0', '0', '0', '0', '0', '7', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('360', '0', '0', '0', '0', '0', '7', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('361', '0', '0', '0', '0', '0', '7', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('362', '0', '0', '0', '0', '0', '7', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('363', '0', '0', '0', '0', '0', '7', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('364', '0', '0', '0', '0', '0', '7', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('365', '0', '0', '0', '0', '0', '8', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('366', '0', '0', '0', '0', '0', '8', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('367', '0', '0', '0', '0', '0', '8', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('368', '0', '0', '0', '0', '0', '8', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('369', '0', '0', '0', '0', '0', '8', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('370', '0', '0', '0', '0', '0', '8', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('371', '0', '0', '0', '0', '0', '8', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('372', '0', '0', '0', '0', '0', '9', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('373', '0', '0', '0', '0', '0', '9', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('374', '0', '0', '0', '0', '0', '9', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('375', '0', '0', '0', '0', '0', '9', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('376', '0', '0', '0', '0', '0', '9', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('377', '0', '0', '0', '0', '0', '9', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('378', '0', '0', '0', '0', '0', '9', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('379', '0', '0', '0', '0', '0', '10', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('380', '0', '0', '0', '0', '0', '10', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('381', '0', '0', '0', '0', '0', '10', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('382', '0', '0', '0', '0', '0', '10', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('383', '0', '0', '0', '0', '0', '10', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('384', '0', '0', '0', '0', '0', '10', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('385', '0', '0', '0', '0', '0', '10', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('386', '0', '0', '0', '0', '0', '12', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('387', '0', '0', '0', '0', '0', '12', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('388', '0', '0', '0', '0', '0', '12', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('389', '0', '0', '0', '0', '0', '12', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('390', '0', '0', '0', '0', '0', '12', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('391', '0', '0', '0', '0', '0', '12', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('392', '0', '0', '0', '0', '0', '12', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('393', '0', '0', '0', '0', '0', '13', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('394', '0', '0', '0', '0', '0', '13', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('395', '0', '0', '0', '0', '0', '13', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('396', '0', '0', '0', '0', '0', '13', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('397', '0', '0', '0', '0', '0', '13', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('398', '0', '0', '0', '0', '0', '13', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('399', '0', '0', '0', '0', '0', '13', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('400', '0', '0', '0', '0', '0', '14', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('401', '0', '0', '0', '0', '0', '14', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('402', '0', '0', '0', '0', '0', '14', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('403', '0', '0', '0', '0', '0', '14', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('404', '0', '0', '0', '0', '0', '14', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('405', '0', '0', '0', '0', '0', '14', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('406', '0', '0', '0', '0', '0', '14', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('407', '0', '0', '0', '0', '0', '15', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('408', '0', '0', '0', '0', '0', '15', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('409', '0', '0', '0', '0', '0', '15', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('410', '0', '0', '0', '0', '0', '15', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('411', '0', '0', '0', '0', '0', '15', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('412', '0', '0', '0', '0', '0', '15', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('413', '0', '0', '0', '0', '0', '15', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('414', '0', '0', '0', '0', '0', '16', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('415', '0', '0', '0', '0', '0', '16', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('416', '0', '0', '0', '0', '0', '16', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('417', '0', '0', '0', '0', '0', '16', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('418', '0', '0', '0', '0', '0', '16', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('419', '0', '0', '0', '0', '0', '16', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('420', '0', '0', '0', '0', '0', '16', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('421', '0', '0', '0', '0', '0', '17', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('422', '0', '0', '0', '0', '0', '17', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('423', '0', '0', '0', '0', '0', '17', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('424', '0', '0', '0', '0', '0', '17', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('425', '0', '0', '0', '0', '0', '17', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('426', '0', '0', '0', '0', '0', '17', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('427', '0', '0', '0', '0', '0', '17', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('428', '0', '0', '0', '0', '0', '22', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('429', '0', '0', '0', '0', '0', '22', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('430', '0', '0', '0', '0', '0', '22', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('431', '0', '0', '0', '0', '0', '22', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('432', '0', '0', '0', '0', '0', '22', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('433', '0', '0', '0', '0', '0', '22', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('434', '0', '0', '0', '0', '0', '22', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('435', '0', '0', '0', '0', '0', '23', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('436', '0', '0', '0', '0', '0', '23', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('437', '0', '0', '0', '0', '0', '23', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('438', '0', '0', '0', '0', '0', '23', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('439', '0', '0', '0', '0', '0', '23', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('440', '0', '0', '0', '0', '0', '23', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('441', '0', '0', '0', '0', '0', '23', '7', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('442', '0', '0', '0', '0', '0', '25', '1', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('443', '0', '0', '0', '0', '0', '25', '2', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('444', '0', '0', '0', '0', '0', '25', '3', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('445', '0', '0', '0', '0', '0', '25', '4', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('446', '0', '0', '0', '0', '0', '25', '5', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('447', '0', '0', '0', '0', '0', '25', '6', '15', '0');
+INSERT INTO `psb_setbiaya_copy` VALUES ('448', '0', '0', '0', '0', '0', '25', '7', '15', '0');
 
 -- ----------------------------
 -- Table structure for psb_statussiswa
@@ -5533,3 +6374,152 @@ CREATE TABLE `psb_tmp_saudara` (
 -- ----------------------------
 INSERT INTO `psb_tmp_saudara` VALUES ('7', '8stsvc8fgc2d77gch0jgm8ona2', 'Raden Aditya Putra', '0000-00-00', 'Elyon Sukomanunggal');
 INSERT INTO `psb_tmp_saudara` VALUES ('8', '8stsvc8fgc2d77gch0jgm8ona2', 'Firman Agung Satria', '0000-00-00', 'Elyon Sukomanunggal');
+DROP TRIGGER IF EXISTS `ins_psb_detailgelombang`;
+DELIMITER ;;
+CREATE TRIGGER `ins_psb_detailgelombang` AFTER INSERT ON `psb_detailgelombang` FOR EACH ROW BEGIN
+
+/*untuk psb_biaya*/
+BLOCK1: begin
+    declare v_col1 int;                     
+    declare no_more_rows1 INT DEFAULT 0;  
+    /*tingkat*/
+		declare cursor1 cursor for              
+        select replid
+        from  aka_tingkat;
+    declare continue handler for not found  
+    		set no_more_rows1 =1;           
+    open cursor1;
+    LOOP1: loop
+        fetch cursor1
+        into  v_col1;
+        if no_more_rows1 then
+            close cursor1;
+            leave LOOP1;
+        end if;
+				/*golongan*/
+        BLOCK2: begin
+            declare v_col2 int;
+            declare no_more_rows2 INT DEFAULT 0;  
+						declare cursor2 cursor for
+                select replid
+                from  psb_golongan;
+           declare continue handler for not found
+               set no_more_rows2 =1;
+            open cursor2;
+            LOOP2: loop
+                fetch cursor2
+                into  v_col2;
+                if no_more_rows2 then
+                    close cursor2;
+                    leave LOOP2;
+                end if;
+								INSERT INTO psb_biaya SET 
+									detailgelombang  = NEW.replid, 
+            			tingkat = v_col1, 
+            			golongan = v_col2;
+            end loop LOOP2;
+        end BLOCK2;
+    end loop LOOP1;
+end BLOCK1;
+
+END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `ins_psb_detaildiskontunai`;
+DELIMITER ;;
+CREATE TRIGGER `ins_psb_detaildiskontunai` AFTER INSERT ON `psb_diskontunai` FOR EACH ROW BEGIN
+BLOCK1: begin
+    declare v_col1 int;                     
+    /*declare no_more_rows boolean1 := FALSE;*/  
+		declare no_more_rows1 INT DEFAULT 0;  
+    declare cursor1 cursor for              
+        select replid
+        from   departemen;
+    declare continue handler for not found  
+        /*set no_more_rows1 := TRUE;*/           
+				set no_more_rows1 =1;           
+    open cursor1;
+    LOOP1: loop
+        fetch cursor1
+        into  v_col1;
+        if no_more_rows1 then
+            close cursor1;
+            leave LOOP1;
+        end if;
+        BLOCK2: begin
+            declare v_col2 int;
+            /*declare no_more_rows2 boolean := FALSE;*/
+            declare no_more_rows2 INT DEFAULT 0;  
+						declare cursor2 cursor for
+                select replid
+                from  aka_tahunajaran;
+           declare continue handler for not found
+               /*set no_more_rows2 := TRUE;*/
+               set no_more_rows2 =1;
+            open cursor2;
+            LOOP2: loop
+                fetch cursor2
+                into  v_col2;
+                if no_more_rows2 then
+                    close cursor2;
+                    leave LOOP2;
+                end if;
+								INSERT INTO psb_detaildiskontunai SET 
+									diskontunai = NEW.replid, 
+            			tahunajaran = v_col2, 
+            			departemen= v_col1 ;
+            end loop LOOP2;
+        end BLOCK2;
+    end loop LOOP1;
+end BLOCK1;
+END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `ins_psb_gelombang`;
+DELIMITER ;;
+CREATE TRIGGER `ins_psb_gelombang` AFTER INSERT ON `psb_gelombang` FOR EACH ROW BEGIN
+BLOCK1: begin
+    declare v_col1 int;                     
+    declare no_more_rows1 INT DEFAULT 0;  
+    declare cursor1 cursor for              
+        select replid
+        from departemen;
+    declare continue handler for not found  
+    		set no_more_rows1 =1;           
+    open cursor1;
+    LOOP1: loop
+        fetch cursor1
+        into  v_col1;
+        if no_more_rows1 then
+            close cursor1;
+            leave LOOP1;
+        end if;
+        BLOCK2: begin
+            declare v_col2 int;
+            /*declare no_more_rows2 boolean := FALSE;*/
+            declare no_more_rows2 INT DEFAULT 0;  
+						declare cursor2 cursor for
+                select replid
+                from  aka_tahunajaran;
+           declare continue handler for not found
+               /*set no_more_rows2 := TRUE;*/
+               set no_more_rows2 =1;
+            open cursor2;
+            LOOP2: loop
+                fetch cursor2
+                into  v_col2;
+                if no_more_rows2 then
+                    close cursor2;
+                    leave LOOP2;
+                end if;
+								INSERT INTO psb_detailgelombang SET 
+									gelombang = NEW.replid, 
+            			departemen = v_col1, 
+            			tahunajaran = v_col2;
+            end loop LOOP2;
+        end BLOCK2;
+    end loop LOOP1;
+end BLOCK1;
+END
+;;
+DELIMITER ;

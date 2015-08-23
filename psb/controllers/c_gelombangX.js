@@ -1,11 +1,3 @@
-// <<<<<<< HEAD
-// var mnu       = 'kelompok';
-// var mnu2      = 'departemen';
-// var mnu3      = 'proses';
-// var dir       = 'models/m_'+mnu+'.php';
-// var dir2      = '../akademik/models/m_'+mnu2+'.php';
-// var dir3      = 'models/m_'+mnu3+'.php';
-// =======
 var mnu  = 'kelompok';
 var mnu6 = 'departemen';
 var mnu7 = 'tahunajaran';

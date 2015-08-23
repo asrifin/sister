@@ -9,15 +9,16 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^home/?$   									index.php?page=vhome
 	#refrensi
 
-	RewriteRule   ^golongan-calon-siswa/?$   					index.php?page=vgolonganCalonSiswa
-	RewriteRule   ^set-biaya-calon-siswa/?$   					index.php?page=vsetBiayaCalonSiswa
+	RewriteRule   ^golongan/?$   								index.php?page=vgolongan
+	RewriteRule   ^biaya/?$   									index.php?page=vbiaya
 	RewriteRule   ^angsuran/?$		   							index.php?page=vangsuran
 	RewriteRule   ^diskon-tunai/?$   							index.php?page=vdiskontunai
 	RewriteRule   ^detail-diskon-tunai/?$   					index.php?page=vdetaildiskontunai
 
 	#transaksi keuangan
 	RewriteRule   ^proses/?$  				 					index.php?page=vproses
-	RewriteRule   ^kelompok/?$				   					index.php?page=vkelompok
+	RewriteRule   ^gelombang/?$				   					index.php?page=vgelombang
+	RewriteRule   ^detail-gelombang/?$				   			index.php?page=vdetailgelombang
 	RewriteRule   ^pendataan-siswa/?$				   			index.php?page=vpendataan
 	RewriteRule   ^penerimaan/?$			   					index.php?page=vpenerimaan
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 

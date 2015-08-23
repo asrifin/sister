@@ -20,7 +20,7 @@
 				$nilai       = (isset($_POST['nilaiS']) && $_POST['nilaiS']!='')?' dd.nilai LIKE "%'.$_POST['nilaiS'].'%" AND':'';
 				$isAktif     = (isset($_POST['isAktifS']) && $_POST['isAktifS']!='')?' dd.isAktif='.$_POST['isAktifS'].' AND':'';
 
-				checkDetailDiskonTunai($departemen,$tahunajaran);
+				// checkDetailDiskonTunai($departemen,$tahunajaran);
 				$sql = 'SELECT 
 							dd.replid,
 							dd.nilai,
@@ -74,7 +74,7 @@
 							
 						$out.= '<tr>
 									<td>'.$res['diskontunai'].'</td>
-									<td>'.$res['nilai'].' %</td>
+									<td align="center">'.$res['nilai'].' %</td>
 									<td>'.$res['keterangan'].'</td>
 									<td align="center"><button onclick="aktifkan('.$res['replid'].');" data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"><i class="icon-'.$icon.'"></i></button></td>
 									'.$btn.'
@@ -178,6 +178,18 @@
 					}
 				}$out=json_encode($ar);
 			break;
+
+			// aktifkan -----------------------------------------------------------------
+			case 'aktifkan':
+				if(!isset($_POST['id_'.$mnu])) $stat='no_id_'.$mnu.'_to_post';
+				else{
+					$akt = getField('isAktif',$tb,'replid',$_POST['id_'.$mnu]);
+					$s   = 'UPDATE  '.$tb.' set isAktif='.($akt==1?0:1).' where replid ='.$_POST['id_'.$mnu];
+					$e   = mysql_query($s);
+					$stat=!$e?'gagal mengaktifkan':'sukses';
+				}$out  = json_encode(array('status'=>$stat));
+			break;
+			// aktifkan -----------------------------------------------------------------
 
 		}
 
