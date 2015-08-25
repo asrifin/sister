@@ -100,6 +100,9 @@
             }else{
                 switch ($_GET['page']) {
                     // master
+                    case 'vdokumen':
+                        require $d.'v_dokumen.php';
+                    break;
                     case 'vgolongan':
                         require $d.'v_golongan.php';
                     break;

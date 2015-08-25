@@ -15,7 +15,7 @@
 
 <div  style="overflow:scroll;height:530px;" >
     <form autocomplete="off" onsubmit="simpan();return false;"> 
-        <button data-hint="Simpan" id="simpanBC"><span class="icon-floppy"></span> </button>
+        <?php echo isAksi('biaya','c')?'<button class="bg-blue fg-white" data-hint="Simpan" id="simpanBC"><span class="icon-floppy"></span> </button>':''; ?>
         <table class="table hovered bordered striped">
             <thead>
                 <tr style="color:white;"class="info">

@@ -81,10 +81,10 @@
 						while ($r2=mysql_fetch_assoc($e2)) {
 							$out.= '<tr>
 										<td>'.$r2['golongan'].'<br> <sup class="fg-orange">('.$r2['keterangan'].')</sup> <input name="golongan[]" value="'.$r2['replid'].'" type="hidden"></td> 
-										<td align="right"><div class="input-control text" ><input data-hint="Formulir" class="text-right" value="Rp. '.number_format($r2['formulir']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="formulirTB_'.$r2['replid'].'"></div></td> 
-										<td align="right"><div class="input-control text"><input data-hint="DPP"  class="text-right"value="Rp. '.number_format($r2['dpp']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="dppTB_'.$r2['replid'].'"></div></td> 
-										<td align="right"><div class="input-control text"><input data-hint="Joining Fee" class="text-right"value="Rp. '.number_format($r2['joiningf']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="joiningfTB_'.$r2['replid'].'"></div></td> 
-										<td align="right"><div class="input-control text"><input data-hint="SPP" class="text-right"value="Rp. '.number_format($r2['spp']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="sppTB_'.$r2['replid'].'"></div></td> 
+										<td align="right">'.(!isAksi('biaya','u')?setuang($r2['formulir']):'<div class="input-control text" ><input data-hint="Formulir" class="text-right" value="Rp. '.number_format($r2['formulir']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="formulirTB_'.$r2['replid'].'"></div>').'</td> 
+										<td align="right">'.(!isAksi('biaya','u')?setuang($r2['dpp']):'<div class="input-control text" ><input data-hint="dpp" class="text-right" value="Rp. '.number_format($r2['dpp']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="dppTB_'.$r2['replid'].'"></div>').'</td> 
+										<td align="right">'.(!isAksi('biaya','u')?setuang($r2['joiningf']):'<div class="input-control text" ><input data-hint="joiningf" class="text-right" value="Rp. '.number_format($r2['joiningf']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="joiningfTB_'.$r2['replid'].'"></div>').'</td> 
+										<td align="right">'.(!isAksi('biaya','u')?setuang($r2['spp']):'<div class="input-control text" ><input data-hint="spp" class="text-right" value="Rp. '.number_format($r2['spp']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="sppTB_'.$r2['replid'].'"></div>').'</td> 
 									</tr>';
 						}
 						$out.= '</tr>';

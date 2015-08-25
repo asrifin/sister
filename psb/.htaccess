@@ -7,8 +7,9 @@ RewriteEngine On
 ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 
 	RewriteRule   ^home/?$   									index.php?page=vhome
-	#refrensi
 
+	#refrensi
+	RewriteRule   ^dokumen/?$   								index.php?page=vdokumen
 	RewriteRule   ^golongan/?$   								index.php?page=vgolongan
 	RewriteRule   ^biaya/?$   									index.php?page=vbiaya
 	RewriteRule   ^angsuran/?$		   							index.php?page=vangsuran
