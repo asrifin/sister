@@ -272,7 +272,7 @@ $admin .= '
 $hasil = $koneksi_db->sql_query( "SELECT * FROM pos_po order by id desc" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 	$admin .= '
-			<option value="'.$data['nopo'].'">'.$data['nopo'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.rupiah_format($data['total']).' ~ '.tanggalindo($data['tgl']).'</option>';
+			<option value="'.$data['nopo'].'">'.getnamasupplier($data['kodesupplier']).' ~ '.$data['nopo'].' ~ '.rupiah_format($data['total']).'</option>';
 }
 	$admin .= '</select>&nbsp;
 					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >

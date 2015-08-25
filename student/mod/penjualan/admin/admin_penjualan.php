@@ -17,38 +17,13 @@ $(document).ready(function() {
 } );
 </script>
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />
-<link rel="stylesheet" href="mod/penjualan/style.css" />
-';
-$admin .= '
-
-<script type="text/javascript" src="mod/penjualan/script.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
-$wkt = <<<eof
-<script language="JavaScript" type="text/javascript">
-    
-    /**
-    * Example callback function
-    */
-    /*<![CDATA[*/
-    function exampleCallback_ISO3(date, month, year)
-    {
-        if (String(month).length == 1) {
-            month = '0' + month;
-        }
-    
-        if (String(date).length == 1) {
-            date = '0' + date;
-        }    
-        document.forms['posts'].tgl.value = year + '-' + month + '-' + date;
-    }
-    calendar3 = new dynCalendar('calendar3', 'exampleCallback_ISO3');
-    calendar3.setMonthCombo(true);
-    calendar3.setYearCombo(true);
-/*]]>*/     
-</script>
-eof;
+$JS_SCRIPT.= <<<js
+<script type="text/javascript">
+  $(function() {
+$( "#tgl" ).datepicker({ dateFormat: "yy-mm-dd" } );
+  });
+  </script>
+js;
 $script_include[] = $JS_SCRIPT;
 	
 //$index_hal=1;	
@@ -382,48 +357,44 @@ $admin .= '
 	<tr>
 		<td>Tanggal</td>
 		<td>:</td>
-		<td><input type="text" name="tgl" value="'.$tgl.'" class="form-control">&nbsp;'.$wkt.'</td>
+		<td><input type="text" id="tgl" name="tgl" value="'.$tgl.'" class="form-control">&nbsp;</td>
 '.$kelas.'
 	</tr>';
 $admin .= '
 	<tr>
 		<td>Kode PO</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="po_id"  name="kodepo" value="'.$kodepo.'" onkeyup="autocompletpo()"class="form-control" >
+		<td><select  id="combobox" name="kodepo"  class="form-control">
+	<option value=""> </option>';
+
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_popenjualan ORDER BY id DESC" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$pilihan = ($data['nopo']==$kodepo)?"selected":'';
+	$admin .= '
+			<option value="'.$data['nopo'].'" '.$pilihan.'>'.getnamacustomer($data['kodecustomer']).' ~ '.$data['nopo'].' ~ '.rupiah_format($data['total']).'</option>';
+}
+	$admin .= '</select>&nbsp;
 					<input type="submit" value="Tambah FAK" name="tambahpo"class="btn btn-success" >&nbsp;&nbsp;<input type="submit" value="Batal" name="deletecustomer"class="btn btn-danger" >
-                    <ul id="po_list_id"></ul>
-                </div>
 				</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		</tr>';
-$admin .= '
-	<tr>
-		<td>Customer</td>
-		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodecustomer" value="'.$kodecustomer.'" onkeyup="autocomplet()"class="form-control" >
-					
-                    <ul id="country_list_id"></ul>
-                </div>
 		<td>Cara Pembayaran</td>
 		<td>:</td>
 		<td>'.$carabayar.'</td>
 		</tr>';
-
-
 $admin .= '
 	<tr>
 		<td>Barang</td>
 		<td>:</td>
-		<td>
-                <div class="input_container">
-                    <input type="text" id="barang_id"  name="kodebarang" value="'.$kodebarang.'" onkeyup="autocomplet2()"class="form-control" >
+		<td><select  id="combobox2" name="kodebarang"  class="form-control">
+	<option value=""> </option>';
+
+$hasil = $koneksi_db->sql_query( "SELECT pp.nama as namaproduk,pp.kode as kode,pj.nama as jenjang FROM pos_produk pp,pos_jenjang pj WHERE pp.jenjang=pj.id" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+
+	$admin .= '
+			<option value="'.$data['kode'].'">'.$data['namaproduk'].' ~ '.$data['jenjang'].'</option>';
+}
+	$admin .= '</select>&nbsp;
 					<input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" >&nbsp;
-                    <ul id="barang_list_id"></ul>
-                </div>
 				</td>
 		<td>Termin</td>
 		<td>:</td>
@@ -535,12 +506,14 @@ $admin .= '
 	<tr>
 		<td>Kode Faktur</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="faktur_id"  name="kodefaktur" value="'.$getlastfaktur.'" onkeyup="autocompletfaktur()" class="form-control" >
+		<td><select id="combobox"  name="kodefaktur"  class="form-control">';
+$hasil = $koneksi_db->sql_query( "SELECT pj.nofaktur,pj.total,sis.nama as nama FROM pos_penjualan pj,aka_siswa sis ORDER BY pj.id DESC" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+	$admin .= '
+			<option value="'.$data['nofaktur'].'">'.$data['nofaktur'].' ~ '.getnamasupplier($data['nama']).' ~ '.rupiah_format($data['total']).'</option>';
+}
+	$admin .= '</select>
 					<input type="submit" value="Lihat Faktur" name="lihatfaktur"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
-					
-                    <ul id="faktur_list_id"></ul>
-                </div>
 				</td>
 		<td></td>
 		<td></td>
