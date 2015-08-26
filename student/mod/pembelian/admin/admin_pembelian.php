@@ -425,6 +425,17 @@ $admin .= '
 
 		</td>
 	</tr>';
+if($nopo){
+$admin .= '
+	<tr>
+		<td>Nomor PO</td>
+		<td>:</td>
+		<td>'.$nopo.'</td>
+		<td>
+		</td>
+	</tr>';	
+	
+}
 $admin .= '
 	<tr>
 		<td>Tanggal</td>
