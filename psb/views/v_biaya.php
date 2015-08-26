@@ -19,7 +19,8 @@
         <table class="table hovered bordered striped">
             <thead>
                 <tr style="color:white;"class="info">
-                    <th class="text-center">Tingkat (Jenjang) </th>
+                    <th class="text-center">Jenjang</th>
+                    <th class="text-center">Kelas</th>
                     <th class="text-center">Golongan</th>
                     <th class="text-center">Formulir</th>
                     <th class="text-center">DPP</th>

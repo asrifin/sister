@@ -4,8 +4,8 @@
 <nav class="breadcrumbs">
     <ul>
         &nbsp;
-        <li><a href="diskon-tunai">Diskon Tunai</a></li>
-        <li class="active"><a href="#"><b>Detail Diskon Tunai</b></a></li>
+        <li><a href="diskon-tunai">Diskon</a></li>
+        <li class="active"><a href="#"><b>Detail Diskon</b></a></li>
     </ul>
 </nav>
 <div class="input-control select span3">

@@ -5,8 +5,8 @@
     <ul>
         &nbsp;
         <button <?php echo isAksi('diskontunai','c')?'onclick="viewFR(\'\')"':'disabled'; ?> class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
-        <li class="active"><a href="#"><b>Diskon Tunai</b></a></li>
-        <li><a href="detail-diskon-tunai">Detail Diskon Tunai</a></li>
+        <li class="active"><a href="#"><b>Diskon</b></a></li>
+        <li><a href="detail-diskon-tunai">Detail Diskon</a></li>
     </ul>
 </nav>
 <table class="table hovered bordered striped">

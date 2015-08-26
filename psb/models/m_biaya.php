@@ -16,88 +16,93 @@
 				$departemen      = isset($_POST['departemenS'])?$_POST['departemenS']:'';
 				$detailgelombang = isset($_POST['detailgelombangS'])?$_POST['detailgelombangS']:'';
 				$nGol            = getNumRows('golongan');
-				// $nTing           = getNumRows2('tingkat');
-				
-				// checkSetBiaya($kelompok);
-				$sql ='SELECT
-							t.replid,	
-							t.tingkat
-						FROM
-							aka_kelas k
-							JOIN aka_subtingkat s on s.replid = k.subtingkat
-							JOIN aka_tingkat t on t.replid = s.tingkat
-						where 
-							k.departemen = '.$departemen.'
-						GROUP BY 
-							t.replid';
-				// vd($sql);
-				
-				// jumlah tingkat
-				$eTing = mysql_query($sql);
-				$nTing = mysql_num_rows($eTing);
-				// vd($nGol);
-
-				if(isset($_POST['starting'])){
-					$starting=$_POST['starting'];
-				}else{
-					$starting=0;
-				}
-
-				$recpage = ($nGol*$nTing);//jumlah data per halaman
-				$aksi    = 'tampil';
-				$subaksi = '';
-				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-				$result  =$obj->result;
-
-				$jum = mysql_num_rows($result);
-				$out ='';
-				if($jum!=0){	
-					$nox 	= $starting+1;
-					while($r1 = mysql_fetch_assoc($result)){	
-						$out.= '<tr>
-									<td valign="middle" rowspan="'.($nGol+1).'">
-										'.$nox.'. '.$r1['tingkat'].'
-									</td>';
-									// g.replid,
-						$s2 ='	SELECT
-									b.replid,
-									b.spp,
-									b.formulir,
-									b.joiningf,
-									b.dpp,
-									g.golongan,
+				$s1 = 'SELECT 
+							t2.idtingkat,
+							t2.tingkat,
+							count(*)nSubt
+						from (
+								SELECT
+									s.replid,	
 									t.tingkat,
-									g.keterangan
+									t.replid idtingkat,	
+									s.subtingkat
 								FROM
-									psb_golongan g
-									JOIN psb_biaya b ON b.golongan = g.replid
-									JOIN aka_tingkat t ON t.replid = b.tingkat
+									aka_tingkat t
+									JOIN aka_subtingkat s ON s.tingkat = t.replid
+									JOIN aka_kelas k ON k.subtingkat = s.replid
 								WHERE
-									b.tingkat = '.$r1['replid'].'
-									AND b.detailgelombang = '.$detailgelombang;
-								// vd($s2);
-						// print_r($s2);exit();
-						$e2  = mysql_query($s2);
-						while ($r2=mysql_fetch_assoc($e2)) {
-							$out.= '<tr>
-										<td>'.$r2['golongan'].'<br> <sup class="fg-orange">('.$r2['keterangan'].')</sup> <input name="golongan[]" value="'.$r2['replid'].'" type="hidden"></td> 
-										<td align="right">'.(!isAksi('biaya','u')?setuang($r2['formulir']):'<div class="input-control text" ><input data-hint="Formulir" class="text-right" value="Rp. '.number_format($r2['formulir']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="formulirTB_'.$r2['replid'].'"></div>').'</td> 
-										<td align="right">'.(!isAksi('biaya','u')?setuang($r2['dpp']):'<div class="input-control text" ><input data-hint="dpp" class="text-right" value="Rp. '.number_format($r2['dpp']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="dppTB_'.$r2['replid'].'"></div>').'</td> 
-										<td align="right">'.(!isAksi('biaya','u')?setuang($r2['joiningf']):'<div class="input-control text" ><input data-hint="joiningf" class="text-right" value="Rp. '.number_format($r2['joiningf']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="joiningfTB_'.$r2['replid'].'"></div>').'</td> 
-										<td align="right">'.(!isAksi('biaya','u')?setuang($r2['spp']):'<div class="input-control text" ><input data-hint="spp" class="text-right" value="Rp. '.number_format($r2['spp']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="sppTB_'.$r2['replid'].'"></div>').'</td> 
-									</tr>';
+									k.departemen = '.$departemen.'
+								GROUP BY
+									s.replid
+							)t2 
+						GROUP BY 
+							t2.idtingkat';
+				$e1  = mysql_query($s1);
+				$n1  = mysql_num_rows($e1);
+				$nox = 1;
+				$out ='';
+				if($n1<=0) $out.= '<tr align="center"><td  colspan="7" ><span style="color:red;text-align:center;"> ... data tidak ditemukan...</span></td></tr>';
+				else{
+					while($r1 = mysql_fetch_assoc($e1)){	
+						// $out.= '<tr class="bg-hover-'.($nox%2==0?'green':'red').'">
+						$out.= '<tr data-hint-mode="2" data-hint-position="left"  data-hint="'.$r1['tingkat'].'" class="bg-hover-*">
+									<td valign="middle" rowspan="'.((intval($r1['nSubt'])*$nGol)+ (intval($r1['nSubt'])+1)).'">
+										'.$nox.'.'.$r1['tingkat'].'
+									</td>';
+						$s2 =' 	SELECT s.replid, s.subtingkat
+								FROM aka_subtingkat s
+								WHERE s.tingkat = '.$r1['idtingkat'];
+						$eTing = mysql_query($s2);
+						$nTing = mysql_num_rows($eTing);
+						
+						$e2    = mysql_query($s2);
+						$n2    = mysql_num_rows($e2);
+						if($n2>0){	
+							while($r2 = mysql_fetch_assoc($e2)){	
+								// $out.= '<tr class="bg-'.($nox%2==0?'green':'red').'">
+											// <td data-hint="okokok" class="text-center" valign="middle" rowspan="'.(intval($nGol)+1).'">
+								$out.= '<tr data-hint-mode="2" data-hint-position="botttom"  data-hint="'.$r1['tingkat'].'-'.$r2['subtingkat'].'">
+											<td class="text-center" valign="middle" rowspan="'.(intval($nGol)+1).'">
+												'.$r2['subtingkat'].'
+											</td>
+											';
+								$s3 ='	SELECT
+											b.replid,
+											b.spp,
+											b.formulir,
+											b.joiningf,
+											b.dpp,
+											g.golongan,
+											s.tingkat,
+											g.keterangan
+										FROM
+											psb_golongan g
+											JOIN psb_biaya b ON b.golongan = g.replid
+											JOIN aka_subtingkat s ON s.replid = b.subtingkat
+										WHERE
+											b.subtingkat = '.$r2['replid'].'
+											AND b.detailgelombang = '.$detailgelombang;
+								$e3  = mysql_query($s3);
+								while ($r3=mysql_fetch_assoc($e3)) {
+									$out.= '<tr>
+												<td>'.$r3['golongan'].'<br> <sup class="fg-orange">('.$r3['keterangan'].')</sup> <input name="golongan[]" value="'.$r3['replid'].'" type="hidden"></td> 
+												<td align="right">'.(!isAksi('biaya','u')?setuang($r3['formulir']):'<div class="input-control text" ><input data-hint="Formulir" class="text-right" value="Rp. '.number_format($r3['formulir']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="formulirTB_'.$r3['replid'].'"></div>').'</td> 
+												<td align="right">'.(!isAksi('biaya','u')?setuang($r3['dpp']):'<div class="input-control text" ><input data-hint="dpp" class="text-right" value="Rp. '.number_format($r3['dpp']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="dppTB_'.$r3['replid'].'"></div>').'</td> 
+												<td align="right">'.(!isAksi('biaya','u')?setuang($r3['joiningf']):'<div class="input-control text" ><input data-hint="joiningf" class="text-right" value="Rp. '.number_format($r3['joiningf']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="joiningfTB_'.$r3['replid'].'"></div>').'</td> 
+												<td align="right">'.(!isAksi('biaya','u')?setuang($r3['spp']):'<div class="input-control text" ><input data-hint="spp" class="text-right" value="Rp. '.number_format($r3['spp']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="sppTB_'.$r3['replid'].'"></div>').'</td> 
+											</tr>';
+								}
+								$out.= '</tr>';
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan=9 ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
 						}
-						$out.= '</tr>';
 						$nox++;
+						$out.='</tr>';
 					}
-				}else{ #kosong
-					$out.= '<tr align="center">
-							<td  colspan=9 ><span style="color:red;text-align:center;">
-							... data tidak ditemukan...</span></td></tr>';
 				}
-				#link paging
-				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 			break; 
 			// view -----------------------------------------------------------------
 
@@ -117,54 +122,6 @@
 				$out = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
-			
-			// delete -----------------------------------------------------------------
-			case 'hapus':
-				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
-				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
-				$e    = mysql_query($s);
-				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
-			break;
-			// delete -----------------------------------------------------------------
-
-			// ambiledit -----------------------------------------------------------------
-			case 'ambiledit':
-				$s 		= ' SELECT *
-							from '.$tb.'
-							WHERE 
-								replid='.$_POST['replid'];
-				$e 		= mysql_query($s);
-				$r 		= mysql_fetch_assoc($e);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'kelas'      =>$r['kelas'],
-							'wali'       =>$r['wali'],
-							'kapasitas'  =>$r['kapasitas'],
-							'keterangan' =>$r['keterangan'],
-						));
-			break;
-			// ambiledit -----------------------------------------------------------------
-
-			// aktifkan -----------------------------------------------------------------
-			case 'aktifkan':
-				$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0" where departemen = '.$_POST['departemen']);
-				if(!$e1){
-					$stat='gagal menonaktifkan';
-				}else{
-					$s2 = 'UPDATE  '.$tb.' set aktif="1" where replid = '.$_POST['replid'];
-					$e2 = mysql_query($s2);
-					if(!$e2){
-						$stat='gagal mengaktifkan';
-					}else{
-						$stat='sukses';
-					}
-				}$out  = json_encode(array('status'=>$stat));
-				//var_dump($stat);exit();
-			break;
-			// aktifkan -----------------------------------------------------------------
-
 		}
 	}echo $out;
 
