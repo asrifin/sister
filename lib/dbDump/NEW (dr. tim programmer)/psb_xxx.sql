@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-24 03:14:00
+Date: 2015-08-26 20:56:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -120,10 +120,10 @@ INSERT INTO `psb_biaya` VALUES ('597', '0', '0', '0', '0', '8', '6', '10');
 INSERT INTO `psb_biaya` VALUES ('598', '0', '0', '0', '0', '8', '7', '10');
 INSERT INTO `psb_biaya` VALUES ('599', '0', '0', '0', '0', '8', '9', '10');
 INSERT INTO `psb_biaya` VALUES ('600', '0', '0', '0', '0', '8', '10', '10');
-INSERT INTO `psb_biaya` VALUES ('602', '90900', '0', '450000', '550000', '1', '1', '11');
+INSERT INTO `psb_biaya` VALUES ('602', '90900', '0', '49000', '0', '1', '1', '11');
 INSERT INTO `psb_biaya` VALUES ('603', '0', '0', '0', '0', '1', '2', '11');
 INSERT INTO `psb_biaya` VALUES ('604', '0', '0', '0', '0', '1', '3', '11');
-INSERT INTO `psb_biaya` VALUES ('605', '0', '0', '0', '0', '1', '4', '11');
+INSERT INTO `psb_biaya` VALUES ('605', '0', '0', '90000', '0', '1', '4', '11');
 INSERT INTO `psb_biaya` VALUES ('606', '0', '0', '0', '0', '1', '5', '11');
 INSERT INTO `psb_biaya` VALUES ('607', '0', '0', '0', '0', '1', '6', '11');
 INSERT INTO `psb_biaya` VALUES ('608', '0', '0', '0', '0', '1', '7', '11');
@@ -140,7 +140,7 @@ INSERT INTO `psb_biaya` VALUES ('619', '0', '0', '0', '0', '2', '9', '11');
 INSERT INTO `psb_biaya` VALUES ('620', '0', '0', '0', '0', '2', '10', '11');
 INSERT INTO `psb_biaya` VALUES ('622', '550000', '0', '0', '0', '3', '1', '11');
 INSERT INTO `psb_biaya` VALUES ('623', '0', '0', '0', '0', '3', '2', '11');
-INSERT INTO `psb_biaya` VALUES ('624', '0', '0', '0', '0', '3', '3', '11');
+INSERT INTO `psb_biaya` VALUES ('624', '90000', '0', '0', '0', '3', '3', '11');
 INSERT INTO `psb_biaya` VALUES ('625', '0', '0', '0', '0', '3', '4', '11');
 INSERT INTO `psb_biaya` VALUES ('626', '0', '0', '0', '0', '3', '5', '11');
 INSERT INTO `psb_biaya` VALUES ('627', '0', '0', '0', '0', '3', '6', '11');
@@ -164,7 +164,7 @@ INSERT INTO `psb_biaya` VALUES ('646', '0', '0', '0', '0', '7', '5', '11');
 INSERT INTO `psb_biaya` VALUES ('647', '0', '0', '0', '0', '7', '6', '11');
 INSERT INTO `psb_biaya` VALUES ('648', '0', '0', '0', '0', '7', '7', '11');
 INSERT INTO `psb_biaya` VALUES ('649', '0', '0', '0', '0', '7', '9', '11');
-INSERT INTO `psb_biaya` VALUES ('650', '0', '0', '0', '0', '7', '10', '11');
+INSERT INTO `psb_biaya` VALUES ('650', '0', '0', '7700000', '0', '7', '10', '11');
 INSERT INTO `psb_biaya` VALUES ('652', '0', '0', '0', '0', '8', '1', '11');
 INSERT INTO `psb_biaya` VALUES ('653', '0', '0', '0', '0', '8', '2', '11');
 INSERT INTO `psb_biaya` VALUES ('654', '0', '0', '0', '0', '8', '3', '11');
@@ -338,7 +338,7 @@ INSERT INTO `psb_biaya` VALUES ('839', '0', '0', '0', '0', '8', '9', '14');
 INSERT INTO `psb_biaya` VALUES ('840', '0', '0', '0', '0', '8', '10', '14');
 INSERT INTO `psb_biaya` VALUES ('842', '0', '0', '0', '0', '1', '1', '15');
 INSERT INTO `psb_biaya` VALUES ('843', '0', '0', '0', '0', '1', '2', '15');
-INSERT INTO `psb_biaya` VALUES ('844', '550000', '0', '0', '0', '1', '3', '15');
+INSERT INTO `psb_biaya` VALUES ('844', '5500000', '0', '0', '0', '1', '3', '15');
 INSERT INTO `psb_biaya` VALUES ('845', '0', '0', '0', '0', '1', '4', '15');
 INSERT INTO `psb_biaya` VALUES ('846', '0', '0', '0', '0', '1', '5', '15');
 INSERT INTO `psb_biaya` VALUES ('847', '0', '0', '0', '0', '1', '6', '15');
@@ -361,7 +361,7 @@ INSERT INTO `psb_biaya` VALUES ('865', '0', '0', '0', '0', '3', '4', '15');
 INSERT INTO `psb_biaya` VALUES ('866', '0', '0', '0', '0', '3', '5', '15');
 INSERT INTO `psb_biaya` VALUES ('867', '0', '0', '0', '0', '3', '6', '15');
 INSERT INTO `psb_biaya` VALUES ('868', '0', '0', '0', '0', '3', '7', '15');
-INSERT INTO `psb_biaya` VALUES ('869', '0', '0', '0', '0', '3', '9', '15');
+INSERT INTO `psb_biaya` VALUES ('869', '8880000', '0', '0', '0', '3', '9', '15');
 INSERT INTO `psb_biaya` VALUES ('870', '0', '0', '0', '0', '3', '10', '15');
 INSERT INTO `psb_biaya` VALUES ('872', '0', '0', '0', '0', '6', '1', '15');
 INSERT INTO `psb_biaya` VALUES ('873', '0', '0', '0', '0', '6', '2', '15');
@@ -2618,6 +2618,25 @@ INSERT INTO `psb_calonsiswa_ayah` VALUES ('987', '1013', '', '', '0000-00-00', '
 INSERT INTO `psb_calonsiswa_ayah` VALUES ('988', '1014', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
 INSERT INTO `psb_calonsiswa_ayah` VALUES ('992', '1016', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
 INSERT INTO `psb_calonsiswa_ayah` VALUES ('993', '1017', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+
+-- ----------------------------
+-- Table structure for psb_calonsiswa_dokumen
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_calonsiswa_dokumen`;
+CREATE TABLE `psb_calonsiswa_dokumen` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `siswa` int(11) NOT NULL,
+  `subdokumen` int(11) NOT NULL,
+  PRIMARY KEY (`replid`),
+  KEY `siswa` (`siswa`) USING BTREE,
+  KEY `subdokumen` (`subdokumen`) USING BTREE,
+  CONSTRAINT `siswaFK` FOREIGN KEY (`siswa`) REFERENCES `psb_subdokumen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `subdokumenFK` FOREIGN KEY (`subdokumen`) REFERENCES `psb_subdokumen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of psb_calonsiswa_dokumen
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for psb_calonsiswa_ibu
@@ -5465,7 +5484,7 @@ INSERT INTO `psb_detaildiskontunai` VALUES ('24', '20', '0', '3', '5', '1');
 INSERT INTO `psb_detaildiskontunai` VALUES ('25', '21', '5', '1', '3', '1');
 INSERT INTO `psb_detaildiskontunai` VALUES ('26', '21', '0', '1', '5', '0');
 INSERT INTO `psb_detaildiskontunai` VALUES ('27', '21', '0', '2', '3', '1');
-INSERT INTO `psb_detaildiskontunai` VALUES ('28', '21', '0', '2', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('28', '21', '70', '2', '5', '1');
 INSERT INTO `psb_detaildiskontunai` VALUES ('29', '21', '0', '3', '3', '1');
 INSERT INTO `psb_detaildiskontunai` VALUES ('30', '21', '0', '3', '5', '1');
 INSERT INTO `psb_detaildiskontunai` VALUES ('31', '22', '50', '1', '3', '1');
@@ -5499,7 +5518,7 @@ INSERT INTO `psb_detaildiskontunai` VALUES ('58', '26', '0', '2', '5', '1');
 INSERT INTO `psb_detaildiskontunai` VALUES ('59', '26', '0', '3', '3', '1');
 INSERT INTO `psb_detaildiskontunai` VALUES ('60', '26', '0', '3', '5', '1');
 INSERT INTO `psb_detaildiskontunai` VALUES ('61', '27', '20', '1', '3', '1');
-INSERT INTO `psb_detaildiskontunai` VALUES ('62', '27', '0', '1', '5', '1');
+INSERT INTO `psb_detaildiskontunai` VALUES ('62', '27', '80', '1', '5', '1');
 INSERT INTO `psb_detaildiskontunai` VALUES ('63', '27', '0', '2', '3', '1');
 INSERT INTO `psb_detaildiskontunai` VALUES ('64', '27', '0', '2', '5', '1');
 INSERT INTO `psb_detaildiskontunai` VALUES ('65', '27', '0', '3', '3', '1');
@@ -5536,7 +5555,7 @@ INSERT INTO `psb_detailgelombang` VALUES ('11', '42', '1', '5', '2015-08-06', '2
 INSERT INTO `psb_detailgelombang` VALUES ('12', '42', '2', '3', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
 INSERT INTO `psb_detailgelombang` VALUES ('13', '42', '2', '5', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
 INSERT INTO `psb_detailgelombang` VALUES ('14', '42', '3', '3', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
-INSERT INTO `psb_detailgelombang` VALUES ('15', '42', '3', '5', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
+INSERT INTO `psb_detailgelombang` VALUES ('15', '42', '3', '5', '2015-08-14', '2015-08-22', '2015-08-23 22:20:07');
 INSERT INTO `psb_detailgelombang` VALUES ('16', '43', '1', '3', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
 INSERT INTO `psb_detailgelombang` VALUES ('17', '43', '1', '5', '2015-11-12', '2017-07-06', '2015-08-23 22:20:07');
 INSERT INTO `psb_detailgelombang` VALUES ('18', '43', '2', '3', '0000-00-00', '0000-00-00', '2015-08-23 22:20:07');
@@ -5566,6 +5585,24 @@ INSERT INTO `psb_diskontunai` VALUES ('24', 'naik jenjang', 'first intake naik j
 INSERT INTO `psb_diskontunai` VALUES ('25', 'JAPRES', 'siswa jalur prestasi');
 INSERT INTO `psb_diskontunai` VALUES ('26', 'pengurus', 'pengurus PPK Elyon, Hamba Tuhan GKA Elyon, Guru Full Timer, Staff, Kepsek');
 INSERT INTO `psb_diskontunai` VALUES ('27', 'DPP ', '( DPP ) second intake untuk siswa dalam // ( SPP ) ortu jemaat &amp; anak sekolah minggu ELYON, secondary rungkut 2 th ajaran // Permohonan khusus melalui disposisi untuk siswa baru yg memiliki sibling');
+
+-- ----------------------------
+-- Table structure for psb_dokumen
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_dokumen`;
+CREATE TABLE `psb_dokumen` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `dokumen` text NOT NULL,
+  PRIMARY KEY (`replid`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of psb_dokumen
+-- ----------------------------
+INSERT INTO `psb_dokumen` VALUES ('11', 'Fookopi Kartu Keluarga (KK) ortu');
+INSERT INTO `psb_dokumen` VALUES ('12', 'Fotokopi KTP (ayah/ibu)');
+INSERT INTO `psb_dokumen` VALUES ('13', 'Copy Rapor :\r\n- Calon KG-A -&gt; PG (jika ada)\r\n- Calon KG-B -&gt; KG-A\r\n- Calon Primary 1 -&gt; KG ');
+INSERT INTO `psb_dokumen` VALUES ('14', 'Rapor asli bagi siswa mutasi ');
 
 -- ----------------------------
 -- Table structure for psb_gelombang
@@ -5710,6 +5747,23 @@ INSERT INTO `psb_proses` VALUES ('9', '2016 - 2017', 'PMB2016', '4', '0000-00-00
 INSERT INTO `psb_proses` VALUES ('10', 'Tahun Ajaran 2014-2015', 'PMB2014', '6', '0000-00-00', '0000-00-00', '100', '3', '1', 'ok (epii)', '2015-02-03 09:53:49', null);
 
 -- ----------------------------
+-- Table structure for psb_satuanjumlah
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_satuanjumlah`;
+CREATE TABLE `psb_satuanjumlah` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `satuanjumlah` varchar(100) NOT NULL,
+  `keterangan` text NOT NULL,
+  PRIMARY KEY (`replid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of psb_satuanjumlah
+-- ----------------------------
+INSERT INTO `psb_satuanjumlah` VALUES ('1', 'lbr', 'lembar');
+INSERT INTO `psb_satuanjumlah` VALUES ('2', 'set', 'set');
+
+-- ----------------------------
 -- Table structure for psb_statussiswa
 -- ----------------------------
 DROP TABLE IF EXISTS `psb_statussiswa`;
@@ -5726,6 +5780,42 @@ CREATE TABLE `psb_statussiswa` (
 -- ----------------------------
 -- Records of psb_statussiswa
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for psb_subdokumen
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_subdokumen`;
+CREATE TABLE `psb_subdokumen` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `dokumen` int(11) NOT NULL,
+  `tingkat` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `satuanjumlah` int(11) NOT NULL,
+  PRIMARY KEY (`replid`),
+  KEY `dokumen` (`dokumen`) USING BTREE,
+  KEY `tingkat` (`tingkat`) USING BTREE,
+  CONSTRAINT `dokumenFK` FOREIGN KEY (`dokumen`) REFERENCES `psb_dokumen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tingkatFK6` FOREIGN KEY (`tingkat`) REFERENCES `aka_tingkat` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of psb_subdokumen
+-- ----------------------------
+INSERT INTO `psb_subdokumen` VALUES ('26', '11', '1', '1', '1');
+INSERT INTO `psb_subdokumen` VALUES ('28', '11', '3', '1', '1');
+INSERT INTO `psb_subdokumen` VALUES ('29', '11', '6', '1', '1');
+INSERT INTO `psb_subdokumen` VALUES ('30', '11', '7', '1', '1');
+INSERT INTO `psb_subdokumen` VALUES ('31', '11', '8', '1', '1');
+INSERT INTO `psb_subdokumen` VALUES ('32', '12', '1', '1', '1');
+INSERT INTO `psb_subdokumen` VALUES ('33', '12', '2', '1', '1');
+INSERT INTO `psb_subdokumen` VALUES ('36', '12', '7', '1', '1');
+INSERT INTO `psb_subdokumen` VALUES ('38', '11', '2', '1', '1');
+INSERT INTO `psb_subdokumen` VALUES ('41', '13', '3', '1', '2');
+INSERT INTO `psb_subdokumen` VALUES ('42', '13', '6', '1', '2');
+INSERT INTO `psb_subdokumen` VALUES ('43', '13', '7', '1', '2');
+INSERT INTO `psb_subdokumen` VALUES ('44', '13', '8', '1', '2');
+INSERT INTO `psb_subdokumen` VALUES ('45', '14', '7', '1', '1');
+INSERT INTO `psb_subdokumen` VALUES ('46', '14', '8', '3', '1');
 
 -- ----------------------------
 -- Table structure for psb_syarat

@@ -1,5 +1,7 @@
-var mnu = 'dokumen';
-var dir = 'models/m_'+mnu+'.php';
+var mnu  = 'dokumen';
+var mnu2 = 'satuanjumlah';
+var dir  = 'models/m_'+mnu+'.php';
+var dir2 = 'models/m_'+mnu2+'.php';
 var contentFR = '';
 
 // main function ---
@@ -19,6 +21,7 @@ var contentFR = '';
                                 +'<tr class="bg-blue fg-white">'
                                     +'<th>Tingkat </th>'
                                     +'<th>Jumlah</th>'
+                                    +'<th>Satuan</th>'
                                 +'</tr>'
                             +'</thead>'
                             +'<tbody id="subdokumenDV">'
@@ -38,8 +41,8 @@ var contentFR = '';
         });
 
         //search action
-        $('#'+mnu+'S').keydown(function (e){
-            if(e.keyCode == 13) viewTB();
+        $('.'+mnu+'_cari').keydown(function (e){
+            if(e.keyCode == 13) viewTB(mnu);
         });
 
         // search button
@@ -60,56 +63,17 @@ var contentFR = '';
         var d=$('form').serialize()+urlx;
         ajax(u,d).done(function (dt){
             if(dt.status!='sukses'){
-                cont = 'Gagal menyimpan data';
+                cont = dt.status;
                 clr  = 'red';
             }else{
                 $.Dialog.close();
-                viewTB();
-                cont = 'Berhasil menyimpan data';
+                viewTB('dokumen');
+                cont = dt.status;
                 clr  = 'green';
             }notif(cont,clr);
         });
     }
 //end of save process ---
-    
-    function dokumenAksiVW (dokumen) {
-        $.ajax({
-            url:dir,
-            data:'aksi=tampil&subaksi=dokumenaksi&id_dokumen='+dokumen,
-            type:'post',
-            dataType:'json',
-            success:function(dt){
-                // alert(dt);return false;
-                console.log(dt);
-                if(dt.status!='sukses'){
-                    notif(dt.status,'red');
-                }else{
-                    alert(dokumen);
-                    $('#idformaksiH').val(dt.data.dokumen);
-                    $('#dokumenTD').html(': '+dt.data.keterangan+'('+dt.data.dokumen+')');
-                    // return false;
-                    // data detail barang
-                    // var tbl='';
-                    // $.each(dt.data.barangArr,function(id,item){
-                    //     var btn;
-                    //     tbl+='<tr>'
-                    //         +'<td><input '+(item.status==3||item.status==4?'disabled':'')+' type="checkbox" dp="'+item.iddpeminjaman+'" brg="'+item.idbarang+'" /></td>'
-                    //         +'<td>'+item.kode+'</td>'
-                    //         +'<td>'+item.barang+'</td>'
-                    //         +'<td>'+item.tgl_kembali2+'</td>'
-                    //         +'<td>'
-                    //             +'<button style="background-color:'+item.color+'" '
-                    //                 +(item.status==3||item.status==4?'onclick="alert(\'sudah dikembalikan\')"':'onclick="kembalikanFC('+item.iddpeminjaman+','+item.idbarang+')"')+'>'
-                    //                 +'<i style="color:white;" class="icon-undo"></i>'
-                    //             +'</button>'
-                    //         +'</td>'
-                    //     +'</tr>';
-                    // });$('#barangTBL2').html(tbl);
-                }
-            }
-        });
-        // contentFR=contentDetail;
-    }
 
 // view table ---
     function viewTB(subaksi){
@@ -159,8 +123,9 @@ var contentFR = '';
             padding: 10,
             onShow: function(){
                     var titlex='<span class="icon-search"></span> Detail Aksi ';
-                    if(iddok=='')subdokumenFC('');
+                    if(iddok=='')  subdokumenFC('');
                     else{
+                        // console.log('masuk edit');
                         var u=dir;
                         var d ='aksi=ambiledit&replid='+iddok;
                         ajax(u,d).done(function (dt){
@@ -174,6 +139,7 @@ var contentFR = '';
                         });
                     }$.Dialog.title(titlex+' '+mnu);
                     $.Dialog.content(contentFR);
+                    $('#dokumenTB').focus();
                 }
         });
     }
@@ -188,14 +154,14 @@ var contentFR = '';
             }else{
                 var o ='';
                 if(dt.subdokumenArr.length==0){
-                    o+'<tr><td class="fg-red" colspan="2">..kosong..</td></tr>'
+                    o+='<tr><td class="fg-red" colspan="2">..kosong..</td></tr>';
                 }else{
                     $.each(dt.subdokumenArr, function (id,item){
                         o+='<tr>'
                                 +'<td>'
                                     +'<div data-role="input-control" class="input-control checkbox">'
                                         +'<label>'
-                                            +'<input onclick="jumlahToggleFC('+item.replid+')" id="tingkat'+item.replid+'TB" name="tingkatTB['+item.replid+']" type="checkbox">'
+                                            +'<input class="tingkatTB" '+(item.idsubdokumen!=null?'checked':'')+' onclick="jumlahToggleFC('+item.idtingkat+')" id="tingkat'+item.idtingkat+'TB" name="tingkatTB['+item.idtingkat+']" type="checkbox">'
                                             +'<span class="check"></span>'
                                             +item.tingkat+' ('+item.kode+')'
                                         +'</label>'
@@ -203,10 +169,19 @@ var contentFR = '';
                                 +'</td>'
                                 +'<td>'
                                     +'<div class="input-control text">'
-                                        +'<input disabled type="number" id="jumlah'+item.replid+'TB" name="jumlah'+item.replid+'TB">'
+                                        +'<input type="hidden" value="'+(item.idsubdokumen===null?'':item.idsubdokumen)+'" name="idsubdokumenH['+item.idtingkat+']" />'
+                                        +'<input min="1" class="text-center" '+(item.jumlah==undefined || item.jumlah==null?'disabled':'')+' type="number" id="jumlah'+item.idtingkat+'TB" value="'+(typeof item.jumlah==undefined || item.jumlah==null?'':item.jumlah)+'" name="jumlah'+item.idtingkat+'TB">'
+                                    +'</div>'
+                                +'</td>'
+                                +'<td>'
+                                    +'<div class="input-control select">'
+                                        +'<select id="satuanjumlah'+item.idtingkat+'TB" name="satuanjumlah'+item.idtingkat+'TB"></select>'
                                     +'</div>'
                                 +'</td>'
                             +'</tr>';
+                    }); 
+                    $.each(dt.subdokumenArr, function (id,item){
+                        cmbsatuanjumlah(item.idtingkat,item.satuanjumlah);
                     });
                 }
                 $('#subdokumenDV').html(o);
@@ -218,11 +193,12 @@ var contentFR = '';
         if($('#tingkat'+idting+'TB').is(':checked')){
             $('#jumlah'+idting+'TB').removeAttr('disabled')
                                     .attr('required',true);
+            $('#jumlah'+idting+'TB').val(1);
         }else{
             $('#jumlah'+idting+'TB').attr('disabled',true)
                                     .removeAttr('required');
+            $('#jumlah'+idting+'TB').val('');
         }
-        $('#jumlah'+idting+'TB').val('');
     }
 
 //paging ---
@@ -265,7 +241,7 @@ var contentFR = '';
         $.ajax({
             url:dir,
             type:'post',
-            data:'aksi=hapus&id_'+mnu+'='+id,
+            data:'aksi=hapus&replid='+id,
             dataType:'json',
             success:function(dt){
                 var cont,clr;
@@ -275,7 +251,7 @@ var contentFR = '';
                 }else{
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
-                    viewTB();
+                    viewTB('dokumen');
                 }notif(cont,clr);
             }
         });
@@ -357,3 +333,21 @@ var contentFR = '';
             }notif(cont,clr);
         });
     }
+
+// combo satuanjumlah ---
+    function cmbsatuanjumlah(idx,sat){
+        u=dir2;
+        d='aksi=cmbsatuanjumlah';
+        ajax(u,d).done(function(dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.satuanjumlah, function(id,item){
+                    out+='<option '+(item.replid==sat?'selected':'')+' value="'+item.replid+'">'+item.satuanjumlah+'</option>';
+                });
+            }
+            $('#satuanjumlah'+idx+'TB').html(out);
+        });
+    }
+//end of combo satuanjumlah ---

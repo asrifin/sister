@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu = 'dokumen';
+	$mnu = 'satuanjumlah';
 	$tb  = 'psb_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -20,7 +20,6 @@
 										t.tingkat,
 										t.kode,
 										t1.jumlah,
-										t1.satuanjumlah,
 										t1.replid idsubdokumen
 									FROM
 										aka_tingkat t
@@ -28,7 +27,6 @@
 											SELECT
 												replid,
 												tingkat,
-												satuanjumlah,
 												jumlah
 											FROM
 												psb_subdokumen
@@ -122,15 +120,15 @@
 							$ss='';
 							foreach ($_POST['idsubdokumenH'] as $i => $v) {
 								if(!empty($_POST['idsubdokumenH'][$i]) && isset($_POST['tingkatTB'][$i])){ //edit
-									$ss   = ' UPDATE psb_subdokumen SET satuanjumlah='.$_POST['satuanjumlah'.$i.'TB'].',jumlah ='.$_POST['jumlah'.$i.'TB'].' WHERE replid='.$_POST['idsubdokumenH'][$i];
+									$ss   = ' UPDATE psb_subdokumen SET jumlah ='.$_POST['jumlah'.$i.'TB'].' WHERE replid='.$_POST['idsubdokumenH'][$i];
 									$ee   = mysql_query($ss);
 									$stat =!$ee?'edit:gagal_update_subdokumen':'sukses';
 								}elseif(!empty($_POST['idsubdokumenH'][$i])){ // hapus
-									$ss   ='DELETE FROM psb_subdokumen  where replid ='.$_POST['idsubdokumenH'][$i];
+									$ss   ='DELETE FROM psb_subdokumen where replid ='.$_POST['idsubdokumenH'][$i];
 									$ee   = mysql_query($ss);
 									$stat =!$ee?'edit:gagal_hapus_subdokumen':'sukses';
 								}elseif(empty($_POST['idsubdokumenH'][$i]) && isset($_POST['tingkatTB'][$i])){ // add
-									$ss= ' INSERT INTO psb_subdokumen SET  satuanjumlah='.$_POST['satuanjumlah'.$i.'TB'].', dokumen='.$_POST['replid'].', tingkat='.$i.', jumlah ='.$_POST['jumlah'.$i.'TB'];
+									$ss= ' INSERT INTO psb_subdokumen SET dokumen='.$_POST['replid'].', tingkat='.$i.', jumlah ='.$_POST['jumlah'.$i.'TB'];
 									$ee = mysql_query($ss);
 									$stat =!$ee?'edit:gagal_add_subdokumen':'sukses';
 								}
@@ -146,8 +144,7 @@
 						}else{
 							foreach ($_POST['tingkatTB'] as $i => $v) {
 								$ss = 'INSERT INTO psb_subdokumen set 	dokumen = '.$id.',
-																		tingkat = '.$i.', 
-																		satuanjumlah='.$_POST['satuanjumlah'.$i.'TB'].',
+																		tingkat = '.$i.',
 																		jumlah  = '.filter($_POST['jumlah'.$i.'TB']);
 								$ee   = mysql_query($ss);
 								$stat =!$ee?'add:gagal_add_subdokumen':'sukses';
@@ -203,23 +200,21 @@
 			break;
 			// aktifkan -----------------------------------------------------------------
 
-			// cmbwarna -----------------------------------------------------------------
+			// cmsatuanjumlah -----------------------------------------------------------------
 			case 'cmb'.$mnu:
 				$w='';
-				if(isset($_POST['id_'.$mnu])){
-					$w.='where id_'.$mnu.'='.$_POST['id_'.$mnu];
+				if(isset($_POST['replid'])){
+					$w.='where replid ='.$_POST['replid'];
 				}else{
 					if(isset($_POST[$mnu])){
 						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST['departemen'])){
-						$w.='where departemen ='.$_POST['departemen'];
 					}
 				}
 				
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY urutan ASC';
+						ORDER  BY '.$mnu.' ASC';
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
@@ -231,7 +226,7 @@
 					if($n=0){ // kosong 
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
-						if(!isset($_POST['id_'.$mnu])){
+						if(!isset($_POST['replid'])){
 							while ($r=mysql_fetch_assoc($e)) {
 								$dt[]=$r;
 							}

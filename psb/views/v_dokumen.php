@@ -15,17 +15,12 @@
             <th class="text-center">Aksi</th>
         </tr>
         <tr xstyle="display:none;" id="cariTR" class="selected">
-            <th class="text-center"><div class="input-control text"><input placeholder="item" id="itemS" name="itemS"></div></th>
+            <th class="text-center"><div class="input-control text"><input class="dokumen_cari" placeholder="cari..." id="dokumen_dokumenS" name="dokumen_dokumenS"></div></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
         </tr>
     </thead>
 
-    <tbody id="tbody">
-        <!-- row table -->
+    <tbody id="dokumen_tbody">
     </tbody>
-    <tfoot>
-        
-    </tfoot>
 </table>
-
