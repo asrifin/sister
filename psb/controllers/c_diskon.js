@@ -1,5 +1,7 @@
-var mnu       = 'diskontunai';
+var mnu       = 'diskon';
+var mnu2      ='departemen';
 var dir       = 'models/m_'+mnu+'.php';
+var dir2      = '../akademik/models/m_'+mnu2+'.php';
 var contentFR = '';
 
 // main function ---
@@ -7,10 +9,16 @@ var contentFR = '';
         contentFR += '<form autocomplete="off" xstyle="overflow:scroll;height:560px;" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
 
+                        // departemen
+                        +'<label>Departemen</label>'
+                        +'<div class="input-control select">'
+                            +'<select id="departemenTB" name="departemenTB"></select>'
+                        +'</div>'
+                        
                         // diskon tunai
                         +'<label>Nama Diskon</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="diskon tunai" required name="diskontunaiTB" id="diskontunaiTB">'
+                            +'<input placeholder="diskon tunai" required name="diskonTB" id="diskonTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
@@ -26,15 +34,18 @@ var contentFR = '';
                         +'</div>'
                     +'</form>';
 
-        viewTB();
+        cmbdepartemen('filter','');
 
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
         });
+        $("#departemenS").on('change', function(){
+            viewTB();
+        });
 
         //search action
-        $('#keteranganS,#diskontunaiS').on('keydown',function (e){ // kode grup
+        $('#keteranganS,#diskonS').on('keydown',function (e){ // kode grup
             if(e.keyCode == 13) viewTB();
         });
 
@@ -46,34 +57,27 @@ var contentFR = '';
     }); 
 // end of save process ---
 
-// combo tingkat ---
-    function cmbtingkat(typ,ting){
-        var replid = ting!=''?'&replid='+ting:'';
-        var u=dir2;
-        var d='aksi=cmb'+mnu2;
+// combo departemen ---
+    function cmbdepartemen(typ,dep){
+        var u = dir2;
+        var d ='aksi=cmb'+mnu2;
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){
                 out+='<option value="">'+dt.status+'</option>';
             }else{
-                if(dt.tingkat.length==0){
-                    out+='<option value="">kosong</option>';
-                }else{
-                    $.each(dt.tingkat, function(id,item){
-                        out+='<option '+(ting==item.replid?' selected ':'')+' value="'+item.replid+'">'+item.tingkat+'</option>';
-                    });
-                }
-                if(typ=='filter'){ // filter (search)
-                    $('#tingkatS').html('<option value="">-SEMUA-</option>'+out);
-                    viewTB();
-                }else{ // form (edit & add)
-                    $('#tingkatTB').html('<option value="">-Pilih Tingkat-</option>'+out);
-                }
+                $.each(dt.departemen, function(id,item){
+                    out+='<option '+(dep!='' && dep==item.replid?'selected':'')+' value="'+item.replid+'">'+item.nama+'</option>';
+                });
+            }
+            if(typ=='filter'){
+                $('#departemenS').html(out);
+                viewTB();
+            }else{
+                $('#departemenTB').html(out);
             }
         });
     }
-//end of combo tingkat ---
-
 //save process ---
     function simpan(){
         var urlx ='&aksi=simpan';
@@ -155,16 +159,19 @@ var contentFR = '';
                     titl= 'Ubah '+mnu;
                     var u =dir;
                     var d ='aksi=ambiledit&replid='+id;
-                    ajax(u,d).done(function(r){
+                    ajax(u,d).done(function (dt){
                         $('#idformH').val(id);
-                        $('#diskontunaiTB').val(r.diskontunai);
-                        $('#keteranganTB').val(r.keterangan);
+                        $('#diskonTB').val(dt.diskon);
+                        $('#keteranganTB').val(dt.keterangan);
+                        cmbdepartemen('form',dt.departemen);
                     });
                 }else{ // form mode : add  
+                    cmbdepartemen('form','');
                     titl='Tambah '+mnu;
-                }$.Dialog.title(titl);
+                }
+                $.Dialog.title(titl);
                 $.Dialog.content(contentFR);
-                $('#diskontunaiTB').focus();
+                $('#diskonTB').focus();
             }
         });
     }

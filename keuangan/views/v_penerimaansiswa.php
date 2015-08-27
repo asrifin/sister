@@ -1,3 +1,4 @@
+<?php isMenu($modul,'penerimaansiswa'); ?>
 <script src="controllers/c_penerimaan.js"></script>
 <script src="js/metro/metro-hint.js"></script>
 <script src="../js/base64.js"></script>

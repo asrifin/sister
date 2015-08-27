@@ -13,8 +13,8 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^golongan/?$   								index.php?page=vgolongan
 	RewriteRule   ^biaya/?$   									index.php?page=vbiaya
 	RewriteRule   ^angsuran/?$		   							index.php?page=vangsuran
-	RewriteRule   ^diskon-tunai/?$   							index.php?page=vdiskontunai
-	RewriteRule   ^detail-diskon-tunai/?$   					index.php?page=vdetaildiskontunai
+	RewriteRule   ^diskon/?$   									index.php?page=vdiskon
+	RewriteRule   ^detail-diskon/?$   							index.php?page=vdetaildiskon
 
 	#transaksi keuangan
 	RewriteRule   ^proses/?$  				 					index.php?page=vproses

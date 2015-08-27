@@ -1,39 +1,20 @@
- ________________
-| NOTE  	  |	
+ _________________
+| NOTE  	  	  |	
 |  + : solved 	  |
 |  - : error/bug  |
 |  C : completed  |
 |  P : progress	  |
 |_________________|
-______________________________________________________
-
-PSB V2.0
-* periode penerimaan (P)
-	+ view > warna table header	
-  	- form : 
-     		-title form : "undefined periode"	
-	     	+ angkatan : combo tidak ter-select  
-  	+ search > belum ada	( tanpa Search)	
-
-* Kelompok Pendaftaran (C)
-	+ paging > Menampilkan syntax query (klik next)	
-	+ filtering > Combo "Tahun-Ajaran", table tidak tampil (onchange)	
+__________________________ transaksi ____________________________
 
 * Pendataan calon siswa (P)
-	+ filtering >  combo "kelompok", table tidak ngefek (query)
-			+ combo tahun ajaran pas ngeload pertama kelompoknya hanya ngeload gelombang1 
-	+ Form > scroll (view)
-	+ paging > undefined (query)
-	+ Insert > Belum Cara insert ke multiple tabel
-	+ Cara membuat no otomatis pada no pendaftaran
-	- menjumlahkan angsuran dan total uang pangkal net menggunakan Rupiah
-	+ Insert > Foto
-	- Update foto tidak tampil
-	+ view   > 
-	  + Combo Kelompok ga sesuai
-	  + menampilkan foto siswa pada view detail siswa
-				
-	
+	- tambah combo departemen 
+	- ganti kelompok menjadi detail gelombang
+	* grup menu pembayaran, dipecah menjadi :
+		- formulir 
+		- DPP :  diskon | angsur
+		- SPP : diskon 
+		- jonining fee : diskon | angsur
 
 * penerimaan siswa baru (P)
 	+ paging > klik next, table tidak tampil
@@ -41,7 +22,11 @@ PSB V2.0
 	- view   > 
 			+ Dialog pada Tombol Diterima res data undefined  
 			+ Combo kelompok ditampilkan semua 
-____________________________________________________
+
+* detail diskon (P)
+	- hapus field departemen  
+
+_____________________________  master  _______________________
 
 * golongan calon siswa (C)
 	+ view > 
@@ -53,18 +38,8 @@ ____________________________________________________
 		+ button search 
 		+ event onkeydown (enter) 
 	
-* kriteria calon siswa (C)
-	+ view :
-		+ table header (theme) 
-		+ form (dark backgound >theme)  
-		+ button add (theme)
-	+ paging > ...
-	+ searching :
-		+ button search 	
-		+ event onkeydown (enter)  
-
-* Set Biaya Calon Siswa (P)
-	- SQL Belum Sesuai
+* Set Biaya Calon Siswa (C)
+	+ SQL Belum Sesuai
 
 * set angsuran (C)
 	+ view :
@@ -75,3 +50,6 @@ ____________________________________________________
 	+ searching :
 		+ button search  
 		+ event onkeydown (enter) 
+
+* diskon (P)
+	- tambah field departemen 
