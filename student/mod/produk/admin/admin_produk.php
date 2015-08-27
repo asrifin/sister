@@ -114,7 +114,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode Barang</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'" required></td>
+		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'" required  maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>Nama Barang</td>
@@ -214,7 +214,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode Barang</td>
 		<td>:</td>
-		<td><input type="text" name="kode"value="'.$kode.'" size="25"class="form-control" required>*kode otomatis apabila tidak diisi</td>
+		<td><input type="text" name="kode"value="'.$kode.'" size="25" maxlength="15" class="form-control" required>*kode otomatis apabila tidak diisi</td>
 	</tr>
 	<tr>
 		<td>Nama Barang</td>

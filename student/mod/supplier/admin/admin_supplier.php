@@ -85,7 +85,7 @@ $admin .= '
 	<tr>
 		<td>Kode</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" required value="'.$kode.'"></td>
+		<td><input type="text" name="kode" size="25"class="form-control" required value="'.$kode.'" maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>Nama</td>
@@ -177,7 +177,7 @@ $admin .= '
 	<tr>
 		<td>Kode</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'"required ></td>
+		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'"required  maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>Nama</td>

@@ -279,7 +279,7 @@ $admin .= '
 	<tr>
 		<td>Nomor PO</td>
 		<td>:</td>
-		<td><input type="text" name="nopo" value="'.$nopo.'" class="form-control"></td>
+		<td><input type="text" name="nopo" value="'.$nopo.'" class="form-control"><input type="submit" value="Batal" name="deletecustomer"class="btn btn-danger" ></td>
 '.$customer.'
 	</tr>';
 $admin .= '
@@ -318,11 +318,9 @@ $pilihan = ($data['kode']==$kodebarang)?"selected":'';
 	$admin .= '
 			<option value="'.$data['kode'].'"'.$pilihan.'>'.$data['namaproduk'].' / '.$data['jenjang'].'</option>';
 }
-	$admin .= '</select>
-				</td>
-		<td>Termin</td>
+	$admin .= '</select>&nbsp;&nbsp;<input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" > <td>Termin</td>
 		<td>:</td>
-		<td>'.$sel3.'Hari</td>
+		<td><input type="text" name="termin" value="'.$termin.'" class="form-control"></td>
 		</tr>
 				';
 $admin .= '	

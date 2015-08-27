@@ -23,19 +23,20 @@ $admin  .='<legend>LAPORAN</legend>';
 $admin .='<div class="panel panel-info">';
 
 if($_GET['aksi']==""){
-$admin .='<div class="panel-heading"><b>Laporan Penjualan Jasa</b></div>';
 $tglawal = date("Y-m-01");
 $tglnow = date("Y-m-d");
 $tglmulai 		= !isset($tglmulai) ? $tglnow : $tglmulai;
 $tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
 $sel = '<select name="carabayar" class="form-control">';
-$arr5 = array ('Tunai');
+$arr5 = array ('Semua','Pemesanan','Tunai');
 foreach ($arr5 as $k=>$v){
 	$sel .= '<option value="'.$v.'">'.$v.'</option>';	
 	
 }
 $sel .= '</select>';
-$admin .= '<form class="form-inline" method="get" action="cetakpenjualanjasa.php" enctype ="multipart/form-data" id="posts" target="_blank">
+
+$admin .='<div class="panel-heading"><b>Laporan Pemesanan</b></div>';
+$admin .= '<form class="form-inline" method="get" action="cetakpopenjualan.php" enctype ="multipart/form-data" id="posts" target="_blank">
 <table class="table table-striped table-hover">';
 $admin .= '
 	<tr>
@@ -53,13 +54,13 @@ $admin .= '
 		<td>'.$sel.'	
 		</td>
 	</tr>';
-	$admin .= '<tr>
+$admin .= '<tr>
 	<td>Customer </td>
-	<td><select name="kodecustomer" id="combobox">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM psb_calonsiswa ORDER BY nama asc");
+	<td><select name="kodecustomer" class="form-control" id="combobox">';
+$hasilj = $koneksi_db->sql_query("SELECT * FROM aka_siswa ORDER BY nama asc");
 $admin .= '<option value="Semua"> Semua </option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
-$admin .= '<option value="'.$datasj['replid'].'">'.$datasj['nama'].'</option>';
+$admin .= '<option value="'.$datasj['nis'].'">'.$datasj['nama'].'&nbsp;&nbsp;('.$datasj['nis'].')</option>';
 }
 $admin .='</select></td>
 </tr>';
@@ -72,7 +73,7 @@ $admin .= '
 $admin .= '<tr>
 	<td>Jenis </td>
 	<td><select name="jenisproduk" id="combobox2">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk where jenis='JASA' ORDER BY nama asc");
+$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk where jenis='BARANG' ORDER BY nama asc");
 $admin .= '<option value="Semua"> Semua </option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
 $admin .= '<option value="'.$datasj['id'].'">'.$datasj['nama'].'</option>';
@@ -82,20 +83,20 @@ $admin .='</select></td>
 $admin .= '<tr>
 	<td>Barang </td>
 	<td><select name="kodebarang" id="combobox3">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_produkjasa ORDER BY nama asc");
+$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_produk ORDER BY nama asc");
 $admin .= '<option value="Semua"> Semua </option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
 $admin .= '<option value="'.$datasj['kode'].'">'.$datasj['nama'].'</option>';
 }
 $admin .='</select></td>
-</tr>';		
+</tr>';
 $admin .= '<tr>
 	<td></td>
 	<td><input type="submit" value="Cetak" name="submit" class="btn btn-success"></td>
 	</tr>
-</table></form>';
-$admin .= '</table>';
+</table>';
 $admin .= "* Apabila tidak dapat melakukan print, klik kanan pilih open link New Tab";
+/*DETAIL*/
 }
 
 }
