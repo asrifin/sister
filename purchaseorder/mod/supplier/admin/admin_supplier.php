@@ -59,6 +59,8 @@ $kode 		= $data['kode'];
 $nama 		= $data['nama'];
 $alamat 		= $data['alamat'];
 $telepon 		= $data['telepon'];
+$generatekode=generatekodeedit('SUPP','kode','pos_supplier',$id);
+if(!$kode){$kode = $generatekode;}
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Edit Supplier</h3></div>';
 $admin .= '
@@ -67,7 +69,7 @@ $admin .= '
 	<tr>
 		<td>Kode</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" required value="'.$kode.'"></td>
+		<td><input type="text" name="kode" size="25"class="form-control" required value="'.$kode.'" maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>Nama</td>
@@ -118,8 +120,9 @@ if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT kode FROM po_supplie
 	}
 
 }
+$generatekode=generatekode('SUP','kode','pos_supplier');
+$kode     		= !isset($kode) ? $generatekode : $kode;
 $nama     		= !isset($nama) ? '' : $nama;
-$kode     		= !isset($kode) ? '' : $kode;
 $alamat     		= !isset($alamat) ? '' : $alamat;
 $telepon     		= !isset($telepon) ? '' : $telepon;
 
@@ -132,7 +135,7 @@ $admin .= '
 	<tr>
 		<td>Kode</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" required></td>
+		<td><input type="text" name="kode" size="25"class="form-control" required maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>Nama</td>

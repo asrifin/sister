@@ -17,38 +17,13 @@ $(document).ready(function() {
 } );
 </script>
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />
-<link rel="stylesheet" href="mod/pr/style.css" />
-';
-$admin .= '
-
-<script type="text/javascript" src="mod/pr/script.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
-$wkt = <<<eof
-<script language="JavaScript" type="text/javascript">
-    
-    /**
-    * Example callback function
-    */
-    /*<![CDATA[*/
-    function exampleCallback_ISO3(date, month, year)
-    {
-        if (String(month).length == 1) {
-            month = '0' + month;
-        }
-    
-        if (String(date).length == 1) {
-            date = '0' + date;
-        }    
-        document.forms['posts'].tgl.value = year + '-' + month + '-' + date;
-    }
-    calendar3 = new dynCalendar('calendar3', 'exampleCallback_ISO3');
-    calendar3.setMonthCombo(true);
-    calendar3.setYearCombo(true);
-/*]]>*/     
-</script>
-eof;
+$JS_SCRIPT.= <<<js
+<script type="text/javascript">
+  $(function() {
+$( "#tgl" ).datepicker({ dateFormat: "yy-mm-dd" } );
+  });
+  </script>
+js;
 $script_include[] = $JS_SCRIPT;
 	
 //$index_hal=1;	
@@ -210,7 +185,7 @@ $admin .= '
 	<tr>
 		<td>Tanggal</td>
 		<td>:</td>
-		<td><input type="text" name="tgl" value="'.$tgl.'" class="form-control"required>&nbsp;'.$wkt.'</td>
+		<td><input type="text" id="tgl" name="tgl" value="'.$tgl.'" class="form-control"required>&nbsp;</td>
 <td></td>
 		<td></td>
 		<td></td>
@@ -229,9 +204,8 @@ $admin .= '
 $admin .= '<tr>
 	<td>Departemen Requisition</td>
 		<td>:</td>
-	<td><select name="departemenpr" class="form-control" required>';
+	<td><select name="departemenpr" class="form-control" required id="combobox">';
 $hasil = $koneksi_db->sql_query("SELECT * FROM aka_tingkat ORDER BY keterangan asc");
-$admin .= '<option value="">== Departemen ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
 $pilihan = ($datas['replid']==$departemenpr)?"selected":'';
 $admin .= '<option value="'.$datas['replid'].'"'.$pilihan.'>'.getdepartemendaritingkat($datas['replid']).' - '.$datas['keterangan'].'</option>';
@@ -255,9 +229,8 @@ $admin .= '
 $admin .= '<tr>
 	<td>Kategori Anggaran</td>
 		<td>:</td>
-	<td><select name="kategorianggaran" class="form-control" required>';
+	<td><select name="kategorianggaran" class="form-control" required id="combobox2">';
 $hasil = $koneksi_db->sql_query("SELECT * FROM keu_kategorianggaran ORDER BY nama asc");
-$admin .= '<option value="">== Anggaran ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
 $pilihan = ($datas['replid']==$kategorianggaran)?"selected":'';
 $admin .= '<option value="'.$datas['replid'].'"'.$pilihan.'>'.$datas['nama'].'</option>';
@@ -267,23 +240,20 @@ $admin .='</select></td>
 	<td></td>
 	<td></td>
 </tr>';
-
-$admin .='<tr>
-		<td>Kode Barang</td>
-		<td>:</td>
-		<td>
-                <div class="input_container">
-                    <input type="text" id="barang_id"  name="kodebarang" value="'.$kodebarang.'" onkeyup="autocomplet2()"class="form-control" >
-					<input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" >&nbsp;
-                    <ul id="barang_list_id"></ul>
-                </div>
-				</td>
+$admin .= '<tr>
+	<td>Kode Barang </td>
+			<td>:</td>
+	<td><select name="kodebarang" id="combobox3">';
+$hasilj = $koneksi_db->sql_query("SELECT sk.replid,sk.kode,sk.nama,sk.keterangan from sar_katalog sk");
+while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
+$admin .= '<option value="'.$datasj['kode'].'">'.$datasj['nama'].'</option>';
+}
+$admin .='</select><input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" >&nbsp;				</td>
 	<td></td>
 	<td></td>
 	<td></td>
 		</tr>
 				';
-
 $admin .= '	
 </table></div>';	
 if(($_SESSION["product_id"])!=""){
@@ -382,20 +352,16 @@ $admin .= '
 $admin .= '
 <form method="post" action="" class="form-inline"id="posts">
 <table class="table table-striped table-hover">';
-$admin .= '
-	<tr>
-		<td>Kode PR</td>
-		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="pr_id"  name="kodepr" value="'.$kodepr.'" onkeyup="autocompletpr()" required class="form-control" >
-					<input type="submit" value="Lihat PR" name="lihatpr"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
-					
-                    <ul id="pr_list_id"></ul>
-                </div>
-				</td>
-		<td></td>
-		<td></td>
-		<td></td>
+$admin .= '<tr>
+	<td>Nomor PR</td>
+			<td>:</td>
+	<td><select name="kode" id="combobox">';
+$hasilj = $koneksi_db->sql_query("SELECT * FROM po_pr ORDER BY id desc");
+while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
+$admin .= '<option value="'.$datasj['nopr'].'">'.$datasj['nopr'].' - '.$datasj['namapr'].'</option>';
+}
+$admin .='</select>&nbsp;&nbsp;<input type="submit" value="Lihat PR" name="lihatpr"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;</td>
+
 		</tr>';
 $admin .= '</form></table></div>';	
 
