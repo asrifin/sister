@@ -99,7 +99,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode Jasa</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'" required></td>
+		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'" required maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>Nama Jasa</td>
@@ -186,7 +186,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode Jasa</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'"required></td>
+		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'"required maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>Nama Jasa</td>

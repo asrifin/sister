@@ -17,38 +17,13 @@ $(document).ready(function() {
 } );
 </script>
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />
-<link rel="stylesheet" href="mod/po/style.css" />
-';
-$admin .= '
-
-<script type="text/javascript" src="mod/penawaran/script.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
-$wkt = <<<eof
-<script language="JavaScript" type="text/javascript">
-    
-    /**
-    * Example callback function
-    */
-    /*<![CDATA[*/
-    function exampleCallback_ISO3(date, month, year)
-    {
-        if (String(month).length == 1) {
-            month = '0' + month;
-        }
-    
-        if (String(date).length == 1) {
-            date = '0' + date;
-        }    
-        document.forms['posts'].tgl.value = year + '-' + month + '-' + date;
-    }
-    calendar3 = new dynCalendar('calendar3', 'exampleCallback_ISO3');
-    calendar3.setMonthCombo(true);
-    calendar3.setYearCombo(true);
-/*]]>*/     
-</script>
-eof;
+$JS_SCRIPT.= <<<js
+<script type="text/javascript">
+  $(function() {
+$( "#tgl" ).datepicker({ dateFormat: "yy-mm-dd" } );
+  });
+  </script>
+js;
 $script_include[] = $JS_SCRIPT;
 	
 //$index_hal=1;	
@@ -192,27 +167,26 @@ $admin .= '
 	<tr>
 		<td>Tanggal</td>
 		<td>:</td>
-		<td><input type="text" name="tgl" value="'.$tgl.'" class="form-control">&nbsp;'.$wkt.'</td>
+		<td><input type="text" id="tgl" name="tgl" value="'.$tgl.'" class="form-control">&nbsp;'.$wkt.'</td>
 <td></td>
 		<td></td>
 		<td></td>
 	</tr>';
+$admin .= '<tr>
+	<td>Nomor PR</td>
+			<td>:</td>
+	<td><select name="kodepr" id="combobox">';
+$hasilj = $koneksi_db->sql_query("SELECT * FROM po_pr ORDER BY id desc");
+while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
+	$pilihan = ($datasj['nopr']==$kodepr)?"selected":'';
+$admin .= '<option value="'.$datasj['nopr'].'"'.$pilihan.'>'.$datasj['nopr'].' - '.$datasj['namapr'].'</option>';
+}
+$admin .='</select>&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Tambah Penawaran" name="tambahpr" class="btn btn-success" >&nbsp;</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		</tr>';
 
-$admin .= '
-	<tr>
-		<td>Kode PR</td>
-		<td>:</td>
-		<td>
-                <div class="input_container">
-                    <input type="text" id="pr_id"  name="kodepr" value="'.$kodepr.'" onkeyup="autocompletpr()"class="form-control" >&nbsp;&nbsp;<input type="submit" value="Tambah Penawaran" name="tambahpr" class="btn btn-success" >
-                    <ul id="pr_list_id"></ul>
-                </div>
-				</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		</tr>
-				';
 
 $admin .= $datapr;
 $admin .= '	
@@ -313,21 +287,21 @@ $admin .= '
 $admin .= '
 <form method="post" action="" class="form-inline"id="posts">
 <table class="table table-striped table-hover">';
-$admin .= '
-	<tr>
-		<td>Kode Penawaran</td>
-		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="pn_id"  name="kodepn" value="'.$kodepn.'" onkeyup="autocompletpn()" required class="form-control" >
-					<input type="submit" value="Lihat PN" name="lihatpn"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
-					
-                    <ul id="pn_list_id"></ul>
-                </div>
-				</td>
+$admin .= '<tr>
+	<td>Kode Penawaran</td>
+			<td>:</td>
+	<td><select name="kodepn" id="combobox">';
+$hasilj = $koneksi_db->sql_query("SELECT * FROM po_pn ORDER BY id DESC");
+while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
+	$pilihan = ($datasj['nopn']==$kodepn)?"selected":'';
+$admin .= '<option value="'.$datasj['nopn'].'"'.$pilihan.'>'.$datasj['nopn'].' - '.$datasj['tgl'].'</option>';
+}
+$admin .='</select>&nbsp;&nbsp;<input type="submit" value="Lihat PN" name="lihatpn"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;</td>
 		<td></td>
 		<td></td>
 		<td></td>
 		</tr>';
+
 $admin .= '</form></table></div>';	
 
 /*******************************/
