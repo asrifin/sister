@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-24 01:11:46
+Date: 2015-08-28 04:36:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -160,13 +160,13 @@ CREATE TABLE `aka_detailkelas` (
   KEY `kelas_2` (`kelas`),
   CONSTRAINT `kelasFK4` FOREIGN KEY (`kelas`) REFERENCES `aka_kelas` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tahunajaranFK5` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=289 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_detailkelas
 -- ----------------------------
 INSERT INTO `aka_detailkelas` VALUES ('1', '1', '3', '2');
-INSERT INTO `aka_detailkelas` VALUES ('2', '1', '5', '0');
+INSERT INTO `aka_detailkelas` VALUES ('2', '1', '5', '2');
 INSERT INTO `aka_detailkelas` VALUES ('3', '2', '3', '1');
 INSERT INTO `aka_detailkelas` VALUES ('4', '2', '5', '0');
 INSERT INTO `aka_detailkelas` VALUES ('5', '3', '3', '0');
@@ -309,6 +309,18 @@ INSERT INTO `aka_detailkelas` VALUES ('141', '71', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('142', '71', '5', '0');
 INSERT INTO `aka_detailkelas` VALUES ('143', '72', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('144', '72', '5', '0');
+INSERT INTO `aka_detailkelas` VALUES ('145', '73', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('146', '73', '5', '0');
+INSERT INTO `aka_detailkelas` VALUES ('147', '74', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('148', '74', '5', '0');
+INSERT INTO `aka_detailkelas` VALUES ('149', '75', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('150', '75', '5', '0');
+INSERT INTO `aka_detailkelas` VALUES ('151', '76', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('152', '76', '5', '0');
+INSERT INTO `aka_detailkelas` VALUES ('153', '77', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('154', '77', '5', '0');
+INSERT INTO `aka_detailkelas` VALUES ('155', '78', '3', '0');
+INSERT INTO `aka_detailkelas` VALUES ('156', '78', '5', '0');
 
 -- ----------------------------
 -- Table structure for aka_grading
@@ -588,7 +600,7 @@ CREATE TABLE `aka_kelas` (
   PRIMARY KEY (`replid`),
   KEY `departemenFK` (`departemen`),
   KEY `subtingkatFK` (`subtingkat`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of aka_kelas
@@ -665,6 +677,12 @@ INSERT INTO `aka_kelas` VALUES ('69', '3', '1', '5', '20', '', '2015-08-23 14:24
 INSERT INTO `aka_kelas` VALUES ('70', '3', '2', '5', '20', '', '2015-08-23 14:24:55');
 INSERT INTO `aka_kelas` VALUES ('71', '3', '1', '6', '20', '', '2015-08-23 14:25:10');
 INSERT INTO `aka_kelas` VALUES ('72', '3', '2', '6', '20', '', '2015-08-23 14:25:22');
+INSERT INTO `aka_kelas` VALUES ('73', '3', '1', '7', '20', '', '2015-08-24 03:36:52');
+INSERT INTO `aka_kelas` VALUES ('74', '3', '2', '7', '20', '', '2015-08-24 03:37:09');
+INSERT INTO `aka_kelas` VALUES ('75', '3', '2', '8', '20', '', '2015-08-24 03:37:30');
+INSERT INTO `aka_kelas` VALUES ('76', '3', '2', '8', '20', '', '2015-08-24 03:37:47');
+INSERT INTO `aka_kelas` VALUES ('77', '1', '1', '24', '20', '', '2015-08-27 06:08:46');
+INSERT INTO `aka_kelas` VALUES ('78', '1', '2', '24', '20', '', '2015-08-27 06:08:56');
 
 -- ----------------------------
 -- Table structure for aka_komennilai
@@ -4638,669 +4656,6 @@ INSERT INTO `aka_siswa_kontakdarurat` VALUES ('733', '732', '', '', '');
 INSERT INTO `aka_siswa_kontakdarurat` VALUES ('734', '733', '', '', '');
 
 -- ----------------------------
--- Table structure for aka_siswa_saudara
--- ----------------------------
-DROP TABLE IF EXISTS `aka_siswa_saudara`;
-CREATE TABLE `aka_siswa_saudara` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `siswa` int(10) unsigned NOT NULL,
-  `nama` varchar(100) NOT NULL,
-  `tgllahir` date NOT NULL,
-  `sekolah` varchar(50) NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=736 DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_siswa_saudara
--- ----------------------------
-INSERT INTO `aka_siswa_saudara` VALUES ('1', '1', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('2', '2', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('4', '4', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('5', '5', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('7', '7', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('11', '10', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('14', '13', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('15', '14', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('16', '15', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('17', '16', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('18', '17', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('19', '18', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('20', '19', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('21', '20', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('22', '21', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('23', '22', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('24', '23', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('25', '24', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('26', '25', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('27', '26', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('29', '28', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('30', '29', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('31', '30', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('32', '31', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('33', '32', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('34', '33', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('35', '34', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('36', '35', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('37', '36', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('38', '37', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('39', '38', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('40', '39', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('41', '40', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('42', '41', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('43', '42', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('44', '43', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('46', '45', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('47', '46', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('48', '47', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('49', '48', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('50', '49', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('51', '50', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('52', '51', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('53', '52', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('54', '53', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('56', '55', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('57', '56', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('58', '57', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('59', '58', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('60', '59', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('61', '60', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('62', '61', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('63', '62', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('64', '63', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('65', '64', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('67', '66', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('68', '67', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('69', '68', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('70', '69', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('71', '70', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('72', '71', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('73', '72', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('74', '73', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('75', '74', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('76', '75', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('77', '76', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('78', '77', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('79', '78', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('80', '79', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('81', '80', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('82', '81', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('83', '82', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('84', '83', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('85', '84', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('86', '85', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('87', '86', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('88', '87', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('89', '88', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('90', '89', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('91', '90', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('92', '91', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('93', '92', 'Regina Soempiet', '2006-06-12', 'Elyon International Christian School');
-INSERT INTO `aka_siswa_saudara` VALUES ('94', '93', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('95', '94', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('96', '95', 'Davide William Susanto', '2006-12-01', 'Elyon International Christian School');
-INSERT INTO `aka_siswa_saudara` VALUES ('97', '96', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('98', '97', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('99', '98', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('100', '99', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('101', '100', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('102', '101', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('103', '102', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('104', '103', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('105', '104', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('107', '106', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('108', '107', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('109', '108', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('110', '109', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('111', '110', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('112', '111', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('113', '112', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('114', '113', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('115', '114', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('116', '115', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('117', '116', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('118', '117', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('119', '118', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('120', '119', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('121', '120', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('122', '121', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('123', '122', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('124', '123', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('125', '124', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('126', '125', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('127', '126', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('128', '127', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('129', '128', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('130', '129', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('131', '130', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('132', '131', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('133', '132', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('134', '133', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('135', '134', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('136', '135', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('137', '136', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('138', '137', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('139', '138', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('140', '139', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('141', '140', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('142', '141', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('143', '142', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('144', '143', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('145', '144', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('146', '145', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('147', '146', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('148', '147', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('149', '148', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('150', '149', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('151', '150', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('152', '151', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('153', '152', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('154', '153', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('155', '154', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('156', '155', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('157', '156', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('158', '157', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('159', '158', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('160', '159', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('161', '160', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('162', '161', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('163', '162', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('164', '163', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('165', '164', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('166', '165', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('167', '166', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('168', '167', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('169', '168', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('170', '169', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('171', '170', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('172', '171', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('173', '172', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('174', '173', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('175', '174', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('176', '175', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('177', '176', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('178', '177', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('179', '178', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('180', '179', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('181', '180', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('182', '181', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('183', '182', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('184', '183', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('185', '184', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('186', '185', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('187', '186', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('188', '187', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('189', '188', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('190', '189', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('191', '190', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('192', '191', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('193', '192', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('194', '193', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('195', '194', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('196', '195', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('197', '196', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('198', '197', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('199', '198', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('200', '199', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('201', '200', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('202', '201', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('203', '202', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('204', '203', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('205', '204', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('206', '205', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('207', '206', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('208', '207', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('209', '208', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('210', '209', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('211', '210', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('212', '211', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('215', '214', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('216', '215', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('217', '216', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('218', '217', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('219', '218', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('220', '219', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('221', '220', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('222', '221', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('223', '222', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('224', '223', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('225', '224', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('226', '225', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('227', '226', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('228', '227', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('229', '228', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('230', '229', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('231', '230', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('232', '231', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('233', '232', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('235', '234', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('236', '235', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('237', '236', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('238', '237', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('239', '238', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('240', '239', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('242', '241', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('243', '242', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('244', '243', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('245', '244', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('246', '245', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('247', '246', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('248', '247', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('249', '248', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('250', '249', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('251', '250', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('252', '251', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('253', '252', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('254', '253', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('255', '254', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('256', '255', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('257', '256', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('258', '257', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('259', '258', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('260', '259', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('261', '260', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('262', '261', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('263', '262', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('264', '263', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('265', '264', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('266', '265', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('267', '266', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('268', '267', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('269', '268', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('270', '269', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('271', '270', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('272', '271', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('273', '272', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('274', '273', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('275', '274', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('276', '275', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('277', '276', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('278', '277', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('279', '278', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('280', '279', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('281', '280', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('282', '281', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('283', '282', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('284', '283', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('285', '284', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('286', '285', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('287', '286', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('288', '287', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('289', '288', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('290', '289', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('291', '290', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('292', '291', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('293', '292', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('294', '293', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('295', '294', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('296', '295', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('297', '296', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('298', '297', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('299', '298', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('300', '299', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('301', '300', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('302', '301', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('303', '302', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('304', '303', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('305', '304', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('367', '366', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('372', '371', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('373', '372', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('374', '373', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('375', '374', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('376', '375', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('377', '376', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('378', '377', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('379', '378', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('380', '379', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('381', '380', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('382', '381', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('383', '382', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('384', '383', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('385', '384', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('386', '385', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('387', '386', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('388', '387', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('389', '388', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('390', '389', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('391', '390', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('392', '391', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('393', '392', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('394', '393', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('395', '394', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('396', '395', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('397', '396', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('398', '397', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('399', '398', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('400', '399', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('401', '400', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('402', '401', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('403', '402', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('404', '403', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('409', '408', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('410', '409', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('411', '410', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('412', '411', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('413', '412', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('414', '413', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('415', '414', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('416', '415', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('417', '416', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('418', '417', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('419', '418', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('420', '419', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('421', '420', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('422', '421', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('423', '422', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('424', '423', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('425', '424', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('426', '425', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('427', '426', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('428', '427', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('429', '428', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('430', '429', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('431', '430', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('432', '431', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('433', '432', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('434', '433', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('435', '434', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('436', '435', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('437', '436', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('438', '437', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('439', '438', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('440', '439', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('441', '440', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('442', '441', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('443', '442', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('444', '443', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('445', '444', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('446', '445', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('447', '446', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('448', '447', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('449', '448', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('450', '449', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('451', '450', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('452', '451', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('453', '452', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('454', '453', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('455', '454', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('456', '455', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('457', '456', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('458', '457', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('459', '458', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('460', '459', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('461', '460', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('462', '461', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('463', '462', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('464', '463', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('465', '464', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('466', '465', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('467', '466', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('468', '467', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('469', '468', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('470', '469', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('471', '470', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('472', '471', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('473', '472', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('474', '473', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('475', '474', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('476', '475', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('477', '476', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('478', '477', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('479', '478', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('480', '479', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('481', '480', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('482', '481', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('483', '482', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('484', '483', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('485', '484', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('486', '485', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('487', '486', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('488', '487', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('489', '488', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('490', '489', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('491', '490', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('492', '491', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('493', '492', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('494', '493', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('495', '494', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('496', '495', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('497', '496', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('498', '497', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('499', '498', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('500', '499', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('501', '500', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('502', '501', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('503', '502', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('504', '503', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('505', '504', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('506', '505', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('509', '508', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('510', '509', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('511', '510', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('512', '511', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('513', '512', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('514', '513', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('515', '514', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('516', '515', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('517', '516', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('518', '517', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('519', '518', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('520', '519', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('521', '520', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('522', '521', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('523', '522', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('524', '523', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('525', '524', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('526', '525', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('527', '526', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('528', '527', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('529', '528', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('530', '529', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('531', '530', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('533', '532', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('534', '533', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('535', '534', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('536', '535', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('537', '536', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('538', '537', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('539', '538', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('540', '539', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('541', '540', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('542', '541', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('543', '542', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('544', '543', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('545', '544', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('546', '545', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('547', '546', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('548', '547', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('549', '548', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('550', '549', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('551', '550', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('552', '551', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('553', '552', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('554', '553', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('555', '554', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('556', '555', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('557', '556', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('558', '557', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('559', '558', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('560', '559', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('561', '560', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('562', '561', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('563', '562', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('564', '563', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('565', '564', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('566', '565', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('567', '566', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('568', '567', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('569', '568', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('570', '569', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('571', '570', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('572', '571', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('573', '572', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('574', '573', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('575', '574', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('576', '575', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('577', '576', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('578', '577', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('579', '578', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('580', '579', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('581', '580', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('582', '581', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('583', '582', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('584', '583', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('585', '584', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('586', '585', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('587', '586', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('588', '587', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('589', '588', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('590', '589', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('591', '590', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('592', '591', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('593', '592', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('594', '593', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('595', '594', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('596', '595', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('597', '596', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('598', '597', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('599', '598', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('600', '599', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('601', '600', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('602', '601', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('603', '602', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('604', '603', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('605', '604', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('606', '605', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('607', '606', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('608', '607', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('609', '608', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('610', '609', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('611', '610', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('612', '611', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('613', '612', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('614', '613', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('615', '614', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('616', '615', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('617', '616', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('618', '617', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('619', '618', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('620', '619', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('621', '620', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('622', '621', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('623', '622', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('624', '623', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('625', '624', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('626', '625', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('627', '626', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('628', '627', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('629', '628', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('630', '629', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('631', '630', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('632', '631', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('633', '632', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('634', '633', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('635', '634', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('636', '635', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('637', '636', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('638', '637', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('639', '638', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('640', '639', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('641', '640', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('642', '641', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('643', '642', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('644', '643', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('645', '644', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('646', '645', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('647', '646', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('648', '647', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('649', '648', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('650', '649', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('651', '650', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('652', '651', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('653', '652', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('654', '653', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('655', '654', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('656', '655', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('657', '656', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('658', '657', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('659', '658', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('660', '659', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('661', '660', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('662', '661', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('663', '662', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('664', '663', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('665', '664', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('666', '665', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('667', '666', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('668', '667', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('669', '668', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('670', '669', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('671', '670', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('672', '671', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('673', '672', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('674', '673', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('675', '674', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('676', '675', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('677', '676', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('678', '677', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('679', '678', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('680', '679', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('681', '680', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('682', '681', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('683', '682', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('684', '683', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('685', '684', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('686', '685', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('687', '686', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('688', '687', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('689', '688', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('690', '689', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('691', '690', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('692', '691', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('693', '692', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('694', '693', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('695', '694', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('696', '695', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('697', '696', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('698', '697', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('699', '698', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('700', '699', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('701', '700', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('702', '701', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('703', '702', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('704', '703', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('705', '704', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('706', '705', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('707', '706', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('708', '707', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('709', '708', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('710', '709', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('711', '710', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('712', '711', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('713', '712', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('714', '713', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('715', '714', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('716', '715', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('717', '716', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('718', '717', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('719', '718', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('720', '719', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('721', '720', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('722', '721', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('723', '722', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('724', '723', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('725', '724', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('726', '725', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('727', '726', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('728', '727', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('729', '728', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('730', '729', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('731', '730', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('732', '731', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('733', '732', '', '0000-00-00', '');
-INSERT INTO `aka_siswa_saudara` VALUES ('734', '733', '', '0000-00-00', '');
-
--- ----------------------------
 -- Table structure for aka_siswa_tes
 -- ----------------------------
 DROP TABLE IF EXISTS `aka_siswa_tes`;
@@ -5539,7 +4894,7 @@ CREATE TABLE `aka_subtingkat` (
   `tingkat` int(10) NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_subtingkat
@@ -5561,6 +4916,7 @@ INSERT INTO `aka_subtingkat` VALUES ('17', '3', '7', '14');
 INSERT INTO `aka_subtingkat` VALUES ('18', '4', '7', '15');
 INSERT INTO `aka_subtingkat` VALUES ('19', '1', '8', '16');
 INSERT INTO `aka_subtingkat` VALUES ('20', '2', '8', '17');
+INSERT INTO `aka_subtingkat` VALUES ('24', 'C', '3', '');
 
 -- ----------------------------
 -- Table structure for aka_tahunajaran
@@ -5694,6 +5050,57 @@ BLOCK1: begin
 				INSERT INTO aka_detailkelas SET 
 					kelas = NEW.replid, 
 					tahunajaran = v_col1;
+    end loop LOOP1;
+end BLOCK1;
+
+END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `ins_aka_subtingkat`;
+DELIMITER ;;
+CREATE TRIGGER `ins_aka_subtingkat` AFTER INSERT ON `aka_subtingkat` FOR EACH ROW BEGIN
+
+/*untuk psb_biaya*/
+BLOCK1: begin
+    declare v_col1 int;                     
+    declare no_more_rows1 INT DEFAULT 0;  
+    /*gol*/
+		declare cursor1 cursor for              
+        select replid
+        from psb_golongan;
+    declare continue handler for not found  
+    		set no_more_rows1 =1;           
+    open cursor1;
+    LOOP1: loop
+        fetch cursor1
+        into  v_col1;
+        if no_more_rows1 then
+            close cursor1;
+            leave LOOP1;
+        end if;
+				/*det gelomb*/
+        BLOCK2: begin
+            declare v_col2 int;
+            declare no_more_rows2 INT DEFAULT 0;  
+						declare cursor2 cursor for
+                select replid
+                from  psb_detailgelombang;
+           declare continue handler for not found
+               set no_more_rows2 =1;
+            open cursor2;
+            LOOP2: loop
+                fetch cursor2
+                into  v_col2;
+                if no_more_rows2 then
+                    close cursor2;
+                    leave LOOP2;
+                end if;
+								INSERT INTO psb_biaya SET 
+									subtingkat= NEW.replid, 
+            			 golongan = v_col1, 
+            			detailgelombang = v_col2;
+            end loop LOOP2;
+        end BLOCK2;
     end loop LOOP1;
 end BLOCK1;
 
