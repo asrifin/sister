@@ -29,9 +29,9 @@ $script_include[] = $JS_SCRIPT;
 //$index_hal=1;	
 	$admin  .='<legend>PURCHASE REQUISITION (PR)</legend>';
 	$admin  .= '<div class="border2">
-<table  width="25%"><tr align="center">
+<table ><tr align="center">
 <td>
-<a href="admin.php?pilih=pr&mod=yes">PURCHASE REQUISITION</a>&nbsp;&nbsp;
+<a href="admin.php?pilih=pr&mod=yes">PURCHASE REQUISITION</a>&nbsp;/&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=pr&mod=yes&aksi=cetak">CETAK PURCHASE REQUISITION</a>&nbsp;&nbsp;
@@ -355,10 +355,11 @@ $admin .= '
 $admin .= '<tr>
 	<td>Nomor PR</td>
 			<td>:</td>
-	<td><select name="kode" id="combobox">';
+	<td><select name="kodepr" id="combobox">';
 $hasilj = $koneksi_db->sql_query("SELECT * FROM po_pr ORDER BY id desc");
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
-$admin .= '<option value="'.$datasj['nopr'].'">'.$datasj['nopr'].' - '.$datasj['namapr'].'</option>';
+	$pilihan = ($datasj['nopr']==$kodepr)?"selected":'';	
+$admin .= '<option value="'.$datasj['nopr'].'"'.$pilihan.'>'.$datasj['nopr'].' - '.$datasj['namapr'].'</option>';
 }
 $admin .='</select>&nbsp;&nbsp;<input type="submit" value="Lihat PR" name="lihatpr"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;</td>
 
