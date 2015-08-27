@@ -1,11 +1,12 @@
-var mnu       = 'pendataan';
+var mnu       = 'siswa';
 var mnu2      = 'departemen';
 var mnu3      = 'tahunajaran';
 var mnu4      = 'tingkat';
-var mnu5      = 'golonganCalonSiswa';
+var mnu5      = 'golongan';
 var mnu6      = 'setAngsuran'; 
 var mnu7      = 'setDiskon';
-var mnu_kel   = 'kelompok';
+var mnu8      = 'detailgelombang';
+var mnu9      = 'subtingkat';
 
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = '../akademik/models/m_'+mnu2+'.php';
@@ -14,205 +15,145 @@ var dir4      = '../akademik/models/m_'+mnu4+'.php';
 var dir5      = 'models/m_'+mnu5+'.php';
 var dir6      = 'models/m_'+mnu6+'.php';
 var dir7      = 'models/m_'+mnu7+'.php';
-var dir_kel   = 'models/m_'+mnu_kel+'.php';
+var dir8      = 'models/m_'+mnu8+'.php';
+var dir9      = '../akademik/models/m_'+mnu9+'.php';
 var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-        cmbdepartemen('');
-        content +='<div class="span10">'
-                    +'<table>'
-                    +'<tr>'
-                        +'<td>Departemen</td>'
-                        +'<td class="span6">: <b id="departemenTD"></b></td>'
-                        +'<td class="place-right"><button data-hint="Cetak" onclick="printPDF(\'pendataan\');"><span class="icon-printer"></span></button></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Proses Penerimaan</td>'
-                        +'<td>: <span id="prosesTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Kelompok calon siswa</td>'
-                        +'<td>: <span id="kelompokTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>No. Pendaftaran</td>'
-                        +'<td>: <span id="nopendaftaranTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Status</td>'
-                        +'<td>: <span id="statusTD"></span></td>'
-                    +'</tr>'
-                +'</table>'
-                    +'</div>'
-                    //Data Siswa
-                +'<div style="overflow:scroll;height:500px;">'
-                +'<table>'
-                    +'<tr>'
-                        +'<td colspan="2"><b>Data Pribadi Siswa :</b></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Nama</td>'
-                        +'<td class="span3">: <span id="nama_siswaTD"></span></td>'
-                        +'<input type="hidden" id="photoH"/>'
-                        +'<td rowspan="6"> <img width="150" id="previmg" src="../img/no_image.jpg" ><br></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Jenis kelamin</td>'
-                        +'<td>: <span id="jkTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Tempat lahir</td>'
-                        +'<td>: <span id="temp_lahirTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Tanggal lahir</td>'
-                        +'<td>: <span id="tgl_lahirTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Agama</td>'
-                        +'<td>: <span id="agamaTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Alamat rumah</td>'
-                        +'<td>: <span id="alamatTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Telepon rumah</td>'
-                        +'<td>: <span id="teleponTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>&nbsp</td>'
-                        +'<td>&nbsp</td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td><b>Kesehatan Siswa</b></td>'
-                        +'<td>&nbsp</td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Golongan Darah</td>'
-                        +'<td>: <span id="goldarahTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Penyakit yang pernah diderita</td>'
-                        +'<td>: <span id="penyakitTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Alergi terhadap</td>'
-                        +'<td>: <span id="alergiTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>&nbsp</td>'
-                        +'<td>&nbsp</td>'
-                    +'</tr>'
-                    //Data Orang Tua
-                    +'<tr>'
-                        +'<td colspan="2"><b>Data Orantua Siswa :</b></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>&nbsp;</td>'
-                        +'<td class="span4">&nbsp&nbspAyah</td>'
-                        +'<td>Ibu</td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Nama</td>'
-                        +'<td>: <span id="nama_ayahTD"></span></td>'
-                        +'<td><span id="nama_ibuTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Kebangsaan</td>'
-                        +'<td>: <span id="kebangsaan_ayahTD"></span></td>'
-                        +'<td><span id="kebangsaan_ibuTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Tempat lahir</td>'
-                        +'<td>: <span id="temp_lahir_ayahTD"></span></td>'
-                        +'<td><span id="temp_lahir_ibuTD"></span></td>'
-                    +'</tr>'
+        cmbdepartemen('filter','');
+        contentFR +='<form style="overflow:scroll;height:560px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="simpanSV(); return false;">' 
+                        // accordion
+                        +'<div class="accordion with-marker xspan3 xplace-left margin10" data-role="accordion" data-closeany="true">'
+                            // kriteria
+                            +'<div class="accordion-frame active">'
+                                +'<a class="heading bg-lightBlue fg-white" href="#">Kriteria Siswa</a>'
+                                +'<div  style="display: block;" class="content grid">'
+                                    // baris 1
+                                    +'<div class="row">'
+                                        // kolom1
+                                        +'<div class="span3">'
+                                            // departemen
+                                            +'<label>Departemen</label>'
+                                            +'<div class="input-control select size3">'
+                                                +'<select id="departemenTB" name="departemenTB"></select>'
+                                            +'</div>'
+                                            // tahunajaran
+                                            +'<label>Tahun Ajaran</label>'
+                                            +'<div class="input-control select size3">'
+                                                +'<select id="tahunajaranTB" name="tahunajaranTB"></select>'
+                                            +'</div>'
+                                            // Detailgelombang
+                                            +'<label>Detail Gelombang</label>'
+                                            +'<div class="input-control select size3">'
+                                                +'<select id="detailgelombangTB" name="detailgelombangTB"></select>'
+                                            +'</div>'
+                                            // tingkat
+                                            +'<label>Tingkat</label>'
+                                            +'<div class="input-control select size3">'
+                                                +'<select id="tingkatTB" name="tingkatTB"></select>'
+                                            +'</div>'
+                                            // subtingkat
+                                            +'<label>Sub Tingkat</label>'
+                                            +'<div class="input-control select size3">'
+                                                +'<select id="subtingkatTB" name="subtingkatTB"></select>'
+                                            +'</div>'
+                                            // golongan
+                                            +'<label>Golongan</label>'
+                                            +'<div class="input-control select size3">'
+                                                +'<select id="golonganTB" name="golonganTB"></select>'
+                                            +'</div>'
+                                        +'</div>'
+                                            
+                                        // kolom2
+                                        +'<div class="span5">'
+                                            // 1
+                                            +'<label>Formulir</label>'
+                                            +'<table class="table hovered bordered striped">'
+                                                +'<tr>'
+                                                    +'<th>No.</th>'
+                                                    +'<th>Item</th>'
+                                                    +'<th>Nominal</th>'
+                                                +'</tr>'
+                                                +'<tr>'
+                                                    +'<td>1.</td>'
+                                                    +'<td>Harga Formulir</td>'
+                                                    +'<td id="formulirDV"></td>'
+                                                +'</tr>'
+                                            +'</table>'                                
+                                            // 2
+                                            +'<label>DPP</label>'
+                                            +'<table class="table hovered bordered striped">'
+                                                +'<tr>'
+                                                    +'<th>No.</th>'
+                                                    +'<th colspan="2">Item</th>'
+                                                    +'<th>Nominal</th>'
+                                                +'</tr>'
+                                                +'<tr>'
+                                                    +'<td>1.</td>'
+                                                    +'<td colspan="2">DPP Awal</td>'
+                                                    +'<td id="dppawalDV"></td>'
+                                                +'</tr>'
+                                                +'<tr>'
+                                                    +'<td>2.</td>'
+                                                    +'<td>Jumlah Angsuran</td>'
+                                                    +'<td>'
+                                                        +'<div class="input-control select">'
+                                                            +'<select name="jml" id=""></select>'
+                                                        +'</div>'
+                                                    +'</td>'
+                                                    +'<td></td>'
+                                                +'</tr>'
+                                                +'<tr>'
+                                                    +'<td>3.</td>'
+                                                    +'<td>Diskon</td>'
+                                                    +'<td><button onclick="return false;" class="fg-white bg-blue"><i class="icon-plus"></i></button></td>'
+                                                    +'<td></td>'
+                                                +'</tr>'
+                                            +'</table>'                                
+                                            // 3
+                                            +'<label>SPP</label>'
+                                            +'<table class="table hovered bordered striped">'
+                                                +'<tr>'
+                                                    +'<th>No.</th>'
+                                                    +'<th colspan="2">Item</th>'
+                                                    +'<th>Nominal</th>'
+                                                +'</tr>'
+                                                +'<tr>'
+                                                    +'<td>1.</td>'
+                                                    +'<td colspan="2">DPP Awal</td>'
+                                                    +'<td id="dppawalDV"></td>'
+                                                +'</tr>'
+                                                +'<tr>'
+                                                    +'<td>1.</td>'
+                                                    +'<td>Jumlah Angsuran</td>'
+                                                    +'<td>'
+                                                        +'<div class="input-control select">'
+                                                            +'<select name="jml" id=""></select>'
+                                                        +'</div>'
+                                                    +'</td>'
+                                                    +'<td></td>'
+                                                +'</tr>'
+                                            +'</table>'                                
+                                        +'</div>'
 
-                    +'<tr>'
-                        +'<td>Tanggal lahir</td>'
-                        +'<td>: <span id="tgl_lahir_ayahTD"></span></td>'
-                        +'<td><span id="tgl_lahir_ibuTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Pekerjaan</td>'
-                        +'<td>: <span id="pekerjaan_ayahTD"></span></td>'
-                        +'<td><span id="pekerjaan_ibuTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Telepon Orantua</td>'
-                        +'<td>: <span id="telepon_ayahTD"></span></td>'
-                        +'<td><span id="telepon_ibuTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>PIN BB Orantua</td>'
-                        +'<td>: <span id="pinbb_ayahTD"></span></td>'
-                        +'<td><span id="pinbb_ibuTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Email Orantua</td>'
-                        +'<td>: <span id="email_ayahTD"></span></td>'
-                        +'<td><span id="email_ibuTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>&nbsp</td>'
-                        +'<td>&nbsp</td>'
-                    +'</tr>'
-                    //Data Keluarga Siswa
-                    +'<tr>'
-                        +'<td colspan="2"><b>Data Keluarga Siswa :</b></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Tanggal perkawinan Orantua</td>'
-                        +'<td>: <span id="tgl_perkawinanTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Nama Kakek</td>'
-                        +'<td>: <span id="kakekTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Nama Nenek</td>'
-                        +'<td>: <span id="nenekTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>&nbsp</td>'
-                        +'<td>&nbsp</td>'
-                    +'</tr>'
-                    //Saudara Siswa
-                    +'<tr>'
-                        +'<td colspan="2"><b>Saudara Siswa :</b></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Nama Saudara</td>'
-                        +'<td>: <span id="nama_saudaraTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Tanggal lahir Saudara</td>'
-                        +'<td>: <span id="tgl_lahir_saudaraTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Sekolah Saudara</td>'
-                        +'<td>: <span id="sekolah_saudaraTD"></span></td>'
-                    +'</tr>'
-                    //Nomor yang dapat dihubungi
-                    +'<tr>'
-                        +'<td colspan="2"><b>Dalam Kondisi Mendesak, orang yang dapat dihubungi (selain orang tua) :</b></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Nama</td>'
-                        +'<td>: <span id="nama_daruratTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Hubungan</td>'
-                        +'<td>: <span id="hubunganTD"></span></td>'
-                    +'</tr>'
-                    +'<tr>'
-                        +'<td>Nomor yang dapat dihubungi</td>'
-                        +'<td>: <span id="nomor_daruratTD"></span></td>'
-                    +'</tr>'
-                +'</table>'
-                +'</div>';
+                                    +'</div>'
+
+
+                                +'</div>'
+                            +'</div>'
+                            
+                            // bioadata
+                            +'<div class="accordion-frame">'
+                                +'<a class="heading bg-lightBlue fg-white" href="#">Biodata</a>'
+                                +'<div style="display: block;" class="content">'
+                                    +'<div id="bioadataDV"></div>'
+                                +'</div>'
+                            +'</div>'
+
+                        +'</div>'
+                        // end of accrdion 
+                    +'</form>';
 
     // button action
         $("#batalBC").on('click',function(){
@@ -686,7 +627,7 @@ var contentFR = '';
     }
 
 // combo departemen ---
-    function cmbdepartemen(dep){
+    function cmbdepartemen(typ,dep){
         var u= dir2;
         var d ='aksi=cmbdepartemen';
         ajax(u,d).done(function (dt){
@@ -698,38 +639,44 @@ var contentFR = '';
                     out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                 });
             }
-            $('#departemenS').html(out);
-            cmbtahunajaran('filter',dt.departemen[0].replid,'');
+            if(typ=='filter'){ // filter (search)
+                $('#departemenS').html(out);
+                cmbtahunajaran('filter','');
+            }else{ // form (edit & add)
+                $('#departemenTB').html(out);
+            }
         });
     }
 
-// combo Tahunajaran ---
-    function cmbtahunajaran(typ,dep,thn){
-        var u = dir3;
-        var d ='aksi=cmbtahunajaran&departemen='+dep;
+// combo tahunajaran ---
+    function cmbtahunajaran(typ,thn){
+        var u= dir3;
+        var d='aksi=cmb'+mnu3;
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){
                 out+='<option value="">'+dt.status+'</option>';
             }else{
-                $.each(dt.tahunajaran, function(id,item){
-                    if(typ=='filter' && item.aktif=='1') 
-                        out+='<option selected value="'+item.replid+'">'+item.tahunajaran+' (aktif)</option>';
-                    else 
-                        out+='<option '+(thn==item.replid?'selected':'')+' value="'+item.replid+'">'+item.tahunajaran+'</option>';
-                });
-            }
-            if(typ=='form'){ // form add || edit 
-                $('#prosesTB').html('<option value="">-Pilih Tahun Ajaran-</option>'+out);
-                if($('#prosesTB').val()==''){
-                    cmbkelompok('form','','');
+                if(dt.tahunajaran.length==0){
+                    out+='<option value="">kosong</option>';
+                }else{
+                    $.each(dt.tahunajaran, function(id,item){
+                        out+='<option '+(thn==item.replid?' selected ':'')+' value="'+item.replid+'">'+item.tahunajaran+' - '+(parseInt(item.tahunajaran)+1)+'</option>';
+                    });
                 }
-            }else{ // filtering
-                $('#tahunajaranS').html(out);
-                cmbkelompok('filter',dt.tahunajaran[0].replid,'');
+                if(typ=='filter'){ // filter (search)
+                    $('#tahunajaranS').html(out);
+                    cmbdetailgelombang('filter','');
+                }else{ // form (edit & add)
+                    // var th1 = dt.tahunajaran[0].tahunajaran;
+                    // var th2 = parseInt(th1)+1;
+                    // $('#tahunajaranDV').text(': '+th1+' - '+th2);
+                    $('#tahunajaranTB').html(out);
+                }
             }
         });
     }
+//end of combo tingkat ---
 
 // combo kelompok ---
     function cmbkelompok(typ,thn,kel){
@@ -873,30 +820,31 @@ var contentFR = '';
 
         }
     }  
-  function cmbtingkat (tingkat) {
-        $.ajax({
-            url:dir4,   
-            type:'post',
-            dataType:'json',
-            data:'aksi=cmb'+mnu4,
-            success:function(dt){
-                var opt='';
-                if (dt.status!='sukses') {
-                    notif(dt.status,'red');
-                    opt+='<option value="">'+dt.status+'</option>'
-                }else{
-                    // alert(id);return false;
-                    var opt = '';
-                    $.each(dt.tingkat,function(id,item){
-                        if(tingkat==item.replid)
-                            opt+='<option selected="selected" value="'+item.replid+'">'+item.tingkat+'</option>'
-                        else
-                            opt+='<option value="'+item.replid+'">'+item.tingkat+'</option>'
-                    });$('#tingkatTB').html('<option value="">Pilih Tingkat ..</option>'+opt);
-                }
-            },
-        });
-    }   
+  function cmbtingkat (typ,ting) {
+    var d='aksi=cmb'+mnu4;
+    var u=dir4;
+    ajax(u,d).done(function (dt){
+        var opt='';
+        if (dt.status!='sukses') {
+            notif(dt.status,'red');
+            opt+='<option value="">'+dt.status+'</option>'
+        }else{
+            var opt = '';
+            $.each(dt.tingkat,function(id,item){
+                opt+='<option '+(ting==item.replid?'selected':'')+' value="'+item.replid+'">'+item.tingkat+'</option>'
+            });
+            if(typ=='filter'){
+                alert('masuk filter');
+                $('#tingkatS').html('<option value="">Pilih Tingkat ..</option>'+opt);
+            }
+            else{
+                // alert('masuk form');
+                $('#tingkatTB').html('<option value="">- Pilih Tingkat -</option>'+opt);
+            }
+
+        }
+    });
+}   
 
 
 // cmbo golongan 
@@ -1133,88 +1081,54 @@ var contentFR = '';
         });
     }
 
-//load  detail Siswa ---
-    function Modal(id){
+// form ---
+    function viewFR(idsiswa){
         $.Dialog({
             shadow: true,
             overlay: true,
             draggable: true,
-            data:'aksi=detail&replid='+id,
             width: '80%',
-            height: 400,
             padding: 10,
-            // onShow: function(res){
             onShow: function(){
-                var titl,cont;
-                    cont= content;
-                    titl= 'Data Calon Siswa';
-                    // var res = ajax(dir,'aksi=detail&replid='+id);  // <-- hapus lagi comment nya gan  (epiii) 
-                    ajax(dir,'aksi=detail&replid='+id).done(function(res){
-                        $('#departemenTD').html(res.data.departemen);
-                        $('#prosesTD').html(res.data.proses);
-                        $('#kelompokTD').html(res.data.kelompok);
-                        $('#nopendaftaranTD').html(res.data.nopendaftaran);
-                        $('#statusTD').html(res.data.statusx);
-                        $('#nama_siswaTD').html(res.data.nama_siswa);
-                        $('#jkTD').html(res.data.jk);
-                        $('#temp_lahirTD').html(res.data.temp_lahir);
-                        $('#tgl_lahirTD').html(res.data.tgl_lahir);
-                        $('#agamaTD').html(res.data.agama);
-                        $('#alamatTD').html(res.data.alamat);
-                        $('#teleponTD').html(res.data.telepon);
-                        $('#goldarahTD').html(res.data.goldarah);
-                        $('#penyakitTD').html(res.data.penyakit);
-                        $('#alergiTD').html(res.data.alergi);
-                        var img;
-                        if(res.data.photo!='' && res.data.photo!=null){//ada gambar
-                            img='../img/upload/'+res.data.photo;
+                if(idsiswa!=''){ // edit 
+                    var u = dir;
+                    var d ='aksi=ambiledit&id_user='+idsiswa;
+                    ajax(u,d).done(function  (dt) {
+                        if(dt.status!='sukses'){
+                            notif(dt.status,'red');
                         }else{
-                            img='../img/no_image.jpg';
+                            if(dt.isLogged) { //sudah aktif (pernah login)
+                                $('#namaTB').attr('disabled',true);
+                                $('#usernameTB').attr('disabled',true);
+                                $('#passwordTB').attr('disabled',true);
+                                $('#simpanTB').attr('disabled',true);
+                            }
+                            $('#idformH').val(idsiswa);
+                            $('#namaTB').val(dt.nama);
+                            $('#usernameTB').val(dt.username);
+                            
+                            levelFC(dt.id_level);
+                            departemenFC(dt.id_level,dt.departemen);
+                            // modulFC(dt.id_level,md)
                         }
-                        $('#previmg2').attr('src',img);
-                        $('#photoH').html(res.data.photo); 
-                    //Saudara Siswa                       
-                        $('#nama_saudaraTD').html(res.data.nama_saudara);
-                        $('#tgl_lahir_saudaraTD').html(res.data.tgl_lahir_saudara);
-                        $('#sekolah_saudaraTD').html(res.data.sekolah_saudara);
-                    // data ayah
-                        $('#nama_ayahTD').html(res.data.nama_ayah);
-                        $('#kebangsaan_ayahTD').html(res.data.kebangsaan_ayah);
-                        $('#temp_lahir_ayahTD').html(res.data.temp_lahir_ayah);
-                        $('#tgl_lahir_ayahTD').html(res.data.tgl_lahir_ayah);
-                        $('#telepon_ayahTD').html(res.data.telepon_ayah);
-                        $('#pinbb_ayahTD').html(res.data.pinbb_ayah);
-                        $('#pinbb_ayahTD').html(res.data.email_ayah);
-                    //Data Ibu
-                        $('#nama_ibuTD').html(res.data.nama_ibu);
-                        $('#kebangsaan_ibuTD').html(res.data.kebangsaan_ibu);
-                        $('#temp_lahir_ibuTD').html(res.data.temp_lahir_ibu);
-                        $('#tgl_lahir_ibuTD').html(res.data.tgl_lahir_ibu);
-                        $('#telepon_ibuTD').html(res.data.telepon_ibu);
-                        $('#pinbb_ibuTD').html(res.data.pinbb_ibu);
-                        $('#pinbb_ibuTD').html(res.data.email_ibu);
-                    //Dataa Saudara Siswa
-                        $('#nama_saudaraTD').html(res.data.nama_saudara);
-                        $('#tgl_lahir_saudaraTD').html(res.data.tgl_lahir_saudara);
-                        $('#sekolah_saudaraTD').html(res.data.sekolah_saudara);
-
-
-                    //Data yang bisa dihubungi
-                        $('#tgl_perkawinanTD').html(res.data.tgl_perkawinan);
-                        $('#kakekTD').html(res.data.kakek);
-                        $('#nenekTD').html(res.data.nenek);
-                    //Data Kontak Darurat
-                        $('#nama_daruratTD').html(res.data.nama_darurat);
-                        $('#hubunganTD').html(res.data.hubungan);
-                        $('#nomor_daruratTD').html(res.data.nomor_darurat);
                     });
-
-                $.Dialog.title(titl);
-                $.Dialog.content(cont);
+                }else{ //add
+                    cmbdepartemen('form','');
+                    cmbtahunajaran('form','');
+                    cmbdetailgelombang('form','');
+                    cmbtingkat('form','');
+                    cmbsubtingkat('form','','');
+                    cmbgolongan('form','');
+                }
+                titlex='<span class="icon-plus-2"></span> Tambah ';
+                $.Dialog.title(titlex+' '+mnu);
+                $.Dialog.content(contentFR);
+                $('#namaTB').focus();
             }
         });
     }
-   
+// end of form ---
+
 //del process ---
     function del(id){
         if(confirm('melanjutkan untuk menghapus data?'))
@@ -1412,5 +1326,76 @@ function notif(cont,clr) {
             getBiaya();
             $('#nopendaftaranTB').val(dt.nopendaftaran);
             $('#nopendaftaranH').val(dt.nopendaftaranH);
+        });
+    }
+
+// combobox detailgelombang pendaftaran
+    function cmbdetailgelombang(typ,dgel){
+        var u = dir8;
+        var d = 'aksi=cmb'+mnu8+'&tahunajaran='+$('#tahunajaranS').val()+'&departemen='+$('#departemenS').val();
+        ajax(u,d).done(function (dt){
+            var opt='';
+            if(dt.status!='sukses'){
+                notif(dt.status,'red');
+            }else{
+                $.each(dt.detailgelombang, function(id,item){
+                    opt+='<option '+(dgel==item.replid?'selected':'')+' value="'+item.replid+'">'+item.gelombang+'</option>';
+                }); 
+            }
+            if(typ=='filter'){
+                $('#detailgelombangS').html(opt);
+                // cmbtingkat('form','');
+            }else{
+                $('#detailgelombangTB').html(opt);
+            }
+        });
+    }
+
+
+// combo subtingkat ---
+    function cmbsubtingkat(typ,ting,sub){
+        if(typ=='filter' && ting==''){
+            $('#subtingkatS').html('<option value="">-Pilih Tingkat-</option>');
+        }else{
+            var u=dir9;
+            var d= 'aksi=cmbsubtingkat'+(ting!=''?'&tingkat='+ting:'');
+            ajax(u,d).done(function (dt) {
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.subtingkat, function(id,item){
+                        out+='<option '+(sub!='' && sub==item.replid?' selected ':'')+' value="'+item.replid+'">'+item.subtingkat+'</option>';
+                    });
+                }
+                if(typ=='filter'){
+                    $('#subtingkatS').html('<option value="">-SEMUA-</option>'+out);
+                    viewTB();
+                }else{
+                    $('#subtingkatTB').html('<option value="">-Pilih Sub Tingkat-</option>'+out);
+                }
+            });
+        }
+    }
+
+// combo golongan ---
+    function cmbgolongan(typ,gol){
+        var u=dir5;
+        var d= 'aksi=cmbgolongan';
+        ajax(u,d).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.golongan, function(id,item){
+                    out+='<option '+(sub!='' && sub==item.replid?' selected ':'')+' value="'+item.replid+'">'+item.golongan+'</option>';
+                });
+            }
+            if(typ=='filter'){
+                $('#golonganS').html(out);
+                viewTB();
+            }else{
+                $('#golonganTB').html('<option value="">-Pilih Golongan -</option>'+out);
+            }
         });
     }

@@ -129,8 +129,8 @@
                     case 'vdetailgelombang':
                         require $d.'v_detailgelombang.php';
                     break;
-                    case 'vpendataan':
-                        require $d.'v_pendataan.php';
+                    case 'vsiswa':
+                        require $d.'v_siswa.php';
                     break;
                     case 'vpenerimaan':
                         require $d.'v_penerimaan.php';

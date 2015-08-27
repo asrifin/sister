@@ -20,7 +20,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^proses/?$  				 					index.php?page=vproses
 	RewriteRule   ^gelombang/?$				   					index.php?page=vgelombang
 	RewriteRule   ^detail-gelombang/?$				   			index.php?page=vdetailgelombang
-	RewriteRule   ^pendataan-siswa/?$				   			index.php?page=vpendataan
+	RewriteRule   ^siswa/?$				   						index.php?page=vsiswa
 	RewriteRule   ^penerimaan/?$			   					index.php?page=vpenerimaan
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 
 

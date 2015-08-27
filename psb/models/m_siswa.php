@@ -5,7 +5,7 @@
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 	// require_once '../../lib/excel_reader2.php';
-	$mnu               = 'calonsiswa';
+	$mnu               = 'siswa';
 	$mnu_ayah          = 'calonsiswa_ayah';
 	$mnu_ibu           = 'calonsiswa_ibu';
 	$mnu_keluarga      = 'calonsiswa_keluarga';
@@ -95,31 +95,11 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$departemen    = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
-				// $proses        = isset($_POST['prosesS'])?filter($_POST['prosesS']):'';
 				$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
 				$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
 				$tingkat       = isset($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
-				// $sql = 'SELECT
-				// 			c.replid,
-				// 			c.nopendaftaran,
-				// 			c.nama,
-				// 			c.setbiaya,
-				// 			a.cicilan,
-				// 			c.kelompok
-				// 		FROM
-				// 			psb_calonsiswa c
-				// 			LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
-				// 			LEFT JOIN departemen d ON d.replid = p.departemen
-				// 			LEFT JOIN psb_angsuran a ON a.replid = c.angsuran
-				// 		WHERE
-				// 			c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
-				// 			AND c.nama LIKE "%'.$nama.'%"
-				// 			AND c.kelompok = '.$kelompok.'
-				// 		ORDER BY
-				// 			c.nopendaftaran ASC,
-				// 			c.nama ASC
-				// 			';
+
 				$sql = 'SELECT
 							c.replid,
 							c.nopendaftaran,
@@ -144,7 +124,7 @@
 							c.nopendaftaran ASC,
 							c.nama ASC
 							';
-				// print_r($sql);exit();	
+							pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
