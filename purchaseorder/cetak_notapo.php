@@ -61,6 +61,7 @@ $discount  			= $data['discount'];
 $netto  			= $data['netto'];
 $carabayar  			= $data['carabayar'];
 $termin  			= $data['termin'];
+$lihatslippr = '<a href="cetak_notapr.php?kode='.$data['nopr'].'"target="new">'.$nopr.'</a>';
 	$error 	= '';
 		if (!$nopo) $error .= "Error: kode PO tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
@@ -77,7 +78,7 @@ echo '
 	<tr>
 		<td>Nomor PR</td>
 		<td>:</td>
-		<td>'.$nopr.'</td>
+		<td>'.$lihatslippr.'</td>
 	</tr>';
 echo '
 	<tr>
@@ -160,10 +161,10 @@ echo '</table>';
 echo'</td></tr></table>';
 		/****************************/
 echo "</body</html>";
-
+/*
 if (!isset($_GET['detail'])){
 echo "<script language=javascript>
 window.print();
 </script>";
-}
+}*/
 ?>
