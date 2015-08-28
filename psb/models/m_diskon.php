@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu = 'diskontunai';
+	$mnu = 'diskon';
 	$tb  = 'psb_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -12,16 +12,17 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$diskontunai = isset($_POST['diskontunaiS'])?$_POST['diskontunaiS']:'';
-				$keterangan  = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
+				$departemen = isset($_POST['departemenS'])?$_POST['departemenS']:'';
+				$diskon     = isset($_POST['diskonS'])?$_POST['diskonS']:'';
+				$keterangan = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
 				$sql = 'SELECT *
 						FROM  '.$tb.' 
 						WHERE 
-							diskontunai LIKE "%'.$diskontunai.'%" AND
+							departemen ='.$departemen.' AND
+							diskon LIKE "%'.$diskon.'%" AND
 							keterangan LIKE "%'.$keterangan.'%"
-						ORDER BY 
-							diskontunai asc
-							';
+						ORDER BY
+							diskon asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -50,7 +51,7 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td align="center">'.$res['diskontunai'].'</td>
+									<td align="center">'.$res['diskon'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -69,8 +70,9 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	diskontunai = "'.filter($_POST['diskontunaiTB']).'",
-								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
+				$s = $tb.' set 	diskon     = "'.filter($_POST['diskonTB']).'",
+								departemen = '.$_POST['departemenTB'].',
+								keterangan = "'.filter($_POST['keteranganTB']).'"';
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				// pr($s2);
 				$e2 = mysql_query($s2);
@@ -102,8 +104,9 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'diskontunai' =>$r['diskontunai'],
-							'keterangan'  =>$r['keterangan'],
+							'departemen' =>$r['departemen'],
+							'diskon'     =>$r['diskon'],
+							'keterangan' =>$r['keterangan'],
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

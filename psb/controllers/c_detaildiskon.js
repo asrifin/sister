@@ -1,4 +1,4 @@
-var mnu  ='detaildiskontunai';
+var mnu  ='detaildiskon';
 var mnu2 ='departemen';
 var mnu3 ='tahunajaran';
 
@@ -24,7 +24,7 @@ var contentFR ='';
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Diskon </td>'
-                                +'<td id="diskontunaiDV"></td>'
+                                +'<td id="diskonDV"></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Keterangan </td>'
@@ -50,7 +50,7 @@ var contentFR ='';
             viewFR('');
         });
 
-        $('#keteranganS,#nilaiS,#diskontunaiS').keydown(function (e){
+        $('#keteranganS,#nilaiS,#diskonS').keydown(function (e){
             if(e.keyCode == 13) viewTB();
         });
         $('#isAktifS,#tahunajaranS,#departemenS').on('change',function (){
@@ -154,7 +154,7 @@ var contentFR ='';
                         cmbtahunajaran('form',dt.tahunajaran);
                         // $('#departemenDV').text(':'+cmbdt.departemen);
                         // $('#tahunajaranDV').text(':'+dt.tahunajaran);
-                        $('#diskontunaiDV').text(':'+dt.diskontunai);
+                        $('#diskonDV').text(':'+dt.diskon);
                         $('#keteranganDV').text(':'+dt.keterangan);
                         $('#nilaiTB').val(dt.nilai);
                     });

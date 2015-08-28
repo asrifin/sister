@@ -112,11 +112,11 @@
                      case 'vbiaya':
                         require $d.'v_biaya.php';
                     break;
-                    case 'vdiskontunai':
-                        require $d.'v_diskontunai.php';
+                    case 'vdiskon':
+                        require $d.'v_diskon.php';
                     break;
-                    case 'vdetaildiskontunai':
-                        require $d.'v_detaildiskontunai.php';
+                    case 'vdetaildiskon':
+                        require $d.'v_detaildiskon.php';
                     break;
 
                     // transaksi
@@ -129,8 +129,8 @@
                     case 'vdetailgelombang':
                         require $d.'v_detailgelombang.php';
                     break;
-                    case 'vpendataan':
-                        require $d.'v_pendataan.php';
+                    case 'vsiswa':
+                        require $d.'v_siswa.php';
                     break;
                     case 'vpenerimaan':
                         require $d.'v_penerimaan.php';

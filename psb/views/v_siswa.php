@@ -1,20 +1,22 @@
-<script src="controllers/c_pendataan.js"></script>
+<?php isMenu($modul,'siswa'); ?>
+<script src="controllers/c_siswa.js"></script>
 <script src="../js/base64.js"></script>
 
-<h4 style="color:white;">Pendataan Calon Siswa</h4>
-<div id="loadarea"></div>
+<h4 style="color:white;">Pendataan Siswa</h4>
 
-<button onclick="switchPN('form','');" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<button <?php echo isAksi('siswa','c')?'onclick="viewFR(\'\')"':'disabled  '; ?> data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<!-- <button onclick="switchPN('form','');" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> -->
 <button onclick="switchPN('view','');"  data-hint="Lihat Data" id="lihatBC" style="display:none;"><span class="icon-list"></span> </button>
 <button onclick="cariFC();" data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
-<div style="display:none;" class="input-control select span3">
+
+<div class="input-control select span3">
     <select class="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
-    <select  onchange="cmbkelompok('filter',$(this).val(),'');"  class="cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
+    <select  onchange="cmbtahunajaran('filter',$(this).val(),'');"  class="cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
 <div class="input-control select span3">
-    <select onchange="viewTB();" class="cari" data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
+    <select onchange="viewTB();" class="cari" data-hint="Gelombang" name="detailgelombangS" id="detailgelombangS"></select>
 </div>
 
 <!-- panel 1 : view table -->

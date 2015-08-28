@@ -129,8 +129,8 @@
                     case 'modulpembayaran':
                         require $d.'v_modulpembayaran.php';
                     break;
-                    case 'penerimaan':
-                        require $d.'v_penerimaan.php';
+                    case 'penerimaansiswa':
+                        require $d.'v_penerimaansiswa.php';
                     break;
                     case 'sarpras':
                         require $d.'v_sarpras.php';

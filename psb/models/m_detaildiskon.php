@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu = 'detaildiskontunai';	
+	$mnu = 'detaildiskon';	
 	$tb  = 'psb_'.$mnu;
 
 	if(!isset($_POST)){
@@ -15,28 +15,27 @@
 				$departemen  = isset($_POST['departemenS'])?$_POST['departemenS']:'';
 				$tahunajaran = isset($_POST['tahunajaranS'])?$_POST['tahunajaranS']:'';
 				$nilai       = isset($_POST['nilaiS'])?$_POST['nilaiS']:'';
-				$diskontunai = isset($_POST['diskontunaiS'])?$_POST['diskontunaiS']:'';
+				$diskon = isset($_POST['diskonS'])?$_POST['diskonS']:'';
 				$keterangan  = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
 				$nilai       = (isset($_POST['nilaiS']) && $_POST['nilaiS']!='')?' dd.nilai LIKE "%'.$_POST['nilaiS'].'%" AND':'';
 				$isAktif     = (isset($_POST['isAktifS']) && $_POST['isAktifS']!='')?' dd.isAktif='.$_POST['isAktifS'].' AND':'';
 
-				// checkDetailDiskonTunai($departemen,$tahunajaran);
 				$sql = 'SELECT 
 							dd.replid,
 							dd.nilai,
-							d.diskontunai,
+							d.diskon,
 							d.keterangan,
 							dd.isAktif
-						FROM  psb_diskontunai d
-							LEFT JOIN '.$tb.' dd on dd.diskontunai = d.replid
+						FROM  psb_diskon d
+							LEFT JOIN '.$tb.' dd on dd.diskon = d.replid
 						WHERE 
 							'.$nilai.$isAktif.'
-							d.diskontunai like "%'.$diskontunai.'%" and 
+							d.diskon like "%'.$diskon.'%" and 
 							d.keterangan like "%'.$keterangan.'%" and
 							dd.tahunajaran ='.$tahunajaran.' and
-							dd.departemen ='.$departemen.'
+							d.departemen ='.$departemen.'
 						ORDER BY 
-							d.diskontunai asc,
+							d.diskon asc,
 							dd.nilai asc';
 							// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
@@ -73,7 +72,7 @@
 						}						 
 							
 						$out.= '<tr>
-									<td>'.$res['diskontunai'].'</td>
+									<td>'.$res['diskon'].'</td>
 									<td align="center">'.$res['nilai'].' %</td>
 									<td>'.$res['keterangan'].'</td>
 									<td align="center"><button onclick="aktifkan('.$res['replid'].');" data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"><i class="icon-'.$icon.'"></i></button></td>
@@ -118,12 +117,12 @@
 				$s = 'SELECT
 						dd.nilai,
 						dd.departemen,
-						d.diskontunai,
+						d.diskon,
 						d.keterangan,
 						dd.tahunajaran
 					FROM
-						psb_detaildiskontunai dd 
-						JOIN psb_diskontunai d ON d.replid= dd.diskontunai
+						psb_detaildiskon dd 
+						JOIN psb_diskon d ON d.replid= dd.diskon
 					WHERE
 						dd.replid ='.$_POST['replid'];
 						 	// pr($s);
@@ -133,7 +132,7 @@
 				$out  = json_encode(array(
 							'departemen'  =>$r['departemen'],
 							'tahunajaran' =>$r['tahunajaran'],
-							'diskontunai' =>$r['diskontunai'],
+							'diskon' =>$r['diskon'],
 							'keterangan'  =>$r['keterangan'],
 							'status'      =>$stat,
 							'nilai'       =>$r['nilai'],
