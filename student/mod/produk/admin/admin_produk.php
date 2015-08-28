@@ -59,7 +59,7 @@ if(isset($_POST['submit'])){
 	$hargajual 		= $_POST['hargajual'];
 	
 	$error 	= '';
-		if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produk WHERE jenjang='$jenjang' and jenis='$jenis' and nama='$nama' or kode='$kode'")) > 1) $error .= "Error: Produk sudah terdaftar , silahkan ulangi.<br />";
+		if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produk WHERE jenjang='$jenjang' and jenis='$jenis' and kode='$kode'")) > 1) $error .= "Error: Produk sudah terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		$tengah .= '<div class="error">'.$error.'</div>';
 	}else{
@@ -158,7 +158,7 @@ $jumlah 		= $_POST['jumlah'];
 $hargabeli 		= $_POST['hargabeli'];
 $hargajual 		= $_POST['hargajual'];
 	$error 	= '';
-	if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produk WHERE jenjang='$jenjang' and jenis='$jenis' and nama='$nama' or kode='$kode'")) > 0) $error .= "Error: Produk sudah terdaftar , silahkan ulangi.<br />";
+	if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produk WHERE jenjang='$jenjang' and jenis='$jenis' and kode='$kode'")) > 0) $error .= "Error: Produk sudah terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		$admin .= '<div class="error">'.$error.'</div>';
 	}else{
