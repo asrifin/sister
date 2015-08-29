@@ -7,6 +7,35 @@ global $koneksi_db,$url_situs;
 $tglmulai 		= $_GET['tglmulai'];
 $tglakhir 		= $_GET['tglakhir'];
 $detail 		= $_GET['detail'];
+$jenisproduk 		= $_GET['jenisproduk'];
+$kodebarang 		= $_GET['kodebarang'];
+$supplier 		= $_GET['supplier'];
+$namasupplier = getnamasupplier($supplier);
+switch ($carabayar) {
+   case 'Semua':
+         $wherestatus="";
+         break;
+   case 'Tunai':
+         $wherestatus="and carabayar='Tunai'";
+         break;
+   case 'Hutang':
+         $wherestatus="and carabayar='Hutang'";
+         break;
+}
+
+if($kodebarang!='Semua'){
+         $jenisproduk="Semua";
+		 $detail ='ok';
+$wherekodebarang="and kodebarang='$kodebarang'";
+$namakodebarang=getnamabarang($kodebarang);
+		 $namajenisproduk ="Semua";
+}
+if($supplier=='Semua'){
+         $wheresupplier="";
+		 $namasupplier ='SEMUA';
+}else{
+         $wheresupplier="and kodesupplier='$supplier'";
+}
 
 echo "<html><head><title>Laporan Retur Pembelian </title>";
 echo '<style type="text/css">
@@ -41,8 +70,8 @@ echo'
 <b>Elyon Christian School</b><br>
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
-if(!$detail){
-echo'<tr><td colspan="7"><h4>Laporan Retur Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
+if($detail<>'ok'){
+echo'<tr><td colspan="7"><h4>Laporan Retur Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Supplier '.$namasupplier.'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
@@ -53,7 +82,7 @@ echo '
 <td>Total</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `po_pembelianretur` where tgl >= '$tglmulai' and tgl <= '$tglakhir' order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `po_pembelianretur` where tgl >= '$tglmulai' and tgl <= '$tglakhir'  $wherestatus  $wheresupplier order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $noretur = $datas['noretur'];
@@ -63,12 +92,14 @@ $kodesupplier = $datas['kodesupplier'];
 $total = $datas['total'];
 $user = $datas['user'];
 $urutan = $no + 1;
+$lihatslip = '<a href="cetak_notareturbeli.php?kode='.$datas['noretur'].'&lihat=ok"target="new">'.$datas['noretur'].'</a>';
+$lihatslipinv = '<a href="cetak_notainvoice.php?kode='.$datas['noinvoice'].'&lihat=ok"target="new">'.$datas['noinvoice'].'</a>';
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$noretur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
-<td>'.$noinvoice.'</td>
+<td>'.$lihatslipinv.'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.rupiah_format($total).'</td>
 </tr>';
@@ -82,7 +113,7 @@ echo '
 </tr>';
 echo '</table>';
 }else{
-echo'<tr><td colspan="8"><h4>Laporan Retur Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
+echo'<tr><td colspan="8"><h4>Laporan Retur Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Supplier '.$namasupplier.', , Barang : '.$namakodebarang.'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
@@ -97,7 +128,7 @@ echo '
 <td>Total</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `po_pembelianretur` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `po_pembelianretur` where tgl >= '$tglmulai' and tgl <= '$tglakhir'  $wherestatus  $wheresupplier  order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $noretur = $datas['noretur'];
@@ -109,6 +140,8 @@ $user = $datas['user'];
 $discount = $datas['discount'];
 $totaldiscount += $discount;
 $urutan = $no + 1;
+$lihatslip = '<a href="cetak_notareturbeli.php?kode='.$datas['noretur'].'&lihat=ok"target="new">'.$datas['noretur'].'</a>';
+$lihatslipinv = '<a href="cetak_notainvoice.php?kode='.$datas['noinvoice'].'&lihat=ok"target="new">'.$datas['noinvoice'].'</a>';
 $s2 = mysql_query ("SELECT * FROM `po_pembelianreturdetail` where noretur = '$noretur'group by id asc");	
 while($datas2 = mysql_fetch_array($s2)){
 $kodebarang = $datas2['kodebarang'];
@@ -119,9 +152,9 @@ $subtotal = $harga*$jumlah;
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$noretur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
-<td>'.$noinvoice.'</td>
+<td>'.$lihatslipinv.'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$kodebarang.'</td>
 <td>'.getnamabarang($kodebarang).'</td>
