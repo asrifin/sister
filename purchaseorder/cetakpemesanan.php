@@ -41,7 +41,7 @@ echo'
 <b>Elyon Christian School</b><br>
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
-if(!$detail){
+if($detail<>'ok'){
 echo'<tr><td colspan="7"><h4>Laporan Pemesanan, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
 echo '
 <tr class="border">
@@ -70,11 +70,13 @@ $carabayar = $datas['carabayar'];
 $termin = $datas['termin'];
 $user = $datas['user'];
 $urutan = $no + 1;
+$lihatslipo = '<a href="cetak_notapo.php?kode='.$datas['nopo'].'&lihat=ok"target="new">'.$datas['nopo'].'</a>';
+$lihatslippr = '<a href="cetak_notapr.php?kode='.$datas['nopr'].'&lihat=ok"target="new">'.$datas['nopr'].'</a>';
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nopo.'</td>
-<td>'.$nopr.'</td>
+<td>'.$lihatslipo.'</td>
+<td>'.$lihatslippr.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.rupiah_format($total).'</td>
@@ -124,6 +126,8 @@ $user = $datas['user'];
 $netto = $datas['netto'];
 $tnetto += $netto;
 $urutan = $no + 1;
+$lihatslipo = '<a href="cetak_notapo.php?kode='.$datas['nopo'].'&lihat=ok"target="new">'.$datas['nopo'].'</a>';
+$lihatslippr = '<a href="cetak_notapr.php?kode='.$datas['nopr'].'&lihat=ok"target="new">'.$datas['nopr'].'</a>';
 $s2 = mysql_query ("SELECT * FROM `po_podetail` where nopo = '$nopo'order by id asc");	
 while($datas2 = mysql_fetch_array($s2)){
 $kodebarang = $datas2['kodebarang'];
@@ -136,8 +140,8 @@ if($jenisbarangid==$jenisproduk){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nopo.'</td>
-<td>'.$nopr.'</td>
+<td>'.$lihatslipo.'</td>
+<td>'.$lihatslippr.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$kodebarang.'</td>
@@ -155,8 +159,8 @@ if($jenisproduk=='Semua'){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nopo.'</td>
-<td>'.$nopr.'</td>
+<td>'.$lihatslipo.'</td>
+<td>'.$lihatslippr.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$kodebarang.'</td>
@@ -191,10 +195,11 @@ echo '</table>';
 }
 /****************************/
 echo "</body</html>";
-
+/*
 if (isset($_GET['tglmulai'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

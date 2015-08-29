@@ -313,30 +313,18 @@ $admin .= '
 		<td>:</td>
 		<td>'.$sel2.'</td>
 	</tr>';
-$admin .= '
+	$admin .= '
 	<tr>
 		<td>Kode PO</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="po_id"  name="kodepo" value="'.$kodepo.'" onkeyup="autocompletpo()"class="form-control" >
-					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
-                    <ul id="po_list_id"></ul>
-                </div>
-				</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		</tr>';
-$admin .= '
-	<tr>
-		<td>Kode Supplier</td>
-		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >
-					&nbsp;
-                    <ul id="country_list_id"></ul>
-                </div>
-				</td>
+		<td><select class="form-select" name="kodepo"id="combobox2">';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM po_po ORDER BY id desc" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$pilihan = ($data['nopo']==$kodepo)?"selected":'';
+	$admin .= '
+			<option value="'.$data['nopo'].'"'.$pilihan.'>'.$data['nopo'].' ~ '.getnamasupplier($data['kodesupplier']).'</option>';
+}
+	$admin .= '</select>&nbsp;<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >&nbsp;</td>
 		<td>Termin</td>
 		<td>:</td>
 		<td>'.$sel3.'Hari</td>
@@ -345,7 +333,7 @@ $admin .= '
 	<tr>
 		<td>Nota Supplier</td>
 		<td>:</td>
-		<td><input type="text" name="notasupplier" value="'.$notasupplier.'"class="form-control" >
+		<td><input type="hidden" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" ><input type="text" name="notasupplier" value="'.$notasupplier.'"class="form-control" >
 				</td>
 		<td></td>
 		<td></td>
@@ -483,22 +471,23 @@ $admin .= '
 $admin .= '
 <form method="post" action="" class="form-inline"id="posts">
 <table class="table table-striped table-hover">';
-$getlastinvoice=getlastinvoice();
 $admin .= '
 	<tr>
 		<td>Kode Invoice</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="invoice_id"  name="kodeinvoice" value="'.$getlastinvoice.'" onkeyup="autocompletinvoice()" required class="form-control" >
-					<input type="submit" value="Lihat Invoice" name="lihatinvoice"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
-					
-                    <ul id="invoice_list_id"></ul>
-                </div>
-				</td>
+		<td><select class="form-select" name="kodeinvoice"id="combobox2">';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM po_pembelian ORDER BY id DESC" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$pilihan = ($data['noinvoice']==$kodeinvoice)?"selected":'';
+	$admin .= '
+			<option value="'.$data['noinvoice'].'"'.$pilihan.'>'.$data['noinvoice'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.$data['total'].'</option>';
+}
+	$admin .= '</select>&nbsp;<input type="submit" value="Lihat Invoice" name="lihatinvoice"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;</td>
 		<td></td>
 		<td></td>
 		<td></td>
 		</tr>';
+
 $admin .= '</form></table></div>';	
 if(isset($_POST['lihatinvoice'])){
 
