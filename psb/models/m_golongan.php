@@ -171,7 +171,7 @@
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
 						}
-					}$ar = array('status'=>'sukses','tingkat'=>$dt);
+					}$ar = array('status'=>'sukses',$mnu=>$dt);
 				}$out=json_encode($ar);
 			break;
 			// cmbtingkat -----------------------------------------------------------------
