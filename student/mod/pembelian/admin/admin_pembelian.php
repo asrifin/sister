@@ -235,14 +235,27 @@ $supplier = '
 
 
 $user = $_SESSION['UserName'];
+$termin = $_POST['termin'];
 $tglnow = date("Y-m-d");
 $noinvoice = generateinvoice();
+$carabayar = $_POST['carabayar'];
 $tgl 		= !isset($tgl) ? $tglnow : $tgl;
 $kodepo 		= !isset($kodepo) ? $_SESSION['kodepo'] : $kodepo;
 $kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesupplier;
 $discount 		= !isset($discount) ? '0' : $discount;
 $carabayar 		= !isset($carabayar) ? 'Hutang' : $carabayar;
-$termin 		= !isset($termin) ?$_POST['termin'] : $termin;
+$termin 		= !isset($termin) ? '0' : $termin;
+$sel2 = '<select name="carabayar" class="form-control">';
+$arr2 = array ('Tunai','Debet Card','Hutang');
+foreach ($arr2 as $kk=>$vv){
+	if ($carabayar == $vv){
+	$sel2 .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';
+	}else {
+	$sel2 .= '<option value="'.$vv.'">'.$vv.'</option>';	
+}
+}
+
+$sel2 .= '</select>'; 
 $admin .= '
 <div class="panel-heading"><b>Transaksi Pembelian</b></div>';	
 $admin .= '
@@ -262,7 +275,7 @@ $admin .= '
 		<td><input type="text" id="tgl" name="tgl" value="'.$tgl.'" class="form-control">&nbsp;</td>
 <td>Cara Pembayaran</td>
 		<td>:</td>
-		<td>'.$carabayar.'<input type="hidden" name="carabayar" value="'.$carabayar.'" class="form-control"></td>		
+		<td>'.$sel2.'<input type="hidden" name="carabayar" value="'.$carabayar.'" class="form-control"></td>		
 	</tr>';
 $admin .= '
 	<tr>

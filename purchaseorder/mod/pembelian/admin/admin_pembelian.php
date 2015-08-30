@@ -17,38 +17,13 @@ $(document).ready(function() {
 } );
 </script>
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />
-<link rel="stylesheet" href="mod/pembelian/style.css" />
-';
-$admin .= '
-
-<script type="text/javascript" src="mod/pembelian/script.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
-$wkt = <<<eof
-<script language="JavaScript" type="text/javascript">
-    
-    /**
-    * Example callback function
-    */
-    /*<![CDATA[*/
-    function exampleCallback_ISO3(date, month, year)
-    {
-        if (String(month).length == 1) {
-            month = '0' + month;
-        }
-    
-        if (String(date).length == 1) {
-            date = '0' + date;
-        }    
-        document.forms['posts'].tgl.value = year + '-' + month + '-' + date;
-    }
-    calendar3 = new dynCalendar('calendar3', 'exampleCallback_ISO3');
-    calendar3.setMonthCombo(true);
-    calendar3.setYearCombo(true);
-/*]]>*/     
-</script>
-eof;
+$JS_SCRIPT.= <<<js
+<script type="text/javascript">
+  $(function() {
+$( "#tgl" ).datepicker({ dateFormat: "yy-mm-dd" } );
+  });
+  </script>
+js;
 $script_include[] = $JS_SCRIPT;
 	
 //$index_hal=1;	
@@ -297,12 +272,13 @@ $supplier = '
 $user = $_SESSION['UserName'];
 $tglnow = date("Y-m-d");
 $noinvoice = generateinvoice();
+$carabayar = $_POST['carabayar'];
 $tgl 		= !isset($tgl) ? $tglnow : $tgl;
 $kodepo 		= !isset($kodepo) ? $_SESSION['kodepo'] : $kodepo;
 $kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesupplier;
 $discount 		= !isset($discount) ? '0' : $discount;
-$carabayar 		= !isset($carabayar) ? $_POST['carabayar'] : $carabayar;
-$termin 		= !isset($termin) ? $_POST['termin'] : $termin;
+$carabayar 		= !isset($carabayar) ? 'Tunai' : $carabayar;
+$termin 		= !isset($termin) ? '0' : $termin;
 $notasupplier 		= !isset($notasupplier) ? $_POST['notasupplier'] : $notasupplier;
 $sel2 = '<select name="carabayar" class="form-control">';
 $arr2 = array ('Tunai','Hutang');
@@ -315,17 +291,7 @@ foreach ($arr2 as $kk=>$vv){
 }
 
 $sel2 .= '</select>'; 
-$sel3 = '<select name="termin" class="form-control" required>';
-$arr3 = array ('0','14','21','30','60','90','120');
-foreach ($arr3 as $kk=>$vv){
-	if ($termin == $vv){
-	$sel3 .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';
-	}else {
-	$sel3 .= '<option value="'.$vv.'">'.$vv.'</option>';	
-	}
-}
 
-$sel3 .= '</select>'; 
 $admin .= '
 <div class="panel-heading"><b>Transaksi Pembelian</b></div>';	
 $admin .= '
@@ -347,30 +313,18 @@ $admin .= '
 		<td>:</td>
 		<td>'.$sel2.'</td>
 	</tr>';
-$admin .= '
+	$admin .= '
 	<tr>
 		<td>Kode PO</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="po_id"  name="kodepo" value="'.$kodepo.'" onkeyup="autocompletpo()"class="form-control" >
-					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >
-                    <ul id="po_list_id"></ul>
-                </div>
-				</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		</tr>';
-$admin .= '
-	<tr>
-		<td>Kode Supplier</td>
-		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" onkeyup="autocomplet()"class="form-control" >
-					&nbsp;
-                    <ul id="country_list_id"></ul>
-                </div>
-				</td>
+		<td><select class="form-select" name="kodepo"id="combobox2">';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM po_po ORDER BY id desc" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$pilihan = ($data['nopo']==$kodepo)?"selected":'';
+	$admin .= '
+			<option value="'.$data['nopo'].'"'.$pilihan.'>'.$data['nopo'].' ~ '.getnamasupplier($data['kodesupplier']).'</option>';
+}
+	$admin .= '</select>&nbsp;<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="deletesupplier"class="btn btn-danger" >&nbsp;</td>
 		<td>Termin</td>
 		<td>:</td>
 		<td>'.$sel3.'Hari</td>
@@ -379,7 +333,7 @@ $admin .= '
 	<tr>
 		<td>Nota Supplier</td>
 		<td>:</td>
-		<td><input type="text" name="notasupplier" value="'.$notasupplier.'"class="form-control" >
+		<td><input type="hidden" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'" ><input type="text" name="notasupplier" value="'.$notasupplier.'"class="form-control" >
 				</td>
 		<td></td>
 		<td></td>
@@ -517,22 +471,23 @@ $admin .= '
 $admin .= '
 <form method="post" action="" class="form-inline"id="posts">
 <table class="table table-striped table-hover">';
-$getlastinvoice=getlastinvoice();
 $admin .= '
 	<tr>
 		<td>Kode Invoice</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="invoice_id"  name="kodeinvoice" value="'.$getlastinvoice.'" onkeyup="autocompletinvoice()" required class="form-control" >
-					<input type="submit" value="Lihat Invoice" name="lihatinvoice"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
-					
-                    <ul id="invoice_list_id"></ul>
-                </div>
-				</td>
+		<td><select class="form-select" name="kodeinvoice"id="combobox2">';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM po_pembelian ORDER BY id DESC" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$pilihan = ($data['noinvoice']==$kodeinvoice)?"selected":'';
+	$admin .= '
+			<option value="'.$data['noinvoice'].'"'.$pilihan.'>'.$data['noinvoice'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.$data['total'].'</option>';
+}
+	$admin .= '</select>&nbsp;<input type="submit" value="Lihat Invoice" name="lihatinvoice"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;</td>
 		<td></td>
 		<td></td>
 		<td></td>
 		</tr>';
+
 $admin .= '</form></table></div>';	
 if(isset($_POST['lihatinvoice'])){
 

@@ -58,6 +58,7 @@ $tgl  			= $data['tgl'];
 $kodesupplier  			= $data['kodesupplier'];
 $total  			= $data['total'];
 $carabayar  			= $data['carabayar'];
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok"target="new">'.$data['noinvoice'].'</a>';
 	$error 	= '';
 		if (!$noretur) $error .= "Error: Kode Retur tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
@@ -74,7 +75,7 @@ echo '
 	<tr>
 		<td>Nomor Invoice</td>
 		<td>:</td>
-		<td>'.$noinvoice.'</td>
+		<td>'.$lihatslip.'</td>
 	</tr>';
 echo '
 	<tr>
@@ -132,10 +133,11 @@ echo '</table>';
 		echo'</td></tr></table>';
 /****************************/
 echo "</body</html>";
-
+/*
 if (!isset($_GET['detail'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

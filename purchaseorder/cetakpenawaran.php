@@ -7,7 +7,7 @@ global $koneksi_db,$url_situs;
 $tglmulai 		= $_GET['tglmulai'];
 $tglakhir 		= $_GET['tglakhir'];
 $detail 		= $_GET['detail'];
-echo "<html><head><title>Laporan Permintaan </title>";
+echo "<html><head><title>Laporan Penawaran </title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
     font-size: 0.8em; /* 14px/16=0.875em */
@@ -41,88 +41,77 @@ echo'
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
 if($detail<>'ok'){
-echo'<tr><td colspan="7"><h4>Laporan Permintaan, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
+echo'<tr><td colspan="7"><h4>Laporan Penawaran, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
+<td>No.PN</td>
 <td>No.PR</td>
 <td>Tanggal</td>
-<td>Nama</td>
-<td>Departemen</td>
-<td>Tujuan</td>
-<td>Anggaran</td>
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `po_pr` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `po_pn` where tgl >= '$tglmulai' and tgl <= '$tglakhir' order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
+$nopn = $datas['nopn'];
 $nopr = $datas['nopr'];
 $tgl = $datas['tgl'];
-$namapr = $datas['namapr'];
-$departemenpr = $datas['departemenpr'];
-$tujuanpr = $datas['tujuanpr'];
-$kategorianggaran = $datas['kategorianggaran'];
 $user = $datas['user'];
 $urutan = $no + 1;
-$lihatslip = '<a href="cetak_notapr.php?kode='.$datas['nopr'].'&lihat=ok"target="new">'.$datas['nopr'].'</a>';
+$lihatslip = '<a href="cetak_notapn.php?kode='.$datas['nopn'].'&lihat=ok"target="new">'.$datas['nopn'].'</a>';
+$lihatslippr = '<a href="cetak_notapr.php?kode='.$datas['nopr'].'&lihat=ok"target="new">'.$datas['nopr'].'</a>';
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
 <td>'.$lihatslip.'</td>
+<td>'.$lihatslippr.'</td>
 <td>'.tanggalindo($tgl).'</td>
-<td>'.$namapr.'</td>
-<td>'.getdepartemendaritingkat($departemenpr).'-'.getdepartemen($departemenpr).'</td>
-<td>'.$tujuanpr.'</td>
-<td>'.getkategorianggaran($kategorianggaran).'</td>
 <td>'.$user.'</td>
 </tr>';
 $no++;
 }
 echo '</table>';
 }else{
-echo'<tr><td colspan="8"><h4>Laporan Permintaan, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
+echo'<tr><td colspan="8"><h4>Laporan Penawaran, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
+<td>No.PN</td>
 <td>No.PR</td>
 <td>Tanggal</td>
-<td>Nama</td>
-<td>Departemen</td>
 <td>Kode Barang</td>
 <td>Nama Barang</td>
-<td>Jumlah</td>
-<td>Spesifikasi</td>
+<td>Harga</td>
+<td>Supplier</td>
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `po_pr` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `po_pn` where tgl >= '$tglmulai' and tgl <= '$tglakhir'  order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
+$nopn = $datas['nopn'];
 $nopr = $datas['nopr'];
 $tgl = $datas['tgl'];
-$namapr = $datas['namapr'];
-$departemenpr = $datas['departemenpr'];
-$tujuanpr = $datas['tujuanpr'];
 $user = $datas['user'];
 $urutan = $no + 1;
-$lihatslip = '<a href="cetak_notapr.php?kode='.$datas['nopr'].'&lihat=ok"target="new">'.$datas['nopr'].'</a>';
-$s2 = mysql_query ("SELECT * FROM `po_prdetail` where nopr = '$nopr'order by id asc");	
+$lihatslippn = '<a href="cetak_notapn.php?kode='.$datas['nopn'].'&lihat=ok"target="new">'.$datas['nopn'].'</a>';
+$lihatslippr = '<a href="cetak_notapr.php?kode='.$datas['nopr'].'&lihat=ok"target="new">'.$datas['nopr'].'</a>';
+$s2 = mysql_query ("SELECT * FROM `po_pndetail` where nopn = '$nopn'order by id asc");	
 while($datas2 = mysql_fetch_array($s2)){
 $kodebarang = $datas2['kodebarang'];
-$jumlah = $datas2['jumlah'];
-$spesifikasi = $datas2['spesifikasi'];
+$harga = $datas2['harga'];
+$supplier = $datas2['supplier'];
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$lihatslip.'</td>
+<td>'.$lihatslippn.'</td>
+<td>'.$lihatslippr.'</td>
 <td>'.tanggalindo($tgl).'</td>
-<td>'.$namapr.'</td>
-<td>'.getdepartemendaritingkat($departemenpr).'-'.getdepartemen($departemenpr).'</td>
 <td>'.$kodebarang.'</td>
 <td>'.getnamabarang($kodebarang).'</td>
-<td>'.$jumlah.'</td>
-<td>'.$spesifikasi.'</td>
+<td>'.$harga.'</td>
+<td>'.getnamasupplier($supplier).'</td>
 <td>'.$user.'</td>
 </tr>';
 $no++;

@@ -10,7 +10,7 @@ $kode 		= $_POST['kode'];
 $kode 		= $_GET['kode'];	
 }
 
-echo "<html><head><title>Nota Purchase Requisition </title>";
+echo "<html><head><title>Nota Penawaran </title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
     font-size: 0.9em; /* 14px/16=0.875em */
@@ -50,25 +50,30 @@ echo'<table  width="100%">
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr></table>';
 echo'</td></tr><tr><td>';
 $no=1;
-$query 		= mysql_query ("SELECT * FROM `po_pr` WHERE `nopr` like '$kode'");
+$query 		= mysql_query ("SELECT * FROM `po_pn` WHERE `nopn` like '$kode'");
 $data 		= mysql_fetch_array($query);
+$nopn  			= $data['nopn'];
 $nopr  			= $data['nopr'];
 $tgl  			= $data['tgl'];
-$namapr  			= $data['namapr'];
-$departemenpr  			= $data['departemenpr'];
-$tujuanpr  			= $data['tujuanpr'];
-$kategorianggaran  			= $data['kategorianggaran'];
+$lihatslippn = '<a href="cetak_notapn.php?kode='.$data['nopn'].'&lihat=ok"target="new">'.$data['nopn'].'</a>';
+$lihatslippr = '<a href="cetak_notapr.php?kode='.$data['nopr'].'&lihat=ok"target="new">'.$data['nopr'].'</a>';
 	$error 	= '';
-		if (!$nopr) $error .= "Error: kode PR tidak terdaftar , silahkan ulangi.<br />";
+		if (!$nopr) $error .= "Error: kode PN tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		echo '<div class="error">'.$error.'</div>';}else{
 		echo '
 <table>';
 echo '
 	<tr>
+		<td>Nomor PN</td>
+		<td>:</td>
+		<td>'.$lihatslippn.'</td>
+	</tr>';
+echo '
+	<tr>
 		<td>Nomor PR</td>
 		<td>:</td>
-		<td>'.$nopr.'</td>
+		<td>'.$lihatslippr.'</td>
 	</tr>';
 echo '
 	<tr>
@@ -76,31 +81,7 @@ echo '
 		<td>:</td>
 		<td>'.tanggalindo($tgl).'</td>
 	</tr>';
-echo '
-	<tr>
-		<td>Nama Requisition</td>
-		<td>:</td>
-		<td>'.$namapr.'</td>
-	</tr>';	
-echo '
-	<tr>
-		<td>Departemen</td>
-		<td>:</td>
-		<td>'.getdepartemendaritingkat($departemenpr).' - '.getdepartemen($departemenpr).'</td>
-	</tr>';	
-	echo '
-	<tr>
-		<td>Tujuan Pembelian</td>
-		<td>:</td>
-		<td>'.$tujuanpr.'</td>
-	</tr>';	
-	echo '
-	<tr>
-		<td>Kategori Anggaran</td>
-		<td>:</td>
-		<td>'.getkategorianggaran($kategorianggaran).'</td>
-			<td></td>
-	</tr>';
+
 echo '</table>';	
 echo '<b>Detail</b>';	
 echo '
@@ -108,20 +89,20 @@ echo '
 echo '	
 <tr>
 <th class="border"><b>No</b></</th>
-<th class="border"><b>Kode</b></</th>
-<th class="border"><b>Nama</b></td>
-<th class="border"><b>Jumlah</b></</td>
-<th class="border"><b>Spesifikasi</b></</th>
+<th class="border"><b>Supplier</b></</th>
+<th class="border"><b>Kode Barang</b></td>
+<th class="border"><b>Nama Barang</b></td>
+<th class="border"><b>Harga</b></</th>
 	</tr>';
-$hasild = $koneksi_db->sql_query("SELECT * FROM `po_prdetail` WHERE `nopr` like '$kode'");
+$hasild = $koneksi_db->sql_query("SELECT * FROM `po_pndetail` WHERE `nopn` like '$kode'");
 while ($datad =  $koneksi_db->sql_fetchrow ($hasild)){
 echo '	
 <tr>
 <td class="border">'.$no.'</td>
+<td class="border">'.getnamasupplier($datad["supplier"]).'</td>
 <td class="border">'.$datad["kodebarang"].'</td>
 <td class="border">'.getnamabarang($datad["kodebarang"]).'</td>
-<td class="border">'.$datad["jumlah"].'</td>
-<td class="border">'.$datad["spesifikasi"].'</td>
+<td class="border">'.$datad["harga"].'</td>
 </tr>';
 	$no++;
 		}

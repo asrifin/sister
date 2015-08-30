@@ -134,11 +134,11 @@ $netto=$data['netto'];
 $user=$data['user'];
 $cetakslip = '<a href="cetak_notapo.php?kode='.$data['nopo'].'&cetak=ok" target ="blank"><span class="btn btn-success">Cetak</span></a>';
 if($carabayar=='Pemesanan'){
-$lihatslip = '<a href="cetak_notapopenjualan.php?kode='.$data['nopo'].'&lihat=ok&bayar=ok">'.$nopo.'</a>';
+$lihatslip = '<a href="cetak_notapopenjualan.php?kode='.$data['nopo'].'&lihat=ok&bayar=ok"target ="blank">'.$nopo.'</a>';
 $bayar ='0';
 $piutang = $netto;
 }else{
-$lihatslip = '<a href="cetak_notapopenjualan.php?kode='.$data['nopo'].'&lihat=ok" >'.$nopo.'</a>';
+$lihatslip = '<a href="cetak_notapopenjualan.php?kode='.$data['nopo'].'&lihat=ok"target ="blank">'.$nopo.'</a>';
 $bayar =$netto;
 $piutang = '0';
 }

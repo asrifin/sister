@@ -17,38 +17,13 @@ $(document).ready(function() {
 } );
 </script>
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />
-<link rel="stylesheet" href="mod/pembelianretur/style.css" />
-';
-$admin .= '
-
-<script type="text/javascript" src="mod/pembelianretur/script.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
-$wkt = <<<eof
-<script language="JavaScript" type="text/javascript">
-    
-    /**
-    * Example callback function
-    */
-    /*<![CDATA[*/
-    function exampleCallback_ISO3(date, month, year)
-    {
-        if (String(month).length == 1) {
-            month = '0' + month;
-        }
-    
-        if (String(date).length == 1) {
-            date = '0' + date;
-        }    
-        document.forms['posts'].tgl.value = year + '-' + month + '-' + date;
-    }
-    calendar3 = new dynCalendar('calendar3', 'exampleCallback_ISO3');
-    calendar3.setMonthCombo(true);
-    calendar3.setYearCombo(true);
-/*]]>*/     
-</script>
-eof;
+$JS_SCRIPT.= <<<js
+<script type="text/javascript">
+  $(function() {
+$( "#tgl" ).datepicker({ dateFormat: "yy-mm-dd" } );
+  });
+  </script>
+js;
 $script_include[] = $JS_SCRIPT;
 	
 //$index_hal=1;	
@@ -289,39 +264,29 @@ $admin .= '
 	<tr>
 		<td>Tanggal</td>
 		<td>:</td>
-		<td><input type="text" name="tgl" value="'.$tgl.'" class="form-control">&nbsp;'.$wkt.'</td>
+		<td><input type="text" id="tgl" name="tgl" value="'.$tgl.'" class="form-control">&nbsp;</td>
 		<td></td>
 		<td></td>
 		<td></td>
 	</tr>';
 $admin .= '
 	<tr>
-		<td>Kode INVOICE</td>
+		<td>Kode Invoice</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="inv_id"  name="kodeinv" value="'.$kodeinv.'" onkeyup="autocompletinv()"class="form-control" >
-					<input type="submit" value="Tambah INV" name="tambahinv"class="btn btn-success" >&nbsp;<input type="submit" value="Delete" name="deletesupplier"class="btn btn-danger" >
-                    <ul id="inv_list_id"></ul>
-                </div>
-				</td>
+		<td><select class="form-select" name="kodeinv"id="combobox2">';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM po_pembelian ORDER BY id DESC" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$pilihan = ($data['noinvoice']==$kodeinv)?"selected":'';
+	$admin .= '
+			<option value="'.$data['noinvoice'].'"'.$pilihan.'>'.$data['noinvoice'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.$data['total'].'</option>';
+}
+	$admin .= '</select>&nbsp;<input type="submit" value="Tambah INV" name="tambahinv"class="btn btn-success" >&nbsp;<input type="submit" value="Delete" name="deletesupplier"class="btn btn-danger" >&nbsp;</td>
 <td>Cara Pembayaran</td>
 		<td>:</td>
 		<td>'.$carabayar.'<input type="hidden" name="carabayar" value="'.$carabayar.'" class="form-control"></td>
 		</tr>';
-$admin .= '
-	<tr>
-		<td>Kode Supplier</td>
-		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="country_id"  name="kodesupplier" value="'.$kodesupplier.'"class="form-control" >
-				</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		</tr>';
-
 $admin .= '	
-	<tr><td colspan="5"><div id="Tbayar"></div></td>
+	<tr><td colspan="5"><input type="hidden"  name="kodesupplier" value="'.$kodesupplier.'"class="form-control" ></td>
 		<td>
 		</td>
 	</tr>
@@ -446,17 +411,19 @@ $admin .= '
 	<tr>
 		<td>Kode Retur Pembelian</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="retur_id"  name="koderetur" value="'.$getlastreturbeli.'" onkeyup="autocompletretur()" required class="form-control" >
-					<input type="submit" value="Lihat Retur" name="lihatretur"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" >&nbsp;
-					
-                    <ul id="retur_list_id"></ul>
-                </div>
-				</td>
-		<td></td>
+		<td><select class="form-select" name="koderetur"id="combobox2">';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM po_pembelianretur ORDER BY id DESC" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$pilihan = ($data['noretur']==$koderetur)?"selected":'';
+	$admin .= '
+			<option value="'.$data['noretur'].'"'.$pilihan.'>'.$data['noretur'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.$data['total'].'</option>';
+}
+	$admin .= '</select>&nbsp;<input type="submit" value="Lihat Retur" name="lihatretur"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalcetak"class="btn btn-danger" ></td>
+<td></td>
 		<td></td>
 		<td></td>
 		</tr>';
+
 $admin .= '</form></table></div>';	
 if(isset($_POST['lihatretur'])){
 $koderetur     = $_POST['koderetur']; 
@@ -469,6 +436,7 @@ $tgl  			= $data['tgl'];
 $kodesupplier  			= $data['kodesupplier'];
 $total  			= $data['total'];
 $carabayar  			= $data['carabayar'];
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok"target="new">'.$data['noinvoice'].'</a>';
 	$error 	= '';
 		if (!$noretur) $error .= "Error: Kode Retur tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
@@ -492,7 +460,7 @@ $admin .= '
 	<tr>
 		<td>Nomor Invoice</td>
 		<td>:</td>
-		<td>'.$noinvoice.'</td>
+		<td>'.$lihatslip.'</td>
 		<td></td>
 	</tr>';
 $admin .= '

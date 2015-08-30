@@ -28,8 +28,8 @@ $tglnow = date("Y-m-d");
 $tglmulai 		= !isset($tglmulai) ? $tglnow : $tglmulai;
 $tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
 
-$admin .='<div class="panel-heading"><b>Laporan Permintaan</b></div>';
-$admin .= '<form class="form-inline" method="get" action="cetakpermintaan.php" enctype ="multipart/form-data" id="posts" target="_blank">
+$admin .='<div class="panel-heading"><b>Laporan Penawaran</b></div>';
+$admin .= '<form class="form-inline" method="get" action="cetakpenawaran.php" enctype ="multipart/form-data" id="posts" target="_blank">
 <table class="table table-striped table-hover">';
 $admin .= '
 	<tr>
@@ -44,7 +44,7 @@ $admin .= '
 $admin .= '
 	<tr>
 		<td width="200px">Detail</td>
-		<td><input type="radio" name="detail" value="ok" checked> Ya , &nbsp;<input type="radio" name="detail" value="tidak"> Tidak	&nbsp;
+		<td><input type="radio" name="detail" value="ok" checked> Ya , &nbsp;<input type="radio" name="detail" value="tidak"> Tidak	&nbsp; 
 		</td>
 	</tr>';
 $admin .= '<tr>

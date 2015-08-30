@@ -17,38 +17,7 @@ $(document).ready(function() {
 } );
 </script>
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />
-<link rel="stylesheet" href="mod/pobatal/style.css" />
-';
-$admin .= '
 
-<script type="text/javascript" src="mod/pobatal/script.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
-$wkt = <<<eof
-<script language="JavaScript" type="text/javascript">
-    
-    /**
-    * Example callback function
-    */
-    /*<![CDATA[*/
-    function exampleCallback_ISO3(date, month, year)
-    {
-        if (String(month).length == 1) {
-            month = '0' + month;
-        }
-    
-        if (String(date).length == 1) {
-            date = '0' + date;
-        }    
-        document.forms['posts'].tgl.value = year + '-' + month + '-' + date;
-    }
-    calendar3 = new dynCalendar('calendar3', 'exampleCallback_ISO3');
-    calendar3.setMonthCombo(true);
-    calendar3.setYearCombo(true);
-/*]]>*/     
-</script>
-eof;
 $script_include[] = $JS_SCRIPT;
 	
 //$index_hal=1;	
@@ -79,17 +48,18 @@ $admin .= '
 $admin .= '
 <form method="post" action="" class="form-inline"id="posts">
 <table class="table table-striped table-hover">';
-$admin .= '
+	$admin .= '
 	<tr>
 		<td>Kode PO</td>
 		<td>:</td>
-		<td><div class="input_container">
-                    <input type="text" id="po_id"  name="kodepo" value="'.$kodepo.'" onkeyup="autocompletpo()" required class="form-control" >
-					<input type="submit" value="Lihat PO" name="lihatpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalhapus"class="btn btn-danger" >&nbsp;
-					
-                    <ul id="po_list_id"></ul>
-                </div>
-				</td>
+		<td><select class="form-select" name="kodepo"id="combobox2">';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM po_po ORDER BY id desc" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$pilihan = ($data['nopo']==$kodepo)?"selected":'';
+	$admin .= '
+			<option value="'.$data['nopo'].'"'.$pilihan.'>'.$data['nopo'].' ~ '.getnamasupplier($data['kodesupplier']).'</option>';
+}
+	$admin .= '</select>&nbsp;<input type="submit" value="Lihat PO" name="lihatpo"class="btn btn-success" >&nbsp;<input type="submit" value="Batal" name="batalhapus"class="btn btn-danger" >&nbsp;</td>
 		<td></td>
 		<td></td>
 		<td></td>
