@@ -142,7 +142,7 @@ echo '<div class="border2">
 </div>';
 }
 
-if ($levelakses=="Audit"){
+if ($levelakses=="Auditor"){
 echo '<div class="border2">
 <table width="100%"><tr align="center">
 <td>
