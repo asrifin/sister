@@ -119,12 +119,8 @@
 				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
-				}else{
-					if(isset($_POST[$mnu])){
-						$w='where '.$mnu.'='.$_POST[$mnu];
-					}else{
-						$w='where tingkat='.$_POST['tingkat'];
-					}
+				}elseif(isset($_POST['tingkat'])){
+					$w='where tingkat='.$_POST['tingkat'];
 				}
 				
 				$s	= ' SELECT *

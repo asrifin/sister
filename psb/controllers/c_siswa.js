@@ -36,32 +36,32 @@ var contentFR = '';
                                             // departemen
                                             +'<label>Departemen</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select id="departemenTB" name="departemenTB"></select>'
+                                                +'<select required onchange="cmbdetailgelombang(\'form\',\'\');" id="departemenTB" name="departemenTB"></select>'
                                             +'</div>'
                                             // tahunajaran
                                             +'<label>Tahun Ajaran</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select id="tahunajaranTB" name="tahunajaranTB"></select>'
+                                                +'<select required  onchange="cmbdetailgelombang(\'form\',\'\');" id="tahunajaranTB" name="tahunajaranTB"></select>'
                                             +'</div>'
                                             // Detailgelombang
                                             +'<label>Detail Gelombang</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select id="detailgelombangTB" name="detailgelombangTB"></select>'
+                                                +'<select required id="detailgelombangTB" name="detailgelombangTB"><option value="">-silahkan pilih Dept. dan Tahun Ajaran dahulu-</option></select>'
                                             +'</div>'
                                             // tingkat
                                             +'<label>Tingkat</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select id="tingkatTB" name="tingkatTB"></select>'
+                                                +'<select required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val());" id="tingkatTBZ" name="tingkatTB"></select>'
                                             +'</div>'
                                             // subtingkat
                                             +'<label>Sub Tingkat</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select id="subtingkatTB" name="subtingkatTB"></select>'
+                                                +'<select required id="subtingkatTB" name="subtingkatTB"></select>'
                                             +'</div>'
                                             // golongan
                                             +'<label>Golongan</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select id="golonganTB" name="golonganTB"></select>'
+                                                +'<select required id="golonganTBZ" name="golonganTBZ"></select>'
                                             +'</div>'
                                         +'</div>'
                                             
@@ -643,7 +643,7 @@ var contentFR = '';
                 $('#departemenS').html(out);
                 cmbtahunajaran('filter','');
             }else{ // form (edit & add)
-                $('#departemenTB').html(out);
+                $('#departemenTB').html('<option value="">-Pilih Departemen-</option>'+out);
             }
         });
     }
@@ -671,7 +671,7 @@ var contentFR = '';
                     // var th1 = dt.tahunajaran[0].tahunajaran;
                     // var th2 = parseInt(th1)+1;
                     // $('#tahunajaranDV').text(': '+th1+' - '+th2);
-                    $('#tahunajaranTB').html(out);
+                    $('#tahunajaranTB').html('<option value="">-Pilih Tahun Ajaran-</option>'+out);
                 }
             }
         });
@@ -820,32 +820,25 @@ var contentFR = '';
 
         }
     }  
-  function cmbtingkat (typ,ting) {
-    var d='aksi=cmb'+mnu4;
-    var u=dir4;
-    ajax(u,d).done(function (dt){
-        var opt='';
-        if (dt.status!='sukses') {
-            notif(dt.status,'red');
-            opt+='<option value="">'+dt.status+'</option>'
-        }else{
-            var opt = '';
-            $.each(dt.tingkat,function(id,item){
-                opt+='<option '+(ting==item.replid?'selected':'')+' value="'+item.replid+'">'+item.tingkat+'</option>'
-            });
-            if(typ=='filter'){
-                alert('masuk filter');
-                $('#tingkatS').html('<option value="">Pilih Tingkat ..</option>'+opt);
-            }
-            else{
-                // alert('masuk form');
-                $('#tingkatTB').html('<option value="">- Pilih Tingkat -</option>'+opt);
-            }
 
-        }
-    });
-}   
-
+// cmbo golongan 
+    function cmbtingkatZ(tip,tgk) {
+        var d = 'aksi=cmb'+mnu4;
+        ajax(dir4,d).done(function (dt){
+            var opt='';
+            if (dt.status!='sukses') {
+                notif(dt.status,'red');
+                opt+='<option value="">'+dt.status+'</option>'
+            }else{
+                var opt = '';
+                $.each(dt.tingkat,function (id,item){
+                    opt+='<option '+(tgk==item.replid?'selected':'')+' value="'+item.replid+'">'+item.tingkat+'</option>'
+                });
+                // console.log(opt);
+                if(tip=='form') $('#tingkatTBZ').html('<option value="">-Pilih Tingkat-</option>'+opt);
+            }
+        });
+    }   
 
 // cmbo golongan 
     function cmbgolongan (golongan) {
@@ -1090,6 +1083,7 @@ var contentFR = '';
             width: '80%',
             padding: 10,
             onShow: function(){
+                $.Dialog.content(contentFR);
                 if(idsiswa!=''){ // edit 
                     var u = dir;
                     var d ='aksi=ambiledit&id_user='+idsiswa;
@@ -1115,19 +1109,17 @@ var contentFR = '';
                 }else{ //add
                     cmbdepartemen('form','');
                     cmbtahunajaran('form','');
-                    cmbdetailgelombang('form','');
-                    cmbtingkat('form','');
+                    // cmbdetailgelombang('form','');
+                    cmbtingkatZ('form','');
                     cmbsubtingkat('form','','');
                     cmbgolongan('form','');
                 }
                 titlex='<span class="icon-plus-2"></span> Tambah ';
                 $.Dialog.title(titlex+' '+mnu);
-                $.Dialog.content(contentFR);
                 $('#namaTB').focus();
             }
         });
     }
-// end of form ---
 
 //del process ---
     function del(id){
@@ -1194,63 +1186,63 @@ function notif(cont,clr) {
 // end of notifikasi
 
 //reset form ---
-    function kosongkan(){
-        $('#idformH').val('');
-    // data siswa
-        $('#tingkatTB').val('');
-        $('#golonganTB').val('');
-        $('#nopendaftaranTB').val('');
-        $('#namaTB').val('');
-        // $.each($('[name="jkTB"]'),function(){
-        //     $(this).removeAttr('checked');
-        // });
-        $('#tempatlahirTB').val('');
-        $('#tgllahiranakTB').val('');
-        $('#agamaTB').val('');
-        $('#alamatsiswaTB').val('');
-        $('#telpsiswaTB').val('');
-        $('#asalsekolahTB').val('');
-        // $('#goldarahTB').val('-');
-        $('#penyakitTB').val('');
-        $('#catatan_kesehatanTB').val('');
-        $('#previmg2').attr('src','../img/no_image.jpg');
-        $('#photoH').val('');
-    // pembayaran
-        $('#setbiayaTB').val('');
-        $('#registrationTD').html('');
-        $('#angsuranTB').val('');
-        $('#discangsuranTD').html('');
-        $('#discsubsidiTB').val('');
-        $('#discsaudaraTB').val('');
-        $('#disctotalTD').html('');
-        $('#registrationnetTD').html('');
-        $('#disctunaiTB').val('');
-        $('#disctunai2TD').html('');
-        $('#materialTD').html('');
-        $('#tuitionTD').html('');
-    //ayah
-        $('#ayahTB').val('');
-        $('#kebangsaan_ayahTB').val('');
-        $('#tempatlahir_ayahTB').val('');
-        $('#tgllahir_ayahTB').val('');
-        $('#pekerjaan_ayahTB').val('');
-        $('#telpayahTB').val('');
-        $('#pinbb_ayahTB').val('');
-        $('#email_ayahTB').val('');
-    //ibu
-        $('#ibuTB').val('');
-        $('#kebangsaan_ibuTB').val('');
-        $('#tempatlahir_ibuTB').val('');
-        $('#tgllahir_ibuTB').val('');
-        $('#pekerjaan_ibuTB').val('');
-        $('#telpibuTB').val('');
-        $('#pinbb_ibuTB').val('');
-        $('#email_ibuTB').val('');
-    // kontak darurat
-        $('#nama_kontakTB').val('');
-        $('#hubunganTB').val('');
-        $('#nomorTB').val('');
-    }
+    // function kosongkan(){
+    //     $('#idformH').val('');
+    // // data siswa
+    //     $('#tingkatTB').val('');
+    //     $('#golonganTB').val('');
+    //     $('#nopendaftaranTB').val('');
+    //     $('#namaTB').val('');
+    //     // $.each($('[name="jkTB"]'),function(){
+    //     //     $(this).removeAttr('checked');
+    //     // });
+    //     $('#tempatlahirTB').val('');
+    //     $('#tgllahiranakTB').val('');
+    //     $('#agamaTB').val('');
+    //     $('#alamatsiswaTB').val('');
+    //     $('#telpsiswaTB').val('');
+    //     $('#asalsekolahTB').val('');
+    //     // $('#goldarahTB').val('-');
+    //     $('#penyakitTB').val('');
+    //     $('#catatan_kesehatanTB').val('');
+    //     $('#previmg2').attr('src','../img/no_image.jpg');
+    //     $('#photoH').val('');
+    // // pembayaran
+    //     $('#setbiayaTB').val('');
+    //     $('#registrationTD').html('');
+    //     $('#angsuranTB').val('');
+    //     $('#discangsuranTD').html('');
+    //     $('#discsubsidiTB').val('');
+    //     $('#discsaudaraTB').val('');
+    //     $('#disctotalTD').html('');
+    //     $('#registrationnetTD').html('');
+    //     $('#disctunaiTB').val('');
+    //     $('#disctunai2TD').html('');
+    //     $('#materialTD').html('');
+    //     $('#tuitionTD').html('');
+    // //ayah
+    //     $('#ayahTB').val('');
+    //     $('#kebangsaan_ayahTB').val('');
+    //     $('#tempatlahir_ayahTB').val('');
+    //     $('#tgllahir_ayahTB').val('');
+    //     $('#pekerjaan_ayahTB').val('');
+    //     $('#telpayahTB').val('');
+    //     $('#pinbb_ayahTB').val('');
+    //     $('#email_ayahTB').val('');
+    // //ibu
+    //     $('#ibuTB').val('');
+    //     $('#kebangsaan_ibuTB').val('');
+    //     $('#tempatlahir_ibuTB').val('');
+    //     $('#tgllahir_ibuTB').val('');
+    //     $('#pekerjaan_ibuTB').val('');
+    //     $('#telpibuTB').val('');
+    //     $('#pinbb_ibuTB').val('');
+    //     $('#email_ibuTB').val('');
+    // // kontak darurat
+    //     $('#nama_kontakTB').val('');
+    //     $('#hubunganTB').val('');
+    //     $('#nomorTB').val('');
+    // }
 //end of reset form ---
 
 //aktifkan process ---
@@ -1331,31 +1323,35 @@ function notif(cont,clr) {
 
 // combobox detailgelombang pendaftaran
     function cmbdetailgelombang(typ,dgel){
-        var u = dir8;
-        var d = 'aksi=cmb'+mnu8+'&tahunajaran='+$('#tahunajaranS').val()+'&departemen='+$('#departemenS').val();
-        ajax(u,d).done(function (dt){
-            var opt='';
-            if(dt.status!='sukses'){
-                notif(dt.status,'red');
-            }else{
-                $.each(dt.detailgelombang, function(id,item){
-                    opt+='<option '+(dgel==item.replid?'selected':'')+' value="'+item.replid+'">'+item.gelombang+'</option>';
-                }); 
-            }
-            if(typ=='filter'){
-                $('#detailgelombangS').html(opt);
-                // cmbtingkat('form','');
-            }else{
-                $('#detailgelombangTB').html(opt);
-            }
-        });
+        var end =typ=='filter'?'S':'TB';
+        var dep =$('#departemen'+end).val();
+        var thn =$('#tahunajaran'+end).val();
+        // console.log(dep+','+thn);return false;
+        var d = 'aksi=cmb'+mnu8+'&tahunajaran='+thn+'&departemen='+dep;
+        if(dep!='' && thn!=''){
+            ajax(dir8,d).done(function (dt){
+                var opt='';
+                if(dt.status!='sukses'){
+                    notif(dt.status,'red');
+                }else{
+                    $.each(dt.detailgelombang, function(id,item){
+                        opt+='<option '+(dgel==item.replid?'selected':'')+' value="'+item.replid+'">'+item.gelombang+'</option>';
+                    }); 
+                }
+                if(typ=='filter'){
+                    $('#detailgelombangS').html(opt);
+                }else{
+                    $('#detailgelombangTB').html('<option value="">-Pilih Gelombang-</option>'+opt);
+                }
+            });
+        }
     }
 
 
 // combo subtingkat ---
     function cmbsubtingkat(typ,ting,sub){
-        if(typ=='filter' && ting==''){
-            $('#subtingkatS').html('<option value="">-Pilih Tingkat-</option>');
+        if(typ=='form' && ting==''){
+            $('#subtingkatTB').html('<option value="">-Pilih Tingkat Dahulu-</option>');
         }else{
             var u=dir9;
             var d= 'aksi=cmbsubtingkat'+(ting!=''?'&tingkat='+ting:'');
@@ -1380,22 +1376,22 @@ function notif(cont,clr) {
 
 // combo golongan ---
     function cmbgolongan(typ,gol){
-        var u=dir5;
-        var d= 'aksi=cmbgolongan';
+        var u = dir5;
+        var d = 'aksi=cmb'+mnu5;
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){
                 out+='<option value="">'+dt.status+'</option>';
             }else{
                 $.each(dt.golongan, function(id,item){
-                    out+='<option '+(sub!='' && sub==item.replid?' selected ':'')+' value="'+item.replid+'">'+item.golongan+'</option>';
+                    out+='<option '+(gol!='' && gol==item.replid?' selected ':'')+' value="'+item.replid+'">'+item.golongan+'</option>';
                 });
             }
             if(typ=='filter'){
                 $('#golonganS').html(out);
                 viewTB();
             }else{
-                $('#golonganTB').html('<option value="">-Pilih Golongan -</option>'+out);
+                $('#golonganTBZ').html('<option value="">-Pilih Golongan -</option>'+out);
             }
         });
     }
