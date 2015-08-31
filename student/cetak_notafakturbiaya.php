@@ -131,10 +131,11 @@ echo '</table>';
 		echo'</td></tr></table>';
 /****************************/
 echo "</body</html>";
-
+/*
 if (!isset($_GET['detail'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

@@ -38,18 +38,23 @@ $admin.='<div class="error">Data Gagal dihapus Dengan ID = '.$id.'</div>';
 }	
 }
 
-if (isset ($_POST['edit_users']) && is_numeric($_GET['id'])){
-	$id = int_filter ($_GET['id']);
+if (isset ($_POST['edit_users'])){
+	$id = $_GET['id'];
 	$level = $_POST['level'];
 	$tipe = $_POST['tipe'];
-	$email	      = text_filter($_POST['email']);
+	$email	      = $_POST['email'];
 if (!is_valid_email($email)) $error .= "Error, E-Mail address invalid!<br />";
 if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT email FROM pos_useraura WHERE email='$email' and UserId!='$id'")) > 0) $error .= "Error: Email ".$email." sudah terdaftar , silahkan ulangi.<br />";
 if ($error) {
 $admin.='<div class="error">'.$error.'</div>';
 } else {
-$up = mysql_query ("UPDATE `pos_useraura` SET `level`='$level',`tipe`='$tipe',`email`='$email' WHERE `UserId`='$id' AND `user`!='admin'");	
+$up = mysql_query ("UPDATE `pos_useraura` SET `level`='$level',`tipe`='$tipe',`email`='$email' WHERE `UserId`='$id'");	
+if ($up){
 $admin.='<div class="sukses">Data Berhasil Diupdate Dengan ID = '.$id.'</div>';	
+}else {
+$admin.='<div class="error">Data Gagal Diupdate Dengan ID = '.$id.'</div>';	
+}
+
 }
 }
 
@@ -166,6 +171,7 @@ $user = $data['user'];
 $level = $data['level'];	
 $tipe = $data['tipe'];
 $email = $data['email'];
+
 $ss = mysql_query ("SHOW FIELDS FROM pos_useraura");
 while ($as = mysql_fetch_array ($ss)){
 	 $arrs = $as['Type'];
@@ -177,7 +183,7 @@ $qss = "&amp;pg=$pg&amp;stg=$stg&amp;offset=$offset";
 }	
 $admin.='<h5 class="bg text-success">Edit User</h5>';
 
-$admin .= '<form method="post" action="admin.php?pilih=admin_users&amp;id='.$id.''.$qss.'">
+$admin .= '<form method="post" action="admin.php?pilih=admin_users&amp;id='.$id.'">
 <table class="table table-striped">
   <tr>
     <td>Username</td>
@@ -187,7 +193,12 @@ $admin .= '<tr>
     <td>Email</td>
     <td><input type="text" name="email" value="'.$email.'" class="form-control"></td>
   </tr>';  
-  
+/*
+  $admin .= '<tr>
+    <td style="padding:5px;">Password</td>
+    <td style="padding:5px;"><input type="text" name="password" size="20" class="form-control"></td>
+  </tr>'; 
+  */
 $sel = '<select name="level" class="form-control">';
 $arrs = ''.substr ($arrs,4);
 $arr = eval( '$arr5 = array'.$arrs.';' );

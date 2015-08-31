@@ -80,10 +80,11 @@ echo '</table>';
 echo '</table>';
 /****************************/
 echo "</body</html>";
-
+/*
 if (!isset($_GET['detail'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

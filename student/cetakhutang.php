@@ -72,8 +72,9 @@ $tombollunas = 'Hutang';
 }else{
 $tombollunas = 'Lunas';
 }
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok"target="new">'.$data['noinvoice'].'</a>';
 echo'<tr class="border">
-            <td>'.$data['noinvoice'].'</td>
+            <td>'.$lihatslip.'</td>
             <td>'.tanggalindo($data['tgl']).'</td>
             <td>'.getnamasupplier($data['kodesupplier']).'</td>
             <td>'.rupiah_format($data['total']).'</td>
@@ -98,10 +99,11 @@ echo '</table>';
 
 /****************************/
 echo "</body</html>";
-
+/*
 if (isset($_GET['tglmulai'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

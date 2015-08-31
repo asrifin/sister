@@ -117,10 +117,11 @@ echo '<tr class="border">
 echo '</table>';
 /****************************/
 echo "</body</html>";
-
+/*
 if(isset($_GET['cetak'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>
