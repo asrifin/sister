@@ -111,9 +111,6 @@ echo '<div class="border2">
 <a href="admin.php?pilih=mnpenjualan&mod=yes"><img src="images/order.png" width="50px"><br>PENJUALAN</a>&nbsp;&nbsp;
 </td>
 <td>
-<a href="admin.php?pilih=mnlaporan&mod=yes"><img src="images/report.png" width="50px" height="50px"><br>LAPORAN</a>&nbsp;&nbsp;
-</td>
-<td>
 <a href="admin.php?pilih=settingwebsite&mod=yes"><img src="images/password.jpg" width="50px"><br>PASSWORD</a>&nbsp;&nbsp;
 </td>
 <td>
@@ -131,6 +128,12 @@ echo '<div class="border2">
 </td>
 <td>
 <a href="admin.php?pilih=mnhutangpiutang&mod=yes"><img src="images/uang.jpg" width="50px"><br>HUTANG/PIUTANG</a>&nbsp;
+</td>
+<td>
+<a href="admin.php?pilih=mnpenjualanbiaya&mod=yes"><img src="images/biaya.png" width="50px"><br>BIAYA</a>&nbsp;&nbsp;
+</td>
+<td>
+<a href="admin.php?pilih=mnlaporan&mod=yes"><img src="images/report.png" width="50px" height="50px"><br>LAPORAN</a>&nbsp;&nbsp;
 </td>
 <td>
 <a href="admin.php?pilih=settingwebsite&mod=yes"><img src="images/password.jpg" width="50px"><br>PASSWORD</a>&nbsp;&nbsp;
