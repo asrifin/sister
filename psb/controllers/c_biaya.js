@@ -18,8 +18,8 @@ var contentFR = '';
                         +'<div class="input-control select">'
                             +'<select required  id="isAngsurTB" name="isAngsurTB">'
                                 +'<option value="">-Pilih-</option>'
-                                +'<option value="1">-Angsur-</option>'
-                                +'<option value="0">-Tunai-</option>'
+                                +'<option value="1">Angsur Reguler</option>'
+                                +'<option value="2">Angsur Bebas</option>'
                             +'</select>'
                         +'</div>'
                         // isdiskon
@@ -27,8 +27,9 @@ var contentFR = '';
                         +'<div class="input-control select">'
                             +'<select required id="isDiskonTB" name="isDiskonTB">'
                                 +'<option value="">-Pilih-</option>'
-                                +'<option value="1">-Ya-</option>'
-                                +'<option value="0">-Tidak-</option>'
+                                +'<option value="0">Tidak Ada</option>'
+                                +'<option value="1">Dikson Reguler</option>'
+                                +'<option value="2">Dikson Bebas</option>'
                             +'</select>'
                         +'</div>'
                         // jenistagihan

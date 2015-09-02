@@ -116,7 +116,7 @@
 			case 'ambiledit':
 				$s = 'SELECT
 						dd.nilai,
-						dd.departemen,
+						d.departemen,
 						d.diskon,
 						d.keterangan,
 						dd.tahunajaran
@@ -141,21 +141,19 @@
 			// ambiledit -----------------------------------------------------------------
 
 			case 'cmb'.$mnu:
-				$w='';
+				$s=$j=$w='';
 				if(isset($_POST['replid'])){
 					$w.='where replid ='.$_POST['replid'];
 				}else{
-					if(isset($_POST[$mnu])){
-						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST['departemen'])){
-						$w.='where departemen ='.$_POST['departemen'];
+					if(isset($_POST['tahunajaran']) && isset($_POST['departemen']) ){
+						$j.=' JOIN psb_diskon d on d.replid = dd.diskon';
+						$w.=' WHERE d.departemen ='.$_POST['departemen'].' AND dd.tahunajaran ='.$_POST['tahunajaran'];
 					}
-				}
-				
-				$s	= ' SELECT *
-						from '.$tb.'
-						'.$w.'		
-						ORDER  BY nilai asc';
+				}				
+				$s	= ' SELECT dd.replid,d.diskon,dd.nilai
+						from '.$tb.' dd
+						'.$j.$w.'		
+						ORDER  BY d.diskon asc';
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
@@ -173,7 +171,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','nilai'=>$dt);
+						}$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;

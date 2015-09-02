@@ -48,15 +48,18 @@
 	}	
 	// set biaya checking 
 	function getSetBiaya($dgel,$subt,$gol){
-		$s = '	SELECT replid, dpp, spp, formulir, joiningf
-				FROM psb_biaya 
-				WHERE 	detailgelombang  ='.$dgel.' AND 
-						subtingkat ='.$subt.' AND 
-						golongan  ='.$gol;
-						// pr($s);exit();
+		$s = '	SELECT b.replid,db.nominal
+				FROM psb_detailbiaya db JOIN psb_biaya b on b.replid = db.biaya 
+				WHERE 	db.detailgelombang  ='.$dgel.' AND 
+						db.subtingkat ='.$subt.' AND 
+						db.golongan  ='.$gol.'
+				ORDER BY b.biaya ASC';
+		// pr($s);exit();
 		$e = mysql_query($s);
-		$r = mysql_fetch_assoc($e);
-		return $r;
+		$o=array();
+		while ($r=mysql_fetch_assoc($e)) {
+			$o[]=$r;
+		}return $o;
 	}
 	function getNumRows($tb){
 		$s='SELECT * FROM psb_'.$tb;

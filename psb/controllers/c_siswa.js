@@ -3,8 +3,8 @@ var mnu2      = 'departemen';
 var mnu3      = 'tahunajaran';
 var mnu4      = 'tingkat';
 var mnu5      = 'golongan';
-var mnu6      = 'setAngsuran'; 
-var mnu7      = 'setDiskon';
+var mnu6      = 'angsuran'; 
+var mnu7      = 'detaildiskon';
 var mnu8      = 'detailgelombang';
 var mnu9      = 'subtingkat';
 
@@ -35,138 +35,38 @@ var contentFR = '';
                                         +'<div class="span3">'
                                             // departemen
                                             +'<label>Departemen</label>'
-                                            +'<div class="input-control select size3">'
-                                                +'<select required onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();" id="departemenTB" name="departemenTB"></select>'
+                                            +'<div class="input-control select xsize3">'
+                                                +'<select required onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya(); cmbdetaildiskon(\'\',\'\'); enableDiskon();" id="departemenTB" name="departemenTB"></select>'
                                             +'</div>'
                                             // tahunajaran
                                             +'<label>Tahun Ajaran</label>'
-                                            +'<div class="input-control select size3">'
-                                                +'<select required  onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();" id="tahunajaranTB" name="tahunajaranTB"></select>'
+                                            +'<div class="input-control select xsize3">'
+                                                +'<select required  onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();  cmbdetaildiskon(\'\',\'\'); enableDiskon();" id="tahunajaranTB" name="tahunajaranTB"></select>'
                                             +'</div>'
                                             // Detailgelombang
                                             +'<label>Detail Gelombang</label>'
-                                            +'<div class="input-control select size3">'
+                                            +'<div class="input-control select xsize3">'
                                                 +'<select onchange=" getBiaya();" required id="detailgelombangTB" name="detailgelombangTB"><option value="">-silahkan pilih Dept. dan Tahun Ajaran dahulu-</option></select>'
                                             +'</div>'
                                             // tingkat
                                             +'<label>Tingkat</label>'
-                                            +'<div class="input-control select size3">'
+                                            +'<div class="input-control select xsize3">'
                                                 +'<select required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya();" id="tingkatTBZ" name="tingkatTB"></select>'
                                             +'</div>'
                                             // subtingkat
                                             +'<label>Sub Tingkat</label>'
-                                            +'<div class="input-control select size3">'
+                                            +'<div class="input-control select xsize3">'
                                                 +'<select onchange=" getBiaya();"  required id="subtingkatTB" name="subtingkatTB"></select>'
                                             +'</div>'
                                             // golongan
                                             +'<label>Golongan</label>'
-                                            +'<div class="input-control select size3">'
+                                            +'<div class="input-control select xsize3">'
                                                 +'<select onchange=" getBiaya();"  required id="golonganTBZ" name="golonganTBs"></select>'
                                             +'</div>'
                                         +'</div>'
                                             
                                         // kolom2
-                                        +'<div class="span5">'
-                                            // 1 formulir
-                                            +'<label>Formulir</label>'
-                                            +'<table class="table hovered bordered striped">'
-                                                +'<tr>'
-                                                    +'<th>No.</th>'
-                                                    +'<th colspan="2">Item</th>'
-                                                    +'<th>Nominal</th>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>1.</td>'
-                                                    +'<td colspan="2">Harga Formulir</td>'
-                                                    +'<td class="text-right" id="formulirTD">silahkan lengkapi dept. dll</td>'
-                                                +'</tr>'
-                                            +'</table>'                                
-                                            // 2 DPP
-                                            +'<label>DPP</label>'
-                                            +'<table class="table hovered bordered striped">'
-                                                +'<tr>'
-                                                    +'<th>No.</th>'
-                                                    +'<th colspan="2">Item</th>'
-                                                    +'<th>Nominal</th>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>1.</td>'
-                                                    +'<td colspan="2">DPP Awal</td>'
-                                                    +'<td  class="text-right"  id="dppawalTD">silahkan lengkapi dept. dll</td>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>2.</td>'
-                                                    +'<td>Jumlah Angsuran</td>'
-                                                    +'<td>'
-                                                        +'<div class="input-control select">'
-                                                            +'<select name="jml" id=""></select>'
-                                                        +'</div>'
-                                                    +'</td>'
-                                                    +'<td></td>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>3.</td>'
-                                                    +'<td>Diskon</td>'
-                                                    +'<td><button onclick="return false;" class="fg-white bg-blue"><i class="icon-plus"></i></button></td>'
-                                                    +'<td></td>'
-                                                +'</tr>'
-                                            +'</table>'                                
-                                            // 3 Joining Fee
-                                            +'<label>Joining Fee</label>'
-                                            +'<table class="table hovered bordered striped">'
-                                                +'<tr>'
-                                                    +'<th>No.</th>'
-                                                    +'<th colspan="2">Item</th>'
-                                                    +'<th>Nominal</th>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>1.</td>'
-                                                    +'<td colspan="2">Joining Fee Awal</td>'
-                                                    +'<td  class="text-right"  id="joiningfawalTD">silahkan lengkapi dept. dll</td>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>2.</td>'
-                                                    +'<td>Jumlah Angsuran</td>'
-                                                    +'<td>'
-                                                        +'<div class="input-control select">'
-                                                            +'<select name="jml" id=""></select>'
-                                                        +'</div>'
-                                                    +'</td>'
-                                                    +'<td></td>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>3.</td>'
-                                                    +'<td>Diskon</td>'
-                                                    +'<td><button onclick="return false;" class="fg-white bg-blue"><i class="icon-plus"></i></button></td>'
-                                                    +'<td></td>'
-                                                +'</tr>'
-                                            +'</table>'
-                                            // 4 SPP
-                                            +'<label>SPP</label>'
-                                            +'<table class="table hovered bordered striped">'
-                                                +'<tr>'
-                                                    +'<th>No.</th>'
-                                                    +'<th colspan="2">Item</th>'
-                                                    +'<th>Nominal</th>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>1.</td>'
-                                                    +'<td colspan="2">SPP Awal</td>'
-                                                    +'<td class="text-right"  id="sppawalTD">silahkan lengkapi dept. dll</td>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>1.</td>'
-                                                    +'<td>Jumlah Angsuran</td>'
-                                                    +'<td>'
-                                                        +'<div class="input-control select">'
-                                                            +'<select name="jml" id=""></select>'
-                                                        +'</div>'
-                                                    +'</td>'
-                                                    +'<td></td>'
-                                                +'</tr>'
-                                            +'</table>'                                
-                                        +'</div>'
-
+                                        +'<div id="biayaDV" class="span6"></div>'
                                     +'</div>'
 
 
@@ -950,7 +850,7 @@ var contentFR = '';
     }*/
 
 // combo angsuran 
-    function cmbangsuran (ang) {
+    function cmbangsuran (idx,ang) {
         var u = dir6;
         var d ='aksi=cmb'+mnu6;
         ajax(u,d).done(function(dt){
@@ -961,12 +861,38 @@ var contentFR = '';
             }else{
                 var opt = '';
                 $.each(dt.angsuran,function(id,item){
-                    opt+='<option '+(ang==item.replid?'selected':'')+' value="'+item.replid+'">'+item.cicilan+' x </option>'
+                    opt+='<option '+(ang==item.replid?'selected':'')+' value="'+item.replid+'">'+item.angsuran+' x </option>'
                 });
             }
-            $('#angsuranTB').html('<option value="">-Pilih Angsuran-</option>'+opt);
+            $('#angsuran'+idx+'TB').html(opt);
         });
-    }        
+    }
+
+// // combo detaildiskon 
+//     function cmbdetaildiskon (idx,disk,cls) {
+//         var dept = $('#departemenTB').val();
+//         var thn  = $('#tahunajaranTB').val();
+//         if(dept!='' || thn!='' ){
+//             var u = dir7;
+//             var d ='aksi=cmb'+mnu7+'&departemen='+dept+'&tahunajaran='+thn;
+//             ajax(u,d).done(function (dt){
+//                 var opt='';
+//                 if (dt.status!='sukses') {
+//                     notif(dt.status,'red');
+//                     opt+='<option value="">'+dt.status+'</option>'
+//                 }else{
+//                     var opt = '';
+//                     if(dt.detaildiskon.length==0) opt+='<option value="">kosong</option>';
+//                     else{
+//                         $.each(dt.detaildiskon,function(id,item){
+//                             opt+='<option '+(disk==item.replid?'selected':'')+' value="'+item.replid+'">'+item.diskon+'</option>'
+//                         });
+//                     }
+//                 }
+//                 $((cls==''?'#detaildiskon'+idx+'TB':'.detaildiskon')).html(opt);
+//             });
+//         }
+//     }
 
 // combo diskon tunai 
     function cmbdisctunai (nilai) {
@@ -999,12 +925,16 @@ var contentFR = '';
                     +'&subtingkat='+subt
                     +'&golongan='+gol
             ajax(u,d).done(function (dt){
-                $('#setbiayaTB').val(dt.replid);
-                $('#formulirTD').html('Rp. '+parseInt(dt.formulir).setCurr());
-                $('#dppawalTD').html('Rp. '+parseInt(dt.dpp).setCurr());
-                $('#joiningfawalTD').html('Rp. '+parseInt(dt.joiningf).setCurr());
-                $('#sppawalTD').html('Rp. '+parseInt(dt.spp).setCurr());
-                // getDiscTotal();
+                if(dt.status!='sukses') notif(dt.status,'red');
+                else{
+                    if(dt.biayaArr.length==0) notif('data kosong,silahkan hubungi admin');
+                    else{
+                        $.each(dt.biayaArr,function (id,item){
+                            $('#biaya'+item.replid+'TD').html('Rp. '+parseInt(item.nominal).setCurr());
+                        })
+                    } 
+                    // getDiscTotal();
+                }
             });            
         }
     }
@@ -1147,6 +1077,7 @@ var contentFR = '';
                     cmbsubtingkat('form','','');
                     cmbgolongan('form','');
                     cmbangsuran('');
+                    biayaFC();
                 }
                 titlex='<span class="icon-plus-2"></span> Tambah ';
                 $.Dialog.title(titlex+' '+mnu);
@@ -1428,4 +1359,151 @@ function notif(cont,clr) {
                 $('#golonganTBZ').html('<option value="">-Pilih Golongan -</option>'+out);
             }
         });
+    }
+
+    function biayaFC(){
+        var d='aksi=tampil&subaksi=biaya';
+        ajax(dir,d).done(function (dt){
+            var out='';
+            if(dt.status!='sukses'){
+                notif(dt.status,'red');
+            }else{
+                if(dt.biayaArr.length==0) {
+                   out+='<label class="fg-white bg-red"> Biaya Masih kosong silahkan hubungi administrator biaya</label>'
+                    $('#biayaDV').html(out);
+                }else{
+                    $.each(dt.biayaArr, function (id,item){
+                        out+='<label>'+item.biaya+'</label>'
+                            +'<table class="table hovered bordered">'
+                                +'<thead>'
+                                    +'<tr class="fg-white bg-blue">'
+                                        +'<th colspan="2">Item</th>'
+                                        +'<th>Nominal</th>'
+                                    +'</tr>'
+                                +'</thead>'
+
+                                +'<tbody>'
+                                    // biaya awal
+                                    +'<tr>'
+                                        +'<td colspan="2">Biaya '+item.biaya+' Awal</td>'
+                                        +'<td class="text-right" id="biaya'+item.replid+'TD">silahkan lengkapi dept. dll</td>'
+                                    +'</tr>'
+
+                                    // dskon
+                                    +'<tr>'
+                                        +'<td>'
+                                            +'<button disabled id="diskon'+item.replid+'BC" onclick="detaildiskonFC('+item.replid+'); return false;" class="fg-white bg-green diskonBC">Diskon<i class="icon-plus-2"></i></button>'
+                                        +'</td>'
+                                        +'<td>'
+                                            +'<table id="detaildiskon'+item.replid+'TBL"></table>'
+                                        +'</td>'
+                                        +'<td></td>'
+                                    +'</tr>'
+
+                                    // biaya nett
+                                    +'<tr>'
+                                        +'<td colspan="2">Biaya '+item.biaya+' Nett</td>'
+                                        +'<td class="text-right" id="biayaNett'+item.replid+'TD">Rp. 0</td>'
+                                    +'</tr>'
+
+                                    // jenis tagihan 
+                                    +'<tr>'
+                                        +'<td>Ditagih</td>'
+                                        +'<td>'+(item.jenistagihan!='sekali'?'per ':'')+item.jenistagihan+'</td>'
+                                        +'<td></td>'
+                                    +'</tr>'
+
+                                    // cara bayar
+                                    +'<tr>'
+                                        +'<td>Angsuran</td>'
+                                        +'<td>'
+                                            +'<div class="input-control select">'
+                                                +'<select id="angsuran'+item.replid+'TB" name="angsuran'+item.replid+'TB"><option value=""></option></select>'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="text-right" id="'+item.isDiskon+'TD"></td>'
+                                    +'</tr>'
+
+                                +'</tbody>'
+                            +'</table>'; 
+                    });
+                    $('#biayaDV').html(out);
+                }
+                $.each(dt.biayaArr, function (id,item){
+                    cmbangsuran(item.replid,'');
+                    cmbdetaildiskon(item.replid,'','');
+                });
+            }
+        });
+    }
+
+// combo detaildiskon 
+    function cmbdetaildiskon (idx,disk,cls) {
+        var dept = $('#departemenTB').val();
+        var thn  = $('#tahunajaranTB').val();
+        if(dept!='' || thn!='' ){
+            var u = dir7;
+            var d ='aksi=cmb'+mnu7+'&departemen='+dept+'&tahunajaran='+thn;
+            ajax(u,d).done(function (dt){
+                var opt='';
+                if (dt.status!='sukses') {
+                    notif(dt.status,'red');
+                    opt+='<option value="">'+dt.status+'</option>'
+                }else{
+                    var opt = '';
+                    if(dt.detaildiskon.length==0) opt+='<option value="">kosong</option>';
+                    else{
+                        $.each(dt.detaildiskon,function(id,item){
+                            opt+='<option '+(disk==item.replid?'selected':'')+' value="'+item.replid+'">'+item.diskon+'</option>'
+                        });
+                    }
+                }
+                $((cls==''?'#detaildiskon'+idx+'TB':'.detaildiskon')).html(opt);
+            });
+        }else notif('pilih departemen & tahun ajaran dahulu ','red');
+    }
+
+    var idy=1;
+    function detaildiskonFC(idx){
+        var dept = $('#departemenTB').val();
+        var thn  = $('#tahunajaranTB').val();
+        // if(dept!='' || thn!='' ){
+            var u = dir7;
+            var d ='aksi=cmb'+mnu7+'&departemen='+dept+'&tahunajaran='+thn;
+            ajax(u,d).done(function (dt){
+                // var tr = '<tr id="detaildiskon'+idx+'TR"><td>';
+                var tr = '<tr id="detaildiskon'+idx+idy+'TR"><td>';
+                tr+='<div class="input-control select"><select required name="detaildiskon'+idx+idy+'TB" name="detaildiskon'+idx+idy+'TB">';
+                if(dt.status!='sukses') notif(dt.status,'red');
+                else{
+                    if(dt.detaildiskon.length==0) tr+='<option value="">kosong</option>';
+                    else{
+                        tr+='<option value="">-Pilih Diskon-</option>';
+                        $.each(dt.detaildiskon,function (id,item){
+                            tr+='<option value="'+item.replid+'">'+item.diskon+' ('+item.nilai+'%)</option>';
+                        });
+                    }
+                }
+                tr+='</div></select>';
+                tr+='</td><td><a onclick="detaildiskonDel('+idx+idy+');" class="button fg-white bg-red" href="#"><i class="icon-remove"></i></a></td></tr>';
+                $('#detaildiskon'+idx+'TBL').append(tr);
+                idy+=1;
+            });
+        // }
+    }
+
+    function detaildiskonDel(xy){
+        $('#detaildiskon'+xy+'TR').fadeOut('slow',function(){
+            $('#detaildiskon'+xy+'TR').remove();
+        });
+    }
+
+    function enableDiskon(){
+        if($('#departemenTB').val()=='' && $('#departemenTB').val()==''){
+            $('.diskonBC').attr('disabled',true);
+            console.log('masuk disabel');
+        }else{
+            $('.diskonBC').removeAttr('disabled');
+            console.log('masuk enable');
+        }
     }

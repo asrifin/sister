@@ -21,8 +21,16 @@
 				$sql = 'SELECT
 							b.replid,
 							b.biaya,
-							if(b.isAngsur=1,"Angsur","Tunai")isAngsur,
-							if(b.isDiskon=1,"Ya","Tidak")isDiskon,
+							case b.isAngsur
+								when 0 then "Tunai"
+								when 1 then "Angsur Reguler"
+								else "Tunai"
+							end as isAngsur,
+							case b.isDiskon
+								when 0 then "Tidak Ada"
+								when 1 then "Diskon Reguler"
+								else "Diskon Bebas"
+							end as isDiskon,
 							t.jenistagihan,
 							b.keterangan
 						FROM

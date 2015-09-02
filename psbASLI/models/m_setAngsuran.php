@@ -3,9 +3,8 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu = 'setAngsuran';	
-	$tb = 'psb_angsuran';
-	// $out=array();
+	$mnu = 'angsuran';	
+	$tb  = 'psb_'.$mnu;
 
 	if(!isset($_POST)){
 		$out=json_encode(['status'=>'invalid_no_post']);		
@@ -16,7 +15,7 @@
 				$kriteria = isset($_POST['angsuranS'])?$_POST['angsuranS']:'';
 				$keterangan = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
 				$sql = 'SELECT *
-						FROM psb_angsuran
+						FROM '.$tb.'
 						WHERE 
 							cicilan like "%'.$kriteria.'%" and 
 							keterangan like "%'.$keterangan.'%" 
