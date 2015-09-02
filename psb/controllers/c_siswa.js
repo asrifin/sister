@@ -36,52 +36,52 @@ var contentFR = '';
                                             // departemen
                                             +'<label>Departemen</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select required onchange="cmbdetailgelombang(\'form\',\'\');" id="departemenTB" name="departemenTB"></select>'
+                                                +'<select required onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();" id="departemenTB" name="departemenTB"></select>'
                                             +'</div>'
                                             // tahunajaran
                                             +'<label>Tahun Ajaran</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select required  onchange="cmbdetailgelombang(\'form\',\'\');" id="tahunajaranTB" name="tahunajaranTB"></select>'
+                                                +'<select required  onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();" id="tahunajaranTB" name="tahunajaranTB"></select>'
                                             +'</div>'
                                             // Detailgelombang
                                             +'<label>Detail Gelombang</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select required id="detailgelombangTB" name="detailgelombangTB"><option value="">-silahkan pilih Dept. dan Tahun Ajaran dahulu-</option></select>'
+                                                +'<select onchange=" getBiaya();" required id="detailgelombangTB" name="detailgelombangTB"><option value="">-silahkan pilih Dept. dan Tahun Ajaran dahulu-</option></select>'
                                             +'</div>'
                                             // tingkat
                                             +'<label>Tingkat</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val());" id="tingkatTBZ" name="tingkatTB"></select>'
+                                                +'<select required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya();" id="tingkatTBZ" name="tingkatTB"></select>'
                                             +'</div>'
                                             // subtingkat
                                             +'<label>Sub Tingkat</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select required id="subtingkatTB" name="subtingkatTB"></select>'
+                                                +'<select onchange=" getBiaya();"  required id="subtingkatTB" name="subtingkatTB"></select>'
                                             +'</div>'
                                             // golongan
                                             +'<label>Golongan</label>'
                                             +'<div class="input-control select size3">'
-                                                +'<select required id="golonganTBZ" name="golonganTBZ"></select>'
+                                                +'<select onchange=" getBiaya();"  required id="golonganTBZ" name="golonganTBs"></select>'
                                             +'</div>'
                                         +'</div>'
                                             
                                         // kolom2
                                         +'<div class="span5">'
-                                            // 1
+                                            // 1 formulir
                                             +'<label>Formulir</label>'
                                             +'<table class="table hovered bordered striped">'
                                                 +'<tr>'
                                                     +'<th>No.</th>'
-                                                    +'<th>Item</th>'
+                                                    +'<th colspan="2">Item</th>'
                                                     +'<th>Nominal</th>'
                                                 +'</tr>'
                                                 +'<tr>'
                                                     +'<td>1.</td>'
-                                                    +'<td>Harga Formulir</td>'
-                                                    +'<td id="formulirDV"></td>'
+                                                    +'<td colspan="2">Harga Formulir</td>'
+                                                    +'<td class="text-right" id="formulirTD">silahkan lengkapi dept. dll</td>'
                                                 +'</tr>'
                                             +'</table>'                                
-                                            // 2
+                                            // 2 DPP
                                             +'<label>DPP</label>'
                                             +'<table class="table hovered bordered striped">'
                                                 +'<tr>'
@@ -92,7 +92,7 @@ var contentFR = '';
                                                 +'<tr>'
                                                     +'<td>1.</td>'
                                                     +'<td colspan="2">DPP Awal</td>'
-                                                    +'<td id="dppawalDV"></td>'
+                                                    +'<td  class="text-right"  id="dppawalTD">silahkan lengkapi dept. dll</td>'
                                                 +'</tr>'
                                                 +'<tr>'
                                                     +'<td>2.</td>'
@@ -111,7 +111,37 @@ var contentFR = '';
                                                     +'<td></td>'
                                                 +'</tr>'
                                             +'</table>'                                
-                                            // 3
+                                            // 3 Joining Fee
+                                            +'<label>Joining Fee</label>'
+                                            +'<table class="table hovered bordered striped">'
+                                                +'<tr>'
+                                                    +'<th>No.</th>'
+                                                    +'<th colspan="2">Item</th>'
+                                                    +'<th>Nominal</th>'
+                                                +'</tr>'
+                                                +'<tr>'
+                                                    +'<td>1.</td>'
+                                                    +'<td colspan="2">Joining Fee Awal</td>'
+                                                    +'<td  class="text-right"  id="joiningfawalTD">silahkan lengkapi dept. dll</td>'
+                                                +'</tr>'
+                                                +'<tr>'
+                                                    +'<td>2.</td>'
+                                                    +'<td>Jumlah Angsuran</td>'
+                                                    +'<td>'
+                                                        +'<div class="input-control select">'
+                                                            +'<select name="jml" id=""></select>'
+                                                        +'</div>'
+                                                    +'</td>'
+                                                    +'<td></td>'
+                                                +'</tr>'
+                                                +'<tr>'
+                                                    +'<td>3.</td>'
+                                                    +'<td>Diskon</td>'
+                                                    +'<td><button onclick="return false;" class="fg-white bg-blue"><i class="icon-plus"></i></button></td>'
+                                                    +'<td></td>'
+                                                +'</tr>'
+                                            +'</table>'
+                                            // 4 SPP
                                             +'<label>SPP</label>'
                                             +'<table class="table hovered bordered striped">'
                                                 +'<tr>'
@@ -121,8 +151,8 @@ var contentFR = '';
                                                 +'</tr>'
                                                 +'<tr>'
                                                     +'<td>1.</td>'
-                                                    +'<td colspan="2">DPP Awal</td>'
-                                                    +'<td id="dppawalDV"></td>'
+                                                    +'<td colspan="2">SPP Awal</td>'
+                                                    +'<td class="text-right"  id="sppawalTD">silahkan lengkapi dept. dll</td>'
                                                 +'</tr>'
                                                 +'<tr>'
                                                     +'<td>1.</td>'
@@ -147,7 +177,7 @@ var contentFR = '';
                             +'<div class="accordion-frame">'
                                 +'<a class="heading bg-lightBlue fg-white" href="#">Biodata</a>'
                                 +'<div style="display: block;" class="content">'
-                                    +'<div id="bioadataDV"></div>'
+                                    +'<div id="bioadataTD"></div>'
                                 +'</div>'
                             +'</div>'
 
@@ -959,18 +989,22 @@ var contentFR = '';
 
 // combo get biaya
     function getBiaya(){
-        if($('#kelompokS').val()!='' && $('#tingkatTB').val()!='' && $('#golonganTB').val()!=''){
+        var dgel = $('#detailgelombangTB').val();
+        var subt = $('#subtingkatTB').val();
+        var gol  = $('#golonganTBZ').val();
+        if(dgel!='' && subt!='' && gol!=''){
             var u = dir;
             var d ='aksi=getBiaya'
-                    +'&kelompok='+$('#kelompokS').val()
-                    +'&tingkat='+$('#tingkatTB').val()
-                    +'&golongan='+$('#golonganTB').val();
+                    +'&detailgelombang='+dgel
+                    +'&subtingkat='+subt
+                    +'&golongan='+gol
             ajax(u,d).done(function (dt){
                 $('#setbiayaTB').val(dt.replid);
-                $('#registrationTD').html('Rp. '+parseInt(dt.registration).setCurr());
-                $('#materialTD').html('Rp. '+parseInt(dt.material).setCurr());
-                $('#tuitionTD').html('Rp. '+parseInt(dt.tuition).setCurr());
-                getDiscTotal();
+                $('#formulirTD').html('Rp. '+parseInt(dt.formulir).setCurr());
+                $('#dppawalTD').html('Rp. '+parseInt(dt.dpp).setCurr());
+                $('#joiningfawalTD').html('Rp. '+parseInt(dt.joiningf).setCurr());
+                $('#sppawalTD').html('Rp. '+parseInt(dt.spp).setCurr());
+                // getDiscTotal();
             });            
         }
     }
@@ -1109,10 +1143,10 @@ var contentFR = '';
                 }else{ //add
                     cmbdepartemen('form','');
                     cmbtahunajaran('form','');
-                    // cmbdetailgelombang('form','');
                     cmbtingkatZ('form','');
                     cmbsubtingkat('form','','');
                     cmbgolongan('form','');
+                    cmbangsuran('');
                 }
                 titlex='<span class="icon-plus-2"></span> Tambah ';
                 $.Dialog.title(titlex+' '+mnu);

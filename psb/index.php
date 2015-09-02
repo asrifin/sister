@@ -109,8 +109,11 @@
                     case 'vangsuran':
                         require $d.'v_angsuran.php';
                     break;
-                     case 'vbiaya':
+                    case 'vbiaya':
                         require $d.'v_biaya.php';
+                    break;
+                    case 'vdetailbiaya':
+                        require $d.'v_detailbiaya.php';
                     break;
                     case 'vdiskon':
                         require $d.'v_diskon.php';

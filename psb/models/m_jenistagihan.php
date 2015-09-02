@@ -4,9 +4,8 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'tingkat';
-	$tb  = 'aka_'.$mnu;
-	// $out=array();
+	$mnu = 'jenistagihan';
+	$tb  = 'psb_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
@@ -14,14 +13,12 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tingkat    = isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
-				$kode       = isset($_POST['kodeS'])?filter(trim($_POST['kodeS'])):'';
+				$gelombang  = isset($_POST['gelombangS'])?filter(trim($_POST['gelombangS'])):'';
 				$keterangan = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
-							kode like "%'.$kode.'%" and
-							tingkat like "%'.$tingkat.'%" and
+							gelombang like "%'.$gelombang.'%" and
 							keterangan like "%'.$keterangan.'%"
 						ORDER 
 							BY urutan asc';
@@ -44,7 +41,7 @@
 					$nox = $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
 						// urutan
-							$nox = '<select '.(isAksi('tingkat','u')?'onchange="urutFC(this);"':'disabled').' class="text-center" replid1="'.$res['replid'].'" urutan1="'.$res['urutan'].'" >';
+							$nox = '<select '.(isAksi('gelombang','u')?'onchange="urutFC(this);"':'disabled').' class="text-center" replid1="'.$res['replid'].'" urutan1="'.$res['urutan'].'" >';
 							for($i=1; $i<=$jum; $i++){
 								if($i==$res['urutan']) $nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
 								else $nox.='<option value="'.$i.'">'.$i.'</option>';
@@ -52,17 +49,16 @@
 						// end of urutan
 
 						$btn ='<td>
-									<button '.(isAksi('tingkat','u')?'onclick="viewFR('.$res['replid'].');"':'disabled').' data-hint="ubah"  >
+									<button '.(isAksi('gelombang','u')?'onclick="viewFR('.$res['replid'].');"':'disabled').' data-hint="ubah"  >
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button  '.(isAksi('tingkat','d')?'onclick="del('.$res['replid'].');"':'disabled').' data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button  '.(isAksi('gelombang','d')?'onclick="del('.$res['replid'].');"':'disabled').' data-hint="hapus" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
 						$out.= '<tr align="center">
 									<td><div class="input-control select">'.$nox.'</div></td>
-									<td>'.$res['kode'].'</td>
-									<td>'.$res['tingkat'].'</td>
+									<td>'.$res['gelombang'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -81,8 +77,7 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	kode 		= "'.filter($_POST['kodeTB']).'",
-								tingkat 	= "'.filter($_POST['tingkatTB']).'",
+				$s = $tb.' set  gelombang 	= "'.filter($_POST['gelombangTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				if(isset($_POST['replid'])){
 					$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
@@ -117,8 +112,7 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'kode'       =>$r['kode'],
-							'tingkat'    =>$r['tingkat'],
+							'gelombang'  =>$r['gelombang'],
 							'keterangan' =>$r['keterangan'],
 						));
 			break;
@@ -144,24 +138,21 @@
 
 			// cmbtingkat -----------------------------------------------------------------
 			case 'cmb'.$mnu:
-				$g=$j=$w='';
+				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
 				}else{
-					if(isset($_POST['departemen'])){
-						$j=' JOIN aka_subtingkat s on s.tingkat = t.replid';
-						$j.=' JOIN aka_kelas k on k.subtingkat = s.replid ';
-						$w=' where k.departemen='.$_POST['departemen'];
-						$g=' GROUP BY t.replid ';
+					if(isset($_POST[$mnu])){
+						$w='where'.$mnu.'='.$_POST[$mnu];
 					}
 				}
 				
-				$s	= ' SELECT t.* 
-						from '.$tb.' t
-						'.$j.$w.$g.'		
+				$s	= ' SELECT * 
+						from '.$tb.'
+						'.$w.'		
 						ORDER  BY 
-							t.urutan asc';
-							// pr($s);
+							urutan asc';
+				// var_dump($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar = $dt=array();
@@ -179,7 +170,7 @@
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
 						}
-					}$ar = array('status'=>'sukses','tingkat'=>$dt);
+					}$ar = array('status'=>'sukses',$mnu=>$dt);
 				}$out=json_encode($ar);
 			break;
 			// cmbtingkat -----------------------------------------------------------------

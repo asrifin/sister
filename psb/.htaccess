@@ -12,6 +12,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^dokumen/?$   								index.php?page=vdokumen
 	RewriteRule   ^golongan/?$   								index.php?page=vgolongan
 	RewriteRule   ^biaya/?$   									index.php?page=vbiaya
+	RewriteRule   ^detail-biaya/?$   							index.php?page=vdetailbiaya
 	RewriteRule   ^angsuran/?$		   							index.php?page=vangsuran
 	RewriteRule   ^diskon/?$   									index.php?page=vdiskon
 	RewriteRule   ^detail-diskon/?$   							index.php?page=vdetaildiskon
