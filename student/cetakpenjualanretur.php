@@ -63,12 +63,14 @@ $kodecustomer = $datas['kodecustomer'];
 $total = $datas['total'];
 $user = $datas['user'];
 $urutan = $no + 1;
+$lihatslip = '<a href="cetak_notareturjual.php?kode='.$datas['noretur'].'&lihat=ok"target="new">'.$datas['noretur'].'</a>';
+$lihatslipfaktur = '<a href="cetak_notafaktur.php?kode='.$datas['nofaktur'].'&lihat=ok"target="new">'.$datas['nofaktur'].'</a>';
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$noretur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
-<td>'.$nofaktur.'</td>
+<td>'.$lihatslipfaktur.'</td>
 <td>'.getnamacustomer($kodecustomer).'</td>
 <td>'.rupiah_format($total).'</td>
 </tr>';
@@ -109,6 +111,8 @@ $user = $datas['user'];
 $discount = $datas['discount'];
 $totaldiscount += $discount;
 $urutan = $no + 1;
+$lihatslip = '<a href="cetak_notareturjual.php?kode='.$datas['noretur'].'&lihat=ok"target="new">'.$datas['noretur'].'</a>';
+$lihatslipfaktur = '<a href="cetak_notafaktur.php?kode='.$datas['nofaktur'].'&lihat=ok"target="new">'.$datas['nofaktur'].'</a>';
 $s2 = mysql_query ("SELECT * FROM `pos_penjualanreturdetail` where noretur = '$noretur'group by id asc");	
 while($datas2 = mysql_fetch_array($s2)){
 $kodebarang = $datas2['kodebarang'];
@@ -119,9 +123,9 @@ $subtotal = $harga*$jumlah;
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$noretur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
-<td>'.$nofaktur.'</td>
+<td>'.$lihatslipfaktur.'</td>
 <td>'.getnamacustomer($kodecustomer).'</td>
 <td>'.$kodebarang.'</td>
 <td>'.getnamabarang($kodebarang).'</td>
@@ -142,10 +146,11 @@ echo '</table>';
 }
 /****************************/
 echo "</body</html>";
-
+/*
 if (isset($_GET['tglmulai'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

@@ -156,6 +156,7 @@ $user = $datas['user'];
 $netto = $datas['netto'];
 $tnetto += $netto;
 $urutan = $no + 1;
+$lihatslip = '<a href="cetak_notafakturjasa.php?kode='.$datas['nofaktur'].'&lihat=ok"target="new" >'.$nofaktur.'</a>';
 $s2 = mysql_query ("SELECT * FROM `pos_penjualanjasadetail` where nofaktur = '$nofaktur'$wherekodebarang  order by id asc");	
 while($datas2 = mysql_fetch_array($s2)){
 $kodejasa = $datas2['kodejasa'];
@@ -171,7 +172,7 @@ if($jenisjasaid==$jenisproduk){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nofaktur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamacustomer($kodecustomer).'</td>
 <td>'.$carabayar.'</td>
@@ -194,7 +195,7 @@ if($jenisproduk=='Semua'){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nofaktur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamacustomer($kodecustomer).'</td>
 <td>'.$carabayar.'</td>

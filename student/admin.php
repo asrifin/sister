@@ -170,7 +170,7 @@ if ($_GET['aksi'] == 'logout') {
 logout ();
 }
 }
-else if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="Audit"){
+else if (isset( $_SESSION['LevelAkses']) &&  $_SESSION['LevelAkses']=="Auditor"){
 	
 include "includes/security.php";	
 
@@ -178,9 +178,9 @@ ob_start();
 if(!isset($_GET['pilih'])){
 	include 'content/dashboard.php';
 		}else if (@$_GET['mod'] == 'yes' 
-				  && file_exists('mod/'.$_GET['pilih'].'/audit/audit_'.$_GET['pilih'].'.php') 
+				  && file_exists('mod/'.$_GET['pilih'].'/auditor/auditor_'.$_GET['pilih'].'.php') 
 				  && !preg_match("/[\.\/]/",$_GET['pilih'])){
-						include 'mod/'.$_GET['pilih'].'/audit/audit_'.$_GET['pilih'].'.php';	
+						include 'mod/'.$_GET['pilih'].'/auditor/auditor_'.$_GET['pilih'].'.php';	
 					}else {
 				//		include 'content/'.$theme.'/normal.php';
 	include 'content/dashboard.php';				

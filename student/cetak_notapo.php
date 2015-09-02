@@ -149,10 +149,11 @@ echo '</table>';
 echo'</td></tr></table>';
 		/****************************/
 echo "</body</html>";
-
+/*
 if (!isset($_GET['lihat'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

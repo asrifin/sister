@@ -86,13 +86,14 @@ $netto = $datas['netto'];
 $bayar = $datas['bayar'];
 $user = $datas['user'];
 $urutan = $no + 1;
+$lihatslip = '<a href="cetak_notafakturbiaya.php?kode='.$datas['nofaktur'].'&lihat=ok"target="new" >'.$nofaktur.'</a>';
 if($termin!=''){
 $termin = $termin." Hari";
 }
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nofaktur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.$carabayar.'</td>
 <td>'.rupiah_format($total).'</td>
@@ -119,7 +120,7 @@ echo '
 <td>No.Faktur</td>
 <td>Tanggal</td>
 <td>Cara Bayar</td>
-<td>Jenis</td>
+<td>Jenis/Jenjang</td>
 <td>Kode</td>
 <td>Nama</td>
 <td>Harga</td>
@@ -139,6 +140,7 @@ $user = $datas['user'];
 $netto = $datas['netto'];
 $tnetto += $netto;
 $urutan = $no + 1;
+$lihatslip = '<a href="cetak_notafakturbiaya.php?kode='.$datas['nofaktur'].'&lihat=ok"target="new" >'.$nofaktur.'</a>';
 $s2 = mysql_query ("SELECT * FROM `pos_penjualanbiayadetail` where nofaktur = '$nofaktur'$wherekodebarang order by id asc");	
 while($datas2 = mysql_fetch_array($s2)){
 $kodebiaya = $datas2['kodebiaya'];
@@ -154,7 +156,7 @@ if($jenisbiayaid==$jenisproduk){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nofaktur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.$carabayar.'</td>
 <td>'.getjenis($jenis).'</td>
@@ -176,11 +178,10 @@ if($jenisproduk=='Semua'){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nofaktur.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.$carabayar.'</td>
-<td>'.getjenisdaribiaya($kodebiaya).'</td>
-<td>'.getjenjangbiaya($kodebiaya).'</td>
+<td>'.getjenisdaribiaya($kodebiaya).'/'.getjenjangbiaya($kodebiaya).'</td>
 <td>'.$kodebiaya.'</td>
 <td>'.getnamabiaya($kodebiaya).'</td>
 <td>'.rupiah_format($harga).'</td>
@@ -208,10 +209,11 @@ echo '</table>';
 }
 /****************************/
 echo "</body</html>";
-
+/*
 if (isset($_GET['tglmulai'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

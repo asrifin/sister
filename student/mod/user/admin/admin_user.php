@@ -9,22 +9,22 @@ if (!cek_login()){
     header("location: index.php");
     exit;
 } else{
+$JS_SCRIPT.= <<<js
+<script language="JavaScript" type="text/javascript">
+$(document).ready(function() {
+    $('#example').dataTable();
+} );
 
-	
+</script>
+js;
+$script_include[] = $JS_SCRIPT;	
 //$index_hal=1;	
-global $maxadmindata;
-	
-	
-$admin ='<legend>Manage Users</legend>';
-$admin .= '
-<a class="btn btn-success" href="admin.php?pilih=user&amp;mod=yes&amp;aksi=tambah_user">Tambah User</a>';
-
 $admin .= '<script type="text/javascript" language="javascript">
    function GP_popupConfirmMsg(msg) { //v1.0
   document.MM_returnValue = confirm(msg);
 }
 </script>';
-
+$admin  .='<legend>MANAGE USER</legend>';
 if ($_GET['aksi'] == 'hapus' && is_numeric($_GET['id'])){
 	$id = int_filter ($_GET['id']);
 $s = mysql_query ("SELECT * FROM `pos_useraura` WHERE `UserId`='$id'");	
@@ -38,25 +38,10 @@ $admin.='<div class="error">Data Gagal dihapus Dengan ID = '.$id.'</div>';
 }	
 }
 
-if (isset ($_POST['edit_users']) && is_numeric($_GET['id'])){
-	$id = int_filter ($_GET['id']);
-	$level = $_POST['level'];
-	$tipe = $_POST['tipe'];
-	$email	      = text_filter($_POST['email']);
-if (!is_valid_email($email)) $error .= "Error, E-Mail address invalid!<br />";
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT email FROM pos_useraura WHERE email='$email' and UserId!='$id'")) > 0) $error .= "Error: Email ".$email." sudah terdaftar , silahkan ulangi.<br />";
-if ($error) {
-$admin.='<div class="error">'.$error.'</div>';
-} else {
-$up = mysql_query ("UPDATE `pos_useraura` SET `level`='$level',`tipe`='$tipe',`email`='$email' WHERE `UserId`='$id' AND `user`!='admin'");	
-$admin.='<div class="sukses">Data Berhasil Diupdate Dengan ID = '.$id.'</div>';	
-}
-}
-
 ######################################
 # Tambah User
 ######################################
-if ($_GET['aksi'] == 'tambah_user'){
+if ($_GET['aksi'] == ''){
 	
 if (isset($_POST['add_users'])){
 	
@@ -89,11 +74,8 @@ $arrs = $as['Type'];
 if (substr($arrs,0,4) == 'enum' && $as['Field'] == 'level') break;
 }
 
-if (isset ($_GET['offset']) && isset ($_GET['pg']) && isset ($_GET['stg'])) {
-$qss = "&pg=$pg&stg=$stg&offset=$offset";
-}	
-$admin.='<h5 class="bg text-success">Tambah User</h5>';
-$admin.='<div class="border">';
+$admin .= '<div class="panel panel-info">
+<div class="panel-heading"><h3 class="panel-title">Tambah User</h3></div>';
 $admin.='<form method="post" action="#">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
@@ -151,14 +133,33 @@ $admin .='<tr>
     <td style="padding:5px;"><input type="submit" value="Tambah" name="add_users" class="btn btn-success"></td>
   </tr>
 </table></form>';
-$admin .= '</div>';		
+$admin .='</div>';	
 }
 
 ######################################
 # Edit User
 ######################################
 if ($_GET['aksi'] == 'edit_user'){
-global $qss;
+if ($_POST['edit_users']){
+	$id = int_filter ($_GET['id']);
+	$level = $_POST['level'];
+	$tipe = $_POST['tipe'];
+	$email	      = text_filter($_POST['email']);
+	$password = md5($_POST['password']);
+if (!is_valid_email($email)) $error .= "Error, E-Mail address invalid!<br />";
+if ($error) {
+$admin.='<div class="error">'.$error.'</div>';
+} else {
+	if($password<>''){
+$up = mysql_query ("UPDATE `pos_useraura` SET `level`='$level',`tipe`='$tipe',`email`='$email',`password`='$password' WHERE `UserId`='$id'");	
+	}else{
+$up = mysql_query ("UPDATE `pos_useraura` SET `level`='$level',`tipe`='$tipe',`email`='$email' WHERE `UserId`='$id'");			
+	}
+$admin.='<div class="sukses">Data Berhasil Diupdate Dengan ID = '.$id.'</div>';	
+$admin .='<meta http-equiv="refresh" content="1; url=admin.php?pilih=user&amp;mod=yes" />';	
+}
+}
+	
 $id = int_filter($_GET['id']);
 $s = mysql_query ("SELECT * FROM `pos_useraura` WHERE `UserId`='$id'");	
 $data = mysql_fetch_array($s);
@@ -171,13 +172,11 @@ while ($as = mysql_fetch_array ($ss)){
 	 $arrs = $as['Type'];
 if (substr($arrs,0,4) == 'enum' && $as['Field'] == 'level') break;
 }
+	
+$admin .= '<div class="panel panel-info">
+<div class="panel-heading"><h3 class="panel-title">Edit User</h3></div>';
 
-if (isset ($_GET['offset']) && isset ($_GET['pg']) && isset ($_GET['stg'])) {
-$qss = "&amp;pg=$pg&amp;stg=$stg&amp;offset=$offset";
-}	
-$admin.='<h5 class="bg text-success">Edit User</h5>';
-
-$admin .= '<form method="post" action="admin.php?pilih=admin_users&amp;id='.$id.''.$qss.'">
+$admin .= '<form method="post" action="">
 <table class="table table-striped">
   <tr>
     <td>Username</td>
@@ -222,120 +221,50 @@ $admin .= '<tr>
     <td>Status</td>
     <td>'.$sel2.'</td>
 </tr>
+  <tr>
+    <td>Password</td>
+    <td><input type="text" name="password" size="20" class="form-control"></td>
+  </tr>
 <tr>
 	<td>&nbsp;</td>
     <td><input type="submit" value="Simpan" name="edit_users" class="btn btn-success"></td>
   </tr>
 </table></form>';
+$admin .= '</div>';
 }
 
-if (!in_array($_GET['aksi'],array('add','edit','hint','addhint'))){
-if (isset($_POST['submit'])){
-$tot     .= $_POST['tot'];
-$pcheck ='';
-			for($i=1;$i<=$tot;$i++)
-			{
-				$check = $_POST['check'.$i] ;
-				if($check <> "")
-				{
-					$pcheck .= $check . ",";
-				}
-			}
-$pcheck = substr_replace($pcheck, "", -1, 1);
-$error = '';
-if ($error){
-$admin.='<div class="error">'.$error.'</div>';
-}
-if ($pcheck)  $sukses .= "Sukses: user dengan UserId $pcheck  Telah di hapus !<br />";
-$koneksi_db->sql_query("DELETE FROM pos_useraura WHERE UserId in($pcheck)");
-if ($sukses){
-$admin.='<div class="sukses">'.$sukses.'</div>';
-}
-}
-$search = $_GET['search'];
 
-$admin.='<h5>List Users</h5>';
 
-$admin.='<form method="post" action=""><table class="table table-striped">
+$admin .= '<div class="panel panel-info">
+<div class="panel-heading"><h3 class="panel-title">List User</h3></div>';
+
+$admin.='<table class="table table-striped" id="example">
+<thead>
 <tr>
-<th class="text-center">No</th>
-<th></th>
 <th>Users</th>
 <th>Email</th>
 <th>Level</th>
 <th>Status</th>
 <th>Aksi</th>
-</tr>';
-$qss = null;
-$offset = int_filter(@$_GET['offset']);
-$pg		= int_filter(@$_GET['pg']);
-$stg	= int_filter(@$_GET['stg']);
-if($search){
-$query = $koneksi_db->sql_query("SELECT count(user) as t FROM `pos_useraura` WHERE user like '%$search%' or email like '%$search%'");
-}else{
-$query = $koneksi_db->sql_query("SELECT count(user) as t FROM `pos_useraura` where user<>'superadmin'");
-}
-$rows = mysql_fetch_row ($query);
-$jumlah = $rows[0];
-mysql_free_result ($query);
-$limit = 25;
-$a = new paging ($limit);
-if ($jumlah > 0){
-if($search){
-$q = mysql_query ("SELECT * FROM `pos_useraura` WHERE user like '%$search%' or email like '%$search%' LIMIT $offset,$limit");
-}else{
-$q = mysql_query ("SELECT * FROM `pos_useraura` where user<>'superadmin' LIMIT $offset,$limit");
-}
-if($offset){
-$no = $offset+1;
-}else{
-$no = 1;
-}
+</tr>
+    </thead>
+';
+$admin.='<tbody>';
+$q = mysql_query ("SELECT * FROM `pos_useraura` where user<>'superadmin'");
 while ($data = mysql_fetch_array($q)){
-$warna = empty ($warna) ? 'bgcolor="#f5f5f5"' : '';
-
-$admin.='<tr '.$warna.'>
-<td class="text-center">'.$no.'</td>
-<td><input type=checkbox name=check'.$no.' value='.$data[0].'></td>
+$admin.='<tr>
 <td>'.$data['user'].'</td>
 <td>'.$data['email'].'</td>
 <td>'.$data['level'].'</td>
 <td>'.$data['tipe'].'</td>
 <td>
-<a  class="btn btn-info" href="?pilih=user&amp;mod=yes&amp;aksi=edit_user&amp;id='.$data['UserId'].$qss.'">Edit</a> 
-<a  class="btn btn-danger" href="?pilih=user&amp;mod=yes&amp;aksi=hapus&amp;id='.$data['UserId'].$qss.'" onClick="GP_popupConfirmMsg(\'Apakah anda Ingin menghapus Users \n['.$data['user'].']\');return document.MM_returnValue;">Hapus</a></td>
+<a  class="btn btn-info" href="?pilih=user&amp;mod=yes&amp;aksi=edit_user&amp;id='.$data['UserId'].'">Edit</a> 
+<a  class="btn btn-danger" href="?pilih=user&amp;mod=yes&amp;aksi=hapus&amp;id='.$data['UserId'].'" onClick="GP_popupConfirmMsg(\'Apakah anda Ingin menghapus Users \n['.$data['user'].']\');return document.MM_returnValue;">Hapus</a></td>
 </tr>';  
-  $no++;
 }
-$admin .='<input type="hidden" name="tot" value="'.$jumlah.'">
-<tr>
-<td colspan="7" style="padding:4px 10px 4px 10px;"><input type="submit" value="Hapus" name="submit" class="btn btn-danger"></td>
-</tr>';
-}
-$admin .= '</table>';
-$admin .="</form>";
-if($jumlah>$limit){
-
-if (empty($_GET['offset']) and !isset ($_GET['offset'])) {
-$offset = 0;
-}
-
-if (empty($_GET['pg']) and !isset ($_GET['pg'])) {
-$pg = 1;
-}
-
-if (empty($_GET['stg']) and !isset ($_GET['stg'])) {
-$stg = 1;
-}
-
-$admin .='<div class="border">';
-$admin .="<center>";
-$admin .= $a-> getPaging($jumlah, $pg, $stg);
-$admin .="</center>";
-$admin .='</div>';
-}
-}
-
+$admin.='</tbody>
+</table>';
+$admin.='</div>';
 }
 
 echo $admin;
