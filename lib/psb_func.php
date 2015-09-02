@@ -47,13 +47,13 @@
 		return array('full'=>$awal.$akhir,'awal'=>$awal,'akhir'=>$akhir);
 	}	
 	// set biaya checking 
-	function getSetBiaya($kel,$krit,$gol){
-		$s = '	SELECT replid,daftar, spp, nilai, joiningf
-				FROM psb_setbiaya 
-				WHERE 	kel  ='.$kel.' AND 
-						krit ='.$krit.' AND 
-						gol  ='.$gol;
-						// print_r($s);exit();
+	function getSetBiaya($dgel,$subt,$gol){
+		$s = '	SELECT replid, dpp, spp, formulir, joiningf
+				FROM psb_biaya 
+				WHERE 	detailgelombang  ='.$dgel.' AND 
+						subtingkat ='.$subt.' AND 
+						golongan  ='.$gol;
+						// pr($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r;

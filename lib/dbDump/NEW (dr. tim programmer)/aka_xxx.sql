@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-28 04:36:50
+Date: 2015-09-02 08:00:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -4992,7 +4992,6 @@ CREATE TABLE `aka_tingkat` (
   `replid` int(11) NOT NULL AUTO_INCREMENT,
   `tingkat` varchar(100) NOT NULL DEFAULT '',
   `kode` varchar(10) NOT NULL,
-  `tahunajaran` int(10) unsigned NOT NULL DEFAULT '0',
   `keterangan` varchar(255) NOT NULL,
   `urutan` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -5003,12 +5002,12 @@ CREATE TABLE `aka_tingkat` (
 -- ----------------------------
 -- Records of aka_tingkat
 -- ----------------------------
-INSERT INTO `aka_tingkat` VALUES ('1', 'Toddler', 'Tod', '1', '-', '1', '2015-06-02 20:52:51');
-INSERT INTO `aka_tingkat` VALUES ('2', 'Playgroup', 'PG', '1', '-', '2', '2015-06-02 20:53:05');
-INSERT INTO `aka_tingkat` VALUES ('3', 'Kindergarten', 'KG ', '1', '-', '3', '2015-06-02 20:53:30');
-INSERT INTO `aka_tingkat` VALUES ('6', 'Primary', 'P', '0', '', '4', '2015-08-18 21:50:54');
-INSERT INTO `aka_tingkat` VALUES ('7', 'Secondary', 'S', '0', '', '5', '2015-08-18 21:51:15');
-INSERT INTO `aka_tingkat` VALUES ('8', 'High School', 'HS', '0', '', '6', '2015-08-18 21:51:35');
+INSERT INTO `aka_tingkat` VALUES ('1', 'Toddler', 'Tod', '-', '1', '2015-06-02 20:52:51');
+INSERT INTO `aka_tingkat` VALUES ('2', 'Playgroup', 'PG', '-', '2', '2015-06-02 20:53:05');
+INSERT INTO `aka_tingkat` VALUES ('3', 'Kindergarten', 'KG ', '-', '3', '2015-06-02 20:53:30');
+INSERT INTO `aka_tingkat` VALUES ('6', 'Primary', 'P', '', '4', '2015-08-18 21:50:54');
+INSERT INTO `aka_tingkat` VALUES ('7', 'Secondary', 'S', '', '5', '2015-08-18 21:51:15');
+INSERT INTO `aka_tingkat` VALUES ('8', 'High School', 'HS', '', '6', '2015-08-18 21:51:35');
 
 -- ----------------------------
 -- Table structure for aka_tmp_saudara
@@ -5060,49 +5059,73 @@ DROP TRIGGER IF EXISTS `ins_aka_subtingkat`;
 DELIMITER ;;
 CREATE TRIGGER `ins_aka_subtingkat` AFTER INSERT ON `aka_subtingkat` FOR EACH ROW BEGIN
 
-/*untuk psb_biaya*/
-BLOCK1: begin
-    declare v_col1 int;                     
-    declare no_more_rows1 INT DEFAULT 0;  
-    /*gol*/
-		declare cursor1 cursor for              
-        select replid
-        from psb_golongan;
-    declare continue handler for not found  
-    		set no_more_rows1 =1;           
-    open cursor1;
-    LOOP1: loop
-        fetch cursor1
-        into  v_col1;
-        if no_more_rows1 then
-            close cursor1;
-            leave LOOP1;
-        end if;
-				/*det gelomb*/
-        BLOCK2: begin
-            declare v_col2 int;
-            declare no_more_rows2 INT DEFAULT 0;  
-						declare cursor2 cursor for
-                select replid
-                from  psb_detailgelombang;
-           declare continue handler for not found
-               set no_more_rows2 =1;
-            open cursor2;
-            LOOP2: loop
-                fetch cursor2
-                into  v_col2;
-                if no_more_rows2 then
-                    close cursor2;
-                    leave LOOP2;
-                end if;
-								INSERT INTO psb_biaya SET 
-									subtingkat= NEW.replid, 
-            			 golongan = v_col1, 
-            			detailgelombang = v_col2;
-            end loop LOOP2;
-        end BLOCK2;
-    end loop LOOP1;
-end BLOCK1;
+/*INSERT psb_detailbiaya*/
+/*detailgelombang-----------------------------------------------------------------------*/
+BLOCK2: begin
+		declare v_col2 int;
+		declare no_more_rows2 INT DEFAULT 0;  
+		declare cursor2 cursor for
+				SELECT s.replid
+				FROM aka_kelas k
+					JOIN aka_subtingkat s on s.replid = k.subtingkat
+				WHERE	k.departemen = v_col1
+				GROUP BY s.replid;
+	 declare continue handler for not found
+			 set no_more_rows2 =1;
+		open cursor2;
+		LOOP2: loop
+				fetch cursor2
+				into  v_col2;
+				if no_more_rows2 then
+						close cursor2;
+						leave LOOP2;
+				end if;
+				/*biaya---------------------------------------------------------------*/
+				BLOCK3: begin
+							declare v_col3 int;
+							declare no_more_rows3 INT DEFAULT 0;  
+							declare cursor3 cursor for
+									select replid
+									from  psb_biaya;
+						 declare continue handler for not found
+								 set no_more_rows3 =1;
+							open cursor3;
+							LOOP3: loop
+									fetch cursor3
+									into  v_col3;
+									if no_more_rows3 then
+											close cursor3;
+											leave LOOP3;
+									end if;
+									/*golongan ---------------------------------------------------------------*/
+									BLOCK4: begin
+												declare v_col4 int;
+												declare no_more_rows4 INT DEFAULT 0;  
+												declare cursor4 cursor for
+														select replid
+														from  psb_golongan;
+											 declare continue handler for not found
+													 set no_more_rows3 =1;
+												open cursor4;
+												LOOP4: loop
+														fetch cursor4
+														into  v_col4;
+														if no_more_rows4 then
+																close cursor4;
+																leave LOOP4;
+														end if;
+									
+														INSERT INTO psb_detailbiaya SET 
+															biaya = v_col3, 
+															subtingkat = v_col2, 
+															detailgelombang = NEW.replid, 
+															golongan = v_col4;
+												end loop LOOP4;
+									end BLOCK4;
+						end loop LOOP3;
+					end BLOCK3;
+		end loop LOOP2;
+end BLOCK2;
 
 END
 ;;

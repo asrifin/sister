@@ -54,7 +54,7 @@
 				WHERE
 						tb.siswa LIKE "%'.$searchTerm.'%"
 						OR tb.sekolah LIKE "%'.$searchTerm.'%"';
-			// print_r($ss);exit();
+			// pr($ss);
 			$result = mysql_query($ss) or die(mysql_error());
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -184,16 +184,17 @@
 			// view -----------------------------------------------------------------
 
 			case 'getBiaya':
-				if(!isset($_POST['kelompok']) || !isset($_POST['tingkat']) || !isset($_POST['golongan'])){
+				if(!isset($_POST['detailgelombang']) || !isset($_POST['subtingkat']) || !isset($_POST['golongan'])){
 					$o = array('status' =>'invalid_no_post' );
 				}else{
-					$biaya = getSetBiaya($_POST['kelompok'],$_POST['tingkat'],$_POST['golongan']);
+					$biaya = getSetBiaya($_POST['detailgelombang'],$_POST['subtingkat'],$_POST['golongan']);
 					$o     = array(
-								'status'       =>(($biaya!=null || $biaya!='')?'sukses':'gagal'),
-								'replid'       =>$biaya['replid'],
-								'registration' =>$biaya['registration'],
-								'material'     =>$biaya['material'],
-								'tuition'      =>$biaya['tuition'],
+								'status'   =>(($biaya!=null || $biaya!='')?'sukses':'gagal'),
+								'replid'   =>$biaya['replid'],
+								'dpp'      =>$biaya['dpp'],
+								'spp'      =>$biaya['spp'],
+								'joiningf' =>$biaya['joiningf'],
+								'formulir' =>$biaya['formulir'],
 							);				
 				}$out = json_encode($o);
 			break;
