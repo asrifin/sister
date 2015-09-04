@@ -14,8 +14,9 @@
 			case 'tampil':
 				$departemen  = isset($_POST['departemenS'])?$_POST['departemenS']:'';
 				$tahunajaran = isset($_POST['tahunajaranS'])?$_POST['tahunajaranS']:'';
+				$biaya       = isset($_POST['biayaS'])?$_POST['biayaS']:'';
 				$nilai       = isset($_POST['nilaiS'])?$_POST['nilaiS']:'';
-				$diskon = isset($_POST['diskonS'])?$_POST['diskonS']:'';
+				$diskon      = isset($_POST['diskonS'])?$_POST['diskonS']:'';
 				$keterangan  = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
 				$nilai       = (isset($_POST['nilaiS']) && $_POST['nilaiS']!='')?' dd.nilai LIKE "%'.$_POST['nilaiS'].'%" AND':'';
 				$isAktif     = (isset($_POST['isAktifS']) && $_POST['isAktifS']!='')?' dd.isAktif='.$_POST['isAktifS'].' AND':'';
@@ -33,7 +34,8 @@
 							d.diskon like "%'.$diskon.'%" and 
 							d.keterangan like "%'.$keterangan.'%" and
 							dd.tahunajaran ='.$tahunajaran.' and
-							d.departemen ='.$departemen.'
+							d.departemen ='.$departemen.' and
+							d.biaya ='.$biaya.'
 						ORDER BY 
 							d.diskon asc,
 							dd.nilai asc';
@@ -72,9 +74,9 @@
 						}						 
 							
 						$out.= '<tr>
-									<td>'.$res['diskon'].'</td>
+									<td><pre>'.$res['diskon'].'</pre></td>
 									<td align="center">'.$res['nilai'].' %</td>
-									<td>'.$res['keterangan'].'</td>
+									<td><pre>'.$res['keterangan'].'</pre></td>
 									<td align="center"><button onclick="aktifkan('.$res['replid'].');" data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"><i class="icon-'.$icon.'"></i></button></td>
 									'.$btn.'
 								</tr>';
@@ -119,10 +121,12 @@
 						d.departemen,
 						d.diskon,
 						d.keterangan,
+						b.biaya,
 						dd.tahunajaran
 					FROM
 						psb_detaildiskon dd 
 						JOIN psb_diskon d ON d.replid= dd.diskon
+						JOIN psb_biaya b ON b.replid= d.biaya
 					WHERE
 						dd.replid ='.$_POST['replid'];
 						 	// pr($s);
@@ -132,7 +136,8 @@
 				$out  = json_encode(array(
 							'departemen'  =>$r['departemen'],
 							'tahunajaran' =>$r['tahunajaran'],
-							'diskon' =>$r['diskon'],
+							'diskon'      =>$r['diskon'],
+							'biaya'       =>$r['biaya'],
 							'keterangan'  =>$r['keterangan'],
 							'status'      =>$stat,
 							'nilai'       =>$r['nilai'],
@@ -147,7 +152,7 @@
 				}else{
 					if(isset($_POST['tahunajaran']) && isset($_POST['departemen']) ){
 						$j.=' JOIN psb_diskon d on d.replid = dd.diskon';
-						$w.=' WHERE d.departemen ='.$_POST['departemen'].' AND dd.tahunajaran ='.$_POST['tahunajaran'];
+						$w.=' WHERE dd.isAktif=1 AND d.departemen ='.$_POST['departemen'].' AND dd.tahunajaran ='.$_POST['tahunajaran'];
 					}
 				}				
 				$s	= ' SELECT dd.replid,d.diskon,dd.nilai

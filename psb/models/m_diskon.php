@@ -15,15 +15,17 @@
 				$departemen = isset($_POST['departemenS'])?$_POST['departemenS']:'';
 				$diskon     = isset($_POST['diskonS'])?$_POST['diskonS']:'';
 				$keterangan = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
+				$biaya      = isset($_POST['biayaS'])?$_POST['biayaS']:'';
 				$sql = 'SELECT *
 						FROM  '.$tb.' 
 						WHERE 
+							biaya ='.$biaya.' AND
 							departemen ='.$departemen.' AND
 							diskon LIKE "%'.$diskon.'%" AND
 							keterangan LIKE "%'.$keterangan.'%"
 						ORDER BY
 							diskon asc';
-				// print_r($sql);exit();
+							// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -51,11 +53,10 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td align="center">'.$res['diskon'].'</td>
-									<td>'.$res['keterangan'].'</td>
+									<td><pre>'.$res['diskon'].'</pre></td>
+									<td><pre>'.$res['keterangan'].'</pre></td>
 									'.$btn.'
 								</tr>';
-						// $nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -71,6 +72,7 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$s = $tb.' set 	diskon     = "'.filter($_POST['diskonTB']).'",
+								biaya      = '.$_POST['biayaTB'].',
 								departemen = '.$_POST['departemenTB'].',
 								keterangan = "'.filter($_POST['keteranganTB']).'"';
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
@@ -105,6 +107,7 @@
 				$out 	= json_encode(array(
 							'status'     =>$stat,
 							'departemen' =>$r['departemen'],
+							'biaya'      =>$r['biaya'],
 							'diskon'     =>$r['diskon'],
 							'keterangan' =>$r['keterangan'],
 						));

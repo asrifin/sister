@@ -227,9 +227,18 @@
 				if(!isset($_POST['detailgelombang']) || !isset($_POST['subtingkat']) || !isset($_POST['golongan']))
 					$o = array('status' =>'invalid_no_post' );
 				else{
-					$biaya = getSetBiaya($_POST['detailgelombang'],$_POST['subtingkat'],$_POST['golongan']);
+					$biaya = getBiayaArr($_POST['detailgelombang'],$_POST['subtingkat'],$_POST['golongan']);
 					$stat=!$biaya || is_null($biaya)?'gagal':'sukses';
 				}$out = json_encode(array('status'=>$stat,'biayaArr'=>$biaya));
+			break;
+
+			case 'getBiayaNett':
+				if(!isset($_POST['iddetailbiaya'])) $o = array('status' =>'invalid_no_post' );
+				else{
+					// $biaya = getBiayaNett($_POST['iddetailbiaya'],(isset($_POST['diskonreguler'])?$_POST['diskonreguler']:null),(isset($_POST['diskonkhusus'])?getuang($_POST['diskonkhusus']):0),$_POST['selecteddiskon']);
+					$biaya = getBiayaNett($_POST['iddetailbiaya'],(isset($_POST['diskonreguler'])?$_POST['diskonreguler']:null),(isset($_POST['diskonkhusus'])?getuang($_POST['diskonkhusus']):0));
+					$stat  = !$biaya?'gagal':'sukses';
+				}$out = json_encode(array('status'=>$stat,'biayaNett'=>$biaya));
 			break;
 
 			case 'nopendaftaran':

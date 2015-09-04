@@ -35,7 +35,8 @@
                         <option value="">-SEMUA-</option>
                         <option value="0">Tidak Ada</option>
                         <option value="1">Diskon Reguler</option>
-                        <option value="2">Diskon Bebas</option>
+                        <option value="2">Diskon Khusus</option>
+                        <option value="3">Diskon Reguler & Khusus</option>
                     </select>
             </div></th>
             <th><div class="input-control select">

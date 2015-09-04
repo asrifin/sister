@@ -29,7 +29,8 @@
 							case b.isDiskon
 								when 0 then "Tidak Ada"
 								when 1 then "Diskon Reguler"
-								else "Diskon Bebas"
+								when 2 then "Diskon Khusus"
+								else "Diskon Reguler & Khusus Bebas"
 							end as isDiskon,
 							t.jenistagihan,
 							b.keterangan
@@ -134,32 +135,19 @@
 							'isAngsur'     =>$r['isAngsur'],
 							'jenistagihan' =>$r['jenistagihan'],
 							'isDiskon'     =>$r['isDiskon'],
+							'keterangan'     =>$r['keterangan'],
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 
-			// cmbdetailgelombang -----------------------------------------------------------------
+			// cmb biaya -----------------------------------------------------------------
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
-				}else{
-					if(isset($_POST['tahunajaran']) && isset($_POST['departemen'])){
-						$w='where 	tahunajaran ='.$_POST['tahunajaran'].' AND
-									departemen  ='.$_POST['departemen'];
-					}
 				}
-				
-				$s	= ' SELECT 
-							dg.replid,
-							g.gelombang,
-							dg.tglmulai,
-							dg.tglselesai
-						from '.$tb.' dg 
-							JOIN psb_gelombang g ON g.replid = dg.gelombang
-						'.$w.'		
-						ORDER BY 
-							g.urutan ASC';
+
+				$s	= ' SELECT * FROM '.$tb.' ORDER BY biaya ASC';
 				// pr($s);
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
@@ -181,11 +169,7 @@
 					}
 				}$out=json_encode($ar);
 			break;
-			// cmbsubtingkat -----------------------------------------------------------------
+			// cmb biaya -----------------------------------------------------------------
 		}
 	}echo $out;
-
-	// ---------------------- //
-	// -- created by rovi -- //
-	// ---------------------- //
 ?>

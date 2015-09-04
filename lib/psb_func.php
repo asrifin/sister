@@ -45,21 +45,6 @@
 		else  $akhir =$r['no']; // ada
 
 		return array('full'=>$awal.$akhir,'awal'=>$awal,'akhir'=>$akhir);
-	}	
-	// set biaya checking 
-	function getSetBiaya($dgel,$subt,$gol){
-		$s = '	SELECT b.replid,db.nominal
-				FROM psb_detailbiaya db JOIN psb_biaya b on b.replid = db.biaya 
-				WHERE 	db.detailgelombang  ='.$dgel.' AND 
-						db.subtingkat ='.$subt.' AND 
-						db.golongan  ='.$gol.'
-				ORDER BY b.biaya ASC';
-		// pr($s);exit();
-		$e = mysql_query($s);
-		$o=array();
-		while ($r=mysql_fetch_assoc($e)) {
-			$o[]=$r;
-		}return $o;
 	}
 	function getNumRows($tb){
 		$s='SELECT * FROM psb_'.$tb;

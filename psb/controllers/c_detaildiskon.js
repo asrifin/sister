@@ -1,10 +1,13 @@
 var mnu  ='detaildiskon';
 var mnu2 ='departemen';
 var mnu3 ='tahunajaran';
+var mnu4 ='biaya';
 
 var dir  ='models/m_'+mnu+'.php';
 var dir2 ='../akademik/models/m_'+mnu2+'.php';
 var dir3 ='../akademik/models/m_'+mnu3+'.php';
+var dir4  ='models/m_'+mnu4+'.php';
+
 
 var contentFR ='';
 // main function ---
@@ -17,6 +20,10 @@ var contentFR ='';
                             +'<tr>'
                                 +'<td>Departemen </td>'
                                 +'<td id="departemenDV"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Biaya </td>'
+                                +'<td id="biayaDV"></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Tahun Ajaran</td>'
@@ -53,7 +60,7 @@ var contentFR ='';
         $('#keteranganS,#nilaiS,#diskonS').keydown(function (e){
             if(e.keyCode == 13) viewTB();
         });
-        $('#isAktifS,#tahunajaranS,#departemenS').on('change',function (){
+        $('#isAktifS,#biayaS,#tahunajaranS,#departemenS').on('change',function (){
             viewTB();
         });
 
@@ -150,12 +157,11 @@ var contentFR ='';
                     var d='aksi=ambiledit&replid='+id;
                     ajax(u,d).done(function (dt){
                         $('#idformH').val(id);
+                        cmbbiaya('form',dt.biaya);
                         cmbdepartemen('form',dt.departemen);
                         cmbtahunajaran('form',dt.tahunajaran);
-                        // $('#departemenDV').text(':'+cmbdt.departemen);
-                        // $('#tahunajaranDV').text(':'+dt.tahunajaran);
-                        $('#diskonDV').text(':'+dt.diskon);
-                        $('#keteranganDV').text(':'+dt.keterangan);
+                        $('#diskonDV').text(': '+dt.diskon);
+                        $('#keteranganDV').text(': '+dt.keterangan);
                         $('#nilaiTB').val(dt.nilai);
                     });
                 }$.Dialog.title(titlex+"Set Diskon");
@@ -265,11 +271,32 @@ var contentFR ='';
             }
             if(typ=='filter'){
                 $('#tahunajaranS').html(out);
-                viewTB();
+                cmbbiaya('filter', '');
             }else{
                 var tahun  = dt.tahunajaran[0].tahunajaran;
                 var tahun2 = parseInt(tahun)+1;
                 $('#tahunajaranDV').text(': '+tahun+' - '+tahun2);
+            }
+        });
+    }
+// combo biaya ---
+    function cmbbiaya(typ,bya){
+        var u = dir4;
+        var d ='aksi=cmb'+mnu4+(bya!=''?'&replid='+bya:'');
+        ajax(u,d).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.biaya, function(id,item){
+                    out+='<option '+(bya!='' && bya==item.replid?'selected':'')+' value="'+item.replid+'">'+item.biaya+'</option>';
+                });
+            }
+            if(typ=='filter'){
+                $('#biayaS').html(out);
+                viewTB();
+            }else{
+                $('#biayaDV').text(': '+dt.biaya[0].biaya);
             }
         });
     }

@@ -20,6 +20,7 @@ var dir9      = '../akademik/models/m_'+mnu9+'.php';
 var contentFR = '';
 
 // main function ---
+var selectedDiskReg = new Array;
     $(document).ready(function(){
         cmbdepartemen('filter','');
         contentFR +='<form style="overflow:scroll;height:560px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="simpanSV(); return false;">' 
@@ -36,12 +37,12 @@ var contentFR = '';
                                             // departemen
                                             +'<label>Departemen</label>'
                                             +'<div class="input-control select xsize3">'
-                                                +'<select required onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya(); cmbdetaildiskon(\'\',\'\'); enableDiskon();" id="departemenTB" name="departemenTB"></select>'
+                                                +'<select required onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();" id="departemenTB" name="departemenTB"></select>'
                                             +'</div>'
                                             // tahunajaran
                                             +'<label>Tahun Ajaran</label>'
                                             +'<div class="input-control select xsize3">'
-                                                +'<select required  onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();  cmbdetaildiskon(\'\',\'\'); enableDiskon();" id="tahunajaranTB" name="tahunajaranTB"></select>'
+                                                +'<select required  onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();;" id="tahunajaranTB" name="tahunajaranTB"></select>'
                                             +'</div>'
                                             // Detailgelombang
                                             +'<label>Detail Gelombang</label>'
@@ -915,6 +916,7 @@ var contentFR = '';
 
 // combo get biaya
     function getBiaya(){
+        enableDiskon('combo');
         var dgel = $('#detailgelombangTB').val();
         var subt = $('#subtingkatTB').val();
         var gol  = $('#golonganTBZ').val();
@@ -930,10 +932,10 @@ var contentFR = '';
                     if(dt.biayaArr.length==0) notif('data kosong,silahkan hubungi admin');
                     else{
                         $.each(dt.biayaArr,function (id,item){
-                            $('#biaya'+item.replid+'TD').html('Rp. '+parseInt(item.nominal).setCurr());
+                            $('#biayaawal'+item.replid+'TD').html('Rp. '+parseInt(item.nominal).setCurr());
+                            $('#iddetailbiaya'+item.replid+'H').val(item.iddetailbiaya);
                         })
-                    } 
-                    // getDiscTotal();
+                    }
                 }
             });            
         }
@@ -981,20 +983,21 @@ var contentFR = '';
     //         });
     //     }
     // }
-// get discount total
-    function getDiscTotal () {
-        var discangsuran = getCurr($('#discangsuranTD').html());
-        var discsubsidi  = getCurr($('#discsubsidiTB').val());
-        var discsaudara  = getCurr($('#discsaudaraTB').val());
-        var disctunai    = getCurr($('#disctunai2TD').html());
-        var disctotal    = discangsuran + discsubsidi + discsaudara + disctunai ;
-        // var disctotal   = parseInt(discsubsidi) + parseInt(discsaudara) + parseInt(disctunai);
-        console.log('angsuran : '+discangsuran);
-        console.log('subsi : '+discsubsidi);
-        console.log('saud : '+discsaudara);
-        console.log('tunai: '+disctunai);
-        $('#disctotalTD').html('Rp. '+disctotal.setCurr());
-        getRegistrationNet();
+//                  (idbiaya, iddetailbiaya)
+    function getBiayaNett(idx) {
+        selectedDiskReg=[];
+        var idy = $('#iddetailbiaya'+idx+'H').val();
+        var diskonreguler='';
+        $('.detaildiskon'+idx+'TB').each(function (id,item){
+            diskonreguler+='&diskonreguler[]='+($(this).val());
+            selectedDiskReg.push($(this).val());
+        });console.log(selectedDiskReg);
+        var d ='aksi=getBiayaNett&iddetailbiaya='+idy+diskonreguler+'&diskonkhusus='+$('#diskonkhusus'+idx+'TB').val();
+        // var d ='aksi=getBiayaNett&iddetailbiaya='+idy+diskonreguler+'&diskonkhusus='+$('#diskonkhusus'+idx+'TB').val()+'&delecteddiskon='+selectedDiskReg;
+        ajax(dir,d).done(function (dt){
+            if(dt.status!='sukses') notif(dt.status,'red');
+            else $('#biayaNett'+idx+'TD').html('Rp. '+(dt.biayaNett.setCurr()) );
+        });
     }
 
 // biaya  : registration net
@@ -1081,7 +1084,7 @@ var contentFR = '';
                 }
                 titlex='<span class="icon-plus-2"></span> Tambah ';
                 $.Dialog.title(titlex+' '+mnu);
-                $('#namaTB').focus();
+                $('#cmbdepartemenTB').focus();
             }
         });
     }
@@ -1385,19 +1388,36 @@ function notif(cont,clr) {
                                 +'<tbody>'
                                     // biaya awal
                                     +'<tr>'
-                                        +'<td colspan="2">Biaya '+item.biaya+' Awal</td>'
-                                        +'<td class="text-right" id="biaya'+item.replid+'TD">silahkan lengkapi dept. dll</td>'
+                                        +'<td colspan="2">Biaya '+item.biaya+' Awal'
+                                            +'<input type="hidden" id="iddetailbiaya'+item.replid+'H" name="iddetailbiaya'+item.replid+'H">'
+                                        +'</td>'
+                                        +'<td class="text-right" id="biayaawal'+item.replid+'TD">'
+                                            +'silahkan lengkapi dept. dll'
+                                        +'</td>'
                                     +'</tr>'
 
                                     // dskon
                                     +'<tr>'
+                                        +'<td>Diskon Reguler</td>'
                                         +'<td>'
-                                            +'<button disabled id="diskon'+item.replid+'BC" onclick="detaildiskonFC('+item.replid+'); return false;" class="fg-white bg-green diskonBC">Diskon<i class="icon-plus-2"></i></button>'
-                                        +'</td>'
-                                        +'<td>'
-                                            +'<table id="detaildiskon'+item.replid+'TBL"></table>'
+                                            +'<table width="100%">'
+                                                +'<thead>'
+                                                    +'<th align="center" colspan="2">'
+                                                        +'<button disabled id="diskon'+item.replid+'BC" onclick="detaildiskonFC('+item.replid+'); return false;" data-hint="Tambah" class="fg-white bg-green diskonBC"><i class="icon-plus-2"></i></button>'
+                                                    +'</th>'
+                                                +'</thead>'
+                                                +'<tbody class="detaildiskonTBL" id="detaildiskon'+item.replid+'TBL">'
+                                                +'</tbody>'
+                                            +'</table>'
                                         +'</td>'
                                         +'<td></td>'
+                                    +'</tr>'
+
+                                    // Diskon Khusus
+                                    +'<tr>'
+                                        +'<td>Diskon Khusus </td>'
+                                        +'<td><div class="input-control text"><input placeholder="keterangan diskon" type="text" id="ketdiskonkhusus'+item.replid+'TB" /></div></td>'
+                                        +'<td><div class="input-control text"><input onkeyup="getBiayaNett('+item.replid+');" value="Rp. 0" class="text-right" onfocus="inputuang(this);" placeholder="nominal" type="text" id="diskonkhusus'+item.replid+'TB" name="diskonkhusus'+item.replid+'TB"/></div></td>'
                                     +'</tr>'
 
                                     // biaya nett
@@ -1418,7 +1438,7 @@ function notif(cont,clr) {
                                         +'<td>Angsuran</td>'
                                         +'<td>'
                                             +'<div class="input-control select">'
-                                                +'<select id="angsuran'+item.replid+'TB" name="angsuran'+item.replid+'TB"><option value=""></option></select>'
+                                                +'<select class="text-center" id="angsuran'+item.replid+'TB" name="angsuran'+item.replid+'TB"><option value=""></option></select>'
                                             +'</div>'
                                         +'</td>'
                                         +'<td class="text-right" id="'+item.isDiskon+'TD"></td>'
@@ -1431,79 +1451,115 @@ function notif(cont,clr) {
                 }
                 $.each(dt.biayaArr, function (id,item){
                     cmbangsuran(item.replid,'');
-                    cmbdetaildiskon(item.replid,'','');
+                    // cmbdetaildiskon(item.replid,'','');
                 });
             }
         });
     }
 
 // combo detaildiskon 
-    function cmbdetaildiskon (idx,disk,cls) {
-        var dept = $('#departemenTB').val();
-        var thn  = $('#tahunajaranTB').val();
-        if(dept!='' || thn!='' ){
-            var u = dir7;
-            var d ='aksi=cmb'+mnu7+'&departemen='+dept+'&tahunajaran='+thn;
-            ajax(u,d).done(function (dt){
-                var opt='';
-                if (dt.status!='sukses') {
-                    notif(dt.status,'red');
-                    opt+='<option value="">'+dt.status+'</option>'
-                }else{
-                    var opt = '';
-                    if(dt.detaildiskon.length==0) opt+='<option value="">kosong</option>';
-                    else{
-                        $.each(dt.detaildiskon,function(id,item){
-                            opt+='<option '+(disk==item.replid?'selected':'')+' value="'+item.replid+'">'+item.diskon+'</option>'
-                        });
-                    }
-                }
-                $((cls==''?'#detaildiskon'+idx+'TB':'.detaildiskon')).html(opt);
+    // function cmbdetaildiskon (idx,disk,cls) {
+    //     var dept = $('#departemenTB').val();
+    //     var thn  = $('#tahunajaranTB').val();
+    //     if(dept!='' || thn!='' ){
+    //         var u = dir7;
+    //         var d ='aksi=cmb'+mnu7+'&departemen='+dept+'&tahunajaran='+thn;
+    //         ajax(u,d).done(function (dt){
+    //             var opt='';
+    //             if (dt.status!='sukses') {
+    //                 notif(dt.status,'red');
+    //                 opt+='<option value="">'+dt.status+'</option>'
+    //             }else{
+    //                 var opt = '';
+    //                 if(dt.detaildiskon.length==0) opt+='<option value="">kosong</option>';
+    //                 else{
+    //                     $.each(dt.detaildiskon,function(id,item){
+    //                         opt+='<option '+(disk==item.replid?'selected':'')+' value="'+item.replid+'">'+item.diskon+'</option>'
+    //                     });
+    //                 }
+    //             }
+    //             $((cls==''?'#detaildiskon'+idx+'TB':'.detaildiskon')).html(opt);
+    //         });
+    //     }else notif('pilih departemen & tahun ajaran dahulu ','red');
+    // }
+
+    function isDiskonSelectedAll(idx){
+        var stat=true;
+        if($('.detaildiskon'+idx+'TB').length>0){
+            $('.detaildiskon'+idx+'TB').each(function (id,item){
+                stat=($(this).val()=='')?false:true;
             });
-        }else notif('pilih departemen & tahun ajaran dahulu ','red');
-    }
+        }
+        return stat; 
+    } 
 
     var idy=1;
     function detaildiskonFC(idx){
-        var dept = $('#departemenTB').val();
-        var thn  = $('#tahunajaranTB').val();
-        // if(dept!='' || thn!='' ){
+        console.log('ebnable='+enableDiskon('button')); 
+        console.log('select='+isDiskonSelectedAll(idx)); 
+        if(enableDiskon('button') && isDiskonSelectedAll(idx)){ // jika true (semua combo terpilih semua)
             var u = dir7;
-            var d ='aksi=cmb'+mnu7+'&departemen='+dept+'&tahunajaran='+thn;
+            var d ='aksi=cmb'+mnu7+'&departemen='+$('#departemenTB').val()+'&tahunajaran='+$('#tahunajaranTB').val();
             ajax(u,d).done(function (dt){
-                // var tr = '<tr id="detaildiskon'+idx+'TR"><td>';
                 var tr = '<tr id="detaildiskon'+idx+idy+'TR"><td>';
-                tr+='<div class="input-control select"><select required name="detaildiskon'+idx+idy+'TB" name="detaildiskon'+idx+idy+'TB">';
+                tr+='<div class="input-control select"><select onchange="getBiayaNett('+idx+');" required  class="detaildiskon'+idx+'TB"  id="detaildiskon'+idx+idy+'TB" name="detaildiskonTB['+idx+idy+']">';
                 if(dt.status!='sukses') notif(dt.status,'red');
                 else{
                     if(dt.detaildiskon.length==0) tr+='<option value="">kosong</option>';
-                    else{
+                    else{   
+                        // var yy = jQuery.inArray(8,selectedDiskReg)
+                        // console.log(yy);
                         tr+='<option value="">-Pilih Diskon-</option>';
                         $.each(dt.detaildiskon,function (id,item){
-                            tr+='<option value="'+item.replid+'">'+item.diskon+' ('+item.nilai+'%)</option>';
+                            tr+='<option '+(jQuery.inArray(item.replid,selectedDiskReg)!=-1?'disabled class="fg-white bg-black"':'')+' value="'+item.replid+'">'+item.nilai+'% | '+item.diskon+'</option>';
                         });
                     }
-                }
-                tr+='</div></select>';
-                tr+='</td><td><a onclick="detaildiskonDel('+idx+idy+');" class="button fg-white bg-red" href="#"><i class="icon-remove"></i></a></td></tr>';
+                }tr+='</div></select>';
+                tr+='</td><td><a onclick="detaildiskonDel('+idx+idy+');" class="button bg-white fg-red"  data-hint="Hapus" href="#"><i class="icon-cancel-2"></i></a></td></tr>';
                 $('#detaildiskon'+idx+'TBL').append(tr);
                 idy+=1;
             });
-        // }
+        }
+    }
+
+    function enableDiskon(typ){
+        if(typ=='combo') {
+            $('.detaildiskonTBL').html('');
+            selectedDiskReg=[];
+        }var dept = $('#departemenTB').val();
+        var thn  = $('#tahunajaranTB').val();
+        var dgel = $('#detailgelombangTB').val();
+        var ting = $('#tingkatTB').val();
+        var subt = $('#subtingkatTB').val();
+        var gol  = $('#golonganTBZ').val();
+        if(dept=='' || thn==''|| dgel==''|| ting==''|| subt=='' || gol==''){ // jka smua combo sudah terpilih
+            $('.diskonBC').attr('disabled',true);
+            stat=false;
+        }else{ // jika salah combo belum terpilih
+            $('.diskonBC').removeAttr('disabled');
+            stat=true;
+        }return stat;   
     }
 
     function detaildiskonDel(xy){
         $('#detaildiskon'+xy+'TR').fadeOut('slow',function(){
             $('#detaildiskon'+xy+'TR').remove();
+            // var arr = [1,2,[1,1], 'abc'];
+            selectedDiskReg.splice($.inArray($('#detaildiskon'+xy+'TB').val(),selectedDiskReg),1);
+            // console.log(arr) //[1, 2, 'abc']
+
+            // selectedDiskReg.remove($('#detaildiskon'+xy+'TB').val());
         });
     }
 
-    function enableDiskon(){
-        if($('#departemenTB').val()=='' && $('#departemenTB').val()==''){
-            $('.diskonBC').attr('disabled',true);
-            console.log('masuk disabel');
-        }else{
-            $('.diskonBC').removeAttr('disabled');
-            console.log('masuk enable');
-        }
+// input uang --------------------------
+    function inputuang(e) {
+        $(e).maskMoney({
+            precision:0,
+            prefix:'Rp. ', 
+            // allowNegative: true, 
+            thousands:'.', 
+            // decimal:',', 
+            affixesStay: true
+        });
     }
