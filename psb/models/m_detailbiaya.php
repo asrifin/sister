@@ -4,7 +4,7 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'biaya';
+	$mnu = 'detailbiaya';
 	$tb  = 'psb_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -24,13 +24,13 @@
 				else{
 					while($r1 = mysql_fetch_assoc($e1)){	
 						$out.='<tr>
-							<td>'.$nox.'. '.$r1['golongan'].'<br> <sup class="fg-orange">('.$r1['keterangan'].')</sup> <input name="golongan[]" value="'.$r1['replid'].'" type="hidden"></td>';
+							<td>'.$nox.'. '.$r1['golongan'].'<br> <sup class="fg-orange">('.$r1['keterangan'].')</sup></td>';
 						$s2 = 'SELECT
 									db.replid,
 									db.nominal,
 									b.biaya
 								FROM
-									psb_detailbiaya db JOIN psb_biaya b on b.replid = db.biaya
+									'.$tb.' db JOIN psb_biaya b on b.replid = db.biaya
 								WHERE
 									db.golongan = '.$r1['replid'].'
 									AND db.subtingkat = '.$subtingkat.'
@@ -39,7 +39,10 @@
 									b.biaya asc';
 						$e2= mysql_query($s2);
 						while ($r2=mysql_fetch_assoc($e2)) {
-							$out.='<td align="right">'.(!isAksi('detailbiaya','u')?setuang($r2['nominal']):'<div class="input-control text" ><input data-hint="'.$r2['biaya'].'" class="text-right" value="Rp. '.number_format($r2['nominal']).'"    onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="'.$r2['biaya'].'TB_'.$r2['replid'].'"></div>').'</td>';
+							$out.='<td align="right">'.(!isAksi('detailbiaya','u')?setuang($r2['nominal']):'<div 
+									class="input-control text" ><input data-hint="'.$r2['biaya'].'" class="text-right" 
+									value="Rp. '.number_format($r2['nominal']).'" onclick="inputuang(this);" onfocus="inputuang(this);" 
+									type="text" name="nominalTB['.$r2['replid'].']"></div>').'</td>';
 						}
 						$out.='</tr>';
 						$nox++;
@@ -52,13 +55,8 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$stat2= true;
-				foreach ($_POST['golongan'] as $i => $v) {
-					$s = 'UPDATE '.$tb.' set 	dpp      = '.filter(getuang($_POST['dppTB_'.$v])).',
-												spp      = '.filter(getuang($_POST['sppTB_'.$v])).',
-												joiningf = '.filter(getuang($_POST['joiningfTB_'.$v])).',
-												formulir = '.filter(getuang($_POST['formulirTB_'.$v])).'
-										WHERE 	replid 	 = '.$v;
-					// print_r($s);exit();
+				foreach ($_POST['nominalTB'] as $i => $v) {
+					$s = 'UPDATE '.$tb.' set nominal = '.filter(getuang($v)).' WHERE replid ='.$i;
 					$e     = mysql_query($s);
 					$stat2 = $e?true:false;
 				}$stat = $stat2?'sukses':'gagal';

@@ -106,6 +106,41 @@
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
+
+			// cmbangsuran -----------------------------------------------------------------
+			case 'cmb'.$mnu:
+				$w='';
+				if(isset($_POST['replid'])){
+					$w.='where replid ='.$_POST['replid'];
+				}
+
+				$s	= ' SELECT *
+						from '.$tb.'
+						'.$w.' 
+						ORDER BY '.$mnu.' ASC';
+						// pr($s);
+				$e 	= mysql_query($s);
+				$n 	= mysql_num_rows($e);
+				$ar=$dt=array();
+
+				if(!$e){ //error
+					$ar = array('status'=>'error');
+				}else{
+					if($n=0){ // kosong 
+						$ar = array('status'=>'kosong');
+					}else{ // ada data
+						if(!isset($_POST['replid'])){
+							while ($r=mysql_fetch_assoc($e)) {
+								$dt[]=$r;
+							}
+						}else{
+							$dt[]=mysql_fetch_assoc($e);
+						}$ar = array('status'=>'sukses',$mnu=>$dt);
+					}
+				}$out=json_encode($ar);
+			break;
+			// cmbtahunajaran -----------------------------------------------------------------
+
 		}
 	}echo $out;
 

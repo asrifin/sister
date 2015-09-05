@@ -1,7 +1,9 @@
 var mnu       = 'biaya';
 var mnu2      = 'jenistagihan';
+var mnu3      = 'biaya';
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = 'models/m_'+mnu2+'.php';
+var dir3      = 'models/m_'+mnu3+'.php';
 var contentFR = '';
 // main function ---
     $(document).ready(function(){
@@ -18,8 +20,8 @@ var contentFR = '';
                         +'<div class="input-control select">'
                             +'<select required  id="isAngsurTB" name="isAngsurTB">'
                                 +'<option value="">-Pilih-</option>'
-                                +'<option value="1">-Angsur-</option>'
-                                +'<option value="0">-Tunai-</option>'
+                                +'<option value="1">Angsur Reguler</option>'
+                                +'<option value="2">Angsur Bebas</option>'
                             +'</select>'
                         +'</div>'
                         // isdiskon
@@ -27,8 +29,10 @@ var contentFR = '';
                         +'<div class="input-control select">'
                             +'<select required id="isDiskonTB" name="isDiskonTB">'
                                 +'<option value="">-Pilih-</option>'
-                                +'<option value="1">-Ya-</option>'
-                                +'<option value="0">-Tidak-</option>'
+                                +'<option value="0">Tidak Ada</option>'
+                                +'<option value="1">Diskon Reguler</option>'
+                                +'<option value="2">Diskon Khsusu</option>'
+                                +'<option value="3">Diskon Reguler & Khusus</option>'
                             +'</select>'
                         +'</div>'
                         // jenistagihan

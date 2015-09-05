@@ -3,8 +3,8 @@ var mnu2      = 'departemen';
 var mnu3      = 'tahunajaran';
 var mnu4      = 'tingkat';
 var mnu5      = 'golongan';
-var mnu6      = 'setAngsuran'; 
-var mnu7      = 'setDiskon';
+var mnu6      = 'angsuran'; 
+var mnu7      = 'detaildiskon';
 var mnu8      = 'detailgelombang';
 var mnu9      = 'subtingkat';
 
@@ -20,6 +20,7 @@ var dir9      = '../akademik/models/m_'+mnu9+'.php';
 var contentFR = '';
 
 // main function ---
+var selectedDiskReg = new Array;
     $(document).ready(function(){
         cmbdepartemen('filter','');
         contentFR +='<form style="overflow:scroll;height:560px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="simpanSV(); return false;">' 
@@ -35,138 +36,38 @@ var contentFR = '';
                                         +'<div class="span3">'
                                             // departemen
                                             +'<label>Departemen</label>'
-                                            +'<div class="input-control select size3">'
+                                            +'<div class="input-control select xsize3">'
                                                 +'<select required onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();" id="departemenTB" name="departemenTB"></select>'
                                             +'</div>'
                                             // tahunajaran
                                             +'<label>Tahun Ajaran</label>'
-                                            +'<div class="input-control select size3">'
-                                                +'<select required  onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();" id="tahunajaranTB" name="tahunajaranTB"></select>'
+                                            +'<div class="input-control select xsize3">'
+                                                +'<select required  onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();;" id="tahunajaranTB" name="tahunajaranTB"></select>'
                                             +'</div>'
                                             // Detailgelombang
                                             +'<label>Detail Gelombang</label>'
-                                            +'<div class="input-control select size3">'
+                                            +'<div class="input-control select xsize3">'
                                                 +'<select onchange=" getBiaya();" required id="detailgelombangTB" name="detailgelombangTB"><option value="">-silahkan pilih Dept. dan Tahun Ajaran dahulu-</option></select>'
                                             +'</div>'
                                             // tingkat
                                             +'<label>Tingkat</label>'
-                                            +'<div class="input-control select size3">'
+                                            +'<div class="input-control select xsize3">'
                                                 +'<select required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya();" id="tingkatTBZ" name="tingkatTB"></select>'
                                             +'</div>'
                                             // subtingkat
                                             +'<label>Sub Tingkat</label>'
-                                            +'<div class="input-control select size3">'
+                                            +'<div class="input-control select xsize3">'
                                                 +'<select onchange=" getBiaya();"  required id="subtingkatTB" name="subtingkatTB"></select>'
                                             +'</div>'
                                             // golongan
                                             +'<label>Golongan</label>'
-                                            +'<div class="input-control select size3">'
+                                            +'<div class="input-control select xsize3">'
                                                 +'<select onchange=" getBiaya();"  required id="golonganTBZ" name="golonganTBs"></select>'
                                             +'</div>'
                                         +'</div>'
                                             
                                         // kolom2
-                                        +'<div class="span5">'
-                                            // 1 formulir
-                                            +'<label>Formulir</label>'
-                                            +'<table class="table hovered bordered striped">'
-                                                +'<tr>'
-                                                    +'<th>No.</th>'
-                                                    +'<th colspan="2">Item</th>'
-                                                    +'<th>Nominal</th>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>1.</td>'
-                                                    +'<td colspan="2">Harga Formulir</td>'
-                                                    +'<td class="text-right" id="formulirTD">silahkan lengkapi dept. dll</td>'
-                                                +'</tr>'
-                                            +'</table>'                                
-                                            // 2 DPP
-                                            +'<label>DPP</label>'
-                                            +'<table class="table hovered bordered striped">'
-                                                +'<tr>'
-                                                    +'<th>No.</th>'
-                                                    +'<th colspan="2">Item</th>'
-                                                    +'<th>Nominal</th>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>1.</td>'
-                                                    +'<td colspan="2">DPP Awal</td>'
-                                                    +'<td  class="text-right"  id="dppawalTD">silahkan lengkapi dept. dll</td>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>2.</td>'
-                                                    +'<td>Jumlah Angsuran</td>'
-                                                    +'<td>'
-                                                        +'<div class="input-control select">'
-                                                            +'<select name="jml" id=""></select>'
-                                                        +'</div>'
-                                                    +'</td>'
-                                                    +'<td></td>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>3.</td>'
-                                                    +'<td>Diskon</td>'
-                                                    +'<td><button onclick="return false;" class="fg-white bg-blue"><i class="icon-plus"></i></button></td>'
-                                                    +'<td></td>'
-                                                +'</tr>'
-                                            +'</table>'                                
-                                            // 3 Joining Fee
-                                            +'<label>Joining Fee</label>'
-                                            +'<table class="table hovered bordered striped">'
-                                                +'<tr>'
-                                                    +'<th>No.</th>'
-                                                    +'<th colspan="2">Item</th>'
-                                                    +'<th>Nominal</th>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>1.</td>'
-                                                    +'<td colspan="2">Joining Fee Awal</td>'
-                                                    +'<td  class="text-right"  id="joiningfawalTD">silahkan lengkapi dept. dll</td>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>2.</td>'
-                                                    +'<td>Jumlah Angsuran</td>'
-                                                    +'<td>'
-                                                        +'<div class="input-control select">'
-                                                            +'<select name="jml" id=""></select>'
-                                                        +'</div>'
-                                                    +'</td>'
-                                                    +'<td></td>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>3.</td>'
-                                                    +'<td>Diskon</td>'
-                                                    +'<td><button onclick="return false;" class="fg-white bg-blue"><i class="icon-plus"></i></button></td>'
-                                                    +'<td></td>'
-                                                +'</tr>'
-                                            +'</table>'
-                                            // 4 SPP
-                                            +'<label>SPP</label>'
-                                            +'<table class="table hovered bordered striped">'
-                                                +'<tr>'
-                                                    +'<th>No.</th>'
-                                                    +'<th colspan="2">Item</th>'
-                                                    +'<th>Nominal</th>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>1.</td>'
-                                                    +'<td colspan="2">SPP Awal</td>'
-                                                    +'<td class="text-right"  id="sppawalTD">silahkan lengkapi dept. dll</td>'
-                                                +'</tr>'
-                                                +'<tr>'
-                                                    +'<td>1.</td>'
-                                                    +'<td>Jumlah Angsuran</td>'
-                                                    +'<td>'
-                                                        +'<div class="input-control select">'
-                                                            +'<select name="jml" id=""></select>'
-                                                        +'</div>'
-                                                    +'</td>'
-                                                    +'<td></td>'
-                                                +'</tr>'
-                                            +'</table>'                                
-                                        +'</div>'
-
+                                        +'<div id="biayaDV" class="span6"></div>'
                                     +'</div>'
 
 
@@ -950,7 +851,7 @@ var contentFR = '';
     }*/
 
 // combo angsuran 
-    function cmbangsuran (ang) {
+    function cmbangsuran (idx,ang) {
         var u = dir6;
         var d ='aksi=cmb'+mnu6;
         ajax(u,d).done(function(dt){
@@ -961,12 +862,38 @@ var contentFR = '';
             }else{
                 var opt = '';
                 $.each(dt.angsuran,function(id,item){
-                    opt+='<option '+(ang==item.replid?'selected':'')+' value="'+item.replid+'">'+item.cicilan+' x </option>'
+                    opt+='<option '+(ang==item.replid?'selected':'')+' value="'+item.replid+'">'+item.angsuran+' x </option>'
                 });
             }
-            $('#angsuranTB').html('<option value="">-Pilih Angsuran-</option>'+opt);
+            $('#angsuran'+idx+'TB').html(opt);
         });
-    }        
+    }
+
+// // combo detaildiskon 
+//     function cmbdetaildiskon (idx,disk,cls) {
+//         var dept = $('#departemenTB').val();
+//         var thn  = $('#tahunajaranTB').val();
+//         if(dept!='' || thn!='' ){
+//             var u = dir7;
+//             var d ='aksi=cmb'+mnu7+'&departemen='+dept+'&tahunajaran='+thn;
+//             ajax(u,d).done(function (dt){
+//                 var opt='';
+//                 if (dt.status!='sukses') {
+//                     notif(dt.status,'red');
+//                     opt+='<option value="">'+dt.status+'</option>'
+//                 }else{
+//                     var opt = '';
+//                     if(dt.detaildiskon.length==0) opt+='<option value="">kosong</option>';
+//                     else{
+//                         $.each(dt.detaildiskon,function(id,item){
+//                             opt+='<option '+(disk==item.replid?'selected':'')+' value="'+item.replid+'">'+item.diskon+'</option>'
+//                         });
+//                     }
+//                 }
+//                 $((cls==''?'#detaildiskon'+idx+'TB':'.detaildiskon')).html(opt);
+//             });
+//         }
+//     }
 
 // combo diskon tunai 
     function cmbdisctunai (nilai) {
@@ -989,6 +916,7 @@ var contentFR = '';
 
 // combo get biaya
     function getBiaya(){
+        enableDiskon('combo');
         var dgel = $('#detailgelombangTB').val();
         var subt = $('#subtingkatTB').val();
         var gol  = $('#golonganTBZ').val();
@@ -999,12 +927,16 @@ var contentFR = '';
                     +'&subtingkat='+subt
                     +'&golongan='+gol
             ajax(u,d).done(function (dt){
-                $('#setbiayaTB').val(dt.replid);
-                $('#formulirTD').html('Rp. '+parseInt(dt.formulir).setCurr());
-                $('#dppawalTD').html('Rp. '+parseInt(dt.dpp).setCurr());
-                $('#joiningfawalTD').html('Rp. '+parseInt(dt.joiningf).setCurr());
-                $('#sppawalTD').html('Rp. '+parseInt(dt.spp).setCurr());
-                // getDiscTotal();
+                if(dt.status!='sukses') notif(dt.status,'red');
+                else{
+                    if(dt.biayaArr.length==0) notif('data kosong,silahkan hubungi admin');
+                    else{
+                        $.each(dt.biayaArr,function (id,item){
+                            $('#biayaawal'+item.replid+'TD').html('Rp. '+parseInt(item.nominal).setCurr());
+                            $('#iddetailbiaya'+item.replid+'H').val(item.iddetailbiaya);
+                        })
+                    }
+                }
             });            
         }
     }
@@ -1051,20 +983,21 @@ var contentFR = '';
     //         });
     //     }
     // }
-// get discount total
-    function getDiscTotal () {
-        var discangsuran = getCurr($('#discangsuranTD').html());
-        var discsubsidi  = getCurr($('#discsubsidiTB').val());
-        var discsaudara  = getCurr($('#discsaudaraTB').val());
-        var disctunai    = getCurr($('#disctunai2TD').html());
-        var disctotal    = discangsuran + discsubsidi + discsaudara + disctunai ;
-        // var disctotal   = parseInt(discsubsidi) + parseInt(discsaudara) + parseInt(disctunai);
-        console.log('angsuran : '+discangsuran);
-        console.log('subsi : '+discsubsidi);
-        console.log('saud : '+discsaudara);
-        console.log('tunai: '+disctunai);
-        $('#disctotalTD').html('Rp. '+disctotal.setCurr());
-        getRegistrationNet();
+//                  (idbiaya, iddetailbiaya)
+    function getBiayaNett(idx) {
+        selectedDiskReg=[];
+        var idy = $('#iddetailbiaya'+idx+'H').val();
+        var diskonreguler='';
+        $('.detaildiskon'+idx+'TB').each(function (id,item){
+            diskonreguler+='&diskonreguler[]='+($(this).val());
+            selectedDiskReg.push($(this).val());
+        });console.log(selectedDiskReg);
+        var d ='aksi=getBiayaNett&iddetailbiaya='+idy+diskonreguler+'&diskonkhusus='+$('#diskonkhusus'+idx+'TB').val();
+        // var d ='aksi=getBiayaNett&iddetailbiaya='+idy+diskonreguler+'&diskonkhusus='+$('#diskonkhusus'+idx+'TB').val()+'&delecteddiskon='+selectedDiskReg;
+        ajax(dir,d).done(function (dt){
+            if(dt.status!='sukses') notif(dt.status,'red');
+            else $('#biayaNett'+idx+'TD').html('Rp. '+(dt.biayaNett.setCurr()) );
+        });
     }
 
 // biaya  : registration net
@@ -1147,10 +1080,11 @@ var contentFR = '';
                     cmbsubtingkat('form','','');
                     cmbgolongan('form','');
                     cmbangsuran('');
+                    biayaFC();
                 }
                 titlex='<span class="icon-plus-2"></span> Tambah ';
                 $.Dialog.title(titlex+' '+mnu);
-                $('#namaTB').focus();
+                $('#cmbdepartemenTB').focus();
             }
         });
     }
@@ -1427,5 +1361,205 @@ function notif(cont,clr) {
             }else{
                 $('#golonganTBZ').html('<option value="">-Pilih Golongan -</option>'+out);
             }
+        });
+    }
+
+    function biayaFC(){
+        var d='aksi=tampil&subaksi=biaya';
+        ajax(dir,d).done(function (dt){
+            var out='';
+            if(dt.status!='sukses'){
+                notif(dt.status,'red');
+            }else{
+                if(dt.biayaArr.length==0) {
+                   out+='<label class="fg-white bg-red"> Biaya Masih kosong silahkan hubungi administrator biaya</label>'
+                    $('#biayaDV').html(out);
+                }else{
+                    $.each(dt.biayaArr, function (id,item){
+                        out+='<label>'+item.biaya+'</label>'
+                            +'<table class="table hovered bordered">'
+                                +'<thead>'
+                                    +'<tr class="fg-white bg-blue">'
+                                        +'<th colspan="2">Item</th>'
+                                        +'<th>Nominal</th>'
+                                    +'</tr>'
+                                +'</thead>'
+
+                                +'<tbody>'
+                                    // biaya awal
+                                    +'<tr>'
+                                        +'<td colspan="2">Biaya '+item.biaya+' Awal'
+                                            +'<input type="hidden" id="iddetailbiaya'+item.replid+'H" name="iddetailbiaya'+item.replid+'H">'
+                                        +'</td>'
+                                        +'<td class="text-right" id="biayaawal'+item.replid+'TD">'
+                                            +'silahkan lengkapi dept. dll'
+                                        +'</td>'
+                                    +'</tr>'
+
+                                    // dskon
+                                    +'<tr>'
+                                        +'<td>Diskon Reguler</td>'
+                                        +'<td>'
+                                            +'<table width="100%">'
+                                                +'<thead>'
+                                                    +'<th align="center" colspan="2">'
+                                                        +'<button disabled id="diskon'+item.replid+'BC" onclick="detaildiskonFC('+item.replid+'); return false;" data-hint="Tambah" class="fg-white bg-green diskonBC"><i class="icon-plus-2"></i></button>'
+                                                    +'</th>'
+                                                +'</thead>'
+                                                +'<tbody class="detaildiskonTBL" id="detaildiskon'+item.replid+'TBL">'
+                                                +'</tbody>'
+                                            +'</table>'
+                                        +'</td>'
+                                        +'<td></td>'
+                                    +'</tr>'
+
+                                    // Diskon Khusus
+                                    +'<tr>'
+                                        +'<td>Diskon Khusus </td>'
+                                        +'<td><div class="input-control text"><input placeholder="keterangan diskon" type="text" id="ketdiskonkhusus'+item.replid+'TB" /></div></td>'
+                                        +'<td><div class="input-control text"><input onkeyup="getBiayaNett('+item.replid+');" value="Rp. 0" class="text-right" onfocus="inputuang(this);" placeholder="nominal" type="text" id="diskonkhusus'+item.replid+'TB" name="diskonkhusus'+item.replid+'TB"/></div></td>'
+                                    +'</tr>'
+
+                                    // biaya nett
+                                    +'<tr>'
+                                        +'<td colspan="2">Biaya '+item.biaya+' Nett</td>'
+                                        +'<td class="text-right" id="biayaNett'+item.replid+'TD">Rp. 0</td>'
+                                    +'</tr>'
+
+                                    // jenis tagihan 
+                                    +'<tr>'
+                                        +'<td>Ditagih</td>'
+                                        +'<td>'+(item.jenistagihan!='sekali'?'per ':'')+item.jenistagihan+'</td>'
+                                        +'<td></td>'
+                                    +'</tr>'
+
+                                    // cara bayar
+                                    +'<tr>'
+                                        +'<td>Angsuran</td>'
+                                        +'<td>'
+                                            +'<div class="input-control select">'
+                                                +'<select class="text-center" id="angsuran'+item.replid+'TB" name="angsuran'+item.replid+'TB"><option value=""></option></select>'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="text-right" id="'+item.isDiskon+'TD"></td>'
+                                    +'</tr>'
+
+                                +'</tbody>'
+                            +'</table>'; 
+                    });
+                    $('#biayaDV').html(out);
+                }
+                $.each(dt.biayaArr, function (id,item){
+                    cmbangsuran(item.replid,'');
+                    // cmbdetaildiskon(item.replid,'','');
+                });
+            }
+        });
+    }
+
+// combo detaildiskon 
+    // function cmbdetaildiskon (idx,disk,cls) {
+    //     var dept = $('#departemenTB').val();
+    //     var thn  = $('#tahunajaranTB').val();
+    //     if(dept!='' || thn!='' ){
+    //         var u = dir7;
+    //         var d ='aksi=cmb'+mnu7+'&departemen='+dept+'&tahunajaran='+thn;
+    //         ajax(u,d).done(function (dt){
+    //             var opt='';
+    //             if (dt.status!='sukses') {
+    //                 notif(dt.status,'red');
+    //                 opt+='<option value="">'+dt.status+'</option>'
+    //             }else{
+    //                 var opt = '';
+    //                 if(dt.detaildiskon.length==0) opt+='<option value="">kosong</option>';
+    //                 else{
+    //                     $.each(dt.detaildiskon,function(id,item){
+    //                         opt+='<option '+(disk==item.replid?'selected':'')+' value="'+item.replid+'">'+item.diskon+'</option>'
+    //                     });
+    //                 }
+    //             }
+    //             $((cls==''?'#detaildiskon'+idx+'TB':'.detaildiskon')).html(opt);
+    //         });
+    //     }else notif('pilih departemen & tahun ajaran dahulu ','red');
+    // }
+
+    function isDiskonSelectedAll(idx){
+        var stat=true;
+        if($('.detaildiskon'+idx+'TB').length>0){
+            $('.detaildiskon'+idx+'TB').each(function (id,item){
+                stat=($(this).val()=='')?false:true;
+            });
+        }
+        return stat; 
+    } 
+
+    var idy=1;
+    function detaildiskonFC(idx){
+        console.log('ebnable='+enableDiskon('button')); 
+        console.log('select='+isDiskonSelectedAll(idx)); 
+        if(enableDiskon('button') && isDiskonSelectedAll(idx)){ // jika true (semua combo terpilih semua)
+            var u = dir7;
+            var d ='aksi=cmb'+mnu7+'&departemen='+$('#departemenTB').val()+'&tahunajaran='+$('#tahunajaranTB').val();
+            ajax(u,d).done(function (dt){
+                var tr = '<tr id="detaildiskon'+idx+idy+'TR"><td>';
+                tr+='<div class="input-control select"><select onchange="getBiayaNett('+idx+');" required  class="detaildiskon'+idx+'TB"  id="detaildiskon'+idx+idy+'TB" name="detaildiskonTB['+idx+idy+']">';
+                if(dt.status!='sukses') notif(dt.status,'red');
+                else{
+                    if(dt.detaildiskon.length==0) tr+='<option value="">kosong</option>';
+                    else{   
+                        // var yy = jQuery.inArray(8,selectedDiskReg)
+                        // console.log(yy);
+                        tr+='<option value="">-Pilih Diskon-</option>';
+                        $.each(dt.detaildiskon,function (id,item){
+                            tr+='<option '+(jQuery.inArray(item.replid,selectedDiskReg)!=-1?'disabled class="fg-white bg-black"':'')+' value="'+item.replid+'">'+item.nilai+'% | '+item.diskon+'</option>';
+                        });
+                    }
+                }tr+='</div></select>';
+                tr+='</td><td><a onclick="detaildiskonDel('+idx+idy+');" class="button bg-white fg-red"  data-hint="Hapus" href="#"><i class="icon-cancel-2"></i></a></td></tr>';
+                $('#detaildiskon'+idx+'TBL').append(tr);
+                idy+=1;
+            });
+        }
+    }
+
+    function enableDiskon(typ){
+        if(typ=='combo') {
+            $('.detaildiskonTBL').html('');
+            selectedDiskReg=[];
+        }var dept = $('#departemenTB').val();
+        var thn  = $('#tahunajaranTB').val();
+        var dgel = $('#detailgelombangTB').val();
+        var ting = $('#tingkatTB').val();
+        var subt = $('#subtingkatTB').val();
+        var gol  = $('#golonganTBZ').val();
+        if(dept=='' || thn==''|| dgel==''|| ting==''|| subt=='' || gol==''){ // jka smua combo sudah terpilih
+            $('.diskonBC').attr('disabled',true);
+            stat=false;
+        }else{ // jika salah combo belum terpilih
+            $('.diskonBC').removeAttr('disabled');
+            stat=true;
+        }return stat;   
+    }
+
+    function detaildiskonDel(xy){
+        $('#detaildiskon'+xy+'TR').fadeOut('slow',function(){
+            $('#detaildiskon'+xy+'TR').remove();
+            // var arr = [1,2,[1,1], 'abc'];
+            selectedDiskReg.splice($.inArray($('#detaildiskon'+xy+'TB').val(),selectedDiskReg),1);
+            // console.log(arr) //[1, 2, 'abc']
+
+            // selectedDiskReg.remove($('#detaildiskon'+xy+'TB').val());
+        });
+    }
+
+// input uang --------------------------
+    function inputuang(e) {
+        $(e).maskMoney({
+            precision:0,
+            prefix:'Rp. ', 
+            // allowNegative: true, 
+            thousands:'.', 
+            // decimal:',', 
+            affixesStay: true
         });
     }

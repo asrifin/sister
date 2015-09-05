@@ -92,111 +92,153 @@
 		}	
 	}else{
 		switch ($_POST['aksi']) {
-			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen    = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
-				$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
-				$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
-				$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-				$tingkat       = isset($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
+				switch ($_POST['subaksi']) {
+					case 'siswa':
+						$departemen    = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
+						$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
+						$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
+						$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+						$tingkat       = isset($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
 
-				$sql = 'SELECT
-							c.replid,
-							c.nopendaftaran,
-							c.nama,
-							c.setbiaya,
-							a.cicilan,
-							c.kelompok,
-						  	akt.tingkat
-						FROM
-							psb_calonsiswa c
-						LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
-						LEFT JOIN aka_tingkat akt ON akt.replid = c.tingkat
-						LEFT JOIN aka_tahunajaran t ON t.replid = akt.tahunajaran
-						LEFT JOIN departemen d ON d.replid = t.departemen
-						LEFT JOIN psb_angsuran a ON a.replid = c.angsuran
-						WHERE
-							c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
-						AND c.nama LIKE "%'.$nama.'%"
-						AND c.kelompok = '.$kelompok.'
-						AND akt.tingkat LIKE "%'.$tingkat.'%"
-						ORDER BY
-							c.nopendaftaran ASC,
-							c.nama ASC
-							';
-							pr($sql);
-				if(isset($_POST['starting'])){ //nilai awal halaman
-					$starting=$_POST['starting'];
-				}else{
-					$starting=0;
-				}
+						$sql = 'SELECT
+									c.replid,
+									c.nopendaftaran,
+									c.nama,
+									c.setbiaya,
+									a.cicilan,
+									c.kelompok,
+								  	akt.tingkat
+								FROM
+									psb_calonsiswa c
+								LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
+								LEFT JOIN aka_tingkat akt ON akt.replid = c.tingkat
+								LEFT JOIN aka_tahunajaran t ON t.replid = akt.tahunajaran
+								LEFT JOIN departemen d ON d.replid = t.departemen
+								LEFT JOIN psb_angsuran a ON a.replid = c.angsuran
+								WHERE
+									c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
+								AND c.nama LIKE "%'.$nama.'%"
+								AND c.kelompok = '.$kelompok.'
+								AND akt.tingkat LIKE "%'.$tingkat.'%"
+								ORDER BY
+									c.nopendaftaran ASC,
+									c.nama ASC
+									';
+									pr($sql);
+						if(isset($_POST['starting'])){ //nilai awal halaman
+							$starting=$_POST['starting'];
+						}else{
+							$starting=0;
+						}
 
-				$recpage = 5;//jumlah data per halaman
-				$aksi    ='tampil';
-				$subaksi ='';
-				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-				$result  =$obj->result;
-				$jum     = mysql_num_rows($result);
-				$out     ='';
-				if($jum!=0){	
-					$nox 	= $starting+1;
-					while($r = mysql_fetch_assoc($result)){	
-						$token=base64_encode($_SESSION['id_loginS'].$r['replid']);
-									// <button data-hint="ubah"  onclick="switchPN(\'form\','.$r['replid'].');">
-						$btn ='<td align="center">
-									<a class="button" href="report/r_pendataan.php?token='.$token.'&replid='.$r['replid'].'" target="_blank" data-hint="cetak">
-										<i class="icon-printer"></i>
-									</a>
-									<button data-hint="ubah"  onclick="switchPN(\'form\','.$r['replid'].');">
-										<i class="icon-pencil"></i>
-									</button>
-									<button data-hint="hapus" onclick="del('.$r['replid'].');">
-										<i class="icon-remove"></i>
-									</button>
-								 </td>';
-						$no=getNoPendaftaran($r['replid'],$r['kelompok']) ;
-						// var_dump($no);exit();
-						$out.= '<tr>
-									<td>'.$no['akhir'].'</td>
-									<td>'.$r['nama'].'</td>
-									<td>'.$r['tingkat'].'</td>
-									<td align="right">'.setuang(getBiaya('registration',$r['replid'])).'</td>
-									<td align="right">'.setuang(getDisc('discsaudara',$r['replid'])).'</td>
-									<td align="right">'.setuang(getDisc('disctunai',$r['replid'])).'</td>
-									<td align="right">'.setuang(getDisc('discangsuran',$r['replid'])).'</td>
-									<td align="right" class="bg-green fg-white">'.setuang(getBiayaNet('registration',$r['replid'])).'</td>
-									<td align="center">'.($r['cicilan']==1?'Cash':'Angsur '.$r['cicilan'].' x').'</td>
-									'.$btn.'
-								</tr>';
-									// <td align="right">'.setuang(getDisc('discsubsidi',$r['replid'])).'</td>
-									// <td align="center">'.($r['angsuran']==1?'<i class="fg-green icon-checkmark"></i>':'<i class="fg-red icon-minus"></i>').'</td>
-						$nox++;
-					}
-				}else{ #kosong
-					$out.= '<tr align="center">
-							<td  colspan=10 ><span style="color:red;text-align:center;">
-							... data tidak ditemukan...</span></td></tr>';
+						$recpage = 5;//jumlah data per halaman
+						$aksi    ='tampil';
+						$subaksi ='';
+						$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+						$result  =$obj->result;
+						$jum     = mysql_num_rows($result);
+						$out     ='';
+						if($jum!=0){	
+							$nox 	= $starting+1;
+							while($r = mysql_fetch_assoc($result)){	
+								$token=base64_encode($_SESSION['id_loginS'].$r['replid']);
+											// <button data-hint="ubah"  onclick="switchPN(\'form\','.$r['replid'].');">
+								$btn ='<td align="center">
+											<a class="button" href="report/r_pendataan.php?token='.$token.'&replid='.$r['replid'].'" target="_blank" data-hint="cetak">
+												<i class="icon-printer"></i>
+											</a>
+											<button data-hint="ubah"  onclick="switchPN(\'form\','.$r['replid'].');">
+												<i class="icon-pencil"></i>
+											</button>
+											<button data-hint="hapus" onclick="del('.$r['replid'].');">
+												<i class="icon-remove"></i>
+											</button>
+										 </td>';
+								$no=getNoPendaftaran($r['replid'],$r['kelompok']) ;
+								// var_dump($no);exit();
+								$out.= '<tr>
+											<td>'.$no['akhir'].'</td>
+											<td>'.$r['nama'].'</td>
+											<td>'.$r['tingkat'].'</td>
+											<td align="right">'.setuang(getBiaya('registration',$r['replid'])).'</td>
+											<td align="right">'.setuang(getDisc('discsaudara',$r['replid'])).'</td>
+											<td align="right">'.setuang(getDisc('disctunai',$r['replid'])).'</td>
+											<td align="right">'.setuang(getDisc('discangsuran',$r['replid'])).'</td>
+											<td align="right" class="bg-green fg-white">'.setuang(getBiayaNet('registration',$r['replid'])).'</td>
+											<td align="center">'.($r['cicilan']==1?'Cash':'Angsur '.$r['cicilan'].' x').'</td>
+											'.$btn.'
+										</tr>';
+											// <td align="right">'.setuang(getDisc('discsubsidi',$r['replid'])).'</td>
+											// <td align="center">'.($r['angsuran']==1?'<i class="fg-green icon-checkmark"></i>':'<i class="fg-red icon-minus"></i>').'</td>
+								$nox++;
+							}
+						}else{ #kosong
+							$out.= '<tr align="center">
+									<td  colspan=10 ><span style="color:red;text-align:center;">
+									... data tidak ditemukan...</span></td></tr>';
+						}
+						#link paging
+						$out.= '<tr class="info"><td colspan=10>'.$obj->anchors.'</td></tr>';
+						$out.='<tr class="info"><td colspan=10>'.$obj->total.'</td></tr>';
+					break; 
+					
+					case 'biaya':
+						$s='SELECT 	
+								b.replid, 
+								b.biaya, 
+								b.kode, 
+								case b.isAngsur
+									when 0 then "Tunai"
+									when 1 then "Angsur Reguler"
+									else "Tunai"
+								end as isAngsur,
+								b.isDiskon,
+								t.jenistagihan
+							FROM psb_biaya b
+								JOIN psb_jenistagihan t on t.replid = b.jenistagihan 
+							ORDER BY 
+								b.biaya ASC';
+						$e=mysql_query($s);
+						$stat=!$e?'gagal':'sukses';
+						$n=mysql_num_rows($e);
+						$biayaArr=array();
+						if($n==0) $stat='kosong';
+						else{
+							$stat='sukses';
+							while ($r=mysql_fetch_assoc($e)) {
+								$biayaArr[]=array(
+									'replid'       =>$r['replid'],
+									'jenistagihan' =>$r['jenistagihan'],
+									'kode'         =>$r['kode'],
+									'biaya'        =>$r['biaya'],
+									'isAngsur'     =>$r['isAngsur'],
+									'isDiskon'     =>$r['isDiskon'],
+									'jenistagihan' =>$r['jenistagihan'],
+								);
+							}
+						}$out=json_encode(array('status'=>$stat,'biayaArr'=>$biayaArr));
+					break;
 				}
-				#link paging
-				$out.= '<tr class="info"><td colspan=10>'.$obj->anchors.'</td></tr>';
-				$out.='<tr class="info"><td colspan=10>'.$obj->total.'</td></tr>';
 			break; 
 			// view -----------------------------------------------------------------
 
 			case 'getBiaya':
-				if(!isset($_POST['detailgelombang']) || !isset($_POST['subtingkat']) || !isset($_POST['golongan'])){
+				if(!isset($_POST['detailgelombang']) || !isset($_POST['subtingkat']) || !isset($_POST['golongan']))
 					$o = array('status' =>'invalid_no_post' );
-				}else{
-					$biaya = getSetBiaya($_POST['detailgelombang'],$_POST['subtingkat'],$_POST['golongan']);
-					$o     = array(
-								'status'   =>(($biaya!=null || $biaya!='')?'sukses':'gagal'),
-								'replid'   =>$biaya['replid'],
-								'dpp'      =>$biaya['dpp'],
-								'spp'      =>$biaya['spp'],
-								'joiningf' =>$biaya['joiningf'],
-								'formulir' =>$biaya['formulir'],
-							);				
-				}$out = json_encode($o);
+				else{
+					$biaya = getBiayaArr($_POST['detailgelombang'],$_POST['subtingkat'],$_POST['golongan']);
+					$stat=!$biaya || is_null($biaya)?'gagal':'sukses';
+				}$out = json_encode(array('status'=>$stat,'biayaArr'=>$biaya));
+			break;
+
+			case 'getBiayaNett':
+				if(!isset($_POST['iddetailbiaya'])) $o = array('status' =>'invalid_no_post' );
+				else{
+					// $biaya = getBiayaNett($_POST['iddetailbiaya'],(isset($_POST['diskonreguler'])?$_POST['diskonreguler']:null),(isset($_POST['diskonkhusus'])?getuang($_POST['diskonkhusus']):0),$_POST['selecteddiskon']);
+					$biaya = getBiayaNett($_POST['iddetailbiaya'],(isset($_POST['diskonreguler'])?$_POST['diskonreguler']:null),(isset($_POST['diskonkhusus'])?getuang($_POST['diskonkhusus']):0));
+					$stat  = !$biaya?'gagal':'sukses';
+				}$out = json_encode(array('status'=>$stat,'biayaNett'=>$biaya));
 			break;
 
 			case 'nopendaftaran':

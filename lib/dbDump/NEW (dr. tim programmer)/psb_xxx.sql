@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-02 07:59:49
+Date: 2015-09-04 17:04:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,9 +21,9 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `psb_angsuran`;
 CREATE TABLE `psb_angsuran` (
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `cicilan` int(11) NOT NULL,
+  `angsuran` int(11) NOT NULL,
   `keterangan` varchar(200) NOT NULL,
-  PRIMARY KEY (`replid`,`cicilan`)
+  PRIMARY KEY (`replid`,`angsuran`)
 ) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -49,6 +49,7 @@ DROP TABLE IF EXISTS `psb_biaya`;
 CREATE TABLE `psb_biaya` (
   `replid` int(11) NOT NULL AUTO_INCREMENT,
   `biaya` varchar(100) NOT NULL,
+  `kode` varchar(50) NOT NULL,
   `isAngsur` int(1) NOT NULL DEFAULT '1',
   `isDiskon` int(1) NOT NULL DEFAULT '0',
   `jenistagihan` int(11) NOT NULL,
@@ -61,10 +62,10 @@ CREATE TABLE `psb_biaya` (
 -- ----------------------------
 -- Records of psb_biaya
 -- ----------------------------
-INSERT INTO `psb_biaya` VALUES ('3', 'formulir', '0', '0', '1', 'Formulr Pendafataran');
-INSERT INTO `psb_biaya` VALUES ('4', 'dpp', '1', '1', '4', 'Uang Gedung');
-INSERT INTO `psb_biaya` VALUES ('7', 'spp', '1', '0', '1', 'sumbangan per bulan ');
-INSERT INTO `psb_biaya` VALUES ('8', 'joining_fee', '1', '1', '1', 'biaya yg dibayar sekali saat masuk');
+INSERT INTO `psb_biaya` VALUES ('3', 'Formulir', 'formulir', '0', '0', '1', 'Formulr Pendafataran');
+INSERT INTO `psb_biaya` VALUES ('4', 'DPP', 'dpp', '1', '3', '4', 'Uang Gedung');
+INSERT INTO `psb_biaya` VALUES ('7', 'SPP', 'spp', '1', '3', '1', 'sumbangan per bulan ');
+INSERT INTO `psb_biaya` VALUES ('8', 'Joining Fee', 'joining_fee', '1', '3', '1', 'biaya yg dibayar sekali saat masuk');
 
 -- ----------------------------
 -- Table structure for psb_biaya_copy
@@ -5583,42 +5584,42 @@ INSERT INTO `psb_detailbiaya` VALUES ('645', '4', '0', '24', '6', '97');
 INSERT INTO `psb_detailbiaya` VALUES ('646', '4', '0', '24', '7', '97');
 INSERT INTO `psb_detailbiaya` VALUES ('647', '4', '0', '24', '9', '97');
 INSERT INTO `psb_detailbiaya` VALUES ('648', '4', '0', '24', '10', '97');
-INSERT INTO `psb_detailbiaya` VALUES ('649', '3', '0', '4', '1', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('650', '3', '0', '4', '2', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('651', '3', '0', '4', '3', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('652', '3', '0', '4', '4', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('653', '3', '0', '4', '5', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('654', '3', '0', '4', '6', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('655', '3', '0', '4', '7', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('656', '3', '0', '4', '9', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('657', '3', '0', '4', '10', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('658', '7', '0', '4', '1', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('659', '7', '0', '4', '2', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('660', '7', '0', '4', '3', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('661', '7', '0', '4', '4', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('662', '7', '0', '4', '5', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('663', '7', '0', '4', '6', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('664', '7', '0', '4', '7', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('665', '7', '0', '4', '9', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('666', '7', '0', '4', '10', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('667', '8', '0', '4', '1', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('668', '8', '0', '4', '2', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('669', '8', '0', '4', '3', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('670', '8', '0', '4', '4', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('671', '8', '0', '4', '5', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('672', '8', '0', '4', '6', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('673', '8', '0', '4', '7', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('674', '8', '0', '4', '9', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('675', '8', '0', '4', '10', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('676', '4', '0', '4', '1', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('677', '4', '0', '4', '2', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('678', '4', '0', '4', '3', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('679', '4', '0', '4', '4', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('680', '4', '0', '4', '5', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('681', '4', '0', '4', '6', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('682', '4', '0', '4', '7', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('683', '4', '0', '4', '9', '98');
-INSERT INTO `psb_detailbiaya` VALUES ('684', '4', '0', '4', '10', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('649', '3', '8000000', '4', '1', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('650', '3', '768', '4', '2', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('651', '3', '8769', '4', '3', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('652', '3', '9', '4', '4', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('653', '3', '67', '4', '5', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('654', '3', '6', '4', '6', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('655', '3', '78', '4', '7', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('656', '3', '86', '4', '9', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('657', '3', '687', '4', '10', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('658', '7', '8800000', '4', '1', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('659', '7', '6876', '4', '2', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('660', '7', '89', '4', '3', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('661', '7', '98', '4', '4', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('662', '7', '7', '4', '5', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('663', '7', '876', '4', '6', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('664', '7', '6876', '4', '7', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('665', '7', '78', '4', '9', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('666', '7', '876', '4', '10', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('667', '8', '800000', '4', '1', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('668', '8', '999999999968', '4', '2', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('669', '8', '89890', '4', '3', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('670', '8', '67', '4', '4', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('671', '8', '68', '4', '5', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('672', '8', '876', '4', '6', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('673', '8', '678', '4', '7', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('674', '8', '876', '4', '9', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('675', '8', '6876', '4', '10', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('676', '4', '12000000', '4', '1', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('677', '4', '67', '4', '2', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('678', '4', '76', '4', '3', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('679', '4', '986', '4', '4', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('680', '4', '8', '4', '5', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('681', '4', '68', '4', '6', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('682', '4', '876', '4', '7', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('683', '4', '78978', '4', '9', '98');
+INSERT INTO `psb_detailbiaya` VALUES ('684', '4', '687', '4', '10', '98');
 INSERT INTO `psb_detailbiaya` VALUES ('685', '3', '0', '5', '1', '98');
 INSERT INTO `psb_detailbiaya` VALUES ('686', '3', '0', '5', '2', '98');
 INSERT INTO `psb_detailbiaya` VALUES ('687', '3', '0', '5', '3', '98');
@@ -8355,7 +8356,7 @@ INSERT INTO `psb_detailbiaya` VALUES ('3417', '4', '0', '14', '6', '104');
 INSERT INTO `psb_detailbiaya` VALUES ('3418', '4', '0', '14', '7', '104');
 INSERT INTO `psb_detailbiaya` VALUES ('3419', '4', '0', '14', '9', '104');
 INSERT INTO `psb_detailbiaya` VALUES ('3420', '4', '0', '14', '10', '104');
-INSERT INTO `psb_detailbiaya` VALUES ('3421', '3', '0', '15', '1', '104');
+INSERT INTO `psb_detailbiaya` VALUES ('3421', '3', '555650', '15', '1', '104');
 INSERT INTO `psb_detailbiaya` VALUES ('3422', '3', '0', '15', '2', '104');
 INSERT INTO `psb_detailbiaya` VALUES ('3423', '3', '0', '15', '3', '104');
 INSERT INTO `psb_detailbiaya` VALUES ('3424', '3', '0', '15', '4', '104');
@@ -8823,7 +8824,7 @@ INSERT INTO `psb_detailbiaya` VALUES ('3885', '4', '0', '14', '6', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3886', '4', '0', '14', '7', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3887', '4', '0', '14', '9', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3888', '4', '0', '14', '10', '105');
-INSERT INTO `psb_detailbiaya` VALUES ('3889', '3', '0', '15', '1', '105');
+INSERT INTO `psb_detailbiaya` VALUES ('3889', '3', '4500000', '15', '1', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3890', '3', '0', '15', '2', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3891', '3', '0', '15', '3', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3892', '3', '0', '15', '4', '105');
@@ -8850,7 +8851,7 @@ INSERT INTO `psb_detailbiaya` VALUES ('3912', '8', '0', '15', '6', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3913', '8', '0', '15', '7', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3914', '8', '0', '15', '9', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3915', '8', '0', '15', '10', '105');
-INSERT INTO `psb_detailbiaya` VALUES ('3916', '4', '0', '15', '1', '105');
+INSERT INTO `psb_detailbiaya` VALUES ('3916', '4', '9000000', '15', '1', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3917', '4', '0', '15', '2', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3918', '4', '0', '15', '3', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3919', '4', '0', '15', '4', '105');
@@ -8886,7 +8887,7 @@ INSERT INTO `psb_detailbiaya` VALUES ('3948', '8', '0', '16', '6', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3949', '8', '0', '16', '7', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3950', '8', '0', '16', '9', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3951', '8', '0', '16', '10', '105');
-INSERT INTO `psb_detailbiaya` VALUES ('3952', '4', '0', '16', '1', '105');
+INSERT INTO `psb_detailbiaya` VALUES ('3952', '4', '90000', '16', '1', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3953', '4', '0', '16', '2', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3954', '4', '0', '16', '3', '105');
 INSERT INTO `psb_detailbiaya` VALUES ('3955', '4', '0', '16', '4', '105');
@@ -9703,29 +9704,41 @@ CREATE TABLE `psb_detaildiskon` (
   KEY `diskon` (`diskon`) USING BTREE,
   CONSTRAINT `diskonFK` FOREIGN KEY (`diskon`) REFERENCES `psb_diskon` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tahunajaranFK` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_detaildiskon
 -- ----------------------------
-INSERT INTO `psb_detaildiskon` VALUES ('1', '20', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('2', '20', '0', '5', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('3', '21', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('4', '21', '0', '5', '0');
-INSERT INTO `psb_detaildiskon` VALUES ('5', '22', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('6', '22', '0', '5', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('7', '23', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('8', '23', '0', '5', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('9', '24', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('10', '24', '0', '5', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('11', '25', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('12', '25', '0', '5', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('13', '26', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('14', '26', '0', '5', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('15', '27', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('16', '27', '0', '5', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('17', '28', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('18', '28', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('1', '32', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('2', '32', '20', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('3', '33', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('4', '33', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('5', '34', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('6', '34', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('7', '35', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('8', '35', '30', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('9', '36', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('10', '36', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('11', '37', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('12', '37', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('13', '38', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('14', '38', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('15', '39', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('16', '39', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('19', '41', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('20', '41', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('21', '42', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('22', '42', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('23', '43', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('24', '43', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('25', '44', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('26', '44', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('27', '45', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('28', '45', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('29', '46', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('30', '46', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('31', '47', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('32', '47', '0', '5', '1');
 
 -- ----------------------------
 -- Table structure for psb_detailgelombang
@@ -9773,25 +9786,34 @@ DROP TABLE IF EXISTS `psb_diskon`;
 CREATE TABLE `psb_diskon` (
   `replid` int(11) NOT NULL AUTO_INCREMENT,
   `departemen` int(11) NOT NULL,
+  `biaya` int(11) NOT NULL,
   `diskon` varchar(50) NOT NULL DEFAULT '',
   `keterangan` text NOT NULL,
   PRIMARY KEY (`replid`),
   KEY `departemen` (`departemen`) USING BTREE,
+  KEY `biaya` (`biaya`) USING BTREE,
+  CONSTRAINT `biayaFK4` FOREIGN KEY (`biaya`) REFERENCES `psb_biaya` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `departemenFK3` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_diskon
 -- ----------------------------
-INSERT INTO `psb_diskon` VALUES ('20', '1', 'jemaat GKA', '( DPP ) Second Intake // ( SPP ) untuk anak ke 3 berdasarkan urutan kelahiran // ( SPP ) untuk ortu jemaat aktif GKA Elyon // ( SPP ) untuk anak sekolah minggu aktif GKA Elyon\r\n');
-INSERT INTO `psb_diskon` VALUES ('21', '1', 'anak ke-2', 'Tambahan subsidi ( DPP ) untuk anak ke 2 dan selanjutnya // ( SPP ) untuk anak ke 2 berdasarkan urutan kelahiran');
-INSERT INTO `psb_diskon` VALUES ('22', '1', 'hamba Tuhan', 'Subsidi ( DPP ) untuk hamba Tuhan di luar GKA Elyon &amp;amp; Calon Siswa Baru Secondary\\n\\n// ( DPP ) untuk : Guru full timer,staff,Kepsek, dengan masa kerja kurang dari 2 th');
-INSERT INTO `psb_diskon` VALUES ('23', '1', 'anak ke-4', '( DPP ) First Intake, Siswa Baru High School // ( SPP ) anak ke 4 sesuai urutan kelahiran, High School 2 th ajaran, siswa secondary suko 1 th ajaran');
-INSERT INTO `psb_diskon` VALUES ('24', '1', 'naik jenjang', 'first intake naik jenjang');
-INSERT INTO `psb_diskon` VALUES ('25', '1', 'JAPRES', 'siswa jalur prestasi');
-INSERT INTO `psb_diskon` VALUES ('26', '1', 'pengurus', 'pengurus PPK Elyon, Hamba Tuhan GKA Elyon, Guru Full Timer, Staff, Kepsek');
-INSERT INTO `psb_diskon` VALUES ('27', '1', 'DPP ', '( DPP ) second intake untuk siswa dalam // ( SPP ) ortu jemaat &amp; anak sekolah minggu ELYON, secondary rungkut 2 th ajaran // Permohonan khusus melalui disposisi untuk siswa baru yg memiliki sibling');
-INSERT INTO `psb_diskon` VALUES ('28', '1', 'prestasi - ekonomi', 'siswa berprestasi dan kurang mampu');
+INSERT INTO `psb_diskon` VALUES ('32', '1', '4', 'jemaat GKA', 'second intake');
+INSERT INTO `psb_diskon` VALUES ('33', '1', '7', 'anak ke-3', 'untuk anak ke 3 berdasarkan urutan kelahiran');
+INSERT INTO `psb_diskon` VALUES ('34', '1', '7', 'jemaat GKA Elyon', '- anak ke 3 berdasarkan urutan kelahiran \r\n- ortu jemaat aktif GKA Elyon \r\n- anak sekolah minggu aktif GKA Elyon');
+INSERT INTO `psb_diskon` VALUES ('35', '1', '4', 'anak ke-2', 'anak ke 2 berdasarkan urutan kelahiran dan selanjutnya ');
+INSERT INTO `psb_diskon` VALUES ('36', '1', '7', 'anak ke-2', 'untuk urutan kelahiran anak ke-2 dst');
+INSERT INTO `psb_diskon` VALUES ('37', '1', '4', 'hamba Tuhan', '- hamba Tuhan di selain GKA Elyon\r\n- Calon Siswa Baru Secondary\r\n- Guru full timer,staff,Kepsek, dengan masa kerja kurang dari 2 th');
+INSERT INTO `psb_diskon` VALUES ('38', '1', '4', 'anak ke-4', '- First Intake\r\n- Siswa Baru High School ');
+INSERT INTO `psb_diskon` VALUES ('39', '1', '7', 'anak ke-4', '- anak ke 4 sesuai urutan kelahiran\r\n- High School 2 th ajaran\r\n- secondary suko 1 th ajaran');
+INSERT INTO `psb_diskon` VALUES ('41', '1', '7', 'first intake naik tingkat', 'first intake naik tingkat');
+INSERT INTO `psb_diskon` VALUES ('42', '1', '4', 'Jarpres', 'siswa jalur prestasi');
+INSERT INTO `psb_diskon` VALUES ('43', '1', '7', 'jarpres', 'siswa jalur prestasi');
+INSERT INTO `psb_diskon` VALUES ('44', '1', '4', 'pengurus', 'pengurus PPK Elyon, Hamba Tuhan GKA Elyon, Guru Full Timer, Staff, Kepsek');
+INSERT INTO `psb_diskon` VALUES ('45', '1', '7', 'pengurus', 'pengurus PPK Elyon, Hamba Tuhan GKA Elyon, Guru Full Timer, Staff, Kepsek');
+INSERT INTO `psb_diskon` VALUES ('46', '1', '4', 'second intake', 'second intake untuk siswa dalam ');
+INSERT INTO `psb_diskon` VALUES ('47', '1', '7', 'diskon xxx', '- ortu jemaat \r\n- anak sekolah minggu ELYON\r\n- secondary rungkut 2 th ajaran \r\n- Permohonan khusus melalui disposisi untuk siswa baru yg memiliki sibling');
 
 -- ----------------------------
 -- Table structure for psb_dokumen
@@ -9823,7 +9845,7 @@ CREATE TABLE `psb_gelombang` (
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`replid`),
   KEY `IX_kelompokcalonsiswa_ts` (`ts`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of psb_gelombang
@@ -10980,6 +11002,7 @@ CREATE TABLE `psb_siswabiaya` (
   `replid` int(11) NOT NULL AUTO_INCREMENT,
   `siswa` int(11) NOT NULL,
   `biaya` int(11) NOT NULL,
+  `angsuran` int(11) NOT NULL,
   PRIMARY KEY (`replid`),
   KEY `siswa` (`siswa`) USING BTREE,
   KEY `biaya` (`biaya`) USING BTREE,
@@ -10988,6 +11011,21 @@ CREATE TABLE `psb_siswabiaya` (
 
 -- ----------------------------
 -- Records of psb_siswabiaya
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for psb_siswadiskon
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_siswadiskon`;
+CREATE TABLE `psb_siswadiskon` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `siswabiaya` int(11) NOT NULL,
+  `diskon` int(11) NOT NULL,
+  PRIMARY KEY (`replid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of psb_siswadiskon
 -- ----------------------------
 
 -- ----------------------------
@@ -11094,75 +11132,48 @@ DROP TRIGGER IF EXISTS `ins_psb_biaya`;
 DELIMITER ;;
 CREATE TRIGGER `ins_psb_biaya` AFTER INSERT ON `psb_biaya` FOR EACH ROW BEGIN
 
-/*INSERT psb_detailbiaya*/
-
-/*subtingkat-----------------------------------------------------------------------*/
-BLOCK2: begin
-		declare v_col2 int;
-		declare no_more_rows2 INT DEFAULT 0;  
-		declare cursor2 cursor for
-				SELECT s.replid
-				FROM aka_kelas k
-					JOIN aka_subtingkat s on s.replid = k.subtingkat
-				WHERE	k.departemen = v_col1
-				GROUP BY s.replid;
-	 declare continue handler for not found
-			 set no_more_rows2 =1;
-		open cursor2;
-		LOOP2: loop
-				fetch cursor2
-				into  v_col2;
-				if no_more_rows2 then
-						close cursor2;
-						leave LOOP2;
+/*untuk psb_detaildiskon*/
+/*tahun ajaran*/
+	BLOCK1: begin
+		declare v_col1 int;
+		declare no_more_rows1 INT DEFAULT 0;  
+		declare cursor1 cursor for
+				select replid
+				from  aka_tahunajaran;
+		declare continue handler for not found set no_more_rows1 =1;
+		open cursor1;
+		LOOP1: loop
+				fetch cursor1
+				into  v_col1;
+				if no_more_rows1 then
+						close cursor1;
+						leave LOOP1;
 				end if;
-				/*detailgelombang---------------------------------------------------------------*/
-				BLOCK3: begin
-							declare v_col3 int;
-							declare no_more_rows3 INT DEFAULT 0;  
-							declare cursor3 cursor for
-									select replid
-									from  psb_detailgelobang;
-						 declare continue handler for not found
-								 set no_more_rows3 =1;
-							open cursor3;
-							LOOP3: loop
-									fetch cursor3
-									into  v_col3;
-									if no_more_rows3 then
-											close cursor3;
-											leave LOOP3;
-									end if;
-									/*golongan ---------------------------------------------------------------*/
-									BLOCK4: begin
-												declare v_col4 int;
-												declare no_more_rows4 INT DEFAULT 0;  
-												declare cursor4 cursor for
-														select replid
-														from  psb_golongan;
-											 declare continue handler for not found
-													 set no_more_rows3 =1;
-												open cursor4;
-												LOOP4: loop
-														fetch cursor4
-														into  v_col4;
-														if no_more_rows4 then
-																close cursor4;
-																leave LOOP4;
-														end if;
-									
-														INSERT INTO psb_detailbiaya SET 
-															detailgelombang = v_col3, 
-															subtingkat = v_col2, 
-															biaya = NEW.replid, 
-															golongan = v_col4;
-												end loop LOOP4;
-									end BLOCK4;
-						end loop LOOP3;
-					end BLOCK3;
-		end loop LOOP2;
-end BLOCK2;
-
+				
+				/*biaya*/
+				BLOCK2: begin
+					declare v_col2 int;
+					declare no_more_rows2 INT DEFAULT 0;  
+					declare cursor2 cursor for
+							select replid
+							from  psb_biaya;
+					declare continue handler for not found set no_more_rows2=1;
+					open cursor2;
+					LOOP2: loop
+							fetch cursor2
+							into  v_col2;
+							if no_more_rows2 then
+									close cursor2;
+									leave LOOP2;
+							end if;
+							INSERT INTO psb_detaildiskon SET 
+								diskon = NEW.replid, 
+								biaya = v_col2, 
+								tahunajaran = v_col1;
+						end loop LOOP2;
+				end BLOCK2;
+		end loop LOOP1;
+end BLOCK1;
 END
 ;;
 DELIMITER ;
@@ -11243,29 +11254,31 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS `ins_psb_diskon`;
 DELIMITER ;;
 CREATE TRIGGER `ins_psb_diskon` AFTER INSERT ON `psb_diskon` FOR EACH ROW BEGIN
-	BLOCK2: begin
-			declare v_col2 int;
-			/*declare no_more_rows2 boolean := FALSE;*/
-			declare no_more_rows2 INT DEFAULT 0;  
-			declare cursor2 cursor for
-					select replid
-					from  aka_tahunajaran;
-		 declare continue handler for not found
-				 /*set no_more_rows2 := TRUE;*/
-				 set no_more_rows2 =1;
-			open cursor2;
-			LOOP2: loop
-					fetch cursor2
-					into  v_col2;
-					if no_more_rows2 then
-							close cursor2;
-							leave LOOP2;
-					end if;
-					INSERT INTO psb_detaildiskon SET 
-						diskon = NEW.replid, 
-						tahunajaran = v_col2;
-			end loop LOOP2;
-	end BLOCK2;
+
+/*untuk psb_detaildiskon*/
+/*tahun ajaran*/
+	BLOCK1: begin
+		declare v_col1 int;
+		declare no_more_rows1 INT DEFAULT 0;  
+		declare cursor1 cursor for
+				select replid
+				from  aka_tahunajaran;
+		declare continue handler for not found set no_more_rows1 =1;
+		open cursor1;
+		LOOP1: loop
+				fetch cursor1
+				into  v_col1;
+				if no_more_rows1 then
+						close cursor1;
+						leave LOOP1;
+				end if;
+
+				INSERT INTO psb_detaildiskon SET 
+					diskon = NEW.replid, 
+					tahunajaran = v_col1;
+
+		end loop LOOP1;
+end BLOCK1;
 END
 ;;
 DELIMITER ;

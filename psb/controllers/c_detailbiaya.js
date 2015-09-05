@@ -31,15 +31,9 @@ var contentFR = '';
             cmbtingkat();
         });$('#tingkatS').on('change',function (){
             cmbsubtingkat();
+        });$('#subtingkatS').on('change',function (){
+            viewTB();
         });
-
-        // search button
-        // $('#cariBC').on('click',function(){
-        //     $('#cariTR').toggle('slow');
-        //     $('#kelasS').val('');
-        //     $('#waliS').val('');
-        // });
-
     }); 
 
 // combobox filtering : department

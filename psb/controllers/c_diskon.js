@@ -1,7 +1,10 @@
-var mnu       = 'diskon';
-var mnu2      ='departemen';
-var dir       = 'models/m_'+mnu+'.php';
-var dir2      = '../akademik/models/m_'+mnu2+'.php';
+var mnu  = 'diskon';
+var mnu2 = 'departemen';
+var mnu3 = 'biaya';
+var dir  = 'models/m_'+mnu+'.php';
+var dir2 = '../akademik/models/m_'+mnu2+'.php';
+var dir3 = 'models/m_'+mnu3+'.php';
+
 var contentFR = '';
 
 // main function ---
@@ -13,6 +16,12 @@ var contentFR = '';
                         +'<label>Departemen</label>'
                         +'<div class="input-control select">'
                             +'<select id="departemenTB" name="departemenTB"></select>'
+                        +'</div>'
+                        
+                        // biaya
+                        +'<label>Biaya</label>'
+                        +'<div class="input-control select">'
+                            +'<select id="biayaTB" name="biayaTB"></select>'
                         +'</div>'
                         
                         // diskon tunai
@@ -40,9 +49,8 @@ var contentFR = '';
         $("#tambahBC").on('click', function(){
             viewFR('');
         });
-        $("#departemenS").on('change', function(){
-            viewTB();
-        });
+        $("#departemenS").on('change', function(){cmbbiaya('filter','')});
+        $("#biayaS").on('change', function(){viewTB();});
 
         //search action
         $('#keteranganS,#diskonS').on('keydown',function (e){ // kode grup
@@ -72,12 +80,34 @@ var contentFR = '';
             }
             if(typ=='filter'){
                 $('#departemenS').html(out);
-                viewTB();
+                cmbbiaya('filter','');
             }else{
                 $('#departemenTB').html(out);
             }
         });
     }
+// combo biaya ---
+    function cmbbiaya(typ,bya){
+        var u = dir3;
+        var d ='aksi=cmb'+mnu3;
+        ajax(u,d).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.biaya, function(id,item){
+                    out+='<option '+(bya!='' && bya==item.replid?'selected':'')+' value="'+item.replid+'">'+item.biaya+'</option>';
+                });
+            }
+            if(typ=='filter'){
+                $('#biayaS').html(out);
+                viewTB();
+            }else{
+                $('#biayaTB').html(out);
+            }
+        });
+    }
+
 //save process ---
     function simpan(){
         var urlx ='&aksi=simpan';
@@ -164,9 +194,11 @@ var contentFR = '';
                         $('#diskonTB').val(dt.diskon);
                         $('#keteranganTB').val(dt.keterangan);
                         cmbdepartemen('form',dt.departemen);
+                        cmbbiaya('form',dt.biaya);
                     });
                 }else{ // form mode : add  
                     cmbdepartemen('form','');
+                    cmbbiaya('form','');
                     titl='Tambah '+mnu;
                 }
                 $.Dialog.title(titl);

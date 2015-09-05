@@ -25,15 +25,18 @@
             <th><div class="input-control select">
                     <select  class="cari" data-hint="angsur" name="isAngsurS" id="isAngsurS">
                         <option value="">-SEMUA-</option>
-                        <option value="1">Angsur</option>
                         <option value="0">Tunai</option>
+                        <option value="1">Angsur Reguler</option>
+                        <option value="2">Angsur Bebas</option>
                     </select>
             </div></th>
             <th><div class="input-control select">
                     <select  class="cari" data-hint="Diskon" name="isDiskonS" id="isDiskonS">
                         <option value="">-SEMUA-</option>
-                        <option value="1">Ya</option>
-                        <option value="0">Tidak</option>
+                        <option value="0">Tidak Ada</option>
+                        <option value="1">Diskon Reguler</option>
+                        <option value="2">Diskon Khusus</option>
+                        <option value="3">Diskon Reguler & Khusus</option>
                     </select>
             </div></th>
             <th><div class="input-control select">

@@ -1,4 +1,47 @@
 <?php
+	function getBiayaNett($idBiaya,$idDiskReg,$diskKhus){
+		$biaya = !is_null($idDiskReg)?getBiayaDiskReg($idBiaya,$idDiskReg):getField('nominal','psb_detailbiaya','replid',$idBiaya);
+		$biayaNett = intval($biaya) - intval($diskKhus);
+		return $biayaNett;
+	}
+
+	function getBiayaDiskReg($idBiaya,$idDiskReg){
+		if(is_array($idDiskReg)){
+			$biaya = getField('nominal','psb_detailbiaya','replid',$idBiaya); // biaya awal  Rp.
+			foreach ($idDiskReg as $i => $v) {
+				$diskReg = intval(getField('nilai','psb_detaildiskon','replid',$v)); // diskon %
+				$biaya-=($biaya*$diskReg/100);
+			}return $biaya;
+		}
+	}
+	function getBiaya($dgel,$subt,$gol){
+		$s = '	SELECT b.replid,db.nominal
+				FROM psb_detailbiaya db JOIN psb_biaya b on b.replid = db.biaya 
+				WHERE 	db.detailgelombang  ='.$dgel.' AND 
+						db.subtingkat ='.$subt.' AND 
+						db.golongan  ='.$gol.'
+				ORDER BY b.biaya ASC';
+		// pr($s);exit();
+		$e = mysql_query($s);
+		$o=array();
+		while ($r=mysql_fetch_assoc($e)) {
+			$o[]=$r;
+		}return $o;
+	}function getBiayaArr($dgel,$subt,$gol){
+		$s = '	SELECT b.replid,db.nominal,db.replid iddetailbiaya
+				FROM psb_detailbiaya db JOIN psb_biaya b on b.replid = db.biaya 
+				WHERE 	db.detailgelombang  ='.$dgel.' AND 
+						db.subtingkat ='.$subt.' AND 
+						db.golongan  ='.$gol.'
+				ORDER BY b.biaya ASC';
+		// pr($s);exit();
+		$e = mysql_query($s);
+		$o=array();
+		while ($r=mysql_fetch_assoc($e)) {
+			$o[]=$r;
+		}return $o;
+	}
+
 	function getKatAnggaran($id,$typ){
 		$s='SELECT
 				k.*, IFNULL(da.kuotaNum, 0) kuotaNum,
@@ -340,63 +383,65 @@
 		$r = mysql_fetch_assoc($e);
 		$rr = $r['terbayar']!=null?$r['terbayar']:0;
 		return $rr;
-	}function getBiaya($typ,$siswa){ // to get : nominal yg harus dibayar
-		if($typ=='pendaftaran'){ // formulir + joining fee
-			$f = '(b.daftar + b.joiningf)';
-		}elseif($typ=='daftar' || $typ=='formulir'){ // formulir
-			$f = 'b.daftar';
-		}elseif($typ=='joiningf' || $typ=='joining fee'){ // dpp
-			$f = 'b.joiningf';
-			$typ='joiningf';
-		}elseif($typ=='dpp'){ // dpp
-			$f = 'b.nilai';
-		}else{ // spp
-			$f = 'b.spp';
-		}
+	}
+	// function getBiaya($typ,$siswa){ // to get : nominal yg harus dibayar
+	// 	if($typ=='pendaftaran'){ // formulir + joining fee
+	// 		$f = '(b.daftar + b.joiningf)';
+	// 	}elseif($typ=='daftar' || $typ=='formulir'){ // formulir
+	// 		$f = 'b.daftar';
+	// 	}elseif($typ=='joiningf' || $typ=='joining fee'){ // dpp
+	// 		$f = 'b.joiningf';
+	// 		$typ='joiningf';
+	// 	}elseif($typ=='dpp'){ // dpp
+	// 		$f = 'b.nilai';
+	// 	}else{ // spp
+	// 		$f = 'b.spp';
+	// 	}
 			
-		$s = 'SELECT '.$f.' as '.$typ.'
-			  FROM psb_setbiaya b
-			  LEFT JOIN psb_calonsiswa c on c.setbiaya = b.replid
-			  WHERE c.replid ='.$siswa;
-			  // var_dump($s);exit();
-		$e = mysql_query($s);
-		$r = mysql_fetch_assoc($e);
-		return $r[$typ];
-	}function getDiscAngsuran($regNum,$disc){
-		$regNum   = getuang($regNum);
-		$discPerc = intval(getField('diskon','psb_angsuran','replid',$disc));
-		$discNum  = $regNum * $discPerc /100;
-		// var_dump($discNum);exit();
-		return $discNum;
-	}function getDisc($typ,$siswa){
-		if($typ=='disctunai'){ // diskon tunai
-			$s     = 'SELECT nilai FROM psb_disctunai WHERE replid ='.getSiswaBy($typ,$siswa);
-			$e     = mysql_query($s);
-			$r     = mysql_fetch_assoc($e);
-			$biaya = getBiaya('registration',$siswa);
-			$ret   = $r['nilai'] * $biaya / 100;
-		}elseif($typ=='discangsuran'){ // diskon angsuran 
-			$angsuran = getSiswaBy('angsuran',$siswa); // suadara || subsisi
-			$ret      = getDiscAngsuran(getBiaya('registration',$siswa),$angsuran);
-		}else{ // saudara || subsidi
-			$ret = getSiswaBy($typ,$siswa);
-		}return $ret;
-	}function getDiscTunai($typ,$siswa){
-		$s     = 'SELECT nilai FROM psb_disctunai WHERE replid ='.getSiswaBy('disctunai',$siswa);
-		$e     = mysql_query($s);
-		$r     = mysql_fetch_assoc($e);
-		$biaya = getBiaya($typ,$siswa);
-		$ret   = $r['nilai'] * $biaya / 100;
-		return $ret;
-	}function getDiscTotal($typ,$siswa){
-		// var_dump(getSiswaBy('discsaudara',$siswa));exit(); 	150.000
-		// var_dump(getSiswaBy('disctb',$siswa));exit(); 		0
-		// var_dump(getDiscTunai($typ,$siswa));exit();			750.000
-		$ret = getDisc('discangsuran',$siswa)+getDisc('disctunai',$siswa)+getSiswaBy('discsubsidi',$siswa)+getSiswaBy('discsaudara',$siswa);
-		// $ret = getDisc('discangsuran',$siswa)+getDisc('disctunai',$siswa)+getDiscTunai($typ,$siswa)+getSiswaBy('disctb',$siswa)+getSiswaBy('discsaudara',$siswa);
-		// var_dump($ret);exit();
-		return $ret;
-	}function getOperator($id){
+	// 	$s = 'SELECT '.$f.' as '.$typ.'
+	// 		  FROM psb_setbiaya b
+	// 		  LEFT JOIN psb_calonsiswa c on c.setbiaya = b.replid
+	// 		  WHERE c.replid ='.$siswa;
+	// 		  // var_dump($s);exit();
+	// 	$e = mysql_query($s);
+	// 	$r = mysql_fetch_assoc($e);
+	// 	return $r[$typ];
+	// }function getDiscAngsuran($regNum,$disc){
+	// 	$regNum   = getuang($regNum);
+	// 	$discPerc = intval(getField('diskon','psb_angsuran','replid',$disc));
+	// 	$discNum  = $regNum * $discPerc /100;
+	// 	// var_dump($discNum);exit();
+	// 	return $discNum;
+	// }function getDisc($typ,$siswa){
+	// 	if($typ=='disctunai'){ // diskon tunai
+	// 		$s     = 'SELECT nilai FROM psb_disctunai WHERE replid ='.getSiswaBy($typ,$siswa);
+	// 		$e     = mysql_query($s);
+	// 		$r     = mysql_fetch_assoc($e);
+	// 		$biaya = getBiaya('registration',$siswa);
+	// 		$ret   = $r['nilai'] * $biaya / 100;
+	// 	}elseif($typ=='discangsuran'){ // diskon angsuran 
+	// 		$angsuran = getSiswaBy('angsuran',$siswa); // suadara || subsisi
+	// 		$ret      = getDiscAngsuran(getBiaya('registration',$siswa),$angsuran);
+	// 	}else{ // saudara || subsidi
+	// 		$ret = getSiswaBy($typ,$siswa);
+	// 	}return $ret;
+	// }function getDiscTunai($typ,$siswa){
+	// 	$s     = 'SELECT nilai FROM psb_disctunai WHERE replid ='.getSiswaBy('disctunai',$siswa);
+	// 	$e     = mysql_query($s);
+	// 	$r     = mysql_fetch_assoc($e);
+	// 	$biaya = getBiaya($typ,$siswa);
+	// 	$ret   = $r['nilai'] * $biaya / 100;
+	// 	return $ret;
+	// }function getDiscTotal($typ,$siswa){
+	// 	// var_dump(getSiswaBy('discsaudara',$siswa));exit(); 	150.000
+	// 	// var_dump(getSiswaBy('disctb',$siswa));exit(); 		0
+	// 	// var_dump(getDiscTunai($typ,$siswa));exit();			750.000
+	// 	$ret = getDisc('discangsuran',$siswa)+getDisc('disctunai',$siswa)+getSiswaBy('discsubsidi',$siswa)+getSiswaBy('discsaudara',$siswa);
+	// 	// $ret = getDisc('discangsuran',$siswa)+getDisc('disctunai',$siswa)+getDiscTunai($typ,$siswa)+getSiswaBy('disctb',$siswa)+getSiswaBy('discsaudara',$siswa);
+	// 	// var_dump($ret);exit();
+	// 	return $ret;
+	// }
+	function getOperator($id){
 		$s = '	SELECT k.jenis 
 				FROM keu_detilrekening d
 					LEFT JOIN keu_kategorirekening k on k.replid = d.kategorirekening  
