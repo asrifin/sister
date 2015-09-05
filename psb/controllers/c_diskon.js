@@ -89,7 +89,7 @@ var contentFR = '';
 // combo biaya ---
     function cmbbiaya(typ,bya){
         var u = dir3;
-        var d ='aksi=cmb'+mnu3;
+        var d ='aksi=cmb'+mnu3+'&isDiskon=';
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){

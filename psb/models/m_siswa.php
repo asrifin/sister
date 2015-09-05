@@ -40,20 +40,29 @@
 			$sord       = $_GET['sord']; // get the direction
 			$searchTerm = $_GET['searchTerm'];
 
-			if(!$sidx) 
-				$sidx =1;
+			if(!$sidx) $sidx =1;
 
-				// FROM
-				// 	'.$table.'
-			$ss='SELECT *
-					FROM (SELECT pc.replid, pc.nama siswa, d.nama sekolah FROM psb_calonsiswa pc
-								LEFT JOIN psb_kelompok k ON k.replid = pc.kelompok
-								LEFT JOIN aka_tahunajaran t ON t.replid = k.tahunajaran
-								LEFT JOIN departemen d ON d.replid = t.departemen 
-						)tb
-				WHERE
-						tb.siswa LIKE "%'.$searchTerm.'%"
-						OR tb.sekolah LIKE "%'.$searchTerm.'%"';
+			if(isset($_GET['subaksi']) && $_GET['subaksi']=='detaildiskon'){ // diskon
+				$ss = '	SELECT 
+							dd.replid,
+							d.diskon,
+							concat(dd.nilai," %")nilai,
+							d.keterangan
+						FROM psb_diskon d 
+							JOIN psb_detaildiskon dd on dd.diskon = d.replid
+						WHERE
+							d.biaya = '.filter($_GET['biaya']).' AND
+							d.departemen = '.filter($_GET['departemen']).' AND
+							dd.tahunajaran = '.filter($_GET['tahunajaran']).' AND
+							dd.isAktif = 1 AND (
+								dd.nilai LIKE "%'.$searchTerm.'%" OR 
+								d.diskon LIKE "%'.$searchTerm.'%" OR 
+								d.keterangan LIKE "%'.$searchTerm.'%"
+							)'.(isset($_GET['selectedDiskReg']) && $_GET['selectedDiskReg']!=''?' AND dd.replid NOT IN ('.$_GET['selectedDiskReg'].')':'');
+ 			}else{ //saudara 
+ 				// code here
+ 			}
+
 			// pr($ss);
 			$result = mysql_query($ss) or die(mysql_error());
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -73,15 +82,13 @@
 			}
 
 			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
+			// pr($result);
 			$rows 	= array();
 			while($row = mysql_fetch_assoc($result)) {
-				// $kode = (isset($_GET['subaksi']) and $_GET['subaksi']=='klasifikasi')?$row['kode']:'';
-				$rows[]= array(
-					'replid' =>$row['replid'], 
-					'siswa'	 =>$row['siswa'],
-					'sekolah'   =>$row['sekolah'] 
-				);
-			}$response=array(
+				$rows[] =$row; 
+			}
+// pr($rows);
+			$response=array(
 				'page'    =>$page,
 				'total'   =>$total_pages,
 				'records' =>$count,
@@ -111,11 +118,11 @@
 								  	akt.tingkat
 								FROM
 									psb_calonsiswa c
-								LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
-								LEFT JOIN aka_tingkat akt ON akt.replid = c.tingkat
-								LEFT JOIN aka_tahunajaran t ON t.replid = akt.tahunajaran
-								LEFT JOIN departemen d ON d.replid = t.departemen
-								LEFT JOIN psb_angsuran a ON a.replid = c.angsuran
+									LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
+									LEFT JOIN aka_tingkat akt ON akt.replid = c.tingkat
+									LEFT JOIN aka_tahunajaran t ON t.replid = akt.tahunajaran
+									LEFT JOIN departemen d ON d.replid = t.departemen
+									LEFT JOIN psb_angsuran a ON a.replid = c.angsuran
 								WHERE
 									c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
 								AND c.nama LIKE "%'.$nama.'%"
@@ -188,10 +195,11 @@
 								b.replid, 
 								b.biaya, 
 								b.kode, 
+								b.isAngsur idIsAngsur,
 								case b.isAngsur
 									when 0 then "Tunai"
 									when 1 then "Angsur Reguler"
-									else "Tunai"
+									else "Angsur Bebas"
 								end as isAngsur,
 								b.isDiskon,
 								t.jenistagihan
@@ -212,6 +220,7 @@
 									'jenistagihan' =>$r['jenistagihan'],
 									'kode'         =>$r['kode'],
 									'biaya'        =>$r['biaya'],
+									'idIsAngsur'   =>$r['idIsAngsur'],
 									'isAngsur'     =>$r['isAngsur'],
 									'isDiskon'     =>$r['isDiskon'],
 									'jenistagihan' =>$r['jenistagihan'],
@@ -235,9 +244,8 @@
 			case 'getBiayaNett':
 				if(!isset($_POST['iddetailbiaya'])) $o = array('status' =>'invalid_no_post' );
 				else{
-					// $biaya = getBiayaNett($_POST['iddetailbiaya'],(isset($_POST['diskonreguler'])?$_POST['diskonreguler']:null),(isset($_POST['diskonkhusus'])?getuang($_POST['diskonkhusus']):0),$_POST['selecteddiskon']);
 					$biaya = getBiayaNett($_POST['iddetailbiaya'],(isset($_POST['diskonreguler'])?$_POST['diskonreguler']:null),(isset($_POST['diskonkhusus'])?getuang($_POST['diskonkhusus']):0));
-					$stat  = !$biaya?'gagal':'sukses';
+					$stat  = $biaya==0?'diskon melebihi biaya':'sukses';
 				}$out = json_encode(array('status'=>$stat,'biayaNett'=>$biaya));
 			break;
 

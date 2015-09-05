@@ -157,7 +157,7 @@ var contentFR ='';
                     var d='aksi=ambiledit&replid='+id;
                     ajax(u,d).done(function (dt){
                         $('#idformH').val(id);
-                        cmbbiaya('form',dt.biaya);
+                        cmbbiaya('form',dt.idbiaya);
                         cmbdepartemen('form',dt.departemen);
                         cmbtahunajaran('form',dt.tahunajaran);
                         $('#diskonDV').text(': '+dt.diskon);
@@ -282,7 +282,7 @@ var contentFR ='';
 // combo biaya ---
     function cmbbiaya(typ,bya){
         var u = dir4;
-        var d ='aksi=cmb'+mnu4+(bya!=''?'&replid='+bya:'');
+        var d ='aksi=cmb'+mnu4+'&isDiskon='+(bya!=''?'&replid='+bya:'');
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){

@@ -1,6 +1,11 @@
 <?php isMenu($modul,'siswa'); ?>
 <script src="controllers/c_siswa.js"></script>
 <script src="../js/base64.js"></script>
+<script src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
+<script src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery-ui-1.10.1.custom.css"/>
+<link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery.ui.combogrid.css"/>
 
 <h4 style="color:white;">Pendataan Siswa</h4>
 

@@ -312,7 +312,6 @@ var contentAdd=contentDetail='';
                     'columnName':'barkode',
                     'hide':true,
                     'width':'20',
-                    // 'width':'8',
                     'label':'Barcode'
                 },{   
                     'columnName':'kode',
@@ -337,13 +336,6 @@ var contentAdd=contentDetail='';
         });
     }   
 
-// hapus barang terpilih
-    function barangDel(id){
-        $('#barangTR_'+id).fadeOut('slow',function(){
-            $('#barangTR_'+id).remove();
-            // barangExist();
-        });
-    }
 //barang record kosong --
     function barangExist(){
         // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
@@ -356,6 +348,14 @@ var contentAdd=contentDetail='';
     }
 //end of barang record kosong --
 
+
+// hapus barang terpilih
+    function barangDel(id){
+        $('#barangTR_'+id).fadeOut('slow',function(){
+            $('#barangTR_'+id).remove();
+            // barangExist();
+        });
+    }
 // pilih barang yg akan dipinjam ---
     function barangAdd (id,barkode,kode,nama) {
         var tr ='<tr val="'+id+'" class="barangTR" id="barangTR_'+id+'">'

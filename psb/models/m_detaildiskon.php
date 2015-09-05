@@ -122,6 +122,7 @@
 						d.diskon,
 						d.keterangan,
 						b.biaya,
+						d.biaya idbiaya,
 						dd.tahunajaran
 					FROM
 						psb_detaildiskon dd 
@@ -138,6 +139,7 @@
 							'tahunajaran' =>$r['tahunajaran'],
 							'diskon'      =>$r['diskon'],
 							'biaya'       =>$r['biaya'],
+							'idbiaya'     =>$r['idbiaya'],
 							'keterangan'  =>$r['keterangan'],
 							'status'      =>$stat,
 							'nilai'       =>$r['nilai'],

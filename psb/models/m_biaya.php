@@ -24,13 +24,13 @@
 							case b.isAngsur
 								when 0 then "Tunai"
 								when 1 then "Angsur Reguler"
-								else "Tunai"
+								else "Angsur Bebas"
 							end as isAngsur,
 							case b.isDiskon
 								when 0 then "Tidak Ada"
 								when 1 then "Diskon Reguler"
 								when 2 then "Diskon Khusus"
-								else "Diskon Reguler & Khusus Bebas"
+								else "Diskon Reguler & Khusus Khusus"
 							end as isDiskon,
 							t.jenistagihan,
 							b.keterangan
@@ -144,10 +144,12 @@
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
-					$w='where replid ='.$_POST['replid'];
+					$w=' where replid ='.$_POST['replid'];
+				}elseif(isset($_POST['isDiskon'])){
+					$w=' where isDiskon IN(1,3)'; // 1 = reguler 3 = reguler & khusus
 				}
 
-				$s	= ' SELECT * FROM '.$tb.' ORDER BY biaya ASC';
+				$s	= ' SELECT * FROM '.$tb.$w.' ORDER BY biaya ASC';
 				// pr($s);
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);

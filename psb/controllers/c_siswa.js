@@ -20,7 +20,6 @@ var dir9      = '../akademik/models/m_'+mnu9+'.php';
 var contentFR = '';
 
 // main function ---
-var selectedDiskReg = new Array;
     $(document).ready(function(){
         cmbdepartemen('filter','');
         contentFR +='<form style="overflow:scroll;height:560px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="simpanSV(); return false;">' 
@@ -67,7 +66,7 @@ var selectedDiskReg = new Array;
                                         +'</div>'
                                             
                                         // kolom2
-                                        +'<div id="biayaDV" class="span6"></div>'
+                                        +'<div id="biayaDV" class="span8"></div>'
                                     +'</div>'
 
 
@@ -90,12 +89,6 @@ var selectedDiskReg = new Array;
         $("#batalBC").on('click',function(){
             switchPN('view','');
         });
-        // $("#lihatBC").on('click',function(){
-        //     switchPN('view','');
-        // });
-        // $("#tambahBC").on('click',function(){
-        //     switchPN('form',''); 
-        // });
         $("#tambahsdrBC").on('click',function(){
             $('#cetak').toggle('slow');
         });
@@ -104,19 +97,6 @@ var selectedDiskReg = new Array;
             $('#saudara').toggle('slow');
         });
 
-    //search action
-        // $('#departemenS').on('change',function(){
-        //     cmbtahunajaran('filter',$(this).val(),'');
-        // });
-        // $('#tahunajaranS').on('change',function (){
-        //     cmbkelompok('filter',$(this).val(),'');
-        // });
-        // $('#kelompokS').on('change',function (){
-        //     viewTB(); 
-        // })
-        $('#prosesTB').on('change',function(){
-            cmbkelompok('form',$(this).val(),'');
-        });
         $('#nopendaftaranS').keydown(function (e){
             if(e.keyCode == 13)
                 viewTB();
@@ -143,45 +123,7 @@ var selectedDiskReg = new Array;
             hitung_dpp();
         });
     }); 
-
-    function cariFC() {
-        $('#cariTR').toggle('slow');
-        $('#namaS').val('');
-        $('#nopendaftaranS').val('');
-        $('#tingkatS').val('');
-    }
-        
-//preview image sebelum upload -------
-/*    function PreviewImage2(e){
-        var typex   = e.files[0].type;
-        var sizex   = e.files[0].size;
-        var namex   = e.files[0].name;
-        
-        if(typex =='image/png'||typex =='image/jpg'||typex =='image/jpeg'|| typex =='image/gif'){ //validasi format
-            if(sizex>(900*900)){ //validasi size
-                notif('ukuran max 1 MB','red');
-                $(e).val('');
-                return false;   
-            }else{ 
-                $('#previmg2').attr('src','../img/w8loader.gif');
-                var reader = new FileReader();
-                reader.readAsDataURL(e.files[0]);
-    
-                reader.onload = function (oFREvent){
-                    var urlx  = oFREvent.target.result;
-                    setTimeout(function(){
-                        $('#previmg2').attr('src',urlx);//.removeAttr('style');
-                    },1000);
-                };
-            }
-        }else{ // format salah
-            $('#previmg2').attr('src','<img src="../img/loader.gif">');
-            $(e).val('');
-            notif('hanya format gambar(jpeg,jpg,png)','red');
-            return false;
-        }
-    };
-*/
+      
 //preview image sebelum upload -------
     function PreviewImage(e){
         var typex   = e.files[0].type;
@@ -217,228 +159,6 @@ var selectedDiskReg = new Array;
         }
     };
 
-// autosuggest
-    // function autoSuggest(el,subaksi,opsi){
-    //     if(subaksi=='saudara'){
-    //         var urlx = '?aksi=autocomp&subaksi='+subaksi;
-    //         var col= [{
-    //                 'align':'left',
-    //                 'columnName':'siswa',
-    //                 'hide':true,
-    //                 'width':'55',
-    //                 'label':'Nama'
-    //             },{   
-    //                 'columnName':'sekolah',
-    //                 'width':'40',
-    //                 'label':'Sekolah'
-    //             }];
-    //     }
-    //     /*else{ // anggaran 
-    //         var urlx= '?aksi=autocomp&subaksi='+subaksi;
-    //         var col =[{
-    //                 'align':'left',
-    //                 'columnName':'nama',
-    //                 'hide':true,
-    //                 'width':'30',
-    //                 'label':'Anggaran'
-    //         },{   
-    //                 'align':'left',
-    //                 'columnName':'kategorianggaran',
-    //                 'width':'15',
-    //                 'label':'Kategori'
-    //         },{   
-    //                 'align':'left',
-    //                 'columnName':'tingkat',
-    //                 'width':'25',
-    //                 'label':'Jenjang'
-    //         },{   
-    //                 'align':'right',
-    //                 'columnName':'sisaBilCur',
-    //                 'width':'15',
-    //                 'label':'Sisa'
-    //         },{   
-    //                 'align':'right',
-    //                 'columnName':'kuotaBilCur',
-    //                 'width':'15',
-    //                 'label':'Nominal'
-    //         }];
-    //     }*/
-    //     urly = dir+urlx;
-    //     var t= terpilihx = '';
-    //     if(rekArr!='' || rekArr!=null){
-    //         t         = rekArr.filter(function(item) { return item !== ''; });
-    //         terpilihx = '&terpilihArr='+t.toString();
-    //     }
-
-    //     $('#'+el+'TB').combogrid({
-    //         debug:true,
-    //         width:'750px',
-    //         colModel: col ,
-    //         url: urly+terpilihx,
-    //         select: function( event, ui ) { // event setelah data terpilih 
-    //             $('#'+el+'H').val(ui.item.replid);
-    //             if(subaksi=='saudara'){ // diskon dari saudara 
-    //                 saudaraAdd(ui.item.replid,ui.item.siswa,ui.item.sekolah);
-    //                 $('#nama_saudaraTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&saudara='+saudaraArr() );
-    //             }
-    //             else if (subaksi=='rek') { // rekening 
-    //                 $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
-    //                 var arr = rekArrFC();
-    //                 var str = arr.toString();
-    //                 console.log('terpilih in auto 1 =>'+str);
-    //             }
-
-    //             // validasi input (tidak sesuai data dr server)
-    //                 $('#'+el+'TB').on('keyup', function(e){
-    //                     var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-    //                     var keyCode = $.ui.keyCode;
-    //                     if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
-    //                         if($('#'+el+'H').val()!=''){
-    //                             $('#'+el+'H').val('');
-    //                             $('#'+el+'TB').val('');
-            
-    //                             var str = rekArr.toString();
-    //                             console.log('terpilih in auto 2 =>'+str+' arr=> '+rekArr);
-    //                             if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
-    //                         }
-    //                     }
-    //                 });
-    //                 $('#'+el+'TB').on('blur,change',function(){
-    //                     if($('#'+el+'H').val()=='') {
-    //                         $('#'+el+'TB').val(''); // :: all 
-    //                         if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
-    //                     }
-    //                 });
-    //             return false;
-    //         }
-    //     });
-    // }
-
-// switch panel 
-    function switchPN(typ,id){
-        if(typ=='view'){ // viw table
-        // button
-            $('#lihatBC').attr('style','display:none;');
-            $('#tambahBC').removeAttr('style');
-            $('#cariBC').removeAttr('style');
-        // panel    
-            $('#pendataanTBL').removeAttr('style');
-            $('#pendataanFR').attr('style','display:none;');
-            $('.cari').removeAttr('style');
-            viewTB();
-            kosongkan();
-        }else{ // form (add||edit)
-        // button
-            $('#tambahBC').attr('style','display:none;');
-            $('#cariBC').attr('style','display:none;');
-            $('#lihatBC').removeAttr('style');
-        // panel    
-            $('#pendataanFR').removeAttr('style');
-            $('#pendataanTBL').attr('style','display:none;');
-            $('.cari').attr('style','display:none;');
-            
-            if(id==''){ // add mode 
-                getNoPendaftaran('');
-                cmbtahunajaran('form',$('#departemenS').val(),'');
-                cmbkelompok('');
-                cmbtingkat('');
-                cmbdisctunai('');
-                cmbgolongan('');
-                cmbagama('');
-                cmbangsuran('');
-            }else{ //edit mode
-                var u =dir;
-                var d ='aksi=ambiledit&replid='+id;
-                ajax(u,d).done(function  (dt) {
-                    $('#idformH').val(id);
-                // data siswa
-                    cmbtahunajaran('form',$('#departemenS').val(),dt.tahunajaran);
-                    cmbkelompok('form',dt.tahunajaran,dt.kelompok);
-                    cmbtingkat(dt.tingkat);
-                    cmbgolongan(dt.golongan);
-                    $('#nopendaftaranH').val(dt.nopendaftaranH);
-                    $('#nopendaftaranTB').val(dt.nopendaftaran);
-                    $('#namaTB').val(dt.namaSiswa);
-                    var kelamin = dt.kelamin;
-                    $.each($('input[name="jkTB"]'),function(){
-                        // if(dt.kelamin==$(this).val()) $(this).addClass('bg-red');
-                        if(kelamin == $(this).val()) {
-                            $(this).attr('checked',true);
-                        } 
-                            // console.log('kel dt = '+dt.kelamin+',kel val '+$(this).val());
-                    });$('#tempatlahirTB').val(dt.tmplahir);
-                    $('#tgllahiranakTB').val(dt.tgllahir);
-                    cmbagama(dt.agama);
-                    $('#alamatsiswaTB').val(dt.alamat);
-                    $('#telpsiswaTB').val(dt.telpon);
-                    $('#asalsekolahTB').val(dt.sekolahasal);
-                    $('#goldarahTB').val(dt.darah);
-                    $('#penyakitTB').val(dt.kesehatan);
-                    $('#catatan_kesehatanTB').val(dt.ketkesehatan);
-                    var img;
-                    if(dt.photo!='' && dt.photo!=null)   img='./img/upload/'+dt.photo; // ada foto 
-                    else img='./img/no_image.jpg'; // tdak ada foto
-
-                    $('#previmg2').attr('src',img);
-                    $('#photoH').val(dt.photo);
-                // pembayaran
-                    $('#setbiayaTB').val(dt.setbiaya);
-                    $('#registrationTD').html(dt.registration);
-                    cmbangsuran(dt.angsuran);
-                    $('#discangsuranTD').html(dt.discangsuran);
-                    $('#discsubsidiTB').val(dt.discsubsidi);
-                    $('#discsaudaraTB').val(dt.discsaudara);
-                    $('#disctotalTD').html(dt.disctotal);
-                    $('#registrationnetTD').html(dt.registrationnet);
-                    cmbdisctunai(dt.iddisctunai);
-                    $('#disctunai2TD').html(dt.disctunai);
-                    $('#materialTD').html(dt.material);
-                    $('#tuitionTD').html(dt.tuition);
-                //ayah
-                    $('#ayahTB').val(dt.namaAyah);
-                    $('#kebangsaan_ayahTB').val(dt.kebangsaanAyah);
-                    $('#tempatlahir_ayahTB').val(dt.tmplahirAyah);
-                    $('#tgllahir_ayahTB').val(dt.tgllahirAyah);
-                    $('#pekerjaan_ayahTB').val(dt.pekerjaanAyah);
-                    $('#telpayahTB').val(dt.telponAyah);
-                    $('#pinbb_ayahTB').val(dt.pinbbAyah);
-                    $('#email_ayahTB').val(dt.emailAyah);
-                //ibu
-                    $('#ibuTB').val(dt.namaIbu);
-                    $('#kebangsaan_ibuTB').val(dt.kebangsaanIbu);
-                    $('#tempatlahir_ibuTB').val(dt.tmplahirIbu);
-                    $('#tgllahir_ibuTB').val(dt.tgllahirIbu);
-                    $('#pekerjaan_ibuTB').val(dt.pekerjaanIbu);
-                    $('#telpibuTB').val(dt.telponIbu);
-                    $('#pinbb_ibuTB').val(dt.pinbbIbu);
-                    $('#email_ibuTB').val(dt.emailIbu);
-                // kontak darurat
-                    $('#nama_kontakTB').val(dt.namaDarurat);
-                    $('#hubunganTB').val(dt.hubungan);
-                    $('#nomorTB').val(dt.telponDarurat);
-                // kakek nenek
-                    $('#kakekTB').val(dt.namaKakek);
-                    $('#nenekTB').val(dt.namaNenek);
-
-                    // var tbl='';
-                    // $.each(dt.saudaraArr,function(id,item){
-                    //     var btn;
-                    //     tbl+='<tr>'
-                    //         +'<td>'+item.nis+'</td>'
-                    //         +'<td>'+item.nama+'</td>'
-                    //     +'</tr>';
-                    // });$('saudaraTBL').html(tbl);
-
-                    // $('#kakekTB').val(dt.kakek-nama);
-                    // $('#nenekTB').val(dt.nenek-nama);
-                });            
-            }
-            // autoSuggest('nama_saudara','saudara','');
-        }
-        // $('#pendataanFR').toggle('slow');
-        // $('#pendataanTBL').toggle('slow');
-    }
-
 // hapus saudara terpilih
     function saudaraDelx(id){
         $('#saudaraTR_'+id).fadeOut('slow',function(){
@@ -471,9 +191,6 @@ var selectedDiskReg = new Array;
             // alert(id);return false;
         $('#saudaraTBL').append(tr); 
         saudaraArr();
-        // $('#saudaraTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&saudara='+saudaraArr() );
-
-        // saudaraExist();
     }
         
 //himpun array saudara terpilih
@@ -816,40 +533,6 @@ var selectedDiskReg = new Array;
         });
     }
 
-// combo jumlah angsuran 
-    /*function cmbangsuran (cicilan) {
-        $.ajax({
-            url:dir6,   
-            type:'post',
-            dataType:'json',
-            data:'aksi=cmb'+mnu6,
-            success:function(dt){
-                var opt='';
-                if (dt.status!='sukses') {
-                    notif(dt.status,'red');
-                    opt+='<option value="">'+dt.status+'</option>'
-                }else{
-                    // alert(id);return false;
-                    var opt = '';
-                    $.each(dt.cicilan,function(id,item){
-                        // if(cicilan==item.replid)
-                        //     opt+='<option selected="selected" value="'+item.replid+'">'+item.cicilan+'</option>'
-                        // else{
-                        //     if (item.replid=='1') 
-                        //     opt+='<option selected="selected" value="'+item.replid+'">'+item.cicilan+'</option>'
-                        // else 
-                        //     opt+='<option value="'+item.replid+'">'+item.cicilan+'</option>'
-                        // }
-                        if(cicilan==item.replid)
-                            opt+='<option selected="selected" value="'+item.replid+'">'+item.cicilan+'</option>'
-                        else
-                            opt+='<option value="'+item.replid+'">'+item.cicilan+'</option>'
-                    });$('#angsuranTB').html('<option value="">Pilih Angsuran ..</option>'+opt);
-                }
-            },
-        });
-    }*/
-
 // combo angsuran 
     function cmbangsuran (idx,ang) {
         var u = dir6;
@@ -869,54 +552,27 @@ var selectedDiskReg = new Array;
         });
     }
 
-// // combo detaildiskon 
-//     function cmbdetaildiskon (idx,disk,cls) {
-//         var dept = $('#departemenTB').val();
-//         var thn  = $('#tahunajaranTB').val();
-//         if(dept!='' || thn!='' ){
-//             var u = dir7;
-//             var d ='aksi=cmb'+mnu7+'&departemen='+dept+'&tahunajaran='+thn;
-//             ajax(u,d).done(function (dt){
-//                 var opt='';
-//                 if (dt.status!='sukses') {
-//                     notif(dt.status,'red');
-//                     opt+='<option value="">'+dt.status+'</option>'
-//                 }else{
-//                     var opt = '';
-//                     if(dt.detaildiskon.length==0) opt+='<option value="">kosong</option>';
-//                     else{
-//                         $.each(dt.detaildiskon,function(id,item){
-//                             opt+='<option '+(disk==item.replid?'selected':'')+' value="'+item.replid+'">'+item.diskon+'</option>'
-//                         });
-//                     }
-//                 }
-//                 $((cls==''?'#detaildiskon'+idx+'TB':'.detaildiskon')).html(opt);
-//             });
-//         }
-//     }
-
-// combo diskon tunai 
-    function cmbdisctunai (nilai) {
-        var u = dir7;
-        var d ='aksi=cmb'+mnu7;
-        ajax(u,d).done(function(dt){
-            var opt='';
-            if (dt.status!='sukses') {
-                notif(dt.status,'red');
-                opt+='<option value="">'+dt.status+'</option>'
-            }else{
-                var opt = '';
-                $.each(dt.nilai,function(id,item){
-                    opt+='<option '+(nilai==item.replid?'selected':'')+' value="'+item.replid+'">'+item.keterangan+' ('+item.nilai+' %)</option>'
-                });
-            }
-            $('#disctunaiTB').html('<option value="">-Pilih Diskon-</option>'+opt);
-        });
-    }        
+    function enableDiskon(){
+        var dep  = $('#departemenTB').val();
+        var thn  = $('#tahunajaranTB').val();
+        var dgel = $('#detailgelombang').val();
+        var ting = $('#tingkatTB').val();
+        var subt = $('#subtingkatTB').val();
+        var gol  = $('#golonganTBZ').val();
+        if(dep=='' || thn=='' || dgel=='' || ting=='' || subt=='' || gol==''){
+            $('.detaildiskonTB').attr('disabled',true);            
+            $('.detaildiskonTBL').html('<tr class="fg-white bg-red"><td class="text-center" colspan="4">..kosong..</td></tr>');
+            $('.biayaawalTD').html('');
+            $('.biayaNettTD').html('');
+        }else{ 
+            $('.detaildiskonTB').removeAttr('disabled');            
+            $('.detaildiskonTBL').html('');
+        }   
+    }
 
 // combo get biaya
     function getBiaya(){
-        enableDiskon('combo');
+        enableDiskon();
         var dgel = $('#detailgelombangTB').val();
         var subt = $('#subtingkatTB').val();
         var gol  = $('#golonganTBZ').val();
@@ -933,6 +589,7 @@ var selectedDiskReg = new Array;
                     else{
                         $.each(dt.biayaArr,function (id,item){
                             $('#biayaawal'+item.replid+'TD').html('Rp. '+parseInt(item.nominal).setCurr());
+                            $('#biayaNett'+item.replid+'TD').html('Rp. '+parseInt(item.nominal).setCurr());
                             $('#iddetailbiaya'+item.replid+'H').val(item.iddetailbiaya);
                         })
                     }
@@ -941,62 +598,17 @@ var selectedDiskReg = new Array;
         }
     }
 
-//get discount tunai  
-    function getDiscTunai(){
-        var replid = $('#disctunaiTB').val();
-        if(replid=='') $('#disctunai2TD').val('Rp. 0');
-        else{
-            var u = dir;
-            var d ='aksi=getDisc&replid='+replid;
-            ajax(u,d).done(function (dt) {
-                var regVal    = $('#registrationTD').html();
-                var regNum    = getCurr((typeof regVal=='NaN' || regVal=='' || regVal=='Rp. 0')?0:regVal);
-                var discNum   = parseInt(dt.nilai);
-                var discTunai = regNum*discNum/100;
-                $('#disctunai2TD').html('Rp. '+parseInt(discTunai).setCurr());
-                getDiscTotal();
-            });
-        }
-    }
-// get discount angsuran 
-    function getDiscAngsuran () {
-        var u = dir;
-        var d ='aksi=getDiscAngsuran'
-                +'&discAngsuran='+$('#angsuranTB').val()
-                +'&regNum='+$('#registrationTD').html();
-        ajax(u,d).done(function (dt) {
-            var discNum = 'Rp. '+dt.discNum.setCurr();
-            $('#discangsuranTD').html(discNum);
-            getDiscTotal();
-        });
-    }
-
-    // function getSetBiaya () {
-    //     if($('#tingkatTB').val()!='' & $('#tingkatTB').val()!=''){
-    //         var u = dir;
-    //         var d = 'aksi=getSetBiaya'
-    //                 +'&kelompok='+$('#kelompokS').val()
-    //                 +'&kriteria='+$('#tingkatTB').val()
-    //                 +'&golongan='+$('#golonganTB').val();
-    //         ajax(u,d).done(function (dt) {
-    //             $('#setbiayaTB').val(dt.setbiaya);
-    //         });
-    //     }
-    // }
 //                  (idbiaya, iddetailbiaya)
     function getBiayaNett(idx) {
-        selectedDiskReg=[];
+        console.log('masuk biaya nett');
         var idy = $('#iddetailbiaya'+idx+'H').val();
-        var diskonreguler='';
-        $('.detaildiskon'+idx+'TB').each(function (id,item){
-            diskonreguler+='&diskonreguler[]='+($(this).val());
-            selectedDiskReg.push($(this).val());
-        });console.log(selectedDiskReg);
-        var d ='aksi=getBiayaNett&iddetailbiaya='+idy+diskonreguler+'&diskonkhusus='+$('#diskonkhusus'+idx+'TB').val();
-        // var d ='aksi=getBiayaNett&iddetailbiaya='+idy+diskonreguler+'&diskonkhusus='+$('#diskonkhusus'+idx+'TB').val()+'&delecteddiskon='+selectedDiskReg;
+        var selectedDiskReg='';
+        $.each(detaildiskonArr(idx), function (id,item){
+            selectedDiskReg+='&diskonreguler[]='+item;
+        });var d ='aksi=getBiayaNett&iddetailbiaya='+idy+selectedDiskReg+'&diskonkhusus='+$('#diskonkhusus'+idx+'TB').val();
         ajax(dir,d).done(function (dt){
-            if(dt.status!='sukses') notif(dt.status,'red');
-            else $('#biayaNett'+idx+'TD').html('Rp. '+(dt.biayaNett.setCurr()) );
+            $('#biayaNett'+idx+'TD').html('Rp. '+(dt.biayaNett.setCurr()) );
+            if(dt.status!='sukses')notif(dt.status,'red');
         });
     }
 
@@ -1084,7 +696,7 @@ var selectedDiskReg = new Array;
                 }
                 titlex='<span class="icon-plus-2"></span> Tambah ';
                 $.Dialog.title(titlex+' '+mnu);
-                $('#cmbdepartemenTB').focus();
+                $('#departemenTB').focus();
             }
         });
     }
@@ -1124,12 +736,6 @@ var selectedDiskReg = new Array;
             affixesStay: true
         });
     }
-// get uang --------------------------
-    // function getuang(e) {
-    //     x = $(e).val().replace(/[^0-9]/g,'');
-    //     return x;
-    // }
-// end of get uang --------------------------
 
    function kodeTrans(){
         var url = dir;
@@ -1152,66 +758,6 @@ function notif(cont,clr) {
     });
 }
 // end of notifikasi
-
-//reset form ---
-    // function kosongkan(){
-    //     $('#idformH').val('');
-    // // data siswa
-    //     $('#tingkatTB').val('');
-    //     $('#golonganTB').val('');
-    //     $('#nopendaftaranTB').val('');
-    //     $('#namaTB').val('');
-    //     // $.each($('[name="jkTB"]'),function(){
-    //     //     $(this).removeAttr('checked');
-    //     // });
-    //     $('#tempatlahirTB').val('');
-    //     $('#tgllahiranakTB').val('');
-    //     $('#agamaTB').val('');
-    //     $('#alamatsiswaTB').val('');
-    //     $('#telpsiswaTB').val('');
-    //     $('#asalsekolahTB').val('');
-    //     // $('#goldarahTB').val('-');
-    //     $('#penyakitTB').val('');
-    //     $('#catatan_kesehatanTB').val('');
-    //     $('#previmg2').attr('src','../img/no_image.jpg');
-    //     $('#photoH').val('');
-    // // pembayaran
-    //     $('#setbiayaTB').val('');
-    //     $('#registrationTD').html('');
-    //     $('#angsuranTB').val('');
-    //     $('#discangsuranTD').html('');
-    //     $('#discsubsidiTB').val('');
-    //     $('#discsaudaraTB').val('');
-    //     $('#disctotalTD').html('');
-    //     $('#registrationnetTD').html('');
-    //     $('#disctunaiTB').val('');
-    //     $('#disctunai2TD').html('');
-    //     $('#materialTD').html('');
-    //     $('#tuitionTD').html('');
-    // //ayah
-    //     $('#ayahTB').val('');
-    //     $('#kebangsaan_ayahTB').val('');
-    //     $('#tempatlahir_ayahTB').val('');
-    //     $('#tgllahir_ayahTB').val('');
-    //     $('#pekerjaan_ayahTB').val('');
-    //     $('#telpayahTB').val('');
-    //     $('#pinbb_ayahTB').val('');
-    //     $('#email_ayahTB').val('');
-    // //ibu
-    //     $('#ibuTB').val('');
-    //     $('#kebangsaan_ibuTB').val('');
-    //     $('#tempatlahir_ibuTB').val('');
-    //     $('#tgllahir_ibuTB').val('');
-    //     $('#pekerjaan_ibuTB').val('');
-    //     $('#telpibuTB').val('');
-    //     $('#pinbb_ibuTB').val('');
-    //     $('#email_ibuTB').val('');
-    // // kontak darurat
-    //     $('#nama_kontakTB').val('');
-    //     $('#hubunganTB').val('');
-    //     $('#nomorTB').val('');
-    // }
-//end of reset form ---
 
 //aktifkan process ---
     function aktifkan(id){
@@ -1266,7 +812,6 @@ function notif(cont,clr) {
 
 // currency to number (ex : Rp. 500.000 -> 500000)
     function getCurr(n){  
-        // var x = Number(n.replace(/[^0-9\,.]+/g,""));
         var num = n==''?'0':n;
         var x   = num.replace(/[^0-9]+/g,"");
         var y   = parseInt(x);
@@ -1294,23 +839,18 @@ function notif(cont,clr) {
         var end =typ=='filter'?'S':'TB';
         var dep =$('#departemen'+end).val();
         var thn =$('#tahunajaran'+end).val();
-        // console.log(dep+','+thn);return false;
         var d = 'aksi=cmb'+mnu8+'&tahunajaran='+thn+'&departemen='+dep;
         if(dep!='' && thn!=''){
             ajax(dir8,d).done(function (dt){
                 var opt='';
-                if(dt.status!='sukses'){
-                    notif(dt.status,'red');
-                }else{
+                if(dt.status!='sukses') notif(dt.status,'red');
+                else{
                     $.each(dt.detailgelombang, function(id,item){
                         opt+='<option '+(dgel==item.replid?'selected':'')+' value="'+item.replid+'">'+item.gelombang+'</option>';
                     }); 
                 }
-                if(typ=='filter'){
-                    $('#detailgelombangS').html(opt);
-                }else{
-                    $('#detailgelombangTB').html('<option value="">-Pilih Gelombang-</option>'+opt);
-                }
+                if(typ=='filter') $('#detailgelombangS').html(opt);
+                else $('#detailgelombangTB').html('<option value="">-Pilih Gelombang-</option>'+opt);
             });
         }
     }
@@ -1378,6 +918,7 @@ function notif(cont,clr) {
                     $.each(dt.biayaArr, function (id,item){
                         out+='<label>'+item.biaya+'</label>'
                             +'<table class="table hovered bordered">'
+                                // header
                                 +'<thead>'
                                     +'<tr class="fg-white bg-blue">'
                                         +'<th colspan="2">Item</th>'
@@ -1389,166 +930,84 @@ function notif(cont,clr) {
                                     // biaya awal
                                     +'<tr>'
                                         +'<td colspan="2">Biaya '+item.biaya+' Awal'
-                                            +'<input type="hidden" id="iddetailbiaya'+item.replid+'H" name="iddetailbiaya'+item.replid+'H">'
+                                            +'<input type="hidden"  id="iddetailbiaya'+item.replid+'H" name="iddetailbiaya'+item.replid+'H">'
                                         +'</td>'
-                                        +'<td class="text-right" id="biayaawal'+item.replid+'TD">'
+                                        +'<td class="text-right biayaawalTD" id="biayaawal'+item.replid+'TD">'
                                             +'silahkan lengkapi dept. dll'
                                         +'</td>'
-                                    +'</tr>'
+                                    +'</tr>';
 
-                                    // dskon
-                                    +'<tr>'
+                                // diskon reguler
+                                if(item.isDiskon=='1' || item.isDiskon=='3' ) { // 1=reg or 3=reg & khusus
+                                    out+='<tr>'
                                         +'<td>Diskon Reguler</td>'
                                         +'<td>'
+                                            +'<div class="input-control text"><input onsubmit="return false;" class="detaildiskonTB" disabled onfocus="multiAutoSuggest(\'detaildiskon\','+item.replid+')" onkeyup="multiAutoSuggest(\'detaildiskon\','+item.replid+')" placeholder="cari diskon .. " type="text" id="detaildiskon'+item.replid+'TB"></div>'
                                             +'<table width="100%">'
-                                                +'<thead>'
-                                                    +'<th align="center" colspan="2">'
-                                                        +'<button disabled id="diskon'+item.replid+'BC" onclick="detaildiskonFC('+item.replid+'); return false;" data-hint="Tambah" class="fg-white bg-green diskonBC"><i class="icon-plus-2"></i></button>'
-                                                    +'</th>'
+                                                +'<thead class="fg-white bg-blue">'
+                                                    +'<th align="center">Diskon</th>'
+                                                    +'<th align="center">Nilai</th>'
+                                                    +'<th align="center">Keterangan</th>'
+                                                    +'<th align="center"><button onclick="$(\'#detaildiskon'+item.replid+'TBL\').html(\'\');getBiayaNett('+item.replid+'); return false;" class="fg-white bg-blue"><i class="icon-cancel-2"></i></button></th>'
                                                 +'</thead>'
                                                 +'<tbody class="detaildiskonTBL" id="detaildiskon'+item.replid+'TBL">'
+                                                    +'<tr><td class="fg-white bg-red text-center" colspan="4">..kosong..</td></tr>'
                                                 +'</tbody>'
                                             +'</table>'
                                         +'</td>'
                                         +'<td></td>'
-                                    +'</tr>'
+                                    +'</tr>';
+                                }
 
-                                    // Diskon Khusus
-                                    +'<tr>'
+                                // Diskon Khusus
+                                if(item.isDiskon=='2' || item.isDiskon=='3' ) { // 2=khusus or 3=reg & khusus
+                                    out+='<tr>'
                                         +'<td>Diskon Khusus </td>'
                                         +'<td><div class="input-control text"><input placeholder="keterangan diskon" type="text" id="ketdiskonkhusus'+item.replid+'TB" /></div></td>'
-                                        +'<td><div class="input-control text"><input onkeyup="getBiayaNett('+item.replid+');" value="Rp. 0" class="text-right" onfocus="inputuang(this);" placeholder="nominal" type="text" id="diskonkhusus'+item.replid+'TB" name="diskonkhusus'+item.replid+'TB"/></div></td>'
-                                    +'</tr>'
+                                        +'<td>'
+                                            +'<div class="input-control text"><input onkeyup="getBiayaNett('+item.replid+');" value="Rp. 0" class="text-right" onfocus="inputuang(this);" placeholder="nominal" type="text" id="diskonkhusus'+item.replid+'TB" name="diskonkhusus'+item.replid+'TB"/></div>'
+                                            +'<sup style="font-weight:bold;" class="fg-red">* Hak Akses : Petugas Khusus </sup>'
+                                        +'</td>'
+                                    +'</tr>';
+                                }
 
-                                    // biaya nett
-                                    +'<tr>'
+                                // biaya nett
+                                if(item.isDiskon!='0') { // reg or bebas
+                                    out+='<tr>'
                                         +'<td colspan="2">Biaya '+item.biaya+' Nett</td>'
-                                        +'<td class="text-right" id="biayaNett'+item.replid+'TD">Rp. 0</td>'
-                                    +'</tr>'
+                                        +'<td class="text-right biayaNettTD" id="biayaNett'+item.replid+'TD">Rp. 0</td>'
+                                    +'</tr>';
+                                }
 
                                     // jenis tagihan 
-                                    +'<tr>'
+                                    out+='<tr>'
                                         +'<td>Ditagih</td>'
                                         +'<td>'+(item.jenistagihan!='sekali'?'per ':'')+item.jenistagihan+'</td>'
                                         +'<td></td>'
-                                    +'</tr>'
+                                    +'</tr>';
 
-                                    // cara bayar
-                                    +'<tr>'
-                                        +'<td>Angsuran</td>'
+                                // cara bayar
+                                if(item.idIsAngsur=='1') { // 1= angsur reg.
+                                    out+='<tr>'
+                                        +'<td>Angsuran '+item.idIsAngsur+'</td>'
                                         +'<td>'
                                             +'<div class="input-control select">'
                                                 +'<select class="text-center" id="angsuran'+item.replid+'TB" name="angsuran'+item.replid+'TB"><option value=""></option></select>'
                                             +'</div>'
                                         +'</td>'
                                         +'<td class="text-right" id="'+item.isDiskon+'TD"></td>'
-                                    +'</tr>'
-
-                                +'</tbody>'
+                                    +'</tr>';
+                                }
+ 
+                                out+='</tbody>'
                             +'</table>'; 
                     });
                     $('#biayaDV').html(out);
                 }
                 $.each(dt.biayaArr, function (id,item){
                     cmbangsuran(item.replid,'');
-                    // cmbdetaildiskon(item.replid,'','');
                 });
             }
-        });
-    }
-
-// combo detaildiskon 
-    // function cmbdetaildiskon (idx,disk,cls) {
-    //     var dept = $('#departemenTB').val();
-    //     var thn  = $('#tahunajaranTB').val();
-    //     if(dept!='' || thn!='' ){
-    //         var u = dir7;
-    //         var d ='aksi=cmb'+mnu7+'&departemen='+dept+'&tahunajaran='+thn;
-    //         ajax(u,d).done(function (dt){
-    //             var opt='';
-    //             if (dt.status!='sukses') {
-    //                 notif(dt.status,'red');
-    //                 opt+='<option value="">'+dt.status+'</option>'
-    //             }else{
-    //                 var opt = '';
-    //                 if(dt.detaildiskon.length==0) opt+='<option value="">kosong</option>';
-    //                 else{
-    //                     $.each(dt.detaildiskon,function(id,item){
-    //                         opt+='<option '+(disk==item.replid?'selected':'')+' value="'+item.replid+'">'+item.diskon+'</option>'
-    //                     });
-    //                 }
-    //             }
-    //             $((cls==''?'#detaildiskon'+idx+'TB':'.detaildiskon')).html(opt);
-    //         });
-    //     }else notif('pilih departemen & tahun ajaran dahulu ','red');
-    // }
-
-    function isDiskonSelectedAll(idx){
-        var stat=true;
-        if($('.detaildiskon'+idx+'TB').length>0){
-            $('.detaildiskon'+idx+'TB').each(function (id,item){
-                stat=($(this).val()=='')?false:true;
-            });
-        }
-        return stat; 
-    } 
-
-    var idy=1;
-    function detaildiskonFC(idx){
-        console.log('ebnable='+enableDiskon('button')); 
-        console.log('select='+isDiskonSelectedAll(idx)); 
-        if(enableDiskon('button') && isDiskonSelectedAll(idx)){ // jika true (semua combo terpilih semua)
-            var u = dir7;
-            var d ='aksi=cmb'+mnu7+'&departemen='+$('#departemenTB').val()+'&tahunajaran='+$('#tahunajaranTB').val();
-            ajax(u,d).done(function (dt){
-                var tr = '<tr id="detaildiskon'+idx+idy+'TR"><td>';
-                tr+='<div class="input-control select"><select onchange="getBiayaNett('+idx+');" required  class="detaildiskon'+idx+'TB"  id="detaildiskon'+idx+idy+'TB" name="detaildiskonTB['+idx+idy+']">';
-                if(dt.status!='sukses') notif(dt.status,'red');
-                else{
-                    if(dt.detaildiskon.length==0) tr+='<option value="">kosong</option>';
-                    else{   
-                        // var yy = jQuery.inArray(8,selectedDiskReg)
-                        // console.log(yy);
-                        tr+='<option value="">-Pilih Diskon-</option>';
-                        $.each(dt.detaildiskon,function (id,item){
-                            tr+='<option '+(jQuery.inArray(item.replid,selectedDiskReg)!=-1?'disabled class="fg-white bg-black"':'')+' value="'+item.replid+'">'+item.nilai+'% | '+item.diskon+'</option>';
-                        });
-                    }
-                }tr+='</div></select>';
-                tr+='</td><td><a onclick="detaildiskonDel('+idx+idy+');" class="button bg-white fg-red"  data-hint="Hapus" href="#"><i class="icon-cancel-2"></i></a></td></tr>';
-                $('#detaildiskon'+idx+'TBL').append(tr);
-                idy+=1;
-            });
-        }
-    }
-
-    function enableDiskon(typ){
-        if(typ=='combo') {
-            $('.detaildiskonTBL').html('');
-            selectedDiskReg=[];
-        }var dept = $('#departemenTB').val();
-        var thn  = $('#tahunajaranTB').val();
-        var dgel = $('#detailgelombangTB').val();
-        var ting = $('#tingkatTB').val();
-        var subt = $('#subtingkatTB').val();
-        var gol  = $('#golonganTBZ').val();
-        if(dept=='' || thn==''|| dgel==''|| ting==''|| subt=='' || gol==''){ // jka smua combo sudah terpilih
-            $('.diskonBC').attr('disabled',true);
-            stat=false;
-        }else{ // jika salah combo belum terpilih
-            $('.diskonBC').removeAttr('disabled');
-            stat=true;
-        }return stat;   
-    }
-
-    function detaildiskonDel(xy){
-        $('#detaildiskon'+xy+'TR').fadeOut('slow',function(){
-            $('#detaildiskon'+xy+'TR').remove();
-            // var arr = [1,2,[1,1], 'abc'];
-            selectedDiskReg.splice($.inArray($('#detaildiskon'+xy+'TB').val(),selectedDiskReg),1);
-            // console.log(arr) //[1, 2, 'abc']
-
-            // selectedDiskReg.remove($('#detaildiskon'+xy+'TB').val());
         });
     }
 
@@ -1561,5 +1020,74 @@ function notif(cont,clr) {
             thousands:'.', 
             // decimal:',', 
             affixesStay: true
+        });
+    }
+
+    function multiAutoSuggest(el,idx){
+        var col =[], par='';
+        if(el=='detaildiskon'){
+            col =[{
+                'align':'left',
+                'columnName':'diskon',
+                'width':'20',
+                'label':'Item'
+            },{   
+                'columnName':'nilai',
+                'width':'20',
+                'align':'center',
+                'label':'Diskon'
+            },{   
+                'columnName':'keterangan',
+                'width':'60',
+                'align':'justify',
+                'label':'Keterangan'
+            }]; 
+            par+='&biaya='+idx+'&tahunajaran='+$('#tahunajaranTB').val()+'&departemen='+$('#departemenTB').val();
+            par+='&selectedDiskReg='+detaildiskonArr(idx)+'&biaya='+idx;
+        }else{
+            // alert('masuk lain,arr='+selectedDiskReg);
+        }
+
+        $('#'+el+idx+'TB').combogrid({
+            debug:true,
+            width:'500px',
+            colModel: col,
+            url: dir+'?aksi=autocomp&subaksi='+el+par,
+            select: function( event, ui ) {
+                detaildiskonAdd(idx, ui.item.replid, ui.item.diskon, ui.item.nilai, ui.item.keterangan);
+                $('#detaildiskon'+idx+'TB').val('');
+                return false;
+            }
+        });
+    }
+
+    function detaildiskonAdd (idx,replid,diskon,nilai,keterangan) {
+        var tr ='<tr val="'+replid+'" class="detaildiskon'+idx+'TR" id="detaildiskon'+replid+'TR">'
+                    +'<td>'+diskon+'</td>'
+                    +'<td>'+nilai+'</td>'
+                    +'<td>'+keterangan+'</td>'
+                    +'<td><button class="bg-white fg-red" onclick="detaildiskonDel('+idx+','+replid+'); return false;"><i class="icon-cancel-2"></button></i></td>'
+                +'</tr>';
+        $('#detaildiskon'+idx+'TBL').append(tr); 
+        detaildiskonArr(idx);
+        getBiayaNett(idx);
+    }
+    
+//himpun array barang terpilih
+    function detaildiskonArr(idx){
+        var selectedDiskReg=[];
+        $('.detaildiskon'+idx+'TR').each(function (id,item){
+            selectedDiskReg.push($(this).attr('val'));
+        });
+        console.log('setelah terpilih di tabel ='+selectedDiskReg);
+        return selectedDiskReg;
+    }
+
+// remove TR 
+    function detaildiskonDel (idx,idy) {
+        $('#detaildiskon'+idy+'TR').fadeOut('slow',function(){
+            $('#detaildiskon'+idy+'TR').remove();
+            detaildiskonArr(idx);
+            getBiayaNett(idx,idy);
         });
     }

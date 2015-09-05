@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-04 17:04:23
+Date: 2015-09-05 18:35:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,8 +64,8 @@ CREATE TABLE `psb_biaya` (
 -- ----------------------------
 INSERT INTO `psb_biaya` VALUES ('3', 'Formulir', 'formulir', '0', '0', '1', 'Formulr Pendafataran');
 INSERT INTO `psb_biaya` VALUES ('4', 'DPP', 'dpp', '1', '3', '4', 'Uang Gedung');
-INSERT INTO `psb_biaya` VALUES ('7', 'SPP', 'spp', '1', '3', '1', 'sumbangan per bulan ');
-INSERT INTO `psb_biaya` VALUES ('8', 'Joining Fee', 'joining_fee', '1', '3', '1', 'biaya yg dibayar sekali saat masuk');
+INSERT INTO `psb_biaya` VALUES ('7', 'SPP', 'spp', '0', '3', '4', 'sumbangan per bulan ');
+INSERT INTO `psb_biaya` VALUES ('8', 'Joining Fee', 'joining_fee', '2', '3', '1', 'biaya yg dibayar sekali saat masuk');
 
 -- ----------------------------
 -- Table structure for psb_biaya_copy
@@ -9704,7 +9704,7 @@ CREATE TABLE `psb_detaildiskon` (
   KEY `diskon` (`diskon`) USING BTREE,
   CONSTRAINT `diskonFK` FOREIGN KEY (`diskon`) REFERENCES `psb_diskon` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tahunajaranFK` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_detaildiskon
@@ -9720,25 +9720,29 @@ INSERT INTO `psb_detaildiskon` VALUES ('8', '35', '30', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('9', '36', '0', '3', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('10', '36', '0', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('11', '37', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('12', '37', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('12', '37', '10', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('13', '38', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('14', '38', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('14', '38', '20', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('15', '39', '0', '3', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('16', '39', '0', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('19', '41', '0', '3', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('20', '41', '0', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('21', '42', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('22', '42', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('22', '42', '5', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('23', '43', '0', '3', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('24', '43', '0', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('25', '44', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('26', '44', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('26', '44', '15', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('27', '45', '0', '3', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('28', '45', '0', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('29', '46', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('30', '46', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('30', '46', '25', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('31', '47', '0', '3', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('32', '47', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('33', '48', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('34', '48', '20', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('35', '49', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('36', '49', '10', '5', '1');
 
 -- ----------------------------
 -- Table structure for psb_detailgelombang
@@ -9794,7 +9798,7 @@ CREATE TABLE `psb_diskon` (
   KEY `biaya` (`biaya`) USING BTREE,
   CONSTRAINT `biayaFK4` FOREIGN KEY (`biaya`) REFERENCES `psb_biaya` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `departemenFK3` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_diskon
@@ -9814,6 +9818,8 @@ INSERT INTO `psb_diskon` VALUES ('44', '1', '4', 'pengurus', 'pengurus PPK Elyon
 INSERT INTO `psb_diskon` VALUES ('45', '1', '7', 'pengurus', 'pengurus PPK Elyon, Hamba Tuhan GKA Elyon, Guru Full Timer, Staff, Kepsek');
 INSERT INTO `psb_diskon` VALUES ('46', '1', '4', 'second intake', 'second intake untuk siswa dalam ');
 INSERT INTO `psb_diskon` VALUES ('47', '1', '7', 'diskon xxx', '- ortu jemaat \r\n- anak sekolah minggu ELYON\r\n- secondary rungkut 2 th ajaran \r\n- Permohonan khusus melalui disposisi untuk siswa baru yg memiliki sibling');
+INSERT INTO `psb_diskon` VALUES ('48', '1', '8', 'anak ke-2', 'ok');
+INSERT INTO `psb_diskon` VALUES ('49', '1', '8', 'anak ke-4', 'sip');
 
 -- ----------------------------
 -- Table structure for psb_dokumen

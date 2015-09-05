@@ -1,7 +1,8 @@
 <?php
 	function getBiayaNett($idBiaya,$idDiskReg,$diskKhus){
 		$biaya = !is_null($idDiskReg)?getBiayaDiskReg($idBiaya,$idDiskReg):getField('nominal','psb_detailbiaya','replid',$idBiaya);
-		$biayaNett = intval($biaya) - intval($diskKhus);
+		$biayaNett = ($biaya<$diskKhus?0:(intval($biaya) - intval($diskKhus)) );
+		// vd($biayaNett);
 		return $biayaNett;
 	}
 
