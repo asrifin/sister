@@ -62,12 +62,13 @@ echo'
 <b>Elyon Christian School</b><br>
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
-if(!$detail){
+if($detail!='ok'){
 echo'<tr><td colspan="7"><h4>Laporan Penjualan, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
 <td>No.Faktur</td>
+<td>No.Pemesanan</td>
 <td>Tanggal</td>
 <td>Customer</td>
 <td>Cara Bayar</td>
@@ -98,10 +99,12 @@ if($termin!=''){
 $termin = $termin." Hari";
 }
 $lihatslip = '<a href="cetak_notafaktur.php?kode='.$datas['nofaktur'].'&lihat=ok"target="new" >'.$nofaktur.'</a>';
+$lihatslippo = '<a href="cetak_notapopenjualan.php?kode='.$datas['nopo'].'&lihat=ok"target="new" >'.$nopo.'</a>';
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
 <td>'.$lihatslip.'</td>
+<td>'.$lihatslippo.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamacustomer($kodecustomer).'</td>
 <td>'.$carabayar.'</td>
@@ -131,11 +134,10 @@ echo '
 <tr class="border">
 <td>No</td>
 <td>No.Faktur</td>
+<td>No.Pemesanan</td>
 <td>Tanggal</td>
 <td>Customer</td>
 <td>Cara Bayar</td>
-<td>Jenis</td>
-<td>Jenjang</td>
 <td>Kode Barang</td>
 <td>Nama Barang</td>
 <td>Harga Beli</td>
@@ -152,6 +154,7 @@ $s = mysql_query ("SELECT * FROM `pos_penjualan` where tgl >= '$tglmulai' and tg
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $nofaktur = $datas['nofaktur'];
+$nopo = $datas['nopo'];
 $tgl = $datas['tgl'];
 $kodecustomer = $datas['kodecustomer'];
 $carabayar = $datas['carabayar'];
@@ -159,6 +162,8 @@ $user = $datas['user'];
 $netto = $datas['netto'];
 $tnetto += $netto;
 $urutan = $no + 1;
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$datas['nofaktur'].'&lihat=ok"target="new" >'.$nofaktur.'</a>';
+$lihatslippo = '<a href="cetak_notapopenjualan.php?kode='.$datas['nopo'].'&lihat=ok"target="new" >'.$nopo.'</a>';
 $s2 = mysql_query ("SELECT * FROM `pos_penjualandetail` where nofaktur = '$nofaktur'order by id asc");	
 while($datas2 = mysql_fetch_array($s2)){
 $kodebarang = $datas2['kodebarang'];
@@ -180,12 +185,11 @@ if($jenisbarangid==$jenisproduk){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nofaktur.'</td>
+<td>'.$lihatslip.'</td>
+<td>'.$lihatslippo.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamacustomer($kodecustomer).'</td>
 <td>'.$carabayar.'</td>
-<td>'.getjenisbarang($kodebarang).'</td>
-<td>'.getjenjangbarang($kodebarang).'</td>
 <td>'.$kodebarang.'</td>
 <td>'.getnamabarang($kodebarang).'</td>
 <td>'.rupiah_format($hargabeli).'</td>
@@ -208,12 +212,11 @@ if($jenisproduk=='Semua'){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$nofaktur.'</td>
+<td>'.$lihatslip.'</td>
+<td>'.$lihatslippo.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamacustomer($kodecustomer).'</td>
 <td>'.$carabayar.'</td>
-<td>'.getjenisbarang($kodebarang).'</td>
-<td>'.getjenjangbarang($kodebarang).'</td>
 <td>'.$kodebarang.'</td>
 <td>'.getnamabarang($kodebarang).'</td>
 <td>'.rupiah_format($hargabeli).'</td>
