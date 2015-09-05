@@ -7,7 +7,8 @@
 	// authentication login 
 	$s1   = 'SELECT 
 				lg.*, lh.date lastlogin,
-				lv.keterangan AS level,
+                lv.keterangan AS level,
+				lv.urutan,
 				lh.counterlog
 			FROM 
 				kon_login lg
@@ -204,16 +205,17 @@
     		session_start();
     		$_SESSION = array(
     			// collect user's informations
-    			'loginS'       => 1,
-    			'id_loginS'    => $r1['id_login'],
-    			'namaS'        => $r1['nama'],
-    			'usernameS'    => $r1['username'],
-    			'levelS'       => $r1['level'],
-    			'lastloginS'   => $r1['lastlogin'],
-    			'counterlogS'  => $r1['counterlog'],
-    			// 'katgrupmenuS' => $katgrupmenuArr, // collect kategori menu
-    			'departemenS'  => $departemenArr, // collect departemens
-    			'grupmodulS'   => $grupmodulArr // collect grup moduls
+                'loginS'          => 1,
+                'id_loginS'       => $r1['id_login'],
+                'namaS'           => $r1['nama'],
+                'usernameS'       => $r1['username'],
+                'levelS'          => $r1['level'],
+                'levelurutanS'    => $r1['urutan'],
+                'lastloginS'      => $r1['lastlogin'],
+                'counterlogS'     => $r1['counterlog'],
+                // 'katgrupmenuS' => $katgrupmenuArr, // collect kategori menu
+                'departemenS'     => $departemenArr, // collect departemens
+                'grupmodulS'      => $grupmodulArr // collect grup moduls
     		);
             $stat = true;
         }

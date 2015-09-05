@@ -54,7 +54,7 @@
 				if($jum!=0){	
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button  '.(isAksi('grupmenu','u')?'onclick="onclick="viewFR('.$res['id_grupmenu'].');"':'disabled').' data-hint="ubah"  class="button" >
+									<button  '.(isAksi('grupmenu','u')?'onclick="viewFR('.$res['id_grupmenu'].');"':'disabled').' data-hint="ubah"  class="button" >
 										<i class="icon-pencil on-left"></i>
 									</button>
 									<button data-hint="hapus"  class="button" '.(isAksi('grupmenu','d')?'onclick="del('.$res['id_grupmenu'].');"':'disabled').'  >

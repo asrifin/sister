@@ -35,27 +35,40 @@ var contentFR = '';
                                         +'<div class="span4">'
                                             // departemen
                                             +'<label>Departemen</label>'
-                                            +'<select data-transform="input-control" required onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();" id="departemenTB" name="departemenTB"></select>'
+                                            +'<div class="input-control select xsize3">'
+                                                +'<select required onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();" id="departemenTB" name="departemenTB"></select>'
+                                            +'</div>'
                                             // tahunajaran
                                             +'<label>Tahun Ajaran</label>'
-                                            +'<select data-transform="input-control" required  onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();;" id="tahunajaranTB" name="tahunajaranTB"></select>'
+                                            +'<div class="input-control select xsize3">'
+                                                +'<select required  onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();;" id="tahunajaranTB" name="tahunajaranTB"></select>'
+                                            +'</div>'
                                             // Detailgelombang
                                             +'<label>Detail Gelombang</label>'
-                                            +'<select  data-transform="input-control" onchange=" getBiaya();" required id="detailgelombangTB" name="detailgelombangTB"><option value="">-silahkan pilih Dept. dan Tahun Ajaran dahulu-</option></select>'
+                                            +'<div class="input-control select xsize3">'
+                                                +'<select onchange=" getBiaya();" required id="detailgelombangTB" name="detailgelombangTB"><option value="">-silahkan pilih Dept. dan Tahun Ajaran dahulu-</option></select>'
+                                            +'</div>'
                                             // tingkat
                                             +'<label>Tingkat</label>'
-                                            +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya();" id="tingkatTBZ" name="tingkatTB"></select>'
+                                            +'<div class="input-control select xsize3">'
+                                                +'<select required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya();" id="tingkatTBZ" name="tingkatTB"></select>'
+                                            +'</div>'
                                             // subtingkat
                                             +'<label>Sub Tingkat</label>'
-                                            +'<select  data-transform="input-control" onchange=" getBiaya();"  required id="subtingkatTB" name="subtingkatTB"></select>'
+                                            +'<div class="input-control select xsize3">'
+                                                +'<select onchange=" getBiaya();"  required id="subtingkatTB" name="subtingkatTB"></select>'
+                                            +'</div>'
                                             // golongan
                                             +'<label>Golongan</label>'
-                                            +'<select data-transform="input-control"  onchange=" getBiaya();"  required id="golonganTBZ" name="golonganTBs"></select>'
+                                            +'<div class="input-control select xsize3">'
+                                                +'<select onchange=" getBiaya();"  required id="golonganTBZ" name="golonganTBs"></select>'
+                                            +'</div>'
                                         +'</div>'
                                             
                                         // kolom2
                                         +'<div id="biayaDV" class="span4"></div>'
                                     +'</div>'
+
                                 +'</div>'
                             +'</div>'
                             
@@ -69,23 +82,33 @@ var contentFR = '';
                                         +'<div class="span4">'
                                             // nopendaftaran
                                             +'<label>No. Pendaftaran</label>'
-                                            +'<input type="text" data-transform="input-control" id="nopendaftaranTB" name="nopendaftaranTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input id="nopendaftaranTB" name="nopendaftaranTB">'
+                                            +'</div>'
                                             // nama
                                             +'<label>Nama</label>'
-                                            +'<input type="text" data-transform="input-control" required placeholder="nama" id="namaTB" name="namaTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="nama" id="namaTB" name="namaTB">'
+                                            +'</div>'
                                             // panggilan
                                             +'<label>Nama Panggilan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="nama panggilan" id="panggilanTB" name="panggilanTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="nama panggilan" id="panggilanTB" name="panggilanTB">'
+                                            +'</div>'
                                             // kelamin
                                             +'<label>Jenis Kelamin</label>'
-                                            +'<select data-transform="input-control" required id="kelaminTB" name="kelaminTB">'
-                                                +'<option value="">Pilih Jenis Kelamin</option>'
-                                                +'<option value="L">Laki</option>'
-                                                +'<option value="P">Perempuan</option>'
-                                            +'</select>'
+                                            +'<div class="input-control select xsize3">'
+                                                +'<select required id="kelaminTB" name="kelaminTB">'
+                                                    +'<option value="">Pilih Jenis Kelamin</option>'
+                                                    +'<option value="L">Laki</option>'
+                                                    +'<option value="P">Perempuan</option>'
+                                                +'</select>'
+                                            +'</div>'
                                             // tempat lahir
                                             +'<label>Tempat Lahir</label>'
-                                            +'<input type="text" data-transform="input-control" required placeholder="tempat lahir" id="tmplahirTB" name="tmplahirTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="tempat lahir" id="tmplahirTB" name="tmplahirTB">'
+                                            +'</div>'
                                             // tanggal lahir 
                                             +'<label>Tanggal lahir</label>'
                                             +'<div class="input-control text" data-role="datepicker"'
@@ -96,48 +119,62 @@ var contentFR = '';
                                             +'</div>'
                                             // warga negara
                                             +'<label>Warga Negara</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="warganegara" id="warganegaraTB" name="warganegaraTB">'
-                                            // agama
-                                            +'<label>Agama</label>'
-                                            +'<select data-transform="input-control" required id="agamasiswaTB" name="agamasiswaTB"></select>'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="warganegara" id="warganegaraTB" name="warganegaraTB">'
+                                            +'</div>'
                                             // bahasa
                                             +'<label>Bahasa</label>'
-                                            +'<input type="text" data-transform="input-control"  required placeholder="bahasa 1" id="bahasa1TB" name="bahasa1TB">'
-                                            +'<input type="text" data-transform="input-control"  required placeholder="bahasa 2" id="bahasa2TB" name="bahasa2TB">'
+                                            +'<div class="input-control text size2">'
+                                                +'<input required placeholder="bahasa 1" id="bahasa1TB" name="bahasa1TB">'
+                                            +'</div>'
+                                            +'<div class="input-control place-right text size2">'
+                                                +'<input required placeholder="bahasa 2" id="bahasa2TB" name="bahasa2TB">'
+                                            +'</div>'
                                             // photo 
                                             +'<label>Pas Photo</label>'
-                                            +'<input type="file" data-transform="input-control" id="photoTB" name="photoTB"/>'
+                                            +'<input type="file" data-transform="input-control" />'
+                                            // +'<div class="input-control file">'
+                                            //     +'<input placeholder="pas photo" type="file" id="photoTB" name="photoTB"/>'
+                                            //     +'<button class="btn-file"></button>'
+                                            // +'</div>'
                                         +'</div>'
                                             
                                         // kolom2
                                         +'<div class="span4">'
                                             // HP
                                             +'<label>No. HP</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. HP" id="hpTB" name="hpTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="No. HP" id="hpTB" name="hpTB">'
+                                            +'</div>'
                                             // Telpon
                                             +'<label>No. Telpon</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. Telpon" id="telponTB" name="telponTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="No. Telpon" id="telponTB" name="telponTB">'
+                                            +'</div>'
                                             // email
                                             +'<label>Email</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Email" id="emailTB" name="emailTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Email" id="emailTB" name="emailTB">'
+                                            +'</div>'
                                             // pinbb
                                             +'<label>pin BBM</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="pin BBM" id="pinbbTB" name="pinbbTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="pin BBM" id="pinbbTB" name="pinbbTB">'
+                                            +'</div>'
                                             // alamat
                                             +'<label>Alamat</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Alamat" id="alamatTB" name="alamatTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Alamat" id="alamatTB" name="alamatTB">'
+                                            +'</div>'
                                             // kota
                                             +'<label>kota</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotaTB" name="kotaTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="kota" id="kotaTB" name="kotaTB">'
+                                            +'</div>'
                                             // kodepos
                                             +'<label>kodepos</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposTB" name="kodeposTB">'
-                                            // photo
-                                            +'<label>Pas Foto</label>'
-                                            +'<div class="tile">'
-                                                +'<div class="tile-content image">'
-                                                    +'<img src="../img/no_image.jpg">'
-                                                +'</div>'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="kodepos" id="kodeposTB" name="kodeposTB">'
                                             +'</div>'
                                         +'</div>'
 
@@ -145,10 +182,14 @@ var contentFR = '';
                                         +'<div class="span4">'
                                             // berat badan
                                             +'<label>Berat Badan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Berat Badan" id="beratTB" name="beratTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Berat Badan" id="beratTB" name="beratTB">'
+                                            +'</div>'
                                             // Tinggi badan
                                             +'<label>Tinggi Badan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Tinggi Badan" id="tinggiTB" name="tinggiTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Tinggi Badan" id="tinggiTB" name="tinggiTB">'
+                                            +'</div>'
                                             // darah
                                             +'<label>Golongan Darah</label>'
                                             +'<div class="input-control select xsize3">'
@@ -162,7 +203,9 @@ var contentFR = '';
                                             +'</div>'
                                             // penyakit
                                             +'<label>penyakit</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="penyakit" id="penyakitTB" name="penyakitTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="penyakit" id="penyakitTB" name="penyakitTB">'
+                                            +'</div>'
                                             // catatankesehatan
                                             +'<label>Catatan Kesehatan</label>'
                                             +'<div class="input-control textarea xsize3">'
@@ -178,15 +221,6 @@ var contentFR = '';
                                                     +'<option value="4">Wali</option>'
                                                 +'</select>'
                                             +'</div>'
-                                            // sekolahasal
-                                            +'<label>Nama (Sekolah Asal)</label>'
-                                            +'<input type="text" data-transform="input-control" required name="sekolahasalTB" id="sekolahasalTB"  placeholder="sekolah" >'
-                                            // kotasekolah
-                                            +'<label>Kota (Sekolah Sekolah)</label>'
-                                            +'<input type="text" data-transform="input-control" required id="kotasekolahTB" name="kotasekolahTB"placeholder="kota ">'
-                                            // negarasekolahasal
-                                            +'<label>Negara (Sekolah Sekolah)</label>'
-                                            +'<input type="text" data-transform="input-control" required id="negarasekolahasalTB" name="negarasekolahasalTB"placeholder="negara">'
                                         +'</div>'
 
                                     +'</div>'
@@ -203,10 +237,14 @@ var contentFR = '';
                                         +'<div class="span4">'
                                             // ayah
                                             +'<label>Nama Ayah</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="nama ayah" id="namaayahTB" name="namaayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="nama ayah" id="namaayahTB" name="namaayahTB">'
+                                            +'</div>'
                                             // tampat lahir
                                             +'<label>Tempat Lahir</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ayah " required id="tmplahirayahTB" name="tmplahirayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input placeholder="tempat lahir ayah " required id="tmplahirayahTB" name="tmplahirayahTB">'
+                                            +'</div>'
                                             // tanggal lahir 
                                             +'<label>Tanggal lahir</label>'
                                             +'<div class="input-control text" data-role="datepicker"'
@@ -217,72 +255,112 @@ var contentFR = '';
                                             +'</div>'
                                             // warga negara
                                             +'<label>Warga Negara</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="warga negara" id="warganegaraayahTB" name="warganegaraayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="warga negara" id="warganegaraayahTB" name="warganegaraayahTB">'
+                                            +'</div>'
                                             // agama
                                             +'<label>Agama</label>'
-                                            +'<select data-transform="input-control" required id="agamaayahTB" name="agamaayahTB"></select>'
+                                            +'<div class="input-control select xsize3">'
+                                                +'<select required id="agamaayahTB" name="agamaayahTB"></select>'
+                                            +'</div>'
                                             // gereja ayah
                                             +'<label>Gereja</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="gereja" id="gerejaayahTB" name="gerejaayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="gereja" id="gerejaayahTB" name="gerejaayahTB">'
+                                            +'</div>'
                                         +'</div>'
                                             
                                         // kolom2
                                         +'<div class="span4">'
                                             // HP
                                             +'<label>No. HP</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. HP" id="hpayahTB" name="hpayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="No. HP" id="hpayahTB" name="hpayahTB">'
+                                            +'</div>'
                                             // Telpon
                                             +'<label>No. Telpon</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. Telpon" id="telponayahTB" name="telponayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="No. Telpon" id="telponayahTB" name="telponayahTB">'
+                                            +'</div>'
                                             // email
                                             +'<label>Email</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Email" id="emailayahTB" name="emailayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Email" id="emailayahTB" name="emailayahTB">'
+                                            +'</div>'
                                             // pinbb
                                             +'<label>pin BBM</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="pin BBM" id="pinbbayahTB" name="pinbbayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="pin BBM" id="pinbbayahTB" name="pinbbayahTB">'
+                                            +'</div>'
                                             // alamat
                                             +'<label>Alamat</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Alamat" id="alamatayahTB" name="alamatayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Alamat" id="alamatayahTB" name="alamatayahTB">'
+                                            +'</div>'
                                             // kota
                                             +'<label>kota</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotaayahTB" name="kotaayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="kota" id="kotaayahTB" name="kotaayahTB">'
+                                            +'</div>'
                                             // kodepos
                                             +'<label>kodepos</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
+                                            +'</div>'
                                             // fax rumah 
                                             +'<label>fax rumah</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="fax " id="faxrumahayahTB" name="faxrumahayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="fax " id="faxrumahayahTB" name="faxrumahayahTB">'
+                                            +'</div>'
                                         +'</div>'
 
                                         // kolom3
                                         +'<div class="span4">'
                                             // Pendidikan
                                             +'<label>Pendidikan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Pendidikan" id="pendidikanayahTB" name="pendidikanayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Pendidikan" id="pendidikanayahTB" name="pendidikanayahTB">'
+                                            +'</div>'
                                             // Bidang pekerjaan 
                                             +'<label>Bidang Pekerjaan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Bidang Pekerjaan" id="bidangpekerjaanTB" name="bidangpekerjaanTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Bidang Pekerjaan" id="bidangpekerjaanTB" name="bidangpekerjaanTB">'
+                                            +'</div>'
                                             //Pekerjaan
                                             +'<label>Pekerjaan Ayah</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="pekerjaan ayah" id="pekerjaanayahTB" name="pekerjaanayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="pekerjaan ayah" id="pekerjaanayahTB" name="pekerjaanayahTB">'
+                                            +'</div>'
                                             // posisi 
                                             +'<label>Posisi Pekerjaan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="posisi pekerjaan " id="posisiayahTB" name="posisiayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="posisi pekerjaan " id="posisiayahTB" name="posisiayahTB">'
+                                            +'</div>'
                                             // penghasilan ayah
                                             +'<label>Penghasilan Ayah</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="penghasilanayah" id="penghasilanayahTB" name="penghasilanayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="penghasilanayah" id="penghasilanayahTB" name="penghasilanayahTB">'
+                                            +'</div>'
                                             // telpon  kantor
                                             +'<label>Telpon Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="telpon " id="telponkantorayahTB" name="telponkantorayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="telpon " id="telponkantorayahTB" name="telponkantorayahTB">'
+                                            +'</div>'
                                             // fax  kantor
                                             +'<label>Fax Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="fax kantor " id="faxkantorayahTB" name="faxkantorayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="fax kantor " id="faxkantorayahTB" name="faxkantorayahTB">'
+                                            +'</div>'
                                             // alamat kantor 
                                             +'<label>Alamat Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="alamat kantor " id="alamatkantorayahTB" name="alamatkantorayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="alamat kantor " id="alamatkantorayahTB" name="alamatkantorayahTB">'
+                                            +'</div>'
                                             // kodepos
                                             +'<label>kodepos</label>'   
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
+                                            +'</div>'
                                         +'</div>'
 
                                     +'</div>'
@@ -299,10 +377,14 @@ var contentFR = '';
                                         +'<div class="span4">'
                                             // ayah
                                             +'<label>Nama ibu</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="nama ibu" id="namaibuTB" name="namaibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="nama ibu" id="namaibuTB" name="namaibuTB">'
+                                            +'</div>'
                                             // tampat lahir
                                             +'<label>Tempat Lahir</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ibu " required id="tmplahiribuTB" name="tmplahiribuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input placeholder="tempat lahir ibu " required id="tmplahiribuTB" name="tmplahiribuTB">'
+                                            +'</div>'
                                             // tanggal lahir 
                                             +'<label>Tanggal lahir</label>'
                                             +'<div class="input-control text" data-role="datepicker"'
@@ -313,7 +395,9 @@ var contentFR = '';
                                             +'</div>'
                                             // warga negara
                                             +'<label>Warga Negara</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="warga negara" id="warganegaraibuTB" name="warganegaraibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="warga negara" id="warganegaraibuTB" name="warganegaraibuTB">'
+                                            +'</div>'
                                             // agama
                                             +'<label>Agama</label>'
                                             +'<div class="input-control select xsize3">'
@@ -321,66 +405,102 @@ var contentFR = '';
                                             +'</div>'
                                             // gereja ibu
                                             +'<label>Gereja</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="gereja" id="gerejaibuTB" name="gerejaibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="gereja" id="gerejaibuTB" name="gerejaibuTB">'
+                                            +'</div>'
                                         +'</div>'
                                             
                                         // kolom2
                                         +'<div class="span4">'
                                             // HP
                                             +'<label>No. HP</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. HP" id="hpibuTB" name="hpibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="No. HP" id="hpibuTB" name="hpibuTB">'
+                                            +'</div>'
                                             // Telpon
                                             +'<label>No. Telpon</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. Telpon" id="telponibuTB" name="telponibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="No. Telpon" id="telponibuTB" name="telponibuTB">'
+                                            +'</div>'
                                             // email
                                             +'<label>Email</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Email" id="emailibuTB" name="emailibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Email" id="emailibuTB" name="emailibuTB">'
+                                            +'</div>'
                                             // pinbb
                                             +'<label>pin BBM</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="pin BBM" id="pinbbibuTB" name="pinbbibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="pin BBM" id="pinbbibuTB" name="pinbbibuTB">'
+                                            +'</div>'
                                             // alamat
                                             +'<label>Alamat</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Alamat" id="alamatibuTB" name="alamatibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Alamat" id="alamatibuTB" name="alamatibuTB">'
+                                            +'</div>'
                                             // kota
                                             +'<label>kota</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotaibuTB" name="kotaibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="kota" id="kotaibuTB" name="kotaibuTB">'
+                                            +'</div>'
                                             // kodepos
                                             +'<label>kodepos</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
+                                            +'</div>'
                                             // fax rumah 
                                             +'<label>fax rumah</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="fax " id="faxrumahibuTB" name="faxrumahibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="fax " id="faxrumahibuTB" name="faxrumahibuTB">'
+                                            +'</div>'
                                         +'</div>'
 
                                         // kolom3
                                         +'<div class="span4">'
                                             // Pendidikan
                                             +'<label>Pendidikan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Pendidikan" id="pendidikanibuTB" name="pendidikanibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Pendidikan" id="pendidikanibuTB" name="pendidikanibuTB">'
+                                            +'</div>'
                                             // Bidang pekerjaan 
                                             +'<label>Bidang Pekerjaan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Bidang Pekerjaan" id="bidangpekerjaanTB" name="bidangpekerjaanTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="Bidang Pekerjaan" id="bidangpekerjaanTB" name="bidangpekerjaanTB">'
+                                            +'</div>'
                                             //Pekerjaan
                                             +'<label>Pekerjaan ibu</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="pekerjaan ibu" id="pekerjaanibuTB" name="pekerjaanibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="pekerjaan ibu" id="pekerjaanibuTB" name="pekerjaanibuTB">'
+                                            +'</div>'
                                             // posisi 
                                             +'<label>Posisi Pekerjaan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="posisi pekerjaan " id="posisiibuTB" name="posisiibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="posisi pekerjaan " id="posisiibuTB" name="posisiibuTB">'
+                                            +'</div>'
                                             // penghasilan ibu
                                             +'<label>Penghasilan ibu</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="penghasilanibu" id="penghasilanibuTB" name="penghasilanibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="penghasilanibu" id="penghasilanibuTB" name="penghasilanibuTB">'
+                                            +'</div>'
                                             // telpon  kantor
                                             +'<label>Telpon Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="telpon " id="telponkantoribuTB" name="telponkantoribuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="telpon " id="telponkantoribuTB" name="telponkantoribuTB">'
+                                            +'</div>'
                                             // fax  kantor
                                             +'<label>Fax Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="fax kantor " id="faxkantoribuTB" name="faxkantoribuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="fax kantor " id="faxkantoribuTB" name="faxkantoribuTB">'
+                                            +'</div>'
                                             // alamat kantor 
                                             +'<label>Alamat Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="alamat kantor " id="alamatkantoribuTB" name="alamatkantoribuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="alamat kantor " id="alamatkantoribuTB" name="alamatkantoribuTB">'
+                                            +'</div>'
                                             // kodepos
                                             +'<label>kodepos</label>'   
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
+                                            +'</div>'
                                         +'</div>'
 
                                     +'</div>'
@@ -397,22 +517,32 @@ var contentFR = '';
                                         +'<div class="span4">'
                                             // nama
                                             +'<label>Nama</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="nama" id="namawaliTB" name="namawaliTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="nama" id="namawaliTB" name="namawaliTB">'
+                                            +'</div>'
                                             // kelamin
                                             +'<label>kelamin</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kelamin" id="kelaminwaliTB" name="kelaminwaliTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="kelamin" id="kelaminwaliTB" name="kelaminwaliTB">'
+                                            +'</div>'
                                             // alamatwali
                                             +'<label>Alamat</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
+                                            +'</div>'
                                         +'</div>'
                                         // kolom2 
                                         +'<div class="span4">'
                                             // kotawali
                                             +'<label>Kota </label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
+                                            +'</div>'
                                             // telponwali
                                             +'<label>Telpon</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
+                                            +'<div class="input-control text xsize3">'
+                                                +'<input required placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
+                                            +'</div>'
                                         +'</div>'
 
                                     +'</div>'
@@ -438,40 +568,6 @@ var contentFR = '';
                                                     +'</tr>'
                                                 +'</thead>'
                                                 +'<tbody id="saudaraTBL">'
-                                                    +'<tr class="bg-white fg-red text-center">'
-                                                        +'<td>-</td>'
-                                                        +'<td>-</td>'
-                                                        +'<td>-</td>'
-                                                        +'<td>-</td>'
-                                                        +'<td>-</td>'
-                                                    +'</tr>'
-                                                +'</tbody>'
-                                            +'</table>'
-                                        +'</div>'
-                                    +'</div>'
-
-                                +'</div>'                            
-                            +'</div>'                            
-
-                            // kelengkapan etailmen
-                            +'<div class="accordion-frame">'
-                                +'<a class="heading bg-lightBlue fg-white" href="#">Kelengkapan Dokumen</a>'
-                                +'<div  style="display: block;" class="content grid">'
-                                    // baris 1
-                                    +'<div class="row">'
-                                        // kolom1
-                                        +'<div class="span8">'
-                                            +'<table class="table bordered hovered striped">'
-                                                +'<thead class="fg-white bg-blue">'
-                                                    +'<tr>'
-                                                        +'<th><input type="checkbox" data-transform="input-control" /></th>'
-                                                        +'<th>Nama</th>'
-                                                        +'<th>Jumlah</th>'
-                                                        +'<th>Upload File</th>'
-                                                        +'<th>Lihat File</th>'
-                                                    +'</tr>'
-                                                +'</thead>'
-                                                +'<tbody id="subdokumenTBL">'
                                                     +'<tr class="bg-white fg-red text-center">'
                                                         +'<td>-</td>'
                                                         +'<td>-</td>'

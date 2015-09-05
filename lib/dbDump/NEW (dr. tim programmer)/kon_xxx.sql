@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-03 06:26:25
+Date: 2015-09-06 06:52:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -54,7 +54,7 @@ CREATE TABLE `kon_grupmenu` (
 INSERT INTO `kon_grupmenu` VALUES ('1', '2', '1', 'Menu Kesiswaan', 'four');
 INSERT INTO `kon_grupmenu` VALUES ('2', '2', '1', 'Menu Belajar - Mengajar', 'four');
 INSERT INTO `kon_grupmenu` VALUES ('3', '1', '1', 'Menu Master', 'four');
-INSERT INTO `kon_grupmenu` VALUES ('4', '1', '2', 'Menu Transaksi', 'four');
+INSERT INTO `kon_grupmenu` VALUES ('4', '2', '2', 'Menu Transaksi', 'four');
 INSERT INTO `kon_grupmenu` VALUES ('5', '2', '6', 'Menu Transaksi ', 'double');
 INSERT INTO `kon_grupmenu` VALUES ('6', '1', '6', 'Menu Master', 'double');
 INSERT INTO `kon_grupmenu` VALUES ('7', '1', '9', 'Menu Sistem', 'double');
@@ -300,7 +300,7 @@ CREATE TABLE `kon_login` (
   PRIMARY KEY (`id_login`),
   KEY `id_level` (`id_level`),
   CONSTRAINT `kon_login_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `kon_level` (`id_level`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_login
@@ -309,8 +309,8 @@ INSERT INTO `kon_login` VALUES ('42', 'a', 'a', 'MGNjMTc1YjljMGYxYjZhODMxYzM5OWU
 INSERT INTO `kon_login` VALUES ('44', 'g', 'g', 'YjJmNWZmNDc0MzY2NzFiNmU1MzNkOGRjMzYxNDg0NWQ=', '21', '0', '1', '', '0000-00-00 00:00:00');
 INSERT INTO `kon_login` VALUES ('45', 'adm+ akademik', 'aaka', 'Yzg5MWY0ZTgxYjdhZmM4NzQ1ZDEwODAwNmQ1NWY5ODU=', '18', '0', '', '', '0000-00-00 00:00:00');
 INSERT INTO `kon_login` VALUES ('46', 'new', 'new', 'MjJhZjY0NWQxODU5Y2I1Y2E2ZGEwYzQ4NGYxZjM3ZWE=', '18', '0', '', '', '0000-00-00 00:00:00');
-INSERT INTO `kon_login` VALUES ('52', 'a+', 'a+', 'Yzg5NDhjMjAwOTRmNjQyMDBjMmI4ZmJhMDQ3YmRiODM=', '18', '0', '1', '', '0000-00-00 00:00:00');
 INSERT INTO `kon_login` VALUES ('60', 'Mr. Boss', 'admin', 'MjEyMzJmMjk3YTU3YTVhNzQzODk0YTBlNGE4MDFmYzM=', '17', '0', '1', '', '0000-00-00 00:00:00');
+INSERT INTO `kon_login` VALUES ('62', 'operator saja', 'operator', 'NGI1ODMzNzZiMjc2N2I5MjNjM2UxZGE2MGQxMGRlNTk=', '20', '0', '1', '', '0000-00-00 00:00:00');
 
 -- ----------------------------
 -- Table structure for kon_logindepartemen
@@ -324,7 +324,7 @@ CREATE TABLE `kon_logindepartemen` (
   KEY `id_login` (`id_login`) USING BTREE,
   KEY `id_departemen` (`id_departemen`) USING BTREE,
   CONSTRAINT `id_login_FK2` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_logindepartemen
@@ -333,10 +333,10 @@ INSERT INTO `kon_logindepartemen` VALUES ('9', '42', '1');
 INSERT INTO `kon_logindepartemen` VALUES ('11', '44', '1');
 INSERT INTO `kon_logindepartemen` VALUES ('12', '45', '1');
 INSERT INTO `kon_logindepartemen` VALUES ('13', '46', '1');
-INSERT INTO `kon_logindepartemen` VALUES ('27', '52', '1');
 INSERT INTO `kon_logindepartemen` VALUES ('49', '60', '1');
 INSERT INTO `kon_logindepartemen` VALUES ('50', '60', '2');
 INSERT INTO `kon_logindepartemen` VALUES ('51', '60', '3');
+INSERT INTO `kon_logindepartemen` VALUES ('53', '62', '1');
 
 -- ----------------------------
 -- Table structure for kon_loginhistory
@@ -349,7 +349,7 @@ CREATE TABLE `kon_loginhistory` (
   PRIMARY KEY (`id_loginhistory`),
   KEY `id_login` (`id_login`) USING BTREE,
   CONSTRAINT `kon_loginhistory_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=216 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=256 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_loginhistory
@@ -358,10 +358,6 @@ INSERT INTO `kon_loginhistory` VALUES ('11', '42', '2015-08-18 03:41:27');
 INSERT INTO `kon_loginhistory` VALUES ('12', '42', '2015-08-18 03:41:27');
 INSERT INTO `kon_loginhistory` VALUES ('15', '45', '2015-08-18 03:46:13');
 INSERT INTO `kon_loginhistory` VALUES ('16', '45', '2015-08-18 03:46:13');
-INSERT INTO `kon_loginhistory` VALUES ('57', '52', '2015-08-19 19:46:41');
-INSERT INTO `kon_loginhistory` VALUES ('58', '52', '2015-08-19 19:46:41');
-INSERT INTO `kon_loginhistory` VALUES ('65', '52', '2015-08-20 00:27:59');
-INSERT INTO `kon_loginhistory` VALUES ('66', '52', '2015-08-20 00:27:59');
 INSERT INTO `kon_loginhistory` VALUES ('201', '60', '2015-09-01 01:42:30');
 INSERT INTO `kon_loginhistory` VALUES ('202', '60', '2015-09-01 01:42:30');
 INSERT INTO `kon_loginhistory` VALUES ('203', '60', '2015-09-01 01:54:20');
@@ -377,6 +373,44 @@ INSERT INTO `kon_loginhistory` VALUES ('212', '60', '2015-09-02 18:43:09');
 INSERT INTO `kon_loginhistory` VALUES ('213', '60', '2015-09-02 18:43:09');
 INSERT INTO `kon_loginhistory` VALUES ('214', '60', '2015-09-02 23:19:59');
 INSERT INTO `kon_loginhistory` VALUES ('215', '60', '2015-09-02 23:19:59');
+INSERT INTO `kon_loginhistory` VALUES ('216', '60', '2015-09-04 23:09:40');
+INSERT INTO `kon_loginhistory` VALUES ('217', '60', '2015-09-04 23:09:40');
+INSERT INTO `kon_loginhistory` VALUES ('218', '60', '2015-09-05 00:18:48');
+INSERT INTO `kon_loginhistory` VALUES ('219', '60', '2015-09-05 00:18:48');
+INSERT INTO `kon_loginhistory` VALUES ('220', '60', '2015-09-05 01:17:31');
+INSERT INTO `kon_loginhistory` VALUES ('221', '60', '2015-09-05 01:17:31');
+INSERT INTO `kon_loginhistory` VALUES ('222', '60', '2015-09-05 01:22:45');
+INSERT INTO `kon_loginhistory` VALUES ('223', '60', '2015-09-05 01:22:45');
+INSERT INTO `kon_loginhistory` VALUES ('224', '60', '2015-09-05 19:53:42');
+INSERT INTO `kon_loginhistory` VALUES ('225', '60', '2015-09-05 19:53:42');
+INSERT INTO `kon_loginhistory` VALUES ('226', '60', '2015-09-05 21:27:02');
+INSERT INTO `kon_loginhistory` VALUES ('227', '60', '2015-09-05 21:27:02');
+INSERT INTO `kon_loginhistory` VALUES ('228', '60', '2015-09-05 21:30:31');
+INSERT INTO `kon_loginhistory` VALUES ('229', '60', '2015-09-05 21:30:31');
+INSERT INTO `kon_loginhistory` VALUES ('230', '60', '2015-09-05 21:31:24');
+INSERT INTO `kon_loginhistory` VALUES ('231', '60', '2015-09-05 21:31:24');
+INSERT INTO `kon_loginhistory` VALUES ('232', '60', '2015-09-05 21:34:42');
+INSERT INTO `kon_loginhistory` VALUES ('233', '60', '2015-09-05 21:34:42');
+INSERT INTO `kon_loginhistory` VALUES ('236', '60', '2015-09-05 22:11:55');
+INSERT INTO `kon_loginhistory` VALUES ('237', '60', '2015-09-05 22:11:55');
+INSERT INTO `kon_loginhistory` VALUES ('238', '60', '2015-09-05 22:14:07');
+INSERT INTO `kon_loginhistory` VALUES ('239', '60', '2015-09-05 22:14:07');
+INSERT INTO `kon_loginhistory` VALUES ('240', '60', '2015-09-05 22:30:37');
+INSERT INTO `kon_loginhistory` VALUES ('241', '60', '2015-09-05 22:30:37');
+INSERT INTO `kon_loginhistory` VALUES ('242', '60', '2015-09-05 22:31:30');
+INSERT INTO `kon_loginhistory` VALUES ('243', '60', '2015-09-05 22:31:30');
+INSERT INTO `kon_loginhistory` VALUES ('244', '62', '2015-09-05 22:34:54');
+INSERT INTO `kon_loginhistory` VALUES ('245', '62', '2015-09-05 22:34:54');
+INSERT INTO `kon_loginhistory` VALUES ('246', '62', '2015-09-05 23:17:41');
+INSERT INTO `kon_loginhistory` VALUES ('247', '62', '2015-09-05 23:17:41');
+INSERT INTO `kon_loginhistory` VALUES ('248', '60', '2015-09-05 23:23:34');
+INSERT INTO `kon_loginhistory` VALUES ('249', '60', '2015-09-05 23:23:34');
+INSERT INTO `kon_loginhistory` VALUES ('250', '60', '2015-09-06 02:43:11');
+INSERT INTO `kon_loginhistory` VALUES ('251', '60', '2015-09-06 02:43:11');
+INSERT INTO `kon_loginhistory` VALUES ('252', '60', '2015-09-06 04:02:15');
+INSERT INTO `kon_loginhistory` VALUES ('253', '60', '2015-09-06 04:02:15');
+INSERT INTO `kon_loginhistory` VALUES ('254', '60', '2015-09-06 05:57:22');
+INSERT INTO `kon_loginhistory` VALUES ('255', '60', '2015-09-06 05:57:22');
 
 -- ----------------------------
 -- Table structure for kon_menu
@@ -586,7 +620,7 @@ CREATE TABLE `kon_privillege` (
   KEY `id_menu` (`id_menu`) USING BTREE,
   CONSTRAINT `id_login_FK` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `id_menu_FK` FOREIGN KEY (`id_menu`) REFERENCES `kon_menu` (`id_menu`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1839 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1844 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_privillege
@@ -638,20 +672,6 @@ INSERT INTO `kon_privillege` VALUES ('187', '46', '15', '0');
 INSERT INTO `kon_privillege` VALUES ('188', '46', '14', '0');
 INSERT INTO `kon_privillege` VALUES ('189', '46', '13', '0');
 INSERT INTO `kon_privillege` VALUES ('190', '46', '12', '0');
-INSERT INTO `kon_privillege` VALUES ('691', '52', '24', '0');
-INSERT INTO `kon_privillege` VALUES ('692', '52', '35', '0');
-INSERT INTO `kon_privillege` VALUES ('693', '52', '37', '0');
-INSERT INTO `kon_privillege` VALUES ('694', '52', '36', '0');
-INSERT INTO `kon_privillege` VALUES ('695', '52', '38', '0');
-INSERT INTO `kon_privillege` VALUES ('696', '52', '4', '0');
-INSERT INTO `kon_privillege` VALUES ('697', '52', '40', '0');
-INSERT INTO `kon_privillege` VALUES ('698', '52', '2', '0');
-INSERT INTO `kon_privillege` VALUES ('699', '52', '3', '0');
-INSERT INTO `kon_privillege` VALUES ('700', '52', '22', '0');
-INSERT INTO `kon_privillege` VALUES ('701', '52', '45', '0');
-INSERT INTO `kon_privillege` VALUES ('702', '52', '47', '0');
-INSERT INTO `kon_privillege` VALUES ('703', '52', '19', '0');
-INSERT INTO `kon_privillege` VALUES ('704', '52', '21', '0');
 INSERT INTO `kon_privillege` VALUES ('1695', '60', '1', '1');
 INSERT INTO `kon_privillege` VALUES ('1696', '60', '2', '1');
 INSERT INTO `kon_privillege` VALUES ('1697', '60', '3', '1');
@@ -796,6 +816,8 @@ INSERT INTO `kon_privillege` VALUES ('1835', '60', '152', '1');
 INSERT INTO `kon_privillege` VALUES ('1836', '60', '153', '1');
 INSERT INTO `kon_privillege` VALUES ('1837', '60', '154', '1');
 INSERT INTO `kon_privillege` VALUES ('1838', '60', '155', '1');
+INSERT INTO `kon_privillege` VALUES ('1842', '62', '155', '1');
+INSERT INTO `kon_privillege` VALUES ('1843', '62', '1', '1');
 
 -- ----------------------------
 -- Table structure for kon_warna

@@ -87,7 +87,6 @@
 			while($row = mysql_fetch_assoc($result)) {
 				$rows[] =$row; 
 			}
-// pr($rows);
 			$response=array(
 				'page'    =>$page,
 				'total'   =>$total_pages,
@@ -125,9 +124,9 @@
 									LEFT JOIN psb_angsuran a ON a.replid = c.angsuran
 								WHERE
 									c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
-								AND c.nama LIKE "%'.$nama.'%"
-								AND c.kelompok = '.$kelompok.'
-								AND akt.tingkat LIKE "%'.$tingkat.'%"
+									AND c.nama LIKE "%'.$nama.'%"
+									AND c.kelompok = '.$kelompok.'
+									AND akt.tingkat LIKE "%'.$tingkat.'%"
 								ORDER BY
 									c.nopendaftaran ASC,
 									c.nama ASC
@@ -191,6 +190,7 @@
 					break; 
 					
 					case 'biaya':
+						// pr($_SESSION);
 						$s='SELECT 	
 								b.replid, 
 								b.biaya, 
@@ -226,7 +226,7 @@
 									'jenistagihan' =>$r['jenistagihan'],
 								);
 							}
-						}$out=json_encode(array('status'=>$stat,'biayaArr'=>$biayaArr));
+						}$out=json_encode(array('status'=>$stat,'levelurutan'=>$_SESSION['levelurutanS'],'biayaArr'=>$biayaArr));
 					break;
 				}
 			break; 
