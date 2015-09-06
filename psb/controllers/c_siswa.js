@@ -1,28 +1,31 @@
-var mnu       = 'siswa';
-var mnu2      = 'departemen';
-var mnu3      = 'tahunajaran';
-var mnu4      = 'tingkat';
-var mnu5      = 'golongan';
-var mnu6      = 'angsuran'; 
-var mnu7      = 'detaildiskon';
-var mnu8      = 'detailgelombang';
-var mnu9      = 'subtingkat';
+var mnu   = 'siswa';
+var mnu2  = 'departemen';
+var mnu3  = 'tahunajaran';
+var mnu4  = 'tingkat';
+var mnu5  = 'golongan';
+var mnu6  = 'angsuran'; 
+var mnu7  = 'detaildiskon';
+var mnu8  = 'detailgelombang';
+var mnu9  = 'subtingkat';
+var mnu10 = 'dokumen';
 
-var dir       = 'models/m_'+mnu+'.php';
-var dir2      = '../akademik/models/m_'+mnu2+'.php';
-var dir3      = '../akademik/models/m_'+mnu3+'.php';
-var dir4      = '../akademik/models/m_'+mnu4+'.php';
-var dir5      = 'models/m_'+mnu5+'.php';
-var dir6      = 'models/m_'+mnu6+'.php';
-var dir7      = 'models/m_'+mnu7+'.php';
-var dir8      = 'models/m_'+mnu8+'.php';
-var dir9      = '../akademik/models/m_'+mnu9+'.php';
+var dir   = 'models/m_'+mnu+'.php';
+var dir2  = '../akademik/models/m_'+mnu2+'.php';
+var dir3  = '../akademik/models/m_'+mnu3+'.php';
+var dir4  = '../akademik/models/m_'+mnu4+'.php';
+var dir5  = 'models/m_'+mnu5+'.php';
+var dir6  = 'models/m_'+mnu6+'.php';
+var dir7  = 'models/m_'+mnu7+'.php';
+var dir8  = 'models/m_'+mnu8+'.php';
+var dir9  = '../akademik/models/m_'+mnu9+'.php';
+var dir10 = 'models/m_'+mnu10+'.php';
 var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
         cmbdepartemen('filter','');
-        contentFR +='<form style="overflow:scroll;height:560px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="simpanSV(); return false;">' 
+        // contentFR +='<form id="formx" onfocus="$(this).scrollbar({height: 355,axis: \'y\'});" class="scrollbar" xstyle="overflow:scroll;height:560px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="simpanSV(); return false;">' 
+        contentFR +='<form id="formx" data-role="scrollbox" data-scroll="vertical" style="overflow:scroll;height:560px;" xstyle="height:300px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="siswaSV(); return false;">' 
                         // accordion
                         +'<div class="accordion with-marker xspan3 xplace-left margin10" data-role="accordion" data-closeany="true">'
                             // kriteria
@@ -106,7 +109,7 @@ var contentFR = '';
                                             +'<input type="text" data-transform="input-control"  required placeholder="bahasa 2" id="bahasa2TB" name="bahasa2TB">'
                                             // photo 
                                             +'<label>Pas Photo</label>'
-                                            +'<input type="file" data-transform="input-control" id="photoTB" name="photoTB"/>'
+                                            +'<input type="file" onChange="previewImage(this);" data-transform="input-control" id="photoTB" name="photoTB"/>'
                                         +'</div>'
                                             
                                         // kolom2
@@ -134,11 +137,19 @@ var contentFR = '';
                                             +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposTB" name="kodeposTB">'
                                             // photo
                                             +'<label>Pas Foto</label>'
-                                            +'<div class="tile">'
-                                                +'<div class="tile-content image">'
-                                                    +'<img src="../img/no_image.jpg">'
+                                            +'<div class="tile double-vertical double-horizontal">'
+                                                +'<img id="previmg" src="../img/no_image.jpg">'
+                                                +'<div class="brand bg-dark opacity">'
+                                                    +'<span class="text">'
+                                                        +'foto si ABC'
+                                                    +'</span>'
                                                 +'</div>'
                                             +'</div>'
+                                            // +'<div class="tile">'
+                                            //     +'<div class="tile-content image">'
+                                            //         +'<img id="previmg" src="../img/no_image.jpg">'
+                                            //     +'</div>'
+                                            // +'</div>'
                                         +'</div>'
 
                                         // kolom3
@@ -453,7 +464,7 @@ var contentFR = '';
                                 +'</div>'                            
                             +'</div>'                            
 
-                            // kelengkapan etailmen
+                            // kelengkapan dokumen
                             +'<div class="accordion-frame">'
                                 +'<a class="heading bg-lightBlue fg-white" href="#">Kelengkapan Dokumen</a>'
                                 +'<div  style="display: block;" class="content grid">'
@@ -490,7 +501,18 @@ var contentFR = '';
                         +'</div>'
                         // end of accrdion 
                     +'</form>';
-
+        // form scroll
+        // $("#form1").scrollbar({
+        //     height: 355,
+        //     axis: 'y'
+        // });
+        // $("#scrollbox2").scrollbar({
+        //     axis: 'x',
+        //     height: 355
+        // });
+        // $("#scrollbox3").scrollbar({
+        //     height: 355
+        // });
     // button action
         $("#batalBC").on('click',function(){
             switchPN('view','');
@@ -531,33 +553,29 @@ var contentFR = '';
     }); 
       
 //preview image sebelum upload -------
-    function PreviewImage(e){
+    function previewImage(e){
         var typex   = e.files[0].type;
         var sizex   = e.files[0].size;
         var namex   = e.files[0].name;
         
-        if(typex =='image/png'||typex =='image/jpg'||typex =='image/jpeg'|| typex =='image/gif'){ //validasi format
-            // alert('masuk valid type');
+        if(typex =='image/bmp'||typex =='image/png'||typex =='image/jpg'||typex =='image/jpeg'|| typex =='image/gif'){ //validasi format
             if(sizex>(900*900)){ //validasi size
-                // alert('masuk invalid size');
                 notif('ukuran max 1 MB','red');
                 $(e).val('');
                 return false;   
             }else{ 
-                // alert('masuk preview');
-                $('#previmg2').attr('src','../img/w8loader.gif');
+                $('#previmg').attr('src','../img/w8loader.gif');
                 var reader = new FileReader();
                 reader.readAsDataURL(e.files[0]);
     
                 reader.onload = function (oFREvent){
                     var urlx  = oFREvent.target.result;
                     setTimeout(function(){
-                        $('#previmg2').attr('src',urlx);//.removeAttr('style');
+                        $('#previmg').attr('src',urlx);//.removeAttr('style');
                     },1000);
                 };
             }
         }else{ // format salah
-            // alert('masuk invalid type');
             $('#previmg').attr('src','<img src="../img/loader.gif">');
             $(e).val('');
             notif('hanya format gambar(jpeg,jpg,png)','red');
@@ -1104,7 +1122,10 @@ var contentFR = '';
                     cmbgolongan('form','');
                     cmbangsuran('');
                     biayaFC();
+                    subdokumenFC();
                 }
+                // $("#form1").scrollbar({height: 355,axis: 'y'});
+
                 titlex='<span class="icon-plus-2"></span> Tambah ';
                 $.Dialog.title(titlex+' '+mnu);
                 $('#departemenTB').focus();
@@ -1377,7 +1398,7 @@ function notif(cont,clr) {
                                         +'<td><div class="input-control text"><input '+(dt.levelurutan==1 || dt.levelurutan==2?' name="ketdiskonkhusus'+item.replid+'TB"':'disabled')+' placeholder="keterangan diskon" type="text" id="ketdiskonkhusus'+item.replid+'TB" /></div></td>'
                                         +'<td>'
                                             +'<div class="input-control text"><input onkeyup="getBiayaNett('+item.replid+');" value="Rp. 0" class="text-right diskonkhususTB" onfocus="inputuang(this);" placeholder="nominal" type="text" id="diskonkhusus'+item.replid+'TB" '+(dt.levelurutan==1 || dt.levelurutan==2?' name="diskonkhusus'+item.replid+'TB"':'disabled')+'></div>'
-                                            +'<sup style="font-weight:bold;" class="fg-red">* Hak Akses : Petugas Khusus </sup>'
+                                            +'<sup style="font-weight:bold;" class="fg-red">* Diisi oleh Petugas Khusus </sup>'
                                         +'</td>'
                                     +'</tr>';
                                 }
@@ -1500,5 +1521,14 @@ function notif(cont,clr) {
             $('#detaildiskon'+idy+'TR').remove();
             detaildiskonArr(idx);
             getBiayaNett(idx,idy);
+        });
+    }
+
+
+    function subdokumenFC(){
+        var u = dir10;        
+        var d = 'aksi=cmb'+mnu10+'&tingkat='+$('#tingkatTB').val();        
+        ajax(u,d).done(function (dt){
+
         });
     }

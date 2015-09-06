@@ -206,20 +206,24 @@
 			// cmbwarna -----------------------------------------------------------------
 			case 'cmb'.$mnu:
 				$w='';
-				if(isset($_POST['id_'.$mnu])){
-					$w.='where id_'.$mnu.'='.$_POST['id_'.$mnu];
+				if(isset($_POST['replid'])){
+					$w.='where sd.replid='.$_POST['replid'];
 				}else{
-					if(isset($_POST[$mnu])){
-						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST['departemen'])){
-						$w.='where departemen ='.$_POST['departemen'];
+					if(isset($_POST['tingkat'])){
+						$w.='where sd.tingkat = '.$_POST['tingkat'];
 					}
 				}
 				
-				$s	= ' SELECT *
-						from '.$tb.'
-						'.$w.'		
-						ORDER  BY urutan ASC';
+				$s	= ' SELECT
+							sd.replid,	
+							d.dokumen,	
+							sd.jumlah,
+							sj.satuanjumlah
+						FROM
+							psb_subdokumen sd
+							JOIN psb_dokumen d on d.replid = sd.dokumen
+							JOIN psb_satuanjumlah sj on sj.replid = sd.satuanjumlah
+						'.$w;
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
@@ -231,7 +235,7 @@
 					if($n=0){ // kosong 
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
-						if(!isset($_POST['id_'.$mnu])){
+						if(!isset($_POST['replid'])){
 							while ($r=mysql_fetch_assoc($e)) {
 								$dt[]=$r;
 							}
