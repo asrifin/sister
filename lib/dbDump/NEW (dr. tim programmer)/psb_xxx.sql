@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-06 06:52:38
+Date: 2015-09-07 04:21:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -9938,52 +9938,52 @@ CREATE TABLE `psb_siswa` (
   `replid` int(11) NOT NULL AUTO_INCREMENT,
   `nopendaftaran` varchar(20) NOT NULL,
   `noformulir` varchar(20) DEFAULT NULL,
-  `nama` varchar(100) NOT NULL,
+  `namasiswa` varchar(100) NOT NULL,
   `nis` varchar(100) NOT NULL DEFAULT '',
   `nisn` varchar(100) NOT NULL DEFAULT '',
-  `panggilan` varchar(30) DEFAULT NULL,
+  `panggilansiswa` varchar(30) DEFAULT NULL,
   `aktif` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `sekolahasal` varchar(100) NOT NULL,
-  `suku` int(10) unsigned NOT NULL DEFAULT '0',
+  `sekolahasalsiswa` varchar(100) NOT NULL,
+  `sukusiswa` int(10) unsigned NOT NULL DEFAULT '0',
   `agamasiswa` int(11) NOT NULL DEFAULT '0',
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `kelamin` enum('L','P') NOT NULL,
-  `tmplahir` varchar(50) NOT NULL,
-  `tgllahir` date NOT NULL,
-  `warganegara` varchar(20) NOT NULL,
+  `jkelaminsiswa` enum('L','P') NOT NULL,
+  `tempatlahirsiswa` varchar(50) NOT NULL,
+  `tanggallahirsiswa` date NOT NULL,
+  `warganegarasiswa` varchar(20) NOT NULL,
   `anakke` tinyint(2) unsigned NOT NULL DEFAULT '0',
-  `berat` decimal(4,1) unsigned NOT NULL DEFAULT '0.0',
-  `tinggi` decimal(4,1) unsigned NOT NULL DEFAULT '0.0',
-  `darah` enum('A','B','AB','O') DEFAULT NULL,
-  `photo` longtext NOT NULL,
-  `alamat` varchar(255) NOT NULL,
-  `kodepos` varchar(8) NOT NULL,
-  `telpon` varchar(20) NOT NULL,
-  `pinbb` varchar(20) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `penyakit` varchar(300) DEFAULT NULL,
-  `hp` varchar(15) DEFAULT NULL,
-  `catatankesehatan` text NOT NULL,
-  `kotasekolahasal` varchar(25) DEFAULT NULL,
-  `negarasekolahasal` varchar(25) DEFAULT NULL,
-  `ijazah` varchar(55) DEFAULT NULL,
-  `keterangan` text,
-  `setbiaya` int(10) NOT NULL DEFAULT '0',
-  `bahasa2` varchar(20) NOT NULL,
-  `bahasa1` varchar(20) NOT NULL,
-  `namabank` varchar(100) NOT NULL,
-  `rekening` varchar(50) NOT NULL,
+  `beratsiswa` decimal(4,1) unsigned NOT NULL DEFAULT '0.0',
+  `tinggisiswa` decimal(4,1) unsigned NOT NULL DEFAULT '0.0',
+  `darahsiswa` enum('A','B','AB','O') NOT NULL,
+  `photosiswa` longtext NOT NULL,
+  `alamatsiswa` varchar(255) NOT NULL,
+  `kodepossiswa` varchar(8) NOT NULL,
+  `telponsiswa` varchar(20) NOT NULL,
+  `pinbbsiswa` varchar(20) NOT NULL,
+  `emailsiswa` varchar(100) NOT NULL,
+  `penyakitsiswa` varchar(300) NOT NULL,
+  `hpsiswa` varchar(15) NOT NULL,
+  `catatankesehatansiswa` text NOT NULL,
+  `kotasiswa` varchar(25) NOT NULL,
+  `kotasekolahasalsiswa` varchar(25) NOT NULL,
+  `negarasekolahasalsiswa` varchar(25) NOT NULL,
+  `ijazahsiswa` varchar(55) NOT NULL,
+  `keterangansiswa` text,
+  `bahasasiswa1` varchar(20) NOT NULL,
+  `bahasasiswa2` varchar(20) NOT NULL,
   `diasuh` enum('1','2','3','4') NOT NULL DEFAULT '1' COMMENT '1=ayah+ibu, 2=ayah, 3=ibu, 4=wali',
   PRIMARY KEY (`replid`),
   UNIQUE KEY `UX_calonsiswa_replid` (`replid`),
-  KEY `FK_calonsiswa_suku` (`suku`),
+  KEY `FK_calonsiswa_suku` (`sukusiswa`),
   KEY `FK_calonsiswa_agama` (`agamasiswa`),
   KEY `FK_calonsiswa_statusiswa` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=1018 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of psb_siswa
 -- ----------------------------
+INSERT INTO `psb_siswa` VALUES ('21', '', null, 'nama', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('22', '', null, 'nama', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 
 -- ----------------------------
 -- Table structure for psb_siswa_copy
@@ -11025,19 +11025,27 @@ DROP TABLE IF EXISTS `psb_siswabiaya`;
 CREATE TABLE `psb_siswabiaya` (
   `replid` int(11) NOT NULL AUTO_INCREMENT,
   `siswa` int(11) NOT NULL,
-  `biaya` int(11) NOT NULL,
+  `detailbiaya` int(11) NOT NULL,
   `angsuran` int(11) NOT NULL,
   `ketdiskonkhusus` text NOT NULL,
   `diskonkhusus` decimal(14,0) NOT NULL,
   PRIMARY KEY (`replid`),
   KEY `siswa` (`siswa`) USING BTREE,
-  KEY `biaya` (`biaya`) USING BTREE,
+  KEY `biaya` (`detailbiaya`) USING BTREE,
   CONSTRAINT `siswaFK2` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswabiaya
 -- ----------------------------
+INSERT INTO `psb_siswabiaya` VALUES ('3', '21', '676', '4', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('4', '21', '649', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('5', '21', '667', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('6', '21', '658', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('7', '22', '676', '4', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('8', '22', '649', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('9', '22', '667', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('10', '22', '658', '0', '', '0');
 
 -- ----------------------------
 -- Table structure for psb_siswadiskon
@@ -11119,12 +11127,12 @@ DROP TABLE IF EXISTS `psb_siswasaudara`;
 CREATE TABLE `psb_siswasaudara` (
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `siswa` int(10) unsigned NOT NULL,
-  `jkelamin` enum('L','P') NOT NULL DEFAULT 'L',
-  `nama` varchar(100) NOT NULL,
-  `tempatlahir` varchar(100) NOT NULL,
-  `tanggallahir` date NOT NULL,
-  `sekolah` varchar(50) NOT NULL,
-  `grade` varchar(5) NOT NULL,
+  `jkelaminsaudara` enum('L','P') NOT NULL DEFAULT 'L',
+  `namasaudara` varchar(100) NOT NULL,
+  `tempatlahirsaudara` varchar(100) NOT NULL,
+  `tanggallahirsaudara` date NOT NULL,
+  `sekolahsaudara` varchar(50) NOT NULL,
+  `gradesaudara` varchar(5) NOT NULL,
   PRIMARY KEY (`replid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
@@ -11187,25 +11195,24 @@ CREATE TABLE `psb_subdokumen` (
   KEY `tingkat` (`tingkat`) USING BTREE,
   CONSTRAINT `dokumenFK` FOREIGN KEY (`dokumen`) REFERENCES `psb_dokumen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tingkatFK6` FOREIGN KEY (`tingkat`) REFERENCES `aka_tingkat` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_subdokumen
 -- ----------------------------
 INSERT INTO `psb_subdokumen` VALUES ('26', '11', '1', '1', '1');
-INSERT INTO `psb_subdokumen` VALUES ('30', '11', '7', '1', '1');
 INSERT INTO `psb_subdokumen` VALUES ('31', '11', '8', '1', '1');
-INSERT INTO `psb_subdokumen` VALUES ('32', '12', '1', '1', '1');
-INSERT INTO `psb_subdokumen` VALUES ('33', '12', '2', '1', '1');
 INSERT INTO `psb_subdokumen` VALUES ('36', '12', '7', '1', '1');
 INSERT INTO `psb_subdokumen` VALUES ('42', '13', '6', '1', '2');
 INSERT INTO `psb_subdokumen` VALUES ('43', '13', '7', '1', '2');
 INSERT INTO `psb_subdokumen` VALUES ('44', '13', '8', '1', '2');
 INSERT INTO `psb_subdokumen` VALUES ('45', '14', '7', '1', '1');
 INSERT INTO `psb_subdokumen` VALUES ('46', '14', '8', '3', '1');
-INSERT INTO `psb_subdokumen` VALUES ('48', '12', '3', '1', '1');
-INSERT INTO `psb_subdokumen` VALUES ('49', '12', '6', '1', '1');
+INSERT INTO `psb_subdokumen` VALUES ('49', '12', '6', '4', '1');
 INSERT INTO `psb_subdokumen` VALUES ('50', '11', '2', '3', '1');
+INSERT INTO `psb_subdokumen` VALUES ('51', '11', '3', '5', '1');
+INSERT INTO `psb_subdokumen` VALUES ('52', '12', '1', '2', '1');
+INSERT INTO `psb_subdokumen` VALUES ('53', '13', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for psb_syarat

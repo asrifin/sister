@@ -5,6 +5,38 @@
 	require_once  'psb_func.php';
 	require_once  'pus_func.php';
 
+
+	function addRecord($f,$tb){
+		if(is_array($f)){
+			$sql='INSERT INTO '.$tb.' SET ';
+			$s='';
+			foreach ($f as $i => $v) {
+				if($v!=null){
+					if(is_numeric($i)) $s.=','.$v.'="'.$_POST[$v.'TB'].'"';
+					else $s.=','.$i.'="'.$v.'"';
+				}
+			}$sql.=substr($s,1);
+		}
+		$stat=!exeQuery($sql)?false:true;
+		$idx=mysql_insert_id();
+		return array('isSukses'=>$stat,'id'=>$idx); 
+	}
+	function editRecord($f,$tb,$w){
+		if(is_array($f)){
+			$sql='UPDATE SET ';
+			$s='';
+			foreach ($f as $i => $v) {
+				$s.=','.$v.'='.$_POST[$v.'TB'];
+			}$sql.=substr($s,1);
+			$sql.=' WHERE '.$w.'='.$_POST[$w];
+			return exeQuery($sql);
+		}
+	}	
+	function exeQuery($sql){
+		$e=mysql_query($sql);
+		return $e?true:false;
+	}
+	
 	// error handling
 	function errMsg($no,$dt){
 		$dt=isset($dt)?$dt:'';

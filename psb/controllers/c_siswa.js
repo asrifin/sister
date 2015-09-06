@@ -8,6 +8,7 @@ var mnu7  = 'detaildiskon';
 var mnu8  = 'detailgelombang';
 var mnu9  = 'subtingkat';
 var mnu10 = 'dokumen';
+var mnu11 = 'agama';
 
 var dir   = 'models/m_'+mnu+'.php';
 var dir2  = '../akademik/models/m_'+mnu2+'.php';
@@ -19,13 +20,15 @@ var dir7  = 'models/m_'+mnu7+'.php';
 var dir8  = 'models/m_'+mnu8+'.php';
 var dir9  = '../akademik/models/m_'+mnu9+'.php';
 var dir10 = 'models/m_'+mnu10+'.php';
+var dir11 = 'models/m_'+mnu11+'.php';
 var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
         cmbdepartemen('filter','');
         // contentFR +='<form id="formx" onfocus="$(this).scrollbar({height: 355,axis: \'y\'});" class="scrollbar" xstyle="overflow:scroll;height:560px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="simpanSV(); return false;">' 
-        contentFR +='<form id="formx" data-role="scrollbox" data-scroll="vertical" style="overflow:scroll;height:560px;" xstyle="height:300px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="siswaSV(); return false;">' 
+        contentFR +='<form id="siswaFR" data-role="scrollbox" data-scroll="vertical" style="overflow:scroll;height:560px;" xstyle="height:300px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="siswaSV(); return false;">' 
+                        +'<input type="hidden" name="idformTB" id="idformTB" />'
                         // accordion
                         +'<div class="accordion with-marker xspan3 xplace-left margin10" data-role="accordion" data-closeany="true">'
                             // kriteria
@@ -47,7 +50,7 @@ var contentFR = '';
                                             +'<select  data-transform="input-control" onchange=" getBiaya();" required id="detailgelombangTB" name="detailgelombangTB"><option value="">-silahkan pilih Dept. dan Tahun Ajaran dahulu-</option></select>'
                                             // tingkat
                                             +'<label>Tingkat</label>'
-                                            +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya();" id="tingkatTBZ" name="tingkatTB"></select>'
+                                            +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya(); subdokumenFC();" id="tingkatTBZ" name="tingkatTB"></select>'
                                             // subtingkat
                                             +'<label>Sub Tingkat</label>'
                                             +'<select  data-transform="input-control" onchange=" getBiaya();"  required id="subtingkatTB" name="subtingkatTB"></select>'
@@ -62,7 +65,7 @@ var contentFR = '';
                                 +'</div>'
                             +'</div>'
                             
-                            // bioadata Siswa
+                            // // bioadata Siswa
                             +'<div class="accordion-frame">'
                                 +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Siswa</a>'
                                 +'<div style="display: block;" class="content grid">'
@@ -75,66 +78,66 @@ var contentFR = '';
                                             +'<input type="text" data-transform="input-control" id="nopendaftaranTB" name="nopendaftaranTB">'
                                             // nama
                                             +'<label>Nama</label>'
-                                            +'<input type="text" data-transform="input-control" required placeholder="nama" id="namaTB" name="namaTB">'
+                                            +'<input type="text" data-transform="input-control" required placeholder="nama" id="namasiswaTB" name="namasiswaTB">'
                                             // panggilan
                                             +'<label>Nama Panggilan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="nama panggilan" id="panggilanTB" name="panggilanTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="nama panggilan" id="panggilansiswaTB" name="panggilansiswaTB">'
                                             // kelamin
                                             +'<label>Jenis Kelamin</label>'
-                                            +'<select data-transform="input-control" required id="kelaminTB" name="kelaminTB">'
-                                                +'<option value="">Pilih Jenis Kelamin</option>'
+                                            +'<select data-transform="input-control" xrequired id="jkelaminsiswaTB" name="jkelaminsiswaTB">'
                                                 +'<option value="L">Laki</option>'
                                                 +'<option value="P">Perempuan</option>'
                                             +'</select>'
                                             // tempat lahir
                                             +'<label>Tempat Lahir</label>'
-                                            +'<input type="text" data-transform="input-control" required placeholder="tempat lahir" id="tmplahirTB" name="tmplahirTB">'
+                                            +'<input type="text" data-transform="input-control" xrequired placeholder="tempat lahir" id="tempatlahirsiswaTB" name="tempatlahirsiswaTB">'
                                             // tanggal lahir 
                                             +'<label>Tanggal lahir</label>'
                                             +'<div class="input-control text" data-role="datepicker"'
                                                 +'data-format="dd mmmm yyyy"'
                                                 +'data-effect="slide">'
-                                                +'<input placeholder="tanggal lahir" required id="tgllahirTB" name="tgllahirTB" type="text">'
+                                                +'<input placeholder="tanggal lahir" xrequired id="tanggallahirsiswaTB" name="tanggallahirsiswaTB" type="text">'
                                                 +'<button class="btn-date"></button>'
                                             +'</div>'
                                             // warga negara
                                             +'<label>Warga Negara</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="warganegara" id="warganegaraTB" name="warganegaraTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="warganegara" id="warganegarasiswaTB" name="warganegarasiswaTB">'
                                             // agama
                                             +'<label>Agama</label>'
                                             +'<select data-transform="input-control" required id="agamasiswaTB" name="agamasiswaTB"></select>'
                                             // bahasa
                                             +'<label>Bahasa</label>'
-                                            +'<input type="text" data-transform="input-control"  required placeholder="bahasa 1" id="bahasa1TB" name="bahasa1TB">'
-                                            +'<input type="text" data-transform="input-control"  required placeholder="bahasa 2" id="bahasa2TB" name="bahasa2TB">'
+                                            +'<input type="text" data-transform="input-control"  xrequired placeholder="bahasa 1" id="bahasasiswa1TB" name="bahasasiswa1TB">'
+                                            +'<input type="text" data-transform="input-control"  xrequired placeholder="bahasa 2" id="bahasasiswa2TB" name="bahasasiswa2TB">'
                                             // photo 
                                             +'<label>Pas Photo</label>'
-                                            +'<input type="file" onChange="previewImage(this);" data-transform="input-control" id="photoTB" name="photoTB"/>'
+                                            +'<input type="text"  id="photosiswa2TB" name="photosiswa2TB"/>'
+                                            +'<input type="file" tipe="image" onchange="preUpload(this);" data-transform="input-control" id="photosiswaTB" name="photosiswaTB"/>'
                                         +'</div>'
                                             
                                         // kolom2
                                         +'<div class="span4">'
                                             // HP
                                             +'<label>No. HP</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. HP" id="hpTB" name="hpTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="No. HP" id="hpsiswaTB" name="hpsiswaTB">'
                                             // Telpon
                                             +'<label>No. Telpon</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. Telpon" id="telponTB" name="telponTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="No. Telpon" id="telponsiswaTB" name="telponsiswaTB">'
                                             // email
                                             +'<label>Email</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Email" id="emailTB" name="emailTB">'
+                                            +'<input  xtype="email" data-transform="input-control" xrequired placeholder="Email" id="emailsiswaTB" name="emailsiswaTB">'
                                             // pinbb
                                             +'<label>pin BBM</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="pin BBM" id="pinbbTB" name="pinbbTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="pin BBM" id="pinbbsiswaTB" name="pinbbsiswaTB">'
                                             // alamat
                                             +'<label>Alamat</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Alamat" id="alamatTB" name="alamatTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Alamat" id="alamatsiswaTB" name="alamatsiswaTB">'
                                             // kota
                                             +'<label>kota</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotaTB" name="kotaTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kota" id="kotasiswaTB" name="kotasiswaTB">'
                                             // kodepos
                                             +'<label>kodepos</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposTB" name="kodeposTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kodepos" id="kodepossiswaTB" name="kodepossiswaTB">'
                                             // photo
                                             +'<label>Pas Foto</label>'
                                             +'<div class="tile double-vertical double-horizontal">'
@@ -145,25 +148,20 @@ var contentFR = '';
                                                     +'</span>'
                                                 +'</div>'
                                             +'</div>'
-                                            // +'<div class="tile">'
-                                            //     +'<div class="tile-content image">'
-                                            //         +'<img id="previmg" src="../img/no_image.jpg">'
-                                            //     +'</div>'
-                                            // +'</div>'
                                         +'</div>'
 
                                         // kolom3
                                         +'<div class="span4">'
                                             // berat badan
                                             +'<label>Berat Badan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Berat Badan" id="beratTB" name="beratTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Berat Badan" id="beratsiswaTB" name="beratsiswaTB">'
                                             // Tinggi badan
                                             +'<label>Tinggi Badan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Tinggi Badan" id="tinggiTB" name="tinggiTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Tinggi Badan" id="tinggisiswaTB" name="tinggisiswaTB">'
                                             // darah
                                             +'<label>Golongan Darah</label>'
                                             +'<div class="input-control select xsize3">'
-                                                +'<select placeholder="darah" id="darahTB" name="darahTB">'
+                                                +'<select placeholder="darah" id="darahsiswaTB" name="darahsiswaTB">'
                                                     +'<option value="">Pilih Golongan Darah</option>'
                                                     +'<option value="A">A</option>'
                                                     +'<option value="B">B</option>'
@@ -173,11 +171,11 @@ var contentFR = '';
                                             +'</div>'
                                             // penyakit
                                             +'<label>penyakit</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="penyakit" id="penyakitTB" name="penyakitTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="penyakit" id="penyakitsiswaTB" name="penyakitsiswaTB">'
                                             // catatankesehatan
                                             +'<label>Catatan Kesehatan</label>'
                                             +'<div class="input-control textarea xsize3">'
-                                                +'<textarea  placeholder="catatan kesehatan ...." id="catatankesehatanTB" name="catatankesehatanTB"></textarea>'
+                                                +'<textarea  placeholder="catatan kesehatan ...." id="catatankesehatansiswaTB" name="catatankesehatansiswaTB"></textarea>'
                                             +'</div>'
                                             // diasuh oleh
                                             +'<label>Diasuh oleh </label>'
@@ -191,281 +189,277 @@ var contentFR = '';
                                             +'</div>'
                                             // sekolahasal
                                             +'<label>Nama (Sekolah Asal)</label>'
-                                            +'<input type="text" data-transform="input-control" required name="sekolahasalTB" id="sekolahasalTB"  placeholder="sekolah" >'
+                                            +'<input type="text" data-transform="input-control" xrequired name="sekolahasalsiswaTB" id="sekolahasalsiswaTB"  placeholder="sekolah" >'
                                             // kotasekolah
                                             +'<label>Kota (Sekolah Sekolah)</label>'
-                                            +'<input type="text" data-transform="input-control" required id="kotasekolahTB" name="kotasekolahTB"placeholder="kota ">'
+                                            +'<input type="text" data-transform="input-control" xrequired id="kotasekolahasalsiswaTB" name="kotasekolahasalsiswaTB" placeholder="kota ">'
                                             // negarasekolahasal
                                             +'<label>Negara (Sekolah Sekolah)</label>'
-                                            +'<input type="text" data-transform="input-control" required id="negarasekolahasalTB" name="negarasekolahasalTB"placeholder="negara">'
+                                            +'<input type="text" data-transform="input-control" xrequired id="negarasekolahasalsiswaTB" name="negarasekolahasalsiswaTB"placeholder="negara">'
                                         +'</div>'
 
                                     +'</div>'
                                 +'</div>'
                             +'</div>'
 
-                            // Biodata Ayah
-                            +'<div class="accordion-frame">'
-                                +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Ayah</a>'
-                                +'<div style="display: block;" class="content grid">'
-                                    // baris 1
-                                    +'<div class="row">'
-                                        // kolom1 
-                                        +'<div class="span4">'
-                                            // ayah
-                                            +'<label>Nama Ayah</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="nama ayah" id="namaayahTB" name="namaayahTB">'
-                                            // tampat lahir
-                                            +'<label>Tempat Lahir</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ayah " required id="tmplahirayahTB" name="tmplahirayahTB">'
-                                            // tanggal lahir 
-                                            +'<label>Tanggal lahir</label>'
-                                            +'<div class="input-control text" data-role="datepicker"'
-                                                +'data-format="dd mmmm yyyy"'
-                                                +'data-effect="slide">'
-                                                +'<input placeholder="tanggal lahir" required id="tgllahirayahTB" name="tgllahirayahTB" type="text">'
-                                                +'<button class="btn-date"></button>'
-                                            +'</div>'
-                                            // warga negara
-                                            +'<label>Warga Negara</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="warga negara" id="warganegaraayahTB" name="warganegaraayahTB">'
-                                            // agama
-                                            +'<label>Agama</label>'
-                                            +'<select data-transform="input-control" required id="agamaayahTB" name="agamaayahTB"></select>'
-                                            // gereja ayah
-                                            +'<label>Gereja</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="gereja" id="gerejaayahTB" name="gerejaayahTB">'
-                                        +'</div>'
+                            // // Biodata Ayah
+                            // +'<div class="accordion-frame">'
+                            //     +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Ayah</a>'
+                            //     +'<div style="display: block;" class="content grid">'
+                            //         // baris 1
+                            //         +'<div class="row">'
+                            //             // kolom1 
+                            //             +'<div class="span4">'
+                            //                 // ayah
+                            //                 +'<label>Nama Ayah</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="nama ayah" id="namaayahTB" name="namaayahTB">'
+                            //                 // tampat lahir
+                            //                 +'<label>Tempat Lahir</label>'
+                            //                 +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ayah " required id="tmplahirayahTB" name="tmplahirayahTB">'
+                            //                 // tanggal lahir 
+                            //                 +'<label>Tanggal lahir</label>'
+                            //                 +'<div class="input-control text" data-role="datepicker"'
+                            //                     +'data-format="dd mmmm yyyy"'
+                            //                     +'data-effect="slide">'
+                            //                     +'<input placeholder="tanggal lahir" required id="tgllahirayahTB" name="tgllahirayahTB" type="text">'
+                            //                     +'<button class="btn-date"></button>'
+                            //                 +'</div>'
+                            //                 // warga negara
+                            //                 +'<label>Warga Negara</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="warga negara" id="warganegaraayahTB" name="warganegaraayahTB">'
+                            //                 // agama
+                            //                 +'<label>Agama</label>'
+                            //                 +'<select data-transform="input-control" required id="agamaayahTB" name="agamaayahTB"></select>'
+                            //                 // gereja ayah
+                            //                 +'<label>Gereja</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="gereja" id="gerejaayahTB" name="gerejaayahTB">'
+                            //             +'</div>'
                                             
-                                        // kolom2
-                                        +'<div class="span4">'
-                                            // HP
-                                            +'<label>No. HP</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. HP" id="hpayahTB" name="hpayahTB">'
-                                            // Telpon
-                                            +'<label>No. Telpon</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. Telpon" id="telponayahTB" name="telponayahTB">'
-                                            // email
-                                            +'<label>Email</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Email" id="emailayahTB" name="emailayahTB">'
-                                            // pinbb
-                                            +'<label>pin BBM</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="pin BBM" id="pinbbayahTB" name="pinbbayahTB">'
-                                            // alamat
-                                            +'<label>Alamat</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Alamat" id="alamatayahTB" name="alamatayahTB">'
-                                            // kota
-                                            +'<label>kota</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotaayahTB" name="kotaayahTB">'
-                                            // kodepos
-                                            +'<label>kodepos</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
-                                            // fax rumah 
-                                            +'<label>fax rumah</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="fax " id="faxrumahayahTB" name="faxrumahayahTB">'
-                                        +'</div>'
+                            //             // kolom2
+                            //             +'<div class="span4">'
+                            //                 // HP
+                            //                 +'<label>No. HP</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="No. HP" id="hpayahTB" name="hpayahTB">'
+                            //                 // Telpon
+                            //                 +'<label>No. Telpon</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="No. Telpon" id="telponayahTB" name="telponayahTB">'
+                            //                 // email
+                            //                 +'<label>Email</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Email" id="emailayahTB" name="emailayahTB">'
+                            //                 // pinbb
+                            //                 +'<label>pin BBM</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="pin BBM" id="pinbbayahTB" name="pinbbayahTB">'
+                            //                 // alamat
+                            //                 +'<label>Alamat</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Alamat" id="alamatayahTB" name="alamatayahTB">'
+                            //                 // kota
+                            //                 +'<label>kota</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotaayahTB" name="kotaayahTB">'
+                            //                 // kodepos
+                            //                 +'<label>kodepos</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
+                            //                 // fax rumah 
+                            //                 +'<label>fax rumah</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="fax " id="faxrumahayahTB" name="faxrumahayahTB">'
+                            //             +'</div>'
 
-                                        // kolom3
-                                        +'<div class="span4">'
-                                            // Pendidikan
-                                            +'<label>Pendidikan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Pendidikan" id="pendidikanayahTB" name="pendidikanayahTB">'
-                                            // Bidang pekerjaan 
-                                            +'<label>Bidang Pekerjaan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Bidang Pekerjaan" id="bidangpekerjaanTB" name="bidangpekerjaanTB">'
-                                            //Pekerjaan
-                                            +'<label>Pekerjaan Ayah</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="pekerjaan ayah" id="pekerjaanayahTB" name="pekerjaanayahTB">'
-                                            // posisi 
-                                            +'<label>Posisi Pekerjaan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="posisi pekerjaan " id="posisiayahTB" name="posisiayahTB">'
-                                            // penghasilan ayah
-                                            +'<label>Penghasilan Ayah</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="penghasilanayah" id="penghasilanayahTB" name="penghasilanayahTB">'
-                                            // telpon  kantor
-                                            +'<label>Telpon Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="telpon " id="telponkantorayahTB" name="telponkantorayahTB">'
-                                            // fax  kantor
-                                            +'<label>Fax Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="fax kantor " id="faxkantorayahTB" name="faxkantorayahTB">'
-                                            // alamat kantor 
-                                            +'<label>Alamat Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="alamat kantor " id="alamatkantorayahTB" name="alamatkantorayahTB">'
-                                            // kodepos
-                                            +'<label>kodepos</label>'   
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
-                                        +'</div>'
+                            //             // kolom3
+                            //             +'<div class="span4">'
+                            //                 // Pendidikan
+                            //                 +'<label>Pendidikan</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Pendidikan" id="pendidikanayahTB" name="pendidikanayahTB">'
+                            //                 // Bidang pekerjaan 
+                            //                 +'<label>Bidang Pekerjaan</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Bidang Pekerjaan" id="bidangpekerjaanTB" name="bidangpekerjaanTB">'
+                            //                 //Pekerjaan
+                            //                 +'<label>Pekerjaan Ayah</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="pekerjaan ayah" id="pekerjaanayahTB" name="pekerjaanayahTB">'
+                            //                 // posisi 
+                            //                 +'<label>Posisi Pekerjaan</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="posisi pekerjaan " id="posisiayahTB" name="posisiayahTB">'
+                            //                 // penghasilan ayah
+                            //                 +'<label>Penghasilan Ayah</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="penghasilanayah" id="penghasilanayahTB" name="penghasilanayahTB">'
+                            //                 // telpon  kantor
+                            //                 +'<label>Telpon Kantor</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="telpon " id="telponkantorayahTB" name="telponkantorayahTB">'
+                            //                 // fax  kantor
+                            //                 +'<label>Fax Kantor</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="fax kantor " id="faxkantorayahTB" name="faxkantorayahTB">'
+                            //                 // alamat kantor 
+                            //                 +'<label>Alamat Kantor</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="alamat kantor " id="alamatkantorayahTB" name="alamatkantorayahTB">'
+                            //                 // kodepos
+                            //                 +'<label>kodepos</label>'   
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
+                            //             +'</div>'
 
-                                    +'</div>'
-                                +'</div>'
-                            +'</div>'
+                            //         +'</div>'
+                            //     +'</div>'
+                            // +'</div>'
 
-                            // Biodata Ibu
-                            +'<div class="accordion-frame">'
-                                +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Ibu</a>'
-                                +'<div style="display: block;" class="content grid">'
-                                    // baris 1
-                                    +'<div class="row">'
-                                        // kolom1 
-                                        +'<div class="span4">'
-                                            // ayah
-                                            +'<label>Nama ibu</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="nama ibu" id="namaibuTB" name="namaibuTB">'
-                                            // tampat lahir
-                                            +'<label>Tempat Lahir</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ibu " required id="tmplahiribuTB" name="tmplahiribuTB">'
-                                            // tanggal lahir 
-                                            +'<label>Tanggal lahir</label>'
-                                            +'<div class="input-control text" data-role="datepicker"'
-                                                +'data-format="dd mmmm yyyy"'
-                                                +'data-effect="slide">'
-                                                +'<input placeholder="tanggal lahir" required id="tgllahiribuTB" name="tgllahiribuTB" type="text">'
-                                                +'<button class="btn-date"></button>'
-                                            +'</div>'
-                                            // warga negara
-                                            +'<label>Warga Negara</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="warga negara" id="warganegaraibuTB" name="warganegaraibuTB">'
-                                            // agama
-                                            +'<label>Agama</label>'
-                                            +'<div class="input-control select xsize3">'
-                                                +'<select required id="agamaibuTB" name="agamaibuTB"></select>'
-                                            +'</div>'
-                                            // gereja ibu
-                                            +'<label>Gereja</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="gereja" id="gerejaibuTB" name="gerejaibuTB">'
-                                        +'</div>'
+                            // // Biodata Ibu
+                            // +'<div class="accordion-frame">'
+                            //     +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Ibu</a>'
+                            //     +'<div style="display: block;" class="content grid">'
+                            //         // baris 1
+                            //         +'<div class="row">'
+                            //             // kolom1 
+                            //             +'<div class="span4">'
+                            //                 // ayah
+                            //                 +'<label>Nama ibu</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="nama ibu" id="namaibuTB" name="namaibuTB">'
+                            //                 // tampat lahir
+                            //                 +'<label>Tempat Lahir</label>'
+                            //                 +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ibu " required id="tmplahiribuTB" name="tmplahiribuTB">'
+                            //                 // tanggal lahir 
+                            //                 +'<label>Tanggal lahir</label>'
+                            //                 +'<div class="input-control text" data-role="datepicker"'
+                            //                     +'data-format="dd mmmm yyyy"'
+                            //                     +'data-effect="slide">'
+                            //                     +'<input placeholder="tanggal lahir" required id="tgllahiribuTB" name="tgllahiribuTB" type="text">'
+                            //                     +'<button class="btn-date"></button>'
+                            //                 +'</div>'
+                            //                 // warga negara
+                            //                 +'<label>Warga Negara</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="warga negara" id="warganegaraibuTB" name="warganegaraibuTB">'
+                            //                 // agama
+                            //                 +'<label>Agama</label>'
+                            //                 +'<div class="input-control select xsize3">'
+                            //                     +'<select required id="agamaibuTB" name="agamaibuTB"></select>'
+                            //                 +'</div>'
+                            //                 // gereja ibu
+                            //                 +'<label>Gereja</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="gereja" id="gerejaibuTB" name="gerejaibuTB">'
+                            //             +'</div>'
                                             
-                                        // kolom2
-                                        +'<div class="span4">'
-                                            // HP
-                                            +'<label>No. HP</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. HP" id="hpibuTB" name="hpibuTB">'
-                                            // Telpon
-                                            +'<label>No. Telpon</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="No. Telpon" id="telponibuTB" name="telponibuTB">'
-                                            // email
-                                            +'<label>Email</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Email" id="emailibuTB" name="emailibuTB">'
-                                            // pinbb
-                                            +'<label>pin BBM</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="pin BBM" id="pinbbibuTB" name="pinbbibuTB">'
-                                            // alamat
-                                            +'<label>Alamat</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Alamat" id="alamatibuTB" name="alamatibuTB">'
-                                            // kota
-                                            +'<label>kota</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotaibuTB" name="kotaibuTB">'
-                                            // kodepos
-                                            +'<label>kodepos</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
-                                            // fax rumah 
-                                            +'<label>fax rumah</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="fax " id="faxrumahibuTB" name="faxrumahibuTB">'
-                                        +'</div>'
+                            //             // kolom2
+                            //             +'<div class="span4">'
+                            //                 // HP
+                            //                 +'<label>No. HP</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="No. HP" id="hpibuTB" name="hpibuTB">'
+                            //                 // Telpon
+                            //                 +'<label>No. Telpon</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="No. Telpon" id="telponibuTB" name="telponibuTB">'
+                            //                 // email
+                            //                 +'<label>Email</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Email" id="emailibuTB" name="emailibuTB">'
+                            //                 // pinbb
+                            //                 +'<label>pin BBM</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="pin BBM" id="pinbbibuTB" name="pinbbibuTB">'
+                            //                 // alamat
+                            //                 +'<label>Alamat</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Alamat" id="alamatibuTB" name="alamatibuTB">'
+                            //                 // kota
+                            //                 +'<label>kota</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotaibuTB" name="kotaibuTB">'
+                            //                 // kodepos
+                            //                 +'<label>kodepos</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
+                            //                 // fax rumah 
+                            //                 +'<label>fax rumah</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="fax " id="faxrumahibuTB" name="faxrumahibuTB">'
+                            //             +'</div>'
 
-                                        // kolom3
-                                        +'<div class="span4">'
-                                            // Pendidikan
-                                            +'<label>Pendidikan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Pendidikan" id="pendidikanibuTB" name="pendidikanibuTB">'
-                                            // Bidang pekerjaan 
-                                            +'<label>Bidang Pekerjaan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="Bidang Pekerjaan" id="bidangpekerjaanTB" name="bidangpekerjaanTB">'
-                                            //Pekerjaan
-                                            +'<label>Pekerjaan ibu</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="pekerjaan ibu" id="pekerjaanibuTB" name="pekerjaanibuTB">'
-                                            // posisi 
-                                            +'<label>Posisi Pekerjaan</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="posisi pekerjaan " id="posisiibuTB" name="posisiibuTB">'
-                                            // penghasilan ibu
-                                            +'<label>Penghasilan ibu</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="penghasilanibu" id="penghasilanibuTB" name="penghasilanibuTB">'
-                                            // telpon  kantor
-                                            +'<label>Telpon Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="telpon " id="telponkantoribuTB" name="telponkantoribuTB">'
-                                            // fax  kantor
-                                            +'<label>Fax Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="fax kantor " id="faxkantoribuTB" name="faxkantoribuTB">'
-                                            // alamat kantor 
-                                            +'<label>Alamat Kantor</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="alamat kantor " id="alamatkantoribuTB" name="alamatkantoribuTB">'
-                                            // kodepos
-                                            +'<label>kodepos</label>'   
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
-                                        +'</div>'
+                            //             // kolom3
+                            //             +'<div class="span4">'
+                            //                 // Pendidikan
+                            //                 +'<label>Pendidikan</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Pendidikan" id="pendidikanibuTB" name="pendidikanibuTB">'
+                            //                 // Bidang pekerjaan 
+                            //                 +'<label>Bidang Pekerjaan</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Bidang Pekerjaan" id="bidangpekerjaanTB" name="bidangpekerjaanTB">'
+                            //                 //Pekerjaan
+                            //                 +'<label>Pekerjaan ibu</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="pekerjaan ibu" id="pekerjaanibuTB" name="pekerjaanibuTB">'
+                            //                 // posisi 
+                            //                 +'<label>Posisi Pekerjaan</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="posisi pekerjaan " id="posisiibuTB" name="posisiibuTB">'
+                            //                 // penghasilan ibu
+                            //                 +'<label>Penghasilan ibu</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="penghasilanibu" id="penghasilanibuTB" name="penghasilanibuTB">'
+                            //                 // telpon  kantor
+                            //                 +'<label>Telpon Kantor</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="telpon " id="telponkantoribuTB" name="telponkantoribuTB">'
+                            //                 // fax  kantor
+                            //                 +'<label>Fax Kantor</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="fax kantor " id="faxkantoribuTB" name="faxkantoribuTB">'
+                            //                 // alamat kantor 
+                            //                 +'<label>Alamat Kantor</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="alamat kantor " id="alamatkantoribuTB" name="alamatkantoribuTB">'
+                            //                 // kodepos
+                            //                 +'<label>kodepos</label>'   
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
+                            //             +'</div>'
 
-                                    +'</div>'
-                                +'</div>'
-                            +'</div>'
+                            //         +'</div>'
+                            //     +'</div>'
+                            // +'</div>'
 
-                            // Biodata wali
-                            +'<div class="accordion-frame">'
-                                +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Wali</a>'
-                                +'<div style="display: block;" class="content grid">'
-                                    // baris 1
-                                    +'<div class="row">'
-                                        // kolom1 
-                                        +'<div class="span4">'
-                                            // nama
-                                            +'<label>Nama</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="nama" id="namawaliTB" name="namawaliTB">'
-                                            // kelamin
-                                            +'<label>kelamin</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kelamin" id="kelaminwaliTB" name="kelaminwaliTB">'
-                                            // alamatwali
-                                            +'<label>Alamat</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
-                                        +'</div>'
-                                        // kolom2 
-                                        +'<div class="span4">'
-                                            // kotawali
-                                            +'<label>Kota </label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
-                                            // telponwali
-                                            +'<label>Telpon</label>'
-                                            +'<input  type="text" data-transform="input-control" required placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
-                                        +'</div>'
+                            // // Biodata wali
+                            // +'<div class="accordion-frame">'
+                            //     +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Wali</a>'
+                            //     +'<div style="display: block;" class="content grid">'
+                            //         // baris 1
+                            //         +'<div class="row">'
+                            //             // kolom1 
+                            //             +'<div class="span4">'
+                            //                 // nama
+                            //                 +'<label>Nama</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="nama" id="namawaliTB" name="namawaliTB">'
+                            //                 // kelamin
+                            //                 +'<label>kelamin</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kelamin" id="kelaminwaliTB" name="kelaminwaliTB">'
+                            //                 // alamatwali
+                            //                 +'<label>Alamat</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
+                            //             +'</div>'
+                            //             // kolom2 
+                            //             +'<div class="span4">'
+                            //                 // kotawali
+                            //                 +'<label>Kota </label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
+                            //                 // telponwali
+                            //                 +'<label>Telpon</label>'
+                            //                 +'<input  type="text" data-transform="input-control" required placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
+                            //             +'</div>'
 
-                                    +'</div>'
-                                +'</div>'
-                            +'</div>'
+                            //         +'</div>'
+                            //     +'</div>'
+                            // +'</div>'
 
-                            // Biodata saudara
-                            +'<div class="accordion-frame">'
-                                +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Saudara</a>'
-                                +'<div  style="display: block;" class="content grid">'
-                                    // baris 1
-                                    +'<div class="row">'
-                                        // kolom1
-                                        +'<div class="span8">'
-                                            +'<table class="table bordered hovered striped">'
-                                                +'<thead class="fg-white bg-blue">'
-                                                    +'<tr>'
-                                                        +'<th>Nama</th>'
-                                                        +'<th>Kelamin</th>'
-                                                        +'<th>Tmpt/Tgl Lahir</th>'
-                                                        +'<th>Sekolah</th>'
-                                                        +'<th>Nilai</th>'
-                                                    +'</tr>'
-                                                +'</thead>'
-                                                +'<tbody id="saudaraTBL">'
-                                                    +'<tr class="bg-white fg-red text-center">'
-                                                        +'<td>-</td>'
-                                                        +'<td>-</td>'
-                                                        +'<td>-</td>'
-                                                        +'<td>-</td>'
-                                                        +'<td>-</td>'
-                                                    +'</tr>'
-                                                +'</tbody>'
-                                            +'</table>'
-                                        +'</div>'
-                                    +'</div>'
+                            // // Biodata saudara
+                            // +'<div class="accordion-frame">'
+                            //     +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Saudara</a>'
+                            //     +'<div  style="display: block;" class="content grid">'
+                            //         // baris 1
+                            //         +'<div class="row">'
+                            //             // kolom1
+                            //             +'<div class="span12">'
+                            //                 +'<button onclick="saudaraFC();return false;"><i class="icon-plus-2"></i></button>'
+                            //                 +'<table class="table bordered hovered striped">'
+                            //                     +'<thead class="fg-white bg-blue">'
+                            //                         +'<tr>'
+                            //                             +'<th>Nama</th>'
+                            //                             +'<th>Kelamin</th>'
+                            //                             +'<th>Tmpt Lahir</th>'
+                            //                             +'<th>Tgl Lahir</th>'
+                            //                             +'<th>Sekolah</th>'
+                            //                             +'<th>Nilai</th>'
+                            //                             +'<th>Hapus</th>'
+                            //                         +'</tr>'
+                            //                     +'</thead>'
+                            //                     +'<tbody id="saudaraTBL">'
+                            //                     +'</tbody>'
+                            //                 +'</table>'
+                            //             +'</div>'
+                            //         +'</div>'
 
-                                +'</div>'                            
-                            +'</div>'                            
+                            //     +'</div>'                            
+                            // +'</div>'                            
 
                             // kelengkapan dokumen
-                            +'<div class="accordion-frame">'
+                            /*+'<div class="accordion-frame">'
                                 +'<a class="heading bg-lightBlue fg-white" href="#">Kelengkapan Dokumen</a>'
                                 +'<div  style="display: block;" class="content grid">'
                                     // baris 1
@@ -494,25 +488,15 @@ var contentFR = '';
                                             +'</table>'
                                         +'</div>'
                                     +'</div>'
-
                                 +'</div>'                            
+                            +'</div>'*/
+                            
+                            +'<div class="form-actions">' 
+                                +'<button class="button primary">simpan</button>&nbsp;'
                             +'</div>'
-
                         +'</div>'
                         // end of accrdion 
                     +'</form>';
-        // form scroll
-        // $("#form1").scrollbar({
-        //     height: 355,
-        //     axis: 'y'
-        // });
-        // $("#scrollbox2").scrollbar({
-        //     axis: 'x',
-        //     height: 355
-        // });
-        // $("#scrollbox3").scrollbar({
-        //     height: 355
-        // });
     // button action
         $("#batalBC").on('click',function(){
             switchPN('view','');
@@ -552,37 +536,6 @@ var contentFR = '';
         });
     }); 
       
-//preview image sebelum upload -------
-    function previewImage(e){
-        var typex   = e.files[0].type;
-        var sizex   = e.files[0].size;
-        var namex   = e.files[0].name;
-        
-        if(typex =='image/bmp'||typex =='image/png'||typex =='image/jpg'||typex =='image/jpeg'|| typex =='image/gif'){ //validasi format
-            if(sizex>(900*900)){ //validasi size
-                notif('ukuran max 1 MB','red');
-                $(e).val('');
-                return false;   
-            }else{ 
-                $('#previmg').attr('src','../img/w8loader.gif');
-                var reader = new FileReader();
-                reader.readAsDataURL(e.files[0]);
-    
-                reader.onload = function (oFREvent){
-                    var urlx  = oFREvent.target.result;
-                    setTimeout(function(){
-                        $('#previmg').attr('src',urlx);//.removeAttr('style');
-                    },1000);
-                };
-            }
-        }else{ // format salah
-            $('#previmg').attr('src','<img src="../img/loader.gif">');
-            $(e).val('');
-            notif('hanya format gambar(jpeg,jpg,png)','red');
-            return false;
-        }
-    };
-
 // hapus saudara terpilih
     function saudaraDelx(id){
         $('#saudaraTR_'+id).fadeOut('slow',function(){
@@ -625,28 +578,62 @@ var contentFR = '';
         });return y;
     }
 
+//preview image sebelum upload -------
+    function preUpload(e){
+        // var typex   = e.files[0].type;
+        // var namex   = e.files[0].name;
+        var sizex = e.files[0].size;
+        var fname = $(e).val();
+        var ext   = fname.replace(/^.*\./, '');
+        console.log($(e).attr('tipe'));
+        if(sizex>(900*900)){ // size over
+            notif('ukuran max 1 MB','red');
+            $(e).val('');
+            return false;   
+        }else{ // size true
+            if($(e).attr('tipe')=='file'){ // file : doc
+                if(ext!='pdf'){
+                    notif('hanya format .pdf','red');// only pdf 
+                    $(e).val('');
+                } 
+            }else{ //image : jpg png dkk
+                if(ext =='bmp'||ext =='png'||ext =='jpg'||ext =='jpeg'|| ext =='gif'){ //validasi format
+                    $('#previmg').attr('src','../img/w8loader.gif');
+                    var reader = new FileReader();
+                    reader.readAsDataURL(e.files[0]);
+
+                    reader.onload = function (oFREvent){
+                        var urlx  = oFREvent.target.result;
+                        setTimeout(function(){
+                            $('#previmg').attr('src',urlx);//.removeAttr('style');
+                        },1000);
+                    };
+                }else {
+                    notif('diperbolehkan format gambar (jpg,png dll)','red');
+                    $(e).val('');
+                }
+            }
+        }
+    };
 // submit Foto siswa ---------------------------
     function siswaSV () {
-        //add image
-        var files =new Array();
+        var files =new Array(), isExist=false;
         $("input:file").each(function() {
             files.push($(this).get(0).files[0]); 
         });
-         
-        // Create a formdata object and add the files
+        console.log(files);
         var filesAdd = new FormData();
         $.each(files, function(key, value){
-            filesAdd.append(key, value);
+            filesAdd.append (key, value);
         });
-
-        if($('#photoTB').val()=='') siswaDb(''); // upload
-        else siswaUp(filesAdd); // ga upload
+        if(typeof files[1]=='undefined') siswaDb('');
+        else siswaUp(filesAdd);
     }
 
 // upload image
     function siswaUp(dataAdd){
         $.ajax({
-            url: dir+'?upload',
+            url: dir+'?upload=images',
             type: 'POST',
             data: dataAdd,
             cache: false,
@@ -667,22 +654,24 @@ var contentFR = '';
 
 // simpan ke database
     function siswaDb(filex){
-        var formData = $('#siswa_form').serialize();
-        if($('#idformH').val()!=''){
-            formData +='&replid='+$('#idformH').val();
+        // console.log('fotoh='+$('#photoH').val()); return false;
+        var formData = $('#siswaFR').serialize();
+        if($('#idformTB').val()!=''){
+            formData +='&replid='+$('#idformTB').val();
         }
 
         if(filex!=''){// ada upload file nya
-            formData +='&file='+filex.file ;    
-            if($('#photoH').val()!=''){
-                formData+='&photo_asal='+$('#photoH').val();
-            }
+            formData +='&photosiswaTB='+filex.file ;    
+            // if($('#photoH').val()!=''){
+            //     formData+='&photo_asal='+$('#photoH').val();
+            // }
         }
 
         $.ajax({
             url: dir,
             type:'POST',
-            data:formData+'&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val(),
+            data:formData+'&aksi=simpan&subaksi=siswa',
+            // data:formData+'&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val(),
             cache:false,
             dataType: 'json',
             success: function(data, textStatus, jqXHR){
@@ -690,7 +679,7 @@ var contentFR = '';
                    notif(data.status,'red');
                 }else{
                     notif(data.status,'green'); 
-                   switchPN('view','');
+                    switchPN('view','');
                 }
             },error: function(jqXHR, textStatus, errorThrown){
                 console.log('ERRORS savedata2: ' + textStatus);
@@ -819,7 +808,7 @@ var contentFR = '';
             var u =dir;
             var d ='aksi=ambiledit&replid='+id;
             ajax(u,d).done(function  (dt) {
-                $('#idformH').val(id);
+                $('#idformTB').val(id);
                 $('#uang_pangkalTB').val(dt.sumpokok);
                 $('#uang_pangkalnetTB').val(dt.sumnet);
                 $('#angsuranTB').val(dt.angsuran);
@@ -939,21 +928,24 @@ var contentFR = '';
     }   
 
 // combo agama
-    function cmbagama (agama) {
-        var u = dir;
-        var d ='aksi=cmbagama';
+    function cmbagamasiswa (typ,agm) {
+        var u = dir11;
+        var d ='aksi=cmb'+mnu11;
         ajax(u,d).done(function(dt){
             var opt='';
             if (dt.status!='sukses') {
                 notif(dt.status,'red');
                 opt+='<option value="">'+dt.status+'</option>'
             }else{
-                var opt = '';
                 $.each(dt.agama,function(id,item){
-                    opt+='<option '+(item.replid==agama?'selected':'')+' value="'+item.replid+'">'+item.agama+'</option>'
+                    opt+='<option '+(item.replid==agm?'selected':'')+' value="'+item.replid+'">'+item.agama+'</option>'
                 });
+                // alert(option)(opt);
+                $('#agamasiswaTB').html('<option value="">Pilih Agama ..</option>'+opt);
             }
-            $('#agamaTB').html('<option value="">Pilih Agama ..</option>'+opt);
+            // if(typ=='form')
+            // else
+            //     $('#agamaTB').html('<option value="">Pilih Agama ..</option>'+opt);
         });
     }
 
@@ -1019,7 +1011,7 @@ var contentFR = '';
                         $.each(dt.biayaArr,function (id,item){
                             $('#biayaawal'+item.replid+'TD').html('Rp. '+parseInt(item.nominal).setCurr());
                             $('#biayaNett'+item.replid+'TD').html('Rp. '+parseInt(item.nominal).setCurr());
-                            $('#iddetailbiaya'+item.replid+'H').val(item.iddetailbiaya);
+                            $('#iddetailbiaya'+item.replid+'TB').val(item.iddetailbiaya);
                         })
                     }
                 }
@@ -1030,7 +1022,7 @@ var contentFR = '';
 //                  (idbiaya, iddetailbiaya)
     function getBiayaNett(idx) {
         console.log('masuk biaya nett');
-        var idy = $('#iddetailbiaya'+idx+'H').val();
+        var idy = $('#iddetailbiaya'+idx+'TB').val();
         var selectedDiskReg='';
         $.each(detaildiskonArr(idx), function (id,item){
             selectedDiskReg+='&diskonreguler[]='+item;
@@ -1105,7 +1097,7 @@ var contentFR = '';
                                 $('#passwordTB').attr('disabled',true);
                                 $('#simpanTB').attr('disabled',true);
                             }
-                            $('#idformH').val(idsiswa);
+                            $('#idformTB').val(idsiswa);
                             $('#namaTB').val(dt.nama);
                             $('#usernameTB').val(dt.username);
                             
@@ -1115,6 +1107,7 @@ var contentFR = '';
                         }
                     });
                 }else{ //add
+                    cmbagamasiswa('form','');
                     cmbdepartemen('form','');
                     cmbtahunajaran('form','');
                     cmbtingkatZ('form','');
@@ -1362,7 +1355,7 @@ function notif(cont,clr) {
                                     // biaya awal
                                     +'<tr>'
                                         +'<td colspan="2">Biaya '+item.biaya+' Awal'
-                                            +'<input type="hidden"  id="iddetailbiaya'+item.replid+'H" name="iddetailbiaya'+item.replid+'H">'
+                                            +'<input type="hidden"  id="iddetailbiaya'+item.replid+'TB" name="iddetailbiayaTB[]">'
                                         +'</td>'
                                         +'<td class="text-right biayaawalTD" id="biayaawal'+item.replid+'TD">'
                                             +'silahkan lengkapi dept. dll'
@@ -1374,13 +1367,13 @@ function notif(cont,clr) {
                                     out+='<tr>'
                                         +'<td>Diskon Reguler</td>'
                                         +'<td>'
-                                            +'<div class="input-control text"><input onsubmit="return false;" class="detaildiskonTB" disabled onfocus="multiAutoSuggest(\'detaildiskon\','+item.replid+')" onkeyup="multiAutoSuggest(\'detaildiskon\','+item.replid+')" placeholder="cari diskon .. " type="text" id="detaildiskon'+item.replid+'TB"></div>'
+                                            +'<div class="input-control text"><input xonsubmit="return false;" class="detaildiskonTB" disabled onfocus="multiAutoSuggest(\'detaildiskon\','+item.replid+')" onkeyup="multiAutoSuggest(\'detaildiskon\','+item.replid+')" placeholder="cari diskon .. " type="text" id="detaildiskon'+item.replid+'TB"></div>'
                                             +'<table width="100%">'
                                                 +'<thead class="fg-white bg-blue">'
                                                     +'<th align="center">Diskon</th>'
                                                     +'<th align="center">Nilai</th>'
                                                     +'<th align="center">Keterangan</th>'
-                                                    +'<th align="center"><button onclick="$(\'#detaildiskon'+item.replid+'TBL\').html(\'\');getBiayaNett('+item.replid+'); return false;" class="fg-white bg-blue"><i class="icon-cancel-2"></i></button></th>'
+                                                    +'<th align="center"><a onclick="$(\'#detaildiskon'+item.replid+'TBL\').html(\'\');getBiayaNett('+item.replid+'); return false;" class="fg-white bg-blue"><i class="icon-cancel-2"></i></a></th>'
                                                 +'</thead>'
                                                 +'<tbody class="detaildiskonTBL" id="detaildiskon'+item.replid+'TBL">'
                                                     +'<tr><td class="fg-white bg-red text-center" colspan="4">..kosong..</td></tr>'
@@ -1527,8 +1520,57 @@ function notif(cont,clr) {
 
     function subdokumenFC(){
         var u = dir10;        
-        var d = 'aksi=cmb'+mnu10+'&tingkat='+$('#tingkatTB').val();        
+        var d = 'aksi=cmb'+mnu10+'&tingkat='+$('#tingkatTBZ').val();        
         ajax(u,d).done(function (dt){
+            if(dt.status!='sukses') notif(dt.status,'red');
+            else{
+                var tr='';
+                if(dt.dokumen==0) tr+='<tr class="text-center fg-red"><td colspan="5">..kosong..</td></tr>';
+                $.each(dt.dokumen, function (id,item){
+                    tr+='<tr>'
+                        +'<td><input id="subdokumen'+item.subdokumen+'CB" name="subdokumen'+item.subdokumen+'CB" data-transform="input-control" type="checkbox" /></td>'
+                        +'<td>'+item.dokumen+'</td>'
+                        +'<td>'+item.jumlah+' '+item.satuanjumlah+'</td>'
+                        // +'<td><input tipe="file" onchange="preUpload(\'file\',\'file'+item.replid+'\');" id="file'+item.replid+'TB" name="file'+item.replid+'TB" type="file" data-transform="input-control" /></td>'
+                        +'<td><input tipe="file" onchange="preUpload(this);" id="file'+item.replid+'TB" name="file'+item.replid+'TB" type="file" data-transform="input-control" /></td>'
+                        +'<td><a class="button" onclick="return false;" href="#">Lihat File</a></td>'
+                    +'</tr>';
+                });$('#subdokumenTBL').html(tr);
+            }
+        });
+    }
 
+    var idsaudara = 1;
+    function saudaraFC(){
+        var tr='';
+            tr+='<tr class="saudaraTR" id="saudara'+idsaudara+'TR">'
+                +'<td><input type="text" data-transform="input-control" name="namasaudara'+idsaudara+'TB"id="namasaudara'+idsaudara+'TB" /></td>'
+                +'<td>'
+                    +'<select required data-transform="input-control" name="jkelaminsaudara'+idsaudara+'TB"id="jkelaminsaudara'+idsaudara+'TB">'
+                        +'<option value="">Pilih kelamin</option>'
+                        +'<option value="L">Laki</option>'
+                        +'<option value="P">Perempuan</option>'
+                    +'</select>'
+                +'</td>'
+                +'<td><input type="text" data-transform="input-control" name="tempatlahirsaudara'+idsaudara+'TB"id="tempatlahirsaudara'+idsaudara+'TB" /></td>'
+                +'<td>'
+                    +'<div class="input-control text" data-role="datepicker"'
+                        +'data-format="dd mmmm yyyy"'
+                        +'data-effect="slide">'
+                        +'<input placeholder="tanggal lahir" required id="tanggallahir'+idsaudara+'TB" name="tanggallahir'+idsaudara+'TB" type="text">'
+                        +'<button class="btn-date"></button>'
+                    +'</div>'
+                +'</td>'
+                +'<td><input type="text" data-transform="input-control" name="sekolahsaudara'+idsaudara+'TB"id="sekolahsaudara'+idsaudara+'TB" /></td>'
+                +'<td><input type="text" data-transform="input-control" name="gradesaudara'+idsaudara+'TB"id="gradesaudara'+idsaudara+'TB" /></td>'
+                +'<td><button onclick="saudaraDelx('+idsaudara+') return false;"><i class="icon-cancel-2"></i></button></td>'
+            +'</tr>';
+        $('#saudaraTBL').append(tr);
+        idsaudara++;
+    }
+
+    function saudaraDelTR(idx,idy){
+        $('#saudara'+idy+'TR').fadeOut('slow',function(){
+            $('#saudara'+idy+'TR').remove();
         });
     }
