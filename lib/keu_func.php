@@ -1,4 +1,27 @@
 <?php
+	function getKriteriaSiswa($f,$siswa){
+		$s='SELECT
+				'.$f.'.'.($f=='departemen'?'nama':$f).'
+			FROM
+				psb_siswa siswa
+				JOIN psb_siswabiaya siswabiaya on siswabiaya.siswa = siswa.replid
+				JOIN psb_detailbiaya detailbiaya on detailbiaya.replid = siswabiaya.detailbiaya
+				JOIN psb_biaya biaya on biaya.replid = detailbiaya.biaya
+				JOIN aka_subtingkat subtingkat on subtingkat.replid = detailbiaya.subtingkat
+				JOIN aka_tingkat tingkat on tingkat.replid = subtingkat.tingkat
+				JOIN psb_detailgelombang detailgelombang on detailgelombang.replid = detailbiaya.detailgelombang
+				JOIN psb_gelombang gelombang on gelombang.replid = detailgelombang.gelombang
+				JOIN aka_tahunajaran tahunajaran on tahunajaran.replid = detailgelombang.tahunajaran
+				JOIN psb_golongan golongan on golongan.replid = detailbiaya.golongan
+				JOIN departemen departemen  on departemen.replid = detailgelombang.departemen
+			WHERE
+				siswa.replid = '.$siswa.'
+			GROUP BY 
+				'.$f.'.'.($f=='departemen'?'nama':$f);
+				// pr($s);
+		return fetchField($s);
+	}
+
 	function getBiayaNett($idBiaya,$idDiskReg,$diskKhus){
 		$biaya = !is_null($idDiskReg)?getBiayaDiskReg($idBiaya,$idDiskReg):getField('nominal','psb_detailbiaya','replid',$idBiaya);
 		$biayaNett = ($biaya<$diskKhus?0:(intval($biaya) - intval($diskKhus)) );

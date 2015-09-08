@@ -18,22 +18,23 @@
 	$tb4  = 'psb_'.$mnu4;
 	$tb5  = 'psb_'.$mnu5;
 	$tb6  = 'psb_'.$mnu6;
-	// $out=array();
+
+	$upDir    = '../upload/';
+	$fileDir  = $upDir.'files';
+	$imageDir = $upDir.'images';
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['upload'])){
-			if($_GET['upload']=='images'){ // jpg, png, dll
+			if($_GET['upload']=='images'){ // images (jpg, png, dll)
 				$tipex    = substr($_FILES[1]['type'],6);
 				$namaAwal = $_FILES[1]['name'];
 				$namaSkrg = $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
 				$src      = $_FILES[1]['tmp_name'];
 				$destix   = '../upload/images/'.basename($namaSkrg);
 
-				if(move_uploaded_file($src, $destix)) $o=array('status'=>'sukses','fileTB'=>$namaSkrg);
+				if(move_uploaded_file($src, $destix)) $o=array('status'=>'sukses','photosiswaTB'=>$namaSkrg);
 				else $o=array('status'=>'gagal');
-
-				// pr($o);
-			}else{ // tipe == files (pdf)
+			}else{ // files (pdf)
 
 			}
 			$out=json_encode($o);
@@ -105,37 +106,31 @@
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					case 'siswa':
-						$departemen    = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
-						$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
+						$nis           = isset($_POST['nisS'])?filter($_POST['nisS']):'';
+						$nisn          = isset($_POST['nisnS'])?filter($_POST['nisnS']):'';
 						$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
-						$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-						$tingkat       = isset($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
-
-						$sql = 'SELECT
-									c.replid,
-									c.nopendaftaran,
-									c.nama,
-									c.setbiaya,
-									a.cicilan,
-									c.kelompok,
-								  	akt.tingkat
-								FROM
-									psb_calonsiswa c
-									LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
-									LEFT JOIN aka_tingkat akt ON akt.replid = c.tingkat
-									LEFT JOIN aka_tahunajaran t ON t.replid = akt.tahunajaran
-									LEFT JOIN departemen d ON d.replid = t.departemen
-									LEFT JOIN psb_angsuran a ON a.replid = c.angsuran
-								WHERE
-									c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
-									AND c.nama LIKE "%'.$nama.'%"
-									AND c.kelompok = '.$kelompok.'
-									AND akt.tingkat LIKE "%'.$tingkat.'%"
+						$namasiswa     = isset($_POST['namasiswaS'])?filter($_POST['namasiswaS']):'';
+						$status        = (isset($_POST['statusS']) && !empty($_POST['statusS']))?' AND status="'.filter($_POST['statusS']).'"':'';
+						
+						$sql = 'SELECT 
+									replid, 
+									nopendaftaran, 
+									namasiswa,
+									status,
+									nis,
+									nisn
+								FROM '.$tb.'
+								WHERE 
+									nopendaftaran LIKE "%'.$nopendaftaran.'%"  AND
+									nis LIKE "%'.$nis.'%"  AND
+									nisn LIKE "%'.$nisn.'%" AND
+									namasiswa LIKE "%'.$namasiswa.'%" 
+									'.$status.'
 								ORDER BY
-									c.nopendaftaran ASC,
-									c.nama ASC
+									nopendaftaran ASC,
+									namasiswa ASC
 									';
-									pr($sql);
+									// pr($sql);
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
@@ -153,34 +148,25 @@
 							$nox 	= $starting+1;
 							while($r = mysql_fetch_assoc($result)){	
 								$token=base64_encode($_SESSION['id_loginS'].$r['replid']);
-											// <button data-hint="ubah"  onclick="switchPN(\'form\','.$r['replid'].');">
 								$btn ='<td align="center">
-											<a class="button" href="report/r_pendataan.php?token='.$token.'&replid='.$r['replid'].'" target="_blank" data-hint="cetak">
+											<a class="button" '.(isAksi('siswa','r')?' href="report/r_siswa.php?token='.$token.'&replid='.$r['replid'].'"':' disabled href="#"').'  target="_blank" data-hint="cetak">
 												<i class="icon-printer"></i>
 											</a>
-											<button data-hint="ubah"  onclick="switchPN(\'form\','.$r['replid'].');">
+											<button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['replid'].')"':' disabled').' >
 												<i class="icon-pencil"></i>
 											</button>
-											<button data-hint="hapus" onclick="del('.$r['replid'].');">
+											<button data-hint="hapus"  '.(isAksi('siswa','d')?'onclick="del('.$r['replid'].')"':' disabled').'>
 												<i class="icon-remove"></i>
 											</button>
 										 </td>';
-								$no=getNoPendaftaran($r['replid'],$r['kelompok']) ;
-								// var_dump($no);exit();
 								$out.= '<tr>
-											<td>'.$no['akhir'].'</td>
-											<td>'.$r['nama'].'</td>
-											<td>'.$r['tingkat'].'</td>
-											<td align="right">'.setuang(getBiaya('registration',$r['replid'])).'</td>
-											<td align="right">'.setuang(getDisc('discsaudara',$r['replid'])).'</td>
-											<td align="right">'.setuang(getDisc('disctunai',$r['replid'])).'</td>
-											<td align="right">'.setuang(getDisc('discangsuran',$r['replid'])).'</td>
-											<td align="right" class="bg-green fg-white">'.setuang(getBiayaNet('registration',$r['replid'])).'</td>
-											<td align="center">'.($r['cicilan']==1?'Cash':'Angsur '.$r['cicilan'].' x').'</td>
+											<td>'.$r['nopendaftaran'].'</td>
+											<td>'.$r['namasiswa'].'</td>
+											<td>'.$r['nis'].'</td>
+											<td>'.$r['nisn'].'</td>
+											<td>'.($r['status']=='1'?'Diterima':($r['status']=='2'?'Lulus':'Belum Diterima')).'</td>
 											'.$btn.'
 										</tr>';
-											// <td align="right">'.setuang(getDisc('discsubsidi',$r['replid'])).'</td>
-											// <td align="center">'.($r['angsuran']==1?'<i class="fg-green icon-checkmark"></i>':'<i class="fg-red icon-minus"></i>').'</td>
 								$nox++;
 							}
 						}else{ #kosong
@@ -307,21 +293,19 @@
 					break;
 
 					case 'siswa':
-						/*$photosiswa=null;
+						// delete file/image [edit:mode]
+						$photosiswa=null;
 						if(empty($_POST['idformTB'])){// add 
-							if(isset($_POST['photosiswaTB']))// ada upload 
-							 $photosiswa = array('photosiswa'=>$_POST['photosiswaTB'],);
+							 $photosiswa = isset($_POST['photosiswaTB'])?$_POST['photosiswaTB']:null; // ada upload 
 						}else{ // edit
 							if(isset($_POST['photosiswaTB'])){// ada upload 
-								if(isset($_POST['photosiswa2TB']) && !empty($_POST['photosiswa2TB'])) // foto lama = ada 
-									$photosiswa = array('photosiswa'=>$_POST['photosiswaTB'],);
-							}else{ // tdk ada upload
-
-							}
-						} */
-
+								$photosiswa = $_POST['photosiswaTB'];
+								if(isset($_POST['photosiswa2TB']) && !empty($_POST['photosiswa2TB'])) fileDel($imageDir.$_POST['photosiswa2TB']); // foto lama = ada 
+							} 
+						} 
 						// biodata siswa -----------------------------------------------------------------------------------------
 						$siswaF = array(
+							'photosiswa'=>$photosiswa,
 							'alamatsiswa',	
 							'bahasasiswa1',	
 							'bahasasiswa2',	
@@ -342,16 +326,16 @@
 							'penyakitsiswa',	
 							'pinbbsiswa',	
 							'sekolahasalsiswa',	
+							'sukusiswa',	
 							'tanggallahirsiswa'=>($_POST['tanggallahirsiswaTB']!=''?tgl_indo6($_POST['tanggallahirsiswaTB']):'0000-00-00'),	
 							'telponsiswa',	
 							'tempatlahirsiswa',	
 							'tinggisiswa',	
 							'warganegarasiswa',
 						);$siswaSV=(isset($_POST['idformTB'])&& !empty($_POST['idformTB']))?editRecord($siswaF,$tb,'replid',$_POST['idformTB']):addRecord($siswaF,$tb);
-
-						if(!$siswaSV['isSukses']){
-							$stat='gagal_insert_siswa';
-						}else{
+						// $stat='sukses'; // sementara
+						if(!$siswaSV['isSukses']) $stat='gagal_insert_siswa';
+						else{
 							// siswa - biaya  -----------------------------------------------------------------------------------------
 							$siswabiayaStat=true;
 							$xx=$n=0;
@@ -441,7 +425,7 @@
 									if(!$siswaibuSV['isSukses']){
 										$stat='gagal_insert_siswa_ibu';
 									}else{
-										// siswa - walimurid -----------------------------------------------------------------------------------------
+										// siswa - walimurid (optional) -----------------------------------------------------------------------------------------
 										if(isset($_POST['namawaliTB']) && !empty($_POST['namawaliTB'])){
 											$siswawaliF = array(
 												'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
@@ -453,47 +437,58 @@
 											);$siswawaliSV=(isset($_POST['idformTB']) && !empty($_POST['idformTB']))?editRecord($siswawaliF,$tb4,'siswa',$_POST['idformTB']):addRecord($siswawaliF,$tb4);
 											if(!$siswawaliSV['isSukses']){
 												$stat='gagal_insert_siswawali';
-											}else{
-												// siswa - kontak darurat -----------------------------------------------------------------------------------------
-												$siswakontakdaruratStat=true;
-												$xx=$n=0;
-												foreach ($_POST['iddetailbiayaTB'] as $i => $v) {
-													$biaya           = getField('biaya','psb_detailbiaya','replid',$v);
-													$angsuran        = isset($_POST['angsuran'.$biaya.'TB'])?',angsuran ='.$_POST['angsuran'.$biaya.'TB']:'';
-													$diskonkhusus    = isset($_POST['diskonkhusus'.$biaya.'TB'])?',diskonkhusus ='.getuang($_POST['diskonkhusus'.$biaya.'TB']):'';
-													$ketdiskonkhusus = isset($_POST['ketdiskonkhusus'.$biaya.'TB'])?',ketdiskonkhusus ="'.$_POST['ketdiskonkhusus'.$biaya.'TB'].'"':'';
-													$siswakontakdaruratS 	 ='INSERT INTO psb_siswakontakdarurat SET 	siswa 	 	='.$siswaSV['id'].',
-																										detailbiaya ='.$v.'
-																										'.$angsuran.$diskonkhusus.$ketdiskonkhusus;
-													$siswakontakdaruratE    =mysql_query($siswakontakdaruratS);
-													$siswakontakdaruratID   =mysql_insert_id();
-													$siswakontakdaruratStat =!$siswakontakdaruratE?false:true;
-													
-												$siswakontakdaruratF = array(
-													'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
-													'namakontakdarurat',
-													'hubkontakdarurat',
-													'telponkontakdarurat1',
-													'telponkontakdarurat2',
-												);$siswakontakdaruratSV=(isset($_POST['idformTB']) && !empty($_POST['idformTB']))?editRecord($siswakontakdaruratF,$tb5,'siswa',$_POST['idformTB']):addRecord($siswakontakdaruratF,$tb5);
-												pr($siswawaliSV);
 											}
+										}// end of : siswa - wali murid --------------------------------------------------------
+										
+										// siswa - kontak darurat -----------------------------------------------------------------------------------------
+										$siswakontakdaruratStat=true;
+										if(isset($_POST['idkontakdaruratTB'])){
+											foreach ($_POST['idkontakdaruratTB'] as $i => $v) {
+												$namakontakdarurat    = isset($_POST['namakontakdarurat'.$v.'TB'])?$_POST['namakontakdarurat'.$v.'TB']:'';
+												$hubkontakdarurat     = isset($_POST['hubkontakdarurat'.$v.'TB'])?$_POST['hubkontakdarurat'.$v.'TB']:'';
+												$telponkontakdarurat1 = isset($_POST['telponkontakdarurat1'.$v.'TB'])?$_POST['telponkontakdarurat1'.$v.'TB']:'';
+												$telponkontakdarurat2 = isset($_POST['telponkontakdarurat2'.$v.'TB'])?$_POST['telponkontakdarurat2'.$v.'TB']:'';
+												$siswakontakdaruratS  ='INSERT INTO '.$tb5.' SET 	
+														siswa 				 ='.$siswaSV['id'].',
+														namakontakdarurat    ="'.$namakontakdarurat.'",
+														hubkontakdarurat     ="'.$hubkontakdarurat.'",
+														telponkontakdarurat1 ="'.$telponkontakdarurat1.'",
+														telponkontakdarurat2 ="'.$telponkontakdarurat2.'"';
+												$siswakontakdaruratE    =mysql_query($siswakontakdaruratS);
+												$siswakontakdaruratStat =!$siswakontakdaruratE?false:true;
+											}
+										}
+										if(!$siswakontakdaruratStat) $stat='gagal_insert_siswa_kontakdarurat';
+										else{
+											$siswasaudaraStat=true;
+											if(isset($_POST['idsaudaraTB'])){
+												foreach ($_POST['idsaudaraTB'] as $i => $v) {
+													$namasaudara         = isset($_POST['namasaudara'.$v.'TB'])?$_POST['namasaudara'.$v.'TB']:'';
+													$jkelaminsaudara     = isset($_POST['jkelaminsaudara'.$v.'TB'])?$_POST['jkelaminsaudara'.$v.'TB']:'';
+													$tempatlahirsaudara  = isset($_POST['tempatlahirsaudara'.$v.'TB'])?$_POST['tempatlahirsaudara'.$v.'TB']:'';
+													$tanggallahirsaudara = isset($_POST['tanggallahirsaudara'.$v.'TB'])?$_POST['tanggallahirsaudara'.$v.'TB']:'';
+													$sekolahsaudara      = isset($_POST['sekolahsaudara'.$v.'TB'])?$_POST['sekolahsaudara'.$v.'TB']:'';
+													$gradesaudara        = isset($_POST['gradesaudara'.$v.'TB'])?$_POST['gradesaudara'.$v.'TB']:'';
+													$siswasaudaraS  ='INSERT INTO '.$tb6.' SET 	
+															siswa               ='.$siswaSV['id'].',
+															namasaudara         ="'.$namasaudara.'",         
+															jkelaminsaudara     ="'.$jkelaminsaudara.'",     
+															tempatlahirsaudara  ="'.$tempatlahirsaudara.'",  
+															tanggallahirsaudara ="'.tgl_indo6($tanggallahirsaudara).'", 
+															sekolahsaudara      ="'.$sekolahsaudara.'",      
+															gradesaudara        ="'.$gradesaudara.'"';        
+													$siswasaudaraE    =mysql_query($siswasaudaraS);
+													$siswasaudaraStat =!$siswasaudaraE?false:true;
+												}
+											}
+											$stat=!$siswasaudaraStat?'gagal_insert_siswa_kontakdarurat':'sukses';
 										}
 									}
 								}
 							}
 						}
-						// pr($_POST['iddetaildiskonTB'][4]);
-				    	// if(isset($_POST['photo_asal'])){ //change image
-						// 	$img='../img/upload/'.$_POST['photo_asal'];
-						// 	if(file_exists($img)){ //checking image is exist
-						// 		$delimg = unlink($img);
-						// 		$statgb  = !$delimg?false:true;
-						// 	}
-						// }
 					break;
-				}		
-				$out=json_encode(array('status' =>$stat));
+				}$out=json_encode(array('status' =>$stat));
 			break;
 
 
@@ -600,7 +595,7 @@
 							'alamat'         =>$r['alamat'],
 							'telpon'    	 =>$r['telpon'],
 							'sekolahasal'    =>$r['sekolahasal'],
-							'photo'          =>$r['photo'],
+							'photosiswa'          =>$r['photosiswa'],
 							'darah'          =>$r['darah'],
 							'kesehatan'      =>$r['kesehatan'],
 							'ketkesehatan'   =>$r['ketkesehatan'],
@@ -907,5 +902,6 @@
 		}
 	}
 	echo $out;
-
 ?>
+
+

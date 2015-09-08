@@ -36,7 +36,12 @@
 	}	
 	function exeQuery($sql){
 		$e=mysql_query($sql);
-		return $e?true:false;
+		return $e;
+		// return $e?true:false;
+	}
+	function fetchField($sql){
+		$ff=mysql_fetch_array(exeQuery($sql));
+		return $ff[0];
 	}
 	
 	// error handling
@@ -53,8 +58,26 @@
 		$e   = mysql_query($s);
 		$arr =array();
 		while ($r=mysql_fetch_assoc($e)) {
-			$arr[]=$r[$f];
+			$arr[]=($f=='*'||$f=='all'?$r:$r[$f]);
 		}return $arr;
+	}
+		
+	function getFieldArr3($f,$tb,$j,$w,$k){
+		$s = 'SELECT ';
+		if(is_array($f)){
+			$ss='';
+			foreach ($f as $i => $v) $ss.=','.$v;
+			$s.=substr($ss,1);
+		}else $s.=$f;
+		$s.=' FROM '.$tb;
+		if(is_array($j)){
+			foreach ($j as $i => $v)  $s.=' LEFT JOIN '.$v[0].' ON '.$v[0].'.'.$v[2].'='.$v[1].'.'.$v[3]; 
+		}
+		$s .=($w!=''?' WHERE '.$w.' = '.$k:'');
+		$e = mysql_query($s);
+		$arr =array();
+		while ($r=mysql_fetch_assoc($e)) $arr[]=$r;
+		return $arr;
 	}
 
 	function getField2($f,$tb,$w,$k){
@@ -94,16 +117,15 @@
 		$arr = '';
 		while ($r=mysql_fetch_assoc($e)) {
 			$arr.=','.$r[$f];
-		} return substr($arr,1);
+		} return substr($arr,1); // a,b,c,d, dst
 	}
 
 	// general function : query data 
 	function getField($f,$tb,$w='',$k=''){
 		$s = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = '.$k:'');
-		// vd($s);
 		$e = mysql_query($s) or die(mysql_error());
 		$r = mysql_fetch_assoc($e);
-		return $r[$f];
+		return ($f=='*' || $f=='all'?$r:$r[$f]);
 	}
 	function vd($x){
 		echo '<pre>';
@@ -118,6 +140,15 @@
 		exit();
 	}
 
+	function delFile($file){
+		if(isset($file)){
+			if(file_exists($file)){
+				$isDel   = unlink($img);
+				$statDel = !$isDel?false:true;
+				return $statDel;
+			}
+		}
+	}
 	/*function contentFC(){
 	    $out='';
 	    // looping grup menu

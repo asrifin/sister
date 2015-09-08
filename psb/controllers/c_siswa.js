@@ -33,41 +33,47 @@ var contentFR = '';
                         +'<div class="accordion with-marker xspan3 xplace-left margin10" data-role="accordion" data-closeany="true">'
                             // kriteria
                             +'<div class="accordion-frame active">'
-                                +'<a class="heading bg-lightBlue fg-white" href="#">Kriteria Siswa</a>'
+                                +'<a class="heading bg-red fg-white" href="#">Kriteria Siswa <sub>*wajib diisi</sub></a>'
                                 +'<div  style="display: block;" class="content grid">'
                                     // baris 1
                                     +'<div class="row">'
                                         // kolom1
-                                        +'<div class="span4">'
+                                        +'<div class="span3">'
                                             // departemen
                                             +'<label>Departemen</label>'
                                             +'<select data-transform="input-control" required onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();" id="departemenTB" name="departemenTB"></select>'
+                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // tahunajaran
                                             +'<label>Tahun Ajaran</label>'
                                             +'<select data-transform="input-control" required  onchange="cmbdetailgelombang(\'form\',\'\'); getBiaya();;" id="tahunajaranTB" name="tahunajaranTB"></select>'
+                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // Detailgelombang
                                             +'<label>Detail Gelombang</label>'
                                             +'<select  data-transform="input-control" onchange=" getBiaya();" required id="detailgelombangTB" name="detailgelombangTB"><option value="">-silahkan pilih Dept. dan Tahun Ajaran dahulu-</option></select>'
+                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // tingkat
                                             +'<label>Tingkat</label>'
                                             +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya(); subdokumenFC();" id="tingkatTBZ" name="tingkatTB"></select>'
+                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // subtingkat
                                             +'<label>Sub Tingkat</label>'
                                             +'<select  data-transform="input-control" onchange=" getBiaya();"  required id="subtingkatTB" name="subtingkatTB"></select>'
+                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // golongan
                                             +'<label>Golongan</label>'
                                             +'<select data-transform="input-control"  onchange=" getBiaya();"  required id="golonganTBZ" name="golonganTBs"></select>'
+                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                         +'</div>'
                                             
                                         // kolom2
-                                        +'<div id="biayaDV" class="span4"></div>'
+                                        +'<div id="biayaDV" class="span7"></div>'
                                     +'</div>'
                                 +'</div>'
                             +'</div>'
                             
                             // // bioadata Siswa
                             +'<div class="accordion-frame">'
-                                +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Siswa</a>'
+                                +'<a class="heading bg-red fg-white" href="#">Biodata Siswa <sub>*wajib diisi</sub></a>'
                                 +'<div style="display: block;" class="content grid">'
                                     // baris 1
                                     +'<div class="row">'
@@ -77,8 +83,9 @@ var contentFR = '';
                                             +'<label>No. Pendaftaran</label>'
                                             +'<input type="text" data-transform="input-control" id="nopendaftaranTB" name="nopendaftaranTB">'
                                             // nama
-                                            +'<label>Nama</label>'
+                                            +'<label>Nama </label>'
                                             +'<input type="text" data-transform="input-control" required placeholder="nama" id="namasiswaTB" name="namasiswaTB">'
+                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // panggilan
                                             +'<label>Nama Panggilan</label>'
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="nama panggilan" id="panggilansiswaTB" name="panggilansiswaTB">'
@@ -102,6 +109,9 @@ var contentFR = '';
                                             // warga negara
                                             +'<label>Warga Negara</label>'
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="warganegara" id="warganegarasiswaTB" name="warganegarasiswaTB">'
+                                            // suku
+                                            +'<label>Suku</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="suku" id="sukusiswaTB" name="sukusiswaTB">'
                                             // agama
                                             +'<label>Agama</label>'
                                             +'<select data-transform="input-control" xrequired id="agamasiswaTB" name="agamasiswaTB"></select>'
@@ -111,7 +121,7 @@ var contentFR = '';
                                             +'<input type="text" data-transform="input-control"  xrequired placeholder="bahasa 2" id="bahasasiswa2TB" name="bahasasiswa2TB">'
                                             // photo 
                                             +'<label>Pas Photo</label>'
-                                            +'<input type="text"  id="photosiswa2TB" name="photosiswa2TB"/>'
+                                            +'<input type="hidden"  id="photosiswa2TB" name="photosiswa2TB"/>'
                                             +'<input type="file" tipe="image" onchange="preUpload(this);" data-transform="input-control" id="photosiswaTB" name="photosiswaTB"/>'
                                         +'</div>'
                                             
@@ -144,7 +154,7 @@ var contentFR = '';
                                                 +'<img id="previmg" src="../img/no_image.jpg">'
                                                 +'<div class="brand bg-dark opacity">'
                                                     +'<span class="text">'
-                                                        +'foto si ABC'
+                                                        +'format[jpg/png/bmp] size[max 1 mb]'
                                                     +'</span>'
                                                 +'</div>'
                                             +'</div>'
@@ -204,7 +214,7 @@ var contentFR = '';
 
                             // Biodata Ayah
                             +'<div class="accordion-frame">'
-                                +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Ayah</a>'
+                                +'<a class="heading bg-red fg-white" href="#">Biodata Ayah <sub>*wajib diisi</sub></a>'
                                 +'<div style="display: block;" class="content grid">'
                                     // baris 1
                                     +'<div class="row">'
@@ -213,6 +223,7 @@ var contentFR = '';
                                             // ayah
                                             +'<label>Nama Ayah</label>'
                                             +'<input  type="text" data-transform="input-control" required placeholder="nama ayah" id="namaayahTB" name="namaayahTB">'
+                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // tampat lahir
                                             +'<label>Tempat Lahir</label>'
                                             +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ayah " xrequired id="tempatlahirayahTB" name="tempatlahirayahTB">'
@@ -300,7 +311,7 @@ var contentFR = '';
 
                             // Biodata ibu
                             +'<div class="accordion-frame">'
-                                +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Ibu</a>'
+                                +'<a class="heading bg-red fg-white" href="#">Biodata Ibu <sub>*wajib diisi</sub></a>'
                                 +'<div style="display: block;" class="content grid">'
                                     // baris 1
                                     +'<div class="row">'
@@ -309,6 +320,7 @@ var contentFR = '';
                                             // ibu
                                             +'<label>Nama ibu</label>'
                                             +'<input  type="text" data-transform="input-control" required placeholder="nama ibu" id="namaibuTB" name="namaibuTB">'
+                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // tampat lahir
                                             +'<label>Tempat Lahir</label>'
                                             +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ibu " xrequired id="tempatlahiribuTB" name="tempatlahiribuTB">'
@@ -406,8 +418,11 @@ var contentFR = '';
                                             +'<label>Nama</label>'
                                             +'<input  type="text" data-transform="input-control" placeholder="nama" id="namawaliTB" name="namawaliTB">'
                                             // kelamin
-                                            +'<label>kelamin</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="kelamin" id="jkelaminwaliTB" name="jkelaminwaliTB">'
+                                            +'<label>Jenis Kelamin</label>'
+                                            +'<select data-transform="input-control" xrequired id="jkelaminwaliTB" name="jkelaminwaliTB">'
+                                                +'<option value="L">Laki</option>'
+                                                +'<option value="P">Perempuan</option>'
+                                            +'</select>'
                                             // alamatwali
                                             +'<label>Alamat</label>'
                                             +'<input  type="text" data-transform="input-control" placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
@@ -433,54 +448,56 @@ var contentFR = '';
                                     // baris 1
                                     +'<div class="row">'
                                         // kolom1 
-                                        +'<div class="span4">'
-                                            // nama
-                                            +'<label>Nama</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="nama" id="namakontakdaruratTB" name="namakontakdaruratTB">'
-                                            // hubungan 
-                                            +'<label>Hubungan</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="hubungan" id="hubkontakdaruratTB" name="hubkontakdaruratTB">'
-                                            // telponkontakdarurat1
-                                            +'<label>telponkontakdarurat1</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="telp. 1" id="telponkontakdarurat1TB" name="telponkontakdarurat1TB">'
-                                            // telponkontakdarurat2
-                                            +'<label>telponkontakdarurat2</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="telp. 2" id="telponkontakdarurat2TB" name="telponkontakdarurat2TB">'
+                                        +'<div class="span12">'
+                                            +'<a  class="button"  href="#" onclick="kontakdaruratFC();return false;"><i class="icon-plus-2"></i></a>'
+                                            +'<table class="table bordered hovered striped">'
+                                                +'<thead class="fg-white bg-blue">'
+                                                    +'<tr>'
+                                                        +'<th>Nama</th>'
+                                                        +'<th>Hubungan</th>'
+                                                        +'<th>Telpon 1</th>'
+                                                        +'<th>Telpon 2</th>'
+                                                        +'<th>Hapus</th>'
+                                                    +'</tr>'
+                                                +'</thead>'
+                                                +'<tbody id="kontakdaruratTBL">'
+                                                +'</tbody>'
+                                            +'</table>'
                                         +'</div>'
 
                                     +'</div>'
                                 +'</div>'
                             +'</div>'
 
-                            // // Biodata saudara
-                            // +'<div class="accordion-frame">'
-                            //     +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Saudara</a>'
-                            //     +'<div  style="display: block;" class="content grid">'
-                            //         // baris 1
-                            //         +'<div class="row">'
-                            //             // kolom1
-                            //             +'<div class="span12">'
-                            //                 +'<button onclick="saudaraFC();return false;"><i class="icon-plus-2"></i></button>'
-                            //                 +'<table class="table bordered hovered striped">'
-                            //                     +'<thead class="fg-white bg-blue">'
-                            //                         +'<tr>'
-                            //                             +'<th>Nama</th>'
-                            //                             +'<th>Kelamin</th>'
-                            //                             +'<th>Tmpt Lahir</th>'
-                            //                             +'<th>Tgl Lahir</th>'
-                            //                             +'<th>Sekolah</th>'
-                            //                             +'<th>Nilai</th>'
-                            //                             +'<th>Hapus</th>'
-                            //                         +'</tr>'
-                            //                     +'</thead>'
-                            //                     +'<tbody id="saudaraTBL">'
-                            //                     +'</tbody>'
-                            //                 +'</table>'
-                            //             +'</div>'
-                            //         +'</div>'
+                            // Biodata Saudara
+                            +'<div class="accordion-frame">'
+                                +'<a class="heading bg-lightBlue fg-white" href="#">Bioada Saudara</a>'
+                                +'<div style="display: block;" class="content grid">'
+                                    // baris 1
+                                    +'<div class="row">'
+                                        // kolom1 
+                                        +'<div class="span12">'
+                                            +'<a  class="button"  href="#" onclick="saudaraFC();return false;"><i class="icon-plus-2"></i></a>'
+                                            +'<table class="table bordered hovered striped">'
+                                                +'<thead class="fg-white bg-blue">'
+                                                    +'<tr>'
+                                                        +'<th>Nama</th>'
+                                                        +'<th>Jenis Kelamin</th>'
+                                                        +'<th>Tempat Lahir</th>'
+                                                        +'<th>Tanggal Lahir</th>'
+                                                        +'<th>Sekolah</th>'
+                                                        +'<th>Grade</th>'
+                                                        +'<th>Hapus</th>'
+                                                    +'</tr>'
+                                                +'</thead>'
+                                                +'<tbody id="saudaraTBL">'
+                                                +'</tbody>'
+                                            +'</table>'
+                                        +'</div>'
 
-                            //     +'</div>'                            
-                            // +'</div>'                            
+                                    +'</div>'
+                                +'</div>'
+                            +'</div>'
 
                             // kelengkapan dokumen
                             /*+'<div class="accordion-frame">'
@@ -522,78 +539,10 @@ var contentFR = '';
                         // end of accrdion 
                     +'</form>';
     // button action
-        $("#batalBC").on('click',function(){
-            switchPN('view','');
-        });
-        $("#tambahsdrBC").on('click',function(){
-            $('#cetak').toggle('slow');
-        });
-        $("#saudara2TB").on('click',function(){
-            $('#saudara2').toggle('slow');
-            $('#saudara').toggle('slow');
-        });
-
-        $('#nopendaftaranS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB();
-        });$('#namaS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB();
-        });$('#tingkatS').keydown(function (e){
-            if(e.keyCode == 13)
-                viewTB();
-        });
-
-        //add
-        $("#klasifikasiBC").on('click',function(){
-            saudaraFR();
-        });
-
-    // search button
-        $("#diskon_subsidiTB,#diskon_saudaraTB").keyup(function(){
-            hitung_diskon();
-            hitung_dpp();
-        }); $("#diskon_tunai").change(function(){
-            setdiskon();
-            hitung_diskon();
-            hitung_dpp();
-        });
+        $('#nopendaftaranS, #namasiswaS, #nisS,#nisnS').keydown(function (e){ if(e.keyCode == 13) viewTB('siswa'); });
+        $('#statusS').on('change',function(){ viewTB('siswa'); });
     }); 
-      
-// hapus saudara terpilih
-    function saudaraDelx(id){
-        $('#saudaraTR_'+id).fadeOut('slow',function(){
-            $('#saudaraTR_'+id).remove();
-        });
-    }
     
-//saudara record kosong --
-    function saudaraExist(){
-        alert('jumlah tr: '+$('#saudaraTBL','.saudaraTR').length);return false;
-        var tr ='<tr class="warning"><td colspan="3" class="text-center">Silahkan pilih Nama Siswa ..</td></tr>';
-        if($('#saudaraTBL').html()=='')
-            $('#saudaraTBL').html(tr);
-        else
-            $('#saudaraTBL').html('');
-    }
-
-// pilih saudara  ---
-    function saudaraAdd (id,siswa,sekolah) {
-        var tr ='<tr val="'+id+'" class="saudaraTR" id="saudaraTR_'+id+'">'
-                    +'<td>'+siswa+'</td>'
-                    +'<td>'+sekolah+'</td>'
-                    // +'<td><button xhref="#" xonclick="saudaraDel('+id+');"onclick="alert('+id+');"><i class="icon-remove"></i></button></td>'
-                    +'<td>'
-                        +'<a href="#" onclick="saudaraDelx('+id+');" xonclick="alert('+id+');">'
-                            +'<i class="icon-remove"></i>'
-                        +'</a>'
-                    +'</td>'
-                +'</tr>';
-            // alert(id);return false;
-        $('#saudaraTBL').append(tr); 
-        saudaraArr();
-    }
-        
 //himpun array saudara terpilih
     function saudaraArr(){
         var y=[];
@@ -666,7 +615,7 @@ var contentFR = '';
             contentType: false,//Set content type to false as jq 'll tell the server its a query string request
             success: function(data, textStatus, jqXHR){
                 if(data.status == 'sukses'){ //gak error
-                    siswaDb(data);
+                    siswaDb(data.photosiswaTB);
                 }else{ //error
                     notif(data.status,'red');
                 }
@@ -678,33 +627,19 @@ var contentFR = '';
 
 // simpan ke database
     function siswaDb(filex){
-        // console.log('fotoh='+$('#photoH').val()); return false;
         var formData = $('#siswaFR').serialize();
-        if($('#idformTB').val()!=''){
-            formData +='&replid='+$('#idformTB').val();
-        }
-
-        if(filex!=''){// ada upload file nya
-            formData +='&photosiswaTB='+filex.file ;    
-            // if($('#photoH').val()!=''){
-            //     formData+='&photo_asal='+$('#photoH').val();
-            // }
-        }
+        if($('#idformTB').val()!='') formData +='&replid='+$('#idformTB').val(); // id tidak kosong (edit mode) 
+        if(filex!='') formData +='&photosiswaTB='+filex;  // ada upload file nya
 
         $.ajax({
             url: dir,
             type:'POST',
             data:formData+'&aksi=simpan&subaksi=siswa',
-            // data:formData+'&aksi=simpan&subaksi=siswa&kelompokS='+$('#kelompokS').val(),
             cache:false,
             dataType: 'json',
             success: function(data, textStatus, jqXHR){
-                if(data.status != 'sukses'){
-                   notif(data.status,'red');
-                }else{
-                    notif(data.status,'green'); 
-                    switchPN('view','');
-                }
+                if(data.status != 'sukses') notif(data.status,'red');
+                else {notif(data.status,'green'); $.Dialog.close();} 
             },error: function(jqXHR, textStatus, errorThrown){
                 console.log('ERRORS savedata2: ' + textStatus);
             }
@@ -907,8 +842,9 @@ var contentFR = '';
     }  
 
 // cmbo golongan 
-    function cmbtingkatZ(tip,tgk) {
-        var d = 'aksi=cmb'+mnu4;
+    // function cmbtingkatZ(tip,tgk) {
+    function cmbtingkatZ(tipe,ting) {
+        var d = 'aksi=cmb'+mnu4+'&departemen='+$('#departemen'+(tipe=='filter'?'S':'TB')).val();
         ajax(dir4,d).done(function (dt){
             var opt='';
             if (dt.status!='sukses') {
@@ -917,10 +853,13 @@ var contentFR = '';
             }else{
                 var opt = '';
                 $.each(dt.tingkat,function (id,item){
-                    opt+='<option '+(tgk==item.replid?'selected':'')+' value="'+item.replid+'">'+item.tingkat+'</option>'
+                    opt+='<option '+(ting==item.replid?'selected':'')+' value="'+item.replid+'">'+item.tingkat+'</option>'
                 });
-                // console.log(opt);
-                if(tip=='form') $('#tingkatTBZ').html('<option value="">-Pilih Tingkat-</option>'+opt);
+                if(tipe=='form') $('#tingkatTBZ').html('<option value="">-Pilih Tingkat-</option>'+opt);
+                else {
+                    $('#tingkatS').html(opt);
+                    viewTB('siswa');
+                }
             }
         });
     }   
@@ -998,7 +937,7 @@ var contentFR = '';
         var gol  = $('#golonganTBZ').val();
         if(dep=='' || thn=='' || dgel=='' || ting=='' || subt=='' || gol==''){
             $('.detaildiskonTB').attr('disabled',true);            
-            $('.detaildiskonTBL').html('<tr class="fg-white bg-red"><td class="text-center" colspan="4">..kosong..</td></tr>');
+            $('.detaildiskonTBL').html('<tr class="bg-white fg-red"><td class="text-center" colspan="4">..kosong..</td></tr>');
             // $('.diskonkhususTB').attr('disabled',true);
             // $('.ketdiskonkhususTB').attr('disabled',true);
             $('.ketdiskonkhususTB').attr('disabled',true);
@@ -1297,8 +1236,13 @@ function notif(cont,clr) {
                         opt+='<option '+(dgel==item.replid?'selected':'')+' value="'+item.replid+'">'+item.gelombang+'</option>';
                     }); 
                 }
-                if(typ=='filter') $('#detailgelombangS').html(opt);
-                else $('#detailgelombangTB').html('<option value="">-Pilih Gelombang-</option>'+opt);
+                if(typ=='filter') {
+                    $('#detailgelombangS').html(opt);
+                    cmbtingkatZ('filter','');
+                }else{
+                    $('#detailgelombangTB').html('<option value="">-Pilih Gelombang-</option>'+opt);
+                    cmbtingkatZ('form','');
+                } 
             });
         }
     }
@@ -1395,11 +1339,11 @@ function notif(cont,clr) {
                                                 +'<thead class="fg-white bg-blue">'
                                                     +'<th align="center">Diskon</th>'
                                                     +'<th align="center">Nilai</th>'
-                                                    +'<th align="center">Keterangan</th>'
+                                                    // +'<th align="center">Keterangan</th>'
                                                     +'<th align="center"><a onclick="$(\'#detaildiskon'+item.replid+'TBL\').html(\'\');getBiayaNett('+item.replid+'); return false;" class="fg-white bg-blue"><i class="icon-cancel-2"></i></a></th>'
                                                 +'</thead>'
                                                 +'<tbody class="detaildiskonTBL" id="detaildiskon'+item.replid+'TBL">'
-                                                    +'<tr><td class="fg-white bg-red text-center" colspan="4">..kosong..</td></tr>'
+                                                    +'<tr><td class="bg-white fg-red text-center" colspan="4">..kosong..</td></tr>'
                                                 +'</tbody>'
                                             +'</table>'
                                         +'</td>'
@@ -1437,7 +1381,7 @@ function notif(cont,clr) {
                                 // cara bayar
                                 if(item.idIsAngsur=='1') { // 1= angsur reg.
                                     out+='<tr>'
-                                        +'<td>Angsuran '+item.idIsAngsur+'</td>'
+                                        +'<td>Angsuran </td>'
                                         +'<td>' 
                                             +'<div class="input-control select">'
                                                 +'<select class="text-center" id="angsuran'+item.replid+'TB" name="angsuran'+item.replid+'TB"><option value=""></option></select>'
@@ -1515,8 +1459,8 @@ function notif(cont,clr) {
                         +'<input type="hidden" name="iddetaildiskonTB['+idx+'][]" value="'+replid+'" />'
                     +'</td>'
                     +'<td>'+nilai+'</td>'
-                    +'<td>'+keterangan+'</td>'
-                    +'<td><button class="bg-white fg-red" onclick="detaildiskonDel('+idx+','+replid+'); return false;"><i class="icon-cancel-2"></button></i></td>'
+                    // +'<td><pre>'+keterangan+'</pre></td>'
+                    +'<td><a href="#" class="bg-white fg-red" onclick="detaildiskonDel('+idx+','+replid+'); return false;"><i class="icon-cancel-2"></a></i></td>'
                 +'</tr>';
         $('#detaildiskon'+idx+'TBL').append(tr); 
         detaildiskonArr(idx);
@@ -1531,15 +1475,6 @@ function notif(cont,clr) {
         });
         console.log('setelah terpilih di tabel ='+selectedDiskReg);
         return selectedDiskReg;
-    }
-
-// remove TR 
-    function detaildiskonDel (idx,idy) {
-        $('#detaildiskon'+idy+'TR').fadeOut('slow',function(){
-            $('#detaildiskon'+idy+'TR').remove();
-            detaildiskonArr(idx);
-            getBiayaNett(idx,idy);
-        });
     }
 
 
@@ -1567,35 +1502,70 @@ function notif(cont,clr) {
 
     var idsaudara = 1;
     function saudaraFC(){
-        var tr='';
-            tr+='<tr class="saudaraTR" id="saudara'+idsaudara+'TR">'
-                +'<td><input type="text" data-transform="input-control" name="namasaudara'+idsaudara+'TB"id="namasaudara'+idsaudara+'TB" /></td>'
+        var tr='<tr class="saudaraTR" id="saudaraTR_'+idsaudara+'">'
                 +'<td>'
-                    +'<select required data-transform="input-control" name="jkelaminsaudara'+idsaudara+'TB"id="jkelaminsaudara'+idsaudara+'TB">'
+                    +'<input type="hidden" value="'+idsaudara+'" name="idsaudaraTB[]">'
+                    +'<input type="text" data-transform="input-control" required name="namasaudara'+idsaudara+'TB"id="namasaudara'+idsaudara+'TB" />'
+                +'</td>'
+                +'<td>'
+                    +'<select  required required data-transform="input-control" name="jkelaminsaudara'+idsaudara+'TB"id="jkelaminsaudara'+idsaudara+'TB">'
                         +'<option value="">Pilih kelamin</option>'
                         +'<option value="L">Laki</option>'
                         +'<option value="P">Perempuan</option>'
                     +'</select>'
                 +'</td>'
-                +'<td><input type="text" data-transform="input-control" name="tempatlahirsaudara'+idsaudara+'TB"id="tempatlahirsaudara'+idsaudara+'TB" /></td>'
+                +'<td><input  required type="text" data-transform="input-control" name="tempatlahirsaudara'+idsaudara+'TB"id="tempatlahirsaudara'+idsaudara+'TB" /></td>'
                 +'<td>'
                     +'<div class="input-control text" data-role="datepicker"'
                         +'data-format="dd mmmm yyyy"'
                         +'data-effect="slide">'
-                        +'<input placeholder="tanggal lahir" required id="tanggallahir'+idsaudara+'TB" name="tanggallahir'+idsaudara+'TB" type="text">'
+                        +'<input  required placeholder="tanggal lahir" required id="tanggallahirsaudara'+idsaudara+'TB" name="tanggallahirsaudara'+idsaudara+'TB" type="text">'
                         +'<button class="btn-date"></button>'
                     +'</div>'
                 +'</td>'
-                +'<td><input type="text" data-transform="input-control" name="sekolahsaudara'+idsaudara+'TB"id="sekolahsaudara'+idsaudara+'TB" /></td>'
-                +'<td><input type="text" data-transform="input-control" name="gradesaudara'+idsaudara+'TB"id="gradesaudara'+idsaudara+'TB" /></td>'
-                +'<td><button onclick="saudaraDelx('+idsaudara+') return false;"><i class="icon-cancel-2"></i></button></td>'
+                +'<td><input type="text"  required data-transform="input-control" name="sekolahsaudara'+idsaudara+'TB"id="sekolahsaudara'+idsaudara+'TB" /></td>'
+                +'<td><input type="text"  required data-transform="input-control" name="gradesaudara'+idsaudara+'TB"id="gradesaudara'+idsaudara+'TB" /></td>'
+                +'<td><a href="#" class="button fg-red bg-white" onclick="saudaraDel('+idsaudara+'); return false;"><i class="icon-cancel-2"></i></a></td>'
             +'</tr>';
         $('#saudaraTBL').append(tr);
         idsaudara++;
     }
 
-    function saudaraDelTR(idx,idy){
-        $('#saudara'+idy+'TR').fadeOut('slow',function(){
-            $('#saudara'+idy+'TR').remove();
+    var idkontakdarurat = 1;
+    function kontakdaruratFC(){
+        var tr='';
+            tr+='<tr class="kontakdaruratTR" id="kontakdaruratTR_'+idkontakdarurat+'">'
+                +'<td>'
+                    +'<input type="hidden" value="'+idkontakdarurat+'" name="idkontakdaruratTB[]">'
+                    +'<input  required type="text" data-transform="input-control" name="namakontakdarurat'+idkontakdarurat+'TB"id="namakontakdarurat'+idkontakdarurat+'TB" />'
+                +'</td>'
+                +'<td><input  required type="text" data-transform="input-control" name="hubkontakdarurat'+idkontakdarurat+'TB"id="hubkontakdarurat'+idkontakdarurat+'TB" /></td>'
+                +'<td><input  required type="text" data-transform="input-control" name="telponkontakdarurat1'+idkontakdarurat+'TB"id="telponkontakdarurat1'+idkontakdarurat+'TB" /></td>'
+                +'<td><input  type="text" data-transform="input-control" name="telponkontakdarurat2'+idkontakdarurat+'TB"id="telponkontakdarurat2'+idkontakdarurat+'TB" /></td>'
+                +'<td><a href="#" class="button bg-white fg-red" onclick="kontakdaruratDel('+idkontakdarurat+'); return false;"><i class="icon-cancel-2"></a></i></td>'
+           +'</tr>';
+        $('#kontakdaruratTBL').append(tr);
+        idkontakdarurat++;
+    }
+
+// hapus saudara terpilih
+    function saudaraDel(id){
+        $('#saudaraTR_'+id).fadeOut('slow',function(){
+            $('#saudaraTR_'+id).remove();
+        });
+    } 
+// hapus kontakdarurat terpilih
+    function kontakdaruratDel(id){
+        $('#kontakdaruratTR_'+id).fadeOut('slow',function(){
+            $('#kontakdaruratTR_'+id).remove();
+        }); return false;
+    }
+
+// hapus diskon reguler terplih 
+    function detaildiskonDel (idx,idy) {
+        $('#detaildiskon'+idy+'TR').fadeOut('slow',function(){
+            $('#detaildiskon'+idy+'TR').remove();
+            detaildiskonArr(idx);
+            getBiayaNett(idx,idy);
         });
     }

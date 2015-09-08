@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-08 12:47:03
+Date: 2015-09-09 05:39:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -6130,7 +6130,7 @@ CREATE TABLE `psb_siswa` (
   `sekolahasalsiswa` varchar(100) NOT NULL,
   `sukusiswa` int(10) unsigned NOT NULL DEFAULT '0',
   `agamasiswa` int(11) NOT NULL DEFAULT '0',
-  `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `status` enum('0','1','2') NOT NULL DEFAULT '0',
   `jkelaminsiswa` enum('L','P') NOT NULL,
   `tempatlahirsiswa` varchar(50) NOT NULL,
   `tanggallahirsiswa` date NOT NULL,
@@ -6161,12 +6161,12 @@ CREATE TABLE `psb_siswa` (
   KEY `FK_calonsiswa_suku` (`sukusiswa`),
   KEY `FK_calonsiswa_agama` (`agamasiswa`),
   KEY `FK_calonsiswa_statusiswa` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of psb_siswa
 -- ----------------------------
-INSERT INTO `psb_siswa` VALUES ('104', '', null, 'opop', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('140', '', null, 'andi noya', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '60_16fe7db130.png', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 
 -- ----------------------------
 -- Table structure for psb_siswa_copy
@@ -7159,12 +7159,12 @@ CREATE TABLE `psb_siswaayah` (
   PRIMARY KEY (`replid`),
   KEY `calonsiswa` (`siswa`) USING BTREE,
   CONSTRAINT `calonsiswaFk` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswaayah
 -- ----------------------------
-INSERT INTO `psb_siswaayah` VALUES ('22', '104', 'loloo', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO `psb_siswaayah` VALUES ('54', '140', '9009909', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_siswabiaya
@@ -7181,15 +7181,15 @@ CREATE TABLE `psb_siswabiaya` (
   KEY `siswa` (`siswa`) USING BTREE,
   KEY `biaya` (`detailbiaya`) USING BTREE,
   CONSTRAINT `siswaFK2` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=339 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=467 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswabiaya
 -- ----------------------------
-INSERT INTO `psb_siswabiaya` VALUES ('335', '104', '676', '2', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('336', '104', '649', '0', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('337', '104', '667', '0', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('338', '104', '658', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('463', '140', '676', '8', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('464', '140', '649', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('465', '140', '667', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('466', '140', '658', '0', '', '0');
 
 -- ----------------------------
 -- Table structure for psb_siswadiskon
@@ -7204,11 +7204,13 @@ CREATE TABLE `psb_siswadiskon` (
   KEY `detaildiskon` (`detaildiskon`) USING BTREE,
   CONSTRAINT `detaildiskonFK2` FOREIGN KEY (`detaildiskon`) REFERENCES `psb_detaildiskon` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siswabiayaFK` FOREIGN KEY (`siswabiaya`) REFERENCES `psb_siswabiaya` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswadiskon
 -- ----------------------------
+INSERT INTO `psb_siswadiskon` VALUES ('80', '463', '2');
+INSERT INTO `psb_siswadiskon` VALUES ('81', '463', '8');
 
 -- ----------------------------
 -- Table structure for psb_siswadokumen
@@ -7262,12 +7264,12 @@ CREATE TABLE `psb_siswaibu` (
   PRIMARY KEY (`replid`),
   KEY `calonsiswa` (`siswa`) USING BTREE,
   CONSTRAINT `psb_siswaibu_ibfk_1` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswaibu
 -- ----------------------------
-INSERT INTO `psb_siswaibu` VALUES ('22', '104', 'lililil', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO `psb_siswaibu` VALUES ('54', '140', 'kokok', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_siswakontakdarurat
@@ -7283,35 +7285,37 @@ CREATE TABLE `psb_siswakontakdarurat` (
   PRIMARY KEY (`replid`),
   KEY `siswa` (`siswa`) USING BTREE,
   CONSTRAINT `siswaFK10` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswakontakdarurat
 -- ----------------------------
-INSERT INTO `psb_siswakontakdarurat` VALUES ('1', '104', 'dardardard', '5', '66', '77');
+INSERT INTO `psb_siswakontakdarurat` VALUES ('30', '140', 'dar1', 'hub1', 'tlp1', 'telp2');
+INSERT INTO `psb_siswakontakdarurat` VALUES ('31', '140', 'dar2', 'hub2', 'tlp2', 'telp3');
 
 -- ----------------------------
 -- Table structure for psb_siswasaudara
 -- ----------------------------
 DROP TABLE IF EXISTS `psb_siswasaudara`;
 CREATE TABLE `psb_siswasaudara` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `siswa` int(10) unsigned NOT NULL,
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `siswa` int(11) NOT NULL,
   `jkelaminsaudara` enum('L','P') NOT NULL DEFAULT 'L',
   `namasaudara` varchar(100) NOT NULL,
   `tempatlahirsaudara` varchar(100) NOT NULL,
   `tanggallahirsaudara` date NOT NULL,
   `sekolahsaudara` varchar(50) NOT NULL,
   `gradesaudara` varchar(5) NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`replid`),
+  KEY `siswa` (`siswa`) USING BTREE,
+  CONSTRAINT `siswaFK9` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswasaudara
 -- ----------------------------
-INSERT INTO `psb_siswasaudara` VALUES ('3', '49', 'L', 'Geoffrey Daniel Ong', '', '2006-05-13', 'Elyon International Christian School', '');
-INSERT INTO `psb_siswasaudara` VALUES ('4', '41', 'L', 'Regina Soempiet', '', '2006-06-12', 'Elyon International Christian School', '');
-INSERT INTO `psb_siswasaudara` VALUES ('5', '44', 'L', 'Davide William Susanto', '', '2006-12-01', 'Elyon International Christian School', '');
+INSERT INTO `psb_siswasaudara` VALUES ('3', '140', 'L', 'namasau1', 'tmlahtsau2', '2015-09-03', 'elyon', '90');
+INSERT INTO `psb_siswasaudara` VALUES ('4', '140', 'P', 'sau2', 'temp22', '2015-09-16', 'gak tau ', 'A');
 
 -- ----------------------------
 -- Table structure for psb_siswawali
@@ -7328,12 +7332,11 @@ CREATE TABLE `psb_siswawali` (
   PRIMARY KEY (`replid`),
   KEY `siswa` (`siswa`) USING BTREE,
   CONSTRAINT `siswaFK8` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswawali
 -- ----------------------------
-INSERT INTO `psb_siswawali` VALUES ('16', '104', 'awawaw', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_statussiswa
