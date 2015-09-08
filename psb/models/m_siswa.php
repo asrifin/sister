@@ -148,13 +148,13 @@
 							$nox 	= $starting+1;
 							while($r = mysql_fetch_assoc($result)){	
 								$token=base64_encode($_SESSION['id_loginS'].$r['replid']);
+											// <button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['replid'].')"':' disabled').' >
+											// 	<i class="icon-pencil"></i>
+											// </button>
 								$btn ='<td align="center">
 											<a class="button" '.(isAksi('siswa','r')?' href="report/r_siswa.php?token='.$token.'&replid='.$r['replid'].'"':' disabled href="#"').'  target="_blank" data-hint="cetak">
 												<i class="icon-printer"></i>
 											</a>
-											<button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['replid'].')"':' disabled').' >
-												<i class="icon-pencil"></i>
-											</button>
 											<button data-hint="hapus"  '.(isAksi('siswa','d')?'onclick="del('.$r['replid'].')"':' disabled').'>
 												<i class="icon-remove"></i>
 											</button>

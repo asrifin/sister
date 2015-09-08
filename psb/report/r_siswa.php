@@ -66,7 +66,7 @@
         $tingkat     = getKriteriaSiswa('tingkat',$replid);
         $subtingkat  = getKriteriaSiswa('subtingkat',$replid);
         $golongan    = getKriteriaSiswa('golongan',$replid);
-        // pr($departemen);
+
         // kriteria siswa
         $out.='
             <tr class="head">

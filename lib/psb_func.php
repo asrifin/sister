@@ -1,22 +1,25 @@
 <?php
-	// function checkDetailDiskonTunai($dep,$thn){
-	// 	$dtun  = getField('count(*)','psb_diskontunai','','');
-	// 	$ddtun = getField2('count(*)','psb_DetailDiskonTunai',array('tahunajaran'=>$thn,'departemen'=>$dep),'');
-	// 	if($ddtun<=0 || $dtun!=$ddtun) addDetailDiskonTunai($dep,$thn);
-	// }
-	// function addDetailDiskonTunai($dep,$thn){
-	// 	// pr($dep);
-	// 	$sk = 'SELECT replid FROM psb_diskontunai ORDER BY replid ASC';
-	// 	$ek = mysql_query($sk);
-	// 	while ($rk = mysql_fetch_assoc($ek)) {
-	// 		$ss ='INSERT INTO psb_detaildiskontunai SET diskontunai ='.$rk['replid'].',
-	// 													departemen 	='.$dep.',
-	// 													tahunajaran ='.$thn;
-	// 		$es = mysql_query($ss);
-	// 	}
-	// }
-
-
+	function getKriteriaSiswa($f,$siswa){
+		$s='SELECT
+				'.$f.'.'.($f=='departemen'?'nama':$f).'
+			FROM
+				psb_siswa siswa
+				JOIN psb_siswabiaya siswabiaya on siswabiaya.siswa = siswa.replid
+				JOIN psb_detailbiaya detailbiaya on detailbiaya.replid = siswabiaya.detailbiaya
+				JOIN psb_biaya biaya on biaya.replid = detailbiaya.biaya
+				JOIN aka_subtingkat subtingkat on subtingkat.replid = detailbiaya.subtingkat
+				JOIN aka_tingkat tingkat on tingkat.replid = subtingkat.tingkat
+				JOIN psb_detailgelombang detailgelombang on detailgelombang.replid = detailbiaya.detailgelombang
+				JOIN psb_gelombang gelombang on gelombang.replid = detailgelombang.gelombang
+				JOIN aka_tahunajaran tahunajaran on tahunajaran.replid = detailgelombang.tahunajaran
+				JOIN psb_golongan golongan on golongan.replid = detailbiaya.golongan
+				JOIN departemen departemen  on departemen.replid = detailgelombang.departemen
+			WHERE
+				siswa.replid = '.$siswa.'
+			GROUP BY 
+				'.$f.'.'.($f=='departemen'?'nama':$f);
+		return fetchField($s);
+	}
 	function getAgama($id){
 		$ret = getField('agama','psb_agama','replid',$id);
 		return $ret;
