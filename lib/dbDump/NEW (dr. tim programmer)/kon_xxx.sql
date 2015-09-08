@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-06 06:52:56
+Date: 2015-09-08 12:54:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -349,7 +349,7 @@ CREATE TABLE `kon_loginhistory` (
   PRIMARY KEY (`id_loginhistory`),
   KEY `id_login` (`id_login`) USING BTREE,
   CONSTRAINT `kon_loginhistory_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=256 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=272 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_loginhistory
@@ -411,6 +411,22 @@ INSERT INTO `kon_loginhistory` VALUES ('252', '60', '2015-09-06 04:02:15');
 INSERT INTO `kon_loginhistory` VALUES ('253', '60', '2015-09-06 04:02:15');
 INSERT INTO `kon_loginhistory` VALUES ('254', '60', '2015-09-06 05:57:22');
 INSERT INTO `kon_loginhistory` VALUES ('255', '60', '2015-09-06 05:57:22');
+INSERT INTO `kon_loginhistory` VALUES ('256', '60', '2015-09-06 14:47:19');
+INSERT INTO `kon_loginhistory` VALUES ('257', '60', '2015-09-06 14:47:19');
+INSERT INTO `kon_loginhistory` VALUES ('258', '60', '2015-09-06 16:40:21');
+INSERT INTO `kon_loginhistory` VALUES ('259', '60', '2015-09-06 16:40:21');
+INSERT INTO `kon_loginhistory` VALUES ('260', '60', '2015-09-06 22:13:47');
+INSERT INTO `kon_loginhistory` VALUES ('261', '60', '2015-09-06 22:13:47');
+INSERT INTO `kon_loginhistory` VALUES ('262', '60', '2015-09-06 23:00:26');
+INSERT INTO `kon_loginhistory` VALUES ('263', '60', '2015-09-06 23:00:26');
+INSERT INTO `kon_loginhistory` VALUES ('264', '60', '2015-09-07 02:33:54');
+INSERT INTO `kon_loginhistory` VALUES ('265', '60', '2015-09-07 02:33:54');
+INSERT INTO `kon_loginhistory` VALUES ('266', '60', '2015-09-07 03:00:15');
+INSERT INTO `kon_loginhistory` VALUES ('267', '60', '2015-09-07 03:00:15');
+INSERT INTO `kon_loginhistory` VALUES ('268', '60', '2015-09-07 13:39:35');
+INSERT INTO `kon_loginhistory` VALUES ('269', '60', '2015-09-07 13:39:35');
+INSERT INTO `kon_loginhistory` VALUES ('270', '60', '2015-09-07 22:28:31');
+INSERT INTO `kon_loginhistory` VALUES ('271', '60', '2015-09-07 22:28:31');
 
 -- ----------------------------
 -- Table structure for kon_menu
