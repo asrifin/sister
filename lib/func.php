@@ -10,6 +10,7 @@
 		if(is_array($f)){
 			$sql='INSERT INTO '.$tb.' SET ';
 			$s='';
+			// pr($f);
 			foreach ($f as $i => $v) {
 				if($v!=null){
 					if(is_numeric($i)) $s.=','.$v.'="'.$_POST[$v.'TB'].'"';
@@ -17,18 +18,19 @@
 				}
 			}$sql.=substr($s,1);
 		}
+		// if($tb=='psb_kontakdarurat') pr($sql);
 		$stat=!exeQuery($sql)?false:true;
 		$idx=mysql_insert_id();
 		return array('isSukses'=>$stat,'id'=>$idx); 
 	}
-	function editRecord($f,$tb,$w){
+	function editRecord($f,$tb,$w,$k){
 		if(is_array($f)){
 			$sql='UPDATE SET ';
 			$s='';
 			foreach ($f as $i => $v) {
 				$s.=','.$v.'='.$_POST[$v.'TB'];
 			}$sql.=substr($s,1);
-			$sql.=' WHERE '.$w.'='.$_POST[$w];
+			$sql.=' WHERE '.$w.'='.$k;
 			return exeQuery($sql);
 		}
 	}	

@@ -5,18 +5,19 @@
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 	// require_once '../../lib/excel_reader2.php';
-	$mnu               = 'siswa';
-	$mnu_ayah          = 'calonsiswa_ayah';
-	$mnu_ibu           = 'calonsiswa_ibu';
-	$mnu_keluarga      = 'calonsiswa_keluarga';
-	$mnu_kontakdarurat = 'calonsiswa_kontakdarurat';
-	$mnu_saudara       = 'calonsiswa_saudara';
-	$tb                = 'psb_'.$mnu;
-	$tb_ayah           = 'psb_'.$mnu_ayah;
-	$tb_ibu            = 'psb_'.$mnu_ibu;
-	$tb_keluarga       = 'psb_'.$mnu_keluarga;
-	$tb_kontakdarurat  = 'psb_'.$mnu_kontakdarurat;
-	$tb_saudara        = 'psb_'.$mnu_saudara;
+	$mnu  = 'siswa';
+	$mnu2 = 'siswaayah';
+	$mnu3 = 'siswaibu';
+	$mnu4 = 'siswawali';
+	$mnu5 = 'siswakontakdarurat';
+	$mnu6 = 'siswasaudara';
+	
+	$tb   = 'psb_'.$mnu;
+	$tb2  = 'psb_'.$mnu2;
+	$tb3  = 'psb_'.$mnu3;
+	$tb4  = 'psb_'.$mnu4;
+	$tb5  = 'psb_'.$mnu5;
+	$tb6  = 'psb_'.$mnu6;
 	// $out=array();
 
 	if(!isset($_POST['aksi'])){
@@ -306,18 +307,20 @@
 					break;
 
 					case 'siswa':
-						// $photosiswa=null;
-						// if(empty($_POST['idformTB'])){// add 
-						// 	if(isset($_POST['photosiswaTB']))// ada upload 
-						// 	 $photosiswa = array('photosiswa'=>$_POST['photosiswaTB'],);
-						// }else{ // edit
-						// 	if(isset($_POST['photosiswaTB'])){// ada upload 
-						// 		if(isset($_POST['photosiswa2TB']) && !empty($_POST['photosiswa2TB'])) // foto lama = ada 
-						// 			$photosiswa = array('photosiswa'=>$_POST['photosiswaTB'],);
-						// 	}else{ // tdk ada upload
+						/*$photosiswa=null;
+						if(empty($_POST['idformTB'])){// add 
+							if(isset($_POST['photosiswaTB']))// ada upload 
+							 $photosiswa = array('photosiswa'=>$_POST['photosiswaTB'],);
+						}else{ // edit
+							if(isset($_POST['photosiswaTB'])){// ada upload 
+								if(isset($_POST['photosiswa2TB']) && !empty($_POST['photosiswa2TB'])) // foto lama = ada 
+									$photosiswa = array('photosiswa'=>$_POST['photosiswaTB'],);
+							}else{ // tdk ada upload
 
-						// 	}
-						// } 
+							}
+						} */
+
+						// biodata siswa -----------------------------------------------------------------------------------------
 						$siswaF = array(
 							'alamatsiswa',	
 							'bahasasiswa1',	
@@ -344,33 +347,143 @@
 							'tempatlahirsiswa',	
 							'tinggisiswa',	
 							'warganegarasiswa',
-						); 
-						$siswaSV=addRecord($siswaF,$tb);
-						if($siswaSV['isSukses']){
-							// $s='';
-							$statsbiaya=true;
+						);$siswaSV=(isset($_POST['idformTB'])&& !empty($_POST['idformTB']))?editRecord($siswaF,$tb,'replid',$_POST['idformTB']):addRecord($siswaF,$tb);
+
+						if(!$siswaSV['isSukses']){
+							$stat='gagal_insert_siswa';
+						}else{
+							// siswa - biaya  -----------------------------------------------------------------------------------------
+							$siswabiayaStat=true;
+							$xx=$n=0;
 							foreach ($_POST['iddetailbiayaTB'] as $i => $v) {
 								$biaya           = getField('biaya','psb_detailbiaya','replid',$v);
 								$angsuran        = isset($_POST['angsuran'.$biaya.'TB'])?',angsuran ='.$_POST['angsuran'.$biaya.'TB']:'';
 								$diskonkhusus    = isset($_POST['diskonkhusus'.$biaya.'TB'])?',diskonkhusus ='.getuang($_POST['diskonkhusus'.$biaya.'TB']):'';
 								$ketdiskonkhusus = isset($_POST['ketdiskonkhusus'.$biaya.'TB'])?',ketdiskonkhusus ="'.$_POST['ketdiskonkhusus'.$biaya.'TB'].'"':'';
-								$s='INSERT INTO psb_siswabiaya SET siswa           ='.$siswaSV['id'].',
-																	detailbiaya     ='.$v.'
-																	'.$angsuran.$diskonkhusus.$ketdiskonkhusus;
-								$esiswbiaya   =mysql_query($s);
-								$idsiswabiaya =mysql_insert_id();
-								$statsbiaya   =!$esiswbiaya?false:true;
+								$siswabiayaS 	 ='INSERT INTO psb_siswabiaya SET 	siswa 	 	='.$siswaSV['id'].',
+																					detailbiaya ='.$v.'
+																					'.$angsuran.$diskonkhusus.$ketdiskonkhusus;
+								$siswabiayaE    =mysql_query($siswabiayaS);
+								$siswabiayaID   =mysql_insert_id();
+								$siswabiayaStat =!$siswabiayaE?false:true;
 								
+								// siswa - diskon  -----------------------------------------------------------------------------------------
+								$nn=1;
+								$diskRegStat=true;
+								if(isset($_POST['iddetaildiskonTB'][$biaya])){ 
+									foreach ($_POST['iddetaildiskonTB'][$biaya] as $ii => $vv) {
+										$diskRegS    ='INSERT INTO psb_siswadiskon SET siswabiaya = '.$siswabiayaID.', detaildiskon = '.$vv;
+										$diskRegE    =mysql_query($diskRegS);
+										$diskRegStat =!$diskRegE?false:true;
+									}
+								}
 						 	}
-							pr($e);
-							// $siswabiayaF = array(
-							// 	'siswa'       =>$siswaSV['id'],	
-							// 	'detailbiaya' =>$_POST['siswaTB'],
-							// );
-							// $siswabiayaSV = addRecord($siswabiayaF,'psb_siswabiaya');
+							if(!$siswabiayaStat){
+								$stat='gagal_insert_siswa_biaya';
+							}elseif(!$diskRegStat){
+								$stat='gagal_insert_diskon_reguler';
+							}else{// sukses
+								// siswa - ayah -----------------------------------------------------------------------------------------
+								$siswaayahF = array(
+									'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
+									'namaayah',
+									'tempatlahirayah',
+									'tanggallahirayah',
+									'agamaayah',
+									'warganegaraayah',
+									'kodeposayah',
+									'kotaayah',
+									'pendidikanayah',
+									'bidangpekerjaanayah',
+									'pekerjaanayah',
+									'posisiayah',
+									'penghasilanayah',
+									'telponayah',
+									'pinbbayah',
+									'emailayah',
+									'alamatayah',
+									'hpayah',
+									'faxrumahayah',
+									'alamatkantorayah',
+									'telponkantorayah',
+									'faxkantorayah',
+									'gerejaayah',
+								);$siswaayahSV=(isset($_POST['idformTB']) && !empty($_POST['idformTB']))?editRecord($siswaayahF,$tb2,'siswa',$_POST['idformTB']):addRecord($siswaayahF,$tb2);
+								if(!$siswaayahSV['isSukses']){
+									$stat='gagal_insert_siswa_ayah';
+								}else{
+									// siswa - ibu -----------------------------------------------------------------------------------------
+									$siswaibuF = array(
+										'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
+										'namaibu',
+										'tempatlahiribu',
+										'tanggallahiribu',
+										'agamaibu',
+										'warganegaraibu',
+										'kodeposibu',
+										'kotaibu',
+										'pendidikanibu',
+										'bidangpekerjaanibu',
+										'pekerjaanibu',
+										'posisiibu',
+										'penghasilanibu',
+										'telponibu',
+										'pinbbibu',
+										'emailibu',
+										'alamatibu',
+										'hpibu',
+										'faxrumahibu',
+										'alamatkantoribu',
+										'telponkantoribu',
+										'faxkantoribu',
+										'gerejaibu',
+									);$siswaibuSV=(isset($_POST['idformTB']) && !empty($_POST['idformTB']))?editRecord($siswaibuF,$tb3,'siswa',$_POST['idformTB']):addRecord($siswaibuF,$tb3);
+									if(!$siswaibuSV['isSukses']){
+										$stat='gagal_insert_siswa_ibu';
+									}else{
+										// siswa - walimurid -----------------------------------------------------------------------------------------
+										if(isset($_POST['namawaliTB']) && !empty($_POST['namawaliTB'])){
+											$siswawaliF = array(
+												'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
+												'namawali',
+												'alamatwali',
+												'telponwali',
+												'jkelaminwali',
+												'kotawali',
+											);$siswawaliSV=(isset($_POST['idformTB']) && !empty($_POST['idformTB']))?editRecord($siswawaliF,$tb4,'siswa',$_POST['idformTB']):addRecord($siswawaliF,$tb4);
+											if(!$siswawaliSV['isSukses']){
+												$stat='gagal_insert_siswawali';
+											}else{
+												// siswa - kontak darurat -----------------------------------------------------------------------------------------
+												$siswakontakdaruratStat=true;
+												$xx=$n=0;
+												foreach ($_POST['iddetailbiayaTB'] as $i => $v) {
+													$biaya           = getField('biaya','psb_detailbiaya','replid',$v);
+													$angsuran        = isset($_POST['angsuran'.$biaya.'TB'])?',angsuran ='.$_POST['angsuran'.$biaya.'TB']:'';
+													$diskonkhusus    = isset($_POST['diskonkhusus'.$biaya.'TB'])?',diskonkhusus ='.getuang($_POST['diskonkhusus'.$biaya.'TB']):'';
+													$ketdiskonkhusus = isset($_POST['ketdiskonkhusus'.$biaya.'TB'])?',ketdiskonkhusus ="'.$_POST['ketdiskonkhusus'.$biaya.'TB'].'"':'';
+													$siswakontakdaruratS 	 ='INSERT INTO psb_siswakontakdarurat SET 	siswa 	 	='.$siswaSV['id'].',
+																										detailbiaya ='.$v.'
+																										'.$angsuran.$diskonkhusus.$ketdiskonkhusus;
+													$siswakontakdaruratE    =mysql_query($siswakontakdaruratS);
+													$siswakontakdaruratID   =mysql_insert_id();
+													$siswakontakdaruratStat =!$siswakontakdaruratE?false:true;
+													
+												$siswakontakdaruratF = array(
+													'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
+													'namakontakdarurat',
+													'hubkontakdarurat',
+													'telponkontakdarurat1',
+													'telponkontakdarurat2',
+												);$siswakontakdaruratSV=(isset($_POST['idformTB']) && !empty($_POST['idformTB']))?editRecord($siswakontakdaruratF,$tb5,'siswa',$_POST['idformTB']):addRecord($siswakontakdaruratF,$tb5);
+												pr($siswawaliSV);
+											}
+										}
+									}
+								}
+							}
 						}
-						// pr($sv['id']);
-						
+						// pr($_POST['iddetaildiskonTB'][4]);
 				    	// if(isset($_POST['photo_asal'])){ //change image
 						// 	$img='../img/upload/'.$_POST['photo_asal'];
 						// 	if(file_exists($img)){ //checking image is exist

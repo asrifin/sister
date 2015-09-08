@@ -104,7 +104,7 @@ var contentFR = '';
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="warganegara" id="warganegarasiswaTB" name="warganegarasiswaTB">'
                                             // agama
                                             +'<label>Agama</label>'
-                                            +'<select data-transform="input-control" required id="agamasiswaTB" name="agamasiswaTB"></select>'
+                                            +'<select data-transform="input-control" xrequired id="agamasiswaTB" name="agamasiswaTB"></select>'
                                             // bahasa
                                             +'<label>Bahasa</label>'
                                             +'<input type="text" data-transform="input-control"  xrequired placeholder="bahasa 1" id="bahasasiswa1TB" name="bahasasiswa1TB">'
@@ -202,231 +202,255 @@ var contentFR = '';
                                 +'</div>'
                             +'</div>'
 
-                            // // Biodata Ayah
-                            // +'<div class="accordion-frame">'
-                            //     +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Ayah</a>'
-                            //     +'<div style="display: block;" class="content grid">'
-                            //         // baris 1
-                            //         +'<div class="row">'
-                            //             // kolom1 
-                            //             +'<div class="span4">'
-                            //                 // ayah
-                            //                 +'<label>Nama Ayah</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="nama ayah" id="namaayahTB" name="namaayahTB">'
-                            //                 // tampat lahir
-                            //                 +'<label>Tempat Lahir</label>'
-                            //                 +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ayah " required id="tmplahirayahTB" name="tmplahirayahTB">'
-                            //                 // tanggal lahir 
-                            //                 +'<label>Tanggal lahir</label>'
-                            //                 +'<div class="input-control text" data-role="datepicker"'
-                            //                     +'data-format="dd mmmm yyyy"'
-                            //                     +'data-effect="slide">'
-                            //                     +'<input placeholder="tanggal lahir" required id="tgllahirayahTB" name="tgllahirayahTB" type="text">'
-                            //                     +'<button class="btn-date"></button>'
-                            //                 +'</div>'
-                            //                 // warga negara
-                            //                 +'<label>Warga Negara</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="warga negara" id="warganegaraayahTB" name="warganegaraayahTB">'
-                            //                 // agama
-                            //                 +'<label>Agama</label>'
-                            //                 +'<select data-transform="input-control" required id="agamaayahTB" name="agamaayahTB"></select>'
-                            //                 // gereja ayah
-                            //                 +'<label>Gereja</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="gereja" id="gerejaayahTB" name="gerejaayahTB">'
-                            //             +'</div>'
+                            // Biodata Ayah
+                            +'<div class="accordion-frame">'
+                                +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Ayah</a>'
+                                +'<div style="display: block;" class="content grid">'
+                                    // baris 1
+                                    +'<div class="row">'
+                                        // kolom1 
+                                        +'<div class="span4">'
+                                            // ayah
+                                            +'<label>Nama Ayah</label>'
+                                            +'<input  type="text" data-transform="input-control" required placeholder="nama ayah" id="namaayahTB" name="namaayahTB">'
+                                            // tampat lahir
+                                            +'<label>Tempat Lahir</label>'
+                                            +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ayah " xrequired id="tempatlahirayahTB" name="tempatlahirayahTB">'
+                                            // tanggal lahir 
+                                            +'<label>Tanggal lahir</label>'
+                                            +'<div class="input-control text" data-role="datepicker"'
+                                                +'data-format="dd mmmm yyyy"'
+                                                +'data-effect="slide">'
+                                                +'<input placeholder="tanggal lahir" xrequired id="tanggallahirayahTB" name="tanggallahirayahTB" type="text">'
+                                                +'<button class="btn-date"></button>'
+                                            +'</div>'
+                                            // warga negara
+                                            +'<label>Warga Negara</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="warga negara" id="warganegaraayahTB" name="warganegaraayahTB">'
+                                            // agama
+                                            +'<label>Agama</label>'
+                                            +'<select data-transform="input-control" xrequired id="agamaayahTB" name="agamaayahTB"></select>'
+                                            // gereja ayah
+                                            +'<label>Gereja</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="gereja" id="gerejaayahTB" name="gerejaayahTB">'
+                                        +'</div>'
                                             
-                            //             // kolom2
-                            //             +'<div class="span4">'
-                            //                 // HP
-                            //                 +'<label>No. HP</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="No. HP" id="hpayahTB" name="hpayahTB">'
-                            //                 // Telpon
-                            //                 +'<label>No. Telpon</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="No. Telpon" id="telponayahTB" name="telponayahTB">'
-                            //                 // email
-                            //                 +'<label>Email</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Email" id="emailayahTB" name="emailayahTB">'
-                            //                 // pinbb
-                            //                 +'<label>pin BBM</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="pin BBM" id="pinbbayahTB" name="pinbbayahTB">'
-                            //                 // alamat
-                            //                 +'<label>Alamat</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Alamat" id="alamatayahTB" name="alamatayahTB">'
-                            //                 // kota
-                            //                 +'<label>kota</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotaayahTB" name="kotaayahTB">'
-                            //                 // kodepos
-                            //                 +'<label>kodepos</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
-                            //                 // fax rumah 
-                            //                 +'<label>fax rumah</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="fax " id="faxrumahayahTB" name="faxrumahayahTB">'
-                            //             +'</div>'
+                                        // kolom2
+                                        +'<div class="span4">'
+                                            // HP
+                                            +'<label>No. HP</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="No. HP" id="hpayahTB" name="hpayahTB">'
+                                            // Telpon
+                                            +'<label>No. Telpon</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="No. Telpon" id="telponayahTB" name="telponayahTB">'
+                                            // email
+                                            +'<label>Email</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Email" id="emailayahTB" name="emailayahTB">'
+                                            // pinbb
+                                            +'<label>pin BBM</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="pin BBM" id="pinbbayahTB" name="pinbbayahTB">'
+                                            // alamat
+                                            +'<label>Alamat</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Alamat" id="alamatayahTB" name="alamatayahTB">'
+                                            // kota
+                                            +'<label>kota</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kota" id="kotaayahTB" name="kotaayahTB">'
+                                            // kodepos
+                                            +'<label>kodepos</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
+                                            // fax rumah 
+                                            +'<label>fax rumah</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="fax " id="faxrumahayahTB" name="faxrumahayahTB">'
+                                        +'</div>'
 
-                            //             // kolom3
-                            //             +'<div class="span4">'
-                            //                 // Pendidikan
-                            //                 +'<label>Pendidikan</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Pendidikan" id="pendidikanayahTB" name="pendidikanayahTB">'
-                            //                 // Bidang pekerjaan 
-                            //                 +'<label>Bidang Pekerjaan</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Bidang Pekerjaan" id="bidangpekerjaanTB" name="bidangpekerjaanTB">'
-                            //                 //Pekerjaan
-                            //                 +'<label>Pekerjaan Ayah</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="pekerjaan ayah" id="pekerjaanayahTB" name="pekerjaanayahTB">'
-                            //                 // posisi 
-                            //                 +'<label>Posisi Pekerjaan</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="posisi pekerjaan " id="posisiayahTB" name="posisiayahTB">'
-                            //                 // penghasilan ayah
-                            //                 +'<label>Penghasilan Ayah</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="penghasilanayah" id="penghasilanayahTB" name="penghasilanayahTB">'
-                            //                 // telpon  kantor
-                            //                 +'<label>Telpon Kantor</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="telpon " id="telponkantorayahTB" name="telponkantorayahTB">'
-                            //                 // fax  kantor
-                            //                 +'<label>Fax Kantor</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="fax kantor " id="faxkantorayahTB" name="faxkantorayahTB">'
-                            //                 // alamat kantor 
-                            //                 +'<label>Alamat Kantor</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="alamat kantor " id="alamatkantorayahTB" name="alamatkantorayahTB">'
-                            //                 // kodepos
-                            //                 +'<label>kodepos</label>'   
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
-                            //             +'</div>'
+                                        // kolom3
+                                        +'<div class="span4">'
+                                            // Pendidikan
+                                            +'<label>Pendidikan</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Pendidikan" id="pendidikanayahTB" name="pendidikanayahTB">'
+                                            // Bidang pekerjaan 
+                                            +'<label>Bidang Pekerjaan</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Bidang Pekerjaan" id="bidangpekerjaanayahTB" name="bidangpekerjaanayahTB">'
+                                            //Pekerjaan
+                                            +'<label>Pekerjaan Ayah</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="pekerjaan ayah" id="pekerjaanayahTB" name="pekerjaanayahTB">'
+                                            // posisi 
+                                            +'<label>Posisi Pekerjaan</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="posisi pekerjaan " id="posisiayahTB" name="posisiayahTB">'
+                                            // penghasilan ayah
+                                            +'<label>Penghasilan Ayah</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="penghasilanayah" id="penghasilanayahTB" name="penghasilanayahTB">'
+                                            // telpon  kantor
+                                            +'<label>Telpon Kantor</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="telpon " id="telponkantorayahTB" name="telponkantorayahTB">'
+                                            // fax  kantor
+                                            +'<label>Fax Kantor</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="fax kantor " id="faxkantorayahTB" name="faxkantorayahTB">'
+                                            // alamat kantor 
+                                            +'<label>Alamat Kantor</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="alamat kantor " id="alamatkantorayahTB" name="alamatkantorayahTB">'
+                                            // kodepos
+                                            +'<label>kodepos</label>'   
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
+                                        +'</div>'
 
-                            //         +'</div>'
-                            //     +'</div>'
-                            // +'</div>'
+                                    +'</div>'
+                                +'</div>'
+                            +'</div>'
 
-                            // // Biodata Ibu
-                            // +'<div class="accordion-frame">'
-                            //     +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Ibu</a>'
-                            //     +'<div style="display: block;" class="content grid">'
-                            //         // baris 1
-                            //         +'<div class="row">'
-                            //             // kolom1 
-                            //             +'<div class="span4">'
-                            //                 // ayah
-                            //                 +'<label>Nama ibu</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="nama ibu" id="namaibuTB" name="namaibuTB">'
-                            //                 // tampat lahir
-                            //                 +'<label>Tempat Lahir</label>'
-                            //                 +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ibu " required id="tmplahiribuTB" name="tmplahiribuTB">'
-                            //                 // tanggal lahir 
-                            //                 +'<label>Tanggal lahir</label>'
-                            //                 +'<div class="input-control text" data-role="datepicker"'
-                            //                     +'data-format="dd mmmm yyyy"'
-                            //                     +'data-effect="slide">'
-                            //                     +'<input placeholder="tanggal lahir" required id="tgllahiribuTB" name="tgllahiribuTB" type="text">'
-                            //                     +'<button class="btn-date"></button>'
-                            //                 +'</div>'
-                            //                 // warga negara
-                            //                 +'<label>Warga Negara</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="warga negara" id="warganegaraibuTB" name="warganegaraibuTB">'
-                            //                 // agama
-                            //                 +'<label>Agama</label>'
-                            //                 +'<div class="input-control select xsize3">'
-                            //                     +'<select required id="agamaibuTB" name="agamaibuTB"></select>'
-                            //                 +'</div>'
-                            //                 // gereja ibu
-                            //                 +'<label>Gereja</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="gereja" id="gerejaibuTB" name="gerejaibuTB">'
-                            //             +'</div>'
+                            // Biodata ibu
+                            +'<div class="accordion-frame">'
+                                +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Ibu</a>'
+                                +'<div style="display: block;" class="content grid">'
+                                    // baris 1
+                                    +'<div class="row">'
+                                        // kolom1 
+                                        +'<div class="span4">'
+                                            // ibu
+                                            +'<label>Nama ibu</label>'
+                                            +'<input  type="text" data-transform="input-control" required placeholder="nama ibu" id="namaibuTB" name="namaibuTB">'
+                                            // tampat lahir
+                                            +'<label>Tempat Lahir</label>'
+                                            +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ibu " xrequired id="tempatlahiribuTB" name="tempatlahiribuTB">'
+                                            // tanggal lahir 
+                                            +'<label>Tanggal lahir</label>'
+                                            +'<div class="input-control text" data-role="datepicker"'
+                                                +'data-format="dd mmmm yyyy"'
+                                                +'data-effect="slide">'
+                                                +'<input placeholder="tanggal lahir" xrequired id="tanggallahiribuTB" name="tanggallahiribuTB" type="text">'
+                                                +'<button class="btn-date"></button>'
+                                            +'</div>'
+                                            // warga negara
+                                            +'<label>Warga Negara</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="warga negara" id="warganegaraibuTB" name="warganegaraibuTB">'
+                                            // agama
+                                            +'<label>Agama</label>'
+                                            +'<select data-transform="input-control" xrequired id="agamaibuTB" name="agamaibuTB"></select>'
+                                            // gereja ibu
+                                            +'<label>Gereja</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="gereja" id="gerejaibuTB" name="gerejaibuTB">'
+                                        +'</div>'
                                             
-                            //             // kolom2
-                            //             +'<div class="span4">'
-                            //                 // HP
-                            //                 +'<label>No. HP</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="No. HP" id="hpibuTB" name="hpibuTB">'
-                            //                 // Telpon
-                            //                 +'<label>No. Telpon</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="No. Telpon" id="telponibuTB" name="telponibuTB">'
-                            //                 // email
-                            //                 +'<label>Email</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Email" id="emailibuTB" name="emailibuTB">'
-                            //                 // pinbb
-                            //                 +'<label>pin BBM</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="pin BBM" id="pinbbibuTB" name="pinbbibuTB">'
-                            //                 // alamat
-                            //                 +'<label>Alamat</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Alamat" id="alamatibuTB" name="alamatibuTB">'
-                            //                 // kota
-                            //                 +'<label>kota</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotaibuTB" name="kotaibuTB">'
-                            //                 // kodepos
-                            //                 +'<label>kodepos</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
-                            //                 // fax rumah 
-                            //                 +'<label>fax rumah</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="fax " id="faxrumahibuTB" name="faxrumahibuTB">'
-                            //             +'</div>'
+                                        // kolom2
+                                        +'<div class="span4">'
+                                            // HP
+                                            +'<label>No. HP</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="No. HP" id="hpibuTB" name="hpibuTB">'
+                                            // Telpon
+                                            +'<label>No. Telpon</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="No. Telpon" id="telponibuTB" name="telponibuTB">'
+                                            // email
+                                            +'<label>Email</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Email" id="emailibuTB" name="emailibuTB">'
+                                            // pinbb
+                                            +'<label>pin BBM</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="pin BBM" id="pinbbibuTB" name="pinbbibuTB">'
+                                            // alamat
+                                            +'<label>Alamat</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Alamat" id="alamatibuTB" name="alamatibuTB">'
+                                            // kota
+                                            +'<label>kota</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kota" id="kotaibuTB" name="kotaibuTB">'
+                                            // kodepos
+                                            +'<label>kodepos</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
+                                            // fax rumah 
+                                            +'<label>fax rumah</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="fax " id="faxrumahibuTB" name="faxrumahibuTB">'
+                                        +'</div>'
 
-                            //             // kolom3
-                            //             +'<div class="span4">'
-                            //                 // Pendidikan
-                            //                 +'<label>Pendidikan</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Pendidikan" id="pendidikanibuTB" name="pendidikanibuTB">'
-                            //                 // Bidang pekerjaan 
-                            //                 +'<label>Bidang Pekerjaan</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="Bidang Pekerjaan" id="bidangpekerjaanTB" name="bidangpekerjaanTB">'
-                            //                 //Pekerjaan
-                            //                 +'<label>Pekerjaan ibu</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="pekerjaan ibu" id="pekerjaanibuTB" name="pekerjaanibuTB">'
-                            //                 // posisi 
-                            //                 +'<label>Posisi Pekerjaan</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="posisi pekerjaan " id="posisiibuTB" name="posisiibuTB">'
-                            //                 // penghasilan ibu
-                            //                 +'<label>Penghasilan ibu</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="penghasilanibu" id="penghasilanibuTB" name="penghasilanibuTB">'
-                            //                 // telpon  kantor
-                            //                 +'<label>Telpon Kantor</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="telpon " id="telponkantoribuTB" name="telponkantoribuTB">'
-                            //                 // fax  kantor
-                            //                 +'<label>Fax Kantor</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="fax kantor " id="faxkantoribuTB" name="faxkantoribuTB">'
-                            //                 // alamat kantor 
-                            //                 +'<label>Alamat Kantor</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="alamat kantor " id="alamatkantoribuTB" name="alamatkantoribuTB">'
-                            //                 // kodepos
-                            //                 +'<label>kodepos</label>'   
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
-                            //             +'</div>'
+                                        // kolom3
+                                        +'<div class="span4">'
+                                            // Pendidikan
+                                            +'<label>Pendidikan</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Pendidikan" id="pendidikanibuTB" name="pendidikanibuTB">'
+                                            // Bidang pekerjaan 
+                                            +'<label>Bidang Pekerjaan</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Bidang Pekerjaan" id="bidangpekerjaanibuTB" name="bidangpekerjaanibuTB">'
+                                            //Pekerjaan
+                                            +'<label>Pekerjaan ibu</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="pekerjaan ibu" id="pekerjaanibuTB" name="pekerjaanibuTB">'
+                                            // posisi 
+                                            +'<label>Posisi Pekerjaan</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="posisi pekerjaan " id="posisiibuTB" name="posisiibuTB">'
+                                            // penghasilan ibu
+                                            +'<label>Penghasilan ibu</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="penghasilanibu" id="penghasilanibuTB" name="penghasilanibuTB">'
+                                            // telpon  kantor
+                                            +'<label>Telpon Kantor</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="telpon " id="telponkantoribuTB" name="telponkantoribuTB">'
+                                            // fax  kantor
+                                            +'<label>Fax Kantor</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="fax kantor " id="faxkantoribuTB" name="faxkantoribuTB">'
+                                            // alamat kantor 
+                                            +'<label>Alamat Kantor</label>'
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="alamat kantor " id="alamatkantoribuTB" name="alamatkantoribuTB">'
+                                            // kodepos
+                                            +'<label>kodepos</label>'   
+                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
+                                        +'</div>'
 
-                            //         +'</div>'
-                            //     +'</div>'
-                            // +'</div>'
+                                    +'</div>'
+                                +'</div>'
+                            +'</div>'
 
-                            // // Biodata wali
-                            // +'<div class="accordion-frame">'
-                            //     +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Wali</a>'
-                            //     +'<div style="display: block;" class="content grid">'
-                            //         // baris 1
-                            //         +'<div class="row">'
-                            //             // kolom1 
-                            //             +'<div class="span4">'
-                            //                 // nama
-                            //                 +'<label>Nama</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="nama" id="namawaliTB" name="namawaliTB">'
-                            //                 // kelamin
-                            //                 +'<label>kelamin</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kelamin" id="kelaminwaliTB" name="kelaminwaliTB">'
-                            //                 // alamatwali
-                            //                 +'<label>Alamat</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
-                            //             +'</div>'
-                            //             // kolom2 
-                            //             +'<div class="span4">'
-                            //                 // kotawali
-                            //                 +'<label>Kota </label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
-                            //                 // telponwali
-                            //                 +'<label>Telpon</label>'
-                            //                 +'<input  type="text" data-transform="input-control" required placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
-                            //             +'</div>'
+                            // Biodata wali
+                            +'<div class="accordion-frame">'
+                                +'<a class="heading bg-lightBlue fg-white" href="#">Biodata Wali</a>'
+                                +'<div style="display: block;" class="content grid">'
+                                    // baris 1
+                                    +'<div class="row">'
+                                        // kolom1 
+                                        +'<div class="span4">'
+                                            // nama
+                                            +'<label>Nama</label>'
+                                            +'<input  type="text" data-transform="input-control" placeholder="nama" id="namawaliTB" name="namawaliTB">'
+                                            // kelamin
+                                            +'<label>kelamin</label>'
+                                            +'<input  type="text" data-transform="input-control" placeholder="kelamin" id="jkelaminwaliTB" name="jkelaminwaliTB">'
+                                            // alamatwali
+                                            +'<label>Alamat</label>'
+                                            +'<input  type="text" data-transform="input-control" placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
+                                        +'</div>'
+                                        // kolom2 
+                                        +'<div class="span4">'
+                                            // kotawali
+                                            +'<label>Kota </label>'
+                                            +'<input  type="text" data-transform="input-control" placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
+                                            // telponwali
+                                            +'<label>Telpon</label>'
+                                            +'<input  type="text" data-transform="input-control" placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
+                                        +'</div>'
 
-                            //         +'</div>'
-                            //     +'</div>'
-                            // +'</div>'
+                                    +'</div>'
+                                +'</div>'
+                            +'</div>'
+ 
+                            // Biodata kontak darurat
+                            +'<div class="accordion-frame">'
+                                +'<a class="heading bg-lightBlue fg-white" href="#">Kontak Darurat</a>'
+                                +'<div style="display: block;" class="content grid">'
+                                    // baris 1
+                                    +'<div class="row">'
+                                        // kolom1 
+                                        +'<div class="span4">'
+                                            // nama
+                                            +'<label>Nama</label>'
+                                            +'<input  type="text" data-transform="input-control" placeholder="nama" id="namakontakdaruratTB" name="namakontakdaruratTB">'
+                                            // hubungan 
+                                            +'<label>Hubungan</label>'
+                                            +'<input  type="text" data-transform="input-control" placeholder="hubungan" id="hubkontakdaruratTB" name="hubkontakdaruratTB">'
+                                            // telponkontakdarurat1
+                                            +'<label>telponkontakdarurat1</label>'
+                                            +'<input  type="text" data-transform="input-control" placeholder="telp. 1" id="telponkontakdarurat1TB" name="telponkontakdarurat1TB">'
+                                            // telponkontakdarurat2
+                                            +'<label>telponkontakdarurat2</label>'
+                                            +'<input  type="text" data-transform="input-control" placeholder="telp. 2" id="telponkontakdarurat2TB" name="telponkontakdarurat2TB">'
+                                        +'</div>'
+
+                                    +'</div>'
+                                +'</div>'
+                            +'</div>'
 
                             // // Biodata saudara
                             // +'<div class="accordion-frame">'
@@ -928,24 +952,21 @@ var contentFR = '';
     }   
 
 // combo agama
-    function cmbagamasiswa (typ,agm) {
+    function cmbagama (elem) {
         var u = dir11;
         var d ='aksi=cmb'+mnu11;
         ajax(u,d).done(function(dt){
-            var opt='';
             if (dt.status!='sukses') {
-                notif(dt.status,'red');
-                opt+='<option value="">'+dt.status+'</option>'
+                notif(mnu11+' '+dt.status,'red');
             }else{
-                $.each(dt.agama,function(id,item){
-                    opt+='<option '+(item.replid==agm?'selected':'')+' value="'+item.replid+'">'+item.agama+'</option>'
+                $.each(elem, function (id,item){
+                    var opt='';
+                    $.each(dt.agama,function (idx,itemx){
+                        opt+='<option '+(item!=null && itemx.replid==item?'selected':'')+' value="'+itemx.replid+'">'+itemx.agama+'</option>'
+                    });
+                    $('#agama'+id+'TB').html('<option value="">-Pilih Agama-</option>'+opt);
                 });
-                // alert(option)(opt);
-                $('#agamasiswaTB').html('<option value="">Pilih Agama ..</option>'+opt);
             }
-            // if(typ=='form')
-            // else
-            //     $('#agamaTB').html('<option value="">Pilih Agama ..</option>'+opt);
         });
     }
 
@@ -1107,7 +1128,9 @@ var contentFR = '';
                         }
                     });
                 }else{ //add
-                    cmbagamasiswa('form','');
+                    var elems = {'ayah':null,'siswa':null,'ibu':null};
+                    // console.log(elems); return false;
+                    cmbagama(elems);
                     cmbdepartemen('form','');
                     cmbtahunajaran('form','');
                     cmbtingkatZ('form','');
@@ -1415,7 +1438,7 @@ function notif(cont,clr) {
                                 if(item.idIsAngsur=='1') { // 1= angsur reg.
                                     out+='<tr>'
                                         +'<td>Angsuran '+item.idIsAngsur+'</td>'
-                                        +'<td>'
+                                        +'<td>' 
                                             +'<div class="input-control select">'
                                                 +'<select class="text-center" id="angsuran'+item.replid+'TB" name="angsuran'+item.replid+'TB"><option value=""></option></select>'
                                             +'</div>'
@@ -1487,8 +1510,10 @@ function notif(cont,clr) {
     }
 
     function detaildiskonAdd (idx,replid,diskon,nilai,keterangan) {
-        var tr ='<tr data-hint="tessss TR" val="'+replid+'" class="detaildiskon'+idx+'TR" id="detaildiskon'+replid+'TR">'
-                    +'<td  data-hint="tessss TD">'+diskon+'</td>'
+        var tr ='<tr val="'+replid+'" class="detaildiskon'+idx+'TR" id="detaildiskon'+replid+'TR">'
+                    +'<td>'+diskon
+                        +'<input type="hidden" name="iddetaildiskonTB['+idx+'][]" value="'+replid+'" />'
+                    +'</td>'
                     +'<td>'+nilai+'</td>'
                     +'<td>'+keterangan+'</td>'
                     +'<td><button class="bg-white fg-red" onclick="detaildiskonDel('+idx+','+replid+'); return false;"><i class="icon-cancel-2"></button></i></td>'
