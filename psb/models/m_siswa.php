@@ -111,7 +111,7 @@
 						$nisn            = isset($_POST['nisnS'])?filter($_POST['nisnS']):'';
 						$nopendaftaran   = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
 						$namasiswa       = isset($_POST['namasiswaS'])?filter($_POST['namasiswaS']):'';
-						$status          = (isset($_POST['statusS']) && !empty($_POST['statusS']))?' AND status="'.filter($_POST['statusS']).'"':'';
+						$status          = (isset($_POST['statusS']) && $_POST['statusS']!='')?' AND status="'.filter($_POST['statusS']).'"':'';
 						
 						$sql = 'SELECT 
 									s.replid, 
