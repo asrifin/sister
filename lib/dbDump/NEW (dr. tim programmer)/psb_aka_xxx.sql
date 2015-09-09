@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-09 05:39:15
+Date: 2015-09-09 12:48:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -6120,7 +6120,7 @@ INSERT INTO `psb_satuanjumlah` VALUES ('2', 'set', 'set');
 DROP TABLE IF EXISTS `psb_siswa`;
 CREATE TABLE `psb_siswa` (
   `replid` int(11) NOT NULL AUTO_INCREMENT,
-  `nopendaftaran` varchar(20) NOT NULL,
+  `nopendaftaran` int(20) NOT NULL,
   `noformulir` varchar(20) DEFAULT NULL,
   `namasiswa` varchar(100) NOT NULL,
   `nis` varchar(100) NOT NULL DEFAULT '',
@@ -6166,7 +6166,7 @@ CREATE TABLE `psb_siswa` (
 -- ----------------------------
 -- Records of psb_siswa
 -- ----------------------------
-INSERT INTO `psb_siswa` VALUES ('140', '', null, 'andi noya', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '60_16fe7db130.png', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('140', '1', null, 'andi noya', '77', '212', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '60_16fe7db130.png', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 
 -- ----------------------------
 -- Table structure for psb_siswa_copy
@@ -7186,7 +7186,7 @@ CREATE TABLE `psb_siswabiaya` (
 -- ----------------------------
 -- Records of psb_siswabiaya
 -- ----------------------------
-INSERT INTO `psb_siswabiaya` VALUES ('463', '140', '676', '8', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('463', '140', '676', '8', '', '200000');
 INSERT INTO `psb_siswabiaya` VALUES ('464', '140', '649', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('465', '140', '667', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('466', '140', '658', '0', '', '0');
@@ -7715,6 +7715,7 @@ end BLOCK2;
 END
 ;;
 DELIMITER ;
+
 -- ----------------------------
 -- Table structure for aka_absen
 -- ----------------------------

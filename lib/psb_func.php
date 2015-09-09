@@ -24,7 +24,21 @@
 		$ret = getField('agama','psb_agama','replid',$id);
 		return $ret;
 	}
-	function getNoPendaftaran($siswa,$kel){
+	function getNoPendaftaran($idsiswa){
+		if(isset($idsiswa)&&!empty($idsiswa)){
+			$f='concat("PSB",LPAD(max(nopendaftaran) ,5,0)) nopendaftaran';
+			$w = 'WHERE replid='.$idsiswa;
+		}else{
+			$f='concat("PSB",LPAD((max(nopendaftaran)+1) ,5,0))nopendaftaran';
+			$w='';
+		}
+		$s = 'SELECT '.$f.' from psb_siswa '.$w;
+		// pr($s);
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r['nopendaftaran'];
+	}
+	function getNoPendaftaranx($siswa,$kel){
 		if(isset($siswa) && is_numeric($siswa)) {// view
 			$s      = 'SELECT nopendaftaran no FROM psb_calonsiswa WHERE replid='.$siswa;
 			$proses = getField('proses','psb_kelompok','replid',$kel);

@@ -106,29 +106,35 @@
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					case 'siswa':
-						$nis           = isset($_POST['nisS'])?filter($_POST['nisS']):'';
-						$nisn          = isset($_POST['nisnS'])?filter($_POST['nisnS']):'';
-						$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
-						$namasiswa     = isset($_POST['namasiswaS'])?filter($_POST['namasiswaS']):'';
-						$status        = (isset($_POST['statusS']) && !empty($_POST['statusS']))?' AND status="'.filter($_POST['statusS']).'"':'';
+						$detailgelombang = isset($_POST['detailgelombangS'])?filter($_POST['detailgelombangS']):'';
+						$nis             = isset($_POST['nisS'])?filter($_POST['nisS']):'';
+						$nisn            = isset($_POST['nisnS'])?filter($_POST['nisnS']):'';
+						$nopendaftaran   = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
+						$namasiswa       = isset($_POST['namasiswaS'])?filter($_POST['namasiswaS']):'';
+						$status          = (isset($_POST['statusS']) && !empty($_POST['statusS']))?' AND status="'.filter($_POST['statusS']).'"':'';
 						
 						$sql = 'SELECT 
-									replid, 
-									nopendaftaran, 
-									namasiswa,
-									status,
-									nis,
-									nisn
-								FROM '.$tb.'
+									s.replid, 
+									s.nopendaftaran, 
+									s.namasiswa,
+									s.status,
+									s.nis,
+									s.nisn
+								FROM '.$tb.' s
+									JOIN psb_siswabiaya sb on sb.siswa = s.replid
+									JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
 								WHERE 
-									nopendaftaran LIKE "%'.$nopendaftaran.'%"  AND
-									nis LIKE "%'.$nis.'%"  AND
-									nisn LIKE "%'.$nisn.'%" AND
-									namasiswa LIKE "%'.$namasiswa.'%" 
+									db.detailgelombang ='.$detailgelombang.' AND
+									s.nopendaftaran LIKE "%'.$nopendaftaran.'%"  AND
+									s.nis LIKE "%'.$nis.'%"  AND
+									s.nisn LIKE "%'.$nisn.'%" AND
+									s.namasiswa LIKE "%'.$namasiswa.'%" 
 									'.$status.'
+								GROUP BY
+									s.replid
 								ORDER BY
-									nopendaftaran ASC,
-									namasiswa ASC
+									s.nopendaftaran ASC,
+									s.namasiswa ASC
 									';
 									// pr($sql);
 						if(isset($_POST['starting'])){ //nilai awal halaman
@@ -159,12 +165,30 @@
 												<i class="icon-remove"></i>
 											</button>
 										 </td>';
+								if($r['status']=='1'){
+									$label = 'Diterima';
+									$clr   = 'green';
+									$func  = 'onclick="statusFR('.$r['replid'].')"';
+								}elseif($r['status']=='2'){
+									$label = 'Lulus';
+									$clr   = 'blue';
+									$func  = '';
+								}else{
+									$label = 'Belum Diterima';
+									$clr   = 'red';
+									$func  = 'onclick="statusFR('.$r['replid'].')"';
+								}
+
+											// <button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['replid'].')"':' disabled').' >
+											// 	<i class="icon-pencil"></i>
+											// </button>
+								// pr(getNoPendaftaran($r['replid']));
 								$out.= '<tr>
-											<td>'.$r['nopendaftaran'].'</td>
+											<td>'.getNoPendaftaran($r['replid']).'</td>
 											<td>'.$r['namasiswa'].'</td>
 											<td>'.$r['nis'].'</td>
 											<td>'.$r['nisn'].'</td>
-											<td>'.($r['status']=='1'?'Diterima':($r['status']=='2'?'Lulus':'Belum Diterima')).'</td>
+											<td><button '.$func.' class="fg-white bg-'.$clr.'">'.$label.'</button></td>
 											'.$btn.'
 										</tr>';
 								$nox++;
@@ -240,13 +264,10 @@
 			break;
 
 			case 'nopendaftaran':
-				$no = getNoPendaftaran('',$_POST['kelompok']);
-				$o  = array(
-						'status'         =>(($no!=null || $no!='')?'sukses':'gagal'),
-						'nopendaftaran'  =>$no['akhir'],
-						'nopendaftaranH' =>$no['akhir'],
-					);
-				$out = json_encode($o);
+				$no = getNoPendaftaran($_POST['idsiswa']);
+				// pr($no);
+				$stat=!$no?'gagal':'sukses';
+				$out = json_encode(array('status'=>$stat,'nopendaftaran'=>$no));
 			break;
 
 			case 'getSetBiaya':
@@ -488,6 +509,18 @@
 							}
 						}
 					break;
+
+					case 'status':
+						if(isset($_POST['idstatusTB'])){
+							$s='UPDATE psb_siswa SET 	status ="'.(!empty($_POST['nisTB'])?'1':'0').'",
+														nis ="'.$_POST['nisTB'].'",
+														nisn ="'.$_POST['nisnTB'].'"
+												WHERE replid = '.$_POST['idstatusTB'];
+							// pr($s);
+							$e=mysql_query($s);
+							$stat=!$e?'gagal':'sukses';
+						}
+					break;
 				}$out=json_encode(array('status' =>$stat));
 			break;
 
@@ -507,123 +540,21 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s = 'SELECT 
-							/* Data  Siswa*/
-							c.*,
-							c.nama namaSiswa,
-							-- t.tingkat,
-							/* pembayaran*/
-							b.material,
-							b.tuition,
-							b.registration,
-							
-							/* Data Ortu*/
-							a.nama namaAyah,
-							a.warga kebangsaanAyah,
-							a.tmplahir tmplahirAyah,
-							a.tgllahir tgllahirAyah,
-							a.pekerjaan pekerjaanAyah,
-							a.telpon telponAyah,
-							a.pinbb pinbbAyah,
-							a.email emailAyah,
-							i.nama namaIbu,
-							i.warga kebangsaanIbu,
-							i.tmplahir tmplahirIbu,
-							i.tgllahir tgllahirIbu,
-							i.pekerjaan pekerjaanIbu,
-							i.telpon telponIbu,
-							i.pinbb pinbbIbu,
-							i.email emailIbu,
-							
-							/* Data Ortu*/
-							d.nama namaDarurat,
-							d.hubungan,
-							d.telpon telponDarurat,
-
-							/* kakek nenek*/
-							k.kakek_nama namaKakek,
-							k.nenek_nama namaNenek
-					 FROM psb_calonsiswa c 
-							LEFT JOIN psb_calonsiswa_ayah a ON a.calonsiswa = c.replid
-							LEFT JOIN psb_calonsiswa_ibu i ON i.calonsiswa = c.replid
-							LEFT JOIN psb_calonsiswa_kontakdarurat d ON d.calonsiswa = c.replid
-							LEFT JOIN psb_calonsiswa_keluarga k ON k.calonsiswa = c.replid
-							LEFT JOIN psb_setbiaya b ON b.replid = c.setbiaya
-							-- LEFT JOIN aka_tingkat t ON t.replid = c.tingkat
-					 WHERE 
-						c.replid='.$_POST['replid'];
+				$s = '	SELECT *
+						FROM psb_siswa s 
+					 	WHERE s.replid='.$_POST['replid'];
 				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
-				// print_r($r);exit();
-				$stat          = ($e)?'sukses':'gagal';
-				$regNum        = setuang(getBiaya('registration',$_POST['replid']));
-				$regNumNet     = setuang(getBiayaNet('registration',$_POST['replid']));
-				$nopendaftaran = getNoPendaftaran($_POST['replid'],$r['kelompok'])['akhir'];
-				// $tingkat   	   = getField('tingkat','psb_calonsiswa','replid',$r['tingkat']);
-				$tahunajaran   = getField('tahunajaran','psb_kelompok','replid',$r['kelompok']);
-				$discangsuran  = setuang(getDiscAngsuran($regNum, $r['angsuran']));
-				$disctunai 	   = setuang(getDisc('disctunai',$_POST['replid']));
-				// var_dump($tingkat);exit();
+				$stat = !$e?'gagal':'sukses';
 				$out    = json_encode(array(
-							'status'          =>$stat,
-						// pembayaran
-							'setbiaya'        =>$r['setbiaya'],
-							'registration'    =>$regNum,
-							'angsuran'        =>$r['angsuran'],
-							'discangsuran'    =>$discangsuran,
-							'discsubsidi'     =>setuang($r['discsubsidi']),
-							'discsaudara'     =>setuang($r['discsaudara']),
-							'iddisctunai'     =>$r['disctunai'],
-							'disctunai'       =>$disctunai,
-							'disctotal'       =>setuang(getDiscTotal($_POST['replid'])),
-							'registrationnet' =>$regNumNet,
-							'material'        =>setuang($r['material']),
-							'tuition'         =>setuang($r['tuition']),
-						// data siswa
-							
-							'nopendaftaranH'  =>$r['nopendaftaran'],
-							'nopendaftaran'  =>$nopendaftaran,
-							'namaSiswa'      =>$r['namaSiswa'],
-							'tahunajaran'    =>$tahunajaran,
-							'kelompok'       =>$r['kelompok'],
-							'tingkat'        =>$r['tingkat'],
-							'golongan'       =>$r['golongan'],
-							'kelamin'        =>$r['kelamin'],
-							'tmplahir'       =>$r['tmplahir'],
-							'tgllahir'       =>tgl_indo5($r['tgllahir']),
-							'agama'          =>$r['agama'],
-							'alamat'         =>$r['alamat'],
-							'telpon'    	 =>$r['telpon'],
-							'sekolahasal'    =>$r['sekolahasal'],
-							'photosiswa'          =>$r['photosiswa'],
-							'darah'          =>$r['darah'],
-							'kesehatan'      =>$r['kesehatan'],
-							'ketkesehatan'   =>$r['ketkesehatan'],
-						// ayah 
-							'namaAyah'       =>$r['namaAyah'],
-							'kebangsaanAyah' =>$r['kebangsaanAyah'],
-							'tmplahirAyah'   =>$r['tmplahirAyah'],
-							'tgllahirAyah'   =>tgl_indo5($r['tgllahirAyah']),
-							'pekerjaanAyah'  =>$r['pekerjaanAyah'],
-							'telponAyah'     =>$r['telponAyah'],
-							'pinbbAyah'      =>$r['pinbbAyah'],
-							'emailAyah'      =>$r['emailAyah'],
-						// ibu
-							'namaIbu'        =>$r['namaIbu'],
-							'kebangsaanIbu'  =>$r['kebangsaanIbu'],
-							'tmplahirIbu'    =>$r['tmplahirIbu'],
-							'tgllahirIbu'    =>tgl_indo5($r['tgllahirIbu']),
-							'pekerjaanIbu'   =>$r['pekerjaanIbu'],
-							'telponIbu'      =>$r['telponIbu'],
-							'pinbbIbu'       =>$r['pinbbIbu'],
-							'emailIbu'       =>$r['emailIbu'],
-						/*kakek nenek*/
-							'namaKakek'      =>$r['namaKakek'],
-							'namaNenek'      =>$r['namaNenek'],
-						/*darurat*/
-							'namaDarurat'    =>$r['namaDarurat'],
-							'hubungan'       =>$r['hubungan'],
-							'telponDarurat'  =>$r['telponDarurat'],
+							'status'        =>$stat,
+							'namasiswa'     =>$r['namasiswa'],
+							'nis'           =>$r['nis'],
+							'nisn'          =>$r['nisn'],
+							'nopendaftaran' =>$r['nopendaftaran'],
+							'departemen'    =>getKriteriaSiswa('departemen',$r['replid']),
+							'tahunajaran'   =>getKriteriaSiswa('tahunajaran',$r['replid']),
+							'statussiswa'   =>($r['status']=='1'?'Diterima':($r['status']=='2'?'Lulus':'Belum Diterima')),
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

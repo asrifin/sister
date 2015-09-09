@@ -21,13 +21,46 @@ var dir8  = 'models/m_'+mnu8+'.php';
 var dir9  = '../akademik/models/m_'+mnu9+'.php';
 var dir10 = 'models/m_'+mnu10+'.php';
 var dir11 = 'models/m_'+mnu11+'.php';
-var contentFR = '';
+var siswa_contentFR = status_contentFR='';
 
 // main function ---
     $(document).ready(function(){
         cmbdepartemen('filter','');
-        // contentFR +='<form id="formx" onfocus="$(this).scrollbar({height: 355,axis: \'y\'});" class="scrollbar" xstyle="overflow:scroll;height:560px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="simpanSV(); return false;">' 
-        contentFR +='<form id="siswaFR" data-role="scrollbox" data-scroll="vertical" style="overflow:scroll;height:560px;" xstyle="height:300px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="siswaSV(); return false;">' 
+        // siswa_contentFR +='<form id="formx" onfocus="$(this).scrollbar({height: 355,axis: \'y\'});" class="scrollbar" xstyle="overflow:scroll;height:560px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="simpanSV(); return false;">' 
+        status_contentFR+='<form id="statusFR" data-role="scrollbox" data-scroll="vertical" style="overflow:scroll;height:560px;" xstyle="height:300px;"  autocomplete="off" onsubmit="statusSV(); return false;">' 
+                            +'<input type="hidden" name="idstatusTB" id="idstatusTB" />'
+                            // no pendaftaran
+                            +'<table class="table bordered striped">'
+                                +'<tr>'
+                                    +'<td>Departemen</td>'
+                                    +'<td id="departemenTD"></td>'
+                                +'</tr><tr>'
+                                    +'<td>Tahun Ajaran</td>'
+                                    +'<td id="tahunajaranTD"></td>'
+                                +'</tr><tr>'
+                                    +'<td>No. pendaftaran</td>'
+                                    +'<td id="nopendaftaranTD"></td>'
+                                +'</tr><tr>'
+                                    +'<td>Nama</td>'
+                                    +'<td id="namasiswaTD"></td>'
+                                +'</tr><tr>'
+                                    +'<td>Status</td>'
+                                    +'<td id="statussiswaTD"></td>'
+                                +'</tr>'
+                            +'</table>'
+                            //nis`
+                            +'<label>NIS</label>'
+                            +'<input type="text" placeholder="NIS" data-transform="input-control" xrequired id="nisTB" name="nisTB">'
+                            // nisn
+                            +'<label>NISN</label>'
+                            +'<input type="text"  placeholder="NISN"  data-transform="input-control" xrequired id="nisnTB" name="nisnTB">'
+                            
+                            +'<div class="form-actions">' 
+                                +'<button class="button primary">simpan</button>&nbsp;'
+                            +'</div>'
+                        +'</form>';
+
+        siswa_contentFR +='<form id="siswaFR" data-role="scrollbox" data-scroll="vertical" style="overflow:scroll;height:560px;" xstyle="height:300px;"  enctype="multipart/form-data" autocomplete="off" onsubmit="siswaSV(); return false;">' 
                         +'<input type="hidden" name="idformTB" id="idformTB" />'
                         // accordion
                         +'<div class="accordion with-marker xspan3 xplace-left margin10" data-role="accordion" data-closeany="true">'
@@ -81,7 +114,7 @@ var contentFR = '';
                                         +'<div class="span4">'
                                             // nopendaftaran
                                             +'<label>No. Pendaftaran</label>'
-                                            +'<input type="text" data-transform="input-control" id="nopendaftaranTB" name="nopendaftaranTB">'
+                                            +'<input readonly type="text" data-transform="input-control" id="nopendaftaranTB" name="nopendaftaranTB">'
                                             // nama
                                             +'<label>Nama </label>'
                                             +'<input type="text" data-transform="input-control" required placeholder="nama" id="namasiswaTB" name="namasiswaTB">'
@@ -1043,7 +1076,7 @@ var contentFR = '';
             width: '80%',
             padding: 10,
             onShow: function(){
-                $.Dialog.content(contentFR);
+                $.Dialog.content(siswa_contentFR);
                 if(idsiswa!=''){ // edit 
                     var u = dir;
                     var d ='aksi=ambiledit&id_user='+idsiswa;
@@ -1069,6 +1102,7 @@ var contentFR = '';
                 }else{ //add
                     var elems = {'ayah':null,'siswa':null,'ibu':null};
                     // console.log(elems); return false;
+                    getNoPendaftaran('');
                     cmbagama(elems);
                     cmbdepartemen('form','');
                     cmbtahunajaran('form','');
@@ -1211,13 +1245,12 @@ function notif(cont,clr) {
     }
 
 // no pendaftaran auto 
-    function getNoPendaftaran (e) {
+    function getNoPendaftaran(idsiswa) {
         var u = dir;
-        var d = 'aksi=nopendaftaran&kelompok='+$(e).val() ;
+        var d = 'aksi=nopendaftaran&idsiswa='+idsiswa;
         ajax(u,d).done(function (dt){
-            getBiaya();
             $('#nopendaftaranTB').val(dt.nopendaftaran);
-            $('#nopendaftaranH').val(dt.nopendaftaranH);
+            // $('#nopendaftaranH').val(dt.nopendaftaranH);
         });
     }
 
@@ -1567,5 +1600,50 @@ function notif(cont,clr) {
             $('#detaildiskon'+idy+'TR').remove();
             detaildiskonArr(idx);
             getBiayaNett(idx,idy);
+        });
+    }
+
+    function statusSV(){
+        var u=dir;        
+        var d=$('#statusFR').serialize()+'&aksi=simpan&subaksi=status';        
+        ajax(u, d).done(function (dt){
+            if(dt.status!='sukses') notif(dt.status,'red');
+            else {
+                $.Dialog.close();
+                viewTB('siswa');
+                notif(dt.status,'green');
+            }
+        });
+    }
+
+// form status ---
+    function statusFR(idsiswa){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: '80%',
+            padding: 10,
+            onShow: function(){
+                $.Dialog.content(status_contentFR);
+                var u = dir;
+                var d ='aksi=ambiledit&replid='+idsiswa;
+                ajax(u,d).done(function  (dt) {
+                    if(dt.status!='sukses') notif(dt.status,'red');
+                    else{
+                        $('#idstatusTB').val(idsiswa);
+                        $('#namasiswaTD').html(dt.namasiswa);
+                        $('#nopendaftaranTD').html(dt.nopendaftaran);
+                        $('#statussiswaTD').html(dt.statussiswa);
+                        $('#departemenTD').html(dt.departemen);
+                        $('#tahunajaranTD').html(dt.tahunajaran);
+                        $('#nisTB').val(dt.nis);
+                        $('#nisnTB').val(dt.nisn);
+                    }
+                });
+                titlex='<span class="icon-plus-2"></span> Tambah ';
+                $.Dialog.title(titlex+' '+mnu);
+                $('#nisTB').focus();
+            }
         });
     }
