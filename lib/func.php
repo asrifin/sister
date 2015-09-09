@@ -74,9 +74,10 @@
 			foreach ($j as $i => $v)  $s.=' LEFT JOIN '.$v[0].' ON '.$v[0].'.'.$v[2].'='.$v[1].'.'.$v[3]; 
 		}
 		$s .=($w!=''?' WHERE '.$w.' = '.$k:'');
+		// pr($s);
 		$e = mysql_query($s);
 		$arr =array();
-		while ($r=mysql_fetch_assoc($e)) $arr[]=$r;
+		while ($r=mysql_fetch_assoc($e)) $arr[]=(!is_array($f)?$r[$f]:$r);
 		return $arr;
 	}
 

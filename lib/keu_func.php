@@ -7,12 +7,26 @@
 		return $biayaNett;
 	}
 
-	function getBiayaDiskReg($idBiaya,$idDiskReg){
+
+	function getDiskReg($idDetailBiaya,$idDiskReg){
 		if(is_array($idDiskReg)){
-			$biaya = getField('nominal','psb_detailbiaya','replid',$idBiaya); // biaya awal  Rp.
+			$biaya = getField('nominal','psb_detailbiaya','replid',$idDetailBiaya); // biaya awal  Rp.
+				// pr($biaya);
 			foreach ($idDiskReg as $i => $v) {
 				$diskReg = intval(getField('nilai','psb_detaildiskon','replid',$v)); // diskon %
 				$biaya-=($biaya*$diskReg/100);
+				// pr($biaya);
+			}return $biaya;
+		}
+	}
+	function getBiayaDiskReg($idDetailBiaya,$idDiskReg){
+		if(is_array($idDiskReg)){
+			$biaya = getField('nominal','psb_detailbiaya','replid',$idDetailBiaya); // biaya awal  Rp.
+				// pr($biaya);
+			foreach ($idDiskReg as $i => $v) {
+				$diskReg = intval(getField('nilai','psb_detaildiskon','replid',$v)); // diskon %
+				$biaya-=($biaya*$diskReg/100);
+				// pr($biaya);
 			}return $biaya;
 		}
 	}

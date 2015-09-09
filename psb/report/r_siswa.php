@@ -7,6 +7,10 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/mpdf/mpdf.php';
 
+  // $diskRegArr =  getFieldArr3('detaildiskon','psb_siswadiskon','','siswabiaya',649);
+  // pr($diskRegArr);
+
+
   $mod  ='PSB';
   $mnu  = 'siswa';
   $mnu2 = 'siswaayah';
@@ -94,7 +98,7 @@
             </tr>';
 
         // Biaya siswa
-        $s7=['psb_siswabiaya.replid','psb_biaya.biaya','psb_biaya.isAngsur','psb_biaya.isDiskon','psb_biaya.jenistagihan','psb_detailbiaya.nominal','psb_siswabiaya.angsuran','psb_siswabiaya.ketdiskonkhusus','psb_siswabiaya.diskonkhusus'];
+        $s7=['psb_siswabiaya.replid','psb_biaya.biaya','psb_detailbiaya.replid detailbiaya','psb_biaya.isAngsur','psb_biaya.isDiskon','psb_biaya.jenistagihan','psb_detailbiaya.nominal','psb_siswabiaya.angsuran','psb_siswabiaya.ketdiskonkhusus','psb_siswabiaya.diskonkhusus'];
         $j7[]=['psb_detailbiaya',$tb7,'replid','detailbiaya'];
         $j7[]=['psb_biaya','psb_detailbiaya','replid','biaya'];
         $r7=getFieldArr3($s7,$tb7,$j7,'siswa',$replid);
@@ -111,16 +115,26 @@
                 <td align="center">Biaya Nett</td>
                 <td align="center">Angsuran</td>
               </tr>';
+              //9.600 - 2.800
+              $cc='';
               foreach ($r7 as $i => $v) {
+                $biayaAwal         = $v['nominal'];
+                $diskRegArr        = getFieldArr3('detaildiskon','psb_siswadiskon','','siswabiaya',$v['replid']);
+                $biayaAfterdiskReg = getBiayaDiskReg($v['detailbiaya'],$diskRegArr);
+                $diskReg           = $biayaAwal - $biayaAfterdiskReg;
+                $diskKhusus        = $v['diskonkhusus'];
+                $biayaNett         = $biayaAwal - ($diskReg+$diskKhusus);
+                $cc.=$diskReg.'<br />';
                 $out.='<tr>
                   <td style="background-color:grey;color:white;">'.(empty($v['biaya'])?'-':$v['biaya']).'</td>
-                  <td align="right">'.(empty($v['nominal'])?'-':setuang($v['nominal'])).'</td>
-                  <td align="right">'.(empty($v['nominal'])?'-':setuang($v['nominal'])).'</td>
-                  <td align="right">'.(empty($v['diskonkhusus'])?'-':setuang($v['diskonkhusus'])).'</td>
-                  <td align="right">'.(empty($v['nominal'])?'-':setuang($v['nominal'])).'</td>
+                  <td align="right">'.(empty($biayaAwal)?'Rp. 0':setuang($biayaAwal)).'</td>
+                  <td align="right">'.(empty($diskReg)?'Rp. 0':setuang($diskReg)).'</td>
+                  <td align="right">'.(empty($diskKhusus)?'Rp. 0':setuang($diskKhusus)).'</td>
+                  <td align="right">'.(empty($biayaNett)?'Rp. 0':setuang($biayaNett)).'</td>
                   <td align="center">'.(empty($v['angsuran'])?'-':$v['angsuran'].' x').'</td>
                 </tr>';
               }
+              // pr($cc);
             $out.='</table>
           </td>
         </tr>
@@ -402,13 +416,16 @@
                     <td>Telpon1</td>
                     <td>Telpon2</td>
                     </tr>';
-                    foreach ($r5 as $i => $v) {
-                      $out.='<tr>
-                        <td>'.(empty($v['namakontakdarurat'])?'-':$v['namakontakdarurat']).'</td>
-                        <td>'.(empty($v['hubkontakdarurat'])?'-':$v['hubkontakdarurat']).'</td>
-                        <td>'.(empty($v['telponkontakdarurat1'])?'-':$v['telponkontakdarurat1']).'</td>
-                        <td>'.(empty($v['telponkontakdarurat2'])?'-':$v['telponkontakdarurat2']).'</td>
-                      </tr>';
+                    if(is_null($r5)) $out.='<tr><td align="center" colspan="4">..kosong..</td></tr>';
+                    else{
+                      foreach ($r5 as $i => $v) {
+                        $out.='<tr>
+                          <td>'.(empty($v['namakontakdarurat'])?'-':$v['namakontakdarurat']).'</td>
+                          <td>'.(empty($v['hubkontakdarurat'])?'-':$v['hubkontakdarurat']).'</td>
+                          <td>'.(empty($v['telponkontakdarurat1'])?'-':$v['telponkontakdarurat1']).'</td>
+                          <td>'.(empty($v['telponkontakdarurat2'])?'-':$v['telponkontakdarurat2']).'</td>
+                        </tr>';
+                      }
                     }
                 $out.='</table>
               </td>
@@ -428,14 +445,17 @@
                     <td>Sekolah</td>
                     <td>Grade</td>
                     </tr>';
-                    foreach ($r6 as $i => $v) {
-                      $out.='<tr>
-                        <td>'.(empty($v['namasaudara'])?'-':$v['namasaudara']).'</td>
-                        <td>'.(empty($v['jkelaminsaudara'])?'-':($v['jkelaminsaudara']=='L'?'Laki-Laki':'Perempuan')).'</td>
-                        <td>'.(empty($v['tempatlahirsaudara'])?'-':$v['tempatlahirsaudara']).'</td>
-                        <td>'.(empty($v['sekolahsaudara'])?'-':$v['sekolahsaudara']).'</td>
-                        <td>'.(empty($v['gradesaudara'])?'-':$v['gradesaudara']).'</td>
-                      </tr>';
+                    if(is_null($r6)) $out.='<tr><td align="center" colspan="4">..kosong..</td></tr>';
+                    else{
+                      foreach ($r6 as $i => $v) {
+                        $out.='<tr>
+                          <td>'.(empty($v['namasaudara'])?'-':$v['namasaudara']).'</td>
+                          <td>'.(empty($v['jkelaminsaudara'])?'-':($v['jkelaminsaudara']=='L'?'Laki-Laki':'Perempuan')).'</td>
+                          <td>'.(empty($v['tempatlahirsaudara'])?'-':$v['tempatlahirsaudara']).'</td>
+                          <td>'.(empty($v['sekolahsaudara'])?'-':$v['sekolahsaudara']).'</td>
+                          <td>'.(empty($v['gradesaudara'])?'-':$v['gradesaudara']).'</td>
+                        </tr>';
+                      }
                     }
                 $out.='</table>
               </td>
