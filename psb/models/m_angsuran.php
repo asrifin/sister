@@ -12,15 +12,15 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$cicilan    = isset($_POST['cicilanS'])?$_POST['cicilanS']:'';
+				$angsuran    = isset($_POST['angsuranS'])?$_POST['angsuranS']:'';
 				$keterangan = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
 				$sql = 'SELECT *
 						FROM  '.$tb.' 
 						WHERE 
-							cicilan LIKE "%'.$cicilan.'%" AND
+							angsuran LIKE "%'.$angsuran.'%" AND
 							keterangan LIKE "%'.$keterangan.'%"
 						ORDER BY 
-							cicilan asc
+							angsuran asc
 							';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
@@ -50,7 +50,7 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td align="center">'.$res['cicilan'].'</td>
+									<td align="center">'.$res['angsuran'].'</td>
 									<td align="center">'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -69,7 +69,7 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	cicilan = "'.filter($_POST['cicilanTB']).'",
+				$s = $tb.' set 	angsuran = "'.filter($_POST['angsuranTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2 = mysql_query($s2);
@@ -87,7 +87,7 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['cicilan']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['angsuran']));
 			break;
 			// delete -----------------------------------------------------------------
 
@@ -101,7 +101,7 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'cicilan'    =>$r['cicilan'],
+							'angsuran'    =>$r['angsuran'],
 							'keterangan' =>$r['keterangan'],
 						));
 			break;

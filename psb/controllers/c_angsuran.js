@@ -7,10 +7,10 @@ var contentFR = '';
         contentFR += '<form autocomplete="off" xstyle="overflow:scroll;height:560px;" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
 
-                        // cicilan
-                        +'<label>Cicilan</label>'
+                        // angsuran
+                        +'<label>angsuran</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="cicilan" required name="cicilanTB" id="cicilanTB">'
+                            +'<input placeholder="angsuran" required name="angsuranTB" id="angsuranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
@@ -34,7 +34,7 @@ var contentFR = '';
         });
 
         //search action
-        $('#keteranganS,#cicilanS').on('keydown',function (e){ // kode grup
+        $('#keteranganS,#angsuranS').on('keydown',function (e){ // kode grup
             if(e.keyCode == 13) viewTB();
         });
     }); 
@@ -152,7 +152,7 @@ var contentFR = '';
                     var d ='aksi=ambiledit&replid='+id;
                     ajax(u,d).done(function (r){
                         $('#idformH').val(id);
-                        $('#cicilanTB').val(r.cicilan);
+                        $('#angsuranTB').val(r.angsuran);
                         $('#keteranganTB').val(r.keterangan);
                     });
                 }else{ // form mode : add  
