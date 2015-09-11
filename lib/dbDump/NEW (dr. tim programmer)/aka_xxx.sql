@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : lumba2
-Source Server Version : 50625
-Source Host           : 127.0.0.1:3306
+Source Server         : local
+Source Server Version : 50620
+Source Host           : localhost:3306
 Source Database       : sister_siadu
 
 Target Server Type    : MYSQL
-Target Server Version : 50625
+Target Server Version : 50620
 File Encoding         : 65001
 
-Date: 2015-09-09 12:48:41
+Date: 2015-09-11 18:54:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5037,7 +5037,7 @@ BLOCK1: begin
         select replid
         from  aka_tahunajaran;
     declare continue handler for not found  
-    		set no_more_rows1 =1;           
+        set no_more_rows1 =1;           
     open cursor1;
     LOOP1: loop
         fetch cursor1
@@ -5046,9 +5046,9 @@ BLOCK1: begin
             close cursor1;
             leave LOOP1;
         end if;
-				INSERT INTO aka_detailkelas SET 
-					kelas = NEW.replid, 
-					tahunajaran = v_col1;
+        INSERT INTO aka_detailkelas SET 
+          kelas = NEW.replid, 
+          tahunajaran = v_col1;
     end loop LOOP1;
 end BLOCK1;
 
@@ -5062,69 +5062,69 @@ CREATE TRIGGER `ins_aka_subtingkat` AFTER INSERT ON `aka_subtingkat` FOR EACH RO
 /*INSERT psb_detailbiaya*/
 /*detailgelombang-----------------------------------------------------------------------*/
 BLOCK2: begin
-		declare v_col2 int;
-		declare no_more_rows2 INT DEFAULT 0;  
-		declare cursor2 cursor for
-				SELECT s.replid
-				FROM aka_kelas k
-					JOIN aka_subtingkat s on s.replid = k.subtingkat
-				WHERE	k.departemen = v_col1
-				GROUP BY s.replid;
-	 declare continue handler for not found
-			 set no_more_rows2 =1;
-		open cursor2;
-		LOOP2: loop
-				fetch cursor2
-				into  v_col2;
-				if no_more_rows2 then
-						close cursor2;
-						leave LOOP2;
-				end if;
-				/*biaya---------------------------------------------------------------*/
-				BLOCK3: begin
-							declare v_col3 int;
-							declare no_more_rows3 INT DEFAULT 0;  
-							declare cursor3 cursor for
-									select replid
-									from  psb_biaya;
-						 declare continue handler for not found
-								 set no_more_rows3 =1;
-							open cursor3;
-							LOOP3: loop
-									fetch cursor3
-									into  v_col3;
-									if no_more_rows3 then
-											close cursor3;
-											leave LOOP3;
-									end if;
-									/*golongan ---------------------------------------------------------------*/
-									BLOCK4: begin
-												declare v_col4 int;
-												declare no_more_rows4 INT DEFAULT 0;  
-												declare cursor4 cursor for
-														select replid
-														from  psb_golongan;
-											 declare continue handler for not found
-													 set no_more_rows3 =1;
-												open cursor4;
-												LOOP4: loop
-														fetch cursor4
-														into  v_col4;
-														if no_more_rows4 then
-																close cursor4;
-																leave LOOP4;
-														end if;
-									
-														INSERT INTO psb_detailbiaya SET 
-															biaya = v_col3, 
-															subtingkat = v_col2, 
-															detailgelombang = NEW.replid, 
-															golongan = v_col4;
-												end loop LOOP4;
-									end BLOCK4;
-						end loop LOOP3;
-					end BLOCK3;
-		end loop LOOP2;
+    declare v_col2 int;
+    declare no_more_rows2 INT DEFAULT 0;  
+    declare cursor2 cursor for
+        SELECT s.replid
+        FROM aka_kelas k
+          JOIN aka_subtingkat s on s.replid = k.subtingkat
+        WHERE k.departemen = v_col1
+        GROUP BY s.replid;
+   declare continue handler for not found
+       set no_more_rows2 =1;
+    open cursor2;
+    LOOP2: loop
+        fetch cursor2
+        into  v_col2;
+        if no_more_rows2 then
+            close cursor2;
+            leave LOOP2;
+        end if;
+        /*biaya---------------------------------------------------------------*/
+        BLOCK3: begin
+              declare v_col3 int;
+              declare no_more_rows3 INT DEFAULT 0;  
+              declare cursor3 cursor for
+                  select replid
+                  from  psb_biaya;
+             declare continue handler for not found
+                 set no_more_rows3 =1;
+              open cursor3;
+              LOOP3: loop
+                  fetch cursor3
+                  into  v_col3;
+                  if no_more_rows3 then
+                      close cursor3;
+                      leave LOOP3;
+                  end if;
+                  /*golongan ---------------------------------------------------------------*/
+                  BLOCK4: begin
+                        declare v_col4 int;
+                        declare no_more_rows4 INT DEFAULT 0;  
+                        declare cursor4 cursor for
+                            select replid
+                            from  psb_golongan;
+                       declare continue handler for not found
+                           set no_more_rows3 =1;
+                        open cursor4;
+                        LOOP4: loop
+                            fetch cursor4
+                            into  v_col4;
+                            if no_more_rows4 then
+                                close cursor4;
+                                leave LOOP4;
+                            end if;
+                  
+                            INSERT INTO psb_detailbiaya SET 
+                              biaya = v_col3, 
+                              subtingkat = v_col2, 
+                              detailgelombang = NEW.replid, 
+                              golongan = v_col4;
+                        end loop LOOP4;
+                  end BLOCK4;
+            end loop LOOP3;
+          end BLOCK3;
+    end loop LOOP2;
 end BLOCK2;
 
 END
@@ -5142,7 +5142,7 @@ BLOCK1: begin
         select replid
         from  psb_gelombang;
     declare continue handler for not found  
-    		set no_more_rows1 =1;           
+        set no_more_rows1 =1;           
     open cursor1;
     LOOP1: loop
         fetch cursor1
@@ -5154,7 +5154,7 @@ BLOCK1: begin
         BLOCK2: begin
             declare v_col2 int;
             declare no_more_rows2 INT DEFAULT 0;  
-						declare cursor2 cursor for
+            declare cursor2 cursor for
                 select replid
                 from  departemen;
            declare continue handler for not found
@@ -5167,10 +5167,10 @@ BLOCK1: begin
                     close cursor2;
                     leave LOOP2;
                 end if;
-								INSERT INTO psb_detailgelombang SET 
-									tahunajaran = NEW.replid, 
-            			gelombang  = v_col1, 
-            			departemen = v_col2;
+                INSERT INTO psb_detailgelombang SET 
+                  tahunajaran = NEW.replid, 
+                  gelombang  = v_col1, 
+                  departemen = v_col2;
             end loop LOOP2;
         end BLOCK2;
     end loop LOOP1;
@@ -5184,7 +5184,7 @@ BLOCK3: begin
         select replid
         from   psb_diskontunai;
     declare continue handler for not found  
-    		set no_more_rows3 =1;           
+        set no_more_rows3 =1;           
     open cursor3;
     LOOP3: loop
         fetch cursor3
@@ -5196,7 +5196,7 @@ BLOCK3: begin
         BLOCK4: begin
             declare v_col4 int;
             declare no_more_rows4 INT DEFAULT 0;  
-						declare cursor4 cursor for
+            declare cursor4 cursor for
                 select replid
                 from  departemen;
            declare continue handler for not found
@@ -5209,10 +5209,10 @@ BLOCK3: begin
                     close cursor4;
                     leave LOOP4;
                 end if;
-								INSERT INTO psb_detaildiskontunai SET 
-									tahunajaran = NEW.replid, 
-            			diskontunai = v_col3, 
-            			departemen = v_col4;
+                INSERT INTO psb_detaildiskontunai SET 
+                  tahunajaran = NEW.replid, 
+                  diskontunai = v_col3, 
+                  departemen = v_col4;
             end loop LOOP4;
         end BLOCK4;
     end loop LOOP3;
@@ -5226,7 +5226,7 @@ BLOCK5: begin
         select replid
         from  aka_kelas;
     declare continue handler for not found  
-    		set no_more_rows5 =1;           
+        set no_more_rows5 =1;           
     open cursor5;
     LOOP5: loop
         fetch cursor5
@@ -5235,9 +5235,9 @@ BLOCK5: begin
             close cursor5;
             leave LOOP5;
         end if;
-				INSERT INTO aka_detailkelas SET 
-					tahunajaran = NEW.replid, 
-					kelas = v_col5;
+        INSERT INTO aka_detailkelas SET 
+          tahunajaran = NEW.replid, 
+          kelas = v_col5;
     end loop LOOP5;
 end BLOCK5;
 
