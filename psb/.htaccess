@@ -18,7 +18,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^detail-diskon/?$   							index.php?page=vdetaildiskon
 
 	#transaksi keuangan
-	RewriteRule   ^proses/?$  				 					index.php?page=vproses
+	RewriteRule   ^reminder-ultah/?$  				 			index.php?page=vreminderultah
 	RewriteRule   ^gelombang/?$				   					index.php?page=vgelombang
 	RewriteRule   ^detail-gelombang/?$				   			index.php?page=vdetailgelombang
 	RewriteRule   ^siswa/?$				   						index.php?page=vsiswa

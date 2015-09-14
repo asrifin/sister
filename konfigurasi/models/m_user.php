@@ -33,7 +33,7 @@
 							lg.nama asc,
 							lg.username asc
 							';
-				// print_r($sql);exit();
+							// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{

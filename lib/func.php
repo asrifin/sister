@@ -17,21 +17,25 @@
 					else $s.=','.$i.'="'.$v.'"';
 				}
 			}$sql.=substr($s,1);
+			// pr($sql);
+			$stat=!exeQuery($sql)?false:true;
+			$idx=mysql_insert_id();
+			return array('isSukses'=>$stat,'id'=>$idx); 
 		}
-		// if($tb=='psb_kontakdarurat') pr($sql);
-		$stat=!exeQuery($sql)?false:true;
-		$idx=mysql_insert_id();
-		return array('isSukses'=>$stat,'id'=>$idx); 
 	}
 	function editRecord($f,$tb,$w,$k){
 		if(is_array($f)){
-			$sql='UPDATE SET ';
+			$sql='UPDATE '.$tb.' SET ';
 			$s='';
 			foreach ($f as $i => $v) {
-				$s.=','.$v.'='.$_POST[$v.'TB'];
+				if($v!=null){
+					if(is_numeric($i)) $s.=','.$v.'="'.$_POST[$v.'TB'].'"';
+					else $s.=','.$i.'="'.$v.'"';
+				}
 			}$sql.=substr($s,1);
 			$sql.=' WHERE '.$w.'='.$k;
-			return exeQuery($sql);
+			$stat=!exeQuery($sql)?false:true;
+			return array('isSukses'=>$stat); 
 		}
 	}	
 	function exeQuery($sql){
@@ -55,6 +59,7 @@
 	}
 	function getFieldArr2($f,$tb,$w,$k){
 		$s   = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = '.$k:'');
+		// pr($s);
 		$e   = mysql_query($s);
 		$arr =array();
 		while ($r=mysql_fetch_assoc($e)) {
@@ -144,7 +149,7 @@
 	function delFile($file){
 		if(isset($file)){
 			if(file_exists($file)){
-				$isDel   = unlink($img);
+				$isDel   = unlink($file);
 				$statDel = !$isDel?false:true;
 				return $statDel;
 			}

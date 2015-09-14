@@ -9,6 +9,7 @@ var mnu8  = 'detailgelombang';
 var mnu9  = 'subtingkat';
 var mnu10 = 'dokumen';
 var mnu11 = 'agama';
+var mnu12 = 'suku';
 
 var dir   = 'models/m_'+mnu+'.php';
 var dir2  = '../akademik/models/m_'+mnu2+'.php';
@@ -21,6 +22,7 @@ var dir8  = 'models/m_'+mnu8+'.php';
 var dir9  = '../akademik/models/m_'+mnu9+'.php';
 var dir10 = 'models/m_'+mnu10+'.php';
 var dir11 = 'models/m_'+mnu11+'.php';
+var dir12 = 'models/m_'+mnu12+'.php';
 var siswa_contentFR = status_contentFR='';
 
 // main function ---
@@ -50,10 +52,10 @@ var siswa_contentFR = status_contentFR='';
                             +'</table>'
                             //nis`
                             +'<label>NIS</label>'
-                            +'<input type="text" placeholder="NIS" data-transform="input-control" xrequired id="nisTB" name="nisTB">'
+                            +'<input type="number" placeholder="NIS" data-transform="input-control" xrequired id="nisTB" name="nisTB">'
                             // nisn
                             +'<label>NISN</label>'
-                            +'<input type="text"  placeholder="NISN"  data-transform="input-control" xrequired id="nisnTB" name="nisnTB">'
+                            +'<input type="number"  placeholder="NISN"  data-transform="input-control" xrequired id="nisnTB" name="nisnTB">'
                             
                             +'<div class="form-actions">' 
                                 +'<button class="button primary">simpan</button>&nbsp;'
@@ -65,7 +67,7 @@ var siswa_contentFR = status_contentFR='';
                         // accordion
                         +'<div class="accordion with-marker xspan3 xplace-left margin10" data-role="accordion" data-closeany="true">'
                             // kriteria
-                            +'<div class="accordion-frame active">'
+                            /*+'<div class="accordion-frame active">'
                                 +'<a class="heading bg-red fg-white" href="#">Kriteria Siswa <sub>*wajib diisi</sub></a>'
                                 +'<div  style="display: block;" class="content grid">'
                                     // baris 1
@@ -102,7 +104,7 @@ var siswa_contentFR = status_contentFR='';
                                         +'<div id="biayaDV" class="span7"></div>'
                                     +'</div>'
                                 +'</div>'
-                            +'</div>'
+                            +'</div>'*/
                             
                             // // bioadata Siswa
                             +'<div class="accordion-frame">'
@@ -114,7 +116,7 @@ var siswa_contentFR = status_contentFR='';
                                         +'<div class="span4">'
                                             // nopendaftaran
                                             +'<label>No. Pendaftaran</label>'
-                                            +'<input readonly type="text" data-transform="input-control" id="nopendaftaranTB" name="nopendaftaranTB">'
+                                            +'<input disabled type="text" data-transform="input-control" id="nopendaftaranTB" name="nopendaftaranTB">'
                                             // nama
                                             +'<label>Nama </label>'
                                             +'<input type="text" data-transform="input-control" required placeholder="nama" id="namasiswaTB" name="namasiswaTB">'
@@ -144,7 +146,7 @@ var siswa_contentFR = status_contentFR='';
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="warganegara" id="warganegarasiswaTB" name="warganegarasiswaTB">'
                                             // suku
                                             +'<label>Suku</label>'
-                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="suku" id="sukusiswaTB" name="sukusiswaTB">'
+                                            +'<select data-transform="input-control" id="sukusiswaTB" name="sukusiswaTB"></select>'
                                             // agama
                                             +'<label>Agama</label>'
                                             +'<select data-transform="input-control" xrequired id="agamasiswaTB" name="agamasiswaTB"></select>'
@@ -184,12 +186,14 @@ var siswa_contentFR = status_contentFR='';
                                             // photo
                                             +'<label>Pas Foto</label>'
                                             +'<div class="tile double-vertical double-horizontal">'
-                                                +'<img id="previmg" src="../img/no_image.jpg">'
-                                                +'<div class="brand bg-dark opacity">'
-                                                    +'<span class="text">'
-                                                        +'format[jpg/png/bmp] size[max 1 mb]'
-                                                    +'</span>'
-                                                +'</div>'
+                                                +'<a id="previmgA" href="#">'
+                                                    +'<img id="previmg" src="../img/no_image.jpg">'
+                                                    +'<div class="brand bg-dark opacity">'
+                                                        +'<span class="text">'
+                                                            +'format[jpg/png/bmp] size[max 1 mb]'
+                                                        +'</span>'
+                                                    +'</div>'
+                                                +'</a>'
                                             +'</div>'
                                         +'</div>'
 
@@ -197,10 +201,10 @@ var siswa_contentFR = status_contentFR='';
                                         +'<div class="span4">'
                                             // berat badan
                                             +'<label>Berat Badan</label>'
-                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Berat Badan" id="beratsiswaTB" name="beratsiswaTB">'
+                                            +'<input  type="number" data-transform="input-control" xrequired placeholder="Berat Badan" id="beratsiswaTB" name="beratsiswaTB">'
                                             // Tinggi badan
                                             +'<label>Tinggi Badan</label>'
-                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="Tinggi Badan" id="tinggisiswaTB" name="tinggisiswaTB">'
+                                            +'<input  type="number" data-transform="input-control" xrequired placeholder="Tinggi Badan" id="tinggisiswaTB" name="tinggisiswaTB">'
                                             // darah
                                             +'<label>Golongan Darah</label>'
                                             +'<div class="input-control select xsize3">'
@@ -301,7 +305,7 @@ var siswa_contentFR = status_contentFR='';
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="kota" id="kotaayahTB" name="kotaayahTB">'
                                             // kodepos
                                             +'<label>kodepos</label>'
-                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
+                                            +'<input type="number" data-transform="input-control" xrequired placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
                                             // fax rumah 
                                             +'<label>fax rumah</label>'
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="fax " id="faxrumahayahTB" name="faxrumahayahTB">'
@@ -323,7 +327,7 @@ var siswa_contentFR = status_contentFR='';
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="posisi pekerjaan " id="posisiayahTB" name="posisiayahTB">'
                                             // penghasilan ayah
                                             +'<label>Penghasilan Ayah</label>'
-                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="penghasilanayah" id="penghasilanayahTB" name="penghasilanayahTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired onfocus="inputuang(this);" placeholder="penghasilanayah" id="penghasilanayahTB" name="penghasilanayahTB">'
                                             // telpon  kantor
                                             +'<label>Telpon Kantor</label>'
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="telpon " id="telponkantorayahTB" name="telponkantorayahTB">'
@@ -333,9 +337,6 @@ var siswa_contentFR = status_contentFR='';
                                             // alamat kantor 
                                             +'<label>Alamat Kantor</label>'
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="alamat kantor " id="alamatkantorayahTB" name="alamatkantorayahTB">'
-                                            // kodepos
-                                            +'<label>kodepos</label>'   
-                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kodepos" id="kodeposayahTB" name="kodeposayahTB">'
                                         +'</div>'
 
                                     +'</div>'
@@ -344,7 +345,7 @@ var siswa_contentFR = status_contentFR='';
 
                             // Biodata ibu
                             +'<div class="accordion-frame">'
-                                +'<a class="heading bg-red fg-white" href="#">Biodata Ibu <sub>*wajib diisi</sub></a>'
+                                +'<a class="heading bg-red fg-white" href="#">Biodata ibu <sub>*wajib diisi</sub></a>'
                                 +'<div style="display: block;" class="content grid">'
                                     // baris 1
                                     +'<div class="row">'
@@ -398,7 +399,7 @@ var siswa_contentFR = status_contentFR='';
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="kota" id="kotaibuTB" name="kotaibuTB">'
                                             // kodepos
                                             +'<label>kodepos</label>'
-                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
+                                            +'<input type="number" data-transform="input-control" xrequired placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
                                             // fax rumah 
                                             +'<label>fax rumah</label>'
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="fax " id="faxrumahibuTB" name="faxrumahibuTB">'
@@ -420,7 +421,7 @@ var siswa_contentFR = status_contentFR='';
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="posisi pekerjaan " id="posisiibuTB" name="posisiibuTB">'
                                             // penghasilan ibu
                                             +'<label>Penghasilan ibu</label>'
-                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="penghasilanibu" id="penghasilanibuTB" name="penghasilanibuTB">'
+                                            +'<input  type="text" data-transform="input-control" xrequired onfocus="inputuang(this);" placeholder="penghasilanibu" id="penghasilanibuTB" name="penghasilanibuTB">'
                                             // telpon  kantor
                                             +'<label>Telpon Kantor</label>'
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="telpon " id="telponkantoribuTB" name="telponkantoribuTB">'
@@ -430,9 +431,6 @@ var siswa_contentFR = status_contentFR='';
                                             // alamat kantor 
                                             +'<label>Alamat Kantor</label>'
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="alamat kantor " id="alamatkantoribuTB" name="alamatkantoribuTB">'
-                                            // kodepos
-                                            +'<label>kodepos</label>'   
-                                            +'<input  type="text" data-transform="input-control" xrequired placeholder="kodepos" id="kodeposibuTB" name="kodeposibuTB">'
                                         +'</div>'
 
                                     +'</div>'
@@ -447,27 +445,34 @@ var siswa_contentFR = status_contentFR='';
                                     +'<div class="row">'
                                         // kolom1 
                                         +'<div class="span4">'
+                                            // cek
+                                            +'<label>'
+                                                +'<input checked onclick="enableWali(this);" type="checkbox" id="siswawaliTB" name="siswawaliTB">'
+                                                +'Wali murid'
+                                            +'</label>'
                                             // nama
                                             +'<label>Nama</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="nama" id="namawaliTB" name="namawaliTB">'
+                                            +'<input type="hidden" id="idsiswawaliTB" name="idsiswawaliTB" />'
+                                            +'<input required class="waliTB"  type="text" data-transform="input-control" placeholder="nama" id="namawaliTB" name="namawaliTB">'
                                             // kelamin
                                             +'<label>Jenis Kelamin</label>'
-                                            +'<select data-transform="input-control" xrequired id="jkelaminwaliTB" name="jkelaminwaliTB">'
+                                            +'<select  class="waliTB"  data-transform="input-control" xrequired id="jkelaminwaliTB" name="jkelaminwaliTB">'
+                                                +'<option value="">-Pili Kelamin-</option>'
                                                 +'<option value="L">Laki</option>'
                                                 +'<option value="P">Perempuan</option>'
                                             +'</select>'
                                             // alamatwali
                                             +'<label>Alamat</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
+                                            +'<input   class="waliTB"  type="text" data-transform="input-control" placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
                                         +'</div>'
                                         // kolom2 
                                         +'<div class="span4">'
                                             // kotawali
                                             +'<label>Kota </label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
+                                            +'<input   class="waliTB"  type="text" data-transform="input-control" placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
                                             // telponwali
                                             +'<label>Telpon</label>'
-                                            +'<input  type="text" data-transform="input-control" placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
+                                            +'<input  class="waliTB"   type="text" data-transform="input-control" placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
                                         +'</div>'
 
                                     +'</div>'
@@ -481,6 +486,7 @@ var siswa_contentFR = status_contentFR='';
                                     // baris 1
                                     +'<div class="row">'
                                         // kolom1 
+                                        // kontakdaruratFC(n,arr)
                                         +'<div class="span12">'
                                             +'<a  class="button"  href="#" onclick="kontakdaruratFC();return false;"><i class="icon-plus-2"></i></a>'
                                             +'<table class="table bordered hovered striped">'
@@ -503,7 +509,7 @@ var siswa_contentFR = status_contentFR='';
                             +'</div>'
 
                             // Biodata Saudara
-                            +'<div class="accordion-frame">'
+                            /*+'<div class="accordion-frame">'
                                 +'<a class="heading bg-lightBlue fg-white" href="#">Bioada Saudara</a>'
                                 +'<div style="display: block;" class="content grid">'
                                     // baris 1
@@ -530,7 +536,7 @@ var siswa_contentFR = status_contentFR='';
 
                                     +'</div>'
                                 +'</div>'
-                            +'</div>'
+                            +'</div>'*/
 
                             // kelengkapan dokumen
                             /*+'<div class="accordion-frame">'
@@ -627,13 +633,17 @@ var siswa_contentFR = status_contentFR='';
         $("input:file").each(function() {
             files.push($(this).get(0).files[0]); 
         });
-        console.log(files);
         var filesAdd = new FormData();
         $.each(files, function(key, value){
             filesAdd.append (key, value);
         });
-        if(typeof files[1]=='undefined') siswaDb('');
-        else siswaUp(filesAdd);
+        if(typeof files[0]=='undefined') {
+            siswaDb('');
+            console.log('masuk tanpa upload');
+        }else{
+            siswaUp(filesAdd);
+            console.log('masuk upload');
+        } 
     }
 
 // upload image
@@ -661,7 +671,7 @@ var siswa_contentFR = status_contentFR='';
 // simpan ke database
     function siswaDb(filex){
         var formData = $('#siswaFR').serialize();
-        if($('#idformTB').val()!='') formData +='&replid='+$('#idformTB').val(); // id tidak kosong (edit mode) 
+        if($('#idformTB').val()!='') formData +='&replid='+$('#idformTB').val()+'&iKontakDDelTR='+iKontakDDelTR; // id tidak kosong (edit mode) 
         if(filex!='') formData +='&photosiswaTB='+filex;  // ada upload file nya
 
         $.ajax({
@@ -672,7 +682,11 @@ var siswa_contentFR = status_contentFR='';
             dataType: 'json',
             success: function(data, textStatus, jqXHR){
                 if(data.status != 'sukses') notif(data.status,'red');
-                else {notif(data.status,'green'); $.Dialog.close();} 
+                else {
+                    notif(data.status,'green'); 
+                    $.Dialog.close();
+                    viewTB('siswa');
+                } 
             },error: function(jqXHR, textStatus, errorThrown){
                 console.log('ERRORS savedata2: ' + textStatus);
             }
@@ -794,88 +808,7 @@ var siswa_contentFR = status_contentFR='';
         });
     }
 
-// load pop up        
-    function loadFR(id) {
-        if(id!='') {// view data siswa
-            var u =dir;
-            var d ='aksi=ambiledit&replid='+id;
-            ajax(u,d).done(function  (dt) {
-                $('#idformTB').val(id);
-                $('#uang_pangkalTB').val(dt.sumpokok);
-                $('#uang_pangkalnetTB').val(dt.sumnet);
-                $('#angsuranTB').val(dt.angsuran);
-                $('#sppTB').val(dt.sppbulan);
-                $('#diskon_subsidiTB').val(dt.disctb);
-                $('#diskon_saudaraTB').val(dt.discsaudara);
-                $('#diskon_tunaiTB').val(dt.disctunai);
-                $('#diskon_totalTB').val(dt.disctotal);
-                $('#joiningTB').val(dt.joining);
-                $('#nopendaftaranTB').val(dt.nopendaftaran);
-                $('#namaTB').val(dt.siswa);
-                $('#tempatlahirTB').val(dt.tmplahir);
-                $('#jkTB').val(dt.kelamin);
-                $('#tgllahiranakTB').val(dt.tgllahir);
-                $('#alamatsiswaTB').val(dt.alamat);
-                $('#telpsiswaTB').val(dt.telpon);
-                $('#asalsekolahTB').val(dt.sekolahasal);
-                var img;
-                if(dt.photo!='' && dt.photo!=null){//ada gambar
-                    img='./img/upload/'+dt.photo;
-                }else{
-                    img='./img/no_image.jpg';
-                }
-                $('#previmg').attr('src',img);
-                $('#photoH').val(dt.photo);
-            //ayah
-                $('#ayahTB').val(dt.nama_ayah);
-                $('#kebangsaan_ayahTB').val(dt.kebangsaan_ayah);
-                $('#tempatlahir_ayahTB').val(dt.tempatlahir_ayah);
-                $('#tgllahir_ayahTB').val(dt.tgllahir_ayah);
-                $('#pekerjaan_ayahTB').val(dt.pekerjaan_ayah);
-                $('#telpayahTB').val(dt.telpayah);
-                $('#pinbb_ayahTB').val(dt.pinbb_ayah);
-                $('#email_ayahTB').val(dt.email_ayah);
-            //ibu
-                $('#ibuTB').val(dt.nama_ibu);
-                $('#kebangsaan_ibuTB').val(dt.kebangsaan_ibu);
-                $('#tempatlahir_ibuTB').val(dt.temp_lahir_ibu);
-                $('#tgllahir_ibuTB').val(dt.tgllahir_ibu);
-                $('#pekerjaan_ibuTB').val(dt.pekerjaan_ibu);
-                $('#telpibuTB').val(dt.telepon_ibu);
-                $('#pinbb_ibuTB').val(dt.pinbb_ibu);
-                $('#email_ibuTB').val(dt.email_ibu);
-            // kontak darurat
-                $('#nama_kontakTB').val(dt.namalain);
-                $('#hubunganTB').val(dt.hubungan);
-                $('#nomorTB').val(dt.telponlain);
-            // kakek nenek
-                $('#kakekTB').val(dt.kakek);
-                $('#nenekTB').val(dt.nenek);
-
-                // var tbl='';
-                // $.each(dt.saudaraArr,function(id,item){
-                //     var btn;
-                //     tbl+='<tr>'
-                //         +'<td>'+item.nis+'</td>'
-                //         +'<td>'+item.nama+'</td>'
-                //     +'</tr>';
-                // });$('saudaraTBL').html(tbl);
-
-                // $('#kakekTB').val(dt.kakek-nama);
-                // $('#nenekTB').val(dt.nenek-nama);
-                cmbkriteria(dt.kriteria);
-                cmbgolongan(dt.golongan);
-                cmbagama(dt.agama);
-                cmbangsuran(dt.jmlangsur);
-                cmbdisctunai(dt.nilai);
-            });
-        }else{ // add 
-
-        }
-    }  
-
 // cmbo golongan 
-    // function cmbtingkatZ(tip,tgk) {
     function cmbtingkatZ(tipe,ting) {
         var d = 'aksi=cmb'+mnu4+'&departemen='+$('#departemen'+(tipe=='filter'?'S':'TB')).val();
         ajax(dir4,d).done(function (dt){
@@ -935,8 +868,25 @@ var siswa_contentFR = status_contentFR='';
                     var opt='';
                     $.each(dt.agama,function (idx,itemx){
                         opt+='<option '+(item!=null && itemx.replid==item?'selected':'')+' value="'+itemx.replid+'">'+itemx.agama+'</option>'
-                    });
-                    $('#agama'+id+'TB').html('<option value="">-Pilih Agama-</option>'+opt);
+                    });$('#agama'+id+'TB').html('<option value="">-Pilih Agama-</option>'+opt);
+                });
+            }
+        });
+    }
+
+    // combo suku
+    function cmbsuku (elem) {
+        var u = dir12
+        var d ='aksi=cmb'+mnu12;
+        ajax(u,d).done(function(dt){
+            if (dt.status!='sukses') {
+                notif(mnu12+' '+dt.status,'red');
+            }else{
+                $.each(elem, function (id,item){
+                    var opt='';
+                    $.each(dt.suku,function (idx,itemx){
+                        opt+='<option '+(item!=null && itemx.replid==item?'selected':'')+' value="'+itemx.replid+'">'+itemx.suku+'</option>'
+                    });$('#suku'+id+'TB').html('<option value="">-Pilih '+mnu12+'-</option>'+opt);
                 });
             }
         });
@@ -961,6 +911,16 @@ var siswa_contentFR = status_contentFR='';
         });
     }
 
+    function enableWali(e){
+        if($(e).is(':checked')){
+            $('.waliTB').removeAttr('disabled')
+                        .attr('required',true);
+        }else{
+            $('.waliTB').attr('disabled',true)
+                        .removeAttr('required')
+                        .val('');            
+        }   
+    }
     function enableDiskon(){
         var dep  = $('#departemenTB').val();
         var thn  = $('#tahunajaranTB').val();
@@ -1069,6 +1029,7 @@ var siswa_contentFR = status_contentFR='';
 
 // form ---
     function viewFR(idsiswa){
+        isClosedFR();
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -1077,31 +1038,111 @@ var siswa_contentFR = status_contentFR='';
             padding: 10,
             onShow: function(){
                 $.Dialog.content(siswa_contentFR);
-                if(idsiswa!=''){ // edit 
+                if(idsiswa!=''){ // edit
                     var u = dir;
-                    var d ='aksi=ambiledit&id_user='+idsiswa;
+                    var d ='aksi=ambiledit&replid='+idsiswa;
                     ajax(u,d).done(function  (dt) {
-                        if(dt.status!='sukses'){
-                            notif(dt.status,'red');
-                        }else{
-                            if(dt.isLogged) { //sudah aktif (pernah login)
-                                $('#namaTB').attr('disabled',true);
-                                $('#usernameTB').attr('disabled',true);
-                                $('#passwordTB').attr('disabled',true);
-                                $('#simpanTB').attr('disabled',true);
-                            }
+                        if(dt.status!='sukses') notif(dt.status,'red');
+                        else{
+                            // bioadata siswa
+                            var agm = {'ayah':dt.agamaayah,'siswa':dt.agamasiswa,'ibu':dt.agamaibu};
+                            cmbagama(agm);
+                            var suk = {'ayah':null,'siswa':dt.sukusiswa,'ibu':null};
+                            cmbsuku(suk);
                             $('#idformTB').val(idsiswa);
-                            $('#namaTB').val(dt.nama);
-                            $('#usernameTB').val(dt.username);
-                            
-                            levelFC(dt.id_level);
-                            departemenFC(dt.id_level,dt.departemen);
-                            // modulFC(dt.id_level,md)
+                            $('#namasiswaTB').val(dt.namasiswa);
+                            $('#panggilansiswaTB').val(dt.panggilansiswa);
+                            $('#jkelaminsiswaTB').val(dt.jkelaminsiswa);
+                            $('#tempatlahirsiswaTB').val(dt.tempatlahirsiswa);
+                            $('#tanggallahirsiswaTB').val(dt.tanggallahirsiswa);
+                            $('#warganegarasiswaTB').val(dt.warganegarasiswa);
+                            $('#bahasasiswa1TB').val(dt.bahasasiswa1);
+                            $('#bahasasiswa2TB').val(dt.bahasasiswa2);
+                            $('#photosiswa2TB').val(dt.photosiswa);
+                            $('#previmgA').attr('href','upload/images/'+dt.photosiswa)
+                                         .attr('target','blank');
+                            $('#previmg').attr('src','upload/images/'+dt.photosiswa)
+                            $('#hpsiswaTB').val(dt.hpsiswa);
+                            $('#telponsiswaTB').val(dt.telponsiswa);
+                            $('#emailsiswaTB').val(dt.emailsiswa);
+                            $('#pinbbsiswaTB').val(dt.pinbbsiswa);
+                            $('#alamatsiswaTB').val(dt.alamatsiswa);
+                            $('#kotasiswaTB').val(dt.kotasiswa);
+                            $('#kodepossiswaTB').val(dt.kodepossiswa);
+                            $('#beratsiswaTB').val(dt.beratsiswa);
+                            $('#tinggisiswaTB').val(dt.tinggisiswa);
+                            $('#darahsiswaTB').val(dt.darahsiswa);
+                            $('#penyakitsiswaTB').val(dt.penyakitsiswa);
+                            $('#catatankesehatansiswaTB').val(dt.catatankesehatansiswa);
+                            $('#diasuhTB').val(dt.diasuh);
+                            $('#sekolahasalsiswaTB').val(dt.sekolahasalsiswa);
+                            $('#kotasekolahasalsiswaTB').val(dt.kotasekolahasalsiswa);
+                            $('#negarasekolahasalsiswaTB').val(dt.negarasekolahasalsiswa);
+                            getNoPendaftaran(idsiswa);
+                            // biodata ayah
+                            $('#namaayahTB').val(dt.namaayah);
+                            $('#namaayahTB').val(dt.namaayah);
+                            $('#tempatlahirayahTB').val(dt.tempatlahirayah);
+                            $('#tanggallahirayahTB').val(dt.tanggallahirayah);
+                            $('#agamaayahTB').val(dt.agamaayah);
+                            $('#warganegaraayahTB').val(dt.warganegaraayah);
+                            $('#kodeposayahTB').val(dt.kodeposayah);
+                            $('#kotaayahTB').val(dt.kotaayah);
+                            $('#pendidikanayahTB').val(dt.pendidikanayah);
+                            $('#bidangpekerjaanayahTB').val(dt.bidangpekerjaanayah);
+                            $('#pekerjaanayahTB').val(dt.pekerjaanayah);
+                            $('#posisiayahTB').val(dt.posisiayah);
+                            $('#penghasilanayahTB').val(dt.penghasilanayah);
+                            $('#telponayahTB').val(dt.telponayah);
+                            $('#emailayahTB').val(dt.emailayah);
+                            $('#pinbbayahTB').val(dt.pinbbayah);
+                            $('#alamatayahTB').val(dt.alamatayah);
+                            $('#hpayahTB').val(dt.hpayah);
+                            $('#faxrumahayahTB').val(dt.faxrumahayah);
+                            $('#alamatkantorayahTB').val(dt.alamatkantorayah);
+                            $('#telponkantorayahTB').val(dt.telponkantorayah);
+                            $('#faxkantorayahTB').val(dt.faxkantorayah);
+                            $('#gerejaayahTB').val(dt.gerejaayah);
+                            // biodata ibu
+                            $('#namaibuTB').val(dt.namaibu);
+                            $('#namaibuTB').val(dt.namaibu);
+                            $('#tempatlahiribuTB').val(dt.tempatlahiribu);
+                            $('#tanggallahiribuTB').val(dt.tanggallahiribu);
+                            $('#agamaibuTB').val(dt.agamaibu);
+                            $('#warganegaraibuTB').val(dt.warganegaraibu);
+                            $('#kodeposibuTB').val(dt.kodeposibu);
+                            $('#kotaibuTB').val(dt.kotaibu);
+                            $('#pendidikanibuTB').val(dt.pendidikanibu);
+                            $('#bidangpekerjaanibuTB').val(dt.bidangpekerjaanibu);
+                            $('#pekerjaanibuTB').val(dt.pekerjaanibu);
+                            $('#posisiibuTB').val(dt.posisiibu);
+                            $('#penghasilanibuTB').val(dt.penghasilanibu);
+                            $('#telponibuTB').val(dt.telponibu);
+                            $('#emailibuTB').val(dt.emailibu);
+                            $('#pinbbibuTB').val(dt.pinbbibu);
+                            $('#alamatibuTB').val(dt.alamatibu);
+                            $('#hpibuTB').val(dt.hpibu);
+                            $('#faxrumahibuTB').val(dt.faxrumahibu);
+                            $('#alamatkantoribuTB').val(dt.alamatkantoribu);
+                            $('#telponkantoribuTB').val(dt.telponkantoribu);
+                            $('#faxkantoribuTB').val(dt.faxkantoribu);
+                            $('#gerejaibuTB').val(dt.gerejaibu);
+                            // biodata wali
+                            if(dt.idsiswawali!=null) $('#idsiswawaliTB').val(dt.idsiswawali);
+                            else {
+                                $('#siswawaliTB').removeAttr('checked');
+                                $('.waliTB').attr('disabled',true);
+                            }$('#namawaliTB').val(dt.namawali);
+                            $('#jkelaminwaliTB').val(dt.jkelaminwali);
+                            $('#alamatwaliTB').val(dt.alamatwali);
+                            $('#kotawaliTB').val(dt.kotawali);
+                            $('#telponwaliTB').val(dt.telponwali);
+                            // kontak darurat
+                            kontakdaruratFC(dt.kontakdaruratArr);
                         }
                     });
                 }else{ //add
                     var elems = {'ayah':null,'siswa':null,'ibu':null};
-                    // console.log(elems); return false;
                     getNoPendaftaran('');
                     cmbagama(elems);
                     cmbdepartemen('form','');
@@ -1112,6 +1153,7 @@ var siswa_contentFR = status_contentFR='';
                     cmbangsuran('');
                     biayaFC();
                     subdokumenFC();
+                    kontakdaruratFC();
                 }
                 // $("#form1").scrollbar({height: 355,axis: 'y'});
 
@@ -1133,11 +1175,11 @@ var siswa_contentFR = status_contentFR='';
             success:function(dt){
                 var cont,clr;
                 if(dt.status!='sukses'){
-                    cont = '..Gagal Menghapus '+dt.terhapus+' ..';
+                    cont = '..Gagal Menghapus ';
                     clr  ='red';
                 }else{
                     viewTB('siswa');
-                    cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
+                    cont = '..Berhasil Menghapus' ;
                     clr  ='green';
                 }
                 notif(cont,clr);
@@ -1155,14 +1197,6 @@ var siswa_contentFR = status_contentFR='';
             thousands:',', 
             // decimal:',', 
             affixesStay: true
-        });
-    }
-
-   function kodeTrans(){
-        var url = dir;
-        var data = 'aksi=codeGen&subaksi=transNo';
-        ajax(url,data).done(function(dt){
-            $('#nopendaftaranTB').val(dt.kode);
         });
     }
     
@@ -1564,21 +1598,42 @@ function notif(cont,clr) {
         idsaudara++;
     }
 
-    var idkontakdarurat = 1;
-    function kontakdaruratFC(){
+    var iKontakDTR = 1;
+    var iKontakDDelTR = [];
+    var iKontakDAddTR = [];
+    function kontakdaruratFC(arr){
+        console.log(arr.length);
         var tr='';
-            tr+='<tr class="kontakdaruratTR" id="kontakdaruratTR_'+idkontakdarurat+'">'
+        var isLoop=true;
+        if(typeof arr=='undefined'){ isLoop=false; n=iKontakDTR;}
+        else{n=arr.length;}
+
+        console.log(arr[0].namakkontakdarurat);
+        for(var i=n; i>=iKontakDTR; i--){
+            var ke = parseInt(i)-1;
+            var idKontakD      = (typeof arr!='undefined')?arr[ke].replid:null;
+            var namaKontakD    = (typeof arr!='undefined')?arr[ke].namakontakdarurat:'';
+            var hubKontakD     = (typeof arr!='undefined')?arr[ke].hubkontakdarurat:'';
+            var telponKontak1D = (typeof arr!='undefined')?arr[ke].telponkontakdarurat1:'';
+            var telponKontak2D = (typeof arr!='undefined')?arr[ke].telponkontakdarurat2:'';
+
+            tr+='<tr class="kontakdaruratTR" id="kontakdaruratTR_'+ke+'">'
                 +'<td>'
-                    +'<input type="hidden" value="'+idkontakdarurat+'" name="idkontakdaruratTB[]">'
-                    +'<input  required type="text" data-transform="input-control" name="namakontakdarurat'+idkontakdarurat+'TB"id="namakontakdarurat'+idkontakdarurat+'TB" />'
+                    +'<input type="hidden" value="'+ke+'" id="idKontakD'+ke+'TR" name="idKontakDTR[]">' // array acuan
+                    +'<input type="hidden" value="'+idKontakD+'" name="idKontakD'+ke+'TB">'
+                    +'<input name="namakontakdarurat'+ke+'TB"id="namakontakdarurat'+ke+'TB" value="'+namaKontakD+'" required type="text" data-transform="input-control">'
                 +'</td>'
-                +'<td><input  required type="text" data-transform="input-control" name="hubkontakdarurat'+idkontakdarurat+'TB"id="hubkontakdarurat'+idkontakdarurat+'TB" /></td>'
-                +'<td><input  required type="text" data-transform="input-control" name="telponkontakdarurat1'+idkontakdarurat+'TB"id="telponkontakdarurat1'+idkontakdarurat+'TB" /></td>'
-                +'<td><input  type="text" data-transform="input-control" name="telponkontakdarurat2'+idkontakdarurat+'TB"id="telponkontakdarurat2'+idkontakdarurat+'TB" /></td>'
-                +'<td><a href="#" class="button bg-white fg-red" onclick="kontakdaruratDel('+idkontakdarurat+'); return false;"><i class="icon-cancel-2"></a></i></td>'
-           +'</tr>';
+                +'<td><input value="'+hubKontakD+'" name="hubkontakdarurat'+ke+'TB"id="hubkontakdarurat'+ke+'TB" required type="text" data-transform="input-control"></td>'
+                +'<td><input value="'+telponKontak1D+'" name="telponkontakdarurat1'+ke+'TB"id="telponkontakdarurat1'+ke+'TB" required type="text" data-transform="input-control"></td>'
+                +'<td><input value="'+telponKontak2D+'" name="telponkontakdarurat2'+ke+'TB"id="telponkontakdarurat2'+ke+'TB" type="text" data-transform="input-control"></td>'
+                +'<td><a onclick="'+(typeof idKontakD!=null?'if(confirm(\'melanjutkan untuk menghapus data?\')) kontakdaruratDel('+ke+','+idKontakD+',\'\');':'kontakdaruratDel('+ke+','+idjurnal+',\'\')')+'" href="#" class="button bg-white fg-red"><i class="icon-cancel-2"></a></i></td>'
+            +'</tr>';
+            // idKontakDTR++;
+        }
+        if(isLoop) iKontakDTR+=n;
+        else iKontakDTR++;
         $('#kontakdaruratTBL').append(tr);
-        idkontakdarurat++;
+        // return tr; 
     }
 
 // hapus saudara terpilih
@@ -1588,11 +1643,43 @@ function notif(cont,clr) {
         });
     } 
 // hapus kontakdarurat terpilih
-    function kontakdaruratDel(id){
-        $('#kontakdaruratTR_'+id).fadeOut('slow',function(){
-            $('#kontakdaruratTR_'+id).remove();
-        }); return false;
+    function kontakdaruratDel(ke,idkontakd){
+        if(idkontakd!=null) iKontakDDelTR.push(idkontakd); //jika ada hapus DB (kontak darurat)
+        $('#kontakdaruratTR_'+ke).fadeOut('slow',function(){
+            $('#kontakdaruratTR_'+ke).remove();
+            // collectArr();
+        });
+        console.log(iKontakDDelTR);
     }
+
+    function isClosedFR () {
+        if($('.window-overlay').length<=0) {
+            iKontakDTR=1; // reset rekTR's counter
+            iKontakDDelTR=[]; // reset rekTR's counter
+            // rekArr=[]; // reset rekArr's counter
+            // detilanggaranArr=[]; // reset rekArr's counter
+        }
+    }
+
+
+// remove TR rekening
+    /*function delRekTR (ke,idjurnal) {
+        // console.log(validDelRek());
+        if(validDelRek().status==false){
+            notif(validDelRek().msg,'red');
+        }else{
+            if(idjurnal!=null) idDelTR.push(idjurnal); //jika ada hapus (jurnal umum)
+            $('#rekTR_'+ke).fadeOut('slow',function(){
+                $('#rekTR_'+ke).remove();
+                
+                collectArr();
+                // console.log('arr terpilih in delrek=>'+rekArr);
+            });
+            console.log(idDelTR);
+        }
+    }*/
+
+
 
 // hapus diskon reguler terplih 
     function detaildiskonDel (idx,idy) {
@@ -1625,6 +1712,7 @@ function notif(cont,clr) {
             width: '80%',
             padding: 10,
             onShow: function(){
+                $('#nisTB').focus();
                 $.Dialog.content(status_contentFR);
                 var u = dir;
                 var d ='aksi=ambiledit&replid='+idsiswa;
@@ -1643,7 +1731,6 @@ function notif(cont,clr) {
                 });
                 titlex='<span class="icon-plus-2"></span> Tambah ';
                 $.Dialog.title(titlex+' '+mnu);
-                $('#nisTB').focus();
             }
         });
     }

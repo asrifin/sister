@@ -20,16 +20,16 @@
 	$tb6  = 'psb_'.$mnu6;
 
 	$upDir    = '../upload/';
-	$fileDir  = $upDir.'files';
-	$imageDir = $upDir.'images';
+	$fileDir  = $upDir.'files/';
+	$imageDir = $upDir.'images/';
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['upload'])){
 			if($_GET['upload']=='images'){ // images (jpg, png, dll)
-				$tipex    = substr($_FILES[1]['type'],6);
-				$namaAwal = $_FILES[1]['name'];
+				$tipex    = substr($_FILES[0]['type'],6);
+				$namaAwal = $_FILES[0]['name'];
 				$namaSkrg = $_SESSION['id_loginS'].'_'.substr((md5($namaAwal.rand())),2,10).'.'.$tipex;
-				$src      = $_FILES[1]['tmp_name'];
+				$src      = $_FILES[0]['tmp_name'];
 				$destix   = '../upload/images/'.basename($namaSkrg);
 
 				if(move_uploaded_file($src, $destix)) $o=array('status'=>'sukses','photosiswaTB'=>$namaSkrg);
@@ -154,10 +154,10 @@
 							$nox 	= $starting+1;
 							while($r = mysql_fetch_assoc($result)){	
 								$token=base64_encode($_SESSION['id_loginS'].$r['replid']);
-											// <button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['replid'].')"':' disabled').' >
-											// 	<i class="icon-pencil"></i>
-											// </button>
 								$btn ='<td align="center">
+											<button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['replid'].')"':' disabled').' >
+												<i class="icon-pencil"></i>
+											</button>
 											<a class="button" '.(isAksi('siswa','r')?' href="report/r_siswa.php?token='.$token.'&replid='.$r['replid'].'"':' disabled href="#"').'  target="_blank" data-hint="cetak">
 												<i class="icon-printer"></i>
 											</a>
@@ -184,7 +184,7 @@
 											// </button>
 								// pr(getNoPendaftaran($r['replid']));
 								$out.= '<tr>
-											<td>'.getNoPendaftaran($r['replid']).'</td>
+											<td>'.getNoPendaftaran2($r['replid']).'</td>
 											<td>'.$r['namasiswa'].'</td>
 											<td>'.$r['nis'].'</td>
 											<td>'.$r['nisn'].'</td>
@@ -264,8 +264,7 @@
 			break;
 
 			case 'nopendaftaran':
-				$no = getNoPendaftaran($_POST['idsiswa']);
-				// pr($no);
+				$no = getNoPendaftaran2($_POST['idsiswa']);
 				$stat=!$no?'gagal':'sukses';
 				$out = json_encode(array('status'=>$stat,'nopendaftaran'=>$no));
 			break;
@@ -314,20 +313,36 @@
 					break;
 
 					case 'siswa':
-						// delete file/image [edit:mode]
+/*						$siswawaliF = array(
+							'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
+							// 'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
+							'namawali',
+							'alamatwali',
+							'telponwali',
+							'jkelaminwali',
+							'kotawali',
+						);
+						// pr($siswawaliF);
+						$siswawaliSV=isset($_POST['idsiswawaliTB']) && $_POST['idsiswawaliTB']!=''?editRecord($siswawaliF,$tb4,'siswa',$_POST['idformTB']):addRecord($siswawaliF,$tb4);
+						pr($siswawaliSV);
+*/						// delete file/image
 						$photosiswa=null;
 						if(empty($_POST['idformTB'])){// add 
 							 $photosiswa = isset($_POST['photosiswaTB'])?$_POST['photosiswaTB']:null; // ada upload 
+							$ss='masuk add';
 						}else{ // edit
+							$ss='masuk dit';
 							if(isset($_POST['photosiswaTB'])){// ada upload 
+								$aa='ada upload';
 								$photosiswa = $_POST['photosiswaTB'];
-								if(isset($_POST['photosiswa2TB']) && !empty($_POST['photosiswa2TB'])) fileDel($imageDir.$_POST['photosiswa2TB']); // foto lama = ada 
+								if(isset($_POST['photosiswa2TB']) && !empty($_POST['photosiswa2TB'])) delFile($imageDir.$_POST['photosiswa2TB']); // foto lama = ada 
 							} 
 						} 
 						// biodata siswa -----------------------------------------------------------------------------------------
 						$siswaF = array(
 							'photosiswa'=>$photosiswa,
 							'alamatsiswa',	
+							'agamasiswa',	
 							'bahasasiswa1',	
 							'bahasasiswa2',	
 							'beratsiswa',	
@@ -342,7 +357,7 @@
 							'kotasiswa',	
 							'namasiswa',	
 							'negarasekolahasalsiswa',	
-							'nopendaftaran',	
+							'nopendaftaran'=>(isset($_POST['idformTB']) && $_POST['idformTB']!=''?null:getNoPendaftaran('')),	
 							'panggilansiswa',	
 							'penyakitsiswa',	
 							'pinbbsiswa',	
@@ -353,12 +368,13 @@
 							'tempatlahirsiswa',	
 							'tinggisiswa',	
 							'warganegarasiswa',
-						);$siswaSV=(isset($_POST['idformTB'])&& !empty($_POST['idformTB']))?editRecord($siswaF,$tb,'replid',$_POST['idformTB']):addRecord($siswaF,$tb);
-						// $stat='sukses'; // sementara
+						);
+						$siswaSV=(isset($_POST['idformTB']) && $_POST['idformTB']!='')?editRecord($siswaF,$tb,'replid',$_POST['idformTB']):addRecord($siswaF,$tb);
+						// pr($siswaSV);
 						if(!$siswaSV['isSukses']) $stat='gagal_insert_siswa';
 						else{
 							// siswa - biaya  -----------------------------------------------------------------------------------------
-							$siswabiayaStat=true;
+							/*$siswabiayaStat=true;
 							$xx=$n=0;
 							foreach ($_POST['iddetailbiayaTB'] as $i => $v) {
 								$biaya           = getField('biaya','psb_detailbiaya','replid',$v);
@@ -382,18 +398,18 @@
 										$diskRegStat =!$diskRegE?false:true;
 									}
 								}
-						 	}
-							if(!$siswabiayaStat){
-								$stat='gagal_insert_siswa_biaya';
-							}elseif(!$diskRegStat){
-								$stat='gagal_insert_diskon_reguler';
-							}else{// sukses
-								// siswa - ayah -----------------------------------------------------------------------------------------
+						 	}*/
+							// if(!$siswabiayaStat){
+							// 	$stat='gagal_insert_siswa_biaya';
+							// }elseif(!$diskRegStat){
+							// 	$stat='gagal_insert_diskon_reguler';
+							// }else{// sukses
+							// 	// siswa - ayah -----------------------------------------------------------------------------------------
 								$siswaayahF = array(
 									'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
 									'namaayah',
 									'tempatlahirayah',
-									'tanggallahirayah',
+									'tanggallahirayah'=>($_POST['tanggallahirayahTB']!=''?tgl_indo6($_POST['tanggallahirayahTB']):'0000-00-00'),	
 									'agamaayah',
 									'warganegaraayah',
 									'kodeposayah',
@@ -402,7 +418,7 @@
 									'bidangpekerjaanayah',
 									'pekerjaanayah',
 									'posisiayah',
-									'penghasilanayah',
+									'penghasilanayah'=>getuang($_POST['penghasilanayahTB']),
 									'telponayah',
 									'pinbbayah',
 									'emailayah',
@@ -414,6 +430,7 @@
 									'faxkantorayah',
 									'gerejaayah',
 								);$siswaayahSV=(isset($_POST['idformTB']) && !empty($_POST['idformTB']))?editRecord($siswaayahF,$tb2,'siswa',$_POST['idformTB']):addRecord($siswaayahF,$tb2);
+								// pr($siswaayahSV['isSukses']);
 								if(!$siswaayahSV['isSukses']){
 									$stat='gagal_insert_siswa_ayah';
 								}else{
@@ -422,7 +439,7 @@
 										'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
 										'namaibu',
 										'tempatlahiribu',
-										'tanggallahiribu',
+										'tanggallahiribu'=>($_POST['tanggallahiribuTB']!=''?tgl_indo6($_POST['tanggallahiribuTB']):'0000-00-00'),	
 										'agamaibu',
 										'warganegaraibu',
 										'kodeposibu',
@@ -431,7 +448,7 @@
 										'bidangpekerjaanibu',
 										'pekerjaanibu',
 										'posisiibu',
-										'penghasilanibu',
+										'penghasilanibu'=>getuang($_POST['penghasilanibuTB']),
 										'telponibu',
 										'pinbbibu',
 										'emailibu',
@@ -447,19 +464,26 @@
 										$stat='gagal_insert_siswa_ibu';
 									}else{
 										// siswa - walimurid (optional) -----------------------------------------------------------------------------------------
-										if(isset($_POST['namawaliTB']) && !empty($_POST['namawaliTB'])){
+										if(isset($_POST['siswawaliTB']) && $_POST['siswawaliTB']=='on'){
 											$siswawaliF = array(
-												'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
+												'siswa'=>$_POST['idformTB']==''?($siswaSV['id']==''?$siswaSV['id']:null):$_POST['idformTB'],
 												'namawali',
 												'alamatwali',
 												'telponwali',
 												'jkelaminwali',
 												'kotawali',
-											);$siswawaliSV=(isset($_POST['idformTB']) && !empty($_POST['idformTB']))?editRecord($siswawaliF,$tb4,'siswa',$_POST['idformTB']):addRecord($siswawaliF,$tb4);
-											if(!$siswawaliSV['isSukses']){
-												$stat='gagal_insert_siswawali';
+											);
+											// pr($siswawaliF);
+											$siswawaliSV=isset($_POST['idsiswawaliTB']) && $_POST['idsiswawaliTB']!=''?editRecord($siswawaliF,$tb4,'siswa',$_POST['idformTB']):addRecord($siswawaliF,$tb4);
+											$siswawaliStat=!$siswawaliSV['isSukses']?false:true;
+										}else{
+											$siswawaliStat=true;
+											if(isset($_POST['idsiswawaliTB']) && $_POST['idsiswawaliTB']!=''){
+												$s='DELETE FROM '.$tb4.' WHERE replid='.$_POST['idsiswawaliTB'];
+												$e=mysql_query($s);
+												$siswawaliStat=!$e?false:true;
 											}
-										}// end of : siswa - wali murid --------------------------------------------------------
+										}
 										
 										// siswa - kontak darurat -----------------------------------------------------------------------------------------
 										$siswakontakdaruratStat=true;
@@ -481,7 +505,7 @@
 										}
 										if(!$siswakontakdaruratStat) $stat='gagal_insert_siswa_kontakdarurat';
 										else{
-											$siswasaudaraStat=true;
+											/*$siswasaudaraStat=true;
 											if(isset($_POST['idsaudaraTB'])){
 												foreach ($_POST['idsaudaraTB'] as $i => $v) {
 													$namasaudara         = isset($_POST['namasaudara'.$v.'TB'])?$_POST['namasaudara'.$v.'TB']:'';
@@ -502,12 +526,14 @@
 													$siswasaudaraStat =!$siswasaudaraE?false:true;
 												}
 											}
-											$stat=!$siswasaudaraStat?'gagal_insert_siswa_kontakdarurat':'sukses';
+											$stat=!$siswasaudaraStat?'gagal_insert_siswa_kontakdarurat':'sukses';*/
 										}
+									
 									}
 								}
-							}
+							// }
 						}
+						// $out=json_encode(array('status' =>$siswaSV['isSukses']));
 					break;
 
 					case 'status':
@@ -520,8 +546,9 @@
 							$e=mysql_query($s);
 							$stat=!$e?'gagal':'sukses';
 						}
+						$out=json_encode(array('status' =>$stat));
 					break;
-				}$out=json_encode(array('status' =>$stat));
+				}
 			break;
 
 
@@ -540,21 +567,116 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s = '	SELECT *
+				$s =' 	SELECT s.*,a.*,i.*,
+							w.replid idsiswawali,
+							w.namawali,
+							w.jkelaminwali,
+							w.alamatwali,
+							w.kotawali,
+							w.telponwali
 						FROM psb_siswa s 
+							JOIN psb_siswaayah a on a.siswa = s.replid
+							JOIN psb_siswaibu i on i.siswa = s.replid
+							LEFT JOIN psb_siswawali w on w.siswa = s.replid
 					 	WHERE s.replid='.$_POST['replid'];
 				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
+				// pr($r);
 				$stat = !$e?'gagal':'sukses';
+				$kontakdaruratArr=getFieldArr2('*',$tb5,'siswa',$_POST['replid']);
+				// pr($kontakdaruratArr);
 				$out    = json_encode(array(
 							'status'        =>$stat,
-							'namasiswa'     =>$r['namasiswa'],
-							'nis'           =>$r['nis'],
-							'nisn'          =>$r['nisn'],
-							'nopendaftaran' =>$r['nopendaftaran'],
-							'departemen'    =>getKriteriaSiswa('departemen',$r['replid']),
-							'tahunajaran'   =>getKriteriaSiswa('tahunajaran',$r['replid']),
-							'statussiswa'   =>($r['status']=='1'?'Diterima':($r['status']=='2'?'Lulus':'Belum Diterima')),
+							// biodata siswa
+							'nopendaftaran'          =>getNoPendaftaran2($_POST['replid']),
+							'namasiswa'              =>$r['namasiswa'],
+							'nis'                    =>$r['nis'],
+							'nisn'                   =>$r['nisn'],
+							'panggilansiswa'         =>$r['panggilansiswa'],
+							'jkelaminsiswa'          =>$r['jkelaminsiswa'],
+							'tempatlahirsiswa'       =>$r['tempatlahirsiswa'],
+							'tanggallahirsiswa'      =>tgl_indo5($r['tanggallahirsiswa']),
+							'sukusiswa'              =>$r['sukusiswa'],
+							'warganegarasiswa'       =>$r['warganegarasiswa'],
+							'agamasiswa'             =>$r['agamasiswa'],
+							'photosiswa'             =>$r['photosiswa'],
+							'hpsiswa'                =>$r['hpsiswa'],
+							'telponsiswa'            =>$r['telponsiswa'],
+							'bahasasiswa1'            =>$r['bahasasiswa1'],
+							'bahasasiswa2'            =>$r['bahasasiswa2'],
+							'emailsiswa'             =>$r['emailsiswa'],
+							'pinbbsiswa'             =>$r['pinbbsiswa'],
+							'alamatsiswa'            =>$r['alamatsiswa'],
+							'kotasiswa'              =>$r['kotasiswa'],
+							'kodepossiswa'           =>$r['kodepossiswa'],
+							'beratsiswa'             =>$r['beratsiswa'],
+							'tinggisiswa'            =>$r['tinggisiswa'],
+							'darahsiswa'             =>$r['darahsiswa'],
+							'penyakitsiswa'          =>$r['penyakitsiswa'],
+							'catatankesehatansiswa'  =>$r['catatankesehatansiswa'],
+							'diasuh'                 =>$r['diasuh'],
+							'sekolahasalsiswa'       =>$r['sekolahasalsiswa'],
+							'kotasekolahasalsiswa'   =>$r['kotasekolahasalsiswa'],
+							'negarasekolahasalsiswa' =>$r['negarasekolahasalsiswa'],
+							//ayah
+							'namaayah'            =>$r['namaayah'],
+							'tempatlahirayah'     =>$r['tempatlahirayah'],
+							'tanggallahirayah'    =>tgl_indo5($r['tanggallahirayah']),
+							'agamaayah'           =>$r['agamaayah'],
+							'warganegaraayah'     =>$r['warganegaraayah'],
+							'kodeposayah'         =>$r['kodeposayah'],
+							'kotaayah'            =>$r['kotaayah'],
+							'pendidikanayah'      =>$r['pendidikanayah'],
+							'bidangpekerjaanayah' =>$r['bidangpekerjaanayah'],
+							'pekerjaanayah'       =>$r['pekerjaanayah'],
+							'posisiayah'          =>$r['posisiayah'],
+							'penghasilanayah'     =>setuang($r['penghasilanayah']),
+							'telponayah'          =>$r['telponayah'],
+							'emailayah'           =>$r['emailayah'],
+							'pinbbayah'           =>$r['pinbbayah'],
+							'alamatayah'          =>$r['alamatayah'],
+							'hpayah'              =>$r['hpayah'],
+							'faxrumahayah'        =>$r['faxrumahayah'],
+							'alamatkantorayah'    =>$r['alamatkantorayah'],
+							'telponkantorayah'    =>$r['telponkantorayah'],
+							'faxkantorayah'       =>$r['faxkantorayah'],
+							'gerejaayah'          =>$r['gerejaayah'],
+							//ibu
+							'namaibu'            =>$r['namaibu'],
+							'tempatlahiribu'     =>$r['tempatlahiribu'],
+							'tanggallahiribu'    =>tgl_indo5($r['tanggallahiribu']),
+							'agamaibu'           =>$r['agamaibu'],
+							'warganegaraibu'     =>$r['warganegaraibu'],
+							'kodeposibu'         =>$r['kodeposibu'],
+							'kotaibu'            =>$r['kotaibu'],
+							'pendidikanibu'      =>$r['pendidikanibu'],
+							'bidangpekerjaanibu' =>$r['bidangpekerjaanibu'],
+							'pekerjaanibu'       =>$r['pekerjaanibu'],
+							'posisiibu'          =>$r['posisiibu'],
+							'penghasilanibu'     =>setuang($r['penghasilanibu']),
+							'telponibu'          =>$r['telponibu'],
+							'emailibu'           =>$r['emailibu'],
+							'pinbbibu'           =>$r['pinbbibu'],
+							'alamatibu'          =>$r['alamatibu'],
+							'hpibu'              =>$r['hpibu'],
+							'faxrumahibu'        =>$r['faxrumahibu'],
+							'alamatkantoribu'    =>$r['alamatkantoribu'],
+							'telponkantoribu'    =>$r['telponkantoribu'],
+							'faxkantoribu'       =>$r['faxkantoribu'],
+							'gerejaibu'          =>$r['gerejaibu'],
+							// biodata wali
+							'idsiswawali'     =>$r['idsiswawali'],
+							'namawali'     =>$r['namawali'],
+							'jkelaminwali' =>$r['jkelaminwali'],
+							'alamatwali'   =>$r['alamatwali'],
+							'kotawali'     =>$r['kotawali'],
+							'telponwali'   =>$r['telponwali'],
+							// kontak darurat
+							'kontakdaruratArr'=>$kontakdaruratArr
+							//kriteria siswa
+							// 'departemen'    =>getKriteriaSiswa('departemen',$r['replid']),
+							// 'tahunajaran'   =>getKriteriaSiswa('tahunajaran',$r['replid']),
+							// 'statussiswa'   =>($r['status']=='1'?'Diterima':($r['status']=='2'?'Lulus':'Belum Diterima')),
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

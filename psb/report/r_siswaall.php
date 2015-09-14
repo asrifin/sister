@@ -7,10 +7,6 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/mpdf/mpdf.php';
 
-  // $diskRegArr =  getFieldArr3('detaildiskon','psb_siswadiskon','','siswabiaya',649);
-  // pr($diskRegArr);
-
-
   $mod  ='PSB';
   $mnu  = 'siswa';
   $mnu2 = 'siswaayah';

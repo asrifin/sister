@@ -24,20 +24,23 @@
 		$ret = getField('agama','psb_agama','replid',$id);
 		return $ret;
 	}
-	function getNoPendaftaran($idsiswa){
-		if(isset($idsiswa)&&!empty($idsiswa)){
-			$f='concat("PSB",LPAD(max(nopendaftaran) ,5,0)) nopendaftaran';
-			$w = 'WHERE replid='.$idsiswa;
-		}else{
-			$f='concat("PSB",LPAD((max(nopendaftaran)+1) ,5,0))nopendaftaran';
-			$w='';
-		}
-		$s = 'SELECT '.$f.' from psb_siswa '.$w;
+	function getNoPendaftaran2($idsiswa){
+		$f = (isset($idsiswa) && !empty($idsiswa) && $idsiswa!='')?'nopendaftaran':'( if(max(nopendaftaran) is null,0,max(nopendaftaran))+1)';
+		$w = (isset($idsiswa) && !empty($idsiswa) && $idsiswa!='')?'WHERE replid='.$idsiswa:'';
+		$s = 'SELECT  concat("PSB",LPAD('.$f.' ,5,0))nopendaftaran FROM  psb_siswa '.$w;
 		// pr($s);
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r['nopendaftaran'];
 	}
+	function getNoPendaftaran($idsiswa){
+		$w = (isset($idsiswa)&&!empty($idsiswa)&&$idsiswa!='')?'WHERE replid='.$idsiswa:'';
+		$s = 'SELECT  (max(nopendaftaran)+1) nopendaftaran FROM  psb_siswa '.$w;
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r['nopendaftaran'];
+	}
+
 	function getNoPendaftaranx($siswa,$kel){
 		if(isset($siswa) && is_numeric($siswa)) {// view
 			$s      = 'SELECT nopendaftaran no FROM psb_calonsiswa WHERE replid='.$siswa;

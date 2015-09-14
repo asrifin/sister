@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu = 'agama';
+	$mnu = 'angsuran';
 	$tb  = 'psb_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -12,20 +12,32 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen = isset($_POST['departemenS'])?$_POST['departemenS']:'';
-				$diskon     = isset($_POST['diskonS'])?$_POST['diskonS']:'';
-				$keterangan = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
-				$biaya      = isset($_POST['biayaS'])?$_POST['biayaS']:'';
-				$sql = 'SELECT *
-						FROM  '.$tb.' 
+				$namaibu   = isset($_POST['namaibuS'])?$_POST['namaibuS']:'';
+				$namasiswa = isset($_POST['namasiswaS'])?$_POST['namasiswaS']:'';
+				$alamatibu = isset($_POST['alamatibuS'])?$_POST['alamatibuS']:'';
+				$emailibu  = isset($_POST['emailibuS'])?$_POST['emailibuS']:'';
+				$sql = 'SELECT 	
+							i.replid,
+							i.namaibu,
+							i.tanggallahiribu,
+							if(DATEDIFF(CURDATE(),i.tanggallahiribu)<0,1,0)isAktif,
+							ABS(DATEDIFF(CURDATE(),i.tanggallahiribu))selisihHari,
+							(if(MONTH(CURDATE())= MONTH(i.tanggallahiribu),1,0))isThisMonth,
+							s.namasiswa,
+							i.alamatibu,
+							i.emailibu
+						FROM  psb_siswa s 
+							JOIN psb_siswaibu i on i.siswa = s.replid 
 						WHERE 
-							biaya ='.$biaya.' AND
-							departemen ='.$departemen.' AND
-							diskon LIKE "%'.$diskon.'%" AND
-							keterangan LIKE "%'.$keterangan.'%"
-						ORDER BY
-							diskon asc';
-							// pr($sql);
+							namaibu LIKE "%'.$namaibu.'%" AND
+							namasiswa LIKE "%'.$namasiswa.'%" AND
+							alamatibu LIKE "%'.$alamatibu.'%" AND
+							emailibu LIKE "%'.$emailibu.'%" 
+						ORDER BY 
+							i.tanggallahiribu asc,
+							i.namaibu asc,
+							s.namasiswa asc';
+pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -45,18 +57,24 @@
 					// $nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+									<button '.(isAksi('reminderultah','u')?'onclick="viewFR('.$res['replid'].');"':'disabled').' data-hint="ubah"  >
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button data-hint="hapus" '.(isAksi('reminderultah','d')?'onclick="del('.$res['replid'].');"':'disabled').'>
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td><pre>'.$res['diskon'].'</pre></td>
-									<td><pre>'.$res['keterangan'].'</pre></td>
+									<td align="center">'.$res['tanggallahiribu'].'</td>
+									<td align="center">'.$res['namaibu'].'</td>
+									<td align="center">'.$res['namasiswa'].'</td>
+									<td align="center">'.$res['namasiswa'].'</td>
+									<td align="center">'.$res['alamatibu'].'</td>
+									<td align="center">'.$res['emailibu'].'</td>
 									'.$btn.'
 								</tr>';
+									// <td align="center">'.$res['kelas'].'</td>
+						// $nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -71,12 +89,9 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	diskon     = "'.filter($_POST['diskonTB']).'",
-								biaya      = '.$_POST['biayaTB'].',
-								departemen = '.$_POST['departemenTB'].',
-								keterangan = "'.filter($_POST['keteranganTB']).'"';
+				$s = $tb.' set 	angsuran = "'.filter($_POST['angsuranTB']).'",
+								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// pr($s2);
 				$e2 = mysql_query($s2);
 				if(!$e2){
 					$stat = 'gagal menyimpan';
@@ -92,7 +107,7 @@
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['angsuran']));
 			break;
 			// delete -----------------------------------------------------------------
 
@@ -106,34 +121,30 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'departemen' =>$r['departemen'],
-							'biaya'      =>$r['biaya'],
-							'diskon'     =>$r['diskon'],
+							'angsuran'    =>$r['angsuran'],
 							'keterangan' =>$r['keterangan'],
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
-			// cmbsubtingkat -----------------------------------------------------------------
+
+			// cmbangsuran -----------------------------------------------------------------
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
-					$w='where replid ='.$_POST['replid'];
-				}else{
-					if(isset($_POST[$mnu])){
-						$w='where '.$mnu.'='.$_POST[$mnu];
-					}
+					$w.='where replid ='.$_POST['replid'];
 				}
-				
+
 				$s	= ' SELECT *
 						from '.$tb.'
-						'.$w.'		
-						ORDER  BY urutan asc';
-				$e  = mysql_query($s);
-				$n  = mysql_num_rows($e);
-				$ar =$dt=array();
+						'.$w.' 
+						ORDER BY '.$mnu.' ASC';
+						// pr($s);
+				$e 	= mysql_query($s);
+				$n 	= mysql_num_rows($e);
+				$ar=$dt=array();
 
 				if(!$e){ //error
-					$ar = array('status'=>'error'.mysql_error());
+					$ar = array('status'=>'error');
 				}else{
 					if($n=0){ // kosong 
 						$ar = array('status'=>'kosong');
@@ -144,12 +155,12 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}
-						$ar = array('status'=>'sukses',$mnu=>$dt);
+						}$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;
-			// cmbsubtingkat -----------------------------------------------------------------
+			// cmbtahunajaran -----------------------------------------------------------------
+
 		}
 	}echo $out;
 

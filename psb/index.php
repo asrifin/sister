@@ -123,8 +123,8 @@
                     break;
 
                     // transaksi
-                    case 'vproses':
-                        require $d.'v_proses.php';
+                    case 'vreminderultah':
+                        require $d.'v_reminderultah.php';
                     break;
                     case 'vgelombang':
                         require $d.'v_gelombang.php';

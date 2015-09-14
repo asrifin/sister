@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu = 'agama';
+	$mnu = 'suku';
 	$tb  = 'psb_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -11,7 +11,7 @@
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
-			case 'tampil':
+			/*case 'tampil':
 				$departemen = isset($_POST['departemenS'])?$_POST['departemenS']:'';
 				$diskon     = isset($_POST['diskonS'])?$_POST['diskonS']:'';
 				$keterangan = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
@@ -66,11 +66,11 @@
 				#link paging
 				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-			break; 
+			break; */
 			// view -----------------------------------------------------------------
 
 			// add / edit -----------------------------------------------------------------
-			case 'simpan':
+			/*case 'simpan':
 				$s = $tb.' set 	diskon     = "'.filter($_POST['diskonTB']).'",
 								biaya      = '.$_POST['biayaTB'].',
 								departemen = '.$_POST['departemenTB'].',
@@ -83,21 +83,21 @@
 				}else{
 					$stat = 'sukses';
 				}$out  = json_encode(array('status'=>$stat));
-			break;
+			break;*/
 			// add / edit -----------------------------------------------------------------
 			
 			// delete -----------------------------------------------------------------
-			case 'hapus':
+			/*case 'hapus':
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
 				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
-			break;
+			break;*/
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
-			case 'ambiledit':
+			/*case 'ambiledit':
 				$s 		= ' SELECT *
 							from '.$tb.'
 							WHERE  replid='.$_POST['replid'];
@@ -111,7 +111,7 @@
 							'diskon'     =>$r['diskon'],
 							'keterangan' =>$r['keterangan'],
 						));
-			break;
+			break;*/
 			// ambiledit -----------------------------------------------------------------
 			// cmbsubtingkat -----------------------------------------------------------------
 			case 'cmb'.$mnu:
@@ -127,7 +127,7 @@
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY urutan asc';
+						ORDER  BY '.$mnu.' asc';
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
