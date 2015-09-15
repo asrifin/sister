@@ -151,7 +151,7 @@ if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT kode FROM pos_suppli
 
 }
 $generatekode=generatekode('SUP','kode','pos_supplier');
-$kode     		= !isset($kode) ? $generatekode : $kode;
+$kode     		= !isset($kode) ? $generatekode : $generatekode;
 $nama     		= !isset($nama) ? '' : $nama;
 $alamat     		= !isset($alamat) ? '' : $alamat;
 $telepon     		= !isset($telepon) ? '' : $telepon;
