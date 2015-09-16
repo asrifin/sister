@@ -67,17 +67,17 @@
 						$belum+=$res['belum'];
 						$out.= '<tr>
 									<td>'.$nox.'. '.$res['tingkat'].'</td>
-									<td align="right">'.$res['sudah'].'</td>
-									<td align="right">'.$res['belum'].'</td>
-									<td align="right">'.(intval($res['sudah'])+intval($res['belum'])).'</td>
+									<td align="center">'.$res['sudah'].'</td>
+									<td align="center">'.$res['belum'].'</td>
+									<td align="center">'.(intval($res['sudah'])+intval($res['belum'])).'</td>
 								</tr>';
 						$nox++;
 					}$total=$belum+$sudah;
 					$out.='<tr class="bg-lightBlue fg-white">
-						<td align="right">Total</td>
-						<td align="right">'.$sudah.'</td>
-						<td align="right">'.$belum.'</td>
-						<td align="right">'.$total.'</td>
+						<td align="center">Total</td>
+						<td align="center">'.$sudah.'</td>
+						<td align="center">'.$belum.'</td>
+						<td align="center">'.$total.'</td>
 					</tr>';
 				}else{ #kosong
 					$out.= '<tr align="center">
