@@ -85,7 +85,7 @@ $admin .= '
 	<tr>
 		<td>Kode</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" required value="'.$kode.'" maxlength="15"></td>
+		<td><b>'.$kode.'</b><input type="hidden" name="kode" size="25"class="form-control" required value="'.$kode.'" maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>Nama</td>
@@ -151,7 +151,7 @@ if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT kode FROM pos_suppli
 
 }
 $generatekode=generatekode('SUP','kode','pos_supplier');
-$kode     		= !isset($kode) ? $generatekode : $kode;
+$kode     		= !isset($kode) ? $generatekode : $generatekode;
 $nama     		= !isset($nama) ? '' : $nama;
 $alamat     		= !isset($alamat) ? '' : $alamat;
 $telepon     		= !isset($telepon) ? '' : $telepon;
@@ -177,7 +177,7 @@ $admin .= '
 	<tr>
 		<td>Kode</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'"required  maxlength="15"></td>
+		<td><b>'.$kode.'</b><input type="hidden" name="kode" size="25"class="form-control" value="'.$kode.'"required  maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>Nama</td>

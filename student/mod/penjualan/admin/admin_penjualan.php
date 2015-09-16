@@ -126,6 +126,7 @@ $subtotal = $cart_itm["subtotal"];
 $jenis=getidjenisbarang($cart_itm["kode"]);
 $hasil  = mysql_query( "INSERT INTO `pos_penjualandetail` VALUES ('','$nofaktur','$nopo','$jenis','$kode','$jumlah','$harga','$hargabeli','$subdiscount','$subtotal')" );
 updatestokjual($kode,$jumlah);
+updatehargajual($kode,$harga);
 alurstok($tgl,'Penjualan',$nofaktur,$kode,$jumlah);
 }
 if($hasil){

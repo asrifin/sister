@@ -72,6 +72,7 @@ $subdiscount = $cart_itm["subdiscount"];
 $subtotal = $cart_itm["subtotal"];
 $hasil  = mysql_query( "INSERT INTO `pos_pembeliandetail` VALUES ('','$noinvoice','$nopo','$kode','$jumlah','$harga','$subdiscount','$subtotal')" );
 updatestokbeli($kode,$jumlah);
+updatehargabeli($kode,$harga);
 alurstok($tgl,'Pembelian',$noinvoice,$kode,$jumlah);
 }
 if($hasil){
