@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-16 20:29:29
+Date: 2015-09-16 20:45:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -3565,7 +3565,6 @@ end BLOCK2;
 END
 ;;
 DELIMITER ;
-
 
 -- ----------------------------
 -- Table structure for aka_absen
