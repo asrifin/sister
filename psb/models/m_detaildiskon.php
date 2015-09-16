@@ -154,6 +154,7 @@
 				}else{
 					if(isset($_POST['tahunajaran']) && isset($_POST['departemen']) ){
 						$j.=' JOIN psb_diskon d on d.replid = dd.diskon';
+						// $j.=(isset($_POST['idsiswabiaya']) && $_POST['idsiswabiaya']!=''?'JOIN psb_siswabiaya sb on sb.detailbiaya = db.replid':'');
 						$w.=' WHERE dd.isAktif=1 AND d.departemen ='.$_POST['departemen'].' AND dd.tahunajaran ='.$_POST['tahunajaran'];
 					}
 				}				

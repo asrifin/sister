@@ -4,6 +4,8 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
+// pr($_POST);
+// pr($_FILES);
 	// require_once '../../lib/excel_reader2.php';
 	$mnu  = 'siswa';
 	$mnu2 = 'siswaayah';
@@ -11,6 +13,7 @@
 	$mnu4 = 'siswawali';
 	$mnu5 = 'siswakontakdarurat';
 	$mnu6 = 'siswasaudara';
+	$mnu7 = 'siswabiaya';
 	
 	$tb   = 'psb_'.$mnu;
 	$tb2  = 'psb_'.$mnu2;
@@ -18,6 +21,7 @@
 	$tb4  = 'psb_'.$mnu4;
 	$tb5  = 'psb_'.$mnu5;
 	$tb6  = 'psb_'.$mnu6;
+	$tb7  = 'psb_'.$mnu7;
 
 	$upDir    = '../upload/';
 	$fileDir  = $upDir.'files/';
@@ -155,6 +159,9 @@
 							while($r = mysql_fetch_assoc($result)){	
 								$token=base64_encode($_SESSION['id_loginS'].$r['replid']);
 								$btn ='<td align="center">
+											<button data-hint="dokumen"   '.(isAksi('siswa','u')?'onclick="subdokumenFR('.$r['replid'].')"':' disabled').' >
+												<i class="icon-file"></i>
+											</button>
 											<button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['replid'].')"':' disabled').' >
 												<i class="icon-pencil"></i>
 											</button>
@@ -203,8 +210,88 @@
 						$out.='<tr class="info"><td colspan=10>'.$obj->total.'</td></tr>';
 					break; 
 					
+					case 'subdokumen':
+						if(isset($_POST['replid']) && $_POST['replid']!=''){
+							$namasiswa = getField('namasiswa','psb_siswa','replid',$_POST['replid']);
+							$deptNama  = getKriteriaSiswa('departemen',$_POST['replid']);
+							$thnNama   = getKriteriaSiswa('tahunajaran',$_POST['replid']);
+							$gelNama   = getKriteriaSiswa('gelombang',$_POST['replid']);
+							$tingNama  = getKriteriaSiswa('tingkat',$_POST['replid']);
+							$tingID    = getField('replid','aka_tingkat','tingkat',$tingNama);
+							$s='SELECT
+									sd.replid,
+									ssd.file,
+									ssd.replid idsiswadokumen,
+									sd.jumlah,
+									d.dokumen,
+									sj.satuanjumlah,
+									if(ssd.replid is null,0,1)isExist
+								FROM
+									psb_dokumen d
+									JOIN psb_subdokumen sd ON sd.dokumen = d.replid
+									JOIN psb_satuanjumlah sj ON sj.replid= sd.satuanjumlah
+									LEFT JOIN (
+										SELECT * 
+										FROM psb_siswadokumen 
+										WHERE siswa = '.$_POST['replid'].'
+									)ssd ON ssd.subdokumen = sd.replid
+								where 
+									sd.tingkat = '.$tingID;
+							// pr($s);
+							$e=mysql_query($s);
+							$stat=!$e?'gagal':'sukses';
+							$siswadokumenArr=array();
+							while ($r=mysql_fetch_assoc($e)) $siswadokumenArr[]=$r;	
+							$out=json_encode(array(
+								'status'          =>$stat,
+								'departemen'      =>$deptNama,
+								'tahunajaran'     =>$thnNama.' - '.($thnNama+1),
+								'detailgelombang' =>$gelNama,
+								'tingkat'         =>$tingNama,
+								'namasiswa'       =>$namasiswa,
+								'siswadokumenArr' =>$siswadokumenArr
+							));
+						}
+					break;
+
+					case 'detaildiskon':
+						if(isset($_POST['siswabiaya']) && $_POST['siswabiaya']!=''){
+							$s='SELECT 
+									dd.replid,
+									sd.replid idsiswadiskon,
+									d.diskon,
+									d.keterangan,
+									concat(dd.nilai," %")nilai
+								FROM psb_siswadiskon sd 
+									JOIN psb_detaildiskon dd on dd.replid = sd.detaildiskon
+									JOIN psb_diskon d  on d.replid = dd.diskon
+								WHERE 
+									sd.siswabiaya='.$_POST['siswabiaya'];
+							// pr($s);
+							$e=mysql_query($s);
+							$stat=!$e?'gagal':'sukses';
+							$detaildiskonArr=array();
+							while ($r=mysql_fetch_assoc($e)) {
+								$detaildiskonArr[]=$r;	
+							}$out=json_encode(array('status'=>$stat,'detaildiskonArr'=>$detaildiskonArr));
+						}
+					break;
+
 					case 'biaya':
-						// pr($_SESSION);
+						if(isset($_POST['siswa']) && $_POST['siswa']!=''){ // edit
+							$f=',sb.replid idsiswabiaya,
+								sb.angsuran,
+								sb.diskonkhusus,
+								sb.ketdiskonkhusus';
+							$j=' LEFT JOIN psb_detailbiaya db on db.biaya = b.replid
+								LEFT JOIN psb_siswabiaya sb on sb.detailbiaya = db.replid';
+							$w=' where sb.siswa ='.$_POST['siswa'];
+							$g=' GROUP BY b.replid';
+						}else {
+							$f='';$j='';$w='';$g=''; // add 
+						}
+
+						// biaya ----------------
 						$s='SELECT 	
 								b.replid, 
 								b.biaya, 
@@ -216,28 +303,38 @@
 									else "Angsur Bebas"
 								end as isAngsur,
 								b.isDiskon,
-								t.jenistagihan
+								t.jenistagihan '.$f.'
 							FROM psb_biaya b
 								JOIN psb_jenistagihan t on t.replid = b.jenistagihan 
+								'.$j.$w.'
+							'.$g.'
 							ORDER BY 
 								b.biaya ASC';
+						// pr($s);	
 						$e=mysql_query($s);
 						$stat=!$e?'gagal':'sukses';
 						$n=mysql_num_rows($e);
 						$biayaArr=array();
+						//end of : biaya ---------------
+
 						if($n==0) $stat='kosong';
 						else{
 							$stat='sukses';
 							while ($r=mysql_fetch_assoc($e)) {
+								// diskon reguler -----------
 								$biayaArr[]=array(
-									'replid'       =>$r['replid'],
-									'jenistagihan' =>$r['jenistagihan'],
-									'kode'         =>$r['kode'],
-									'biaya'        =>$r['biaya'],
-									'idIsAngsur'   =>$r['idIsAngsur'],
-									'isAngsur'     =>$r['isAngsur'],
-									'isDiskon'     =>$r['isDiskon'],
-									'jenistagihan' =>$r['jenistagihan'],
+									'replid'          =>$r['replid'],
+									'jenistagihan'    =>$r['jenistagihan'],
+									'kode'            =>$r['kode'],
+									'biaya'           =>$r['biaya'],
+									'idIsAngsur'      =>$r['idIsAngsur'],
+									'idsiswabiaya'    =>(isset($_POST['siswa']) && $_POST['siswa']!=''?$r['idsiswabiaya']:''),
+									'angsuran'        =>(isset($_POST['siswa']) && $_POST['siswa']!=''?$r['angsuran']:''),
+									'diskonkhusus'    =>(isset($_POST['siswa']) && $_POST['siswa']!=''?setuang($r['diskonkhusus']):''),
+									'ketdiskonkhusus' =>(isset($_POST['siswa']) && $_POST['siswa']!=''?$r['ketdiskonkhusus']:''),
+									'isAngsur'        =>$r['isAngsur'],
+									'isDiskon'        =>$r['isDiskon'],
+									'jenistagihan'    =>$r['jenistagihan'],
 								);
 							}
 						}$out=json_encode(array('status'=>$stat,'levelurutan'=>$_SESSION['levelurutanS'],'biayaArr'=>$biayaArr));
@@ -309,23 +406,52 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				switch ($_POST['subaksi']) {
-					case 'subdokumen':
+					case 'siswadokumen':
+						if(isset($_POST['siswadokumenTB'])){
+							$stat   = true;
+							$dbstat = $upstat = $dfstat = true;
+							// pr($_POST);
+							foreach ($_POST['siswadokumenTB'] as $i => $v) {
+								// upload file ---------------------------- 
+								$namaAwal = $_FILES['file'.$i.'TB']['name'];
+								$tipex    = substr($_FILES['file'.$i.'TB']['name'],-4);
+								$namaSkrg = 'dok'.$_POST['siswaTB'].'_'.$i.'_'.substr((md5($namaAwal.rand())),2,10).$tipex;
+								$src      = $_FILES['file'.$i.'TB']['tmp_name'];
+								$destix   = '../upload/files/'.basename($namaSkrg);
+								
+								if($namaAwal!=''){ // ada file ter upload
+									if($_POST['idsiswadokumen'.$i.'TB']!=''){ // edit mode
+										$df=delFile('../upload/files/'.$_POST['fileawal'.$i.'TB']);
+										$dfstat=!$df?false:true;
+									}$upload = move_uploaded_file($src, $destix);
+									$upstat = !$upload?false:true;
+								}
+
+								if($upstat){
+									// save to db  ---------------------------- 
+									$pre='';
+									if($_POST['idsiswadokumen'.$i.'TB']==''){ // add 
+										$pre='INSERT INTO ';
+										$w='';
+									}else{ //edit 
+										$pre='UPDATE ';
+										$w=' WHERE replid ='.$_POST['idsiswadokumen'.$i.'TB'];
+									}
+									$s=$pre.' psb_siswadokumen SET 	
+										siswa      ='.$_POST['siswaTB'].',
+										subdokumen ='.$i.',
+										file       ="'.$namaSkrg.'" '.$w;
+									$e=mysql_query($s);
+									$dbstat=!$e?false:true;
+								}
+							}$out=json_encode(array(
+								'status'=>(!$dfstat?'gagal_delete_file':(!$upstat?'gagal_upload_file':(!$dbstat?'gagal_db':'sukses')))
+							));
+						}
 					break;
 
 					case 'siswa':
-/*						$siswawaliF = array(
-							'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
-							// 'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
-							'namawali',
-							'alamatwali',
-							'telponwali',
-							'jkelaminwali',
-							'kotawali',
-						);
-						// pr($siswawaliF);
-						$siswawaliSV=isset($_POST['idsiswawaliTB']) && $_POST['idsiswawaliTB']!=''?editRecord($siswawaliF,$tb4,'siswa',$_POST['idformTB']):addRecord($siswawaliF,$tb4);
-						pr($siswawaliSV);
-*/						// delete file/image
+						// delete file/image
 						$photosiswa=null;
 						if(empty($_POST['idformTB'])){// add 
 							 $photosiswa = isset($_POST['photosiswaTB'])?$_POST['photosiswaTB']:null; // ada upload 
@@ -338,6 +464,7 @@
 								if(isset($_POST['photosiswa2TB']) && !empty($_POST['photosiswa2TB'])) delFile($imageDir.$_POST['photosiswa2TB']); // foto lama = ada 
 							} 
 						} 
+
 						// biodata siswa -----------------------------------------------------------------------------------------
 						$siswaF = array(
 							'photosiswa'=>$photosiswa,
@@ -370,40 +497,62 @@
 							'warganegarasiswa',
 						);
 						$siswaSV=(isset($_POST['idformTB']) && $_POST['idformTB']!='')?editRecord($siswaF,$tb,'replid',$_POST['idformTB']):addRecord($siswaF,$tb);
-						// pr($siswaSV);
 						if(!$siswaSV['isSukses']) $stat='gagal_insert_siswa';
 						else{
+							// hapus detail dskon (diskon reguler) --------------------------
+							$diskRegStat=true;
+							if(isset($_POST['iDetailDiskonDelTR']) && $_POST['iDetailDiskonDelTR']!=''){
+								$sdd ='DELETE FROM psb_siswadiskon WHERE replid IN ('.$_POST['iDetailDiskonDelTR'].')';
+								$edd = mysql_query($sdd);
+								$diskRegStat=!$edd?false:true;
+							}
 							// siswa - biaya  -----------------------------------------------------------------------------------------
-							/*$siswabiayaStat=true;
-							$xx=$n=0;
-							foreach ($_POST['iddetailbiayaTB'] as $i => $v) {
-								$biaya           = getField('biaya','psb_detailbiaya','replid',$v);
-								$angsuran        = isset($_POST['angsuran'.$biaya.'TB'])?',angsuran ='.$_POST['angsuran'.$biaya.'TB']:'';
-								$diskonkhusus    = isset($_POST['diskonkhusus'.$biaya.'TB'])?',diskonkhusus ='.getuang($_POST['diskonkhusus'.$biaya.'TB']):'';
-								$ketdiskonkhusus = isset($_POST['ketdiskonkhusus'.$biaya.'TB'])?',ketdiskonkhusus ="'.$_POST['ketdiskonkhusus'.$biaya.'TB'].'"':'';
-								$siswabiayaS 	 ='INSERT INTO psb_siswabiaya SET 	siswa 	 	='.$siswaSV['id'].',
-																					detailbiaya ='.$v.'
-																					'.$angsuran.$diskonkhusus.$ketdiskonkhusus;
-								$siswabiayaE    =mysql_query($siswabiayaS);
-								$siswabiayaID   =mysql_insert_id();
-								$siswabiayaStat =!$siswabiayaE?false:true;
-								
-								// siswa - diskon  -----------------------------------------------------------------------------------------
-								$nn=1;
-								$diskRegStat=true;
-								if(isset($_POST['iddetaildiskonTB'][$biaya])){ 
-									foreach ($_POST['iddetaildiskonTB'][$biaya] as $ii => $vv) {
-										$diskRegS    ='INSERT INTO psb_siswadiskon SET siswabiaya = '.$siswabiayaID.', detaildiskon = '.$vv;
-										$diskRegE    =mysql_query($diskRegS);
-										$diskRegStat =!$diskRegE?false:true;
+							$siswabiayaStat=true;$xx=$n=0;
+							if(isset($_POST['iddetailbiayaTB'])){
+								foreach ($_POST['iddetailbiayaTB'] as $i => $v) {
+									$biaya = getField('biaya','psb_detailbiaya','replid',$v);
+									if(isset($_POST['idsiswabiaya'.$biaya.'TB']) && $_POST['idsiswabiaya'.$biaya.'TB']!=''){
+										$pre ='UPDATE ';
+										$f   ='';
+										$w   =' WHERE replid ="'.$_POST['idsiswabiaya'.$biaya.'TB'].'"';
+									}else{
+										$pre ='INSERT INTO ';
+										$f   =' siswa="'.(isset($siswaSV['id'])?$siswaSV['id']:'').'",';
+										$w   ='';
 									}
-								}
-						 	}*/
-							// if(!$siswabiayaStat){
-							// 	$stat='gagal_insert_siswa_biaya';
-							// }elseif(!$diskRegStat){
-							// 	$stat='gagal_insert_diskon_reguler';
-							// }else{// sukses
+
+									$angsuran        = isset($_POST['angsuran'.$biaya.'TB'])?',angsuran ='.$_POST['angsuran'.$biaya.'TB']:'';
+									$diskonkhusus    = isset($_POST['diskonkhusus'.$biaya.'TB'])?',diskonkhusus ='.getuang($_POST['diskonkhusus'.$biaya.'TB']):'';
+									$ketdiskonkhusus = isset($_POST['ketdiskonkhusus'.$biaya.'TB'])?',ketdiskonkhusus ="'.$_POST['ketdiskonkhusus'.$biaya.'TB'].'"':'';
+									$siswabiayaS 	 = $pre.' psb_siswabiaya SET '.$f.' detailbiaya ='.$v.'
+														'.$angsuran.$diskonkhusus.$ketdiskonkhusus.$w;
+									$siswabiayaE    = mysql_query($siswabiayaS);
+									$siswabiayaID   = (isset($_POST['idsiswabiaya'.$biaya.'TB']) && $_POST['idsiswabiaya'.$biaya.'TB']!='')?$_POST['idsiswabiaya'.$biaya.'TB']:mysql_insert_id();
+									$siswabiayaStat =!$siswabiayaE?false:true;
+									
+									// siswa - diskon  -----------------------------------------------------------------------------------------
+									if(isset($_POST['iddetaildiskonTB'][$biaya])){ 
+										foreach ($_POST['iddetaildiskonTB'][$biaya] as $ii => $vv) {
+											if(isset($_POST['idsiswadiskon'.$vv.'TB']) && $_POST['idsiswadiskon'.$vv.'TB']!=''){
+												$pre ='UPDATE '; 
+												$f   ='';
+												$w   =' WHERE replid='.$_POST['idsiswadiskon'.$vv.'TB'];
+											}else{
+												$pre ='INSERT INTO '; 
+												$f   ='siswabiaya = '.$siswabiayaID.',';
+												$w   ='';
+											}$diskRegS   =$pre.' psb_siswadiskon SET '.$f.' detaildiskon = '.$vv.$w;
+											$diskRegE    = mysql_query($diskRegS);
+											$diskRegStat =!$diskRegE?false:true;
+										}
+									}
+							 	}
+							}
+							if(!$siswabiayaStat){
+								$stat='gagal_insert_siswa_biaya';
+							}elseif(!$diskRegStat){
+								$stat='gagal_insert_diskon_reguler';
+							}else{// sukses
 							// 	// siswa - ayah -----------------------------------------------------------------------------------------
 								$siswaayahF = array(
 									'siswa'=>isset($siswaSV['id'])?$siswaSV['id']:null,
@@ -430,7 +579,6 @@
 									'faxkantorayah',
 									'gerejaayah',
 								);$siswaayahSV=(isset($_POST['idformTB']) && !empty($_POST['idformTB']))?editRecord($siswaayahF,$tb2,'siswa',$_POST['idformTB']):addRecord($siswaayahF,$tb2);
-								// pr($siswaayahSV['isSukses']);
 								if(!$siswaayahSV['isSukses']){
 									$stat='gagal_insert_siswa_ayah';
 								}else{
@@ -464,16 +612,16 @@
 										$stat='gagal_insert_siswa_ibu';
 									}else{
 										// siswa - walimurid (optional) -----------------------------------------------------------------------------------------
+										$siswawaliStat=true;
 										if(isset($_POST['siswawaliTB']) && $_POST['siswawaliTB']=='on'){
 											$siswawaliF = array(
-												'siswa'=>$_POST['idformTB']==''?($siswaSV['id']==''?$siswaSV['id']:null):$_POST['idformTB'],
+												'siswa'=>$_POST['idformTB']==''?($siswaSV['id']!=''?$siswaSV['id']:null):$_POST['idformTB'],
 												'namawali',
 												'alamatwali',
 												'telponwali',
 												'jkelaminwali',
 												'kotawali',
 											);
-											// pr($siswawaliF);
 											$siswawaliSV=isset($_POST['idsiswawaliTB']) && $_POST['idsiswawaliTB']!=''?editRecord($siswawaliF,$tb4,'siswa',$_POST['idformTB']):addRecord($siswawaliF,$tb4);
 											$siswawaliStat=!$siswawaliSV['isSukses']?false:true;
 										}else{
@@ -485,55 +633,95 @@
 											}
 										}
 										
-										// siswa - kontak darurat -----------------------------------------------------------------------------------------
-										$siswakontakdaruratStat=true;
-										if(isset($_POST['idkontakdaruratTB'])){
-											foreach ($_POST['idkontakdaruratTB'] as $i => $v) {
-												$namakontakdarurat    = isset($_POST['namakontakdarurat'.$v.'TB'])?$_POST['namakontakdarurat'.$v.'TB']:'';
-												$hubkontakdarurat     = isset($_POST['hubkontakdarurat'.$v.'TB'])?$_POST['hubkontakdarurat'.$v.'TB']:'';
-												$telponkontakdarurat1 = isset($_POST['telponkontakdarurat1'.$v.'TB'])?$_POST['telponkontakdarurat1'.$v.'TB']:'';
-												$telponkontakdarurat2 = isset($_POST['telponkontakdarurat2'.$v.'TB'])?$_POST['telponkontakdarurat2'.$v.'TB']:'';
-												$siswakontakdaruratS  ='INSERT INTO '.$tb5.' SET 	
-														siswa 				 ='.$siswaSV['id'].',
-														namakontakdarurat    ="'.$namakontakdarurat.'",
-														hubkontakdarurat     ="'.$hubkontakdarurat.'",
-														telponkontakdarurat1 ="'.$telponkontakdarurat1.'",
-														telponkontakdarurat2 ="'.$telponkontakdarurat2.'"';
-												$siswakontakdaruratE    =mysql_query($siswakontakdaruratS);
-												$siswakontakdaruratStat =!$siswakontakdaruratE?false:true;
+										if(!$siswawaliStat){
+											$stat='gagal_insert_or_update_wali';
+										}else{
+											// siswa - kontak darurat -----------------------------------------------------------------------------------------
+											$siswakontakdaruratStat=true;
+											// pr($_POST['iKontakDDelTR']);
+											if(isset($_POST['iKontakDDelTR']) && $_POST['iKontakDDelTR']!=''){ // ada item terhapus
+												$sd = 'DELETE FROM psb_siswakontakdarurat WHERE replid IN ('.$_POST['iKontakDDelTR'].')';
+												$ed = mysql_query($sd);
+												$siswakontakdaruratStat=!$ed?false:true;
 											}
-										}
-										if(!$siswakontakdaruratStat) $stat='gagal_insert_siswa_kontakdarurat';
-										else{
-											/*$siswasaudaraStat=true;
-											if(isset($_POST['idsaudaraTB'])){
-												foreach ($_POST['idsaudaraTB'] as $i => $v) {
-													$namasaudara         = isset($_POST['namasaudara'.$v.'TB'])?$_POST['namasaudara'.$v.'TB']:'';
-													$jkelaminsaudara     = isset($_POST['jkelaminsaudara'.$v.'TB'])?$_POST['jkelaminsaudara'.$v.'TB']:'';
-													$tempatlahirsaudara  = isset($_POST['tempatlahirsaudara'.$v.'TB'])?$_POST['tempatlahirsaudara'.$v.'TB']:'';
-													$tanggallahirsaudara = isset($_POST['tanggallahirsaudara'.$v.'TB'])?$_POST['tanggallahirsaudara'.$v.'TB']:'';
-													$sekolahsaudara      = isset($_POST['sekolahsaudara'.$v.'TB'])?$_POST['sekolahsaudara'.$v.'TB']:'';
-													$gradesaudara        = isset($_POST['gradesaudara'.$v.'TB'])?$_POST['gradesaudara'.$v.'TB']:'';
-													$siswasaudaraS  ='INSERT INTO '.$tb6.' SET 	
-															siswa               ='.$siswaSV['id'].',
-															namasaudara         ="'.$namasaudara.'",         
-															jkelaminsaudara     ="'.$jkelaminsaudara.'",     
-															tempatlahirsaudara  ="'.$tempatlahirsaudara.'",  
-															tanggallahirsaudara ="'.tgl_indo6($tanggallahirsaudara).'", 
-															sekolahsaudara      ="'.$sekolahsaudara.'",      
-															gradesaudara        ="'.$gradesaudara.'"';        
-													$siswasaudaraE    =mysql_query($siswasaudaraS);
-													$siswasaudaraStat =!$siswasaudaraE?false:true;
+											if(isset($_POST['idKontakDTR'])){ // ada item di add/edit
+												foreach ($_POST['idKontakDTR'] as $i => $v) {
+													if(isset($_POST['idKontakD'.$v.'TB']) && $_POST['idKontakD'.$v.'TB']!=''){ // edit
+														$pre = 'UPDATE ';
+														$w   =' WHERE replid='.$_POST['idKontakD'.$v.'TB'];
+														$f   = '';
+													}else{ // add 
+														$pre = 'INSERT INTO ';
+														$w   ='';
+														$f   = 'siswa='.($_POST['idformTB']!=''?$_POST['idformTB']:$siswaSV['id']).',';
+													}
+														
+													$namakontakdarurat    = isset($_POST['namakontakdarurat'.$v.'TB'])?$_POST['namakontakdarurat'.$v.'TB']:'';
+													$hubkontakdarurat     = isset($_POST['hubkontakdarurat'.$v.'TB'])?$_POST['hubkontakdarurat'.$v.'TB']:'';
+													$telponkontakdarurat1 = isset($_POST['telponkontakdarurat1'.$v.'TB'])?$_POST['telponkontakdarurat1'.$v.'TB']:'';
+													$telponkontakdarurat2 = isset($_POST['telponkontakdarurat2'.$v.'TB'])?$_POST['telponkontakdarurat2'.$v.'TB']:'';
+													$siswakontakdaruratS  = $pre.$tb5.' SET 	
+															'.$f.' 
+															namakontakdarurat    ="'.$namakontakdarurat.'",
+															hubkontakdarurat     ="'.$hubkontakdarurat.'",
+															telponkontakdarurat1 ="'.$telponkontakdarurat1.'",
+															telponkontakdarurat2 ="'.$telponkontakdarurat2.'" 
+														'.$w;
+													$siswakontakdaruratE    =mysql_query($siswakontakdaruratS);
+													$siswakontakdaruratStat =!$siswakontakdaruratE?false:true;
 												}
 											}
-											$stat=!$siswasaudaraStat?'gagal_insert_siswa_kontakdarurat':'sukses';*/
+											if(!$siswakontakdaruratStat){
+												$stat='gagal_insert_update_kontak_darurat';
+											}else{
+												// siswa - saudara -----------------------------------------------------------------------------------------
+												$siswasaudaraStat=true;
+												if(isset($_POST['iSaudaraDelTR']) && $_POST['iSaudaraDelTR']!=''){ // ada item terhapus
+													$sd = 'DELETE FROM '.$tb6.' WHERE replid IN ('.$_POST['iSaudaraDelTR'].')';
+													$ed = mysql_query($sd);
+													$siswasaudaraStat=!$ed?false:true;
+												}
+												if(isset($_POST['idSaudaraTR'])){ // ada item di add/edit
+													foreach ($_POST['idSaudaraTR'] as $i => $v) {
+														if(isset($_POST['idSaudara'.$v.'TB']) && $_POST['idSaudara'.$v.'TB']!=''){ // edit
+															$pre = 'UPDATE ';
+															$w   =' WHERE replid='.$_POST['idSaudara'.$v.'TB'];
+															$f   = '';
+														}else{ // add 
+															$pre = 'INSERT INTO ';
+															$w   ='';
+															$f   = 'siswa='.($_POST['idformTB']!=''?$_POST['idformTB']:$siswaSV['id']).',';
+														}
+														$namasaudara         = isset($_POST['namasaudara'.$v.'TB'])?$_POST['namasaudara'.$v.'TB']:'';
+														$jkelaminsaudara     = isset($_POST['jkelaminsaudara'.$v.'TB'])?$_POST['jkelaminsaudara'.$v.'TB']:'';
+														$tempatlahirsaudara  = isset($_POST['tempatlahirsaudara'.$v.'TB'])?$_POST['tempatlahirsaudara'.$v.'TB']:'';
+														$tanggallahirsaudara = isset($_POST['tanggallahirsaudara'.$v.'TB'])?$_POST['tanggallahirsaudara'.$v.'TB']:'';
+														$sekolahsaudara      = isset($_POST['sekolahsaudara'.$v.'TB'])?$_POST['sekolahsaudara'.$v.'TB']:'';
+														$gradesaudara        = isset($_POST['gradesaudara'.$v.'TB'])?$_POST['gradesaudara'.$v.'TB']:'';
+														$siswasaudaraS = $pre.$tb6.' SET 	
+																'.$f.' 
+																namasaudara         ="'.$namasaudara.'",
+																jkelaminsaudara     ="'.$jkelaminsaudara.'",
+																tempatlahirsaudara  ="'.$tempatlahirsaudara.'",
+																tanggallahirsaudara ="'.tgl_indo6($tanggallahirsaudara).'", 
+																sekolahsaudara      ="'.$sekolahsaudara.'", 
+																gradesaudara        ="'.$gradesaudara.'" 
+															'.$w;
+														$siswasaudaraE    =mysql_query($siswasaudaraS);
+														$siswasaudaraStat =!$siswasaudaraE?false:true;
+													}
+												}// end of : saudara siswa  ----
+												if(!$siswasaudaraStat){
+													$stat='gagal_insert_update_wali_murid';
+												}else{
+													$stat='sukses';
+												}
+											}
 										}
-									
 									}
 								}
-							// }
-						}
-						// $out=json_encode(array('status' =>$siswaSV['isSukses']));
+							}
+						}$out=json_encode(array('status' =>$stat));
 					break;
 
 					case 'status':
@@ -573,20 +761,59 @@
 							w.jkelaminwali,
 							w.alamatwali,
 							w.kotawali,
-							w.telponwali
+							w.telponwali,
+							case s.status
+								when "0" then "Belum Diterima"
+								when "1" then "Diterima"
+								else "Lulus"
+							end as statusiswa
 						FROM psb_siswa s 
 							JOIN psb_siswaayah a on a.siswa = s.replid
 							JOIN psb_siswaibu i on i.siswa = s.replid
 							LEFT JOIN psb_siswawali w on w.siswa = s.replid
 					 	WHERE s.replid='.$_POST['replid'];
-				$e 		= mysql_query($s) or die(mysql_error());
-				$r 		= mysql_fetch_assoc($e);
-				// pr($r);
+				$e    = mysql_query($s) or die(mysql_error());
+				$r    = mysql_fetch_assoc($e);
 				$stat = !$e?'gagal':'sukses';
-				$kontakdaruratArr=getFieldArr2('*',$tb5,'siswa',$_POST['replid']);
-				// pr($kontakdaruratArr);
+
+				$deptNama =getKriteriaSiswa('departemen',$_POST['replid']);
+					$deptID =getField('replid','departemen','nama',$deptNama);
+				$thnNama  =getKriteriaSiswa('tahunajaran',$_POST['replid']);
+					$thnID  =getField('replid','aka_tahunajaran','tahunajaran',$thnNama);
+				$gelNama =getKriteriaSiswa('gelombang',$_POST['replid']);
+					$gelID   =getField('replid','psb_gelombang','gelombang',$gelNama);
+
+				$ww[]=['tahunajaran','=',$thnID]; 
+				$ww[]=['departemen','=',$deptID]; 
+				$ww[]=['gelombang','=',$gelID]; 
+					$dgelID =getFieldArr4('replid','psb_detailgelombang','',$ww);
+				$tingNama =getKriteriaSiswa('tingkat',$_POST['replid']);
+					$tingID   =getField('replid','aka_tingkat','tingkat',$tingNama);
+				$stingNama =getKriteriaSiswa('subtingkat',$_POST['replid']);
+					$stingID   =getField('replid','aka_subtingkat','subtingkat',$stingNama);
+				$golNama =getKriteriaSiswa('golongan',$_POST['replid']);
+					$golID   =getField('replid','psb_golongan','golongan',$golNama);
+				// pr($golID);
+
+				$kontakdaruratArr = getFieldArr2('*',$tb5,'siswa',$_POST['replid']);
+				$saudaraArr       = getFieldArr2('*',$tb6,'siswa',$_POST['replid']);
+				$biayaArr         = getFieldArr2('*',$tb7,'siswa',$_POST['replid']);
+				// TODO : fetch psb_siswabiaya (tingkat & subtingkat terakhir/paling tinggi )
+				// pr($biayaArr);
 				$out    = json_encode(array(
-							'status'        =>$stat,
+							'status'          =>$stat,
+							'statussiswa'     =>$r['statusiswa'],
+							// kriteria siswa 
+							'departemen'      =>$deptID,
+							'departemennama'  =>$deptNama,
+							'tahunajaran'     =>$thnID,
+							'tahunajarannama' =>$thnNama.' - '.($thnNama+1),
+							'detailgelombang' =>$dgelID,
+							'tingkat'         =>$tingID,
+							'subtingkat'      =>$stingID,
+							'golongan'        =>$golID,
+							// biaya
+							'biayaArr'        =>$biayaArr,
 							// biodata siswa
 							'nopendaftaran'          =>getNoPendaftaran2($_POST['replid']),
 							'namasiswa'              =>$r['namasiswa'],
@@ -595,15 +822,15 @@
 							'panggilansiswa'         =>$r['panggilansiswa'],
 							'jkelaminsiswa'          =>$r['jkelaminsiswa'],
 							'tempatlahirsiswa'       =>$r['tempatlahirsiswa'],
-							'tanggallahirsiswa'      =>tgl_indo5($r['tanggallahirsiswa']),
+							'tanggallahirsiswa'      =>$r['tanggallahirsiswa']=='0000-00-00'?'':tgl_indo5($r['tanggallahirsiswa']),
 							'sukusiswa'              =>$r['sukusiswa'],
 							'warganegarasiswa'       =>$r['warganegarasiswa'],
 							'agamasiswa'             =>$r['agamasiswa'],
 							'photosiswa'             =>$r['photosiswa'],
 							'hpsiswa'                =>$r['hpsiswa'],
 							'telponsiswa'            =>$r['telponsiswa'],
-							'bahasasiswa1'            =>$r['bahasasiswa1'],
-							'bahasasiswa2'            =>$r['bahasasiswa2'],
+							'bahasasiswa1'           =>$r['bahasasiswa1'],
+							'bahasasiswa2'           =>$r['bahasasiswa2'],
 							'emailsiswa'             =>$r['emailsiswa'],
 							'pinbbsiswa'             =>$r['pinbbsiswa'],
 							'alamatsiswa'            =>$r['alamatsiswa'],
@@ -619,64 +846,62 @@
 							'kotasekolahasalsiswa'   =>$r['kotasekolahasalsiswa'],
 							'negarasekolahasalsiswa' =>$r['negarasekolahasalsiswa'],
 							//ayah
-							'namaayah'            =>$r['namaayah'],
-							'tempatlahirayah'     =>$r['tempatlahirayah'],
-							'tanggallahirayah'    =>tgl_indo5($r['tanggallahirayah']),
-							'agamaayah'           =>$r['agamaayah'],
-							'warganegaraayah'     =>$r['warganegaraayah'],
-							'kodeposayah'         =>$r['kodeposayah'],
-							'kotaayah'            =>$r['kotaayah'],
-							'pendidikanayah'      =>$r['pendidikanayah'],
-							'bidangpekerjaanayah' =>$r['bidangpekerjaanayah'],
-							'pekerjaanayah'       =>$r['pekerjaanayah'],
-							'posisiayah'          =>$r['posisiayah'],
-							'penghasilanayah'     =>setuang($r['penghasilanayah']),
-							'telponayah'          =>$r['telponayah'],
-							'emailayah'           =>$r['emailayah'],
-							'pinbbayah'           =>$r['pinbbayah'],
-							'alamatayah'          =>$r['alamatayah'],
-							'hpayah'              =>$r['hpayah'],
-							'faxrumahayah'        =>$r['faxrumahayah'],
-							'alamatkantorayah'    =>$r['alamatkantorayah'],
-							'telponkantorayah'    =>$r['telponkantorayah'],
-							'faxkantorayah'       =>$r['faxkantorayah'],
-							'gerejaayah'          =>$r['gerejaayah'],
+							'namaayah'               =>$r['namaayah'],
+							'tempatlahirayah'        =>$r['tempatlahirayah'],
+							'tanggallahirayah'       =>tgl_indo5($r['tanggallahirayah']),
+							'agamaayah'              =>$r['agamaayah'],
+							'warganegaraayah'        =>$r['warganegaraayah'],
+							'kodeposayah'            =>$r['kodeposayah'],
+							'kotaayah'               =>$r['kotaayah'],
+							'pendidikanayah'         =>$r['pendidikanayah'],
+							'bidangpekerjaanayah'    =>$r['bidangpekerjaanayah'],
+							'pekerjaanayah'          =>$r['pekerjaanayah'],
+							'posisiayah'             =>$r['posisiayah'],
+							'penghasilanayah'        =>setuang($r['penghasilanayah']),
+							'telponayah'             =>$r['telponayah'],
+							'emailayah'              =>$r['emailayah'],
+							'pinbbayah'              =>$r['pinbbayah'],
+							'alamatayah'             =>$r['alamatayah'],
+							'hpayah'                 =>$r['hpayah'],
+							'faxrumahayah'           =>$r['faxrumahayah'],
+							'alamatkantorayah'       =>$r['alamatkantorayah'],
+							'telponkantorayah'       =>$r['telponkantorayah'],
+							'faxkantorayah'          =>$r['faxkantorayah'],
+							'gerejaayah'             =>$r['gerejaayah'],
 							//ibu
-							'namaibu'            =>$r['namaibu'],
-							'tempatlahiribu'     =>$r['tempatlahiribu'],
-							'tanggallahiribu'    =>tgl_indo5($r['tanggallahiribu']),
-							'agamaibu'           =>$r['agamaibu'],
-							'warganegaraibu'     =>$r['warganegaraibu'],
-							'kodeposibu'         =>$r['kodeposibu'],
-							'kotaibu'            =>$r['kotaibu'],
-							'pendidikanibu'      =>$r['pendidikanibu'],
-							'bidangpekerjaanibu' =>$r['bidangpekerjaanibu'],
-							'pekerjaanibu'       =>$r['pekerjaanibu'],
-							'posisiibu'          =>$r['posisiibu'],
-							'penghasilanibu'     =>setuang($r['penghasilanibu']),
-							'telponibu'          =>$r['telponibu'],
-							'emailibu'           =>$r['emailibu'],
-							'pinbbibu'           =>$r['pinbbibu'],
-							'alamatibu'          =>$r['alamatibu'],
-							'hpibu'              =>$r['hpibu'],
-							'faxrumahibu'        =>$r['faxrumahibu'],
-							'alamatkantoribu'    =>$r['alamatkantoribu'],
-							'telponkantoribu'    =>$r['telponkantoribu'],
-							'faxkantoribu'       =>$r['faxkantoribu'],
-							'gerejaibu'          =>$r['gerejaibu'],
+							'namaibu'                =>$r['namaibu'],
+							'tempatlahiribu'         =>$r['tempatlahiribu'],
+							'tanggallahiribu'        =>tgl_indo5($r['tanggallahiribu']),
+							'agamaibu'               =>$r['agamaibu'],
+							'warganegaraibu'         =>$r['warganegaraibu'],
+							'kodeposibu'             =>$r['kodeposibu'],
+							'kotaibu'                =>$r['kotaibu'],
+							'pendidikanibu'          =>$r['pendidikanibu'],
+							'bidangpekerjaanibu'     =>$r['bidangpekerjaanibu'],
+							'pekerjaanibu'           =>$r['pekerjaanibu'],
+							'posisiibu'              =>$r['posisiibu'],
+							'penghasilanibu'         =>setuang($r['penghasilanibu']),
+							'telponibu'              =>$r['telponibu'],
+							'emailibu'               =>$r['emailibu'],
+							'pinbbibu'               =>$r['pinbbibu'],
+							'alamatibu'              =>$r['alamatibu'],
+							'hpibu'                  =>$r['hpibu'],
+							'faxrumahibu'            =>$r['faxrumahibu'],
+							'alamatkantoribu'        =>$r['alamatkantoribu'],
+							'telponkantoribu'        =>$r['telponkantoribu'],
+							'faxkantoribu'           =>$r['faxkantoribu'],
+							'gerejaibu'              =>$r['gerejaibu'],
 							// biodata wali
-							'idsiswawali'     =>$r['idsiswawali'],
-							'namawali'     =>$r['namawali'],
-							'jkelaminwali' =>$r['jkelaminwali'],
-							'alamatwali'   =>$r['alamatwali'],
-							'kotawali'     =>$r['kotawali'],
-							'telponwali'   =>$r['telponwali'],
+							'idsiswawali'            =>$r['idsiswawali'],
+							'namawali'               =>$r['namawali'],
+							'jkelaminwali'           =>$r['jkelaminwali'],
+							'alamatwali'             =>$r['alamatwali'],
+							'kotawali'               =>$r['kotawali'],
+							'telponwali'             =>$r['telponwali'],
 							// kontak darurat
-							'kontakdaruratArr'=>$kontakdaruratArr
-							//kriteria siswa
-							// 'departemen'    =>getKriteriaSiswa('departemen',$r['replid']),
-							// 'tahunajaran'   =>getKriteriaSiswa('tahunajaran',$r['replid']),
-							// 'statussiswa'   =>($r['status']=='1'?'Diterima':($r['status']=='2'?'Lulus':'Belum Diterima')),
+							'kontakdaruratArr'       =>$kontakdaruratArr,
+							// saudara siswa
+							'saudaraArr'             =>$saudaraArr
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

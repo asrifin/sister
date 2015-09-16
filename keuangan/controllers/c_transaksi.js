@@ -490,6 +490,15 @@ var detilanggaranArr=rekArr=[];
             case 12:return 'Dec';break;
         }
     }
+        // var dob  ='2015-09-16';
+    function tgl_indo5(str){
+        var m = monthFormat(parseInt(str.substring(7,5)));
+        var d = str.substring(8);
+        var y = str.substring(0,4);
+        return d+' '+m+' '+y;
+    }
+    // console.log(tgl_indo5(dob));    }
+
 
 //date format -----------------
     function dateFormatx(typ,d,m,y){
@@ -523,7 +532,6 @@ var detilanggaranArr=rekArr=[];
         var dd = lastDate(mm,yyyy);
         return dateFormatx('id',dd,monthFormat(mm),yyyy);
     }
-
         
 //ganti jenis rekening (debit/kredit)
     function ju_gantiJenisRek(typ,i){

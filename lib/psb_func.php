@@ -18,6 +18,7 @@
 				siswa.replid = '.$siswa.'
 			GROUP BY 
 				'.$f.'.'.($f=='departemen'?'nama':$f);
+		// pr($s);
 		return fetchField($s);
 	}
 	function getAgama($id){

@@ -162,7 +162,7 @@
               <td>: '.(empty($r['nisn'])?'-':$r['nisn']).'</td>
             </tr><tr>
               <td>Jenis Kelamin</td>
-              <td>: '.(empty($r['jkelaminsiswa'])?'-':$r['jkelaminsiswa']).'</td>
+              <td>: '.(empty($r['jkelaminsiswa'])?'-':$r['jkelaminsiswa']=='L'?'Laki - laki':'Perempuan').'</td>
             </tr><tr>
               <td>Tempat / Tanggal Lahir</td>
               <td>: '.(empty($r['tempatlahirsiswa'])?'-':$r['tempatlahirsiswa']).' / '.tgl_indo5((empty($r['tanggallahirsiswa'])?'-':$r['tanggallahirsiswa'])).'</td>
@@ -391,7 +391,7 @@
               <td colspan="2">: '.(empty($r4['namawali'])?'-':$r4['namawali']).'</td>
             </tr><tr>
               <td >Jenis Kelamin</td>
-              <td colspan="2">: '.(empty($r4['jkelaminwali'])?'-':$r4['jkelaminwali']).'</td>
+              <td colspan="2">: '.(empty($r4['jkelaminwali'])?'-':$r4['jkelaminwali']=='L'?'Laki - laki':'Perempuan').'</td>
             </tr><tr>
               <td >Alamat</td>
               <td colspan="2">: '.(empty($r4['alamatwali'])?'-':$r4['alamatwali']).'</td>
@@ -416,7 +416,7 @@
                     <td>Telpon1</td>
                     <td>Telpon2</td>
                     </tr>';
-                    if(is_null($r5)) $out.='<tr><td align="center" colspan="4">..kosong..</td></tr>';
+                    if(count($r5)==0) $out.='<tr><td align="center">-</td><td align="center">-</td><td align="center">-</td><td align="center">-</td></tr>';
                     else{
                       foreach ($r5 as $i => $v) {
                         $out.='<tr>
@@ -445,7 +445,7 @@
                     <td>Sekolah</td>
                     <td>Grade</td>
                     </tr>';
-                    if(is_null($r6)) $out.='<tr><td align="center" colspan="4">..kosong..</td></tr>';
+                    if(count($r6)==0) $out.='<tr><td align="center">-</td><td align="center">-</td><td align="center">-</td><td align="center">-</td><td align="center">-</td></tr>';
                     else{
                       foreach ($r6 as $i => $v) {
                         $out.='<tr>

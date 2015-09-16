@@ -17,7 +17,7 @@
 					else $s.=','.$i.'="'.$v.'"';
 				}
 			}$sql.=substr($s,1);
-			// pr($sql);
+			// if($tb=='psb_siswawali') pr($sql);
 			$stat=!exeQuery($sql)?false:true;
 			$idx=mysql_insert_id();
 			return array('isSukses'=>$stat,'id'=>$idx); 
@@ -67,6 +67,24 @@
 		}return $arr;
 	}
 		
+	function getFieldArr4($f,$tb,$j,$w){
+		$s = 'SELECT ';
+		$s.=$f;
+		$s.=' FROM '.$tb;
+		if(is_array($j)){
+			foreach ($j as $i => $v)  $s.=' LEFT JOIN '.$v[0].' ON '.$v[0].'.'.$v[2].'='.$v[1].'.'.$v[3]; 
+		}
+		$s.=' WHERE ';
+		if(is_array($w)){
+			$ww='';
+			foreach ($w as $i => $v)  {
+				$ww.='AND '.$v[0].' '.$v[1].' "'.($v[1]=='LIKE'?'%':'').$v[2].($v[1]=='LIKE'?'%':'').'" ';// replid = 13
+			}$s.=substr($ww,4);
+		}$e = mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r[$f];
+	}	
+	
 	function getFieldArr3($f,$tb,$j,$w,$k){
 		$s = 'SELECT ';
 		if(is_array($f)){
@@ -128,7 +146,7 @@
 
 	// general function : query data 
 	function getField($f,$tb,$w='',$k=''){
-		$s = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = '.$k:'');
+		$s = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = "'.$k.'"':'');
 		$e = mysql_query($s) or die(mysql_error());
 		$r = mysql_fetch_assoc($e);
 		return ($f=='*' || $f=='all'?$r:$r[$f]);
