@@ -110,6 +110,7 @@ $hasil  = mysql_query( "INSERT INTO `pos_penjualanbiayadetail` VALUES ('','$nofa
 if($hasil){
 $admin .= '<div class="sukses"><b>Berhasil Menambah Transaksi Biaya.</b></div>';
 penjualanbiayarefresh();
+updatehargajualbiaya($kode,$harga);
 penjualanbiayacetak($nofaktur);
 
 }else{

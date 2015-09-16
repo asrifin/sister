@@ -81,6 +81,7 @@ $hasil  = mysql_query( "INSERT INTO `pos_penjualanjasadetail` VALUES ('','$nofak
 if($hasil){
 $admin .= '<div class="sukses"><b>Berhasil Menambah Penjualan Jasa.</b></div>';
 penjualanjasarefresh();
+updatehargajualjasa($kode,$harga);
 penjualanjasacetak($nofaktur);
 }else{
 $admin .= '<div class="error"><b>Gagal Menambah Penjualan Jasa.</b></div>';

@@ -99,7 +99,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode Jasa</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'" required maxlength="15"></td>
+		<td><b>'.$kode.'</b><input type="hidden" name="kode" size="25"class="form-control" value="'.$kode.'" required maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>Nama Jasa</td>
@@ -148,7 +148,7 @@ $hargajual 		= int_filter($_POST['hargajual']);
 	}
 
 }
-$generatekode=generatekode('KPR','kode','pos_produk');
+$generatekode=generatekode('KPJ','kode','pos_produkjasa');
 $jenjang     		= !isset($jenjang) ? $generatekode : $generatekode;
 $kode     		= !isset($kode) ? $generatekode : $kode;
 $nama     		= !isset($nama) ? '' : $nama;
@@ -186,7 +186,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode Jasa</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'"required maxlength="15"></td>
+		<td><b>'.$kode.'</b><input type="hidden" name="kode" size="25"class="form-control" value="'.$kode.'"required maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>Nama Jasa</td>
