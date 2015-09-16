@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-16 07:10:30
+Date: 2015-09-16 07:30:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1975,10 +1975,6 @@ CREATE TABLE `psb_siswa` (
 -- ----------------------------
 INSERT INTO `psb_siswa` VALUES ('148', '1', null, 'ronaldinho gaucho', '99', '144', 'dinhox', '1', 'brazil school', '2', '0', '1', 'L', 'rio de janeiro', '2015-09-19', 'brasil', '0', '70.0', '180.0', 'B', '3_37f1ec3ae3.png', 'rio street', '808080', '30303030', '1919191', 'ronaldinho@gaucho.com', 'hitam', '1010101010', 'haus', 'rio de J.', 'rio de', 'mexico', '', null, 'portuguese', 'inggris', '4');
 INSERT INTO `psb_siswa` VALUES ('157', '2', null, 'patrick vieira', '', '', 'vieira', '1', '', '0', '0', '0', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '3_8f1d44921e.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('158', '3', null, '', '', '', '', '1', '', '0', '0', '0', '', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '');
-INSERT INTO `psb_siswa` VALUES ('159', '4', null, '', '', '', '', '1', '', '0', '0', '0', '', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '');
-INSERT INTO `psb_siswa` VALUES ('160', '5', null, '', '', '', '', '1', '', '0', '0', '0', '', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '');
-INSERT INTO `psb_siswa` VALUES ('161', '6', null, '', '', '', '', '1', '', '0', '0', '0', '', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_siswa_copy
@@ -2978,10 +2974,6 @@ CREATE TABLE `psb_siswaayah` (
 -- ----------------------------
 INSERT INTO `psb_siswaayah` VALUES ('7', '148', 'jose mourinho 55', 'london 5', '2015-09-26', '2', 'inggris', '7707', 'kota ayah', 's3', 'technology', 'developer', 'project manager', '150000000', '888', '4y4h', 'ayah@siswa.elyon', 'jalan ayah', '777', '9999999', 'jalan kantor ayah', '6969696969', '02121212', 'elyon');
 INSERT INTO `psb_siswaayah` VALUES ('16', '157', 'irina shayk', 'boston', '2015-09-25', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO `psb_siswaayah` VALUES ('17', '158', '', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO `psb_siswaayah` VALUES ('18', '159', '', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO `psb_siswaayah` VALUES ('19', '160', '', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO `psb_siswaayah` VALUES ('20', '161', '', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_siswabiaya
@@ -3049,7 +3041,7 @@ CREATE TABLE `psb_siswadokumen` (
   KEY `subdokumen` (`subdokumen`) USING BTREE,
   CONSTRAINT `siswaFK` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `subdokumenFK` FOREIGN KEY (`subdokumen`) REFERENCES `psb_subdokumen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswadokumen
@@ -3094,10 +3086,6 @@ CREATE TABLE `psb_siswaibu` (
 -- ----------------------------
 INSERT INTO `psb_siswaibu` VALUES ('7', '148', 'shakira 55', 'new york 5', '2015-09-19', '1', 'pantai gading 9', '87293899', 'kota pantai gaing 9', 'S9', 'konsultan9', 'psikiater9', 'staff9', '60000000', '0878789899', 'i8ua9', 'ibu@siswa.elyon9', 'alamat ibu9', '087777999', '034109089899', 'jalan kantor ibu99', '07283472899', '0341888899', 'elyon 9');
 INSERT INTO `psb_siswaibu` VALUES ('16', '157', 'irina shayk', 'missisipi', '2015-09-27', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO `psb_siswaibu` VALUES ('17', '158', '', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO `psb_siswaibu` VALUES ('18', '159', '', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO `psb_siswaibu` VALUES ('19', '160', '', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO `psb_siswaibu` VALUES ('20', '161', '', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_siswakontakdarurat
