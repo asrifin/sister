@@ -2,6 +2,7 @@
 	session_start();
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
+	require_once '../../lib/tglindo.php';
 	require_once '../../lib/pagination_class.php';
 	$mnu = 'angsuran';
 	$tb  = 'psb_'.$mnu;
@@ -18,26 +19,25 @@
 				$emailibu  = isset($_POST['emailibuS'])?$_POST['emailibuS']:'';
 				$sql = 'SELECT 	
 							i.replid,
+							s.replid idsiswa,
 							i.namaibu,
 							i.tanggallahiribu,
-							if(DATEDIFF(CURDATE(),i.tanggallahiribu)<0,1,0)isAktif,
-							ABS(DATEDIFF(CURDATE(),i.tanggallahiribu))selisihHari,
-							(if(MONTH(CURDATE())= MONTH(i.tanggallahiribu),1,0))isThisMonth,
 							s.namasiswa,
 							i.alamatibu,
 							i.emailibu
 						FROM  psb_siswa s 
 							JOIN psb_siswaibu i on i.siswa = s.replid 
 						WHERE 
-							namaibu LIKE "%'.$namaibu.'%" AND
-							namasiswa LIKE "%'.$namasiswa.'%" AND
-							alamatibu LIKE "%'.$alamatibu.'%" AND
-							emailibu LIKE "%'.$emailibu.'%" 
+							month(i.tanggallahiribu) IN (month(CURDATE()), (month(CURDATE())+1)) and  
+							s.namasiswa LIKE "%'.$namasiswa.'%" AND
+							i.namaibu LIKE "%'.$namaibu.'%" AND
+							i.alamatibu LIKE "%'.$alamatibu.'%" AND
+							i.emailibu LIKE "%'.$emailibu.'%" 
 						ORDER BY 
 							i.tanggallahiribu asc,
 							i.namaibu asc,
 							s.namasiswa asc';
-pr($sql);
+// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -54,27 +54,17 @@ pr($sql);
 				$jum	= mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
-					// $nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
-						$btn ='<td align="center">
-									<button '.(isAksi('reminderultah','u')?'onclick="viewFR('.$res['replid'].');"':'disabled').' data-hint="ubah"  >
-										<i class="icon-pencil on-left"></i>
-									</button>
-									<button data-hint="hapus" '.(isAksi('reminderultah','d')?'onclick="del('.$res['replid'].');"':'disabled').'>
-										<i class="icon-remove on-left"></i>
-									</button>
-								 </td>';
+						$tingNama  = getKriteriaSiswa('tingkat',$res['idsiswa']);
+						$stingNama = getKriteriaSiswa('subtingkat',$res['idsiswa']);
 						$out.= '<tr>
-									<td align="center">'.$res['tanggallahiribu'].'</td>
+									<td align="center">'.tgl_indo5($res['tanggallahiribu']).'</td>
 									<td align="center">'.$res['namaibu'].'</td>
 									<td align="center">'.$res['namasiswa'].'</td>
-									<td align="center">'.$res['namasiswa'].'</td>
+									<td align="center">'.$tingNama.'-'.$stingNama.' </td>
 									<td align="center">'.$res['alamatibu'].'</td>
 									<td align="center">'.$res['emailibu'].'</td>
-									'.$btn.'
 								</tr>';
-									// <td align="center">'.$res['kelas'].'</td>
-						// $nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">

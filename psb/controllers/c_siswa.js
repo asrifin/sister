@@ -402,6 +402,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                             // tampat lahir
                                             +'<label>Tempat Lahir</label>'
                                             +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ibu " xrequired id="tempatlahiribuTB" name="tempatlahiribuTB">'
+                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // tanggal lahir 
                                             +'<label>Tanggal lahir</label>'
                                             +'<div class="input-control text" data-role="datepicker"'
@@ -1653,7 +1654,7 @@ function notif(cont,clr) {
                     +'<div class="input-control text" data-role="datepicker"'
                         +'data-format="dd mmmm yyyy"'
                         +'data-effect="slide">'
-                        +'<input value="'+tgl_indo5(tanggalLahirSaudara)+'" placeholder="tanggal lahir" required id="tanggallahirsaudara'+ke+'TB" name="tanggallahirsaudara'+ke+'TB" type="text">'
+                        +'<input value="'+(tanggalLahirSaudara!=''||tanggalLahirSaudara!='0000-00-00'?tgl_indo5(tanggalLahirSaudara):'')+'" placeholder="tanggal lahir" required id="tanggallahirsaudara'+ke+'TB" name="tanggallahirsaudara'+ke+'TB" type="text">'
                         +'<button class="btn-date"></button>'
                     +'</div>'
                 +'</td>'
@@ -1785,7 +1786,8 @@ function notif(cont,clr) {
                                 +'<td class="text-center">'
                                     +'<input type="hidden" name="fileawal'+item.replid+'TB" value="'+(item.file==null?'':item.file)+'"/>'
                                     +'<input value="'+(item.idsiswadokumen==null?'':item.idsiswadokumen)+'" name="idsiswadokumen'+item.replid+'TB" type="hidden">'
-                                    +'<pre><input '+(item.idsiswadokumen==null?'':'checked')+' onclick="enableDokumen('+item.replid+');" name="siswadokumenTB['+item.replid+']" id="siswadokumen'+item.replid+'TB" type="checkbox"></pre>'
+                                    +'<input type="hidden" id="siswadokumen'+item.replid+'TB" name="siswadokumenTB[]"  value="'+item.replid+'"/>'
+                                    +'<pre><input '+(item.idsiswadokumen==null?'':'checked')+' onclick="enableDokumen('+item.replid+');" name="siswadokumenCB'+item.replid+'" id="siswadokumen'+item.replid+'CB" type="checkbox"></pre>'
                                 +'</td>'
                                 +'<td><pre>'+item.dokumen+'</pre></td>'
                                 +'<td><pre>'+item.jumlah+' '+item.satuanjumlah+'</pre></td>'
@@ -1802,7 +1804,7 @@ function notif(cont,clr) {
     
     function enableDokumen(e){
         $('#file'+e+'TB').val('');
-        if($('#siswadokumen'+e+'TB').is(':checked')){
+        if($('#siswadokumen'+e+'CB').is(':checked')){
             $('#file'+e+'TB').attr('required',true);
             $('#siswadokumen'+e+'TR').addClass('bg-lightTeal');
             $('#file'+e+'TB').removeAttr('disabled',true);

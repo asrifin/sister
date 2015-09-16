@@ -236,7 +236,8 @@
 										WHERE siswa = '.$_POST['replid'].'
 									)ssd ON ssd.subdokumen = sd.replid
 								where 
-									sd.tingkat = '.$tingID;
+									sd.tingkat = '.$tingID.'
+								ORDER BY d.dokumen ASC';
 							// pr($s);
 							$e=mysql_query($s);
 							$stat=!$e?'gagal':'sukses';
@@ -413,36 +414,59 @@
 							// pr($_POST);
 							foreach ($_POST['siswadokumenTB'] as $i => $v) {
 								// upload file ---------------------------- 
-								$namaAwal = $_FILES['file'.$i.'TB']['name'];
-								$tipex    = substr($_FILES['file'.$i.'TB']['name'],-4);
-								$namaSkrg = 'dok'.$_POST['siswaTB'].'_'.$i.'_'.substr((md5($namaAwal.rand())),2,10).$tipex;
-								$src      = $_FILES['file'.$i.'TB']['tmp_name'];
+								$namaAwal = $_FILES['file'.$v.'TB']['name'];
+								$tipex    = substr($_FILES['file'.$v.'TB']['name'],-4);
+								$namaSkrg = 'dok'.$_POST['siswaTB'].'_'.$v.'_'.substr((md5($namaAwal.rand())),2,10).$tipex;
+								$src      = $_FILES['file'.$v.'TB']['tmp_name'];
 								$destix   = '../upload/files/'.basename($namaSkrg);
 								
-								if($namaAwal!=''){ // ada file ter upload
-									if($_POST['idsiswadokumen'.$i.'TB']!=''){ // edit mode
-										$df=delFile('../upload/files/'.$_POST['fileawal'.$i.'TB']);
-										$dfstat=!$df?false:true;
-									}$upload = move_uploaded_file($src, $destix);
-									$upstat = !$upload?false:true;
-								}
-
-								if($upstat){
-									// save to db  ---------------------------- 
-									$pre='';
-									if($_POST['idsiswadokumen'.$i.'TB']==''){ // add 
-										$pre='INSERT INTO ';
-										$w='';
-									}else{ //edit 
-										$pre='UPDATE ';
-										$w=' WHERE replid ='.$_POST['idsiswadokumen'.$i.'TB'];
+								// edit mode 
+								if($_POST['idsiswadokumen'.$v.'TB']!=''){
+									if($_POST['siswadokumenCB'.$v]=='on'){// CHECKED checkbox  [replace]  
+										// DELETE : old file & data_DB 
+										if($_POST['fileawal'.$v.'TB'] && $namaAwal!=''){
+											$df=delFile('../upload/files/'.$_POST['fileawal'.$v.'TB']);
+											$dfstat=!$df?false:true;
+											$sdok ='DELETE FROM psb_siswadokumen WHERE replid= '.$_POST['idsiswadokumen'.$v.'TB'];
+										}
+										// UPLOAD : new file 
+										$file='';
+										if($namaAwal!=''){ 
+											$upload = move_uploaded_file($src, $destix);
+											$upstat = !$upload?false:true;
+											$file   = ',file="'.$namaSkrg.'"';
+										}
+										// SAVE : new data_DB 
+										$s  ='UPDATE  psb_siswadokumen SET 	
+												siswa      ='.$_POST['siswaTB'].',
+												subdokumen ='.$v.$file.'
+											  WHERE replid ='.$_POST['idsiswadokumen'.$v.'TB'];
+										$e=mysql_query($s);
+										$dbstat=!$e?false:true;
+									}else{ // UNCHECKED checkbox [without]
+										if($_POST['fileawal'.$v.'TB']){ // DELETE old_file & data_DB
+											$df=delFile('../upload/files/'.$_POST['fileawal'.$v.'TB']);
+											$dfstat=!$df?false:true;
+											$s ='DELETE FROM psb_siswadokumen WHERE replid= '.$_POST['idsiswadokumen'.$v.'TB'];
+											$e=mysql_query($s);
+											$dbstat=!$e?false:true;
+										}
 									}
-									$s=$pre.' psb_siswadokumen SET 	
-										siswa      ='.$_POST['siswaTB'].',
-										subdokumen ='.$i.',
-										file       ="'.$namaSkrg.'" '.$w;
-									$e=mysql_query($s);
-									$dbstat=!$e?false:true;
+								}else{ //add mode 
+									if($_POST['siswadokumenCB'.$v]=='on'){// CHECKED checkbox 
+										// UPLOAD : new file 
+										if($namaAwal!=''){ 
+											$upload = move_uploaded_file($src, $destix);
+											$upstat = !$upload?false:true;
+										}	
+										// SAVE : new data_DB 
+										$s  ='INSERT INTO psb_siswadokumen SET 	
+												siswa      ='.$_POST['siswaTB'].',
+												subdokumen ='.$v.',
+												file       ="'.$namaSkrg.'"';
+										$e=mysql_query($s);
+										$dbstat=!$e?false:true;
+									}
 								}
 							}$out=json_encode(array(
 								'status'=>(!$dfstat?'gagal_delete_file':(!$upstat?'gagal_upload_file':(!$dbstat?'gagal_db':'sukses')))
@@ -848,7 +872,7 @@
 							//ayah
 							'namaayah'               =>$r['namaayah'],
 							'tempatlahirayah'        =>$r['tempatlahirayah'],
-							'tanggallahirayah'       =>tgl_indo5($r['tanggallahirayah']),
+							'tanggallahirayah'      =>$r['tanggallahirayah']=='0000-00-00'?'':tgl_indo5($r['tanggallahirayah']),
 							'agamaayah'              =>$r['agamaayah'],
 							'warganegaraayah'        =>$r['warganegaraayah'],
 							'kodeposayah'            =>$r['kodeposayah'],
@@ -871,7 +895,7 @@
 							//ibu
 							'namaibu'                =>$r['namaibu'],
 							'tempatlahiribu'         =>$r['tempatlahiribu'],
-							'tanggallahiribu'        =>tgl_indo5($r['tanggallahiribu']),
+							'tanggallahiribu'      =>$r['tanggallahiribu']=='0000-00-00'?'':tgl_indo5($r['tanggallahiribu']),
 							'agamaibu'               =>$r['agamaibu'],
 							'warganegaraibu'         =>$r['warganegaraibu'],
 							'kodeposibu'             =>$r['kodeposibu'],

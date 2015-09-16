@@ -19,6 +19,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 
 	#transaksi keuangan
 	RewriteRule   ^reminder-ultah/?$  				 			index.php?page=vreminderultah
+	RewriteRule   ^rekapitulasi-siswa/?$				   					index.php?page=vrekapitulasisiswa
 	RewriteRule   ^gelombang/?$				   					index.php?page=vgelombang
 	RewriteRule   ^detail-gelombang/?$				   			index.php?page=vdetailgelombang
 	RewriteRule   ^siswa/?$				   						index.php?page=vsiswa
