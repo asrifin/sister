@@ -9,34 +9,14 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-        /*contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
-                        +'<input id="idformH" type="hidden">' 
-                        
-                        // golongan
-                        +'<label>golongan</label>'
-                        +'<div class="input-control text">'
-                            +'<input required placeholder="golongan" name="golonganTB" id="golonganTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        
-                        // keterangan
-                        +'<label>Keterangan</label>'
-                        +'<div class="input-control textarea">'
-                            +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
-                        +'</div>'
-                        
-                        // button
-                        +'<div class="form-actions">' 
-                            +'<button class="button primary">simpan</button>&nbsp;'
-                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-                        +'</div>'
-                    +'</form>';*/
-
         cmbdepartemen('filter','');
         viewTB();
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
+        });
+        $('#cetakBC').on('click',function(){
+            printPDF();
         });
 
         //search action
@@ -363,3 +343,23 @@ function ajax(u,d){
             }
         });
     }   
+
+
+//end of  print to PDF -------
+    function printPDF(){
+        var par='',tok='',p,v;
+        // var el ='.'+(typeof mn=='undefined'?'':mn+'_')+'cari';
+        $('.cari').each(function(){
+            p=$(this).attr('id');
+            v=$(this).val();
+            par+='&'+p+'='+v;
+            tok+=v;
+        });
+
+        var x  = $('#id_loginS').val();
+        var token = encode64(x+tok);
+        console.log('para = '+par);
+        console.log('tok = '+x+tok);
+        console.log('token = '+token);
+        window.open('report/r_rekapitulasisiswa.php?token='+token+par,'_blank');
+    }

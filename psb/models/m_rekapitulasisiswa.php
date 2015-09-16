@@ -54,8 +54,7 @@
 								GROUP BY tb2.tingkat
 							)tb on tb.tingkat = t.replid
 						ORDER BY t.urutan ASC';
-
-							// vd($sql);
+				// vd($sql);
 				$e   = mysql_query($sql);
 				$jum = mysql_num_rows($e);
 				$out ='';

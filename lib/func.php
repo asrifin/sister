@@ -43,8 +43,15 @@
 		return $e;
 		// return $e?true:false;
 	}
+	function fetchField2($sql){
+		$e=exeQuery($sql);
+		$r=array();
+		while ( $ff=mysql_fetch_assoc($e)) $r[]=$ff;
+		return $r;
+	}
 	function fetchField($sql){
 		$ff=mysql_fetch_array(exeQuery($sql));
+		// pr($sql);
 		return $ff[0];
 	}
 	

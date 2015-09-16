@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-16 20:45:04
+Date: 2015-09-17 00:39:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -343,7 +343,7 @@ CREATE TABLE `kon_loginhistory` (
   PRIMARY KEY (`id_loginhistory`),
   KEY `id_login` (`id_login`) USING BTREE,
   CONSTRAINT `kon_loginhistory_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_loginhistory
@@ -352,6 +352,8 @@ INSERT INTO `kon_loginhistory` VALUES ('5', '2', '2015-09-11 22:34:05');
 INSERT INTO `kon_loginhistory` VALUES ('6', '2', '2015-09-11 22:34:05');
 INSERT INTO `kon_loginhistory` VALUES ('47', '5', '2015-09-16 20:42:27');
 INSERT INTO `kon_loginhistory` VALUES ('48', '5', '2015-09-16 20:42:27');
+INSERT INTO `kon_loginhistory` VALUES ('49', '5', '2015-09-16 20:57:19');
+INSERT INTO `kon_loginhistory` VALUES ('50', '5', '2015-09-16 20:57:19');
 
 -- ----------------------------
 -- Table structure for kon_menu

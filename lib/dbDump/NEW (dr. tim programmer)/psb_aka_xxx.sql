@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-16 20:45:16
+Date: 2015-09-17 00:39:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,7 +45,7 @@ CREATE TABLE `psb_angsuran` (
   `angsuran` int(11) NOT NULL,
   `keterangan` varchar(200) NOT NULL,
   PRIMARY KEY (`replid`,`angsuran`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_angsuran
@@ -1973,8 +1973,8 @@ CREATE TABLE `psb_siswa` (
 -- ----------------------------
 -- Records of psb_siswa
 -- ----------------------------
-INSERT INTO `psb_siswa` VALUES ('148', '1', null, 'ronaldinho gaucho', '99', '144', 'dinhox', '1', 'brazil school', '2', '0', '1', 'L', 'rio de janeiro', '2015-09-19', 'brasil', '0', '70.0', '180.0', 'B', '4_14b82a8a83.png', 'rio street', '808080', '30303030', '1919191', 'ronaldinho@gaucho.com', 'hitam', '1010101010', 'haus', 'rio de J.', 'rio de', 'mexico', '', null, 'portuguese', 'inggris', '4');
-INSERT INTO `psb_siswa` VALUES ('157', '2', null, 'patrick vieira', '', '', 'vieira', '1', '', '0', '0', '0', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '3_8f1d44921e.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('148', '1', null, 'ronaldinho gaucho', '99', '144', 'dinhox', '1', 'brazil school', '2', '0', '1', 'L', 'rio de janeiro', '2015-09-19', 'brasil', '0', '70.0', '180.0', 'B', '5_dbeb1c3503.png', 'rio street', '808080', '30303030', '1919191', 'ronaldinho@gaucho.com', 'hitam', '1010101010', 'haus', 'rio de J.', 'rio de', 'mexico', '', null, 'portuguese', 'inggris', '4');
+INSERT INTO `psb_siswa` VALUES ('157', '2', null, 'patrick vieira', '', '', 'vieira', '1', '', '0', '0', '0', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '5_9803460371.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('158', '3', null, 'sebut saja bunga', '99', '', '', '1', '', '0', '0', '1', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '4_71c2ca0414.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 
 -- ----------------------------
@@ -3031,7 +3031,6 @@ CREATE TABLE `psb_siswadiskon` (
 INSERT INTO `psb_siswadiskon` VALUES ('14', '497', '34');
 INSERT INTO `psb_siswadiskon` VALUES ('32', '531', '22');
 INSERT INTO `psb_siswadiskon` VALUES ('33', '495', '30');
-INSERT INTO `psb_siswadiskon` VALUES ('34', '495', '2');
 INSERT INTO `psb_siswadiskon` VALUES ('36', '535', '38');
 
 -- ----------------------------
@@ -3048,13 +3047,11 @@ CREATE TABLE `psb_siswadokumen` (
   KEY `subdokumen` (`subdokumen`) USING BTREE,
   CONSTRAINT `siswaFK` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `subdokumenFK` FOREIGN KEY (`subdokumen`) REFERENCES `psb_subdokumen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswadokumen
 -- ----------------------------
-INSERT INTO `psb_siswadokumen` VALUES ('22', '158', '53', 'dok158_53_aea3a2b2af.pdf');
-INSERT INTO `psb_siswadokumen` VALUES ('23', '158', '26', 'dok158_26_3ef380269e.pdf');
 
 -- ----------------------------
 -- Table structure for psb_siswaibu
@@ -3565,6 +3562,7 @@ end BLOCK2;
 END
 ;;
 DELIMITER ;
+
 
 -- ----------------------------
 -- Table structure for aka_absen

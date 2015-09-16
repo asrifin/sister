@@ -74,11 +74,11 @@
         // kriteria siswa
         $out.='
             <tr class="head">
-              <td colspan="3">Biodata Siswa</td>
+              <td colspan="3">Kriteria Siswa</td>
             </tr><tr>
               <td width="25%">Departemen</td>
               <td colspan="2">: '.$departemen.'</td>
-            </tr><tr>
+            </tr><tr>x  
               <td width="25%">Tahun Ajaran</td>
               <td colspan="2">: '.$tahunajaran.' - '.($tahunajaran+1).'</td>
             </tr><tr>
@@ -149,7 +149,7 @@
               <td colspan="3">Biodata Siswa</td>
             </tr><tr>
               <td width="25%">No. Pendaftaran</td>
-              <td>: '.(empty($r['nopendaftaran'])?'-':$r['nopendaftaran']).'</td>
+              <td>: '.(empty($r['nopendaftaran'])?'-':getNoPendaftaran2($_GET['replid'])).'</td>
               <td rowspan="7" align="right"><img height="150" src="'.$photosiswa.'" alt="" /></td>
             </tr><tr>
               <td >Nama</td>
@@ -171,10 +171,10 @@
               <td>: '.(empty($r['warganegarasiswa'])?'-':$r['warganegarasiswa']).'</td>
             </tr><tr>
               <td>sukusiwa</td>
-              <td>: '.(empty($r['sukusiswa'])?'-':$r['sukusiswa']).'</td>
+              <td>: '.(empty($r['sukusiswa'])?'-':getField('suku','psb_suku','replid',$r['sukusiswa'])).'</td>
             </tr><tr>
               <td>Agama</td>
-              <td colspan="2">: '.(empty($r['agamasiswa'])?'-':$r['agamasiswa']).'</td>
+              <td colspan="2">: '.(empty($r['agamasiswa'])?'-':getField('agama','psb_agama','replid',$r['agamasiswa'])).'</td>
             </tr><tr>
               <td>Bahasa</td>
               <td colspan="2">: '.(empty($r['bahasasiswa1'])?'-':$r['bahasasiswa1']).' & '.(empty($r['bahasasiswa2'])?'-':$r['bahasasiswa2']).'</td>
@@ -249,7 +249,7 @@
               <td colspan="2">: '.(empty($r2['warganegaraayah'])?'-':$r2['warganegaraayah']).'</td>
             </tr><tr>
               <td >Agama</td>
-              <td colspan="2">: '.(empty($r2['agamaayah'])?'-':$r2['agamaayah']).'</td>
+              <td colspan="2">: '.(empty($r2['agamaayah'])?'-':getField('agama','psb_agama','replid',$r2['agamaayah'])).'</td>
             </tr><tr>
               <td >Gereja</td>
               <td colspan="2">: '.(empty($r2['gerejaayah'])?'-':$r2['gerejaayah']).'</td>
@@ -291,7 +291,7 @@
               <td colspan="2">: '.(empty($r2['posisiayah'])?'-':$r2['posisiayah']).'</td>
             </tr><tr>
               <td >Penghasilan</td>
-              <td colspan="2">: '.(empty($r2['penghasilanayah'])?'-':$r2['penghasilanayah']).'</td>
+              <td colspan="2">: '.(empty($r2['penghasilanayah'])?'-':setuang($r2['penghasilanayah'])).'</td>
             </tr><tr>
               <td >Telpon Kantor</td>
               <td colspan="2">: '.(empty($r2['telponkantorayahayah'])?'-':$r2['telponkantorayahayah']).'</td>
@@ -323,7 +323,7 @@
               <td colspan="2">: '.(empty($r3['warganegaraibu'])?'-':$r3['warganegaraibu']).'</td>
             </tr><tr>
               <td >Agama</td>
-              <td colspan="2">: '.(empty($r3['agamaibu'])?'-':$r3['agamaibu']).'</td>
+              <td colspan="2">: '.(empty($r3['agamaibu'])?'-':getField('agama','psb_agama','replid',$r3['agamaibu'])).'</td>
             </tr><tr>
               <td >Gereja</td>
               <td colspan="2">: '.(empty($r3['gerejaibu'])?'-':$r3['gerejaibu']).'</td>
@@ -365,7 +365,7 @@
               <td colspan="2">: '.(empty($r3['posisiibu'])?'-':$r3['posisiibu']).'</td>
             </tr><tr>
               <td >Penghasilan</td>
-              <td colspan="2">: '.(empty($r3['penghasilanibu'])?'-':$r3['penghasilanibu']).'</td>
+              <td colspan="2">: '.(empty($r3['penghasilanibu'])?'-':setuang($r3['penghasilanibu'])).'</td>
             </tr><tr>
               <td >Telpon Kantor</td>
               <td colspan="2">: '.(empty($r3['telponkantoribuibu'])?'-':$r3['telponkantoribuibu']).'</td>
