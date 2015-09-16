@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-17 00:39:10
+Date: 2015-09-17 05:06:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -160,7 +160,7 @@ CREATE TABLE `aka_detailkelas` (
   KEY `kelas_2` (`kelas`),
   CONSTRAINT `kelasFK4` FOREIGN KEY (`kelas`) REFERENCES `aka_kelas` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tahunajaranFK5` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=235 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_detailkelas
@@ -321,6 +321,84 @@ INSERT INTO `aka_detailkelas` VALUES ('153', '77', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('154', '77', '5', '0');
 INSERT INTO `aka_detailkelas` VALUES ('155', '78', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('156', '78', '5', '0');
+INSERT INTO `aka_detailkelas` VALUES ('157', '1', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('158', '2', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('159', '3', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('160', '4', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('161', '5', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('162', '6', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('163', '7', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('164', '8', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('165', '9', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('166', '10', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('167', '11', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('168', '12', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('169', '13', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('170', '14', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('171', '15', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('172', '16', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('173', '17', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('174', '18', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('175', '19', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('176', '20', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('177', '21', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('178', '22', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('179', '23', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('180', '24', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('181', '25', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('182', '26', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('183', '27', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('184', '28', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('185', '29', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('186', '30', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('187', '31', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('188', '32', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('189', '33', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('190', '34', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('191', '35', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('192', '36', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('193', '37', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('194', '38', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('195', '39', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('196', '40', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('197', '41', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('198', '42', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('199', '43', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('200', '44', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('201', '45', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('202', '46', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('203', '77', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('204', '78', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('205', '47', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('206', '48', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('207', '49', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('208', '50', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('209', '51', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('210', '52', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('211', '53', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('212', '54', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('213', '55', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('214', '56', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('215', '57', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('216', '58', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('217', '59', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('218', '60', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('219', '61', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('220', '62', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('221', '63', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('222', '64', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('223', '65', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('224', '66', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('225', '67', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('226', '68', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('227', '69', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('228', '70', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('229', '71', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('230', '72', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('231', '73', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('232', '74', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('233', '75', '12', '0');
+INSERT INTO `aka_detailkelas` VALUES ('234', '76', '12', '0');
 
 -- ----------------------------
 -- Table structure for aka_grading
@@ -4928,13 +5006,14 @@ CREATE TABLE `aka_tahunajaran` (
   `keterangan` text NOT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of aka_tahunajaran
 -- ----------------------------
 INSERT INTO `aka_tahunajaran` VALUES ('3', '2014', '--', '2014-03-19 04:37:57');
 INSERT INTO `aka_tahunajaran` VALUES ('5', '2015', '-', '2015-01-28 08:57:00');
+INSERT INTO `aka_tahunajaran` VALUES ('12', '2016', '', '2015-09-17 05:03:41');
 
 -- ----------------------------
 -- Table structure for aka_tahunlulus
@@ -5142,7 +5221,7 @@ BLOCK1: begin
         select replid
         from  psb_gelombang;
     declare continue handler for not found  
-        set no_more_rows1 =1;           
+    		set no_more_rows1 =1;           
     open cursor1;
     LOOP1: loop
         fetch cursor1
@@ -5154,7 +5233,7 @@ BLOCK1: begin
         BLOCK2: begin
             declare v_col2 int;
             declare no_more_rows2 INT DEFAULT 0;  
-            declare cursor2 cursor for
+						declare cursor2 cursor for
                 select replid
                 from  departemen;
            declare continue handler for not found
@@ -5167,24 +5246,25 @@ BLOCK1: begin
                     close cursor2;
                     leave LOOP2;
                 end if;
-                INSERT INTO psb_detailgelombang SET 
-                  tahunajaran = NEW.replid, 
-                  gelombang  = v_col1, 
-                  departemen = v_col2;
+								INSERT INTO psb_detailgelombang SET 
+									tahunajaran = NEW.replid, 
+            			gelombang  = v_col1, 
+            			departemen = v_col2;
             end loop LOOP2;
         end BLOCK2;
     end loop LOOP1;
 end BLOCK1;
 
-/*untuk psb_detaildiskontunai*/
+/*untuk psb_detaildiskon*/
+/*diskon*/
 BLOCK3: begin
     declare v_col3 int;                     
     declare no_more_rows3 INT DEFAULT 0;  
     declare cursor3 cursor for              
         select replid
-        from   psb_diskontunai;
+        from   psb_diskon;
     declare continue handler for not found  
-        set no_more_rows3 =1;           
+    		set no_more_rows3 =1;           
     open cursor3;
     LOOP3: loop
         fetch cursor3
@@ -5193,28 +5273,9 @@ BLOCK3: begin
             close cursor3;
             leave LOOP3;
         end if;
-        BLOCK4: begin
-            declare v_col4 int;
-            declare no_more_rows4 INT DEFAULT 0;  
-            declare cursor4 cursor for
-                select replid
-                from  departemen;
-           declare continue handler for not found
-               set no_more_rows4 =1;
-            open cursor4;
-            LOOP4: loop
-                fetch cursor4
-                into  v_col4;
-                if no_more_rows4 then
-                    close cursor4;
-                    leave LOOP4;
-                end if;
-                INSERT INTO psb_detaildiskontunai SET 
-                  tahunajaran = NEW.replid, 
-                  diskontunai = v_col3, 
-                  departemen = v_col4;
-            end loop LOOP4;
-        end BLOCK4;
+				INSERT INTO psb_detaildiskon SET 
+					tahunajaran = NEW.replid, 
+					diskon = v_col3;
     end loop LOOP3;
 end BLOCK3;
 
@@ -5226,7 +5287,7 @@ BLOCK5: begin
         select replid
         from  aka_kelas;
     declare continue handler for not found  
-        set no_more_rows5 =1;           
+    		set no_more_rows5 =1;           
     open cursor5;
     LOOP5: loop
         fetch cursor5
@@ -5235,9 +5296,9 @@ BLOCK5: begin
             close cursor5;
             leave LOOP5;
         end if;
-        INSERT INTO aka_detailkelas SET 
-          tahunajaran = NEW.replid, 
-          kelas = v_col5;
+				INSERT INTO aka_detailkelas SET 
+					tahunajaran = NEW.replid, 
+					kelas = v_col5;
     end loop LOOP5;
 end BLOCK5;
 
