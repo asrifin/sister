@@ -349,7 +349,8 @@
 					$o = array('status' =>'invalid_no_post' );
 				else{
 					$biaya = getBiayaArr($_POST['detailgelombang'],$_POST['subtingkat'],$_POST['golongan']);
-					$stat=!$biaya || is_null($biaya)?'gagal':'sukses';
+					// $stat=!$biaya || is_null($biaya)?'gagal':'sukses';
+					$stat=!$biaya?'gagal':'sukses';
 				}$out = json_encode(array('status'=>$stat,'biayaArr'=>$biaya));
 			break;
 
