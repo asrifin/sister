@@ -120,7 +120,7 @@ $jumlah=$data['jumlah'];
 $harga=$data['harga'];
 $subdiscount=$data['subdiscount'];
 $ceksisajumbeli=$jumlah-ceksisajumbeli($nopo,$kode);
-$subtotal=$ceksisajumbeli*$harga;
+$subtotal=$data['subtotal'];
 $hasil2 =  $koneksi_db->sql_query( "SELECT * FROM pos_produk WHERE kode='$kode'" );
 $data2 = $koneksi_db->sql_fetchrow($hasil2);
 $id=$data2['id'];
@@ -341,7 +341,7 @@ $admin .= '
 		<td>'.$cart_itm["subtotal"].'</td>
 		<td>
 <input align="right" type="hidden" name="harga['.$array.']" value="'.$cart_itm["harga"].'"class="form-control">
-<input align="right" type="hidden" name="subdiscount['.$array.']" value="'.$cart_itm["jumlah"].'"class="form-control">
+<input align="right" type="hidden" name="subdiscount['.$array.']" value="'.$cart_itm["subdiscount"].'"class="form-control">
 		<input align="right" type="hidden" name="jumlahbeliasli['.$array.']" value="'.$cart_itm["jumlahbeliasli"].'"class="form-control">
 		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'">
 </td>

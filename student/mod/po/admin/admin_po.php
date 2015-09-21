@@ -102,6 +102,7 @@ updatehargabeli($kode,$harga);
 }
 if($hasil){
 $admin .= '<div class="sukses"><b>Berhasil Menambah PO.</b></div>';
+pocetak($nopo);
 porefresh();
 //$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po&mod=yes" />';
 }else{

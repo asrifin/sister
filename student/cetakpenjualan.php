@@ -240,7 +240,7 @@ $grandsubtotalbayar+=$subtotalbayar;
 }
 echo '
 <tr class="border" align="right">
-<td colspan="11"><b>Grand Total :</b></td>
+<td colspan="10"><b>Grand Total :</b></td>
 <td>'.$grandjumlah.'</td>
 <td></td>
 <td>'.rupiah_format($grandtotal).'</td>
