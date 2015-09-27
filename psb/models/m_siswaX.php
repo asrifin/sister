@@ -111,24 +111,35 @@
 				switch ($_POST['subaksi']) {
 					case 'siswa':
 						$detailgelombang = isset($_POST['detailgelombangS'])?filter($_POST['detailgelombangS']):'';
-						$tingkat         = isset($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
-						$subtingkat      = isset($_POST['subtingkatS']) && $_POST['subtingkatS']!=''?' AND idsubtingkat='.filter($_POST['subtingkatS']):'';
 						$nis             = isset($_POST['nisS'])?filter($_POST['nisS']):'';
 						$nisn            = isset($_POST['nisnS'])?filter($_POST['nisnS']):'';
 						$nopendaftaran   = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
 						$namasiswa       = isset($_POST['namasiswaS'])?filter($_POST['namasiswaS']):'';
 						$status          = (isset($_POST['statusS']) && $_POST['statusS']!='')?' AND status="'.filter($_POST['statusS']).'"':'';
 						
-						$sql = 'SELECT *
-								FROM vw_psb_siswa_kriteria
+						$sql = 'SELECT 
+									s.replid, 
+									s.nopendaftaran, 
+									s.namasiswa,
+									s.status,
+									s.nis,
+									s.nisn
+								FROM '.$tb.' s
+									JOIN psb_siswabiaya sb on sb.siswa = s.replid
+									JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
 								WHERE 
-									idtingkat ='.$tingkat.' '.$subtingkat.' AND
-									iddetailgelombang ='.$detailgelombang.' AND
-									nopendaftaran LIKE "%'.$nopendaftaran.'%"  AND
-									nis LIKE "%'.$nis.'%"  AND
-									nisn LIKE "%'.$nisn.'%" AND
-									namasiswa LIKE "%'.$namasiswa.'%" 
-									'.$status;
+									db.detailgelombang ='.$detailgelombang.' AND
+									s.nopendaftaran LIKE "%'.$nopendaftaran.'%"  AND
+									s.nis LIKE "%'.$nis.'%"  AND
+									s.nisn LIKE "%'.$nisn.'%" AND
+									s.namasiswa LIKE "%'.$namasiswa.'%" 
+									'.$status.'
+								GROUP BY
+									s.replid
+								ORDER BY
+									s.nopendaftaran ASC,
+									s.namasiswa ASC
+									';
 									// pr($sql);
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -138,7 +149,7 @@
 
 						$recpage = 5;//jumlah data per halaman
 						$aksi    ='tampil';
-						$subaksi ='siswa';
+						$subaksi ='';
 						$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
 						$result  =$obj->result;
 						$jum     = mysql_num_rows($result);
@@ -146,25 +157,25 @@
 						if($jum!=0){	
 							$nox 	= $starting+1;
 							while($r = mysql_fetch_assoc($result)){	
-								$token=base64_encode($_SESSION['id_loginS'].$r['idsiswa']);
+								$token=base64_encode($_SESSION['id_loginS'].$r['replid']);
 								$btn ='<td align="center">
-											<button data-hint="dokumen"   '.(isAksi('siswa','u')?'onclick="subdokumenFR('.$r['idsiswa'].')"':' disabled').' >
+											<button data-hint="dokumen"   '.(isAksi('siswa','u')?'onclick="subdokumenFR('.$r['replid'].')"':' disabled').' >
 												<i class="icon-file"></i>
 											</button>
-											<button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['idsiswa'].')"':' disabled').' >
+											<button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['replid'].')"':' disabled').' >
 												<i class="icon-pencil"></i>
 											</button>
-											<a class="button" '.(isAksi('siswa','r')?' href="report/r_siswa.php?token='.$token.'&idsiswa='.$r['idsiswa'].'"':' disabled href="#"').'  target="_blank" data-hint="cetak">
+											<a class="button" '.(isAksi('siswa','r')?' href="report/r_siswa.php?token='.$token.'&replid='.$r['replid'].'"':' disabled href="#"').'  target="_blank" data-hint="cetak">
 												<i class="icon-printer"></i>
 											</a>
-											<button data-hint="hapus"  '.(isAksi('siswa','d')?'onclick="del('.$r['idsiswa'].')"':' disabled').'>
+											<button data-hint="hapus"  '.(isAksi('siswa','d')?'onclick="del('.$r['replid'].')"':' disabled').'>
 												<i class="icon-remove"></i>
 											</button>
 										 </td>';
 								if($r['status']=='1'){
 									$label = 'Diterima';
 									$clr   = 'green';
-									$func  = 'onclick="statusFR('.$r['idsiswa'].')"';
+									$func  = 'onclick="statusFR('.$r['replid'].')"';
 								}elseif($r['status']=='2'){
 									$label = 'Lulus';
 									$clr   = 'blue';
@@ -172,7 +183,7 @@
 								}else{
 									$label = 'Belum Diterima';
 									$clr   = 'red';
-									$func  = 'onclick="statusFR('.$r['idsiswa'].')"';
+									$func  = 'onclick="statusFR('.$r['replid'].')"';
 								}
 
 											// <button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['replid'].')"':' disabled').' >
@@ -180,7 +191,7 @@
 											// </button>
 								// pr(getNoPendaftaran($r['replid']));
 								$out.= '<tr>
-											<td>'.getNoPendaftaran2($r['idsiswa']).'</td>
+											<td>'.getNoPendaftaran2($r['replid']).'</td>
 											<td>'.$r['namasiswa'].'</td>
 											<td>'.$r['nis'].'</td>
 											<td>'.$r['nisn'].'</td>
@@ -338,7 +349,8 @@
 					$o = array('status' =>'invalid_no_post' );
 				else{
 					$biaya = getBiayaArr($_POST['detailgelombang'],$_POST['subtingkat'],$_POST['golongan']);
-					$stat=!$biaya || is_null($biaya)?'gagal':'sukses';
+					// $stat=!$biaya || is_null($biaya)?'gagal':'sukses';
+					$stat=!$biaya?'gagal':'sukses';
 				}$out = json_encode(array('status'=>$stat,'biayaArr'=>$biaya));
 			break;
 
@@ -407,7 +419,9 @@
 								$tipex    = substr($_FILES['file'.$v.'TB']['name'],-4);
 								$namaSkrg = 'dok'.$_POST['siswaTB'].'_'.$v.'_'.substr((md5($namaAwal.rand())),2,10).$tipex;
 								$src      = $_FILES['file'.$v.'TB']['tmp_name'];
-								$destix   = '../upload/files/'.basename($namaSkrg);
+								$dir='../upload/files/';
+								if(!is_dir($dir)) mkdir($dir);
+								$destix   = $dir.basename($namaSkrg);
 								
 								// edit mode 
 								if($_POST['idsiswadokumen'.$v.'TB']!=''){

@@ -222,24 +222,32 @@
 			// ambiledit -----------------------------------------------------------------
 
 		// cmbkelas ---------------------------------------------------------
-			case 'cmbkelas':
-				$w='';
+			case 'cmb'.$mnu:
+				$f=$j=$w='';
 				if(isset($_POST['replid'])){
 					$w.='where replid ='.$_POST['replid'];
 				}else{
 					if(isset($_POST[$mnu])){
 						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST['subtingkat'])){
-						$w.='where subtingkat ='.$_POST['subtingkat'];
+					}elseif(isset($_POST['subtingkat']) && isset($_POST['tahunajaran']) && isset($_POST['departemen']) ){
+						$f.='dk.replid,
+							k.kelas,
+							k.subtingkat,
+							dk.tahunajaran,
+							k.departemen';
+						$j.='join aka_kelas k on k.replid = dk.kelas';
+						$w.=' where 
+								k.subtingkat ='.$_POST['subtingkat'].' AND 
+								dk.tahunajaran = '.$_POST['tahunajaran'].' and 
+								k.departemen = '.$_POST['departemen'];
 					}
 				}
-
-				$s	= 'SELECT *
-						from '.$tb.'
-						'.$w.'		
-						ORDER  BY '.$mnu.' asc';
+				$s	= 'SELECT '.$f.'
+						from '.$tb.' dk
+						'.$j.$w.'		
+						ORDER  BY k.kelas  asc';
 				$e  = mysql_query($s);
-				// var_dump($s);
+				// pr($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
 
@@ -255,7 +263,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','kelas'=>$dt);
+						}$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}
 				$out=json_encode($ar);

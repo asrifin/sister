@@ -151,8 +151,8 @@
                     case 'valumni':
                         require $d.'v_alumni.php';
                     break;
-                    case 'vsiswa':
-                        require $d.'v_siswa.php';
+                    case 'vsiswakelas':
+                        require $d.'v_siswakelas.php';
                     break;
                     case 'vsubtingkat':
                         require $d.'v_subtingkat.php';

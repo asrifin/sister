@@ -14,20 +14,17 @@
 <button onclick="switchPN('view','');"  data-hint="Lihat Data" id="lihatBC" style="display:none;"><span class="icon-list"></span> </button>
 
 <!-- combo  filter -->
-<div class="input-control select span2">
+<div class="input-control select span3">
     <select  onchange="cmbtahunajaran('filter','');" class="siswa_cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
-<div class="input-control select span2">
+<div class="input-control select span3">
     <select  onchange="cmbdetailgelombang('filter','');"  class="siswa_cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
-<div class="input-control select span2">
+<div class="input-control select span3">
     <select  onchange="cmbtingkatZ('filter','');"  class="siswa_cari" data-hint="Gelombang" name="detailgelombangS" id="detailgelombangS"></select>
 </div>
-<div class="input-control select span2">
-    <select onchange="cmbsubtingkat('filter',$(this).val(),'');" class="siswa_cari" data-hint="tingkat" name="tingkatS" id="tingkatS"></select>
-</div>
-<div class="input-control select span2">
-    <select  onchange="viewTB('siswa');"  class="siswa_cari" data-hint="Sub Tingkat" name="subtingkatS" id="subtingkatS"></select>
+<div class="input-control select span3">
+    <select onchange="viewTB();" class="siswa_cari" data-hint="tingkat" name="tingkatS" id="tingkatS"></select>
 </div>
 <!-- end of :  combo  filter -->
 

@@ -132,7 +132,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                             +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // tingkat
                                             +'<label>Tingkat</label>'
-                                            +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya(); subdokumenFC();" id="tingkatTBZ" name="tingkatTB"></select>'
+                                            +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya();" id="tingkatTBZ" name="tingkatTB"></select>'
                                             +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // subtingkat
                                             +'<label>Sub Tingkat</label>'
@@ -402,6 +402,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                             // tampat lahir
                                             +'<label>Tempat Lahir</label>'
                                             +'<input  type="text" data-transform="input-control" placeholder="tempat lahir ibu " xrequired id="tempatlahiribuTB" name="tempatlahiribuTB">'
+                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // tanggal lahir 
                                             +'<label>Tanggal lahir</label>'
                                             +'<div class="input-control text" data-role="datepicker"'
@@ -410,7 +411,6 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                                 +'<input placeholder="tanggal lahir" xrequired id="tanggallahiribuTB" name="tanggallahiribuTB" type="text">'
                                                 +'<button class="btn-date"></button>'
                                             +'</div>'
-                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // warga negara
                                             +'<label>Warga Negara</label>'
                                             +'<input  type="text" data-transform="input-control" xrequired placeholder="warga negara" id="warganegaraibuTB" name="warganegaraibuTB">'
@@ -787,6 +787,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
             }
         });
     }
+//end of combo tingkat ---
 
 // combo kelompok ---
     function cmbkelompok(typ,thn,kel){
@@ -869,7 +870,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                 if(tipe=='form') $('#tingkatTBZ').html('<option value="">-Pilih Tingkat-</option>'+opt);
                 else {
                     $('#tingkatS').html(opt);
-                    cmbsubtingkat('filter',dt.tingkat[0].replid,'');
+                    viewTB('siswa');
                 }
             }
         });
@@ -1027,6 +1028,16 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
         });var d ='aksi=getBiayaNett&iddetailbiaya='+idy+selectedDiskReg+'&diskonkhusus='+$('#diskonkhusus'+idx+'TB').val();
         ajax(dir,d).done(function (dt){
             $('#biayaNett'+idx+'TD').html('Rp. '+(dt.biayaNett.setCurr()) );
+            if(dt.biayaNett==0){
+                $('#detaildiskon'+idx+'TBL tr:last').addClass('bg-orange fg-white');
+                setTimeout(function(){
+                    $('#detaildiskon'+idx+'TBL tr:last').fadeOut(function(){
+                        $(this).remove();
+                        getBiayaNett(idx);
+                        detaildiskonArr(idx);
+                    });
+                },500);
+            }
             if(dt.status!='sukses')notif(dt.status,'red');
         });
     }
@@ -1213,7 +1224,6 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                     cmbgolongan('form','');
                     cmbangsuran('');
                     biayaFC('');
-                    subdokumenFC();
                     kontakdaruratFC();
                 }
                 // $("#form1").scrollbar({height: 355,axis: 'y'});
@@ -1400,7 +1410,7 @@ function notif(cont,clr) {
                 }
                 if(typ=='filter'){
                     $('#subtingkatS').html('<option value="">-SEMUA-</option>'+out);
-                    viewTB('siswa');
+                    viewTB();
                 }else{
                     $('#subtingkatTB').html('<option value="">-Pilih Sub Tingkat-</option>'+out);
                 }
@@ -1598,7 +1608,7 @@ function notif(cont,clr) {
     }
 //                        idbiaya,iddetaildiskon                                           
     function detaildiskonAdd (idx,siswadiskon,replid,diskon,nilai,keterangan) {
-        var tr ='<tr val="'+replid+'" class="detaildiskon'+idx+'TR" id="detaildiskon'+replid+'TR">'
+        var tr ='<tr val="'+replid+'" class="detaildiskon'+idx+'TR bg-lightTeal" id="detaildiskon'+replid+'TR">'
                     +'<td>'+diskon
                         +'<input type="hidden" name="idsiswadiskon'+replid+'TB" value="'+(siswadiskon!=''?siswadiskon:'')+'" />'
                         +'<input type="hidden" name="iddetaildiskonTB['+idx+'][]" value="'+replid+'" />'
@@ -1607,6 +1617,9 @@ function notif(cont,clr) {
                     +'<td><a href="#" class="bg-white fg-red" onclick="detaildiskonDel('+idx+','+replid+',\''+siswadiskon+'\'); return false;"><i class="icon-cancel-2"></a></i></td>'
                 +'</tr>';
         $('#detaildiskon'+idx+'TBL').append(tr); 
+        setTimeout(function(){
+            $('#detaildiskon'+replid+'TR').removeClass('bg-lightTeal');
+        },800);
         detaildiskonArr(idx);
         getBiayaNett(idx);
     }
@@ -1620,6 +1633,62 @@ function notif(cont,clr) {
         // console.log('setelah terpilih di tabel ='+selectedDiskReg);
         return selectedDiskReg;
     }
+
+// saudara siswa ------------------------------
+    var iSaudaraTR = 1;
+    var iSaudaraDelTR = [];
+    var iSaudaraAddTR = [];
+    function saudaraFC(arr){
+        var tr='';
+        var isLoop=true;
+        if(typeof arr=='undefined'){ isLoop=false; n=iSaudaraTR;}
+        else{n=arr.length;}
+
+        for(var i=n; i>=iSaudaraTR; i--){
+            var ke = parseInt(i)-1;
+            var idSaudara           = (typeof arr!='undefined')?arr[ke].replid:'';
+            var namaSaudara         = (typeof arr!='undefined')?arr[ke].namasaudara:'';
+            var jKelaminSaudara     = (typeof arr!='undefined')?arr[ke].jkelaminsaudara:'';
+            var tempatLahirSaudara  = (typeof arr!='undefined')?arr[ke].tempatlahirsaudara:'';
+            var tanggalLahirSaudara = (typeof arr!='undefined')?arr[ke].tanggallahirsaudara:'';
+            var sekolahSaudara      = (typeof arr!='undefined')?arr[ke].sekolahsaudara:'';
+            var gradeSaudara        = (typeof arr!='undefined')?arr[ke].gradesaudara:'';
+
+            tr+='<tr class="saudaraTR" id="saudaraTR_'+ke+'">'
+                +'<td>'
+                    +'<input type="hidden" value="'+ke+'" id="idSaudara'+ke+'TR" name="idSaudaraTR[]">' // array acuan
+                    +'<input type="hidden" value="'+idSaudara+'" name="idSaudara'+ke+'TB">'
+                    +'<input name="namasaudara'+ke+'TB" id="namasaudara'+ke+'TB" value="'+namaSaudara+'" required type="text" data-transform="input-control">'
+                +'</td>'
+                +'<td><select name="jkelaminsaudara'+ke+'TB" id="jkelaminsaudara'+ke+'TB" required data-transform="input-control"><option value="">-Pilih Jenis Kelamin-</option><option '+(jKelaminSaudara=='L'?'selected':'')+' value="L">Laki-laki</option><option  '+(jKelaminSaudara=='P'?'selected':'')+' value="P">Perempuan</option></select></td>'
+                +'<td><input value="'+tempatLahirSaudara+'" name="tempatlahirsaudara'+ke+'TB" id="tempatlahirsaudara'+ke+'TB" required type="text" data-transform="input-control"></td>'
+                +'<td>'
+                    +'<div class="input-control text" data-role="datepicker"'
+                        +'data-format="dd mmmm yyyy"'
+                        +'data-effect="slide">'
+                        +'<input value="'+(tanggalLahirSaudara!=''||tanggalLahirSaudara!='0000-00-00'?tgl_indo5(tanggalLahirSaudara):'')+'" placeholder="tanggal lahir" required id="tanggallahirsaudara'+ke+'TB" name="tanggallahirsaudara'+ke+'TB" type="text">'
+                        +'<button class="btn-date"></button>'
+                    +'</div>'
+                +'</td>'
+                +'<td><input value="'+sekolahSaudara+'" name="sekolahsaudara'+ke+'TB" id="sekolahsaudara'+ke+'TB" type="text" data-transform="input-control"></td>'
+                +'<td><input value="'+gradeSaudara+'" name="gradesaudara'+ke+'TB" id="gradesaudara'+ke+'TB" type="text" data-transform="input-control"></td>'
+                +'<td><a onclick="'+(idSaudara!=''?'if(confirm(\'melanjutkan untuk menghapus data?\')) saudaraDel('+ke+',\''+idSaudara+'\',\'\');':'saudaraDel('+ke+',\''+idSaudara+'\',\'\')')+'" href="#" class="button bg-white fg-red"><i class="icon-cancel-2"></a></i></td>'
+            +'</tr>';
+        }
+        if(isLoop) iSaudaraTR+=n;
+        else iSaudaraTR++;
+        $('#saudaraTBL').prepend(tr);
+    }
+// end of : saudara ------------------------------
+
+// hapus saudara terpilih
+    function saudaraDel(ke,idsaudara){
+        if(idsaudara!='') iKontakDDelTR.push(idsaudara); //jika ada hapus DB 
+        $('#saudaraTR_'+ke).fadeOut('slow',function(){
+            $('#saudaraTR_'+ke).remove();
+        });
+        // console.log(iSaudaraDelTR);
+    } 
 
 // kontak darurat ------------------------------
     var iKontakDTR = 1;
@@ -1682,7 +1751,7 @@ function notif(cont,clr) {
     function detaildiskonDel (idx,idy,idz) {
         $('#detaildiskon'+idy+'TR').fadeOut('slow',function(){
             $('#detaildiskon'+idy+'TR').remove();
-            iDetailDiskonDelTR.push(idz); // hapus
+            if(idz!='') iDetailDiskonDelTR.push(idz); // hapus
             detaildiskonArr(idx);
             getBiayaNett(idx,idy);
             // console.log(iDetailDiskonDelTR);
@@ -1855,60 +1924,3 @@ function notif(cont,clr) {
         var y = str.substring(0,4);
         return d+' '+m+' '+y;
     }
-
-
-// saudara siswa ------------------------------
-    var iSaudaraTR = 1;
-    var iSaudaraDelTR = [];
-    var iSaudaraAddTR = [];
-    function saudaraFC(arr){
-        var tr='';
-        var isLoop=true;
-        if(typeof arr=='undefined'){ isLoop=false; n=iSaudaraTR;}
-        else{n=arr.length;}
-
-        for(var i=n; i>=iSaudaraTR; i--){
-            var ke = parseInt(i)-1;
-            var idSaudara           = (typeof arr!='undefined')?arr[ke].replid:'';
-            var namaSaudara         = (typeof arr!='undefined')?arr[ke].namasaudara:'';
-            var jKelaminSaudara     = (typeof arr!='undefined')?arr[ke].jkelaminsaudara:'';
-            var tempatLahirSaudara  = (typeof arr!='undefined')?arr[ke].tempatlahirsaudara:'';
-            var tanggalLahirSaudara = (typeof arr!='undefined')?arr[ke].tanggallahirsaudara:'';
-            var sekolahSaudara      = (typeof arr!='undefined')?arr[ke].sekolahsaudara:'';
-            var gradeSaudara        = (typeof arr!='undefined')?arr[ke].gradesaudara:'';
-
-            tr+='<tr class="saudaraTR" id="saudaraTR_'+ke+'">'
-                +'<td>'
-                    +'<input type="hidden" value="'+ke+'" id="idSaudara'+ke+'TR" name="idSaudaraTR[]">' // array acuan
-                    +'<input type="hidden" value="'+idSaudara+'" name="idSaudara'+ke+'TB">'
-                    +'<input name="namasaudara'+ke+'TB" id="namasaudara'+ke+'TB" value="'+namaSaudara+'" required type="text" data-transform="input-control">'
-                +'</td>'
-                +'<td><select name="jkelaminsaudara'+ke+'TB" id="jkelaminsaudara'+ke+'TB" required data-transform="input-control"><option value="">-Pilih Jenis Kelamin-</option><option '+(jKelaminSaudara=='L'?'selected':'')+' value="L">Laki-laki</option><option  '+(jKelaminSaudara=='P'?'selected':'')+' value="P">Perempuan</option></select></td>'
-                +'<td><input value="'+tempatLahirSaudara+'" name="tempatlahirsaudara'+ke+'TB" id="tempatlahirsaudara'+ke+'TB" required type="text" data-transform="input-control"></td>'
-                +'<td>'
-                    +'<div class="input-control text" data-role="datepicker"'
-                        +'data-format="dd mmmm yyyy"'
-                        +'data-effect="slide">'
-                        +'<input value="'+(tanggalLahirSaudara!=''||tanggalLahirSaudara!='0000-00-00'?tgl_indo5(tanggalLahirSaudara):'')+'" placeholder="tanggal lahir" required id="tanggallahirsaudara'+ke+'TB" name="tanggallahirsaudara'+ke+'TB" type="text">'
-                        +'<button class="btn-date"></button>'
-                    +'</div>'
-                +'</td>'
-                +'<td><input value="'+sekolahSaudara+'" name="sekolahsaudara'+ke+'TB" id="sekolahsaudara'+ke+'TB" type="text" data-transform="input-control"></td>'
-                +'<td><input value="'+gradeSaudara+'" name="gradesaudara'+ke+'TB" id="gradesaudara'+ke+'TB" type="text" data-transform="input-control"></td>'
-                +'<td><a onclick="'+(idSaudara!=''?'if(confirm(\'melanjutkan untuk menghapus data?\')) saudaraDel('+ke+',\''+idSaudara+'\',\'\');':'saudaraDel('+ke+',\''+idSaudara+'\',\'\')')+'" href="#" class="button bg-white fg-red"><i class="icon-cancel-2"></a></i></td>'
-            +'</tr>';
-        }
-        if(isLoop) iSaudaraTR+=n;
-        else iSaudaraTR++;
-        $('#saudaraTBL').prepend(tr);
-    }
-// end of : saudara ------------------------------
-
-// hapus saudara terpilih
-    function saudaraDel(ke,idsaudara){
-        if(idsaudara!='') iKontakDDelTR.push(idsaudara); //jika ada hapus DB 
-        $('#saudaraTR_'+ke).fadeOut('slow',function(){
-            $('#saudaraTR_'+ke).remove();
-        });
-        // console.log(iSaudaraDelTR);
-    } 
