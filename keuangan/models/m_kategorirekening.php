@@ -103,15 +103,17 @@
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status' =>$stat,
-							'kode'   =>$r['kode'],
-							'nama'   =>$r['nama'],
-							'jenis'  =>$r['jenis']
+							'status'      =>$stat,
+							'kode'        =>$r['kode'],
+							'nama'        =>$r['nama'],
+							'jenis'       =>$r['jenis'],
+							'jenistambah' =>$r['jenistambah'],
+							'jeniskurang' =>$r['jeniskurang']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 
-			// cmbtahunbuku -----------------------------------------------------------------
+			// cmb kat angg -----------------------------------------------------------------
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){

@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : lumba2
-Source Server Version : 50625
+Source Server Version : 50616
 Source Host           : 127.0.0.1:3306
 Source Database       : sister_siadu
 
 Target Server Type    : MYSQL
-Target Server Version : 50625
+Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-09-18 03:55:40
+Date: 2015-09-29 17:06:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -4748,6 +4748,26 @@ CREATE TABLE `aka_siswa_tes` (
 -- ----------------------------
 -- Records of aka_siswa_tes
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for aka_siswakelas
+-- ----------------------------
+DROP TABLE IF EXISTS `aka_siswakelas`;
+CREATE TABLE `aka_siswakelas` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `siswa` int(11) NOT NULL,
+  `detailkelas` int(11) NOT NULL,
+  PRIMARY KEY (`replid`),
+  KEY `siswa` (`siswa`) USING BTREE,
+  KEY `detailkelas` (`detailkelas`) USING BTREE,
+  CONSTRAINT `detailkelas` FOREIGN KEY (`detailkelas`) REFERENCES `aka_detailkelas` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `siswa` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of aka_siswakelas
+-- ----------------------------
+INSERT INTO `aka_siswakelas` VALUES ('58', '148', '157');
 
 -- ----------------------------
 -- Table structure for aka_sks

@@ -93,33 +93,51 @@
                 require $d.'v_home.php';
             }else{
                 switch ($_GET['page']) {
-                    // referensi
+                    // master
                     case 'kategorirekening':
                         require $d.'v_kategorirekening.php';
                     break;
                     case 'detilrekening':
                         require $d.'v_detilrekening.php';
                     break;
-                    case 'tahunbuku':
-                        require $d.'v_tahunbuku.php';
-                    break;
                     case 'saldorekening':
                         require $d.'v_saldorekening.php';
                     break;
-                    case 'anggaran':
-                        require $d.'v_anggaran.php';
+                    case 'kategorianggaran':
+                        require $d.'v_kategorianggaran.php';
                     break;
                     case 'detilanggaran':
                         require $d.'v_detilanggaran.php';
                     break;
-                    case 'anggarantahunan':
-                        require $d.'v_anggarantahunan.php';
-                    break;
                     case 'jenislaporan':
                         require $d.'v_jenislaporan.php';
                     break;
+                    case 'pemutihanpenerimaansiswa':
+                        require $d.'v_pemutihanpenerimaansiswa.php';
+                    break;
+                    case 'diskon':
+                        require $d.'v_diskon.php';
+                    break;
+                    case 'detaildiskon':
+                        require $d.'v_detaildiskon.php';
+                    break;
+                    case 'angsuran':
+                        require $d.'v_angsuran.php';
+                    break;
+                    case 'biaya':
+                        require $d.'v_biaya.php';
+                    break;
+                    case 'detailbiaya':
+                        require $d.'v_detailbiaya.php';
+                    break;
+                    case 'viabayar':
+                        require $d.'v_viabayar.php';
+                    break;
 
                     // transaksi
+                    case 'anggarantahunan':
+                        require $d.'v_anggarantahunan.php';
+                    break;
                     case 'transaksi':
                         require $d.'v_transaksi.php';
                     break;
@@ -131,6 +149,9 @@
                     break;
                     case 'penerimaansiswa':
                         require $d.'v_penerimaansiswa.php';
+                    break;
+                    case 'rekapitulasipenerimaansiswa':
+                        require $d.'v_rekapitulasipenerimaansiswa.php';
                     break;
                     case 'sarpras':
                         require $d.'v_sarpras.php';

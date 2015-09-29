@@ -14,9 +14,9 @@
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-center">Biaya</th>
-            <th class="text-center">Cara Bayar</th>
+            <th class="text-center">Angsuran</th>
             <th class="text-center">Diskon</th>
-            <th class="text-center">Ditagih</th>
+            <!-- <th class="text-center">Ditagih</th> -->
             <th class="text-center">Keterangan</th>
             <th class="text-center">Aksi</th>
         </tr>
@@ -25,9 +25,9 @@
             <th><div class="input-control select">
                     <select  class="cari" data-hint="angsur" name="isAngsurS" id="isAngsurS">
                         <option value="">-SEMUA-</option>
-                        <option value="0">Tunai</option>
-                        <option value="1">Angsur Reguler</option>
-                        <option value="2">Angsur Bebas</option>
+                        <option value="1">Ada</option>
+                        <option value="0">Tidak Ada</option>
+                        <!-- <option value="2">Angsur Bebas</option> -->
                     </select>
             </div></th>
             <th><div class="input-control select">
@@ -39,9 +39,9 @@
                         <option value="3">Diskon Reguler & Khusus</option>
                     </select>
             </div></th>
-            <th><div class="input-control select">
+            <!-- <th><div class="input-control select">
                     <select  class="cari" data-hint="Ditagih Per" name="jenistagihanS" id="jenistagihanS"></select>
-            </div></th>
+            </div></th> -->
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari..." id="keteranganS"></div></th>
             <th></th>
         </tr>

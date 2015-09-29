@@ -16,7 +16,7 @@
 				$kategorirekening = (isset($_POST['kategorirekeningS']) and $_POST['kategorirekeningS']!='')?' kr.replid='.$_POST['kategorirekeningS'].' AND':'';
 				$kode             = isset($_POST['kodeS'])?filter($_POST['kodeS']):'';
 				$nama             = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-				$tahunbuku        = isset($_POST['tahunbukuS'])?filter($_POST['tahunbukuS']):'';
+				$tahunajaran      = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 
 				$sql = 'SELECT
 							sr.replid,
@@ -30,14 +30,14 @@
 							IFNULL(sr.nominal2,0)saldo2
 						FROM
 							keu_detilrekening r
-							LEFT JOIN keu_saldorekening sr ON sr.rekening = r.replid
+							LEFT JOIN keu_saldorekening sr ON sr.detilrekening = r.replid
 							LEFT JOIN keu_kategorirekening kr ON kr.replid = r.kategorirekening
 						WHERE
 							'.$kategorirekening.'
 							r.nama LIKE "%'.$nama.'%"
 							AND r.kode LIKE "%'.$kode.'%"
-							AND sr.tahunbuku = "'.$tahunbuku.'"';
-							// print_r($sql);exit();
+							AND sr.tahunajaran = "'.$tahunajaran.'"';
+							// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -57,16 +57,6 @@
 					$curKat = '';
 					$ec = mysql_query($sql);
 					while($res = mysql_fetch_assoc($result)){	
- 					// 	if($res['replid']==NULL){ // belum ada
-						// 	$si = 'INSERT INTO keu_saldorekening set 
-						// 			rekening = '.$res['idrekening'].',
-						// 			tahunbuku = '.$tahunbuku;
-						// 	$ei = mysql_query($si);
-						// 	if($ei)
-						// 		echo '<script>window.location=\'saldo-rekening\';</script>';
-						// 	else
-						// 		$out.='<tr><td>'.$res['nama'].' is failed to insert </td></tr>';
-						// }else{ //sudah ada
 							if($res['idkategorirekening']!=$curKat){ // kategori rek 
 								$ss = 'SELECT replid,nama,RPAD(kode,6,0)kode from keu_kategorirekening where replid='.$res['idkategorirekening'];	
 								$ee = mysql_query($ss);
@@ -118,37 +108,36 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s    = $tb.' set 	nominal 	= "'.getuang(filter($_POST['nominalTB'])).'", 
-									nominal2 	= "'.getuang(filter($_POST['nominalTB'])).'"';
-				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// print_r($s2);exit();
-				$e    = mysql_query($s2);
+				$s    =' UPDATE '.$tb.' set nominal 	= '.getuang(filter($_POST['nominalTB'])).', 
+											nominal2 	= '.getuang(filter($_POST['nominalTB'])).'
+									WHERE 	replid		='.$_POST['replid'];
+								// pr($s);
+				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
 				$out  = json_encode(array('status'=>$stat));
 			break;
-			// add / edit -----------------------------------------------------------------
 			
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s = 'SELECT
-							tb.nama tahunbuku,
-							kr.nama kategorirekening,
-							r.kode,
-							r.nama,
-							kr.jenis,
-							IFNULL(sr.nominal,0)nominal
-						FROM
-							keu_detilrekening r
-							LEFT JOIN keu_saldorekening sr ON sr.rekening = r.replid
-							LEFT JOIN keu_kategorirekening kr ON kr.replid = r.kategorirekening
-							LEFT JOIN keu_tahunbuku tb  ON tb.replid =sr.tahunbuku
-						WHERE
-							sr.replid ='.$_POST['replid'];
-				// print_r($s);exit();
+						t.tahunajaran,
+						kr.nama kategorirekening,
+						r.kode,
+						r.nama,
+						kr.jenis,
+						IFNULL(sr.nominal,0)nominal
+					FROM
+						keu_detilrekening r
+						JOIN keu_saldorekening sr ON sr.detilrekening = r.replid
+						JOIN keu_kategorirekening kr ON kr.replid = r.kategorirekening
+						JOIN aka_tahunajaran t ON t.replid =sr.tahunajaran
+					WHERE
+						sr.replid ='.$_POST['replid'];
+				// vd($s);
 				$e   = mysql_query($s);
 				$r   = mysql_fetch_assoc($e);
 				$out = json_encode(array(
-							'tahunbuku'        =>$r['tahunbuku'],
+							'tahunajaran'        =>$r['tahunajaran'],
 							'kategorirekening' =>$r['kategorirekening'],
 							'kode'             =>$r['kode'],
 							'nama'             =>$r['nama'],

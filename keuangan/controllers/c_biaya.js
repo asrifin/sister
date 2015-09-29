@@ -12,17 +12,17 @@ var contentFR = '';
                         // biaya
                         +'<label>Biaya</label>'
                         +'<div class="input-control text">'
-                            +'<input type="text" placeholder="biaya" name="biayaTB" id="biayaTB"/>'
+                            +'<input required type="text" placeholder="biaya" name="biayaTB" id="biayaTB"/>'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         // isangsur
-                        +'<label>Cara Bayar</label>'
+                        +'<label>Angsuran</label>'
                         +'<div class="input-control select">'
                             +'<select required  id="isAngsurTB" name="isAngsurTB">'
                                 +'<option value="">-Pilih-</option>'
-                                +'<option value="0">Tunai</option>'
-                                +'<option value="1">Angsur Reguler</option>'
-                                +'<option value="2">Angsur Bebas</option>'
+                                +'<option value="1">Ada</option>'
+                                +'<option value="0">Tidak Ada</option>'
+                                // +'<option value="2">Angsur Bebas</option>'
                             +'</select>'
                         +'</div>'
                         // isdiskon
@@ -37,11 +37,11 @@ var contentFR = '';
                             +'</select>'
                         +'</div>'
                         // jenistagihan
-                        +'<label>Jenis Tagihan</label>'
-                        +'<div class="input-control select">'
-                            +'<select required id="jenistagihanTB" name="jenistagihanTB">'
-                            +'</select>'
-                        +'</div>'
+                        // +'<label>Jenis Tagihan</label>'
+                        // +'<div class="input-control select">'
+                        //     +'<select required id="jenistagihanTB" name="jenistagihanTB">'
+                        //     +'</select>'
+                        // +'</div>'
                         // keterngan
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
@@ -49,7 +49,7 @@ var contentFR = '';
                         +'</div>'
                         // button
                         +'<div class="form-actions">' 
-                            +'<button class="button primary">simpan</button>&nbsp;'
+                            +'<button id="simpanBC" class="button primary">simpan</button>&nbsp;'
                         +'</div>'
                     +'</form>';
 
@@ -130,16 +130,17 @@ var contentFR = '';
     function simpan(){
         var urlx ='&aksi=simpan';
         // edit mode
-        if($('#idformH').val()!=''){
-            urlx += '&replid='+$('#idformH').val();
-        }
+        if($('#idformH').val()!='') urlx += '&replid='+$('#idformH').val();
+
         $.ajax({
             url:dir,
             cache:false,
             type:'post',
             dataType:'json',
             data:$('form').serialize()+urlx,
-            success:function(dt){
+            beforeSend:function(){
+                $('#simpanBC').html('<img src="img/w8loader.gif">');
+            },success:function(dt){
                 if(dt.status!='sukses'){
                     cont = 'Gagal menyimpan data';
                     clr  = 'red';
@@ -213,11 +214,11 @@ var contentFR = '';
                         $('#keteranganTB').val(r.keterangan);
                         $('#isAngsurTB').val(r.isAngsur);
                         $('#isDiskonTB').val(r.isDiskon);
-                        cmbjenistagihan('form',r.jenistagihan);
+                        // cmbjenistagihan('form',r.jenistagihan);
                     });
                 }else{ // form mode : add  
                     titl='Tambah '+mnu;
-                    cmbjenistagihan('form','');
+                    // cmbjenistagihan('form','');
                 }$.Dialog.title(titl);
                 $.Dialog.content(contentFR);
                 $('#biayaTB').focus();

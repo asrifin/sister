@@ -5,8 +5,10 @@
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 
-	$mnu = 'anggarantahunan';
-	$tb  = 'keu_'.$mnu;
+	$mnu  = 'kategorianggaran';
+	$mnu2 = 'detilanggaran';
+	$tb   = 'keu_'.$mnu;
+	$tb2  = 'keu_'.$mnu2;
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['upload'])){
@@ -76,21 +78,32 @@
 		switch ($_POST['aksi']) {
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
+				$departemen       = isset($_POST['departemenS'])?$_POST['departemenS']:'';
+				$tingkat          = isset($_POST['tingkatS'])?$_POST['tingkatS']:'';
 				$kategorianggaran = isset($_POST['kategorianggaranS'])?filter($_POST['kategorianggaranS']):'';
-				$detilanggaran    = isset($_POST['detilanggaranS'])?filter($_POST['detilanggaranS']):'';
+				$detilrekening    = isset($_POST['detilrekeningS'])?filter($_POST['detilrekeningS']):'';
 				$keterangan       = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
-				$tahunajaran      = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 
-				$sql = 'SELECT at.replid,da.detilanggaran,da.keterangan,at.hargasatuan
-						FROM keu_detilanggaran da
-							LEFT JOIN '.$tb.' at on at.detilanggaran = da.replid
+				$sql = 'SELECT
+							ka.replid,	
+							ka.kategorianggaran,
+							ka.keterangan,
+							concat("[",dr.kode,"] ",dr.nama)rekening
+						FROM
+							keu_kategorianggaran ka
+							JOIN keu_detilrekening dr on dr.replid = ka.detilrekening
 						where 
-							at.tahunajaran = '.$tahunajaran.' and 
-							da.kategorianggaran = "'.$kategorianggaran.'"  and 
-							da.detilanggaran LIKE "%'.$detilanggaran.'%" and 
-							da.keterangan LIKE "%'.$keterangan.'%"
-						order by da.detilanggaran asc';
-				// pr($sql);
+							ka.departemen = '.$departemen.'  and 
+							ka.tingkat = '.$tingkat.'  and (
+								dr.kode LIKE  "%'.$detilrekening.'%" OR
+								dr.nama LIKE  "%'.$detilrekening.'%"
+							)and 
+							ka.kategorianggaran LIKE "%'.$kategorianggaran.'%" and 
+							ka.keterangan LIKE "%'.$keterangan.'%"
+						order by
+							ka.kategorianggaran asc,
+							dr.nama asc';
+							// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -105,24 +118,31 @@
 
 				#ada data
 				$jum	= mysql_num_rows($result);
-				$out ='';
+				$out ='';$totaset=0;
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
+						// <button data-hint="detail"  class="button" onclick="vwHeadDetilAnggaran('.$res['replid'].');">
+						// 	<i class="icon-zoom-in"></i>
+						// </button>
 						$btn ='<td align="center">
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
+									<button data-hint="ubah"  class="button" onclick="loadFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
+									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+										<i class="icon-remove on-left"></i>
+									</button>
 								 </td>';
-					 	// kuota 	
 						$out.= '<tr>
-									<td>'.$res['detilanggaran'].'</td>
+									<td>'.$res['kategorianggaran'].'</td>
+									<td>'.$res['rekening'].'</td>
 									<td>'.$res['keterangan'].'</td>
-									<td align="right">
-										<div class="progress-bar" data-role="progress-bar" data-color="bg-green" data-value="100"></div>
-										'.setuang($res['hargasatuan']).'</td>
+									<td>-</td>
 									'.$btn.'
 								</tr>';
+									// <td class="text-right" >Rp. '.number_format(getKatAnggaran($res['replid'],'kuotaNum')).'</td>
+									// <td class="text-right" >Rp. '.number_format(getKatAnggaran($res['replid'],'sisaNum')).'</td>
+									// <td class="text-center">'.$res['jmlItem'].' item</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -136,23 +156,110 @@
 			break; 
 			// tampil ---------------------------------------------------------------------
 
+			// head info ------------------------------------------------------------------
+			case 'headinfo':
+				switch ($_POST['subaksi']) {
+					case 'detilanggaran':
+						$s = '	SELECT 
+									k.nama,
+									k.keterangan,
+									ta.tahunajaran,
+									CONCAT(t.tingkat,"(",t.keterangan,")") tingkat,
+									d.nama departemen
+								FROM keu_kategorianggaran k
+									LEFT JOIN aka_tingkat t on t.replid = k.tingkat
+									LEFT JOIN aka_tahunajaran ta on ta.replid = t.tahunajaran
+									LEFT JOIN departemen d on d.replid = ta.departemen
+								WHERE 
+									k.replid = '.$_POST['kategorianggaran'];
+							// print_r($s);exit();
+						$q    = mysql_query($s);
+						$stat = $q?'sukses':'gagal';
+						$r    = mysql_fetch_assoc($q);
+						$katAnggKuotaNum = getKatAnggaran($_POST['kategorianggaran'],'kuotaNum');
+						$katAnggSisaNum  = getKatAnggaran($_POST['kategorianggaran'],'sisaNum');
+						$out  = json_encode(array(
+									'status'          =>$stat,
+									'nama'            =>$r['nama'],
+									'keterangan'      =>$r['keterangan'],
+									'tahunajaran'     =>$r['tahunajaran'],
+									'tingkat'         =>$r['tingkat'],
+									'departemen'      =>$r['departemen'],
+									'katAnggKuotaNum' =>$katAnggKuotaNum,
+									'katAnggSisaNum'  =>$katAnggSisaNum,
+								));
+					break;
+
+					case 'barang':
+						$s = '	SELECT
+									g.replid,
+									g.nama as grup,(
+										SELECT nama
+										from sar_lokasi 
+										where replid = g.lokasi
+									)as lokasi,
+									IFNULL(tbjum.totbarang,0)totbarang,
+									tbjum.susut,
+									tbjum.nama as katalog,
+									tbjum.totaset,
+									tbjum.photo2
+								from 
+									sar_grup g
+									LEFT JOIN (
+										SELECT 
+											k.replid,
+											k.grup,
+											k.susut,
+											k.nama,
+											k.photo2,
+											count(*)totbarang,
+											sum(b.harga)totaset
+										from 
+											sar_katalog k,
+											sar_barang b
+										WHERE
+											k.replid = b.katalog AND
+											k.replid = '.$_POST['katalog'].'
+									)tbjum on tbjum.grup = g.replid
+								where 
+									tbjum.replid= '.$_POST['katalog'];
+						// var_dump($s);exit();
+						$e = mysql_query($s) or die(mysql_error());
+						$r = mysql_fetch_assoc($e);
+						if(!$e){
+							$stat='gagal';
+						}else{
+							$stat ='sukses';
+							$dt   = array(
+										'idkatalog' =>$r['replid'],
+										'katalog'   =>$r['katalog'],
+										'grup'      =>$r['grup'],
+										'photo2'    =>$r['photo2'],
+										'lokasi'    =>$r['lokasi'],
+										'susut'     =>$r['susut'],
+										'totbarang' =>$r['totbarang'],
+										'totaset'   =>number_format($r['totaset'])
+									);
+						}
+						$out  = json_encode(array(
+									'status' =>$stat,
+									'data'   =>$dt
+								));
+					break;
+				}
+			break;
+			// head info ------------------------------------------------------------------
+
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				// simpan anggaran tahunan  -----
-				$s  ='	UPDATE '.$tb.' set hargasatuan = '.getuang($_POST['hargasatuanTB']).' 
-						WHERE replid='.$_POST['replid'];
-				$e = mysql_query($s);
-				// nominal anggaran ----
-				if($e && isset($_POST['idnominalH'])){
-					$stat2=true;
-					foreach ($_POST['idnominalH'] as $i => $v) {
-						$s2='UPDATE keu_nominalanggaran SET jml 	='.$_POST['jml'.$v.'TB'].',
-															bulan   ='.$v.' 
-													WHERE 	anggarantahunan	='.$_POST['replid'].' AND bulan ='.$v;
-						$e2    =mysql_query($s2);
-						$stat2 =!$e2?false:true;
-					}$stat  = !$stat2?'gagal_nominal':'sukses';
-				}$out = json_encode(array('status'=>(!$e|| !$stat2?'gagal':'sukses')));
+				$s= $tb.' set 	kategorianggaran = "'.$_POST['kategorianggaranTB'].'",
+								departemen       = '.$_POST['departemenTB'].',
+								tingkat          = '.$_POST['tingkatTB'].',
+								detilrekening    = '.$_POST['detilrekeningH'].',
+								keterangan       = "'.$_POST['keteranganTB'].'"';
+				$s2  =(isset($_POST['replid']) AND $_POST['replid']!='')?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				$e   = mysql_query($s2);
+				$out = json_encode(array('status'=>!$e?'gagal':'sukses'));
 			break;
 			
 			// delete ---------------------------------------------------------------------
@@ -167,55 +274,29 @@
 
 			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
-				$s = '	SELECT
-							ta.hargasatuan,	
-							da.detilanggaran,	
-							ka.departemen,
-							ta.tahunajaran,
-							ka.tingkat,
-							ka.kategorianggaran,
-							da.keterangan
-						FROM
-							keu_anggarantahunan ta
-							JOIN keu_detilanggaran da ON da.replid = ta.detilanggaran
-							JOIN keu_kategorianggaran ka ON ka.replid = da.kategorianggaran
-						WHERE
-							ta.replid ='.$_POST['replid'];
+				$s = 	'SELECT 
+							a.departemen,
+							a.tingkat,
+							a.kategorianggaran,
+							a.keterangan,
+							a.detilrekening iddetilrekening,
+							concat("[",d.kode,"] ",d.nama)detilrekening
+						FROM '.$tb.' a
+							LEFT JOIN keu_detilrekening d on d.replid = a.detilrekening
+						WHERE a.replid ='.$_POST['replid'];
 				// pr($s);
-				$e = mysql_query($s);
-				$r = mysql_fetch_assoc($e);
-				if(!$e) $stat ='gagal_ambiledit_anggaran_tahunan';
-				else{
-					$s2 ='SELECT replid, jml, bulan FROM keu_nominalanggaran WHERE anggarantahunan ='.$_POST['replid'];
-					$e2 = mysql_query($s2);
-					$stat=!$e2?'gagal_nominalanggaran':'sukses';
-					$nominalArr=array();
-					$totJml=$totJmlHrg=0;
-					while ($r2=mysql_fetch_assoc($e2)) {
-						$jmlHrg=(intval($r2['jml'])*intval($r['hargasatuan']));
-						$totJml+=$r2['jml'];
-						$totJmlHrg+=$jmlHrg;
-						$nominalArr[]=array(
-							'replid' =>$r2['replid'],
-							'jml'    =>$r2['jml'],
-							'bulan'  =>$r2['bulan'],
-							'jmlHrg' =>setuang($jmlHrg),
-						);
-					}
-				}
-				$out = json_encode(array(
-						'status'           =>$stat,
-						'departemen'       =>$r['departemen'],
-						'tahunajaran'      =>$r['tahunajaran'],
-						'tingkat'          =>$r['tingkat'],
-						'kategorianggaran' =>$r['kategorianggaran'],
-						'detilanggaran'    =>$r['detilanggaran'],	
-						'hargasatuan'      =>setuang($r['hargasatuan']),	
-						'keterangan'       =>$r['keterangan'],
-						'nominalArr'       =>$nominalArr,
-						'totJml'           =>$totJml,
-						'totJmlHrg'        =>setuang($totJmlHrg)
-					));
+				$e 		= mysql_query($s);
+				$r 		= mysql_fetch_assoc($e);
+				$stat 	= ($e)?'sukses':'gagal';
+				$out 	= json_encode(array(
+							'status'           =>$stat,
+							'departemen'       =>$r['departemen'],
+							'tingkat'          =>$r['tingkat'],
+							'kategorianggaran' =>$r['kategorianggaran'],
+							'iddetilrekening'  =>$r['iddetilrekening'],
+							'detilrekening'    =>$r['detilrekening'],
+							'keterangan'       =>$r['keterangan'],
+						));
 			break;
 			// ambiledit ------------------------------------------------------------------
 
@@ -269,7 +350,7 @@
 			// generate barcode -----------------------------------------------------------
 			
 			// cmb kategori anggaran -----------------------------------------------------------------
-			case 'cmbkategorianggaran':
+			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
 					$w.='where replid ='.$_POST['replid'];
@@ -277,7 +358,7 @@
 					if(isset($_POST[$mnu])){
 						$w.='where '.$mnu.'='.$_POST[$mnu];
 					}elseif(isset($_POST['departemen'])){
-						$w.='where departemen ='.$_POST['departemen'];
+						$w.='where departemen ='.$_POST['departemen'].' AND  tingkat ='.$_POST['tingkat'];
 					}
 				}
 				
@@ -285,8 +366,8 @@
 						from '.$tb.'
 						'.$w.'		
 						ORDER  BY 
-							nama asc';
-				// var_dump($s);exit();
+							kategorianggaran asc';
+// pr($s);
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
 				$ar=$dt=array();

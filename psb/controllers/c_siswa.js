@@ -16,7 +16,7 @@ var dir2  = '../akademik/models/m_'+mnu2+'.php';
 var dir3  = '../akademik/models/m_'+mnu3+'.php';
 var dir4  = '../akademik/models/m_'+mnu4+'.php';
 var dir5  = 'models/m_'+mnu5+'.php';
-var dir6  = 'models/m_'+mnu6+'.php';
+var dir6  = '../keuangan/models/m_'+mnu6+'.php';
 var dir7  = 'models/m_'+mnu7+'.php';
 var dir8  = 'models/m_'+mnu8+'.php';
 var dir9  = '../akademik/models/m_'+mnu9+'.php';
@@ -132,7 +132,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                             +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // tingkat
                                             +'<label>Tingkat</label>'
-                                            +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya(); subdokumenFC();" id="tingkatTBZ" name="tingkatTB"></select>'
+                                            +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya();" id="tingkatTBZ" name="tingkatTB"></select>'
                                             +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // subtingkat
                                             +'<label>Sub Tingkat</label>'
@@ -1213,7 +1213,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                     cmbgolongan('form','');
                     cmbangsuran('');
                     biayaFC('');
-                    subdokumenFC();
+                    // subdokumenFC();
                     kontakdaruratFC();
                 }
                 // $("#form1").scrollbar({height: 355,axis: 'y'});

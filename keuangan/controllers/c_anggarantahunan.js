@@ -1,278 +1,253 @@
 var mnu  ='anggarantahunan'; 
-var dir  ='models/m_'+mnu+'.php';
-
-var mnu2 ='tahunbuku'; 
-var dir2 ='models/m_'+mnu2+'.php';
-
+var mnu2 ='kategorianggaran'; 
 var mnu3 ='departemen'; 
+var mnu4 ='detilanggaran'; 
+var mnu5 ='tingkat'; 
+var mnu6 ='tahunajaran'; 
+
+var dir  ='models/m_'+mnu+'.php';
+var dir2 ='models/m_'+mnu2+'.php';
 var dir3 ='../akademik/models/m_'+mnu3+'.php';
+var dir4 ='../akademik/models/m_'+mnu4+'.php';
+var dir5 ='../akademik/models/m_'+mnu5+'.php';
+var dir6 ='../akademik/models/m_'+mnu6+'.php';
 
-var mnu4 ='anggaran'; 
-var dir4 ='models/m_'+mnu4+'.php';
 var contentFR ='';
-
+    
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+        // anggaran
+        contentFR += '<form style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpanSV();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
+                         // header 
+                        +'<table class="table xbordered">'
+                            +'<tr>'
+                                +'<td class="size2">Departemen</td>'
+                                +'<td id="departemenTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Tingkat</td>'
+                                +'<td id="tingkatTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Kategori Anggaran </td>'
+                                +'<td id="kategorianggaranTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Tahun Ajaran </td>'
+                                +'<td id="tahunajaranTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Detil Anggaran </td>'
+                                +'<td id="detilanggaranTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Keterangan </td>'
+                                +'<td id="keteranganTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Harga Satuan </td>'
+                                +'<td>'
+                                    +'<input onkeyup="hitungAll();" placeholder="harga satuan " onfocus="inputuang(this);" name="hargasatuanTB" id="hargasatuanTB" data-transform="input-control"  type="text" />'
+                                +'</td>'
+                            +'</tr>'
+                        +'</table>'
 
-                        +'<label>Departemen</label>'
-                        +'<div>'
-                            +'<div class="input-control size3 text" >'
-                                +'<input disabled name="departemenTB" id="departemenTB" type="text">'
-                            +'</div>'
-                        +'</div>'    
+                        // +'<label>Harga Satuan</label>'
 
-                        +'<label>Tahun Buku</label>'
-                        +'<div>'
-                            +'<div class="input-control size2 text" >'
-                                +'<input disabled name="tahunbukuTB" id="tahunbukuTB" type="text">'
-                            +'</div>'
-                        +'</div>'                        
+                        // nominal anggaran 
+                        +'<table class="table hovered bordered striped">'
+                                // header
+                                +'<tr class="fg-white bg-blue">'
+                                    +'<th>Bulan</th>'
+                                    +'<th>Jumlah</th>'
+                                    +'<th>Harga Total</th>'
+                                +'</tr>'
+                                
+                            // list 
+                                // Juli
+                                +'<tr>'
+                                    +'<td>Juli</td>'
+                                    +'<td>'
+                                        +'<div val="7" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="7" />'
+                                            +'<input class="jml text-right" id="jml7TB" name="jml7TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg7TD">Rp. 0</td>'
+                                +'</tr>'
+                                
+                                // agustus
+                                +'<tr>'
+                                    +'<td>agustus</td>'
+                                    +'<td>'
+                                        +'<div val="8" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="8" />'
+                                            +'<input class="jml text-right" id="jml8TB" name="jml8TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg8TD">Rp. 0</td>'
+                                +'</tr>'
 
-                        +'<label>Kategori Anggaran</label>'
-                        +'<div>'
-                            +'<div class="input-control size4 text" >'
-                                +'<input disabled name="kategorianggaranTB" id="kategorianggaranTB" type="text">'
-                            +'</div>'
-                        +'</div>'                
+                                // September
+                                +'<tr>'
+                                    +'<td>September</td>'
+                                    +'<td>'
+                                        +'<div val="9" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="9" />'
+                                            +'<input class="jml text-right" id="jml9TB" name="jml9TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg9TD">Rp. 0</td>'
+                                +'</tr>'
 
-                        +'<label>Detil Anggaran</label>'
-                        +'<div>'
-                            +'<div class="input-control size4 text" >'
-                                +'<input disabled name="detilanggaranTB" id="detilanggaranTB" type="text">'
-                            +'</div>'
-                        +'</div>'                
+                                // Oktober
+                                +'<tr>'
+                                    +'<td>Oktober</td>'
+                                    +'<td>'
+                                        +'<div val="10" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="10" />'
+                                            +'<input class="jml text-right" id="jml10TB" name="jml10TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg10TD">Rp. 0</td>'
+                                +'</tr>'
 
-                        +'<label>Rekening</label>'
-                        +'<div>'
-                            +'<div class="input-control size3 text" >'
-                                +'<input disabled name="rekeningTB" id="rekeningTB" type="text">'
-                            +'</div>'
-                        +'</div>'
+                                // November
+                                +'<tr>'
+                                    +'<td>November</td>'
+                                    +'<td>'
+                                        +'<div val="11" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="11" />'
+                                            +'<input class="jml text-right" id="jml11TB" name="jml11TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg11TD">Rp. 0</td>'
+                                +'</tr>'
 
-                        +'<label>Nominal</label>'
-                        +'<div>'
-                            +'<div class="input-control size3 text" >'
-                                +'<input onclick="inputuang(this);" placeholder="nominal" type="text" name="nominalTB" id="nominalTB">'
-                            +'</div>'
-                        +'</div>'
-                        
+                                // Desember
+                                +'<tr>'
+                                    +'<td>Desember</td>'
+                                    +'<td>'
+                                        +'<div val="12" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="12" />'
+                                            +'<input class="jml text-right" id="jml12TB" name="jml12TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg12TD">Rp. 0</td>'
+                                +'</tr>'
+
+                                // Januari
+                                +'<tr>'
+                                    +'<td>Januari</td>'
+                                    +'<td>'
+                                        +'<div val="1" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="1" />'
+                                            +'<input class="jml text-right" id="jml1TB" name="jml1TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg1TD">Rp. 0</td>'
+                                +'</tr>'
+
+                                // Februari
+                                +'<tr>'
+                                    +'<td>Februari</td>'
+                                    +'<td>'
+                                        +'<div val="2" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="2" />'
+                                            +'<input class="jml text-right" id="jml2TB" name="jml2TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg2TD">Rp. 0</td>'
+                                +'</tr>'
+
+                                // Maret
+                                +'<tr>'
+                                    +'<td>Maret</td>'
+                                    +'<td>'
+                                        +'<div val="3" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="3" />'
+                                            +'<input class="jml text-right" id="jml3TB" name="jml3TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg3TD">Rp. 0</td>'
+                                +'</tr>'
+
+                                // April
+                                +'<tr>'
+                                    +'<td>April</td>'
+                                    +'<td>'
+                                        +'<div val="4" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="4" />'
+                                            +'<input class="jml text-right" id="jml4TB" name="jml4TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg4TD">Rp. 0</td>'
+                                +'</tr>'
+
+                                // Mei
+                                +'<tr>'
+                                    +'<td>Mei</td>'
+                                    +'<td>'
+                                        +'<div val="5" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="5" />'
+                                            +'<input class="jml text-right" id="jml5TB" name="jml5TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg5TD">Rp. 0</td>'
+                                +'</tr>'
+
+                                // Juni
+                                +'<tr>'
+                                    +'<td>Juni</td>'
+                                    +'<td>'
+                                        +'<div val="6" class="input-control text">'
+                                            +'<input class="idnominal" type="hidden" name="idnominalH[]" value="6" />'
+                                            +'<input class="jml text-right" id="jml6TB" name="jml6TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                        +'</div>'
+                                    +'</td>'
+                                    +'<td class="jmlHrg" align="right" id="jmlHrg6TD">Rp. 0</td>'
+                                +'</tr>'
+
+                                // total 
+                                +'<tr class="fg-white bg-blue">'
+                                    +'<th>Total</th>'
+                                    +'<th align="right" id="totJmlTD">12</th>'
+                                    +'<th align="right" id="totJmlHrgTD">Rp. 0</th>'
+                                +'</tr>'
+                            +'</table>'
+
+                        // button simpan
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
-                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
-
         cmbdepartemen('filter','');
 
-        //add form
-        $("#tambahBC").on('click', function(){
-            viewFR('');
+        //print----
+        $('#cetakBC').on('click',function(){
+            printPDF('anggaran');
         });
-
-        //cari ----
-        $('#cariBC').on('click',function(){
-            $('#cariTR').toggle('slow');
-            $('#kodeS').val('');
-            $('#namaS').val('');
-            $('#keteranganS').val('');
+        $('#cetak2BC').on('click',function(){
+            printPDF('anggaran2');
+        });$('#k_cetakBC').on('click',function(){
+            printPDF('detilanggaran');
         });
-        //search action // edit by epiii
-        $('#departemenS,#tahunbukuS,#kategorianggaranS').on('change',function (e){ // change : combo box
+        // search box
+        $('#keteranganS,#detilanggaranS').on('keydown',function (e){ // kode grup
+            if(e.keyCode == 13) viewTB();
+        });//combo box
+        $('#tahunajaranS').on('change',function (){ // kode grup
             viewTB();
         });
-        $('#kodeS,#namaS').on('keydown',function (e){ // kode grup
-            if(e.keyCode == 13)
-                viewTB();
+        $('#kategorianggaranS').on('change',function (){ // kode grup
+            cmbtahunajaran('filter','')
         });
-       
+        $('#departemenS,#tingkatS').on('change',function (){ // kode grup
+             cmbkategorianggaran('filter','');
+        });
     }); 
-// end of main function ---
-// 
-// combo departemen ---
-    function cmbdepartemen(typ,dep){
-        var depart ='';
-        if(dep!='') 
-            depart = '&replid='+dep;
-        $.ajax({
-            url:dir3,
-            data:'aksi=cmb'+mnu3+depart,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    if(dt.departemen.length==0)
-                        out+='<option value="">kosong</option>';
-                    else{
-                        $.each(dt.departemen, function(id,item){
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                        });
-                    }    
-                }
-                if(typ=='form'){ //form
-                    $('#departemenTB').text(dt.departemen[0].nama);
-                }else{// filtering
-                    $('#departemenS').html(out);
-                    cmbtahunbuku('filter','');
-                } 
-            }
-        });
-    }
-//end of combo departemen ----
-
-
-// combo departemen ---
-    function cmbkategorianggaran(typ,kat){
-        $.ajax({
-            url:dir4,
-            data:'aksi=cmbkategori'+mnu4,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.kategorianggaran, function(id,item){
-                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                }
-
-                if(typ=='form'){ //form
-                    $('#kategorianggaranTB').html(dt.kategorianggaran[0].nama);
-                }else{// filtering
-                    $('#kategorianggaranS').html(out);
-                    viewTB();
-                } 
-
-            }
-        });
-    }
-//end of combo departemen ---
-
-// combo tahun buku  ---
-    function cmbtahunbuku(typ,thn){
-        $.ajax({
-            url:dir2,
-            data:'aksi=cmb'+mnu2,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.tahunbuku, function(id,item){
-                        if(item.aktif==1)
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
-                        else
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                    });
-                }
-
-                if(typ=='form'){ //form
-                    $('#tahunbukuTB').html(dt.tahunbuku[0].nama);
-                }else{// filtering
-                    $('#tahunbukuS').html(out);
-                    cmbkategorianggaran('filter','');
-                } 
-
-            }
-        });
-    }
-//end of combo departemen ---
-
-//save process ---
-    function simpan(){
-        var urlx ='&aksi=simpan';
-        // edit mode
-        if($('#idformH').val()!=''){
-            urlx += '&replid='+$('#idformH').val();
-        }
-        $.ajax({
-            url:dir,
-            cache:false,
-            type:'post',
-            dataType:'json',
-            data:$('form').serialize()+urlx,
-            success:function(dt){
-                if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
-                    clr  = 'red';
-                }else{
-                    $.Dialog.close();
-                    kosongkan();
-                    cont = 'Berhasil menyimpan data';
-                    clr  = 'green';
-                    viewTB();
-                }notif(cont,clr);
-            }
-        });
-    }
-//end of save process ---
-
-// view table ---
-    function viewTB(){ 
-        var aksi ='aksi=tampil';
-        var cari ='&kategorianggaranS='+$('#kategorianggaranS').val()
-                +'&departemenS='+$('#departemenS').val()
-                +'&tahunbukuS='+$('#tahunbukuS').val()
-                +'&rekeningS='+$('#rekeningS').val()
-                +'&namaS='+$('#namaS').val()
-                +'&nominalS='+$('#nominalS').val();
-
-        $.ajax({
-            url : dir,
-            type: 'post',
-            data: aksi+cari,
-            beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
-            },success:function(dt){
-                setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
-                },1000);
-            }
-        });
-    }
-// end of view table ---
-
-// form ---
-    function viewFR(id){
-        $.Dialog({
-            shadow: true,
-            overlay: true,
-            draggable: true,
-            width: 500,
-            padding: 10,
-            onShow: function(){
-                var titlex='<span class="icon-pencil"></span> Ubah';
-                $.ajax({
-                    url:dir,
-                    data:'aksi=ambiledit&replid='+id,
-                    type:'post',
-                    dataType:'json',
-                    success:function(dt){
-                        $('#idformH').val(id);
-                        $('#kategorianggaranTB').val(dt.kategorianggaran);
-                        $('#tahunbukuTB').val(dt.tahunbuku);
-                        $('#departemenTB').val(dt.departemen);
-                        $('#detilanggaranTB').val(dt.detilanggaran);
-                        $('#rekeningTB').val(dt.rekening);
-                        $('#namaTB').val(dt.nama);
-                        $('#nominalTB').val(dt.nominal);
-                    }
-                });
-                $.Dialog.title(titlex+' '+mnu); // edit by epiii
-                $.Dialog.content(contentFR);
-            }
-        });
-    }
-// end of form ---
-
+    
 //paging ---
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
@@ -306,90 +281,364 @@ var contentFR ='';
             }
         });
     }
-//end of paging ---
 
-    // function pagination(page,aksix,menux){ 
-    //     var datax = 'starting='+page+'&aksi='+aksix+'&menu='+menux;
-    //     var cari  = '&kategoriS='+$('#kategoriS').val();
-    //                 // +'&tempatS='+$('#tempatS').val()
-    //                 // +'&keteranganS='+$('#keteranganS').val();
-    //     $.ajax({
-    //         url:dir,
-    //         type:"post",
-    //         data: datax+cari,
-    //         beforeSend:function(){
-    //             $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
-    //         },success:function(dt){
-    //             setTimeout(function(){
-    //                 $('#tbody').html(dt).fadeIn();
-    //             },1000);
-    //         }
-    //     });
-    // }   
-//end of paging ---
+// view table ---
+    function viewTB(subaksi){
+        var aksi ='aksi=tampil';
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
+        }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
+        $.ajax({
+            url : dir,
+            type: 'post',
+            data: aksi+cari,
+            beforeSend:function(){
+                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+            },success:function(dt){
+                setTimeout(function(){
+                    $(el2).html(dt).fadeIn();
+                },500);
+            }
+        });
+}
+
+    function simpanSV(){
+        var urlx ='&aksi=simpan&subaksi=anggaran';
+        // edit mode
+        if($('#idformH').val()!=''){
+            urlx += '&replid='+$('#idformH').val();
+        }
+        var u = dir;
+        var d = $('form').serialize()+urlx;
+        ajax(u,d).done(function (dt){
+            if(dt.status!='sukses'){
+                cont = 'Gagal menyimpan data';
+                clr  = 'red';
+            }else{
+                $.Dialog.close();
+                viewTB();
+                cont = 'Berhasil menyimpan data';
+                clr  = 'green';
+            }notif(cont,clr);
+        });
+    }
     
-//del process ---
     function del(id){
         if(confirm('melanjutkan untuk menghapus data?'))
-        $.ajax({
-            url:dir,
-            type:'post',
-            data:'aksi=hapus&replid='+id,
-            dataType:'json',
-            success:function(dt){
-                var cont,clr;
-                if(dt.status!='sukses'){
-                    cont = '..Gagal Menghapus '+dt.terhapus+' ..';
-                    clr  ='red';
-                }else{
-                    // viewTB($('#tempatS').val());
-                    viewTB($('#'+mnu2+'S').val());
-                    cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
-                    clr  ='green';
-                }
-                notif(cont,clr);
+        var u = dir;
+        var d ='aksi=hapus&subaksi=anggaran&replid='+id;
+        ajax(u,d).done(function (dt){
+            var cont,clr;
+            if(dt.status!='sukses'){
+                cont = '..Gagal Menghapus '+dt.terhapus+' ..';
+                clr  ='red';
+            }else{
+                viewTB();
+                cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
+                clr  ='green';
+            }notif(cont,clr);
+        });
+    }
+    
+  // autosuggest
+    function autoSuggest(el){
+        var urlx= '?aksi=autocomp';
+        var col = [{
+                'align':'left',
+                'columnName':'kode',
+                'hide':true,
+                'width':'10',
+                'label':'Kode'
+            },{   
+                'align':'left',
+                'columnName':'nama',
+                'width':'90',
+                'label':'detilRekening'
+        }];
+
+        urly = dir+urlx;
+        $('#'+el+'TB').combogrid({
+            debug:true,
+            width:'900px',
+            colModel: col ,
+            url: urly,
+            select: function( event, ui ) { // event setelah data terpilih 
+                $('#'+el+'H').val(ui.item.replid);
+                $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
+
+                // validasi input (tidak sesuai data dr server)
+                    $('#'+el+'TB').on('keyup', function(e){
+                        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+                        var keyCode = $.ui.keyCode;
+                        if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
+                            if($('#'+el+'H').val()!=''){
+                                $('#'+el+'H').val('');
+                                $('#'+el+'TB').val('');
+                            }
+                        }
+                    });
+
+                    $('#'+el+'TB').on('blur,change',function(){
+                        if($('#'+el+'H').val()=='') {
+                            $('#'+el+'TB').val(''); // :: all 
+                        }
+                    });
+                return false;
             }
         });
     }
-//end of del process ---
-    
-// notifikasi
-function notif(cont,clr) {
-    var not = $.Notify({
-        caption : "<b>Notifikasi</b>",
-        content : cont,
-        timeout : 3000,
-        style :{
-            background: clr,
-            color:'white'
-        },
-    });
-}
-// end of notifikasi
-// hjkagj
-//reset form ---
-    function kosongkan(){
-        $('#idformTB').val('');
-        $('#kodeTB').val('');
-        $('#rekeningTB').val('');
-        // $('#aktivitasTB').val('');
-        $('#keteranganTB').val('');
-    }
-//end of reset form ---
 
-// input uang --------------------------
+    // load form 
+    function viewFR(id){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: '40%',
+            padding: 10,
+            onShow: function(){
+                $.Dialog.title('<i class="fg-white icon-'+(id!=''?'pencil':'plus-2')+'"></i> '+(id!=''?' Ubah ':' Tambah ')+' Anggaran'); 
+                $.Dialog.content(contentFR);
+            
+                var u = dir;
+                var d = 'aksi=ambiledit&replid='+id;
+                ajax(u,d).done(function (dt) {
+                    $('#idformH').val(id);
+                    cmbdepartemen('form',dt.departemen);
+                    cmbtahunajaran('form',dt.tahunajaran);
+                    cmbtingkat('form',dt.tingkat);
+                    cmbkategorianggaran('form',dt.kategorianggaran);
+                    $('#detilanggaranTD').html(': '+dt.detilanggaran);
+                    $('#keteranganTD').html(': '+dt.keterangan);
+                    $('#hargasatuanTB').val(dt.hargasatuan);
+                    $('#totJmlTD').html(dt.totJml);
+                    $('#totJmlHrgTD').html(dt.totJmlHrg);
+
+                    $.each(dt.nominalArr,function (id,item){
+                        $('#jml'+item.bulan+'TB').val(item.jml);
+                        $('#jmlHrg'+item.bulan+'TD').html(item.jmlHrg);
+                    })
+                });
+            }
+        });
+    }
+
+
+// ajax
+    function ajax(u,d){
+        return $.ajax({
+            url:u,
+            data:d,
+            dataType:'json',
+            type:'post'
+        });
+    }
+
+// departemen ---
+    function cmbdepartemen(typ,dep){
+        var u = dir3;
+        var d = 'aksi=cmb'+mnu3+(dep!=''?'&replid='+dep:'');
+        ajax(u,d).done(function(dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.departemen, function(id,item){
+                	out+='<option '+((dep!='' && dep==item.replid)?'selected':'')+' value="'+item.replid+'">'+item.nama+'</option>';
+                });
+            }
+            if(typ=='form'){ //form 
+                $('#departemenTD').html(': '+dt.departemen[0].nama);
+                cmbtingkat('form','');
+            }else{ // filter
+                $('#departemenS').html(out);
+                cmbtingkat('filter','');
+            }
+        });
+    }
+
+// combo kategorianggaran ---
+    function cmbkategorianggaran(typ,ting){
+        u =dir2;
+        d ='aksi=cmb'+mnu2+'&departemen='+$('#departemenS').val()+'&tingkat='+$('#tingkatS').val();
+        ajax(u,d).done(function (dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                if(dt.kategorianggaran.length==0){
+                    out+='<option value="">kosong</option>';
+                }else{
+                    $.each(dt.kategorianggaran, function(id,item){
+                        out+='<option '+((ting!='' && ting==item.replid)?'selected':'')+' value="'+item.replid+'">'+item.kategorianggaran+' </option>';
+                    });
+                }
+            }
+            if(typ=='filter'){ // filter
+                $('#kategorianggaranS').html(out);
+                cmbtahunajaran('filter','');
+            }else{ // form 
+                $('#kategorianggaranTD').html(': '+dt.kategorianggaran[0].kategorianggaran);
+            }
+        });
+    }
+// combo tingkat ---
+    function cmbtingkat(typ,ting){
+        u =dir5;
+        d ='aksi=cmb'+mnu5+'&departemen='+$('#departemenS').val();
+        ajax(u,d).done(function (dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                if(dt.tingkat.length==0){
+                    out+='<option value="">kosong</option>';
+                }else{
+                    $.each(dt.tingkat, function(id,item){
+                        out+='<option '+((ting!='' && ting==item.replid)?'selected':'')+' value="'+item.replid+'">'+item.tingkat+' </option>';
+                    });
+                }
+            }
+            if(typ=='filter'){ // filter
+                $('#tingkatS').html(out);
+                cmbkategorianggaran('filter','');
+            }else{ // form 
+                $('#tingkatTD').html(': '+dt.tingkat[0].tingkat);
+                cmbkategorianggaran('form','');
+            }
+        });
+    }
+
+// notifikasi
+    function notif(cont,clr) {
+        var not = $.Notify({
+            caption : "<b>Notifikasi</b>",
+            content : cont,
+            timeout : 3000,
+            style :{
+                background: clr,
+                color:'white'
+            },
+        });
+    }
+
+//end of  print to PDF -------
+    function printPDF(mn){
+        var par='',tok='',p,v;
+        $('.'+(mn=='anggaran' || mn=='anggaran2'?'anggaran':mn)+'_cari').each(function(){
+            p=$(this).attr('id');
+            v=$(this).val();
+            par+='&'+p+'='+v;
+            tok+=v;
+        });var x  = $('#id_loginS').val();
+        var token = encode64(x+tok);
+        console.log('para = '+par);
+        console.log('tok = '+x+tok);
+        console.log('token = '+token);
+        window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+    }
+
+// tahunajaran ---
+    function cmbtahunajaran(typ,thn){
+        var u = dir6;
+        var d = 'aksi=cmb'+mnu6+(thn!=''?'&eplid='+thn:'');
+        ajax(u,d).done(function(dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.tahunajaran, function(id,item){
+                    var ta = item.tahunajaran+' - '+(parseInt(item.tahunajaran)+1);
+                    out+='<option '+((thn!='' && thn==item.replid)?'selected':'')+' value="'+item.replid+'">'+ta+'</option>';
+                });
+            }
+            if(typ=='form'){ //form 
+                var t = dt.tahunajaran[0].tahunajaran;
+                var ta =t+' - '+(parseInt(t)+1);
+                $('#tahunajaranTD').html(': '+ta);
+            }else{ // filter
+                $('#tahunajaranS').html(out);
+                viewTB();
+            }
+        });
+    }
     function inputuang(e) {
         $(e).maskMoney({
             precision:0,
             prefix:'Rp. ', 
-            // allowNegative: true, 
             thousands:'.', 
-            // decimal:',', 
             affixesStay: true
         });
     }
-// end of input uang --------------------------
+// input uang --------------------------
+    function inputangka(e) {
+        $(e).maskMoney({
+            precision:0,
+            // affixesStay: true
+        });
+    }
+// hitung semua
+    function hitungAll () {
+        jmlHrg();
+        totJml();
+        totJmlHrg();
+    }
 
-    // ---------------------- //
-    // -- created by rovi  -- //
-    // ---------------------- // 
+// hitung jumlah x harga satuan (@bulan) [horizontal]
+    function jmlHrg() {
+        var hrgSatuan = getCurr($('#hargasatuanTB').val());
+        $('.idnominal').each(function () {
+            var jml    = getCurr($('#jml'+$(this).val()+'TB').val());
+            var jmlHrg = 'Rp. '+(jml * hrgSatuan).setCurr();
+            $('#jmlHrg'+$(this).val()+'TD').html(jmlHrg);
+        });
+    }
+
+// hitung total jumlah [vertikal]
+    function totJml(){
+        var ret=0;
+        $('.jml').each(function () {
+            var jml = getCurr($(this).val());
+            ret+=jml;
+        });
+        $('#totJmlTD').html(ret);
+    }
+
+// hitung total dr. (jumlah x harga satuan) [vertikal]   
+    function totJmlHrg(){
+        var ret=0;
+        $('.jmlHrg').each(function () {
+            var jmlHrg = getCurr($(this).html());
+            ret+=jmlHrg;
+        });
+        $('#totJmlHrgTD').html('Rp. '+ret.setCurr());
+    }
+
+// currency to number (ex : Rp. 500.000 -> 500000)
+    function getCurr(n){  
+        var x = Number(n.replace(/[^0-9]+/g,""));
+        return x;
+    }
+
+
+    // number to currency (ex : 500000 -> 500.000)  
+    Number.prototype.setCurr=function(){
+        return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
+    }

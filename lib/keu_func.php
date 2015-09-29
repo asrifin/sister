@@ -1,4 +1,5 @@
 <?php
+	
 
 	function getBiayaNett($idBiaya,$idDiskReg,$diskKhus){
 		$biaya = !is_null($idDiskReg)?getBiayaDiskReg($idBiaya,$idDiskReg):getField('nominal','psb_detailbiaya','replid',$idBiaya);
@@ -29,6 +30,46 @@
 				// pr($biaya);
 			}return $biaya;
 		}
+	}
+
+	function getAngsuranNominal($idSiswa,$idBiaya){
+		$ra = mysql_fetch_assoc(mysql_query('SELECT
+					a.angsuran
+				FROM
+					psb_siswabiaya sb 
+					JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+					JOIN psb_angsuran a on a.replid = sb.angsuran
+				WHERE
+					sb.siswa = '.$idSiswa.' AND 
+					db.biaya  = '.$idBiaya));
+		$angsuran  = $ra['angsuran'];
+		$biayaNett = getBiayaNett2($idSiswa,$idBiaya);			
+		$angsuranNominal = $biayaNett/$angsuran;
+		// pr($biayaNett);
+		return $angsuranNominal;
+	}
+	function getBiayaNett2($idSiswa,$idBiaya){
+		$s1 = ' SELECT db.nominal biaya, sb.diskonkhusus
+				FROM psb_siswabiaya sb 
+					JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+				WHERE sb.siswa = '.$idSiswa.' and db.biaya = '.$idBiaya;
+		$e1 =mysql_query($s1);
+		$r1 =mysql_fetch_assoc($e1);
+
+		$s2 = '	SELECT dd.nilai
+				FROM psb_siswadiskon sd
+					JOIN psb_detaildiskon dd on dd.replid = sd.detaildiskon
+					JOIN psb_siswabiaya sb on sb.replid = sd.siswabiaya
+					JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+				where  
+					sb.siswa = '.$idSiswa.' and  
+					db.biaya = '.$idBiaya;
+		$e2 =mysql_query($s2);
+		$biayaAwal = $r1['biaya'];
+		while ($r2 =mysql_fetch_assoc($e2)) {
+			$diskReg = intval($r2['nilai']);
+			$biayaAwal-=($biayaAwal*$diskReg/100);
+		}return $biayaAwal-intval($r1['diskonkhusus']);
 	}
 	function getBiaya($dgel,$subt,$gol){
 		$s = '	SELECT b.replid,db.nominal
@@ -361,7 +402,8 @@
 		$angsurkali = getSiswaBy('jmlangsur',$siswa);
 		$ret = $biaya/$angsurkali;
 		return $ret;
-	}function akanBayarOpt($typ,$siswa){
+	}
+	function akanBayarOpt($typ,$siswa){
 		$biayaKotor = getBiaya($typ,$siswa);			// 15.000.000
 		$diskonTotal= getDiscTotal($typ,$siswa); 		// 	  900.000
 														// __________ -
@@ -383,8 +425,46 @@
 		}
 		return $ret;
 	}
+	function getTerbayar2($idSiswa,$idBiaya){ // to get : nominal yg telah terbayar
+		$s ='	SELECT 
+					count(*)angsuranke,
+					SUM(p.nominal)terbayarTotal,
+					p.nominal terbayarBaru
+				from  keu_pembayaran p 
+					JOIN psb_siswabiaya sb on sb.replid = p.siswabiaya
+					JOIN psb_detailbiaya db on db.replid = sb.detailbiaya 
+					LEFT JOIN (
+						SELECT 
+							max(pp.replid)replid,
+							max(pp.tanggal)tanggal
+						from  keu_pembayaran pp 
+							JOIN psb_siswabiaya sb on sb.replid = pp.siswabiaya
+							JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+						where 
+							sb.siswa = 148 and 
+							db.biaya = 4 
+						ORDER BY 
+							pp.tanggal desc,
+							pp.replid desc
+					)t on t.replid = p.replid 
+				where 
+					sb.siswa = '.$idSiswa.' and 
+					db.biaya = '.$idBiaya;
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r;
+	}function getTerbayarTotal($idSiswa,$idBiaya){
+		$terbayar =  getTerbayar2($idSiswa,$idBiaya);
+		return $terbayar['terbayarTotal'];
+	}function getTerbayarAngsuranke($idSiswa,$idBiaya){
+		$terbayar =  getTerbayar2($idSiswa,$idBiaya);
+		return $terbayar['angsuranke'];
+	}function getTerbayarBaru($idSiswa,$idBiaya){
+		$terbayar =  getTerbayar2($idSiswa,$idBiaya);
+		return $terbayar['terbayarBaru'];
+	}
 	function getTerbayar($typ,$siswa){ // to get : nominal yg telah terbayar
-		$s ='SELECT
+		$s ='SELECT	
 				SUM(p.cicilan) terbayar
 			FROM
 				keu_pembayaran p 

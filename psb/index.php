@@ -123,6 +123,9 @@
                     break;
 
                     // transaksi
+                    case 'vpemutihanpenerimaansiswa':
+                        require $d.'v_pemutihanpenerimaansiswa.php';
+                    break;
                     case 'vrekapitulasisiswa':
                         require $d.'v_rekapitulasisiswa.php';
                     break;

@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : lumba2
-Source Server Version : 50625
+Source Server Version : 50616
 Source Host           : 127.0.0.1:3306
 Source Database       : sister_siadu
 
 Target Server Type    : MYSQL
-Target Server Version : 50625
+Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-09-18 03:56:06
+Date: 2015-09-29 17:06:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -73,20 +73,42 @@ CREATE TABLE `psb_biaya` (
   `kode` varchar(50) NOT NULL,
   `isAngsur` int(1) NOT NULL DEFAULT '1',
   `isDiskon` int(1) NOT NULL DEFAULT '0',
-  `jenistagihan` int(11) NOT NULL,
   `keterangan` text,
-  PRIMARY KEY (`replid`),
-  KEY `jenistagihan` (`jenistagihan`) USING BTREE,
-  CONSTRAINT `jenistagihanFK` FOREIGN KEY (`jenistagihan`) REFERENCES `psb_jenistagihan` (`replid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`replid`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_biaya
 -- ----------------------------
-INSERT INTO `psb_biaya` VALUES ('3', 'Formulir', 'formulir', '0', '0', '1', 'Formulr Pendafataran');
-INSERT INTO `psb_biaya` VALUES ('4', 'DPP', 'dpp', '1', '3', '4', 'Uang Gedung');
-INSERT INTO `psb_biaya` VALUES ('7', 'SPP', 'spp', '0', '3', '4', 'sumbangan per bulan ');
-INSERT INTO `psb_biaya` VALUES ('8', 'Joining Fee', 'joining_fee', '2', '3', '1', 'biaya yg dibayar sekali saat masuk');
+INSERT INTO `psb_biaya` VALUES ('3', 'Formulir', 'formulir', '0', '0', 'Formulr Pendafataran');
+INSERT INTO `psb_biaya` VALUES ('4', 'DPP', 'dpp', '1', '3', 'Uang Gedung');
+INSERT INTO `psb_biaya` VALUES ('7', 'SPP', 'spp', '0', '3', 'sumbangan per bulan ');
+INSERT INTO `psb_biaya` VALUES ('8', 'Joining Fee', 'joining_fee', '2', '3', 'biaya yg dibayar sekali saat masuk');
+
+-- ----------------------------
+-- Table structure for psb_biaya_copy
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_biaya_copy`;
+CREATE TABLE `psb_biaya_copy` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `biaya` varchar(100) NOT NULL,
+  `kode` varchar(50) NOT NULL,
+  `isAngsur` int(1) NOT NULL DEFAULT '1',
+  `isDiskon` int(1) NOT NULL DEFAULT '0',
+  `jenistagihan` int(11) NOT NULL,
+  `keterangan` text,
+  PRIMARY KEY (`replid`),
+  KEY `jenistagihan` (`jenistagihan`) USING BTREE,
+  CONSTRAINT `psb_biaya_copy_ibfk_1` FOREIGN KEY (`jenistagihan`) REFERENCES `psb_jenistagihan` (`replid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of psb_biaya_copy
+-- ----------------------------
+INSERT INTO `psb_biaya_copy` VALUES ('3', 'Formulir', 'formulir', '0', '0', '1', 'Formulr Pendafataran');
+INSERT INTO `psb_biaya_copy` VALUES ('4', 'DPP', 'dpp', '1', '3', '4', 'Uang Gedung');
+INSERT INTO `psb_biaya_copy` VALUES ('7', 'SPP', 'spp', '0', '3', '4', 'sumbangan per bulan ');
+INSERT INTO `psb_biaya_copy` VALUES ('8', 'Joining Fee', 'joining_fee', '2', '3', '1', 'biaya yg dibayar sekali saat masuk');
 
 -- ----------------------------
 -- Table structure for psb_calonsiswa_keluarga
@@ -1046,7 +1068,7 @@ CREATE TABLE `psb_detailbiaya` (
   CONSTRAINT `detailgelombangFK4` FOREIGN KEY (`detailgelombang`) REFERENCES `psb_detailgelombang` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `golonganFK2` FOREIGN KEY (`golongan`) REFERENCES `psb_golongan` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `subtingkatFK2` FOREIGN KEY (`subtingkat`) REFERENCES `aka_subtingkat` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6594 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7980 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of psb_detailbiaya
@@ -1579,9 +1601,9 @@ INSERT INTO `psb_detailbiaya` VALUES ('4718', '3', '0', '8', '2', '108');
 INSERT INTO `psb_detailbiaya` VALUES ('4727', '7', '0', '8', '2', '108');
 INSERT INTO `psb_detailbiaya` VALUES ('4736', '8', '0', '8', '2', '108');
 INSERT INTO `psb_detailbiaya` VALUES ('4745', '4', '0', '8', '2', '108');
-INSERT INTO `psb_detailbiaya` VALUES ('6330', '3', '0', '4', '2', '145');
+INSERT INTO `psb_detailbiaya` VALUES ('6330', '3', '7', '4', '2', '145');
 INSERT INTO `psb_detailbiaya` VALUES ('6331', '8', '0', '4', '2', '145');
-INSERT INTO `psb_detailbiaya` VALUES ('6332', '4', '0', '4', '2', '145');
+INSERT INTO `psb_detailbiaya` VALUES ('6332', '4', '900', '4', '2', '145');
 INSERT INTO `psb_detailbiaya` VALUES ('6333', '7', '0', '4', '2', '145');
 INSERT INTO `psb_detailbiaya` VALUES ('6334', '3', '0', '5', '2', '145');
 INSERT INTO `psb_detailbiaya` VALUES ('6335', '8', '0', '5', '2', '145');
@@ -1859,7 +1881,7 @@ CREATE TABLE `psb_detaildiskon` (
   KEY `diskon` (`diskon`) USING BTREE,
   CONSTRAINT `diskonFK` FOREIGN KEY (`diskon`) REFERENCES `psb_diskon` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tahunajaranFK` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_detaildiskon
@@ -1899,7 +1921,7 @@ INSERT INTO `psb_detaildiskon` VALUES ('38', '50', '25', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('39', '51', '0', '3', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('40', '51', '20', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('41', '52', '0', '3', '1');
-INSERT INTO `psb_detaildiskon` VALUES ('42', '52', '0', '5', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('42', '52', '60', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('43', '53', '0', '3', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('44', '53', '0', '5', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('45', '54', '0', '3', '1');
@@ -1936,6 +1958,9 @@ INSERT INTO `psb_detaildiskon` VALUES ('75', '53', '0', '12', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('76', '54', '0', '12', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('77', '55', '0', '12', '1');
 INSERT INTO `psb_detaildiskon` VALUES ('78', '57', '0', '12', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('79', '59', '0', '3', '1');
+INSERT INTO `psb_detaildiskon` VALUES ('80', '59', '0', '5', '0');
+INSERT INTO `psb_detaildiskon` VALUES ('81', '59', '90', '12', '1');
 
 -- ----------------------------
 -- Table structure for psb_detailgelombang
@@ -1997,7 +2022,7 @@ CREATE TABLE `psb_diskon` (
   KEY `biaya` (`biaya`) USING BTREE,
   CONSTRAINT `biayaFK4` FOREIGN KEY (`biaya`) REFERENCES `psb_biaya` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `departemenFK3` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_diskon
@@ -2026,6 +2051,7 @@ INSERT INTO `psb_diskon` VALUES ('55', '2', '4', 'Naik Jenjang', 'Semua level (J
 INSERT INTO `psb_diskon` VALUES ('56', '1', '4', 'Naik Jenjang', 'Semua level (Jan-Juni)');
 INSERT INTO `psb_diskon` VALUES ('57', '2', '4', 'Naik Jenjang', 'Semua level (Jan-Juni)');
 INSERT INTO `psb_diskon` VALUES ('58', '1', '4', 'Japres', 'Luar dan dalam (Nilai rapor &amp; UAS)');
+INSERT INTO `psb_diskon` VALUES ('59', '1', '4', 'woke', 'sip');
 
 -- ----------------------------
 -- Table structure for psb_dokumen
@@ -2035,7 +2061,7 @@ CREATE TABLE `psb_dokumen` (
   `replid` int(11) NOT NULL AUTO_INCREMENT,
   `dokumen` text NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_dokumen
@@ -2137,7 +2163,6 @@ CREATE TABLE `psb_kriteria` (
 -- Records of psb_kriteria
 -- ----------------------------
 INSERT INTO `psb_kriteria` VALUES ('1', 'Toddler', 'Usia diatas 1 tahun', '1');
-INSERT INTO `psb_kriteria` VALUES ('23', 'High School 2', 'Usia 16 Tahun', '1');
 INSERT INTO `psb_kriteria` VALUES ('5', 'Secondary 3', 'Usia 14 tahun', '1');
 INSERT INTO `psb_kriteria` VALUES ('6', 'Secondary 2', 'Usia 13 tahun', '1');
 INSERT INTO `psb_kriteria` VALUES ('7', 'Secondary 1', 'Usia 12', '1');
@@ -2151,6 +2176,7 @@ INSERT INTO `psb_kriteria` VALUES ('15', 'Kindergarten B', 'Usia 5 tahun', '1');
 INSERT INTO `psb_kriteria` VALUES ('16', 'Kindergarten A', 'Usia 4 tahun', '1');
 INSERT INTO `psb_kriteria` VALUES ('17', 'Playgroup B', 'Usia 3 tahun', '1');
 INSERT INTO `psb_kriteria` VALUES ('22', 'High School 1', 'Usia 15 Tahun', '1');
+INSERT INTO `psb_kriteria` VALUES ('23', 'High School 2', 'Usia 16 Tahun', '1');
 INSERT INTO `psb_kriteria` VALUES ('25', 'Playgroup A', 'Usia 2 tahun', '1');
 
 -- ----------------------------
@@ -2268,7 +2294,7 @@ CREATE TABLE `psb_siswa` (
 -- Records of psb_siswa
 -- ----------------------------
 INSERT INTO `psb_siswa` VALUES ('148', '1', null, 'ronaldinho gaucho', '22', '144', 'dinhox', '1', 'brazil school', '2', '0', '1', 'L', 'rio de janeiro', '2015-09-19', 'brasil', '0', '70.0', '180.0', 'B', '5_dbeb1c3503.png', 'rio street', '808080', '30303030', '1919191', 'ronaldinho@gaucho.com', 'hitam', '1010101010', 'haus', 'rio de J.', 'rio de', 'mexico', '', null, 'portuguese', 'inggris', '4');
-INSERT INTO `psb_siswa` VALUES ('157', '2', null, 'patrick vieira', '', '', 'vieira', '1', '', '0', '0', '0', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '5_9803460371.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('157', '2', null, 'patrick vieira', '45', '', 'vieira', '1', '', '0', '0', '1', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '5_9803460371.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('158', '3', null, 'sebut saja bunga', '99', '', '', '1', '', '0', '0', '1', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '4_71c2ca0414.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 
 -- ----------------------------
@@ -3291,7 +3317,7 @@ CREATE TABLE `psb_siswabiaya` (
 -- ----------------------------
 -- Records of psb_siswabiaya
 -- ----------------------------
-INSERT INTO `psb_siswabiaya` VALUES ('495', '148', '677', '12', 'd khusus gan', '580000');
+INSERT INTO `psb_siswabiaya` VALUES ('495', '148', '677', '10', 'd khusus gan', '580000');
 INSERT INTO `psb_siswabiaya` VALUES ('496', '148', '650', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('497', '148', '668', '0', 'diskon juara olahraga nasional / daerah', '900000');
 INSERT INTO `psb_siswabiaya` VALUES ('498', '148', '659', '0', '', '0');
@@ -3317,7 +3343,7 @@ CREATE TABLE `psb_siswadiskon` (
   KEY `detaildiskon` (`detaildiskon`) USING BTREE,
   CONSTRAINT `detaildiskonFK2` FOREIGN KEY (`detaildiskon`) REFERENCES `psb_detaildiskon` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siswabiayaFK` FOREIGN KEY (`siswabiaya`) REFERENCES `psb_siswabiaya` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswadiskon
@@ -3326,6 +3352,7 @@ INSERT INTO `psb_siswadiskon` VALUES ('14', '497', '34');
 INSERT INTO `psb_siswadiskon` VALUES ('32', '531', '22');
 INSERT INTO `psb_siswadiskon` VALUES ('33', '495', '30');
 INSERT INTO `psb_siswadiskon` VALUES ('36', '535', '38');
+INSERT INTO `psb_siswadiskon` VALUES ('37', '495', '2');
 
 -- ----------------------------
 -- Table structure for psb_siswadokumen
@@ -3341,7 +3368,7 @@ CREATE TABLE `psb_siswadokumen` (
   KEY `subdokumen` (`subdokumen`) USING BTREE,
   CONSTRAINT `siswaFK` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `subdokumenFK` FOREIGN KEY (`subdokumen`) REFERENCES `psb_subdokumen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswadokumen
@@ -3492,7 +3519,7 @@ CREATE TABLE `psb_subdokumen` (
   KEY `tingkat` (`tingkat`) USING BTREE,
   CONSTRAINT `dokumenFK` FOREIGN KEY (`dokumen`) REFERENCES `psb_dokumen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tingkatFK6` FOREIGN KEY (`tingkat`) REFERENCES `aka_tingkat` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_subdokumen
@@ -3583,48 +3610,70 @@ DROP TRIGGER IF EXISTS `ins_psb_biaya`;
 DELIMITER ;;
 CREATE TRIGGER `ins_psb_biaya` AFTER INSERT ON `psb_biaya` FOR EACH ROW BEGIN
 
-/*untuk psb_detaildiskon*/
-/*tahun ajaran*/
+/*INSERT psb_detailbiaya */
+/*detail detail gelombang -----------------------------------------------------------------------*/
 	BLOCK1: begin
-		declare v_col1 int;
-		declare no_more_rows1 INT DEFAULT 0;  
+		declare vDetGelombang, vDept int;
+		declare rowHabis1 INT DEFAULT 0;  
 		declare cursor1 cursor for
-				select replid
-				from  aka_tahunajaran;
-		declare continue handler for not found set no_more_rows1 =1;
+								select replid,departemen
+								from  psb_detailgelombang;
+		declare continue handler for not found set rowHabis1 = 1;
 		open cursor1;
 		LOOP1: loop
-				fetch cursor1
-				into  v_col1;
-				if no_more_rows1 then
-						close cursor1;
-						leave LOOP1;
-				end if;
-				
-				/*biaya*/
-				BLOCK2: begin
-					declare v_col2 int;
-					declare no_more_rows2 INT DEFAULT 0;  
-					declare cursor2 cursor for
-							select replid
-							from  psb_biaya;
-					declare continue handler for not found set no_more_rows2=1;
-					open cursor2;
+			fetch cursor1
+			into  vDetGelombang,vDept;
+			if rowHabis1 then
+							close cursor1;
+							leave LOOP1;
+			end if;
+			/*subtingkat  ---------------------------------------------------------------*/
+			BLOCK2: begin
+					declare vSubtingkat int;
+					declare rowsHabis2 INT DEFAULT 0;  
+					declare cursor3 cursor for  
+							SELECT s.replid
+							FROM aka_kelas k
+									JOIN aka_subtingkat s on s.replid = k.subtingkat
+							WHERE k.departemen = vDept
+							GROUP BY s.replid;
+					declare continue handler for not found set rowsHabis2 =1;
+					open cursor3;
 					LOOP2: loop
-							fetch cursor2
-							into  v_col2;
-							if no_more_rows2 then
-									close cursor2;
-									leave LOOP2;
-							end if;
-							INSERT INTO psb_detaildiskon SET 
-								diskon = NEW.replid, 
-								biaya = v_col2, 
-								tahunajaran = v_col1;
-						end loop LOOP2;
-				end BLOCK2;
+									fetch cursor3
+									into  vSubtingkat;
+									if rowsHabis2 then   
+													close cursor3;
+													leave LOOP2;
+									end if;
+									/*golongan ---------------------------------------------------------------*/
+									BLOCK3: begin
+											declare vGolongan int;
+											declare rowsHabis3 INT DEFAULT 0;  
+											declare cursor4 cursor for
+															select replid
+															from  psb_golongan;
+											declare continue handler for not found set rowsHabis3 =1;
+											open cursor4;
+											LOOP3: loop
+												fetch cursor4
+												into  vGolongan;
+												if rowsHabis3 then
+																close cursor4;
+																leave LOOP3;
+												end if;
+		
+												INSERT INTO psb_detailbiaya SET 
+														biaya = NEW.replid, 
+														subtingkat = vSubtingkat, 
+														detailgelombang = vDetGelombang, 
+														golongan = vGolongan;
+											end loop LOOP3;
+									end BLOCK3;
+							end loop LOOP2;
+					end BLOCK2;
 		end loop LOOP1;
-end BLOCK1;
+	end BLOCK1;
 END
 ;;
 DELIMITER ;

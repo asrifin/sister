@@ -13,18 +13,18 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$jenistagihan = isset($_POST['jenistagihanS']) && $_POST['jenistagihanS']!=''?' b.jenistagihan = '.$_POST['jenistagihanS'].' AND  ':'';
+				// $jenistagihan = isset($_POST['jenistagihanS']) && $_POST['jenistagihanS']!=''?' b.jenistagihan = '.$_POST['jenistagihanS'].' AND  ':'';
 				$isDiskon     = isset($_POST['isDiskonS']) && $_POST['isDiskonS']!=''?' b.isDiskon = '.$_POST['isDiskonS'].' AND  ':'';
 				$isAngsur     = isset($_POST['isAngsurS']) && $_POST['isAngsurS']!=''?' b.isAngsur = '.$_POST['isAngsurS'].' AND  ':'';
 				$biaya        = isset($_POST['biayaS'])?$_POST['biayaS']:'';
 				$keterangan   = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
+								// else "Angsur Bebas"
 				$sql = 'SELECT
 							b.replid,
 							b.biaya,
 							case b.isAngsur
-								when 0 then "Tunai"
-								when 1 then "Angsur Reguler"
-								else "Angsur Bebas"
+								when 0 then "Tidak Ada"
+								else "Ada"
 							end as isAngsur,
 							case b.isDiskon
 								when 0 then "Tidak Ada"
@@ -32,15 +32,16 @@
 								when 2 then "Diskon Khusus"
 								else "Diskon Reguler & Khusus Khusus"
 							end as isDiskon,
-							t.jenistagihan,
+							/*t.jenistagihan,*/
 							b.keterangan
 						FROM
 							psb_biaya b
-							LEFT JOIN psb_jenistagihan t ON t.replid = b.jenistagihan
+							/*LEFT JOIN psb_jenistagihan t ON t.replid = b.jenistagihan*/
 						WHERE
-							'.$isAngsur.$isDiskon.$jenistagihan.'
+							'.$isAngsur.$isDiskon.'
 							b.keterangan LIKE "%'.$keterangan.'%" AND
 							b.biaya LIKE "%'.$biaya.'%"';
+							// $jenistagihan.'
 				// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -48,7 +49,7 @@
 					$starting=0;
 				}
 
-				$recpage = 5;//jumlah data per halaman
+				$recpage = 10;//jumlah data per halaman
 				$aksi    ='tampil';
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
@@ -71,10 +72,10 @@
 									<td align="center">'.$res['biaya'].'</td>
 									<td align="center">'.$res['isAngsur'].'</td>
 									<td align="center">'.$res['isDiskon'].'</td>
-									<td align="center">'.$res['jenistagihan'].'</td>
 									<td align="justify">'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
+									// <td align="center">'.$res['jenistagihan'].'</td>
 						// $nox++;
 					}
 				}else{ #kosong
@@ -90,10 +91,10 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
+								// jenistagihan = '.filter($_POST['jenistagihanTB']).',
 				$s = $tb.' set 	biaya        = "'.filter($_POST['biayaTB']).'",
 								isAngsur     = '.filter($_POST['isAngsurTB']).',
 								isDiskon     = '.filter($_POST['isDiskonTB']).',
-								jenistagihan = '.filter($_POST['jenistagihanTB']).',
 								keterangan   = "'.filter($_POST['keteranganTB']).'"';
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				// pr($s2);
@@ -115,12 +116,12 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
+							// jenistagihan,
 				$s = 'SELECT
 							replid,
 							biaya,
 							isAngsur,
 							isDiskon,
-							jenistagihan,
 							keterangan
 						FROM
 							psb_biaya
@@ -133,10 +134,10 @@
 							'status'       =>$stat,
 							'biaya'        =>$r['biaya'],
 							'isAngsur'     =>$r['isAngsur'],
-							'jenistagihan' =>$r['jenistagihan'],
 							'isDiskon'     =>$r['isDiskon'],
 							'keterangan'     =>$r['keterangan'],
 						));
+							// 'jenistagihan' =>$r['jenistagihan'],
 			break;
 			// ambiledit -----------------------------------------------------------------
 

@@ -1,5 +1,5 @@
-<?php isMenu($modul,'anggarantahunan'); ?>
-<script src="controllers/c_anggarantahunan.js"></script>
+<?php isMenu($modul,'detilanggaran'); ?>
+<script src="controllers/c_detilanggaran.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
 <script src="../js/base64.js"></script>
@@ -15,9 +15,10 @@
 <nav class="breadcrumbs">
     <ul>
         &nbsp;
+        <button class="place-left" <?php echo isAksi('detilanggaran','c')?'onclick="viewFR(\'\');"':'disabled';  ?>  data-hint="Tambah Data" id="a_tambahBC"><span class="icon-plus-2"></span> </button>
         <li><a href="kategori-anggaran">Kategori Anggaran</a></li>
-        <li><a href="detil-anggaran">Item Anggaran</a></li>
-        <li  class="active"><b><a href="#">Anggaran Tahunan</a></b></li>
+        <li class="active"><a href="#"><b>Item Anggaran</b></a></li>
+        <li><a href="anggaran-tahunan">Anggaran Tahunan</a></li>
     </ul>
 </nav>
 
@@ -30,22 +31,17 @@
 <div class="input-control select size3">
     <select data-hint="kategori" class="cari" name="kategorianggaranS" id="kategorianggaranS" data-hint="kategorianggaran" ></select>
 </div> 
-<div class="input-control select size3">
-    <select data-hint="Tahun Ajaran" class="cari" name="tahunajaranS" id="tahunajaranS" data-hint="tahunajaran" ></select>
-</div> 
 
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-center">Detail Anggaran</th>
             <th class="text-center">Keterangan</th>
-            <th class="text-center">Harga @item</th>
             <th class="text-center">Aksi</th>
         </tr>
         <tr id="a_cariTR" class="info">
             <th class="text-center"><input data-transform="input-control" placeholder="cari ..." id="detilanggaranS" class="cari"></th>
             <th class="text-center"><input data-transform="input-control" placeholder="cari ..." id="keteranganS" class="cari"></th>
-            <th class="text-center"></th>
             <th class="text-center"></th>
         </tr>
     </thead>

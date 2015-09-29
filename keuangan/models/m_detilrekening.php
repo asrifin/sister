@@ -4,8 +4,8 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu  = 'detilrekening';
 	$menu = 'COA';
+	$mnu  = 'detilrekening';
 	$tb   = 'keu_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -57,10 +57,10 @@
 									</tr>';
 						}
 						$btn ='<td align="center">
-									<button data-hint="ubah" '.isDisabled($menu,'u').' class="button" onclick="viewFR('.$res['replid'].');">
+									<button '.(isAksi('detilrekening','d')?'onclick="viewFR('.$res['replid'].');"':'disabled').' data-hint="ubah" class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" '.isDisabled($menu,'d').'  class="button" onclick="del('.$res['replid'].');">
+									<button '.(isAksi('detilrekening','d')?'onclick="del('.$res['replid'].');"':'disabled').' data-hint="hapus" class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
@@ -90,40 +90,21 @@
 									kode             = "'.filter($_POST['kodeTB']).'",
 									nama             = "'.filter($_POST['namaTB']).'",
 									keterangan       = "'.filter($_POST['keteranganTB']).'"';
-				if(isset($_POST['replid']) and $_POST['replid']!=''){
-					$s2   = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
-					$e    = mysql_query($s2);
-					$stat = $e?'sukses':'gagal_'.mysql_error();
-				}else{
-					$s2 = 'INSERT INTO '.$s;				
-					$e  = mysql_query($s2);
-					$id = mysql_insert_id();
-					if(!$e){
-						$stat2  = false;
-					}else{
-						$tbuku = mysql_fetch_assoc(mysql_query('SELECT replid from keu_tahunbuku WHERE aktif=1'));
-						$s3    = 'INSERT INTO keu_saldorekening SET tahunbuku ='.$tbuku['replid'].',rekening  ='.$id;
-						$e2    = mysql_query($s3);
-						$stat2 = $e2?true:false;
-					}$stat  = $stat2?'sukses':'gagal_'.mysql_error();
-				}$out  = json_encode(array('status'=>$stat));
+				$s2   =(isset($_POST['replid']) and $_POST['replid']!='')?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				// pr($s2);
+				$e    = mysql_query($s2);
+				$stat = !$e?'gagal':'sukses';
+				$out  = json_encode(array('status'=>$stat));
 			break;
-			// add / edit -----------------------------------------------------------------
 			
 			// delete -----------------------------------------------------------------
 			case 'hapus':
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
-				if(!$e){
-					$stat = 'gagal_'.mysql_error();
-				}else{
-					$s2   = 'DELETE FROM keu_saldorekening WHERE rekening = '.$d['replid'];
-					$e2   = mysql_query($s2);
-					$stat = $e2?'sukses':'gagal_'.mysql_error();
-				}$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				$stat =!$e?'gagal':'sukses';
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
 			break;
-			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':

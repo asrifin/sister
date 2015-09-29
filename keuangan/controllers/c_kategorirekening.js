@@ -6,19 +6,19 @@ var contentFR = '';
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
-
+                        // kode 
                         +'<label>Kode </label>'
                         +'<div class="input-control text">'
                             +'<input type="number" placeholder="kode kategori rekening" required name="kodeTB" id="kodeTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        
+                        // kategori 
                         +'<label>Kategori Rekening </label>'
                         +'<div class="input-control text">'
                             +'<input  placeholder="kategori rekening" required name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-
+                        // normal
                         +'<label>Jenis Normal</label>'
                         +'<div class="input-control select">'
                             +'<select required name="jenisTB" id="jenisTB">'
@@ -26,7 +26,7 @@ var contentFR = '';
                                 +'<option value="k">KREDIT</option>'
                             +'</select>'
                         +'</div>'
-
+                        // penambahan
                         +'<label>Penambahan </label>'
                         +'<div class="input-control select">'
                             +'<select required name="jenistambahTB" id="jenistambahTB">'
@@ -34,7 +34,7 @@ var contentFR = '';
                                 +'<option value="k">KREDIT</option>'
                             +'</select>'
                         +'</div>'
-
+                        // pengurangan`
                         +'<label>Pengurangan </label>'
                         +'<div class="input-control select">'
                             +'<select required name="jeniskurangTB" id="jeniskurangTB">'
@@ -142,6 +142,8 @@ var contentFR = '';
                             $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
                             $('#jenisTB').val(dt.jenis);
+                            $('#jenistambahTB').val(dt.jenistambah);
+                            $('#jeniskurangTB').val(dt.jeniskurang);
                         }
                     });
                 }$.Dialog.title(titlex+' '+mnu);
