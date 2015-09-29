@@ -132,7 +132,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                             +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // tingkat
                                             +'<label>Tingkat</label>'
-                                            +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya(); subdokumenFC();" id="tingkatTBZ" name="tingkatTB"></select>'
+                                            +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya();" id="tingkatTBZ" name="tingkatTB"></select>'
                                             +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // subtingkat
                                             +'<label>Sub Tingkat</label>'
@@ -1028,6 +1028,16 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
         });var d ='aksi=getBiayaNett&iddetailbiaya='+idy+selectedDiskReg+'&diskonkhusus='+$('#diskonkhusus'+idx+'TB').val();
         ajax(dir,d).done(function (dt){
             $('#biayaNett'+idx+'TD').html('Rp. '+(dt.biayaNett.setCurr()) );
+            if(dt.biayaNett==0){
+                $('#detaildiskon'+idx+'TBL tr:last').addClass('bg-orange fg-white');
+                setTimeout(function(){
+                    $('#detaildiskon'+idx+'TBL tr:last').fadeOut(function(){
+                        $(this).remove();
+                        getBiayaNett(idx);
+                        detaildiskonArr(idx);
+                    });
+                },500);
+            }
             if(dt.status!='sukses')notif(dt.status,'red');
         });
     }
@@ -1214,7 +1224,6 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                     cmbgolongan('form','');
                     cmbangsuran('');
                     biayaFC('');
-                    subdokumenFC();
                     kontakdaruratFC();
                 }
                 // $("#form1").scrollbar({height: 355,axis: 'y'});
@@ -1599,15 +1608,18 @@ function notif(cont,clr) {
     }
 //                        idbiaya,iddetaildiskon                                           
     function detaildiskonAdd (idx,siswadiskon,replid,diskon,nilai,keterangan) {
-        var tr ='<tr val="'+replid+'" class="detaildiskon'+idx+'TR" id="detaildiskon'+replid+'TR">'
+        var tr ='<tr val="'+replid+'" class="detaildiskon'+idx+'TR bg-lightTeal" id="detaildiskon'+replid+'TR">'
                     +'<td>'+diskon
                         +'<input type="hidden" name="idsiswadiskon'+replid+'TB" value="'+(siswadiskon!=''?siswadiskon:'')+'" />'
                         +'<input type="hidden" name="iddetaildiskonTB['+idx+'][]" value="'+replid+'" />'
                     +'</td>'
                     +'<td>'+nilai+'</td>'
-                    +'<td><a href="#" class="bg-white fg-red" onclick="detaildiskonDel('+idx+','+replid+','+siswadiskon+'); return false;"><i class="icon-cancel-2"></a></i></td>'
+                    +'<td><a href="#" class="bg-white fg-red" onclick="detaildiskonDel('+idx+','+replid+',\''+siswadiskon+'\'); return false;"><i class="icon-cancel-2"></a></i></td>'
                 +'</tr>';
         $('#detaildiskon'+idx+'TBL').append(tr); 
+        setTimeout(function(){
+            $('#detaildiskon'+replid+'TR').removeClass('bg-lightTeal');
+        },800);
         detaildiskonArr(idx);
         getBiayaNett(idx);
     }
@@ -1739,7 +1751,7 @@ function notif(cont,clr) {
     function detaildiskonDel (idx,idy,idz) {
         $('#detaildiskon'+idy+'TR').fadeOut('slow',function(){
             $('#detaildiskon'+idy+'TR').remove();
-            iDetailDiskonDelTR.push(idz); // hapus
+            if(idz!='') iDetailDiskonDelTR.push(idz); // hapus
             detaildiskonArr(idx);
             getBiayaNett(idx,idy);
             // console.log(iDetailDiskonDelTR);

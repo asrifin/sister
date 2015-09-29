@@ -24,7 +24,9 @@
 							ifnull(tb.sudah,0)sudah
 						from 
 							aka_tingkat t 
-							LEFT JOIN (
+							JOIN aka_subtingkat st on st.tingkat = t.replid 
+							JOIN aka_kelas k on k.subtingkat = st.replid 
+						LEFT JOIN (
 								SELECT 
 									sum(tb2.status="0")belum,
 									sum(tb2.status="1")sudah,
@@ -53,7 +55,11 @@
 								)tb2 
 								GROUP BY tb2.tingkat
 							)tb on tb.tingkat = t.replid
-						ORDER BY t.urutan ASC';
+							WHERE
+								k.departemen = '.$departemen.'
+							GROUP BY
+								t.replid
+							ORDER BY t.urutan ASC';
 				// vd($sql);
 				$e   = mysql_query($sql);
 				$jum = mysql_num_rows($e);

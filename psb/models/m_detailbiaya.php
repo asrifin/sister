@@ -37,6 +37,7 @@
 									AND db.detailgelombang = '.$detailgelombang.'
 								ORDER BY
 									b.biaya asc';
+									// pr($s2);
 						$e2= mysql_query($s2);
 						while ($r2=mysql_fetch_assoc($e2)) {
 							$out.='<td align="right">'.(!isAksi('detailbiaya','u')?setuang($r2['nominal']):'<div 

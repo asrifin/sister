@@ -349,7 +349,8 @@
 					$o = array('status' =>'invalid_no_post' );
 				else{
 					$biaya = getBiayaArr($_POST['detailgelombang'],$_POST['subtingkat'],$_POST['golongan']);
-					$stat=!$biaya || is_null($biaya)?'gagal':'sukses';
+					// $stat=!$biaya || is_null($biaya)?'gagal':'sukses';
+					$stat=!$biaya?'gagal':'sukses';
 				}$out = json_encode(array('status'=>$stat,'biayaArr'=>$biaya));
 			break;
 
@@ -418,7 +419,9 @@
 								$tipex    = substr($_FILES['file'.$v.'TB']['name'],-4);
 								$namaSkrg = 'dok'.$_POST['siswaTB'].'_'.$v.'_'.substr((md5($namaAwal.rand())),2,10).$tipex;
 								$src      = $_FILES['file'.$v.'TB']['tmp_name'];
-								$destix   = '../upload/files/'.basename($namaSkrg);
+								$dir='../upload/files/';
+								if(!is_dir($dir)) mkdir($dir);
+								$destix   = $dir.basename($namaSkrg);
 								
 								// edit mode 
 								if($_POST['idsiswadokumen'.$v.'TB']!=''){

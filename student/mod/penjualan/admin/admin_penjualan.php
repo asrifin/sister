@@ -170,8 +170,10 @@ $jumlah=$data['jumlah'];
 $harga=$data['harga'];
 $hargabeli=$data['hargabeli'];
 $subdiscount=$data['subdiscount'];
+//$harga= $harga-$subdiscount;
+$harga2=$harga-($harga*($subdiscount/100));
 $ceksisajumjual=$jumlah-ceksisajumjual($nopo,$kode);
-$subtotal=$ceksisajumjual*$harga;
+$subtotal=$ceksisajumjual*$harga2;
 $hasil2 =  $koneksi_db->sql_query( "SELECT * FROM pos_produk WHERE kode='$kode'" );
 $data2 = $koneksi_db->sql_fetchrow($hasil2);
 $id=$data2['id'];
@@ -254,7 +256,8 @@ $id=$data['id'];
 $kode=$data['kode'];
 $stok=$data['jumlah'];
 $harga=$data['hargajual'];
-$hargabeli=$data['hargabeli'];
+//$hargabeli=$data['hargabeli'];
+$hargabeli = gethargabeliterbaru($kode);
 $jenjang=$data['jenjang'];
 $jenis=$data['jenis'];
 $error 	= '';
@@ -422,6 +425,7 @@ $admin .= '
 					<th><b>Jenjang</b></</th>
 		<th><b>Kode</b></</th>
 		<th><b>Nama</b></td>
+						<th><b>H.Beli</b></</td>
 		<th><b>Jumlah</b></</td>
 		<th><b>Harga</b></</th>
 		<th><b>Discount</b></</th>
@@ -439,6 +443,7 @@ $admin .= '
 		<td>'.getjenjang($cart_itm["jenjang"]).'</td>
 			<td>'.$cart_itm["kode"].'</td>
 		<td>'.getnamabarang($cart_itm["kode"]).'</td>
+				<td>'.$cart_itm["hargabeli"].'</td>
 		<td><input align="right" type="text" name="jumlahjual['.$array.']" value="'.$cart_itm["jumlah"].'"class="form-control"></td>
 		<td>'.$cart_itm["harga"].'</td>
 		<td>'.$cart_itm["subdiscount"].'</td>
