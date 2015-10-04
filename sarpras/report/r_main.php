@@ -5,16 +5,23 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
 
-  $x     = $_SESSION['id_loginS'].$_GET['k_grupS'].$_GET['k_kodeS'].$_GET['k_namaS'].$_GET['k_keteranganS'];
+  $x     = $_SESSION['id_loginS'].$_GET['detail_tempatH'].$_GET['lokasiS'].$_GET['main_kodeS'].$_GET['main_tempatS'].$_GET['main_keteranganS'];
   $token = base64_encode($x);
   // print_r($_GET['token']);exit();
   if(!isset($_SESSION)){ // login 
     echo 'user has been logout';
   }else{ // logout
-    if(!isset($_GET['token']) and $token!==$_GET['token']){
+    if(!isset($_GET['token']) and $token!==$_GET['token']){ 
       echo 'maaf token - url tidak valid';
     }else{
-        $ss = ' SELECT * from sar_tempat WHERE replid='.$_POST['replid'];
+        $ss = ' SELECT
+                  t.nama tempat,
+                  l.nama
+                FROM
+                  sar_tempat t
+                  LEFT JOIN sar_lokasi l ON l.replid = t.lokasi
+                WHERE
+                  t.lokasi = '.$_GET['lokasiS'];
           // print_r($ss);exit();
         $ee = mysql_query($ss);
         $rr = mysql_fetch_assoc($ee);
@@ -37,7 +44,7 @@
                 <tr>
                   <td>Lokasi</td>
                   <td>:</td>
-                  <td>'.$rr['lokasi'].'</td>
+                  <td>'.$rr['nama'].'</td>
                 </tr>
                 <tr>
                   <td>Tempat</td>
@@ -60,7 +67,7 @@
                 $status     = isset($_POST['detail_statusS'])?filter($_POST['detail_statusS']):'';
                 $keterangan = isset($_POST['detail_keteranganS'])?filter($_POST['detail_keteranganS']):'';
             
-            $sql = 'SELECT (
+            $s = 'SELECT (
                     SELECT 
                       CONCAT(ll.kode,"/",gg.kode,"/",tt.kode,"/",kk.kode,"/",LPAD(b.urut,5,0))
                     from 
@@ -94,7 +101,7 @@
                     LEFT JOIN sar_katalog kg on kg.replid = b.katalog
                     LEFT JOIN sar_tempat t on t.replid = b.tempat
                     WHERE
-                      t.replid ='.$tempat.' and
+                      t.replid = '.$tempat.' AND
                       kg.nama LIKE "%'.$nama.'%" and
                       b.kode LIKE "%'.$kode.'%" and
                       b.barkode LIKE "%'.$barkode.'%" and
@@ -137,7 +144,7 @@
                     while ($r=mysql_fetch_assoc($e)) {
                       $out.='<tr>
                                 <td>'.$r['kode'].'</td>
-                                <td>'.$r['nama'].'</td>
+                                <td>'.$r['katalog'].'</td>
                                 <td align="right">'.$r['jenis'].'</td>
                                 <td align="right">'.$r['jum_unit'].'</td>
                                 <td align="right">Rp. '.number_format($r['aset']).',-</td>
@@ -148,7 +155,7 @@
                     }
                   }
           $out.='</table>';
-          $out.='<p>Total : '.$n.'</p>';
+          // $out.='<p>Total : '.$n.'</p>';
         echo $out;
   
         #generate html -> PDF ------------
