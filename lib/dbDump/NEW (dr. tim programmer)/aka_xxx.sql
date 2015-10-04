@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-09-29 17:06:55
+Date: 2015-10-04 16:44:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -4762,12 +4762,13 @@ CREATE TABLE `aka_siswakelas` (
   KEY `detailkelas` (`detailkelas`) USING BTREE,
   CONSTRAINT `detailkelas` FOREIGN KEY (`detailkelas`) REFERENCES `aka_detailkelas` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siswa` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_siswakelas
 -- ----------------------------
-INSERT INTO `aka_siswakelas` VALUES ('58', '148', '157');
+INSERT INTO `aka_siswakelas` VALUES ('4', '175', '6');
+INSERT INTO `aka_siswakelas` VALUES ('5', '176', '4');
 
 -- ----------------------------
 -- Table structure for aka_sks
