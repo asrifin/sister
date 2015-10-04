@@ -21,16 +21,16 @@
 <div class="input-control select span3">
     <select class="aktif_cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
-<div class="input-control select span3">
+<div class="input-control select span2">
     <select class="aktif_cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
-<div class="input-control select span3">
+<div class="input-control select span2">
     <select  class="aktif_cari" data-hint="Tingkat" name="tingkatS" id="tingkatS"></select>
 </div>
-<div class="input-control select span3">
+<div class="input-control select span1">
     <select  class="aktif_cari" data-hint="Sub Tingkat" name="subtingkatS" id="subtingkatS"></select>
 </div>
-<div class="input-control select span3">
+<div class="input-control select span2">
     <select  class="aktif_cari" data-hint="Kelas" name="detailkelasS" id="detailkelasS"></select>
 </div>
 <!-- <form id="aktifFR"> -->

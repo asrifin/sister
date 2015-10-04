@@ -223,19 +223,20 @@
 
 		// cmbkelas ---------------------------------------------------------
 			case 'cmb'.$mnu:
-				$f=$j=$w='';
+				$f='dk.replid,
+					k.kelas,
+					k.kapasitas';
+				$w='';
+				$j='join aka_kelas k on k.replid = dk.kelas';
 				if(isset($_POST['replid'])){
-					$w.='where replid ='.$_POST['replid'];
+					$w.=' where dk.replid ='.$_POST['replid'];
 				}else{
 					if(isset($_POST[$mnu])){
-						$w.='where '.$mnu.'='.$_POST[$mnu];
+						$w.=' where '.$mnu.'='.$_POST[$mnu];
 					}elseif(isset($_POST['subtingkat']) && isset($_POST['tahunajaran']) && isset($_POST['departemen']) ){
-						$f.='dk.replid,
-							k.kelas,
-							k.subtingkat,
-							dk.tahunajaran,
-							k.departemen';
-						$j.='join aka_kelas k on k.replid = dk.kelas';
+						$f.=',(
+								SELECT COUNT(*) FROM aka_siswakelas sk WHERE sk.detailkelas = dk.replid
+							)terisi';
 						$w.=' where 
 								k.subtingkat ='.$_POST['subtingkat'].' AND 
 								dk.tahunajaran = '.$_POST['tahunajaran'].' and 
@@ -246,8 +247,8 @@
 						from '.$tb.' dk
 						'.$j.$w.'		
 						ORDER  BY k.kelas  asc';
-				$e  = mysql_query($s);
 				// pr($s);
+				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
 

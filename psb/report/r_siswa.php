@@ -7,10 +7,6 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/mpdf/mpdf.php';
 
-  // $diskRegArr =  getFieldArr3('detaildiskon','psb_siswadiskon','','siswabiaya',649);
-  // pr($diskRegArr);
-
-
   $mod  ='PSB';
   $mnu  = 'siswa';
   $mnu2 = 'siswaayah';
@@ -34,7 +30,7 @@
 
   $x     = $_SESSION['id_loginS'].$_GET['replid'];
   $token = base64_encode($x);
-
+// pr($_GET['replid']);
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
   }else{ // sudah login 
@@ -98,9 +94,10 @@
             </tr>';
 
         // Biaya siswa
-        $s7=['psb_siswabiaya.replid','psb_biaya.biaya','psb_detailbiaya.replid detailbiaya','psb_biaya.isAngsur','psb_biaya.isDiskon','psb_biaya.jenistagihan','psb_detailbiaya.nominal','psb_siswabiaya.angsuran','psb_siswabiaya.ketdiskonkhusus','psb_siswabiaya.diskonkhusus'];
+        $s7=['psb_siswabiaya.replid','psb_biaya.biaya','  keu_viabayar.viabayar','psb_detailbiaya.replid detailbiaya','psb_biaya.isAngsur','psb_biaya.isDiskon','psb_detailbiaya.nominal','psb_siswabiaya.angsuran','psb_siswabiaya.ketdiskonkhusus','psb_siswabiaya.diskonkhusus'];
         $j7[]=['psb_detailbiaya',$tb7,'replid','detailbiaya'];
         $j7[]=['psb_biaya','psb_detailbiaya','replid','biaya'];
+        $j7[]=['keu_viabayar','psb_siswabiaya','replid','viabayar'];
         $r7=getFieldArr3($s7,$tb7,$j7,'siswa',$replid);
 
         $out.='<tr xclass="head"><td colspan="3">Biaya Siswa</td>
@@ -114,6 +111,7 @@
                 <td align="center">Diskon Khusus</td>
                 <td align="center">Biaya Nett</td>
                 <td align="center">Angsuran</td>
+                <td align="center">Via</td>
               </tr>';
               //9.600 - 2.800
               $cc='';
@@ -123,6 +121,7 @@
                 $biayaAfterdiskReg = getBiayaDiskReg($v['detailbiaya'],$diskRegArr);
                 $diskReg           = $biayaAwal - $biayaAfterdiskReg;
                 $diskKhusus        = $v['diskonkhusus'];
+                $viaBayar          = $v['viabayar'];
                 $biayaNett         = $biayaAwal - ($diskReg+$diskKhusus);
                 $cc.=$diskReg.'<br />';
                 $out.='<tr>
@@ -132,6 +131,7 @@
                   <td align="right">'.(empty($diskKhusus)?'Rp. 0':setuang($diskKhusus)).'</td>
                   <td align="right">'.(empty($biayaNett)?'Rp. 0':setuang($biayaNett)).'</td>
                   <td align="center">'.(empty($v['angsuran'])?'-':$v['angsuran'].' x').'</td>
+                  <td align="center">'.(empty($v['viabayar'])?'-':$v['viabayar']).'</td>
                 </tr>';
               }
               // pr($cc);

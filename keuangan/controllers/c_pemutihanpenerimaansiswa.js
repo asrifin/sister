@@ -7,15 +7,55 @@ var contentFR = '';
         contentFR += '<form style="overflow:scroll;height:500px;" autocomplete="off" id="dokumenFR" onsubmit="simpan();return false;" >' 
                         +'<input name="idformH" id="idformH" type="hidden">' 
 
-                        // item
-                        +'<label>Via</label>'
-                        +'<input data-transform="input-control" required placeholder="via" name="viabayarTB" id="viabayarTB">'
+                        // siswa 
+                        +'<label>Siswa </label>'
+                        +'<input name="siswaH" id="siswaH" type="text">' 
+                        +'<input onfocus="autoSuggest(\'siswa\');" data-transform="input-control"  required placeholder="cari nis/nama siswa" name="siswaTB" id="siswaTB">'
 
-                        // keterangan
-                        +'<label>Keterangan</label>'
-                        +'<div class="input-control textarea">'
-                            +'<textarea xdata-transform="input-control" placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
-                        +'</div>'
+                        +'<table class="table">'
+                            +'<tr>'
+                                +'<td>Departemen</td>'
+                                +'<td id="departemenTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Tahun Ajaran</td>'
+                                +'<td id="tahunajaranTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Tingkat</td>'
+                                +'<td id="tingkatTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Sub Tingkat</td>'
+                                +'<td id="subtingkatTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>NIS</td>'
+                                +'<td id="nisTD"></td>'
+                            +'</tr>'
+                        +'</table>'
+
+                        // tabel biaya
+                        +'<table class="table bordered">'
+                            +'<tr class="bg-blue fg-white">'
+                                +'<th>Biaya</th>'
+                                +'<th>Nominal</th>'
+                                +'<th><a class="<bg-blue></bg-blue>" href="#" onclick="biayaDel();"><i class="fg-white icon-cancel-2"></i></a></th>'
+                            +'</tr>'
+                        +'</table>'
+
+                        // tgl 
+                        +'<label>No. MOM </label>'
+                        +'<input data-transform="input-control" required placeholder="nomor MOM" name="nomomTB" id="nomomTB">'
+
+                        // No. MOM 
+                        +'<label>Tanggal MOM</label>'
+                        +'<div class="input-control text" data-role="datepicker"'
+                            +'data-format="dd mmmm yyyy"'
+                            +'data-effect="slide">'
+                            +'<input placeholder="tgl. MOM" required id="tglmomTB" name="tglmomTB" type="text">'
+                            +'<button class="btn-date"></button>'
+                        +'</div>'    
 
                         // button
                         +'<div class="form-actions">' 
@@ -103,7 +143,7 @@ var contentFR = '';
 
 
 // form ---
-    function viewFR(iddok){
+    function viewFR(idsiswa){
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -112,14 +152,14 @@ var contentFR = '';
             padding: 10,
             onShow: function(){
                 var titlex='<span class="icon-search"></span> Detail Aksi ';
-                if(iddok!='') { 
+                if(idsiswa!='') { 
                     var u =dir;
-                    var d ='aksi=ambiledit&replid='+iddok;
+                    var d ='aksi=ambiledit&replid='+idsiswa;
                     ajax(u,d).done(function (dt){
                         if(dt.status!='sukses'){
                             notif(dt.status,'red');
                         }else{
-                            $('#idformH').val(iddok);
+                            $('#idformH').val(idsiswa);
                             $('#viabayarTB').val(dt.viabayar);
                             $('#keteranganTB').val(dt.keterangan);
                         }
@@ -337,3 +377,72 @@ var contentFR = '';
         });
     }
 //end of combo satuanjumlah ---
+
+
+  // autosuggest
+    function autoSuggest(el){
+        var urlx= '?aksi=autocomp';
+        var col = [{
+                'align':'left',
+                'columnName':'nis',
+                'hide':true,
+                'width':'10',
+                'label':'NIS'
+            },{   
+                'align':'left',
+                'columnName':'namasiswa',
+                'width':'90',
+                'label':'NAMA'
+            },{   
+                'align':'left',
+                'columnName':'kelas',
+                'width':'90',
+                'label':'KELAS'
+            },{   
+                'align':'left',
+                'columnName':'tahunajaran',
+                'width':'90',
+                'label':'Th. Ajaran'
+            },{   
+                'align':'left',
+                'columnName':'departemen',
+                'width':'90',
+                'label':'DEPT.'
+        }];
+
+        urly = dir+urlx;
+        $('#'+el+'TB').combogrid({
+            debug:true,
+            width:'700px',
+            colModel: col ,
+            url: urly,
+            select: function( event, ui ) { // event setelah data terpilih 
+                $('#'+el+'H').val(ui.item.replid);
+                $('#'+el+'TB').val(ui.item.nama);
+                $('#nisTB').val(ui.item.nis);
+                $('#departemenTB').val(ui.item.departemen);
+                $('#tahunajaranTB').val(ui.item.tahunajaran);
+                $('#tingkatTB').val(ui.item.tingkat);
+                $('#subtingkatTB').val(ui.item.subtingkat);
+
+                // validasi input (tidak sesuai data dr server)
+                    $('#'+el+'TB').on('keyup', function(e){
+                        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+                        var keyCode = $.ui.keyCode;
+                        if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
+                            if($('#'+el+'H').val()!=''){
+                                $('#'+el+'H').val('');
+                                $('#'+el+'TB').val('');
+                            }
+                        }
+                    });
+
+                    $('#'+el+'TB').on('blur,change',function(){
+                        if($('#'+el+'H').val()=='') {
+                            $('#'+el+'TB').val(''); // :: all 
+                        }
+                    });
+                return false;
+            }
+        });
+    }

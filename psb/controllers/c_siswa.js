@@ -10,6 +10,7 @@ var mnu9  = 'subtingkat';
 var mnu10 = 'dokumen';
 var mnu11 = 'agama';
 var mnu12 = 'suku';
+var mnu13 = 'viabayar';
 
 var dir   = 'models/m_'+mnu+'.php';
 var dir2  = '../akademik/models/m_'+mnu2+'.php';
@@ -23,7 +24,9 @@ var dir9  = '../akademik/models/m_'+mnu9+'.php';
 var dir10 = 'models/m_'+mnu10+'.php';
 var dir11 = 'models/m_'+mnu11+'.php';
 var dir12 = 'models/m_'+mnu12+'.php';
+var dir13 = '../keuangan/models/m_'+mnu13+'.php';
 var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
+
 
 // main function ---
     $(document).ready(function(){
@@ -949,10 +952,26 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
             }else{
                 var opt = '';
                 $.each(dt.angsuran,function(id,item){
-                    opt+='<option '+(ang==item.replid?'selected':'')+' value="'+item.replid+'">'+item.angsuran+' x </option>'
+                    opt+='<option '+(ang==item.replid?'selected':'')+' '+(item.angsuran=='1'?'style="display:none;"':'')+' value="'+item.replid+'">'+item.angsuran+' x </option>'
                 });
-            }
-            $('#angsuran'+idx+'TB').html(opt);
+            }$('#angsuran'+idx+'TB').html('<option value="">-Pilih Angsuran-</option>'+opt);
+        });
+    }
+// combo cara bayar
+    function cmbviabayar (idx,via) {
+        var u = dir13;
+        var d ='aksi=cmb'+mnu13;
+        ajax(u,d).done(function (dt){
+            var opt='';
+            if (dt.status!='sukses') {
+                notif(dt.status,'red');
+                opt+='<option value="">'+dt.status+'</option>'
+            }else{
+                var opt = '';   
+                $.each(dt.viabayar,function (id,item){
+                    opt+='<option '+(via==item.replid?'selected':'')+' value="'+item.replid+'">'+item.viabayar+' </option>'
+                });
+            }$('#viabayar'+idx+'TB').html(opt);
         });
     }
 
@@ -1465,7 +1484,7 @@ function notif(cont,clr) {
                                     +'</tr>';
 
                                 // diskon reguler
-                                if(item.isDiskon=='1' || item.isDiskon=='3' ) { // 1=reg or 3=reg & khusus
+                                if(item.isDiskon=='1' || item.isDiskon=='3' ) { // 1=reg ||  (3=reg & khusus)
                                     out+='<tr>'
                                         +'<td>Diskon Reguler</td>'
                                         +'<td>'
@@ -1474,8 +1493,8 @@ function notif(cont,clr) {
                                                 +'<thead class="fg-white bg-blue">'
                                                     +'<th align="center">Diskon</th>'
                                                     +'<th align="center">Nilai</th>'
-                                                    // +'<th align="center">Keterangan</th>'
-                                                    +'<th align="center"><a onclick="$(\'#detaildiskon'+item.replid+'TBL\').html(\'\');getBiayaNett('+item.replid+'); return false;" class="fg-white bg-blue"><i class="icon-cancel-2"></i></a></th>'
+                                                    +'<th align="center">Hapus</th>'
+                                                    // +'<th align="center"><a onclick="$(\'#detaildiskon'+item.replid+'TBL\').html(\'\');getBiayaNett('+item.replid+'); return false;" class="fg-white bg-blue"><i class="icon-cancel-2"></i></a></th>'
                                                 +'</thead>'
                                                 +'<tbody class="detaildiskonTBL" id="detaildiskon'+item.replid+'TBL">'
                                                     +'<tr><td class="bg-white fg-red text-center" colspan="4">..kosong..</td></tr>'
@@ -1487,7 +1506,7 @@ function notif(cont,clr) {
                                 }
 
                                 // Diskon Khusus
-                                if(item.isDiskon=='2' || item.isDiskon=='3' ) { // 2=khusus or 3=reg & khusus
+                                if(item.isDiskon=='2' || item.isDiskon=='3' ) { // 2=khusus || (3=reg & khusus)
                                     out+='<tr>'
                                         +'<td>Diskon Khusus </td>'
                                         +'<td><div class="input-control text"><input value="'+(item.ketdiskonkhusus!=''?item.ketdiskonkhusus:'')+'" '+(dt.levelurutan==1 || dt.levelurutan==2?' name="ketdiskonkhusus'+item.replid+'TB"':'disabled')+' placeholder="keterangan diskon" type="text" id="ketdiskonkhusus'+item.replid+'TB" /></div></td>'
@@ -1507,42 +1526,59 @@ function notif(cont,clr) {
                                 }
 
                                     // jenis tagihan 
-                                    out+='<tr>'
-                                        +'<td>Ditagih</td>'
-                                        +'<td>'+(item.jenistagihan!='sekali'?'per ':'')+item.jenistagihan+'</td>'
-                                        +'<td></td>'
-                                    +'</tr>';
+                                    // out+='<tr>'
+                                    //     +'<td>Ditagih</td>'
+                                    //     +'<td>'+(item.jenistagihan!='sekali'?'per ':'')+item.jenistagihan+'</td>'
+                                    //     +'<td></td>'
+                                    // +'</tr>';
 
                                 // cara bayar
-                                if(item.idIsAngsur=='1') { // 1= angsur reg.
+                                // if(item.idIsAngsur=='1') { // 1= angsur reg.
                                     out+='<tr>'
-                                        +'<td>Angsuran </td>'
+                                        +'<td>Cara Bayar </td>'
                                         +'<td>' 
-                                            +'<div class="input-control select">'
-                                                +'<select class="text-center" id="angsuran'+item.replid+'TB" name="angsuran'+item.replid+'TB"><option value=""></option></select>'
+                                            +'<div xclass="input-control radio">'
+                                                +'<label><input id="isAngsur2'+item.replid+'0TB" onclick="isAngsur2FC('+item.replid+',0)" value="0" required name="isAngsur2'+item.replid+'TB" '+(item.isAngsur=='0'?'checked':'')+' type="radio"> Kontan</label>'
+                                                +'<label '+(item.isAngsur=='0'?'class="fg-gray"':'')+' >'
+                                                    +'<input  id="isAngsur2'+item.replid+'1TB" onclick="isAngsur2FC('+item.replid+',1)"  value="1" required name="isAngsur2'+item.replid+'TB"  '+(item.isAngsur=='0'?'disabled':'')+' type="radio"> Angsur'
+                                                +'</label>'
                                             +'</div>'
+                                            +'<select style="display:none;" data-transform="input-control" class="text-center" id="angsuran'+item.replid+'TB" name="angsuran'+item.replid+'TB"><option value=""></option></select>'
                                         +'</td>'
                                         +'<td class="text-right" id="'+item.isDiskon+'TD"></td>'
                                     +'</tr>';
-                                }
+                                // }
+                                out+='<tr>'
+                                    +'<td>Via</td>'
+                                    +'<td>'
+                                        +'<select data-transform="input-control" name="viabayar'+item.replid+'TB" id="viabayar'+item.replid+'TB"></select>'
+                                    +'</td>'
+                                +'</tr>';
  
                                 out+='</tbody>'
                             +'</table>'; 
                     });
                     $('#biayaDV').html(out);
-                }
+                    $.each(dt.biayaArr, function (id,item){
+                        getBiaya();
+                        if(siswa!=''){
+                            $('#isAngsur2'+item.replid+(item.isAngsur2=='1'?'1':'0')+'TB').attr('checked',true);
+                            isAngsur2FC(item.replid,item.isAngsur2);
+                        } 
 
-                $.each(dt.biayaArr, function (id,item){
-                    getBiaya();
-                    if(item.idIsAngsur=='1') cmbangsuran(item.replid,(item.angsuran!=''?item.angsuran:''));
-                    // detail_diskon / diskon_reguler 
-                    ajax(dir,'aksi=tampil&subaksi=detaildiskon&siswabiaya='+item.idsiswabiaya).done(function (dtx){
-                        console.log('loop diskon reg @biaya ='+item.idsiswabiaya);
-                        $.each(dtx.detaildiskonArr, function (idx,itemx){
-                            detaildiskonAdd (item.replid,itemx.idsiswadiskon,itemx.replid,itemx.diskon,itemx.nilai,itemx.keterangan);
+                        cmbviabayar(item.replid,(item.viabayar!=''||item.viabayar!='0'?item.viabayar:''));
+                        cmbangsuran(item.replid,(item.angsuran!=''?item.angsuran:''));
+                        
+                        // detail_diskon / diskon_reguler 
+                        ajax(dir,'aksi=tampil&subaksi=detaildiskon&siswabiaya='+item.idsiswabiaya).done(function (dtx){
+                            console.log('loop diskon reg @biaya ='+item.idsiswabiaya);
+                            $.each(dtx.detaildiskonArr, function (idx,itemx){
+                                detaildiskonAdd (item.replid,itemx.idsiswadiskon,itemx.replid,itemx.diskon,itemx.nilai,itemx.keterangan);
+                            });
                         });
                     });
-                });
+                }
+
             }
         });
     }
@@ -1912,3 +1948,14 @@ function notif(cont,clr) {
         });
         // console.log(iSaudaraDelTR);
     } 
+
+    function  isAngsur2FC (e,typ) {
+        if(typ=='1') { // angsur
+            $('#angsuran'+e+'TB').removeAttr('style').attr('required',true).val('');
+            console.log('angsur e='+e+' typ='+typ);
+        }else{ // tunai
+            $('#angsuran'+e+'TB').attr('style','display:none').removeAttr('required').val('');        
+            console.log('tunai e='+e+' typ='+typ);
+        } 
+    }
+

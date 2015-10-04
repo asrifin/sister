@@ -179,7 +179,7 @@
 									siswa.namasiswa LIKE "%'.$namasiswa.'%" 
 								GROUP BY 
 									siswa.replid';
-									// vd($sql);
+									vd($sql);
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{

@@ -35,8 +35,9 @@
 		return $r['nopendaftaran'];
 	}
 	function getNoPendaftaran($idsiswa){
-		$w = (isset($idsiswa)&&!empty($idsiswa)&&$idsiswa!='')?'WHERE replid='.$idsiswa:'';
-		$s = 'SELECT  (max(nopendaftaran)+1) nopendaftaran FROM  psb_siswa '.$w;
+		$w = (isset($idsiswa) && $idsiswa!='')?'WHERE replid='.$idsiswa:'';
+		$s = 'SELECT (ifnull(max(nopendaftaran),0)+1) nopendaftaran FROM  psb_siswa '.$w;
+		// pr($s);
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r['nopendaftaran'];

@@ -4,7 +4,6 @@ var mnu3 = 'tahunajaran';
 var mnu4 = 'tingkat';
 var mnu5 = 'subtingkat';
 var mnu6 = 'detailkelas';
-var mnu7 = 'angkatan';
 var mnu8 = 'kelas';
 
 var dir  = 'models/m_'+mnu+'.php';
@@ -13,13 +12,12 @@ var dir3 = 'models/m_'+mnu3+'.php';
 var dir4 = 'models/m_'+mnu4+'.php';
 var dir5 = 'models/m_'+mnu5+'.php';
 var dir6 = 'models/m_'+mnu6+'.php';
-var dir7 = 'models/m_'+mnu7+'.php';
 var dir8 = 'models/m_'+mnu8+'.php';
 var contentFR ='';
 
 // main function ---
-   $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpanSV();return false;" id="'+mnu+'FR">' 
+    $(document).ready(function(){
+        contentFR += '<form style="overflow:scroll;height:550px;"  autocomplete="off" onsubmit="simpanSV();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         +'<table class="table">'
                             // mode`
@@ -28,14 +26,14 @@ var contentFR ='';
                                 +'<td>: '
                                     +'<div data-role="input-control" class="input-control radio default-style" >'    
                                         +'<label>'
-                                            +'<input checked value="1" name="modeTB" type="radio" >'
+                                            +'<input id="modeTB1"  onclick="modeFC();"  checked value="1" name="modeTB" type="radio" >'
                                             +'<span class="check"></span>'
                                             +'Baru &nbsp;'
                                         +'</label>'
                                     +'</div>'
                                     +'<div data-role="input-control" class="input-control radio default-style" >'    
                                         +'<label>'
-                                            +'<input value="2"  name="modeTB" type="radio" >'
+                                            +'<input id="modeTB2"  onclick="modeFC();" value="2"  name="modeTB" type="radio" >'
                                             +'<span class="check"></span>'
                                             +'Naik Kelas'
                                         +'</label>'
@@ -57,19 +55,32 @@ var contentFR ='';
                                 +'<td>Tingkat <input  type="hidden"  class="belum_cari"  type="text" id="tingkatTB" /></td>'
                                 +'<td id="tingkatTD"></td>'
                             +'</tr>'
-                            // sub tingkat
+                            // ke --------------------------------
+                            +'<tr><td class="bg-lightTeal"  colspan="2">Ke -</td></tr>'
                             +'<tr>'
                                 +'<td>Sub Tingkat '
                                     +'<input type="hidden" name="subtingkatTB" class="belum_cari" type="text" id="subtingkatTB" />'
                                     +'<input type="hidden" id="detailkelasTB" name="detailkelasTB" />'
                                 +'</td>'
                                 +'<td id="subtingkatTD"></td>'
-                                // detailkelas
                             +'</tr>'
-                            //masuk ke kelas ?
                             +'<tr>'
                                 +'<td>akan Masuk kelas</td>'
                                 +'<td id="kelasTD"></td>'
+                            +'</tr>'
+                            // asal ------------------------------
+                            +'<tr style="display:none;"  class="modenaikTR"><td class="bg-lightTeal" colspan="2">Dari  -</td></tr>'
+                            +'<tr style="display:none;"  class="modenaikTR">'
+                                +'<td>Sub Tingkat</td>'
+                                +'<td id="subtingkatasalTD">'
+                                    +'<select data-transform="input-control" name="subtingkatTB2" id="subtingkatTB2"></select>'
+                                +'</td>'
+                            +'</tr>'
+                            +'<tr style="display:none;" class="modenaikTR">'
+                                +'<td>Kelas</td>'
+                                +'<td id="kelasasalTD">'
+                                    +'<select data-transform="input-control" name="detailkelasTB2" id="detailkelasTB2"></select>'
+                                +'</td>'
                             +'</tr>'
                         +'</table>'
 
@@ -114,7 +125,7 @@ var contentFR ='';
             cmbtahunajaran('filter',$(this).val());
         });
         $('#tahunajaranS').on('change',function (){
-            cmbtingkat('fitler','',$('#departemenS').val());
+            cmbtingkat('filter',$('#departemenS').val());
         });
         $('#tingkatS').on('change',function (){
             cmbsubtingkat('filter',$(this).val(),'');
@@ -125,44 +136,33 @@ var contentFR ='';
         $('#detailkelasS').on('change',function (){
             viewTB('aktif');
         });
-        $('#cariBC').on('click',function(){
-            $('#cariTR').toggle('slow');
-            $('#nisnS').val('');
-            $('#namaS').val('');
-            $('#keteranganS').val('');
-        });
         $('#aktif_nisS,#aktif_nisnS,#aktif_namasiswaS').on('keydown',function (e){ // kode grup
             if(e.keyCode == 13) viewTB('aktif');
         });
-        // $('#belum_nisS,#belum_nisnS,#belum_namasiswaS').on('keyup',function (){ // kode grup
-        //     // if(e.keyCode == 13) 
-        //     console.log('masuk key up');
-        //         viewTB('belum');
-        // });
     }); 
 
-// combo kelas ---
+// // combo kelas ---
     function cmbdetailkelas(typ,subt,dkls){
-        console.log('setalah masuk'+$('#detailkelasS').val());
         var u=dir6;
-        var d= 'aksi=cmb'+mnu6+'&subtingkat='+subt+'&departemen='+$('#departemenS').val()+'&tahunajaran='+$('#tahunajaranS').val();
+        var d= 'aksi=cmb'+mnu6+'&subtingkat='+subt+'&departemen='+$('#departemenS').val()+'&tahunajaran='+$('#tahunajaranS').val()+(dkls!=''?'&replid='+$('#detailkelasS').val():'');
         ajax(u,d).done(function (dt){
             var out='';
             if(dt.status!='sukses'){
                 out+='<option value="">'+dt.status+'</option>';
             }else{
-                if(dt.detailkelas.length==0) out+='<option value="">kosong</option>';
-                else{
+                if(dt.detailkelas.length==0) {out+='<option value="">kosong</option>';
+                }else{
                     $.each(dt.detailkelas, function (id,item){
-                        out+='<option '+(item.replid==dkls?'selected':'')+' value="'+item.replid+'">'+item.kelas+'</option>';
+                        out+='<option '+(item.replid==dkls?'selected':'')+' value="'+item.replid+'">'+item.kelas+' (terisi : '+item.terisi+' dr '+item.kapasitas+')</option>';
                     });
                 }
-                if(typ=='filter'){
+                if(typ=='filter'){ //filter 
                     $('#detailkelasS').html(out);
                     viewTB('aktif');
-                } else  {
+                }else { // form add 
                     $('#detailkelasTB').html('<option value="">-Pilih '+mnu6+'-</option>'+out);
                     $('#kelasTD').html(': '+dt.detailkelas[0].kelas);
+                    console.log(dt.detailkelas[0].kelas);
                 }
             }
         });
@@ -241,17 +241,18 @@ var contentFR ='';
             onShow: function(){
                 var titl,cont;
                 $.Dialog.content(contentFR);
-                if(idsiswa!=''){ //form mode : edit 
-                    titl= 'Ubah '+mnu;
-                    var d ='aksi=ambiledit&replid='+idsiswa;
-                    ajax(dir,d).done(function (dt){
-                        $('#idformH').val(id);
-                    });
-                }else{ // form mode : add  
+                // if(idsiswa!=''){ //form mode : edit 
+                //     titl= 'Ubah '+mnu;
+                //     var d ='aksi=ambiledit&replid='+idsiswa;
+                //     ajax(dir,d).done(function (dt){
+                //         $('#idformH').val(id);
+                //     });
+                // }else{ // form mode : add  
                     titl='Tambah '+mnu;
                     cmbdepartemen('form');
                     $('#detailkelasTB').val($('#detailkelasS').val());
-                }$.Dialog.title(titl);
+                // }
+                $.Dialog.title(titl);
             }
         });
     }
@@ -276,14 +277,13 @@ var contentFR ='';
         // siswaExist();
     }
 
-
 // end of form ---
     function siswaDel(id){
             $('#siswaTR_'+id).fadeOut('slow',function(){
                 $('#siswaTR_'+id).remove();
                 // barangExist();
             });
-        }
+    }
 
     function siswaExist(){
         // var jumImg = $('.imgTR:visible','#imgTB').length; //hitung jumlah gambar bkeg bukeg  dalam form 
@@ -293,7 +293,6 @@ var contentFR ='';
         else $('#siswaTBL').html('');
     }
 //end of barang record kosong --
-
 
 //himpun array siswa terpilih
     function siswaArr(){
@@ -377,18 +376,18 @@ var contentFR ='';
         });
     }
     
-// notifikasi
-function notif(cont,clr) {
-    var not = $.Notify({
-        caption : "<b>Notifikasi</b>",
-        content : cont,
-        timeout : 3000,
-        style :{
-            background: clr,
-            color:'white'
-        },
-    });
-}
+    // notifikasi
+    function notif(cont,clr) {
+        var not = $.Notify({
+            caption : "<b>Notifikasi</b>",
+            content : cont,
+            timeout : 3000,
+            style :{
+                background: clr,
+                color:'white'
+            },
+        });
+    }
 // end of notifikasi
 
 //reset form ---
@@ -556,6 +555,7 @@ function notif(cont,clr) {
             }
         }
     }
+
     function siswakelasSelAll(e){ //*
         // isSelectedTR();
         if($(e).is(':checked')){
@@ -568,6 +568,7 @@ function notif(cont,clr) {
             $('.siswakelasTB').removeAttr('checked');
         }
     }
+
     function siswaSelAll(e){ //*
         if($(e).is(':checked')){
             $('.siswaTR').addClass('bg-lightTeal');
@@ -590,5 +591,15 @@ function notif(cont,clr) {
             $('#siswa'+e+'TR').addClass('bg-lightTeal');
         }else{
             $('#siswa'+e+'TR').removeClass('bg-lightTeal');
+        }
+    }
+
+    function modeFC(){
+        if($('#modeTB1').is(':checked')){ // siswa baru 
+            $('.modenaikTR').attr('style','display:none;');
+            // cmbsubtingkat()
+            // todo : fetch data for combo box subtingkat & detail kelas  (by : tingkat & )
+        }else{ // naik kelas
+            $('.modenaikTR').removeAttr('style');
         }
     }

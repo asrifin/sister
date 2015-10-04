@@ -154,7 +154,7 @@
 											<button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['idsiswa'].')"':' disabled').' >
 												<i class="icon-pencil"></i>
 											</button>
-											<a class="button" '.(isAksi('siswa','r')?' href="report/r_siswa.php?token='.$token.'&idsiswa='.$r['idsiswa'].'"':' disabled href="#"').'  target="_blank" data-hint="cetak">
+											<a class="button" '.(isAksi('siswa','r')?' href="report/r_siswa.php?token='.$token.'&replid='.$r['idsiswa'].'"':' disabled href="#"').'  target="_blank" data-hint="cetak">
 												<i class="icon-printer"></i>
 											</a>
 											<button data-hint="hapus"  '.(isAksi('siswa','d')?'onclick="del('.$r['idsiswa'].')"':' disabled').'>
@@ -272,6 +272,8 @@
 							$f=',sb.replid idsiswabiaya,
 								sb.angsuran,
 								sb.diskonkhusus,
+								sb.viabayar,
+								sb.isAngsur2,
 								sb.ketdiskonkhusus';
 							$j=' LEFT JOIN psb_detailbiaya db on db.biaya = b.replid
 								LEFT JOIN psb_siswabiaya sb on sb.detailbiaya = db.replid';
@@ -286,21 +288,17 @@
 								b.replid, 
 								b.biaya, 
 								b.kode, 
-								b.isAngsur idIsAngsur,
-								case b.isAngsur
-									when 0 then "Tunai"
-									when 1 then "Angsur Reguler"
-									else "Angsur Bebas"
-								end as isAngsur,
-								b.isDiskon,
-								t.jenistagihan '.$f.'
+								b.isAngsur,
+								b.isDiskon
+								'.$f.'
 							FROM psb_biaya b
-								JOIN psb_jenistagihan t on t.replid = b.jenistagihan 
 								'.$j.$w.'
 							'.$g.'
 							ORDER BY 
 								b.biaya ASC';
-						// pr($s);	
+								// t.jenistagihan 
+								// JOIN psb_jenistagihan t on t.replid = b.jenistagihan 
+						// vd($s);	
 						$e=mysql_query($s);
 						$stat=!$e?'gagal':'sukses';
 						$n=mysql_num_rows($e);
@@ -314,22 +312,21 @@
 								// diskon reguler -----------
 								$biayaArr[]=array(
 									'replid'          =>$r['replid'],
-									'jenistagihan'    =>$r['jenistagihan'],
 									'kode'            =>$r['kode'],
 									'biaya'           =>$r['biaya'],
-									'idIsAngsur'      =>$r['idIsAngsur'],
 									'idsiswabiaya'    =>(isset($_POST['siswa']) && $_POST['siswa']!=''?$r['idsiswabiaya']:''),
 									'angsuran'        =>(isset($_POST['siswa']) && $_POST['siswa']!=''?$r['angsuran']:''),
 									'diskonkhusus'    =>(isset($_POST['siswa']) && $_POST['siswa']!=''?setuang($r['diskonkhusus']):''),
 									'ketdiskonkhusus' =>(isset($_POST['siswa']) && $_POST['siswa']!=''?$r['ketdiskonkhusus']:''),
 									'isAngsur'        =>$r['isAngsur'],
+									'isAngsur2'       =>(isset($r['isAngsur2'])?$r['isAngsur2']:''),
+									'viabayar'        =>(isset($r['viabayar'])?$r['viabayar']:''),
 									'isDiskon'        =>$r['isDiskon'],
-									'jenistagihan'    =>$r['jenistagihan'],
 								);
 							}
 						}$out=json_encode(array('status'=>$stat,'levelurutan'=>$_SESSION['levelurutanS'],'biayaArr'=>$biayaArr));
-					break;
-				}
+						break;
+					}
 			break; 
 			// view -----------------------------------------------------------------
 
@@ -509,6 +506,7 @@
 							'tinggisiswa',	
 							'warganegarasiswa',
 						);
+						// pr($siswaF);
 						$siswaSV=(isset($_POST['idformTB']) && $_POST['idformTB']!='')?editRecord($siswaF,$tb,'replid',$_POST['idformTB']):addRecord($siswaF,$tb);
 						if(!$siswaSV['isSukses']) $stat='gagal_insert_siswa';
 						else{
@@ -521,6 +519,7 @@
 							}
 							// siswa - biaya  -----------------------------------------------------------------------------------------
 							$siswabiayaStat=true;$xx=$n=0;
+							$ss='';
 							if(isset($_POST['iddetailbiayaTB'])){
 								foreach ($_POST['iddetailbiayaTB'] as $i => $v) {
 									$biaya = getField('biaya','psb_detailbiaya','replid',$v);
@@ -533,12 +532,16 @@
 										$f   =' siswa="'.(isset($siswaSV['id'])?$siswaSV['id']:'').'",';
 										$w   ='';
 									}
-
-									$angsuran        = isset($_POST['angsuran'.$biaya.'TB'])?',angsuran ='.$_POST['angsuran'.$biaya.'TB']:'';
+									
+									$isAngsur2       = isset($_POST['isAngsur2'.$biaya.'TB'])?',isAngsur2 ="'.$_POST['isAngsur2'.$biaya.'TB'].'"':'';
+									$angsuran        = ',angsuran ='.($_POST['isAngsur2'.$biaya.'TB']=='1'?$_POST['angsuran'.$biaya.'TB']:'0');
 									$diskonkhusus    = isset($_POST['diskonkhusus'.$biaya.'TB'])?',diskonkhusus ='.getuang($_POST['diskonkhusus'.$biaya.'TB']):'';
 									$ketdiskonkhusus = isset($_POST['ketdiskonkhusus'.$biaya.'TB'])?',ketdiskonkhusus ="'.$_POST['ketdiskonkhusus'.$biaya.'TB'].'"':'';
-									$siswabiayaS 	 = $pre.' psb_siswabiaya SET '.$f.' detailbiaya ='.$v.'
-														'.$angsuran.$diskonkhusus.$ketdiskonkhusus.$w;
+									$viabayar        = isset($_POST['viabayar'.$biaya.'TB'])?',viabayar ="'.$_POST['viabayar'.$biaya.'TB'].'"':'';
+									$siswabiayaS     = $pre.' psb_siswabiaya SET '.$f.' detailbiaya ='.$v.'
+														'.$angsuran.$diskonkhusus.$ketdiskonkhusus.$isAngsur2.$viabayar.$w;
+														// pr($siswabiayaS);
+									$ss.=$siswabiayaS;
 									$siswabiayaE    = mysql_query($siswabiayaS);
 									$siswabiayaID   = (isset($_POST['idsiswabiaya'.$biaya.'TB']) && $_POST['idsiswabiaya'.$biaya.'TB']!='')?$_POST['idsiswabiaya'.$biaya.'TB']:mysql_insert_id();
 									$siswabiayaStat =!$siswabiayaE?false:true;
@@ -560,6 +563,7 @@
 										}
 									}
 							 	}
+								// pr($ss);
 							}
 							if(!$siswabiayaStat){
 								$stat='gagal_insert_siswa_biaya';
@@ -766,7 +770,7 @@
 			break;
 			// delete -----------------------------------------------------------------
 
-			// ambiledit -----------------------------------------------------------------
+			// amxdit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s =' 	SELECT s.*,a.*,i.*,
 							w.replid idsiswawali,

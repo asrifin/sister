@@ -7,7 +7,54 @@
 	$tb  = 'keu_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
-		$out=json_encode(array('status'=>'invalid_no_post'));		
+		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
+			$page       = $_GET['page']; // get the requested page
+			$limit      = $_GET['rows']; // get how many rows we want to have into the grid
+			$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
+			$sord       = $_GET['sord']; // get the direction
+			$searchTerm = $_GET['searchTerm'];
+
+			if(!$sidx) 
+				$sidx =1;
+
+			$ss='SELECT *
+				FROM '.$tb.' 
+				WHERE 
+					kode LIKE "%'.$searchTerm.'%" OR
+					nama LIKE "%'.$searchTerm.'%"';
+			// print_r($ss);exit();
+			$result = mysql_query($ss) or die(mysql_error());
+			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
+			$count  = mysql_num_rows($result);
+
+			if( $count >0 ) {
+				$total_pages = ceil($count/$limit);
+			} else {
+				$total_pages = 0;
+			}
+			if ($page > $total_pages) $page=$total_pages;
+			$start 	= $limit*$page - $limit; // do not put $limit*($page - 1)
+			if($total_pages!=0) {
+				$ss.='ORDER BY '.$sidx.' '.$sord.' LIMIT '.$start.','.$limit;
+			}else {
+				$ss.='ORDER BY '.$sidx.' '.$sord;
+			}
+
+			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
+			$rows 	= array();
+			while($row = mysql_fetch_assoc($result)) {
+				$rows[]= array(
+					'replid' =>$row['replid'], 
+					'nama'   =>$row['nama'], 
+					'kode'   =>$row['kode']
+				);
+			}$response=array(
+				'page'    =>$page,
+				'total'   =>$total_pages,
+				'records' =>$count,
+				'rows'    =>$rows,
+			);$out=json_encode($response);
+		}else $out=json_encode(array('status'=>'invalid_no_post'));		
 	}else{
 		switch ($_POST['aksi']) {
 			// view -----------------------------------------------------------------
@@ -33,7 +80,7 @@
 							s.namasiswa like "%'.$siswa.'%" AND 
 							p.nomom like "%'.$nomom.'%" AND 
 							k.nama  like "%'.$karyawan.'%"';
-						// pr($sql);
+						// pr($sql);	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{

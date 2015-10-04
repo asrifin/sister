@@ -18,7 +18,8 @@
 						FROM '.$tb.'
 						WHERE 
 							viabayar like "%'.$viabayar.'%" and
-							keterangan like "%'.$keterangan.'%"';
+							keterangan like "%'.$keterangan.'%"
+						ORDER BY viabayar asc';
 						// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -100,44 +101,18 @@
 			break;
 			// ambiledit -----------------------------------------------------------------
 
-			// aktifkan -----------------------------------------------------------------
-			case 'aktifkan':
-				$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0"');
-				if(!$e1){
-					$stat='gagal menonaktifkan';
-				}else{
-					$s2 = 'UPDATE  '.$tb.' set aktif="1" where id_ .$mnu= '.$_POST['id_'.$mnu];
-					$e2 = mysql_query($s2);
-					if(!$e2){
-						$stat='gagal mengaktifkan';
-					}else{
-						$stat='sukses';
-					}
-				}$out  = json_encode(array('status'=>$stat));
-			break;
-			// aktifkan -----------------------------------------------------------------
-
-			// cmbwarna -----------------------------------------------------------------
-			case 'cmb'.$mnu:
+			// cmb viabayar -----------------------------------------------------------------
+			case 'cmbviabayar':
+				// pr($_POST);
 				$w='';
 				if(isset($_POST['replid'])){
-					$w.='where sd.replid='.$_POST['replid'];
-				}else{
-					if(isset($_POST['tingkat'])){
-						$w.='where sd.tingkat = '.$_POST['tingkat'];
-					}
+					$w.='where replid='.$_POST['replid'];
 				}
 				
-				$s	= ' SELECT
-							sd.replid,	
-							d.dokumen,	
-							sd.jumlah,
-							sj.satuanjumlah
-						FROM
-							psb_subdokumen sd
-							JOIN psb_dokumen d on d.replid = sd.dokumen
-							JOIN psb_satuanjumlah sj on sj.replid = sd.satuanjumlah
-						'.$w;
+				$s	= ' SELECT *
+						FROM '.$tb.'
+						'.$w.'
+						ORDER BY viabayar asc';
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
@@ -162,5 +137,4 @@
 			// cmbtahunajaran -----------------------------------------------------------------
 		}
 	}echo $out;
-
 ?>
