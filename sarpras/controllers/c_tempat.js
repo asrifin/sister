@@ -39,7 +39,7 @@ var c_mainFR =c_detailFR='';
                         +'</div>'
                     +'</form>';
         c_detailFR+='<div style="overflow:scroll;height:600px;">'
-                    +'<input type="hidden" id="detail_tempatH" class="detail_cari" >'
+                    +'<input type="text" id="detail_tempatH" class="detail_cari" >'
                     +'<table width="100%" >'
                         +'<tr>'
                             +'<td  width="5%" ><b>Lokasi</b></td><td width="1%">:</td>'
@@ -52,7 +52,7 @@ var c_mainFR =c_detailFR='';
                         +'<tr>'
                             +'<td><b>Keterangan</b></td><td  width="1%">:</td>'
                             +'<td id="keteranganDV"></td>'
-                            +'<td class="place-right"><button data-hint="cetak" onclick="printPDF(\'main\');" class="button"><i class="icon-printer"></i></button></td>'
+                            +'<td class="place-right"><button data-hint="cetak" onclick="printPDF(\'detail\');" class="button"><i class="icon-printer"></i></button></td>'
                         +'</tr>'
                     +'</table>'
                     +'<table class="table hovered bordered striped">'
@@ -383,10 +383,14 @@ function notif(cont,clr) {
         $('.'+mn+'_cari').each(function(){
             p=$(this).attr('id');
             v=$(this).val();
+        // par+=$('#detail_tempatH').val();
             par+='&'+p+'='+v;
             tok+=v;
-        });var x  = $('#id_loginS').val();
+        });
+        var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
+        console.log(token);
+        // return false;
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
     // ---------------------- //
