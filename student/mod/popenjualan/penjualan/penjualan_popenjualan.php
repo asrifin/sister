@@ -181,7 +181,15 @@ $id=$data['id'];
 $kode=$data['kode'];
 $stok=$data['jumlah'];
 $harga=$data['hargajual'];
-$hargabeli=$data['hargabeli'];
+//HPP memakai data beli terbaru
+$hargabeli = gethargabeliterbarutgl($kode,$tgl);
+if(!$hargabeli){
+$hargabeli=$data['hargabeli'];	
+}
+if(!$harga){
+$harga=$hargabeli;	
+}
+//End HPP memakai data beli terbaru
 $jenjang=$data['jenjang'];
 $jenis=$data['jenis'];
 $error 	= '';

@@ -1,9 +1,10 @@
 <?php
-
+include 'includes/session.php';
 include 'includes/config.php';
 include 'includes/mysql.php';
 include 'includes/configsitus.php';
 global $koneksi_db,$url_situs;
+$user = $_SESSION['UserName'];
 if(isset($_POST['kode'])){
 $kode 		= $_POST['kode'];
 }else{
@@ -11,8 +12,9 @@ $kode 		= $_GET['kode'];
 }
 if(isset($_POST['bayarnominal'])){
 $nopo 		= $_POST['kode'];	
+$carabayar 		= $_POST['carabayar'];	
 $bayarnominal 		= $_POST['bayarnominal'];	
-$query 		= mysql_query ("update pos_popenjualan set carabayar ='Tunai' where nopo='$nopo'");
+$query 		= mysql_query ("update pos_popenjualan set carabayar ='$carabayar' where nopo='$nopo'");
 $style_include[] ='<meta http-equiv="refresh" content="1; url=cetak_notapopenjualan.php?kode='.$kode.'&cetak=ok" />';
 	}
 echo "<html><head><title>Nota PO Penjualan</title>";
@@ -63,12 +65,28 @@ $kodecustomer  			= $data['kodecustomer'];
 $total  			= $data['total'];
 $discount  			= $data['discount'];
 $netto  			= $data['netto'];
-$carabayar  			= $data['carabayar'];
+$carabayar2  			= $data['carabayar'];
 $termin  			= $data['termin'];
+	if(isset($_GET['bayar'])){
+$sel2 = '<select name="carabayar" class="form-control">';
+$arr2 = array ('Pemesanan','Tunai','Debet Card');
+foreach ($arr2 as $kk=>$vv){
+	if ($carabayar2 == $vv){
+	$sel2 .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';
+	}else {
+	$sel2 .= '<option value="'.$vv.'">'.$vv.'</option>';	
+}
+}
+$sel2 .= '</select>'; 
+	}
+	else{
+$sel2 = "$carabayar2";		
+	}
 	$error 	= '';
 		if (!$nopo) $error .= "Error: kode PO tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		echo '<div class="error">'.$error.'</div>';}else{
+			echo '<form class="form-inline" method="POST" action="cetak_notapopenjualan.php?kode='.$kode.'&cetak=ok" enctype ="multipart/form-data" id="posts">';
 		echo '
 <table>';
 echo '
@@ -99,7 +117,7 @@ echo '
 	<tr>
 		<td>Cara Pembayaran</td>
 		<td>:</td>
-		<td>'.($carabayar).'</td>
+		<td>'.($sel2).'</td>
 	</tr>';	
 echo '</table>';	
 echo '<b>Detail</b>';	
@@ -137,7 +155,7 @@ echo '
 		<td >'.rupiah_format($total).'</td>
 	</tr>';
 	if((isset($_GET['bayar']) or isset($_POST['bayar']))and($carabayar=='Pemesanan')){
-echo '<form class="form-inline" method="POST" action="cetak_notapopenjualan.php?kode='.$kode.'&cetak=ok" enctype ="multipart/form-data" id="posts">';
+
 echo '<tr class="border">	
 		<td colspan="7" align="right"><b>Bayar</b></td>	<td>
 	<input type="hidden" value="'.$nopo.'" name="kode">
@@ -149,9 +167,19 @@ echo '<tr>
 	<input type="submit" value="Bayar" name="bayar"onclick="return confirm(\'Apakah Anda Yakin Ingin Melunasi Pemesanan Ini ?\')"></td>
 	</tr></form>';
 	}else{
+	if($carabayar=='Pemesanan'){
+		$total='0';
+	$bayar=''.rupiah_format($total).'';		
+	}else{
+	$bayar=''.rupiah_format($total).'';		
+	}
 echo '	<tr class="border">	
 		<td colspan="7" align="right"><b>Bayar</b></td>
-		<td >'.rupiah_format($total).'</td>
+		<td >'.$bayar.'</td>
+	</tr>
+	';
+	echo '	<tr>	
+		<td colspan="8" align="right"><b>Tanda Tangan</b><br><br><br><br>'.$_SESSION['UserName'].'&nbsp;&nbsp;&nbsp;</td>
 	</tr>
 	';
 	}
