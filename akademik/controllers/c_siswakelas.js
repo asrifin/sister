@@ -60,7 +60,7 @@ var contentFR ='';
                             +'<tr style="display:none;"  class="modenaikTR">'
                                 +'<td>Sub Tingkat</td>'
                                 +'<td id="subtingkatasalTD">'
-                                    +'<select data-transform="input-control" name="subtingkatTB2" id="subtingkatTB2"></select>'
+                                    // +'<select data-transform="input-control" name="subtingkatTB2" id="subtingkatTB2"></select>'
                                 +'</td>'
                             +'</tr>'
                             +'<tr style="display:none;" class="modenaikTR">'
@@ -495,30 +495,6 @@ var contentFR ='';
         });
     }   
 
-    function cmbtingkat2(typ,dept) {
-        var d = 'aksi=cmb'+mnu4+'&departemen='+dept+(typ=='form'?'&replid='+$('#tingkatS').val():'');
-        ajax(dir4,d).done(function (dt){
-            var out='';
-            if (dt.status!='sukses') {
-                notif(dt.status,'red');
-                out+='<option value="">'+dt.status+'</option>'
-            }else{
-                $.each(dt.tingkat,function (id,item){
-                    out+='<option value="'+item.replid+'">'+item.tingkat+'</option>'
-                });
-                if(typ=='form') {
-                    $('#tingkatTD').html(': '+dt.tingkat[0].tingkat+' '+dt.tingkat[0].nsubtingkat);
-                    cmbsubtingkat('form',dt.tingkat[0].replid);
-                    $('#tingkatTB').val($('#tingkatS').val());
-                }else {
-                    $('#tingkatS').html(out);
-                    cmbsubtingkat('filter',dt.tingkat[0].replid);
-                }
-            }
-        });
-    }   
-
-
 // combo subtingkat ---
     function cmbsubtingkat(typ,ting){
         var u=dir5;
@@ -538,10 +514,12 @@ var contentFR ='';
                 $('#subtingkatTD').html(': '+dt.subtingkat[0].subtingkat);
                 $('#subtingkatTB').val($('#subtingkatS').val());
                 if($('#modeTB1').is(':checked')) { // siswa baru  
+                    // alert('masukk baru');
                     cmbdetailkelas('form',dt.subtingkat[0].replid,$('#detailkelasS').val());
                 }else{ // naik kelas
                     $('#subtingkatTB2').html(out);
                 }
+                    $('#subtingkatasalTD').html(parseInt(dt.subtingkat[0].subtingkat)-1);
                 viewTB('belum');
             }
         });
