@@ -144,8 +144,11 @@
 
 			// cmbtingkat -----------------------------------------------------------------
 			case 'cmb'.$mnu:
-				$g=$j=$w='';
+				$f=$g=$j=$w='';
 				if(isset($_POST['replid'])){
+					$f.=',(
+						SELECT count(*) FROM aka_subtingkat st where st.tingkat = t.replid
+					)nsubtingkat';
 					$w='where replid ='.$_POST['replid'];
 				}else{
 					if(isset($_POST['departemen'])){
@@ -156,11 +159,10 @@
 					}
 				}
 				
-				$s	= ' SELECT t.* 
+				$s	= ' SELECT t.* '.$f.'
 						from '.$tb.' t
 						'.$j.$w.$g.'		
-						ORDER  BY 
-							t.urutan asc';
+						ORDER  BY  t.urutan asc';
 							// pr($s);
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);

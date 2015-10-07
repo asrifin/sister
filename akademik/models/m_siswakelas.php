@@ -71,7 +71,6 @@
 			case 'tampil':
 				switch ($_POST['subaksi']) {
 					case 'aktif':
-					// pr($_POST);
 						$detailkelas       = isset($_POST['detailkelasS'])?filter($_POST['detailkelasS']):'';
 						$namasiswa         = isset($_POST['aktif_namasiswaS'])?filter($_POST['aktif_namasiswaS']):'';
 						$nisn              = isset($_POST['aktif_nisnS'])?filter($_POST['aktif_nisnS']):'';
@@ -179,7 +178,7 @@
 									siswa.namasiswa LIKE "%'.$namasiswa.'%" 
 								GROUP BY 
 									siswa.replid';
-									vd($sql);
+									// vd($sql);
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
