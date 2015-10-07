@@ -253,7 +253,15 @@ $id=$data['id'];
 $kode=$data['kode'];
 $stok=$data['jumlah'];
 $harga=$data['hargajual'];
-$hargabeli=$data['hargabeli'];
+//HPP memakai data beli terbaru
+$hargabeli = gethargabeliterbarutgl($kode,$tgl);
+if(!$hargabeli){
+$hargabeli=$data['hargabeli'];	
+}
+if(!$harga){
+$harga=$hargabeli;	
+}
+//End HPP memakai data beli terbaru
 $jenjang=$data['jenjang'];
 $jenis=$data['jenis'];
 $error 	= '';
@@ -367,7 +375,7 @@ $admin .= '
 		<td><select  id="combobox" name="kodepo"  class="form-control">
 	<option value=""> </option>';
 
-$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_popenjualan ORDER BY id DESC" );
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_popenjualan  where carabayar <> 'Pemesanan' ORDER BY id DESC" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $pilihan = ($data['nopo']==$kodepo)?"selected":'';
 	$admin .= '
@@ -445,7 +453,7 @@ $admin .= '
 		<td>'.$cart_itm["subtotal"].'</td>
 		<td>
 <input align="right" type="hidden" name="harga['.$array.']" value="'.$cart_itm["harga"].'"class="form-control">
-<input align="right" type="hidden" name="subdiscount['.$array.']" value="'.$cart_itm["jumlah"].'"class="form-control">
+<input align="right" type="hidden" name="subdiscount['.$array.']" value="'.$cart_itm["subdiscount"].'"class="form-control">
 		<input align="right" type="hidden" name="jumlahjualasli['.$array.']" value="'.$cart_itm["jumlahjualasli"].'"class="form-control">
 		<input type="hidden" name="kode" value="'.$cart_itm["kode"].'">
 </td>

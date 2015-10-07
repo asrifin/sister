@@ -97,12 +97,21 @@ $getnamabarang = getnamabarang($kodebaranga);
 if($transaksi=='Penjualan' or $transaksi=='Retur Pembelian'or $transaksi=='Mutasi Keluar'){
 $jumlah =$jumlah*(-1);
 }
+if($transaksi=='Pembelian'){
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$datast['kode'].'&lihat=ok"target="new">'.$kode.'</a>';
+}elseif($transaksi=='Retur Pembelian'){
+$lihatslip = '<a href="cetak_notareturbeli.php?kode='.$datast['kode'].'&lihat=ok"target="new">'.$kode.'</a>';
+}elseif($transaksi=='Penjualan'){
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$datast['kode'].'&lihat=ok"target="new" >'.$kode.'</a>';
+}elseif($transaksi=='Retur Penjualan'){
+$lihatslip = '<a href="cetak_notareturjual.php?kode='.$datast['kode'].'&lihat=ok"target="new">'.$kode.'</a>';	
+}
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.$transaksi.'</td>
-<td>'.$kode.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.$kodebaranga.'</td>
 <td>'.$getnamabarang.'</td>
 <td>'.$jumlah.'</td>

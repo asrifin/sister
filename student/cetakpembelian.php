@@ -38,8 +38,8 @@ switch ($carabayar) {
    case 'Tunai':
          $wherestatus="and carabayar='Tunai'";
          break;
-   case 'Debet Card':
-         $wherestatus="and carabayar='Debet Card'";
+   case 'Transfer':
+         $wherestatus="and carabayar='Transfer'";
          break;
    case 'Hutang':
          $wherestatus="and carabayar='Hutang'";

@@ -28,7 +28,7 @@ $tglnow = date("Y-m-d");
 $tglmulai 		= !isset($tglmulai) ? $tglnow : $tglmulai;
 $tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
 $sel = '<select name="carabayar" class="form-control">';
-$arr5 = array ('Semua','Tunai','Debet Card','Hutang');
+$arr5 = array ('Semua','Tunai','Transfer','Hutang');
 foreach ($arr5 as $k=>$v){
 	$sel .= '<option value="'.$v.'">'.$v.'</option>';	
 	

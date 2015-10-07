@@ -54,7 +54,7 @@ $total 		= $_POST['total'];
 $user 		= $_POST['user'];
 $carabayar 		= $_POST['carabayar'];
 if($carabayar=='Potong Hutang'){
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT noinvoice FROM pos_pembelian WHERE noinvoice='$noinvoice' and (carabayar='Tunai' or carabayar='Debet Card')")) > 0) $error .= "Error: Nomor Invoice ".$noinvoice." bukan merupakan Transaksi Hutang, atau Hutang telah di Lunasi
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT noinvoice FROM pos_pembelian WHERE noinvoice='$noinvoice' and (carabayar='Tunai' or carabayar='Transfer')")) > 0) $error .= "Error: Nomor Invoice ".$noinvoice." bukan merupakan Transaksi Hutang, atau Hutang telah di Lunasi
 <br>tidak dapat dilakukan Pemotongan Hutang<br />";
 if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT noinvoice FROM pos_pembelian WHERE noinvoice='$noinvoice' and hutang='0'")) > 0) $error .= "Error: Nomor Invoice ".$noinvoice." , Hutang telah di Lunasi
 <br>tidak dapat dilakukan Pemotongan Hutang<br />";

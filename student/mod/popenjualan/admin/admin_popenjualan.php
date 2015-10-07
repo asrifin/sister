@@ -181,7 +181,15 @@ $id=$data['id'];
 $kode=$data['kode'];
 $stok=$data['jumlah'];
 $harga=$data['hargajual'];
-$hargabeli=$data['hargabeli'];
+//HPP memakai data beli terbaru
+$hargabeli = gethargabeliterbarutgl($kode,$tgl);
+if(!$hargabeli){
+$hargabeli=$data['hargabeli'];	
+}
+if(!$harga){
+$harga=$hargabeli;	
+}
+//End HPP memakai data beli terbaru
 $jenjang=$data['jenjang'];
 $jenis=$data['jenis'];
 $error 	= '';
@@ -244,11 +252,12 @@ $tgl 		= !isset($tgl) ? $tglnow : $tgl;
 $kodecustomer 		= !isset($kodecustomer) ? $_SESSION['kodecustomer'] : $kodecustomer;
 $namacustomer		= !isset($namacustomer) ? getnamacustomer($_SESSION['kodecustomer']) : $namacustomer;
 //$namabarang 		= !isset($namabarang) ? $_POST['namabarang'] : $namabarang;
+$termin 		= !isset($termin) ? '0' : $termin;
 $discount 		= !isset($discount) ? '0' : $discount;
 $carabayar 		= !isset($carabayar) ? $_POST['carabayar'] : $carabayar;
 $termin 		= !isset($termin) ? $_POST['termin'] : $termin;
 $sel2 = '<select name="carabayar" class="form-control">';
-$arr2 = array ('Tunai','Debet Card','Pemesanan');
+$arr2 = array ('Pemesanan');
 foreach ($arr2 as $kk=>$vv){
 	if ($carabayar == $vv){
 	$sel2 .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';
