@@ -144,6 +144,7 @@
 					break;
 
 					case 'belum':
+					pr($_POST);
 						$departemen  = isset($_POST['departemenTB'])?filter($_POST['departemenTB']):'';
 						$tahunajaran = isset($_POST['tahunajaranTB'])?filter($_POST['tahunajaranTB']):'';
 						$subtingkat  = isset($_POST['subtingkatTB'])?filter($_POST['subtingkatTB']):'';
@@ -178,7 +179,7 @@
 									siswa.namasiswa LIKE "%'.$namasiswa.'%" 
 								GROUP BY 
 									siswa.replid';
-									// vd($sql);
+							// pr($sql);
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{

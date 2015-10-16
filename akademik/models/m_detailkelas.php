@@ -231,8 +231,12 @@
 				if(isset($_POST['replid'])){
 					$w.=' where dk.replid ='.$_POST['replid'];
 				}else{
-					if(isset($_POST[$mnu])){
-						$w.=' where '.$mnu.'='.$_POST[$mnu];
+					if(isset($_POST['modeTB2'])){
+						$j.=' JOIN aka_subtingkat st ON st.replid = k.subtingkat';
+						$w.=' WHERE	dk.tahunajaran = '.$_POST['tahunajaran'].'
+								AND st.subtingkat = "'.$_POST['subtingkat'].'"
+								AND k.departemen = '.$_POST['departemen'].'
+								AND st.tingkat = '.$_POST['tingkat'];
 					}elseif(isset($_POST['subtingkat']) && isset($_POST['tahunajaran']) && isset($_POST['departemen']) ){
 						$f.=',(
 								SELECT COUNT(*) FROM aka_siswakelas sk WHERE sk.detailkelas = dk.replid
