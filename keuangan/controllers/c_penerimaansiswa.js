@@ -5,6 +5,7 @@ var mnu6 ='tahunajaran';
 var mnu7 ='tingkat'; 
 var mnu8 ='subtingkat'; 
 var mnu9 ='kelas'; 
+var mnu10 ='viabayar'; 
 
 var dir  ='models/m_'+mnu+'.php';
 var dir2 ='../akademik/models/m_'+mnu2+'.php';
@@ -13,6 +14,7 @@ var dir6 ='../akademik/models/m_'+mnu6+'.php';
 var dir7 ='../akademik/models/m_'+mnu7+'.php';
 var dir8 ='../akademik/models/m_'+mnu8+'.php';
 var dir9 ='../akademik/models/m_'+mnu9+'.php';
+var dir10 ='../keuangan/models/m_'+mnu10+'.php';
 
 var contentFR ='';
 // main function load first 
@@ -21,6 +23,7 @@ var contentFR ='';
         //form content
         contentFR+= '<form  style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpanSV(this); return false;" id="'+mnu+'FR">'
                         +'<input id="ju_idformH" type="hidden">' 
+                        +'<input id="idsiswabiayaTB" name="idsiswabiayaTB" type="hidden">' 
                         +'<input id="idsiswaH" name="idsiswaH" type="hidden">' 
                         +'<input id="idmodulH" name="idmodulH" type="hidden">' 
                         +'<input id="rekkasH" name="rekkasH" type="hidden">' 
@@ -42,6 +45,15 @@ var contentFR ='';
                             +'<tr>'
                                 +'<td><b>Biaya</b> </td>'
                                 +'<td id="biayaTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>Tanggal</b> </td>'
+                                +'<td>'
+                                    +'<div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">'
+                                        +'<input required type="text" id="tanggalTB" name="tanggalTB">'
+                                        +'<button class="btn-date"></button>'
+                                    +'</div>'
+                                +'</td>'
                             +'</tr>'
                         +'</table>'
 
@@ -68,6 +80,16 @@ var contentFR ='';
                                 +'<td xclass="bg-yellow"></td>'
                             +'</tr>'
                             +'<tr>'
+                                +'<td>* Cara Bayar </td>'
+                                +'<td id="caraBayarTD"></td>'
+                                +'<td></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>* Via (Rule) </td>'
+                                +'<td id="viaBayarTD"></td>'
+                                +'<td></td>'
+                            +'</tr>'
+                            +'<tr>'
                                 +'<td colspan="2">* Setelah Diskon (Nett)</td>'
                                 +'<td style="font-weight:bold;"  class="bg-yellow fg-white text-right" id="biayaNettTD"></td>'
                             +'</tr>'
@@ -75,21 +97,21 @@ var contentFR ='';
                                 +'<td colspan="4"></td>'
                             +'</tr>'
                             // Angsuran  ---------------------------
-                            +'<tr>'
-                                +'<td  class="bg-lightTeal"  colspan="2"><b>Angsuran</b> </td>'
+                            +'<tr class="angsuranTR">'
+                                +'<td class="bg-lightTeal"  colspan="2"><b>Angsuran</b> </td>'
                                 +'<td class="bg-lightTeal"></td>'
                             +'</tr>'
-                            +'<tr>'
+                            +'<tr class="angsuranTR">'
                                 +'<td>* Jumlah Angsuran</td>'
                                 +'<td id="angsuranTD" class="text-right"></td>'
                                 +'<td xclass="bg-yellow"></td>'
                             +'</tr>'
-                            +'<tr>'
+                            +'<tr class="angsuranTR">'
                                 +'<td>* Nominal Angsuran</td>'
                                 +'<td id="angsuranNominalTD" class="text-right"></td>'
                                 +'<td xclass="bg-yellow"></td>'
                             +'</tr>'
-                            +'<tr>'
+                            +'<tr class="angsuranTR">'
                                 +'<td colspan="4"></td>'
                             +'</tr>'
                             // Sudah Dibayar  ---------------------------
@@ -121,26 +143,31 @@ var contentFR ='';
                                 +'<td  class="bg-lightTeal"  colspan="2"><b>Akan Dibayar</b> </td>'
                                 +'<td class="bg-lightTeal"></td>'
                             +'</tr>'
-                            +'<tr>'
+                            +'<tr class="angsuranTR">'
                                 +'<td>* Angsuran ke - </td>'
                                 +'<td class="text-right" id="akanBayarkeTD"></td>'
                                 +'<td xclass="bg-yellow"></td>'
                             +'</tr>'
                             +'<tr>'
-                                +'<td colspan="2">* Nominal Angsuran </td>'
+                                +'<td>* Via (de facto) </td>'
+                                +'<td><select required name="viaBayarTB" id="viaBayarTB" data-transform="input-control"></select></td>'
+                                +'<td></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td colspan="2">* Nominal <input type="hidden" id="kuranganAngsuranTB" /></td>'
                                 +'<td xclass="bg-yellow"></td>'
                             +'</tr>'
-                            +'<tr>'
-                                +'<td colspan="4"></td>'
-                            +'</tr>'
+                            // +'<tr>'
+                            //     +'<td colspan="4"></td>'
+                            // +'</tr>'
                             // nominal bayar 1
-                            +'<tr>'
-                                +'<td><label class="place-right"><input onclick="pilihAkanBayarJenis();" id="akanBayarJenisTB1" checked value="1" name="akanBayarJenisTB" type="radio" > Pas Angsuran </label> </td>'
+                            +'<tr id="pasTR">'
+                                +'<td><label class="place-right"><input onclick="pilihAkanBayarJenis();" id="akanBayarJenisTB1" checked value="1" name="akanBayarJenisTB" type="radio" > Pas  </label> </td>'
                                 +'<td class="text-right" id="akanBayarNominalTD"></td>'
                                 +'<td xclass="bg-yellow"><input id="akanBayarNominalTB1" type="hidden" name="akanBayarNominalTB1" /></td>'
                             +'</tr>'
                             // nominal bayar 2
-                            +'<tr>'
+                            +'<tr class="angsuranTR">'
                                 +'<td><label class="place-right"><input  onclick="pilihAkanBayarJenis();"  id="akanBayarJenisTB2" type="radio" value="2" name="akanBayarJenisTB"> Krg. dari Angsuran </label> </td>'
                                 +'<td><div class="input-control text">'
                                     +'<input id="akanBayarNominalTB2"  onkeyup="akanBayarSisaFC();" name="akanBayarNominalTB2" disabled onfocus="inputuang(this);" placeholder="masukkan nominal" type="text" class="text-right"></div>'
@@ -159,20 +186,21 @@ var contentFR ='';
                             +'</tr>'
 
                             // yang belum  Dibayar  ---------------------------
-                            +'<tr>'
+                            +'<tr class="angsuranTR">'
                                 +'<td  class="bg-lightTeal"  colspan="2"><b>yang Belum Dibayar</b> </td>'
                                 +'<td class="bg-lightTeal"></td>'
                             +'</tr>'
-                            +'<tr>'
+                            +'<tr class="angsuranTR">'
                                 +'<td>* Angsuran </td>'
                                 +'<td id="belumBayarAngsurankeTD" class="text-right"></td>'
                                 +'<td xclass="bg-yellow"></td>'
                             +'</tr>'
-                            +'<tr>'
+                            +'<tr class="angsuranTR">'
                                 +'<td>* Total Nominal</td>'
                                 +'<td></td>'
                                 +'<td style="font-weight:bold;" id="belumBayarNominalTotTD" class="bg-yellow fg-white"></td>'
                             +'</tr>'
+
                         +'</table>'
 
                         +'<div class="form-actions">' 
@@ -275,18 +303,19 @@ var contentFR ='';
     function simpanSV(e){
         if(confirm('Anda yakin membayar ?')){
             var url  = dir;
-            var data = $(e).serialize()+'&aksi=simpan&subaksi='+curTab();
-            if($('#akanbayarI').html()!='' || $('#akanbayarI').val()=='Rp. 0'){ 
-                return false;
-            }else{
+            var data = $(e).serialize()+'&aksi=simpan';
+            // var data = $(e).serialize()+'&aksi=simpan&subaksi='+curTab();
+            // if($('#akanbayarI').html()!='' || $('#akanbayarI').val()=='Rp. 0'){ 
+            //     return false;
+            // }else{
                 ajax(url,data).done(function (dt) {
                     notif(dt.status,(dt.status=='sukses'?'green':'red'));
                     if (dt.status=='sukses') {
                         $.Dialog.close();
-                        viewTB(curTab());
+                        viewTB();
                     }
                 });
-            }
+            // }
         }
     }
 
@@ -322,26 +351,59 @@ var contentFR ='';
                     if(dt.status!='sukses') notif(dt.status,'red'); 
                     else {
                         // info header 
+                        $('#tanggalTB').val(getToday());
+                        $('#idsiswabiayaTB').val(dt.datax.idsiswabiaya);
                         $('#namasiswaTD').html(': '+dt.datax.namasiswa);
                         $('#kelasTD').html(': '+dt.datax.kelas);
                         $('#nisTD').html(': '+dt.datax.nis);
                         $('#biayaTD').html(': '+dt.datax.biaya);
-                        // detail pembayaran 
+                        // harus pembayaran 
                         $('#biayaAwalTD').html(dt.datax.biayaAwal);
                         $('#totalDiskonTD').html(dt.datax.totalDiskon);
                         $('#biayaNettTD').html(dt.datax.biayaNett);
+                        $('#caraBayarTD').html(dt.datax.isAngsur2=='1'?'Angsur':'Kontan');
+                        cmbviabayar('rule',dt.datax.viabayar);
+                        cmbviabayar('facto',dt.datax.viabayar);
                         //angsuran 
+                        if(dt.datax.isAngsur2=='0') $('.angsuranTR').attr('style','display:none;');
+                        else $('.angsuranTR').removeAttr('style');
+
                         $('#angsuranTD').html(dt.datax.angsuran+' x');
                         $('#angsuranNominalTD').html('@ '+dt.datax.angsuranNominal);
                         //sudah terbayar 
-                        $('#terbayarAngsurankeTD').html(dt.datax.terbayarAngsuranke);
-                        $('#terbayarBaruTD').html(dt.datax.terbayarBaru);
+                        var isAngsur2 = dt.datax.isAngsur2;
+                        var tbyrke    = dt.datax.terbayarAngsuranke;
+                        var aknbyrke  = dt.datax.akanBayarke;
+                            var angsurNom    = dt.datax.angsuranNominal;
+                            var kuranganAngs = parseInt(dt.datax.kuranganAngsuran);
+                        $('#kuranganAngsuranTB').val(kuranganAngs);
+                        var krgNomInfo=krgKeInfo='',akanBayarTot=angsurNom;
+                        if(isAngsur2=='1' && kuranganAngs!=0 && tbyrke!='0' ){ // tunggakan (angsuran kurg dr standard)
+                            krgNomInfo = '</br><span class="fg-red">( - Rp. '+(dt.datax.kuranganAngsuran.setCurr());
+                            krgKeInfo  = '</br><span class="fg-red">( kurangan ) </span>';
+                            akanBayarTot = kuranganAngs;
+                            $('#akanBayarNominalTB2').val('Rp. '+dt.datax.kuranganAngsuran.setCurr());
+                            $('#akanBayarJenisTB1').attr('disabled',true);
+                            $('#akanBayarJenisTB2').attr('checked',true);
+                            $('#akanBayarNominalTB2').removeAttr('disabled');
+                            $('#pasTR').attr('style','display:none');
+                            // nett -  (ternayar+akanbayar)
+                            var biayaNett     = parseInt(dt.datax.biayaNett);
+                            var terbayarTotal = parseInt(dt.datax.terbayarTotal);
+                            var akanBayar     = kuranganAngs;
+                            // console.log( );
+                            var belumBayarNominalTot = biayaNett - (terbayarTotal+akanBayar);
+                            $('#belumBayarNominalTotTD').html('Rp. '+(belumBayarNominalTot).setCurr());
+                        }
+
+                        $('#terbayarAngsurankeTD').html(tbyrke);
+                        $('#terbayarBaruTD').html(dt.datax.terbayarBaru+krgNomInfo);
                         $('#terbayarTotalTD').html(dt.datax.terbayarTotal);
                         // akan bayar
-                        $('#akanBayarkeTD').html(dt.datax.akanBayarke);
-                        $('#akanBayarNominalTB1').val(dt.datax.angsuranNominal);
+                        $('#akanBayarkeTD').html(dt.datax.akanBayarke+krgKeInfo);
                         $('#akanBayarNominalTD').html(dt.datax.angsuranNominal);
-                        $('#akanBayarNominalTotTD').html(dt.datax.angsuranNominal);
+                            
+                        $('#akanBayarNominalTotTD').html('Rp. '+(akanBayarTot.setCurr()));
                         // belum bayar
                         $('#belumBayarNominalTotTD').html(dt.datax.belumBayarNominalTot);
                         $('#belumBayarAngsurankeTD').html(dt.datax.belumBayarAngsuranke+' x');
@@ -594,14 +656,18 @@ var contentFR ='';
     function akanBayarSisaFC() {
         var bayarNominal =getUang($('#akanBayarNominalTB2').val());
         var angsuranNominal = parseInt(getUang($('#angsuranNominalTD').html()));
-        var kuranganNominal = angsuranNominal - bayarNominal; 
-        if(kuranganNominal<=0){
-            $('#akanBayarNotif').html('<span align="justify" class="fg-white bg-red ">Max Rp. '+(parseInt(angsuranNominal).setCurr())+'</span>');
-        }else{
-            $('#akanBayarNotif').html('');
-        }
-        $('#akanBayarKuranganTD').html(parseInt(kuranganNominal).setCurr());
-        $('#akanBayarNominalTotTD').html('Rp. '+parseInt(bayarNominal).setCurr());
+        if($('#kuranganAngsuranTB').val()!=''){ // ada tunggakan angsuran yang kurang
+            maxbyr  = parseInt($('#kuranganAngsuranTB').val()); // 9.212.500
+            kuranganNominal = maxbyr - bayarNominal;
+            if(kuranganNominal<0) $('#akanBayarNotif').html('<span align="justify" class="fg-white bg-red ">Max Rp. '+(parseInt(maxbyr).setCurr())+'</span>');
+            else $('#akanBayarNotif').html('');
+        }else{ // tifak ada tunggakan angsuran yg kurang 
+            maxbyr = angsuranNominal;
+            kuranganNominal = maxbyr - bayarNominal; 
+            if(kuranganNominal<=0) $('#akanBayarNotif').html('<span align="justify" class="fg-white bg-red ">Max Rp. '+(parseInt(maxbyr).setCurr())+'</span>');
+            else $('#akanBayarNotif').html('');
+        }$('#akanBayarKuranganTD').html(parseInt(kuranganNominal).setCurr());
+        $('#akanBayarNominalTotTD').html('Rp. '+parseInt(maxbyr).setCurr());
         belumBayarFC();
     }
 
@@ -622,6 +688,102 @@ var contentFR ='';
     }
 
 
+// cmbo viabayar 
+    function cmbviabayar(typ,via) {
+        var d = 'aksi=cmb'+mnu10+(typ=='rule'?'&replid='+via:'');
+        ajax(dir10,d).done(function (dt){
+            var out='';
+            if (dt.status!='sukses') {
+                notif(dt.status,'red');
+                out+='<option value="">'+dt.status+'</option>'
+            }else{
+                $.each(dt.viabayar,function (id,item){
+                    out+='<option '+(via==item.replid?'selected':'')+' value="'+item.replid+'">'+item.viabayar+'</option>'
+                });
+                if(typ=='rule') {
+                    $('#viaBayarTD').html(dt.viabayar[0].viabayar);
+                }else {
+                    $('#viaBayarTB').html(out);
+                }
+            }
+        });
+    }   
+
 //    4.882.000
 //      600.000
 //    5.482.000
+
+// left pad (replace with 0)
+    function lpadZero (n, length){
+        var str = (n > 0 ? n : -n) + "";
+        var zeros = "";
+        for (var i = length - str.length; i > 0; i--)
+            zeros += "0";
+        zeros += str;
+        return n >= 0 ? zeros : "-" + zeros;
+    }
+
+    function validUang () {
+        //TODO
+    }
+
+/*about date*/ 
+// get month format -------------
+    function monthFormat(mon){
+        switch(mon){
+            case 1:return 'Jan';break;
+            case 2:return 'Feb';break;
+            case 3:return 'Mar';break;
+            case 4:return 'Apr';break;
+            case 5:return 'May';break;
+            case 6:return 'Jun';break;
+            case 7:return 'Jul';break;
+            case 8:return 'Aug';break;
+            case 9:return 'Sep';break;
+            case 10:return 'Oct';break;
+            case 11:return 'Nov';break;
+            case 12:return 'Dec';break;
+        }
+    }
+        // var dob  ='2015-09-16';
+    function tgl_indo5(str){
+        var m = monthFormat(parseInt(str.substring(7,5)));
+        var d = str.substring(8);
+        var y = str.substring(0,4);
+        return d+' '+m+' '+y;
+    }
+    // console.log(tgl_indo5(dob));    }
+
+
+//date format -----------------
+    function dateFormatx(typ,d,m,y){
+        if(typ=='id') // 25 Dec 2014
+            return d+' '+m+' '+y;
+        else // 2014-12-25
+            return y+'-'+m+'-'+d;
+    }
+
+//global u/ tanggal --------
+    var now  = new Date();
+    var dd   = now.getDate();
+    var mm   = now.getMonth()+1;
+    var yyyy = now.getFullYear();
+
+//tanggal terakhir : dd
+    function lastDate(m,y){
+        return 32 - new Date(y, (m-1), 32).getDate();
+    }
+// tanggal hari ini : dd mm yyyy
+    function getToday() {
+        // function addLeadingZeros (n, length){
+        return dateFormatx('id',lpadZero(dd,2),monthFormat(mm),yyyy);
+    }
+// tanggal pertama bulan ini : dd mm yyyy 
+    function getFirstDate() {
+        return dateFormatx('id','01',monthFormat(mm),yyyy);
+    }
+// tanggal terakhir bulan ini  : dd mm yyyy
+    function getLastDate() {
+        var dd = lastDate(mm,yyyy);
+        return dateFormatx('id',dd,monthFormat(mm),yyyy);
+    }

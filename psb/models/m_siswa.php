@@ -775,8 +775,8 @@
 				$s ='SELECT
 						/*bio siswa*/
 						case s.`status`	
-							WHEN 0 then "Belum Diterima"
-							WHEN 0 then "Diterima"
+							WHEN "0" then "Belum Diterima"
+							WHEN "1" then "Diterima"
 							else "Lulus"
 						end as status,
 						s.replid,
@@ -867,9 +867,11 @@
 						st.replid subtingkat,
 						t.replid tingkat,
 						/*dept dkk*/
-						dg.departemen,
+						dg.departemen iddepartemen,
+						d.nama departemen,
 						dg.replid detailgelombang,
-						dg.tahunajaran,
+						dg.tahunajaran idtahunajaran,
+						ta.tahunajaran,
 						db.golongan
 					FROM
 						psb_siswa s
@@ -881,10 +883,13 @@
 						JOIN psb_detailgelombang dg ON dg.replid = db.detailgelombang
 						JOIN aka_subtingkat st ON st.replid = db.subtingkat
 						JOIN aka_tingkat t ON t.replid = st.tingkat
+						JOIN departemen d  ON d.replid = dg.departemen
+						JOIN aka_tahunajaran ta  ON ta.replid = dg.tahunajaran
 					WHERE
 						s.replid ='.$_POST['replid'].'
 					GROUP BY
 						s.replid';
+						// pr($s);
 				$e    = mysql_query($s) or die(mysql_error());
 				$r    = mysql_fetch_assoc($e);
 				$stat = !$e?'gagal':'sukses';
@@ -899,7 +904,8 @@
 							/*bio siswa*/
 							'statussiswa'            =>$r['status'],
 							'replid'                 =>$r['replid'],
-							'nopendaftaran'          =>$r['nopendaftaran'],
+							'nopendaftaran'          =>getNoPendaftaran2($_POST['replid']),
+							// $r['nopendaftaran'],
 							'namasiswa'              =>$r['namasiswa'],
 							'nis'                    =>$r['nis'],
 							'nisn'                   =>$r['nisn'],
@@ -987,9 +993,12 @@
 							'subtingkat'             =>$r['subtingkat'],
 							// 'idtingkat'           =>$r['idtingkat'],
 							'tingkat'                =>$r['tingkat'],
+							'iddepartemen'             =>$r['iddepartemen'],
 							'departemen'             =>$r['departemen'],
 							'tahunajaran'            =>$r['tahunajaran'],
 							'detailgelombang'        =>$r['detailgelombang'],
+							'tahunajaran'        	 =>($r['tahunajaran'].' - '.($r['tahunajaran']+1)),
+							'idtahunajaran'        	 =>$r['idtahunajaran'],
 							'golongan'               =>$r['golongan'],
 							// kontak darurat
 							'kontakdaruratArr'       =>$kontakdaruratArr,

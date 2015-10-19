@@ -14,7 +14,7 @@
 <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
 
 <div style="overflow:scroll;height:500px;">
-    <div class="input-control select span2">
+    <div class="input-control select span3">
         <label class="fg-white">Departemen</label>
         <select onchange="cmbtahunajaran('filter');" class="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
     </div><div class="input-control select span2">

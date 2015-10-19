@@ -40,12 +40,18 @@
 									// pr($s2);
 						$e2= mysql_query($s2);
 						while ($r2=mysql_fetch_assoc($e2)) {
-							$out.='<td align="right">'.(!isAksi('detailbiaya','u')?setuang($r2['nominal']):'<div 
-									class="input-control text" ><input data-hint="'.$r2['biaya'].'" class="text-right" 
-									value="Rp. '.number_format($r2['nominal']).'" onclick="inputuang(this);" onfocus="inputuang(this);" 
-									type="text" name="nominalTB['.$r2['replid'].']"></div>').'</td>';
-						}
-						$out.='</tr>';
+							if(!isAksi('detailbiaya','u')){
+								$field=setuang($r2['nominal']);
+							}else{
+								$field='<div class="input-control text" >
+											<input data-hint="'.$r2['biaya'].'" class="text-right" value="Rp. '.number_format($r2['nominal']).'" 
+											onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="nominalTB['.$r2['replid'].']">
+											<a onclick="viewFR('.$r2['biaya'].');" class="button fg-white bg-blue" href="#" data-hint="rekening">
+												<i class=" icon-checkmark"></i>
+											</a>
+										</div>';
+							}$out.='<td align="right">'.$field.'</td>';
+						}$out.='</tr>';
 						$nox++;
 					}
 				}

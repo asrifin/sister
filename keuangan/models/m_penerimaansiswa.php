@@ -283,28 +283,15 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				// 1. simpan pembayaran
-				if($_POST['subaksi']=='dpp'){ // dpp 
-					$nominal       = $_POST['akanbayarTB'] * getAngsurNom($_POST['subaksi'],$_POST['idsiswaH']);
-					$detjenistrans = 'in_siswa';
-				}elseif($_POST['subaksi']=='joiningf'){ //joining fee
-					$nominal       = getuang($_POST['akanbayar2TB']);
-					$detjenistrans = 'in_calonsiswa';
-				}else{ // spp , formulir
-					$nominal = getBiaya($_POST['subaksi'],$_POST['idsiswaH']); // pendaftaran & spp
-					if($_POST['subaksi']=='spp'){ // spp
-						$detjenistrans = 'in_siswa';
-					}else{  // formulir
-						$detjenistrans = 'in_calonsiswa';
-					}
-				}$s = 'INSERT INTO '.$tb.' set 	modul   = '.$_POST['idmodulH'].',
-												cicilan = '.$nominal.',
-												siswa   = '.$_POST['idsiswaH'];
+				$s = 'INSERT INTO '.$tb.' set 	siswabiaya = '.$_POST['idsiswabiayaTB'].',
+												nominal    = '.getuang($_POST['akanBayarJenisTB']=='1'?$_POST['akanBayarNominalTB1']:$_POST['akanBayarNominalTB2']).',
+												viabayar2  = '.$_POST['viaBayarTB'].',
+												tanggal    = "'.tgl_indo6($_POST['tanggalTB']).'"';
 				$e  = mysql_query($s);
 				$id = mysql_insert_id();
 				if(!$e) $stat='gagal_insert_pembayaran';
 				else{
-					// 2. simpan transaksi
+					/*// 2. simpan transaksi
 					$s2 = 'INSERT INTO keu_transaksi SET 	tahunbuku  ='.getTahunBuku('replid').',
 															pembayaran ='.$id.',
 															nominal    ='.$nominal.',
@@ -336,7 +323,8 @@
 							$e6   = mysql_query($s6);
 							$stat = ($e5 OR $e6)?'sukses':'gagal_update_saldorekening';
 						}
-					}
+					}*/
+						$stat='sukses';
 				}$out = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
@@ -382,13 +370,15 @@
 
 			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
-				$s= 'SELECT 	
+				$s= 'SELECT sb.replid idsiswabiaya,	
 							v.namasiswa,	
 							v.nis,
 							concat(v.tingkat," ",v.subtingkat,"-",k.kelas)kelas,
 							b.biaya,
 							db.nominal biayaAwal,
-							sb.angsuran
+							sb.angsuran,
+							sb.isAngsur2,
+							sb.viabayar
 						FROM 
 							psb_siswabiaya sb 
 							JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
@@ -410,13 +400,17 @@
 				$terbayarAngsuranke   = getTerbayarAngsuranke($_POST['replid'],$_POST['biaya']);
 				$terbayarBaru         = getTerbayarBaru($_POST['replid'],$_POST['biaya']);
 				$akanBayarke          = $terbayarBaru<$angsuranNominal?$terbayarAngsuranke:($terbayarAngsuranke+1);
+				$kuranganAngsuran = $angsuranNominal-$terbayarBaru;
+				// pr($akanBayarke);
 				$terbayarTotal        = getTerbayarTotal($_POST['replid'],$_POST['biaya']);
 				$belumBayarNominalTot = $biayaNett-($terbayarTotal+$angsuranNominal);
+				// pr($terbayarTotal);
 				$belumBayarAngsuranke   = intval($r['angsuran'])-intval($akanBayarke);
 				$out  = json_encode(array(
 							'status' =>$stat,
 							'datax'  =>array(
 								// header
+								'idsiswabiaya'            =>$r['idsiswabiaya'],
 								'namasiswa'            =>$r['namasiswa'],
 								'kelas'                =>$r['kelas'],
 								'biaya'                =>$r['biaya'],
@@ -427,6 +421,9 @@
 								'biayaNett'            =>setuang($biayaNett),
 								'totalDiskon'          =>setuang($r['biayaAwal']-$biayaNett),
 								//angsuran
+								'kuranganAngsuran'             => $kuranganAngsuran,
+								'viabayar'             => $r['viabayar'],
+								'isAngsur2'             => $r['isAngsur2'],
 								'angsuran'             => $r['angsuran'],
 								'angsuranNominal'      => setuang($angsuranNominal),
 								//sudah bayar

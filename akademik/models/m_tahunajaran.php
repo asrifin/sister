@@ -130,19 +130,18 @@
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
-					$w.='where replid ='.$_POST['replid'];
-				}else{
-					if(isset($_POST[$mnu])){
-						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST['departemen'])){
-						$w.='where departemen ='.$_POST['departemen'];
-					}
+					$w.='where ta.replid ='.$_POST['replid'];
 				}
-				
-				$s	= ' SELECT *
-						from '.$tb.'
-						'.$w.' 
-						ORDER BY tahunajaran DESC';
+
+				$s	= ' SELECT 
+							ta.*,(
+								SELECT replid FROM aka_tahunajaran where tahunajaran = (ta.tahunajaran-1)
+							)idtahunajaransblm,
+							(ta.tahunajaran-1)tahunajaransblm
+						from 
+							aka_tahunajaran ta 
+						'.$w.'
+						ORDER BY ta.tahunajaran DESC';
 						// pr($s);
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);

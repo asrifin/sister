@@ -231,9 +231,10 @@
 				if(isset($_POST['replid'])){
 					$w.=' where dk.replid ='.$_POST['replid'];
 				}else{
-					if(isset($_POST['modeTB2'])){
+					// if(isset($_POST['modeTB2'])){
+					if(isset($_POST['modeTB']) && $_POST['modeTB']=='2'){
 						$j.=' JOIN aka_subtingkat st ON st.replid = k.subtingkat';
-						$w.=' WHERE	dk.tahunajaran = '.$_POST['tahunajaran'].'
+						$w.=' WHERE	dk.tahunajaran = '.$_POST['tahunajaranasal'].'
 								AND st.subtingkat = "'.$_POST['subtingkat'].'"
 								AND k.departemen = '.$_POST['departemen'].'
 								AND st.tingkat = '.$_POST['tingkat'];

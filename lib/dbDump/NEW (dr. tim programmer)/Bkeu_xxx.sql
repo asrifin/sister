@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-10-19 10:11:48
+Date: 2015-09-29 17:07:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -114,7 +114,7 @@ CREATE TABLE `keu_detilrekening` (
   PRIMARY KEY (`replid`),
   KEY `kategorirekeningFK` (`kategorirekening`),
   CONSTRAINT `kategorirekeningFK` FOREIGN KEY (`kategorirekening`) REFERENCES `keu_kategorirekening` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=347 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=346 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_detilrekening
@@ -459,7 +459,6 @@ INSERT INTO `keu_detilrekening` VALUES ('337', '7', '514199', 'LAIN - LAIN', '')
 INSERT INTO `keu_detilrekening` VALUES ('343', '2', '9999', 'uuuu', 'jjj');
 INSERT INTO `keu_detilrekening` VALUES ('344', '2', '9999', 'uuuu', 'jjj');
 INSERT INTO `keu_detilrekening` VALUES ('345', '2', '9999', 'uuuu', 'jjj');
-INSERT INTO `keu_detilrekening` VALUES ('346', '6', '411106', 'Formulir', '');
 
 -- ----------------------------
 -- Table structure for keu_detilrekening_copy
@@ -1259,23 +1258,19 @@ CREATE TABLE `keu_pembayaran` (
   `replid` int(11) NOT NULL AUTO_INCREMENT,
   `siswabiaya` int(11) NOT NULL,
   `nominal` decimal(14,0) NOT NULL DEFAULT '0',
-  `viabayar2` int(11) NOT NULL,
   `tanggal` date NOT NULL DEFAULT '0000-00-00',
   `keterangan` text NOT NULL,
   PRIMARY KEY (`replid`),
   KEY `siswabiaya` (`siswabiaya`) USING BTREE,
-  KEY `viabayar2` (`viabayar2`) USING BTREE,
-  CONSTRAINT `siswabiayaFK2` FOREIGN KEY (`siswabiaya`) REFERENCES `psb_siswabiaya` (`replid`) ON UPDATE CASCADE,
-  CONSTRAINT `viabayarFK3` FOREIGN KEY (`viabayar2`) REFERENCES `keu_viabayar` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  CONSTRAINT `siswabiayaFK2` FOREIGN KEY (`siswabiaya`) REFERENCES `psb_siswabiaya` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3673 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_pembayaran
 -- ----------------------------
-INSERT INTO `keu_pembayaran` VALUES ('1', '602', '9212500', '1', '2015-08-10', '');
-INSERT INTO `keu_pembayaran` VALUES ('3', '602', '4600000', '1', '2015-09-12', 'ok');
-INSERT INTO `keu_pembayaran` VALUES ('4', '602', '9212500', '1', '2015-07-10', '');
-INSERT INTO `keu_pembayaran` VALUES ('5', '602', '4612500', '3', '2015-10-19', '');
+INSERT INTO `keu_pembayaran` VALUES ('3670', '495', '698000', '2015-09-08', '');
+INSERT INTO `keu_pembayaran` VALUES ('3671', '495', '400000', '2015-09-30', 'ok');
+INSERT INTO `keu_pembayaran` VALUES ('3672', '496', '1500000', '2015-08-23', '');
 
 -- ----------------------------
 -- Table structure for keu_pembayaran_copy
@@ -1749,14 +1744,14 @@ CREATE TABLE `keu_saldorekening` (
   KEY `detilrekening` (`detilrekening`) USING BTREE,
   CONSTRAINT `detilrekeningFK1` FOREIGN KEY (`detilrekening`) REFERENCES `keu_detilrekening` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tahunajaranFK6` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2207 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2204 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_saldorekening
 -- ----------------------------
 INSERT INTO `keu_saldorekening` VALUES ('1184', '1', '3', '0', '0');
 INSERT INTO `keu_saldorekening` VALUES ('1185', '1', '5', '44444', '44444');
-INSERT INTO `keu_saldorekening` VALUES ('1186', '1', '12', '90000', '90000');
+INSERT INTO `keu_saldorekening` VALUES ('1186', '1', '12', '9000', '9000');
 INSERT INTO `keu_saldorekening` VALUES ('1187', '2', '3', '0', '0');
 INSERT INTO `keu_saldorekening` VALUES ('1188', '2', '5', '0', '0');
 INSERT INTO `keu_saldorekening` VALUES ('1189', '2', '12', '0', '0');
@@ -2774,9 +2769,6 @@ INSERT INTO `keu_saldorekening` VALUES ('2200', '344', '12', '0', '0');
 INSERT INTO `keu_saldorekening` VALUES ('2201', '345', '3', '0', '0');
 INSERT INTO `keu_saldorekening` VALUES ('2202', '345', '5', '0', '0');
 INSERT INTO `keu_saldorekening` VALUES ('2203', '345', '12', '0', '0');
-INSERT INTO `keu_saldorekening` VALUES ('2204', '346', '3', '0', '0');
-INSERT INTO `keu_saldorekening` VALUES ('2205', '346', '5', '0', '0');
-INSERT INTO `keu_saldorekening` VALUES ('2206', '346', '12', '0', '0');
 
 -- ----------------------------
 -- Table structure for keu_saldorekening_copy
@@ -2812,8 +2804,8 @@ CREATE TABLE `keu_subpemutihanpenerimaansiswa` (
   PRIMARY KEY (`replid`),
   KEY `pemutihanpenerimaansiswa` (`pemutihanpenerimaansiswa`) USING BTREE,
   KEY `siswabiaya` (`siswabiaya`) USING BTREE,
-  CONSTRAINT `pemutihanpenerimaansiswaFK` FOREIGN KEY (`pemutihanpenerimaansiswa`) REFERENCES `keu_pemutihanpenerimaansiswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `siswabiayaFK3` FOREIGN KEY (`siswabiaya`) REFERENCES `psb_siswabiaya` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `siswabiayaFK3` FOREIGN KEY (`siswabiaya`) REFERENCES `psb_siswabiaya` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `pemutihanpenerimaansiswaFK` FOREIGN KEY (`pemutihanpenerimaansiswa`) REFERENCES `keu_pemutihanpenerimaansiswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -2872,6 +2864,35 @@ CREATE TABLE `keu_transaksi` (
 -- ----------------------------
 -- Records of keu_transaksi
 -- ----------------------------
+INSERT INTO `keu_transaksi` VALUES ('1', '1', 'BKM-0001/05/2015', 'o', '2015-05-25', '1', '83', '80000', '8', '0', '0', '0', '0', '0', '0', '0', '4', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('2', '1', 'BKK-0002/05/2015', 'd', '2015-05-25', '1', '83', '15000', 'gaji xx', '0', '0', '0', '0', '0', '0', '0', '7', '39', '0');
+INSERT INTO `keu_transaksi` VALUES ('3', '1', 'BKK-0003/05/2015', '', '2015-05-25', '6', '222', '35000', 'pesangon', '0', '0', '0', '0', '0', '0', '0', '7', '39', '0');
+INSERT INTO `keu_transaksi` VALUES ('4', '1', 'BKM-0006/05/2015', '', '2015-05-25', '1', '203', '120000', 'donasi uang sekolah dari para wali murid', '0', '0', '0', '0', '0', '0', '0', '4', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('5', '1', 'MMJ-0005/05/2015', 'ju 2', '2015-05-26', '0', '0', '5500', 'uraian ju 2 ', '0', '0', '0', '0', '0', '0', '0', '7', '20', '0');
+INSERT INTO `keu_transaksi` VALUES ('6', '1', 'BKM-0006/05/2015', '', '2015-05-27', '1', '200', '300000', 'Pembayaran Pendaftaran Tahun Ajaran 2014 - 2015. \r\nCalon Siswa : Trevor Yongnardi \r\nNo. Pendaftaran : PMB2014140007', '0', '0', '3653', '0', '0', '0', '0', '2', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('7', '1', 'BKM-0007/05/2015', '', '2015-05-27', '1', '195', '500000', 'Pembayaran Joining Fee Tahun  Angkatan 2014. \r\nCalon Siswa : Trevor Yongnardi \r\nNo. Pendaftaran : PMB2014140007', '0', '0', '3654', '0', '0', '0', '0', '2', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('8', '1', 'BKM-0008/05/2015', '', '2015-05-30', '1', '194', '14000000', 'Pembayaran DPP Angkatan 2014. \r\nSiswa : Kaitlynn Tiffany L. \r\nNIS : ', '0', '0', '3655', '0', '0', '0', '0', '1', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('9', '1', 'BKM-0009/06/2015', '', '2015-06-05', '1', '194', '4545000', 'Pembayaran DPP Angkatan 2014. \r\nSiswa : Trevor Yongnardi \r\nNIS : ', '0', '0', '3656', '0', '0', '0', '0', '1', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('10', '1', 'BKM-0010/06/2015', '', '2015-06-05', '1', '200', '300000', 'Pembayaran Pendaftaran Tahun Ajaran 2014 - 2015. \r\nCalon Siswa : Kaitlynn Tiffany L. \r\nNo. Pendaftaran : PMB2014140001', '0', '0', '3657', '0', '0', '0', '0', '2', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('11', '1', 'BKM-0011/06/2015', '', '2015-06-08', '1', '194', '4522000', 'Pembayaran DPP Angkatan 2014. \r\nSiswa : Sean Kennard Sebastian Ho \r\nNIS : ', '0', '0', '3658', '0', '0', '0', '0', '1', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('12', '1', 'BKM-0012/06/2015', '', '2015-06-08', '1', '194', '2261000', 'Pembayaran DPP Angkatan 2014. \r\nSiswa : Sean Kennard Sebastian Ho \r\nNIS : ', '0', '0', '3659', '0', '0', '0', '0', '1', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('13', '1', 'BKM-0013/06/2015', '', '2015-06-08', '1', '194', '4522000', 'Pembayaran DPP Angkatan 2014. \r\nSiswa : Sean Kennard Sebastian Ho \r\nNIS : ', '0', '0', '3660', '0', '0', '0', '0', '1', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('14', '1', 'BKM-0014/06/2015', '', '2015-06-08', '1', '195', '100000', 'Pembayaran Joining Fee Tahun  Angkatan 2014. \r\nCalon Siswa : Sean Kennard Sebastian Ho \r\nNo. Pendaftaran : PMB2014140008', '0', '0', '3661', '0', '0', '0', '0', '2', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('15', '1', 'BKM-0015/06/2015', '', '2015-06-08', '1', '195', '50000', 'Pembayaran Joining Fee Tahun  Angkatan 2014. \r\nCalon Siswa : Sean Kennard Sebastian Ho \r\nNo. Pendaftaran : PMB2014140008', '0', '0', '3662', '0', '0', '0', '0', '2', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('16', '1', 'BKM-0016/06/2015', '', '2015-06-08', '1', '195', '150000', 'Pembayaran Joining Fee Tahun  Angkatan 2014. \r\nCalon Siswa : Sean Kennard Sebastian Ho \r\nNo. Pendaftaran : PMB2014140008', '0', '0', '3663', '0', '0', '0', '0', '2', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('17', '1', 'BKM-0017/06/2015', '', '2015-06-08', '1', '194', '1515000', 'Pembayaran DPP Angkatan 2014. \r\nSiswa : Trevor Yongnardi \r\nNIS : ', '0', '0', '3664', '0', '0', '0', '0', '1', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('18', '1', 'BKM-0018/06/2015', '', '2015-06-08', '1', '194', '3030000', 'Pembayaran DPP Angkatan 2014. \r\nSiswa : Trevor Yongnardi \r\nNIS : ', '0', '0', '3665', '0', '0', '0', '0', '1', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('21', '1', 'BKK-0019/06/2015', 'INV1805150002', '2015-06-12', '3', '277', '50000', 'papan tulis', '0', '0', '0', '0', '0', '0', '0', '7', '37', '0');
+INSERT INTO `keu_transaksi` VALUES ('22', '1', 'BKK-0022/06/2015', 'INV0106150004', '2015-06-12', '3', '277', '5000', 'ok bos', '0', '0', '0', '0', '0', '0', '0', '7', '37', '0');
+INSERT INTO `keu_transaksi` VALUES ('23', '1', 'BKK-0023/06/2015', 'INV1805150001', '2015-06-13', '1', '277', '20000', 'urai', '0', '0', '0', '0', '0', '0', '0', '7', '40', '0');
+INSERT INTO `keu_transaksi` VALUES ('24', '1', 'BKK-0024/06/2015', 'INV1805150001', '2015-06-13', '1', '277', '90000', 'tes', '0', '0', '0', '0', '0', '0', '0', '7', '37', '0');
+INSERT INTO `keu_transaksi` VALUES ('25', '1', 'BKK-0025/06/2015', 'INV1805150001', '2015-06-13', '2', '277', '80000', 'alat tulis keryawan', '0', '0', '0', '0', '0', '0', '0', '7', '37', '1');
+INSERT INTO `keu_transaksi` VALUES ('26', '1', 'BKK-0026/06/2015', 'INV1805150001', '2015-06-13', '16', '277', '80000', 'buka giro ', '0', '0', '0', '0', '0', '0', '0', '7', '39', '1');
+INSERT INTO `keu_transaksi` VALUES ('27', '1', 'BKM-0027/06/2015', '', '2015-06-13', '1', '195', '75', 'Pembayaran Joining Fee Tahun  Angkatan 2014. \r\nCalon Siswa : Sean Kennard Sebastian Ho \r\nNo. Pendaftaran : PMB2014140008', '0', '0', '3666', '0', '0', '0', '0', '2', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('28', '1', 'BKM-0028/06/2015', '', '2015-06-13', '1', '195', '65000', 'Pembayaran Joining Fee Tahun  Angkatan 2014. \r\nCalon Siswa : Sean Kennard Sebastian Ho \r\nNo. Pendaftaran : PMB2014140008', '0', '0', '3667', '0', '0', '0', '0', '2', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('29', '1', 'MMJ-0029/06/2015', '', '2015-06-18', '0', '0', '900', 'tos', '0', '0', '0', '0', '0', '0', '0', '8', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('30', '1', 'BKM-0030/07/2015', '', '2015-07-14', '1', '194', '-2695000', 'Pembayaran DPP Angkatan 2014. \r\nSiswa : Sean Kennard Sebastian Ho \r\nNIS : 333', '0', '0', '3668', '0', '0', '0', '0', '1', '0', '0');
+INSERT INTO `keu_transaksi` VALUES ('31', '1', 'BKM-0031/07/2015', '', '2015-07-14', '1', '194', '-1142857', 'Pembayaran DPP Angkatan 2014. \r\nSiswa : maryeta p \r\nNIS : 1234', '0', '0', '3669', '0', '0', '0', '0', '1', '0', '0');
 
 -- ----------------------------
 -- Table structure for keu_viabayar
@@ -2882,15 +2903,14 @@ CREATE TABLE `keu_viabayar` (
   `viabayar` varchar(100) NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_viabayar
 -- ----------------------------
-INSERT INTO `keu_viabayar` VALUES ('1', 'Kartu Kredit', 'pembayaran via kartu kredit, misal : paypal, CC bank ABC, dll');
-INSERT INTO `keu_viabayar` VALUES ('2', 'Kartu Debit', 'pembayaran melalui debt card . misal : ATM/debt card BCA, dll');
-INSERT INTO `keu_viabayar` VALUES ('3', 'Transfer Bank', 'pembayaran via tranfer antar sejenis/beda bank');
-INSERT INTO `keu_viabayar` VALUES ('5', 'Uang Tunai', 'bayar uang dengan uang cash');
+INSERT INTO `keu_viabayar` VALUES ('2', 'Kartu Kredit', 'pembayaran via kartu kredit, misal : paypal, CC bank ABC, dll');
+INSERT INTO `keu_viabayar` VALUES ('3', 'Kartu Debit', 'pembayaran melalui debt card . misal : ATM/debt card BCA, dll');
+INSERT INTO `keu_viabayar` VALUES ('4', 'Transfer Bank', 'pembayaran via tranfer antar sejenis/beda bank');
 DROP TRIGGER IF EXISTS `ins_keu_anggarantahunan`;
 DELIMITER ;;
 CREATE TRIGGER `ins_keu_anggarantahunan` AFTER INSERT ON `keu_anggarantahunan` FOR EACH ROW BEGIN

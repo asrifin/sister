@@ -33,19 +33,24 @@
 	}
 
 	function getAngsuranNominal($idSiswa,$idBiaya){
-		$ra = mysql_fetch_assoc(mysql_query('SELECT
-					a.angsuran
-				FROM
-					psb_siswabiaya sb 
-					JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
-					JOIN psb_angsuran a on a.replid = sb.angsuran
-				WHERE
-					sb.siswa = '.$idSiswa.' AND 
-					db.biaya  = '.$idBiaya));
+				// a.angsuran
+				// JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+				// JOIN psb_angsuran a on a.replid = sb.angsuran
+		$s='SELECT
+				IFNULL(a.angsuran,1)angsuran
+			FROM
+				psb_siswabiaya sb 
+				left JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+				left JOIN psb_angsuran a on a.replid = sb.angsuran
+			WHERE
+				sb.siswa = '.$idSiswa.' AND 
+				db.biaya  = '.$idBiaya;
+		$e  = mysql_query($s);
+		$ra = mysql_fetch_assoc($e);
 		$angsuran  = $ra['angsuran'];
 		$biayaNett = getBiayaNett2($idSiswa,$idBiaya);			
 		$angsuranNominal = $biayaNett/$angsuran;
-		// pr($biayaNett);
+		// pr($angsuran);
 		return $angsuranNominal;
 	}
 	function getBiayaNett2($idSiswa,$idBiaya){
@@ -434,22 +439,25 @@
 					JOIN psb_siswabiaya sb on sb.replid = p.siswabiaya
 					JOIN psb_detailbiaya db on db.replid = sb.detailbiaya 
 					LEFT JOIN (
-						SELECT 
-							max(pp.replid)replid,
-							max(pp.tanggal)tanggal
-						from  keu_pembayaran pp 
-							JOIN psb_siswabiaya sb on sb.replid = pp.siswabiaya
-							JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
-						where 
-							sb.siswa = 148 and 
-							db.biaya = 4 
-						ORDER BY 
-							pp.tanggal desc,
-							pp.replid desc
+						SELECT tt.replid,max(tt.tanggal)tanggal 
+						FROM (
+							SELECT 
+								pp.replid,
+								pp.tanggal
+							from  keu_pembayaran pp 
+								JOIN psb_siswabiaya sb on sb.replid = pp.siswabiaya
+								JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+							where 
+								sb.siswa = '.$idSiswa.' and 
+								db.biaya = '.$idBiaya.' 
+							ORDER BY 
+								pp.tanggal desc
+						)tt 
 					)t on t.replid = p.replid 
 				where 
 					sb.siswa = '.$idSiswa.' and 
 					db.biaya = '.$idBiaya;
+					// pr($s);
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r;
@@ -461,6 +469,7 @@
 		return $terbayar['angsuranke'];
 	}function getTerbayarBaru($idSiswa,$idBiaya){
 		$terbayar =  getTerbayar2($idSiswa,$idBiaya);
+		// pr($terbayar);
 		return $terbayar['terbayarBaru'];
 	}
 	function getTerbayar($typ,$siswa){ // to get : nominal yg telah terbayar
