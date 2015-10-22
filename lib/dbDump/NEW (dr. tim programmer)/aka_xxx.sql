@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-10-19 10:11:05
+Date: 2015-10-22 10:06:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -4762,7 +4762,7 @@ CREATE TABLE `aka_siswakelas` (
   KEY `detailkelas` (`detailkelas`) USING BTREE,
   CONSTRAINT `detailkelas` FOREIGN KEY (`detailkelas`) REFERENCES `aka_detailkelas` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siswa` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_siswakelas
@@ -4789,6 +4789,12 @@ INSERT INTO `aka_siswakelas` VALUES ('40', '188', '170');
 INSERT INTO `aka_siswakelas` VALUES ('41', '189', '170');
 INSERT INTO `aka_siswakelas` VALUES ('42', '191', '170');
 INSERT INTO `aka_siswakelas` VALUES ('44', '180', '170');
+INSERT INTO `aka_siswakelas` VALUES ('45', '193', '157');
+INSERT INTO `aka_siswakelas` VALUES ('46', '194', '157');
+INSERT INTO `aka_siswakelas` VALUES ('47', '195', '157');
+INSERT INTO `aka_siswakelas` VALUES ('48', '196', '157');
+INSERT INTO `aka_siswakelas` VALUES ('49', '197', '157');
+INSERT INTO `aka_siswakelas` VALUES ('50', '198', '157');
 
 -- ----------------------------
 -- Table structure for aka_sks
@@ -5047,7 +5053,8 @@ CREATE TABLE `aka_tahunajaran` (
   `tahunajaran` varchar(50) NOT NULL,
   `keterangan` text NOT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`replid`)
+  PRIMARY KEY (`replid`),
+  KEY `tahunajaran` (`tahunajaran`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------

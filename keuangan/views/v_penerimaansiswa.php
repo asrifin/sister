@@ -16,21 +16,21 @@
 <div style="overflow:scroll;height:500px;">
     <div class="input-control select span3">
         <label class="fg-white">Departemen</label>
-        <select onchange="cmbtahunajaran('filter');" class="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
+        <select onchange="cmbtahunajaran('filter');" class="penerimaansiswa_cari" data-hint="Departemen" name="penerimaansiswa_cari_departemenS" id="departemenS"></select>
     </div><div class="input-control select span2">
         <label class="fg-white">Tahun Ajaran</label>
-        <select onchange="cmbtingkat('filter');" class="cari" data-hint="tahunajaran" name="tahunajaranS" id="tahunajaranS"></select>
+        <select onchange="cmbtingkat('filter');" class="penerimaansiswa_cari" data-hint="tahunajaran" name="penerimaansiswa_cari_tahunajaranS" id="tahunajaranS"></select>
     </div><div class="input-control select span2">
         <label class="fg-white">Tingkat</label>
-        <select onchange="cmbsubtingkat('filter');" class="cari" data-hint="tingkat" name="tingkatS" id="tingkatS"></select>
+        <select onchange="cmbsubtingkat('filter');" class="penerimaansiswa_cari" data-hint="tingkat" name="penerimaansiswa_cari_tingkatS" id="tingkatS"></select>
     </div><div class="input-control select span2">
         <label class="fg-white">Sub Tingkat</label>
-        <select onchange="cmbbiaya('filter');" class="cari" data-hint="subtingkat" name="subtingkatS" id="subtingkatS"></select>
+        <select onchange="cmbbiaya('filter');" class="penerimaansiswa_cari" data-hint="subtingkat" name="penerimaansiswa_cari_subtingkatS" id="subtingkatS"></select>
     </div><div class="input-control select span2">
         <label class="fg-white">Biaya   </label>
-        <select onchange="viewTB();" class="cari" data-hint="biaya" name="biayaS" id="biayaS"></select>
+        <select onchange="viewTB('penerimaansiswa');" class="penerimaansiswa_cari" data-hint="biaya" name="biayaS" id="biayaS"></select>
     </div>
-    <button id="formulir_cetakBC" onclick="printPDF('formulir');" data-hint="Cetak" data-hint-position="top"><i class="icon-printer" ></i></button>
+    <button id="cetakBC" onclick="printPDF('penerimaansiswa','');" data-hint="Cetak" data-hint-position="top"><i class="icon-printer" ></i></button>
     <table class="table hovered bordered striped">
         <thead>
             <tr style="color:white;"class="info">
@@ -38,23 +38,27 @@
                 <th class="text-center">NISN</th>
                 <th class="text-center">NIS</th>
                 <th class="text-center">Nama</th>
+                <th class="text-center">Tagihan</th>
+                <th class="text-center">Terbayar</th>
                 <th class="text-center">Bayar</th>
             </tr>
             <tr id="formulirTR" class="info">
-                <th class="text-center"><input type="text" data-transform="input-control" placeholder="cari ..." id="nopendaftaranS" class="cari"></th>
-                <th class="text-center"><input id="nisnS" type="text" data-transform="input-control" placeholder="cari ..."  class="cari"></th>
-                <th class="text-center"><input id="nisS" type="text" data-transform="input-control" placeholder="cari ..."  class="cari"></th>
-                <th class="text-center"><input id="namasiswaS" type="text" data-transform="input-control" placeholder="cari ..."  class="cari"></th>
+                <th class="text-center"><input type="text" data-transform="input-control" placeholder="cari ..." id="nopendaftaranS" class="penerimaansiswa_cari"></th>
+                <th class="text-center"><input id="nisnS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
+                <th class="text-center"><input id="nisS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
+                <th class="text-center"><input id="namasiswaS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
+                <th class="text-center"></th>
+                <th class="text-center"></th>
                 <th class="text-center">
-                    <!-- <select  data-transform="input-control" class="cari text-center" id="statusS" name="statusS" >
+<!--                     <select  data-transform="input-control" class="cari text-center" id="statusS" name="statusS" >
                         <option value="">-Semua-</option>
                         <option class="bg-green fg-white" value="lunas">Lunas</option>
                         <option class="bg-yellow fg-white" value="kurang">Kurang</option>
                         <option class="bg-red fg-white" value="belum">Belum</option>
-                    </select> -->
-                </th>
+                    </select>
+ -->                </th>
             </tr>
         </thead>
-        <tbody id="tbody"></tbody>
+        <tbody id="penerimaansiswa_tbody"></tbody>
     </table>
 </div>

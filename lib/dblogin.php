@@ -99,7 +99,7 @@
     							p.id_login = '.$r1['id_login'].' and
     							gm.id_modul = '.$r3['id_modul'].'
     						GROUP BY
-    							gm.id_grupmenu';
+    							gm.grupmenu ASC';
     				// print_r($s4);exit();	
     				$e4          = mysql_query($s4);
     				$grupmenuArr = array();

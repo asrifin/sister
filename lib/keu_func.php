@@ -451,7 +451,8 @@
 								sb.siswa = '.$idSiswa.' and 
 								db.biaya = '.$idBiaya.' 
 							ORDER BY 
-								pp.tanggal desc
+								pp.tanggal desc,
+								pp.replid desc
 						)tt 
 					)t on t.replid = p.replid 
 				where 
@@ -726,4 +727,24 @@
 		return $str;
 	}
 
+	function nokwitansi($idpembayaran){
+		$s='SELECT
+                date(p.tanggal)d,
+                month(p.tanggal)m,
+                year(p.tanggal)y,
+                ucase(b.biaya)biaya,	
+                lpad(p.idkwitansi,4,0)idkwitansi
+              FROM
+                keu_pembayaran p
+                JOIN psb_siswabiaya sb ON sb.replid = p.siswabiaya
+                JOIN psb_detailbiaya db ON db.replid = sb.detailbiaya
+                JOIN psb_biaya b ON b.replid = db.biaya
+                JOIN psb_siswa s ON s.replid = sb.siswa
+              WHERE
+                p.replid = '.$idpembayaran;
+        $e=mysql_query($s);
+        $r=mysql_fetch_assoc($e);
+        $o=$r['biaya'].' - '.$r['idkwitansi'].'/'.substr($r['d'],8).'/'.$r['m'].'/'.$r['y'];
+        return $o;
+	}
 ?>

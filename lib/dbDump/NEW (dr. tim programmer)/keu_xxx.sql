@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-10-19 10:11:48
+Date: 2015-10-22 10:06:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1261,21 +1261,33 @@ CREATE TABLE `keu_pembayaran` (
   `nominal` decimal(14,0) NOT NULL DEFAULT '0',
   `viabayar2` int(11) NOT NULL,
   `tanggal` date NOT NULL DEFAULT '0000-00-00',
+  `idkwitansi` int(11) NOT NULL,
   `keterangan` text NOT NULL,
+  `ts` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`replid`),
   KEY `siswabiaya` (`siswabiaya`) USING BTREE,
   KEY `viabayar2` (`viabayar2`) USING BTREE,
   CONSTRAINT `siswabiayaFK2` FOREIGN KEY (`siswabiaya`) REFERENCES `psb_siswabiaya` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `viabayarFK3` FOREIGN KEY (`viabayar2`) REFERENCES `keu_viabayar` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_pembayaran
 -- ----------------------------
-INSERT INTO `keu_pembayaran` VALUES ('1', '602', '9212500', '1', '2015-08-10', '');
-INSERT INTO `keu_pembayaran` VALUES ('3', '602', '4600000', '1', '2015-09-12', 'ok');
-INSERT INTO `keu_pembayaran` VALUES ('4', '602', '9212500', '1', '2015-07-10', '');
-INSERT INTO `keu_pembayaran` VALUES ('5', '602', '4612500', '3', '2015-10-19', '');
+INSERT INTO `keu_pembayaran` VALUES ('4', '602', '9000000', '1', '2015-07-10', '1', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('22', '634', '41500000', '1', '2015-10-21', '5', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('23', '648', '159091', '3', '2015-10-21', '6', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('25', '614', '41500000', '2', '2015-10-21', '8', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('29', '602', '212500', '3', '2015-10-22', '9', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('32', '602', '9212500', '3', '2015-10-23', '10', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('35', '622', '41500000', '3', '2015-10-22', '13', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('36', '602', '9212500', '3', '2015-10-24', '14', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('37', '646', '41500000', '1', '2015-10-13', '15', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('38', '654', '769500', '3', '2015-10-22', '16', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('39', '658', '100000', '5', '2015-10-22', '17', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('41', '658', '62000', '5', '2015-10-22', '18', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('42', '658', '162000', '5', '2015-10-22', '19', '', '0000-00-00 00:00:00');
+INSERT INTO `keu_pembayaran` VALUES ('43', '674', '50000', '1', '2015-10-22', '20', '', '0000-00-00 00:00:00');
 
 -- ----------------------------
 -- Table structure for keu_pembayaran_copy
@@ -1733,6 +1745,67 @@ INSERT INTO `keu_rekening` VALUES ('335', '7', '514109', 'BIAYA STUDENT EXCHANGE
 INSERT INTO `keu_rekening` VALUES ('336', '7', '514110', 'BIAYA CHECK POINT', null, '');
 INSERT INTO `keu_rekening` VALUES ('337', '7', '514199', 'LAIN - LAIN', null, '');
 INSERT INTO `keu_rekening` VALUES ('340', '1', '111109', 'test rekening dua x', '5500000', 'keterangan tes dua');
+
+-- ----------------------------
+-- Table structure for keu_rekeningbiaya
+-- ----------------------------
+DROP TABLE IF EXISTS `keu_rekeningbiaya`;
+CREATE TABLE `keu_rekeningbiaya` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `biaya` int(11) NOT NULL,
+  `departemen` int(11) NOT NULL,
+  `tahunajaran` int(11) NOT NULL,
+  `detilrekening` int(11) DEFAULT NULL,
+  PRIMARY KEY (`replid`),
+  KEY `biaya` (`biaya`) USING BTREE,
+  KEY `tahunajaran` (`tahunajaran`) USING BTREE,
+  KEY `detilrekening` (`detilrekening`) USING BTREE,
+  KEY `departemen` (`departemen`) USING BTREE,
+  CONSTRAINT `biayaFK2` FOREIGN KEY (`biaya`) REFERENCES `psb_biaya` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `departemenFK2` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `detilrekeningFK2` FOREIGN KEY (`detilrekening`) REFERENCES `keu_detilrekening` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tahunajaranFK7` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of keu_rekeningbiaya
+-- ----------------------------
+INSERT INTO `keu_rekeningbiaya` VALUES ('1', '3', '1', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('2', '3', '1', '5', '10');
+INSERT INTO `keu_rekeningbiaya` VALUES ('3', '3', '1', '12', '200');
+INSERT INTO `keu_rekeningbiaya` VALUES ('4', '3', '2', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('5', '3', '2', '5', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('6', '3', '2', '12', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('7', '3', '3', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('8', '3', '3', '5', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('9', '3', '3', '12', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('10', '4', '1', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('11', '4', '1', '5', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('12', '4', '1', '12', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('13', '4', '2', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('14', '4', '2', '5', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('15', '4', '2', '12', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('16', '4', '3', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('17', '4', '3', '5', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('18', '4', '3', '12', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('19', '7', '1', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('20', '7', '1', '5', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('21', '7', '1', '12', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('22', '7', '2', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('23', '7', '2', '5', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('24', '7', '2', '12', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('25', '7', '3', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('26', '7', '3', '5', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('27', '7', '3', '12', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('28', '8', '1', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('29', '8', '1', '5', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('30', '8', '1', '12', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('31', '8', '2', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('32', '8', '2', '5', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('33', '8', '2', '12', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('34', '8', '3', '3', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('35', '8', '3', '5', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('36', '8', '3', '12', '2');
 
 -- ----------------------------
 -- Table structure for keu_saldorekening

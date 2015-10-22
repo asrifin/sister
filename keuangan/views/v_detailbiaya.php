@@ -10,6 +10,7 @@
 <nav class="breadcrumbs">
     <ul>
         <li><a href="biaya">Biaya</a></li>
+        <li><a href="rekening-biaya">Rekening Biaya</a></li>
         <li class="active"><a href="#"><b>Detail Biaya</b></a></li>
     </ul>
 </nav>

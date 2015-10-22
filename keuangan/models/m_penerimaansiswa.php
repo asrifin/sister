@@ -71,28 +71,22 @@
 		switch ($_POST['aksi']) {
 			// history bayar
 			case 'histBayar':
-				$s ='SELECT
-						p.replid,
-						p.cicilan,
-						t.tanggal
-					FROM
-						keu_pembayaran p 
-						LEFT JOIN keu_transaksi t on t.pembayaran = p.replid
-						LEFT JOIN keu_modulpembayaran m on m.replid = p.modul
-						LEFT JOIN keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
-					WHERE
-						k.nama = "'.$_POST['subaksi'].'" AND 
-						p.siswa = '.$_POST['siswa'];
-			// var_dump($s);exit();
+				$s ='SELECT p.replid, p.tanggal,p.nominal,p.idkwitansi
+					 FROM keu_pembayaran p 
+					 WHERE p.siswabiaya = '.$_POST['siswabiaya'].'
+					 ORDER BY p.tanggal ASC,p.replid ASC';
 				$e   = mysql_query($s);
 				$arr = array();
+				$totNominal=0;$angsuranKe=1;
 				while ($r=mysql_fetch_assoc($e)){
 					$arr[]=array(
-						'replid'  =>$r['replid'],
-						'cicilan' =>'Rp. '.number_format($r['cicilan']),
-						'tanggal' =>tgl_indo5($r['tanggal'])
-					);
-				}$out = json_encode(array('status'=>$e?'sukses':'gagal','datax'=>$arr));
+						'replid'     =>$r['replid'],
+						'angsuranKe' =>$angsuranKe,
+						'nominal'    =>setuang($r['nominal']),
+						'tanggal'    =>tgl_indo5($r['tanggal']),
+						'idkwitansi' =>$r['idkwitansi'],
+					);$totNominal+=$r['nominal'];$angsuranKe++;
+				}$out = json_encode(array('status'=>$e?'sukses':'gagal','datax'=>$arr,'totNominal'=>setuang($totNominal)));
 			break;
 
 			// tampil ---------------------------------------------------------------------
@@ -104,7 +98,7 @@
 				$nisn          = isset($_POST['nisnS'])?filter($_POST['nisnS']):'';
 				$namasiswa     = isset($_POST['namasiswaS'])?filter($_POST['namasiswaS']):'';
 				$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
-				$status        = (isset($_POST['statusS']) AND $_POST['statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'_statusS']).'"':'';
+				// $status        = (isset($_POST['statusS']) AND $_POST['statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'_statusS']).'"':'';
 				$sql = 'SELECT 	
 							v.idsiswa,
 							v.namasiswa,	
@@ -145,41 +139,27 @@
 				if($jum!=0){	
 					$nox = $starting+1;
 					while($res = mysql_fetch_assoc($result)){
+						$terbayarTotal      = getTerbayarTotal($res['idsiswa'],$res['biaya']);
+						$biayaNett          = getBiayaNett2($res['idsiswa'],$res['biaya']);
+						$status = $terbayarTotal==$biayaNett?'lunas':($terbayarTotal==0?'belum':'kurang');
+						$color  = $terbayarTotal==$biayaNett?'green':($terbayarTotal==0?'red':'yellow');
 						
-						/*$biaya    = getBiaya($pre,$res['replid']);
-						$terbayar = getTerbayar('joining fee',$res['replid']);
-						$status   = getStatusBayar('joining fee',$res['replid']);
-						if($status=='belum'){ // belum
-							$clr  = 'red';
-							$icon = 'empty';
-							$hint = 'belum bayar';
-							$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
-						}else{
-						 	if($status=='lunas'){ // lunas
-								$clr  = 'green';
-								$icon = 'full';
-								$hint = 'lunas';
-								$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
-							}else{ // kurang
-								$clr  = 'yellow';
-								$icon = 'half';
-								$hint = 'kurang';
-								$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
-							}
-						}*/
-									// <button data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"   '.$func.'>
-						$btn ='<td align="center">
-									<button onclick="viewFR('.$res['idsiswa'].')"; class="fg-white bg-blue">
-										<i class="icon-battery-full"></i>
-									</button>
-							   </td>';
-					 	$out.= '<tr>
-									<td>'.getNoPendaftaran2($res['idsiswa']).'</td>
-									<td>'.$res['nisn'].'</td>
-									<td>'.$res['nis'].'</td>
-									<td>'.$res['namasiswa'].'</td>
-									'.$btn.'
-								</tr>';
+						// if($_POST['statusS']==$status){
+							$btn ='<td align="center">
+										<button style="font-weight:bold;" onclick="viewFR('.$res['idsiswa'].')"; class="fg-white bg-'.$color.'">
+											'.$status.'
+										</button>
+								   </td>';
+						 	$out.= '<tr>
+										<td>'.getNoPendaftaran2($res['idsiswa']).'</td>
+										<td>'.$res['nisn'].'</td>
+										<td>'.$res['nis'].'</td>
+										<td>'.$res['namasiswa'].'</td>
+										<td>'.setuang($biayaNett).'</td>
+										<td>'.setuang($terbayarTotal).'</td>
+										'.$btn.'
+									</tr>';
+						// }
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -283,10 +263,13 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
+				$idkw = getField('max(idkwitansi)+1','keu_pembayaran','','');
 				$s = 'INSERT INTO '.$tb.' set 	siswabiaya = '.$_POST['idsiswabiayaTB'].',
 												nominal    = '.getuang($_POST['akanBayarJenisTB']=='1'?$_POST['akanBayarNominalTB1']:$_POST['akanBayarNominalTB2']).',
 												viabayar2  = '.$_POST['viaBayarTB'].',
-												tanggal    = "'.tgl_indo6($_POST['tanggalTB']).'"';
+												tanggal    = "'.tgl_indo6($_POST['tanggalTB']).'",
+												idkwitansi = '.$idkw;
+
 				$e  = mysql_query($s);
 				$id = mysql_insert_id();
 				if(!$e) $stat='gagal_insert_pembayaran';
@@ -325,39 +308,17 @@
 						}
 					}*/
 						$stat='sukses';
-				}$out = json_encode(array('status'=>$stat));
+				}$out = json_encode(array('status'=>$stat,'idpembayaran'=>$id));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
 			// delete ---------------------------------------------------------------------
 			case 'hapus':
-				switch ($_POST['subaksi']) {
-					case 'grup':
-						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
-						$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
-						$e    = mysql_query($s);
-						$stat = ($e)?'sukses':'gagal';
-						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
-					break;
-
-					case 'katalog':
-						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb3.' where replid='.$_POST['replid']));
-						$s    = 'DELETE from '.$tb3.' WHERE replid='.$_POST['replid'];
-						// var_dump($s);exit();
-						$e    = mysql_query($s);
-						$stat = ($e)?'sukses':'gagal';
-						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
-					break;
-
-					case 'barang':
-						$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb4.' where replid='.$_POST['replid']));
-						$s    = 'DELETE from '.$tb4.' WHERE replid='.$_POST['replid'];
-						// var_dump($s);exit();
-						$e    = mysql_query($s);
-						$stat = ($e)?'sukses':'gagal';
-						$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['kode']));
-					break;
-				}
+				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
+				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
+				$e    = mysql_query($s);
+				$stat = ($e)?'sukses':'gagal';
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$mnu));
 			break;
 			// delete ---------------------------------------------------------------------
 
@@ -390,50 +351,62 @@
 						WHERE
 							db.biaya  ='.$_POST['biaya'].' and 
 							v.idsiswa  ='.$_POST['replid'].' AND 
-							v.idsubtingkat = '.$_POST['subtingkat'];
+							v.idsubtingkat = '.$_POST['subtingkat'].'
+						GROUP BY
+							sb.replid';
 				// pr($s); 
 				$e    = mysql_query($s);
 				$r    = mysql_fetch_assoc($e);
 				$stat                 = $e?'sukses':'gagal';
+			// awal
 				$biayaNett            = getBiayaNett2($_POST['replid'],$_POST['biaya']);
 				$angsuranNominal      = getAngsuranNominal($_POST['replid'],$_POST['biaya']);
-				$terbayarAngsuranke   = getTerbayarAngsuranke($_POST['replid'],$_POST['biaya']);
+			// terbayar
+				$terbayarAngsurankeReal = getTerbayarAngsuranke($_POST['replid'],$_POST['biaya']);
 				$terbayarBaru         = getTerbayarBaru($_POST['replid'],$_POST['biaya']);
-				$akanBayarke          = $terbayarBaru<$angsuranNominal?$terbayarAngsuranke:($terbayarAngsuranke+1);
-				$kuranganAngsuran = $angsuranNominal-$terbayarBaru;
-				// pr($akanBayarke);
 				$terbayarTotal        = getTerbayarTotal($_POST['replid'],$_POST['biaya']);
-				$belumBayarNominalTot = $biayaNett-($terbayarTotal+$angsuranNominal);
-				// pr($terbayarTotal);
-				$belumBayarAngsuranke   = intval($r['angsuran'])-intval($akanBayarke);
+				$terbayarAngsurankeRule = ceil($terbayarTotal/$angsuranNominal);
+				// pr($terbayarAngsuranke2);
+			// akan bayar
+				// $akanBayarke          = $terbayarBaru<$angsuranNominal?$terbayarAngsurankeRule:($terbayarAngsuranke+1);
+				$akanBayarke          = ($terbayarTotal%$angsuranNominal==0)?($terbayarAngsurankeRule+1):$terbayarAngsurankeRule;
+				$lunasPerAngsuran     =($terbayarTotal%$angsuranNominal==0)?true:false;
+				$lunasTotalAngsuran   = $terbayarTotal==$biayaNett?true:false;
+				$kuranganAngsuran     = $terbayarAngsurankeRule==$akanBayarke?$angsuranNominal-$terbayarBaru:0;
+			//belum bayar
+				// $belumBayarNominalTot = $biayaNett-($terbayarTotal+$angsuranNominal);
+				$belumBayarAngsuranke = intval($r['angsuran'])-intval($akanBayarke);
+
 				$out  = json_encode(array(
 							'status' =>$stat,
 							'datax'  =>array(
-								// header
-								'idsiswabiaya'            =>$r['idsiswabiaya'],
+							// header
+								'idsiswabiaya'         =>$r['idsiswabiaya'],
 								'namasiswa'            =>$r['namasiswa'],
 								'kelas'                =>$r['kelas'],
 								'biaya'                =>$r['biaya'],
 								'nis'                  =>$r['nis'],
-								// detail pembayaran 
-								// harus dibayar
+							// harus dibayar
 								'biayaAwal'            =>setuang($r['biayaAwal']),
 								'biayaNett'            =>setuang($biayaNett),
 								'totalDiskon'          =>setuang($r['biayaAwal']-$biayaNett),
-								//angsuran
-								'kuranganAngsuran'             => $kuranganAngsuran,
+							//angsuran
+								'kuranganAngsuran'     => $kuranganAngsuran,
 								'viabayar'             => $r['viabayar'],
-								'isAngsur2'             => $r['isAngsur2'],
+								'isAngsur2'            => $r['isAngsur2'],
 								'angsuran'             => $r['angsuran'],
 								'angsuranNominal'      => setuang($angsuranNominal),
-								//sudah bayar
-								'terbayarAngsuranke'   => $terbayarAngsuranke,
+								'lunasPerAngsuran'=>$lunasPerAngsuran,
+								'lunasTotalAngsuran'=>$lunasTotalAngsuran,
+							//sudah bayar
+								'terbayarAngsurankeReal'   => $terbayarAngsurankeReal,
+								'terbayarAngsurankeRule'   => $terbayarAngsurankeRule,
 								'terbayarBaru'         => setuang($terbayarBaru),
 								'terbayarTotal'        => setuang($terbayarTotal),
-								//akan bayar
+							//akan bayar
 								'akanBayarke'          => $akanBayarke,
-								//belum bayar
-								'belumBayarNominalTot' => setuang($belumBayarNominalTot),
+							//belum bayar
+								// 'belumBayarNominalTot' => setuang($belumBayarNominalTot),
 								'belumBayarAngsuranke' => $belumBayarAngsuranke,
 						)));					
 			break;
