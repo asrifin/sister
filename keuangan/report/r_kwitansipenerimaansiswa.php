@@ -72,7 +72,7 @@
                     </tr>
                     <tr>
                       <td>Sebanyak </td>
-                      <td>: ..... </td>
+                      <td>: '.Terbilang($r['nominal']).' Rupiah </td>
                     </tr>
                     <tr>
                       <td>Untuk  </td>
