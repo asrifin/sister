@@ -4,8 +4,24 @@ include 'includes/config.php';
 include 'includes/mysql.php';
 include 'includes/configsitus.php';
 global $koneksi_db,$url_situs;
-$kelompok 		= $_GET['kelompok'];
+$golongan 		= $_GET['golongan'];
+$lokasi 		= $_GET['lokasi'];
 $gelombang 		= $_GET['gelombang'];
+if($golongan=='Semua'){
+         $wheregolongan="";
+}else{
+         $wheregolongan="and golongan='$golongan'";
+}
+if($lokasi=='Semua'){
+         $wherelokasi="";
+}else{
+         $wherelokasi="and lokasi='$lokasi'";
+}
+if($gelombang=='Semua'){
+         $wheregelombang="";
+}else{
+         $wheregelombang="and gelombang='$gelombang'";
+}
 
 echo "<html><head><title>Laporan Tahap 2</title>";
 echo '<style type="text/css">
@@ -41,14 +57,15 @@ echo'
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
 if(!$detail){
-echo'<tr><td colspan="7"><h4>Laporan Tahap 2, Kelompok '.getkelompok($kelompok).', Gelombang '.getgelombang($gelombang).'</h4></td></tr>';
+echo'<tr><td colspan="7"><h4>Laporan Tahap 2, Golongan '.getgolongan($golongan).', Gelombang '.getgelombang($gelombang).', Lokasi '.getlokasi($lokasi).'</h4></td></tr>';
 echo '
 <tr class="border">
             <td>No</td>
             <th>Kode</th>
 			<th>Nama</th>
-           <th>Departemen</th>
-           <th>Kelompok</th>
+           <td>Lokasi</td>
+           <td>Golongan</td>
+		   <td>Gelombang</td> 
            <th>Ket</th>
            <th>Follow Up</th>
 		   <th>Free Trial</th>
@@ -61,12 +78,13 @@ echo '
 		   <th>Diterima/Tidak</th>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM psbcalon_siswa where kelompok = '$kelompok' and gelombang = '$gelombang'  order by id asc");	
+$s = mysql_query ("SELECT * FROM psbcalon_siswa $wheregolongan $wherelokasi $wheregelombang  order by id asc");	
 while($data = mysql_fetch_array($s)){
 $kode=$data['kode'];
 $nama=$data['nama'];
-$kelompok=$data['kelompok'];
-$departemen=$data['departemen'];
+$golongan=$data['golongan'];
+$lokasi=$data['lokasi'];
+$gelombang=$data['gelombang'];
 $ket2=$data['ket2'];
 $followup=$data['followup'];
 $freetrial=$data['freetrial'];
@@ -83,8 +101,9 @@ echo '
 <td class="text-center">'.$no.'</td>
             <td>'.$kode.'</td>
             <td>'.$nama.'</td>
-            <td>'.getdepartemen($departemen).'</td>
-            <td>'.getkelompok($kelompok).'</td>
+            <td>'.getlokasi($lokasi).'</td>
+            <td>'.getgolongan($golongan).'</td>
+			<td>'.getgelombang($gelombang).'</td>
             <td>'.$ket2.'</td>
             <td>'.$followup.'</td>
 			<td>'.$freetrial.'</td>
