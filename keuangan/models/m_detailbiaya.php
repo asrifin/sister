@@ -24,7 +24,9 @@
 				else{
 					while($r1 = mysql_fetch_assoc($e1)){	
 						$out.='<tr>
-							<td>'.$nox.'. '.$r1['golongan'].'<br> <sup class="fg-orange">('.$r1['keterangan'].')</sup></td>';
+							<td>'.$nox.'. '.$r1['golongan'].'<br> 
+								<sup class="fg-orange">('.$r1['keterangan'].')</sup>
+							</td>';
 						$s2 = 'SELECT
 									db.replid,
 									db.nominal,
@@ -40,12 +42,18 @@
 									// pr($s2);
 						$e2= mysql_query($s2);
 						while ($r2=mysql_fetch_assoc($e2)) {
-							$out.='<td align="right">'.(!isAksi('detailbiaya','u')?setuang($r2['nominal']):'<div 
-									class="input-control text" ><input data-hint="'.$r2['biaya'].'" class="text-right" 
-									value="Rp. '.number_format($r2['nominal']).'" onclick="inputuang(this);" onfocus="inputuang(this);" 
-									type="text" name="nominalTB['.$r2['replid'].']"></div>').'</td>';
-						}
-						$out.='</tr>';
+							if(!isAksi('detailbiaya','u')){
+								$field=setuang($r2['nominal']);
+							}else{
+								$field='<div class="input-control text" >
+											<input data-hint="'.$r2['biaya'].'" class="text-right" value="Rp. '.number_format($r2['nominal']).'" 
+											onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="nominalTB['.$r2['replid'].']">
+										</div>';
+									// <a onclick="viewFR('.$r2['replid'].');" class="button fg-white bg-blue" href="#" data-hint="rekening">
+									// 	<i class=" icon-cc-nc"></i>
+									// </a>
+							}$out.='<td align="right">'.$field.'</td>';
+						}$out.='</tr>';
 						$nox++;
 					}
 				}
@@ -64,10 +72,43 @@
 				$out = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
+
+			// ambiledit -----------------------------------------------------------------
+			case 'ambiledit':
+				$s 	= 'SELECT 
+							db.replid,
+							st.subtingkat,
+							gol.golongan,
+							g.gelombang,
+							t.tingkat,
+							concat(ta.tahunajaran," - ",ta.tahunajaran+1)tahunajaran,
+							d.nama
+						from 
+							psb_detailbiaya db 
+							JOIN psb_detailgelombang dg on dg.replid = db.detailgelombang
+							JOIN psb_gelombang g on g.replid = dg.gelombang
+							JOIN psb_golongan gol on gol.replid = db.golongan
+							JOIN aka_subtingkat st on st.replid = db.subtingkat
+							JOIN aka_tingkat t on t.replid = st.tingkat
+							JOIN aka_tahunajaran ta on ta.replid = dg.tahunajaran
+							JOIN departemen d on d.replid = dg.departemen
+						WHERE 
+							db.replid ='.$_POST['replid'];
+				// pr($s);
+				$e    = mysql_query($s);
+				$r    = mysql_fetch_assoc($e);
+				$stat = ($e)?'sukses':'gagal';
+				$out  = json_encode(array(
+							'status'      =>$stat,
+							'departemen'  =>$r['departemen'],
+							'tahunajaran' =>$r['tahunajaran'],
+							'tingkat'     =>$r['tingkat'],
+							'subtingkat'  =>$r['subtingkat'],
+							'golongan'    =>$r['golongan'],
+						));
+			break;
+			// ambiledit -----------------------------------------------------------------
+
 		}
 	}echo $out;
-
-	// ---------------------- //
-	// -- created by epiii -- //
-	// ---------------------- //
 ?>

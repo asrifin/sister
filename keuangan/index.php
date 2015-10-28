@@ -156,6 +156,9 @@
                     case 'sarpras':
                         require $d.'v_sarpras.php';
                     break;
+                    case 'rekeningbiaya':
+                        require $d.'v_rekeningbiaya.php';
+                    break;
 
                     // case 'aktivitas':
                     //     require $d.'v_keuaktivitas.php';

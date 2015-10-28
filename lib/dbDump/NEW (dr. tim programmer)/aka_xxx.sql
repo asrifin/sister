@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-10-04 16:44:24
+Date: 2015-10-22 10:38:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -4762,13 +4762,39 @@ CREATE TABLE `aka_siswakelas` (
   KEY `detailkelas` (`detailkelas`) USING BTREE,
   CONSTRAINT `detailkelas` FOREIGN KEY (`detailkelas`) REFERENCES `aka_detailkelas` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siswa` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_siswakelas
 -- ----------------------------
-INSERT INTO `aka_siswakelas` VALUES ('4', '175', '6');
-INSERT INTO `aka_siswakelas` VALUES ('5', '176', '4');
+INSERT INTO `aka_siswakelas` VALUES ('15', '180', '22');
+INSERT INTO `aka_siswakelas` VALUES ('16', '183', '22');
+INSERT INTO `aka_siswakelas` VALUES ('17', '184', '22');
+INSERT INTO `aka_siswakelas` VALUES ('18', '185', '22');
+INSERT INTO `aka_siswakelas` VALUES ('19', '186', '22');
+INSERT INTO `aka_siswakelas` VALUES ('20', '187', '22');
+INSERT INTO `aka_siswakelas` VALUES ('21', '188', '22');
+INSERT INTO `aka_siswakelas` VALUES ('22', '189', '22');
+INSERT INTO `aka_siswakelas` VALUES ('23', '190', '22');
+INSERT INTO `aka_siswakelas` VALUES ('24', '191', '22');
+INSERT INTO `aka_siswakelas` VALUES ('31', '190', '170');
+INSERT INTO `aka_siswakelas` VALUES ('32', '181', '170');
+INSERT INTO `aka_siswakelas` VALUES ('33', '182', '170');
+INSERT INTO `aka_siswakelas` VALUES ('35', '183', '170');
+INSERT INTO `aka_siswakelas` VALUES ('36', '184', '170');
+INSERT INTO `aka_siswakelas` VALUES ('37', '185', '170');
+INSERT INTO `aka_siswakelas` VALUES ('38', '186', '170');
+INSERT INTO `aka_siswakelas` VALUES ('39', '187', '170');
+INSERT INTO `aka_siswakelas` VALUES ('40', '188', '170');
+INSERT INTO `aka_siswakelas` VALUES ('41', '189', '170');
+INSERT INTO `aka_siswakelas` VALUES ('42', '191', '170');
+INSERT INTO `aka_siswakelas` VALUES ('44', '180', '170');
+INSERT INTO `aka_siswakelas` VALUES ('45', '193', '157');
+INSERT INTO `aka_siswakelas` VALUES ('46', '194', '157');
+INSERT INTO `aka_siswakelas` VALUES ('47', '195', '157');
+INSERT INTO `aka_siswakelas` VALUES ('48', '196', '157');
+INSERT INTO `aka_siswakelas` VALUES ('49', '197', '157');
+INSERT INTO `aka_siswakelas` VALUES ('50', '198', '157');
 
 -- ----------------------------
 -- Table structure for aka_sks
@@ -4991,6 +5017,7 @@ CREATE TABLE `aka_subtingkat` (
   `replid` int(10) NOT NULL AUTO_INCREMENT,
   `subtingkat` varchar(100) NOT NULL,
   `tingkat` int(10) NOT NULL,
+  `urutan` int(11) NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`replid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
@@ -4998,24 +5025,24 @@ CREATE TABLE `aka_subtingkat` (
 -- ----------------------------
 -- Records of aka_subtingkat
 -- ----------------------------
-INSERT INTO `aka_subtingkat` VALUES ('4', '1', '1', '1');
-INSERT INTO `aka_subtingkat` VALUES ('5', 'A', '2', '2');
-INSERT INTO `aka_subtingkat` VALUES ('6', 'B', '2', '3');
-INSERT INTO `aka_subtingkat` VALUES ('7', 'A', '3', '4');
-INSERT INTO `aka_subtingkat` VALUES ('8', 'B', '3', '5');
-INSERT INTO `aka_subtingkat` VALUES ('9', '1', '6', '6');
-INSERT INTO `aka_subtingkat` VALUES ('10', '2', '6', '7');
-INSERT INTO `aka_subtingkat` VALUES ('11', '3', '6', '8');
-INSERT INTO `aka_subtingkat` VALUES ('12', '4', '6', '9');
-INSERT INTO `aka_subtingkat` VALUES ('13', '5', '6', '10');
-INSERT INTO `aka_subtingkat` VALUES ('14', '6', '6', '11');
-INSERT INTO `aka_subtingkat` VALUES ('15', '1', '7', '12');
-INSERT INTO `aka_subtingkat` VALUES ('16', '2', '7', '13');
-INSERT INTO `aka_subtingkat` VALUES ('17', '3', '7', '14');
-INSERT INTO `aka_subtingkat` VALUES ('18', '4', '7', '15');
-INSERT INTO `aka_subtingkat` VALUES ('19', '1', '8', '16');
-INSERT INTO `aka_subtingkat` VALUES ('20', '2', '8', '17');
-INSERT INTO `aka_subtingkat` VALUES ('24', 'C', '3', '');
+INSERT INTO `aka_subtingkat` VALUES ('4', '1', '1', '0', '1');
+INSERT INTO `aka_subtingkat` VALUES ('5', '1', '2', '0', '2');
+INSERT INTO `aka_subtingkat` VALUES ('6', '2', '2', '0', '3');
+INSERT INTO `aka_subtingkat` VALUES ('7', '1', '3', '0', '4');
+INSERT INTO `aka_subtingkat` VALUES ('8', '2', '3', '0', '5');
+INSERT INTO `aka_subtingkat` VALUES ('9', '1', '6', '0', '6');
+INSERT INTO `aka_subtingkat` VALUES ('10', '2', '6', '0', '7');
+INSERT INTO `aka_subtingkat` VALUES ('11', '3', '6', '0', '8');
+INSERT INTO `aka_subtingkat` VALUES ('12', '4', '6', '0', '9');
+INSERT INTO `aka_subtingkat` VALUES ('13', '5', '6', '0', '10');
+INSERT INTO `aka_subtingkat` VALUES ('14', '6', '6', '0', '11');
+INSERT INTO `aka_subtingkat` VALUES ('15', '1', '7', '0', '12');
+INSERT INTO `aka_subtingkat` VALUES ('16', '2', '7', '0', '13');
+INSERT INTO `aka_subtingkat` VALUES ('17', '3', '7', '0', '14');
+INSERT INTO `aka_subtingkat` VALUES ('18', '4', '7', '0', '15');
+INSERT INTO `aka_subtingkat` VALUES ('19', '1', '8', '0', '16');
+INSERT INTO `aka_subtingkat` VALUES ('20', '2', '8', '0', '17');
+INSERT INTO `aka_subtingkat` VALUES ('24', '3', '3', '0', '');
 
 -- ----------------------------
 -- Table structure for aka_tahunajaran
@@ -5026,7 +5053,8 @@ CREATE TABLE `aka_tahunajaran` (
   `tahunajaran` varchar(50) NOT NULL,
   `keterangan` text NOT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`replid`)
+  PRIMARY KEY (`replid`),
+  KEY `tahunajaran` (`tahunajaran`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------

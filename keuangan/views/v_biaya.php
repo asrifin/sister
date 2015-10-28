@@ -6,6 +6,7 @@
         &nbsp;
         <button class="place-left" <?php echo isAksi('user','c')?'onclick="viewFR(\'\')"':'disabled'; ?> data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
         <li class="active"><a href="#"><b>Biaya</b></a></li>
+        <li><a href="rekening-biaya">Rekening-Biaya</a></li>
         <li><a href="detail-biaya">Detail-Biaya</a></li>
     </ul>
 </nav>

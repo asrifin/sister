@@ -144,12 +144,34 @@
 					break;
 
 					case 'belum':
-						$departemen  = isset($_POST['departemenTB'])?filter($_POST['departemenTB']):'';
-						$tahunajaran = isset($_POST['tahunajaranTB'])?filter($_POST['tahunajaranTB']):'';
-						$subtingkat  = isset($_POST['subtingkatTB'])?filter($_POST['subtingkatTB']):'';
+						$departemen      = isset($_POST['departemenTB'])?filter($_POST['departemenTB']):'';
+						$tahunajaran     = isset($_POST['tahunajaranTB'])?filter($_POST['tahunajaranTB']):'';
+						$subtingkat      = isset($_POST['subtingkatTB'])?filter($_POST['subtingkatTB']):'';
+						$tahunajaran     = isset($_POST['tahunajaranTB'])?filter($_POST['tahunajaranTB']):'';
+						$tahunajaranasal = isset($_POST['tahunajaranasalTB'])?filter($_POST['tahunajaranasalTB']):'';
+						$detailkelas     = isset($_POST['detailkelasTB'])?filter($_POST['detailkelasTB']):'';
+						$detailkelasasal = isset($_POST['detailkelasasalTB'])?filter($_POST['detailkelasasalTB']):'';
 						
 						$nis         = isset($_POST['belum_nisS'])?filter($_POST['belum_nisS']):'';
 						$namasiswa   = isset($_POST['belum_namasiswaS'])?filter($_POST['belum_namasiswaS']):'';
+
+						if($_POST['modeTB']=='1'){ // siswa baru
+							$w=' and siswa.replid not in (SELECT sk.siswa from aka_siswakelas sk)';  
+							$w.=' AND subtingkat.replid ='.$subtingkat;    
+							$w.=' AND tahunajaran.replid = '.$tahunajaran; 
+						}else{ // siswa lama ( naik kelas )
+							$w=' and siswa.replid IN (
+									SELECT sk.siswa
+									FROM aka_siswakelas sk
+									WHERE
+										sk.detailkelas ='.$detailkelasasal.' and 
+										sk.siswa NOT in (
+											SELECT sk2.siswa FROM aka_siswakelas sk2 WHERE sk2.detailkelas = '.$detailkelas.'
+										)
+								)';  
+							$w.='';    
+							$w.=' AND tahunajaran.replid = '.$tahunajaranasal; 
+						}
 
 						$sql = 'SELECT
 									siswa.replid,
@@ -170,15 +192,12 @@
 									JOIN departemen departemen  on departemen.replid = detailgelombang.departemen
 								WHERE
 									siswa.status ="1"  and  
-									siswa.replid not in (SELECT siswa from aka_siswakelas) and  
-									subtingkat.replid ='.$subtingkat.' and   
-									tahunajaran.replid = '.$tahunajaran.' and 
 									departemen.replid = '.$departemen.' and 
 									siswa.nis LIKE "%'.$nis.'%" and 
-									siswa.namasiswa LIKE "%'.$namasiswa.'%" 
+									siswa.namasiswa LIKE "%'.$namasiswa.'%" '.$w.'
 								GROUP BY 
 									siswa.replid';
-									// vd($sql);
+						// pr($sql);
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
@@ -219,7 +238,7 @@
 						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
 						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 					break;
-				}		
+				}
 			break;  
 			// view -----------------------------------------------------------------
 

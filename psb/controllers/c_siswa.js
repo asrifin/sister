@@ -495,32 +495,33 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                         +'<div class="span4">'
                                             // cek
                                             +'<label>'
-                                                +'<input checked onclick="enableWali(this);" type="checkbox" id="siswawaliTB" name="siswawaliTB">'
+                                                // +'<input checked onclick="enableWali(this);" type="checkbox" id="siswawaliTB" name="siswawaliTB">'
+                                                +'<input Xchecked onclick="enableWali(this);" type="checkbox" id="siswawaliTB" name="siswawaliTB">'
                                                 +'Wali murid'
                                             +'</label>'
                                             // nama
                                             +'<label>Nama</label>'
                                             +'<input type="hidden" id="idsiswawaliTB" name="idsiswawaliTB" />'
-                                            +'<input required class="waliTB"  type="text" data-transform="input-control" placeholder="nama" id="namawaliTB" name="namawaliTB">'
+                                            +'<input Xrequired  disabled class="waliTB"  type="text" data-transform="input-control" placeholder="nama" id="namawaliTB" name="namawaliTB">'
                                             // kelamin
                                             +'<label>Jenis Kelamin</label>'
-                                            +'<select  class="waliTB"  data-transform="input-control" xrequired id="jkelaminwaliTB" name="jkelaminwaliTB">'
+                                            +'<select disabled class="waliTB"  data-transform="input-control" xrequired id="jkelaminwaliTB" name="jkelaminwaliTB">'
                                                 +'<option value="">-Pili Kelamin-</option>'
                                                 +'<option value="L">Laki</option>'
                                                 +'<option value="P">Perempuan</option>'
                                             +'</select>'
                                             // alamatwali
                                             +'<label>Alamat</label>'
-                                            +'<input   class="waliTB"  type="text" data-transform="input-control" placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
+                                            +'<input disabled class="waliTB"  type="text" data-transform="input-control" placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
                                         +'</div>'
                                         // kolom2 
                                         +'<div class="span4">'
                                             // kotawali
                                             +'<label>Kota </label>'
-                                            +'<input   class="waliTB"  type="text" data-transform="input-control" placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
+                                            +'<input disabled  class="waliTB"  type="text" data-transform="input-control" placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
                                             // telponwali
                                             +'<label>Telpon</label>'
-                                            +'<input  class="waliTB"   type="text" data-transform="input-control" placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
+                                            +'<input disabled class="waliTB"   type="text" data-transform="input-control" placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
                                         +'</div>'
 
                                     +'</div>'
@@ -1109,10 +1110,10 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                         if(dt.status!='sukses') notif(dt.status,'red');
                         else{
                         // kriteria siswa 
-                            cmbdepartemen('form',dt.departemen);
-                            cmbtahunajaran('form',dt.tahunajaran);
-                            cmbdetailgelombang('form',dt.detailgelombang,dt.departemen,dt.tahunajaran);
-                            cmbtingkatZ('form',dt.tingkat,dt.departemen);
+                            cmbdepartemen('form',dt.iddepartemen);
+                            cmbtahunajaran('form',dt.idtahunajaran);
+                            cmbdetailgelombang('form',dt.detailgelombang,dt.iddepartemen,dt.idtahunajaran);
+                            cmbtingkatZ('form',dt.tingkat,dt.iddepartemen);
                             cmbsubtingkat('form',dt.tingkat,dt.subtingkat);
                             cmbgolongan('form',dt.golongan);
                         // biaya 
@@ -1233,7 +1234,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                     cmbangsuran('');
                     biayaFC('');
                     // subdokumenFC();
-                    kontakdaruratFC();
+                    // kontakdaruratFC();
                 }
                 // $("#form1").scrollbar({height: 355,axis: 'y'});
                 titlex='<span class="icon-plus-2"></span> Tambah ';
@@ -1488,7 +1489,7 @@ function notif(cont,clr) {
                                     out+='<tr>'
                                         +'<td>Diskon Reguler</td>'
                                         +'<td>'
-                                            +'<div class="input-control text"><input class="detaildiskonTB" '+(siswa==''?'disabled':'')+' onfocus="multiAutoSuggest(\'detaildiskon\','+item.replid+')" onkeyup="multiAutoSuggest(\'detaildiskon\','+item.replid+')" placeholder="cari diskon .. " type="text" id="detaildiskon'+item.replid+'TB"></div>'
+                                            +'<div class="input-control text"><input class="detaildiskonTB" '+(siswa==''?'disabled':'')+' onfocus="multiAutoSuggest(\'detaildiskon\','+item.replid+')" onkeyup="multiAutoSuggest(\'detaildiskon\','+item.replid+')" placeholder="cari diskon (backspace / panah bawah) " type="text" id="detaildiskon'+item.replid+'TB"></div>'
                                             +'<table width="100%">'
                                                 +'<thead class="fg-white bg-blue">'
                                                     +'<th align="center">Diskon</th>'
@@ -1851,12 +1852,12 @@ function notif(cont,clr) {
                     if(dt.status!='sukses') notif(dt.status,'red');
                     else{
                         $('#idstatusTB').val(idsiswa);
-                        $('#namasiswaTD').html(dt.namasiswa);
-                        $('#nopendaftaranTD').html(dt.nopendaftaran);
+                        $('#namasiswaTD').html(': '+dt.namasiswa);
+                        $('#nopendaftaranTD').html(': '+dt.nopendaftaran);
                         $('#statussiswaTD').addClass('fg-white bg-'+(dt.statussiswa!='Belum Diterima'?(dt.statussiswa=='Diterima'?'green':'lightBlue'):'red'));
                         $('#statussiswaTD').html(dt.statussiswa);
-                        $('#departemenTD').html(dt.departemennama);
-                        $('#tahunajaranTD').html(dt.tahunajarannama);
+                        $('#departemenTD').html(': '+dt.departemen);
+                        $('#tahunajaranTD').html(': '+dt.tahunajaran);
                         $('#nisTB').val(dt.nis);
                         $('#nisnTB').val(dt.nisn);
                     }

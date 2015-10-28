@@ -15,6 +15,42 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
+        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;">' 
+                        +'<input id="idformH" type="hidden">' 
+                        
+                        +'<table class="table">'
+                            +'<tr>' 
+                                +'<td>Departemen</td>'
+                                +'<td id="departemenTD"></td>'
+                            +'</tr>'
+                            +'<tr>' 
+                                +'<td>Tahun Ajaran</td>'
+                                +'<td id="tahunajaranTD"></td>'
+                            +'</tr>'
+                            +'<tr>' 
+                                +'<td>Gelombang</td>'
+                                +'<td id="gelombangTD"></td>'
+                            +'</tr>'
+                            +'<tr>' 
+                                +'<td>Tingkat</td>'
+                                +'<td id="tingkatTD"></td>'
+                            +'</tr>'
+                            +'<tr>' 
+                                +'<td>Sub Tingkat</td>'
+                                +'<td id="subtingkatTD"></td>'
+                            +'</tr>'
+                            +'<tr>' 
+                                +'<td>Golongan</td>'
+                                +'<td id="golonganTD"></td>'
+                            +'</tr>'
+                        +'</table>'
+                        +'<div id="detilrekeningDV"></div>'
+                        +'<div class="form-actions">' 
+                            +'<button class="button primary">simpan</button>&nbsp;'
+                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                        +'</div>'
+                    +'</form>';
+
         cmbdepartemen('filter','');
 
         //add form
@@ -226,7 +262,6 @@ var contentFR = '';
     
 // form ---
     function viewFR(id){
-        // $.Dialog({
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -234,91 +269,22 @@ var contentFR = '';
             width: 500,
             padding: 10,
             onShow: function(){
-                var titlex='';
-
-                // form :: departemen (disabled field) -----------------------------
-                    $.ajax({
-                        url:dir2,
-                        data:'aksi=cmb'+mnu2+'&replid='+$('#departemenS').val(),
-                        type:'post',
-                        dataType:'json',
-                        success:function(dt){
-                            titlex+='';
-                            $('#departemenH').val($('#departemenS').val());
-                            $('#tahunajaranH').val($('#tahunajaranS').val());
-                            $('#tingkatH').val($('#tingkatS').val());
-                            var out;
-                            if(dt.status!='sukses'){
-                                out=dt.status;
-                            }else{
-                                out=dt.departemen[0].nama;
-                            }$('#departemenTB').val(out);
-                  
-                        // form :: tahun ajaran (disabled field) --------------
-                            $.ajax({
-                                url:dir3,
-                                // data:'aksi=cmbtahunajaran&departemen='+$('#departemenS').val()+'&replid='+$('#tahunajaranS').val(),
-                                data:'aksi=cmbtahunajaran&replid='+$('#tahunajaranS').val(),
-                                dataType:'json',
-                                type:'post',
-                                success:function(dt2){
-                                    // alert(titlex+' ok');
-                                    var out2;
-                                    if(dt.status!='sukses'){
-                                        out2=dt2.status;
-                                    }else{
-                                        out2=dt2.tahunajaran[0].tahunajaran;
-                                    }$('#tahunajaranTB').val(out2);
-                                    
-                                // form :: tingkat (disabled field) --------------
-                                    $.ajax({
-                                        url:dir4,
-                                        data:'aksi=cmbkelompok&replid='+$('#kelompokS').val(),
-                                        dataType:'json',
-                                        type:'post',
-                                        success:function(dt3){
-                                            // alert(titlex+' ok');
-                                            var out3;
-                                            if(dt3.status!='sukses'){
-                                                out3=dt3.status;
-                                            }else{
-                                                out3=dt3.kelompok[0].kelompok;
-                                            }$('#kelompokTB').val(out3);
-                                            
-                                            if (id!='') { // edit mode
-                                            // form :: edit :: tampilkan data 
-                                                $.ajax({
-                                                    url:dir,
-                                                    data:'aksi=ambiledit&replid='+id,
-                                                    type:'post',
-                                                    dataType:'json',
-                                                    success:function(dt3){
-                                                        $('#idformH').val(id);
-                                                        $('#kelasTB').val(dt3.kelas);
-                                                        $('#kapasitasTB').val(dt3.kapasitas);
-                                                        $('#waliTB').val(dt3.wali);
-                                                        $('#keteranganTB').val(dt3.keterangan);
-                                                    }
-                                                });
-                                            // end of form :: edit :: tampilkan data 
-                                                // titlex='<span class="icon-pencil"></span> Ubah ';
-                                                titlex+='<span class="icon-pencil"></span> Ubah ';
-                                            }else{ //add mode
-                                                // alert('judul ='+titlex);
-                                                titlex+='<span class="icon-plus-2"></span> Tambah ';
-                                                // titlex='<span class="icon-plus-2"></span> Tambah ';
-                                            }
-                                        }
-                                    });
-
-                                }
-                            });
-                            // alert(titlex);
-                        //end of  form :: tahun ajaran (disabled field) --------------
-                        }
-                    });
-                //end of form :: departemen (disabled field) -----------------------------
-                $.Dialog.title(titlex+' '+mnu);
+                ajax(dir,'aksi=ambiledit&replid='+id).done(function (dt) {
+                    if(dt.status!='sukses') notif('red','gagal ambil data');
+                    else {
+                        $('#departemenTD').html(dt.departemen);
+                        $('#tahunajaranTD').html(dt.tahunajaran);
+                        $('#tingkatTD').html(dt.tingkat);
+                        $('#subtingkatTD').html(dt.subtingkat);
+                        $('#golonganTD').html(dt.golongan);
+                        var tr='';
+                        // $.each(dt.biayaArr, function (id,item) {
+                        //     tr+='<label>'+item.biaya+'</label>'
+                        //         +'<input data-transform="input-control" type="text">';
+                        // });$('#detilrekeningDV').html(tr);
+                    }
+                });
+                $.Dialog.title('Setting Rekening');
                 $.Dialog.content(contentFR);
             }
         });
@@ -358,25 +324,7 @@ var contentFR = '';
             }
         });
     }
-    // function pagination(page,aksix){
-    //     var datax = 'starting='+page+'&aksi='+aksix;
-    //     var cari =  '&tingkatS='+$('#tingkatS').val()
-    //                 +'&kelasS='+$('#kelasS').val()
-    //                 +'&waliS='+$('#waliS').val();
-    //     $.ajax({
-    //         url:dir,
-    //         type:"post",
-    //         data: datax+cari,
-    //         beforeSend:function(){
-    //             $('#tbody').html('<tr><td align="center" colspan="7"><img src="../img/w8loader.gif"></td></tr></center>');
-    //         },success:function(dt){
-    //             setTimeout(function(){
-    //                 $('#tbody').html(dt).fadeIn();
-    //             },1000);
-    //         }
-    //     });
-    // }   
-//end of paging ---
+  
     
 //del process ---
     function del(id){
