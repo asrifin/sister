@@ -60,6 +60,7 @@ $nama=$_POST['nama'];
 $lokasi=$_POST['lokasi'];
 $golongan=$_POST['golongan'];
 $gelombang=$_POST['gelombang'];
+$tingkat=$_POST['tingkat'];
 $tgllahir=$_POST['tgllahir'];
 $namaortu=$_POST['namaortu'];
 $alamat=$_POST['alamat'];
@@ -76,7 +77,7 @@ if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT * FROM psbcalon_sisw
 	if ($error){
 		$admin .= '<div class="error">'.$error.'</div>';
 	}else{
-		$hasil  = mysql_query( "INSERT INTO `psbcalon_siswa` (`kode`,`nama`,`lokasi`,`golongan`,`gelombang`,`tgllahir`,`namaortu`,`alamat`,`kota`,`telp`,`hp`,`ket`,`asalsekolah`,`info`,`kelamin`) VALUES ('$kode','$nama','$lokasi','$golongan','$gelombang','$tgllahir','$namaortu','$alamat','$kota','$telp','$hp','$ket','$asalsekolah','$info','$kelamin')" );
+		$hasil  = mysql_query( "INSERT INTO `psbcalon_siswa` (`kode`,`nama`,`lokasi`,`golongan`,`gelombang`,`tingkat`,`tgllahir`,`namaortu`,`alamat`,`kota`,`telp`,`hp`,`ket`,`asalsekolah`,`info`,`kelamin`) VALUES ('$kode','$nama','$lokasi','$golongan','$gelombang','$tingkat','$tgllahir','$namaortu','$alamat','$kota','$telp','$hp','$ket','$asalsekolah','$info','$kelamin')" );
 		if($hasil){
 			$admin .= '<div class="sukses"><b>Berhasil di Buat.</b></div>';
 			$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=tahap1&amp;mod=yes" />';	
@@ -92,6 +93,7 @@ $nama     		= !isset($nama) ? '' : $nama;
 $lokasi     		= !isset($lokasi) ? '' : $lokasi;
 $golongan     		= !isset($golongan) ? '' : $golongan;
 $gelombang     		= !isset($gelombang) ? '' : $gelombang;
+$tingkat     		= !isset($tingkat) ? '' : $tingkat;
 $tgllahir     		= !isset($tgllahir) ? '' : $tgllahir;
 $namaortu     		= !isset($namaortu) ? '' : $namaortu;
 $alamat     		= !isset($alamat) ? '' : $alamat;
@@ -152,6 +154,18 @@ $admin .= '<option value="">== Gelombang ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
 $pilihan = ($datas['replid']==$gelombang)?"selected":'';
 $admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['gelombang'].'</option>';
+}
+$admin .='</select></td>
+</tr>
+<tr>
+	<td>Tingkat</td>
+		<td>:</td>
+	<td><select name="tingkat" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * from aka_tingkat");
+$admin .= '<option value="">== Tingkat ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$tingkat)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['tingkat'].'</option>';
 }
 $admin .='</select></td>
 </tr>
@@ -241,12 +255,13 @@ $asalsekolah=$_POST['asalsekolah'];
 $info=$_POST['info'];
 $kelamin=$_POST['kelamin'];
 $gelombang=$_POST['gelombang'];
+$tingkat=$_POST['tingkat'];
 	$error 	= '';
 if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT * FROM psbcalon_siswa WHERE kode='$kode' and id<>'$id'")) > 0) $error .= "Error: kode ".$kode." sudah terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		$tengah .= '<div class="error">'.$error.'</div>';
 	}else{
-		$hasil  = mysql_query( "UPDATE `psbcalon_siswa` SET `kode`='$kode',`nama`='$nama',`golongan`='$golongan',`lokasi`='$lokasi',`tgllahir`='$tgllahir',`namaortu`='$namaortu',`alamat`='$alamat',`kota`='$kota',`telp`='$telp',`hp`='$hp',`ket`='$ket',`asalsekolah`='$asalsekolah',`info`='$info',`kelamin`='$kelamin',`gelombang`='$gelombang' WHERE `id`='$id'" );
+		$hasil  = mysql_query( "UPDATE `psbcalon_siswa` SET `kode`='$kode',`nama`='$nama',`golongan`='$golongan',`lokasi`='$lokasi',`tgllahir`='$tgllahir',`namaortu`='$namaortu',`alamat`='$alamat',`kota`='$kota',`telp`='$telp',`hp`='$hp',`ket`='$ket',`asalsekolah`='$asalsekolah',`info`='$info',`kelamin`='$kelamin',`gelombang`='$gelombang',`tingkat`='$tingkat' WHERE `id`='$id'" );
 		if($hasil){
 			$admin .= '<div class="sukses"><b>Berhasil di Update.</b></div>';
 			$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=tahap1&amp;mod=yes" />';	
@@ -273,6 +288,7 @@ $asalsekolah=$data['asalsekolah'];
 $info=$data['info'];
 $kelamin=$data['kelamin'];
 $gelombang=$data['gelombang'];
+$tingkat=$data['tingkat'];
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Tambah Calon Siswa</h3></div>';
 $admin .= '
@@ -321,6 +337,18 @@ $admin .= '<option value="">== Gelombang ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
 $pilihan = ($datas['replid']==$gelombang)?"selected":'';
 $admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['gelombang'].'</option>';
+}
+$admin .='</select></td>
+</tr>
+<tr>
+	<td>Tingkat</td>
+		<td>:</td>
+	<td><select name="tingkat" class="form-control"required>';
+$hasil = $koneksi_db->sql_query("SELECT * from aka_tingkat");
+$admin .= '<option value="">== Tingkat ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$tingkat)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['tingkat'].'</option>';
 }
 $admin .='</select></td>
 </tr>
@@ -403,6 +431,7 @@ $admin.='
            <th>Lokasi</th>
            <th>Golongan</th>
 		   <th>Gelombang</th> 
+		   <th>Tingkat</th> 
            <th>TglLahir</th>
            <th>Ortu</th>
 		   <th>Alamat</th>
@@ -434,12 +463,14 @@ $asalsekolah=$data['asalsekolah'];
 $info=$data['info'];
 $kelamin=$data['kelamin'];
 $gelombang=$data['gelombang'];
+$tingkat=$data['tingkat'];
 $admin.='<tr>
             <td>'.$kode.'</td>
             <td>'.$nama.'</td>
             <td>'.getlokasi($lokasi).'</td>
             <td>'.getgolongan($golongan).'</td>
 			<td>'.getgelombang($gelombang).'</td>
+			<td>'.gettingkat($tingkat).'</td>
 			<td>'.$tgllahir.'</td>
             <td>'.$namaortu.'</td>
 			<td>'.$alamat.'</td>
@@ -497,6 +528,7 @@ $admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['gelombang
 }
 $admin .='</select></td>
 </tr>';
+
 $admin .= '<tr>
 	<td></td>
 	<td><input type="submit" value="Cetak" name="submit" class="btn btn-success"></td>

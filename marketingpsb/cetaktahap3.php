@@ -66,6 +66,7 @@ echo '
            <td>Lokasi</td>
            <td>Golongan</td>
 		   <td>Gelombang</td> 
+		   <td>Tingkat</td> 
            <th>Diterima</th>
            <th>Joining Fee</th>
 		   <th>DPP</th>
@@ -81,6 +82,7 @@ $nama=$data['nama'];
 $golongan=$data['golongan'];
 $lokasi=$data['lokasi'];
 $gelombang=$data['gelombang'];
+$tingkat=$data['tingkat'];
 $diterima=$data['diterima'];
 $joiningfee=$data['joiningfee'];
 $dpp=$data['dpp'];
@@ -96,6 +98,7 @@ echo '
             <td>'.getlokasi($lokasi).'</td>
             <td>'.getgolongan($golongan).'</td>
 			<td>'.getgelombang($gelombang).'</td>
+			<td>'.gettingkat($tingkat).'</td>
             <td>'.$diterima.'</td>
             <td>'.$joiningfee.'</td>
 			<td>'.$dpp.'</td>
