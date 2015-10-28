@@ -4,9 +4,24 @@ include 'includes/config.php';
 include 'includes/mysql.php';
 include 'includes/configsitus.php';
 global $koneksi_db,$url_situs;
-$kelompok 		= $_GET['kelompok'];
+$golongan 		= $_GET['golongan'];
+$lokasi 		= $_GET['lokasi'];
 $gelombang 		= $_GET['gelombang'];
-
+if($golongan=='Semua'){
+         $wheregolongan="";
+}else{
+         $wheregolongan="and golongan='$golongan'";
+}
+if($lokasi=='Semua'){
+         $wherelokasi="";
+}else{
+         $wherelokasi="and lokasi='$lokasi'";
+}
+if($gelombang=='Semua'){
+         $wheregelombang="";
+}else{
+         $wheregelombang="and gelombang='$gelombang'";
+}
 echo "<html><head><title>Laporan Tahap 1</title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
@@ -41,14 +56,16 @@ echo'
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
 if(!$detail){
-echo'<tr><td colspan="7"><h4>Laporan Tahap 1, Kelompok '.getkelompok($kelompok).', Gelombang '.getgelombang($gelombang).'</h4></td></tr>';
+echo'<tr><td colspan="7"><h4>Laporan Tahap 1, Golongan :'.getgolongan($golongan).', Gelombang :'.getgelombang($gelombang).', Lokasi :'.getlokasi($lokasi).'</h4></td></tr>';
 echo '
 <tr class="border">
             <td>No</td>
             <td>Kode</td>
 			<td>Nama</td>
-           <td>Departemen</td>
-           <td>Kelompok</td>
+           <td>Lokasi</td>
+           <td>Golongan</td>
+		   <td>Gelombang</td> 
+		   <td>Tingkat</td> 
            <td>TglLahir</td>
            <td>Ortu</td>
 		   <td>Alamat</td>
@@ -59,15 +76,17 @@ echo '
 		   <td>AsalSekolah</td>
 		   <td>Info</td>
 		   <td>Kelamin</td>
-		   <td>Gelombang</td> 
+
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM psbcalon_siswa where kelompok = '$kelompok' and gelombang = '$gelombang'  order by id asc");	
+$s = mysql_query ("SELECT * FROM psbcalon_siswa where id<>'' $wheregolongan $wherelokasi $wheregelombang  order by id asc");	
 while($data = mysql_fetch_array($s)){
 $kode=$data['kode'];
 $nama=$data['nama'];
-$kelompok=$data['kelompok'];
-$departemen=$data['departemen'];
+$golongan=$data['golongan'];
+$lokasi=$data['lokasi'];
+$gelombang=$data['gelombang'];
+$tingkat=$data['tingkat'];
 $tgllahir=$data['tgllahir'];
 $namaortu=$data['namaortu'];
 $alamat=$data['alamat'];
@@ -78,15 +97,16 @@ $ket=$data['ket'];
 $asalsekolah=$data['asalsekolah'];
 $info=$data['info'];
 $kelamin=$data['kelamin'];
-$gelombang=$data['gelombang'];
 $urutan = $no + 1;
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
             <td>'.$kode.'</td>
             <td>'.$nama.'</td>
-            <td>'.getdepartemen($departemen).'</td>
-            <td>'.getkelompok($kelompok).'</td>
+            <td>'.getlokasi($lokasi).'</td>
+            <td>'.getgolongan($golongan).'</td>
+			<td>'.getgelombang($gelombang).'</td>
+			<td>'.gettingkat($tingkat).'</td>
 			<td>'.$tgllahir.'</td>
             <td>'.$namaortu.'</td>
 			<td>'.$alamat.'</td>
@@ -97,7 +117,7 @@ echo '
 			<td>'.$asalsekolah.'</td>
 			<td>'.$info.'</td>
 			<td>'.getkelamin($kelamin).'</td>
-			<td>'.getgelombang($gelombang).'</td>
+
 </tr>';
 $no++;
 }
@@ -106,10 +126,12 @@ echo '</table>';
 }
 /****************************/
 echo "</body</html>";
-
+/*
 if (isset($_GET['gelombang'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
+
 ?>
