@@ -57,7 +57,7 @@ echo'
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
 if(!$detail){
-echo'<tr><td colspan="7"><h4>Laporan Tahap 3, Golongan '.getgolongan($golongan).', Gelombang '.getgelombang($gelombang).', Lokasi '.getlokasi($lokasi).'</h4></td></tr>';
+echo'<tr><td colspan="7"><h4>Laporan Tahap 3, Golongan :'.getgolongan($golongan).', Gelombang :'.getgelombang($gelombang).', Lokasi :'.getlokasi($lokasi).'</h4></td></tr>';
 echo '
 <tr class="border">
             <td>No</td>
@@ -75,7 +75,7 @@ echo '
 		   <th>Uang Material</th>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM psbcalon_siswa $wheregolongan $wherelokasi $wheregelombang order by id asc");	
+$s = mysql_query ("SELECT * FROM psbcalon_siswa where id<>'' $wheregolongan $wherelokasi $wheregelombang order by id asc");	
 while($data = mysql_fetch_array($s)){
 $kode=$data['kode'];
 $nama=$data['nama'];
@@ -114,9 +114,11 @@ echo '</table>';
 /****************************/
 echo "</body</html>";
 
-if (isset($_GET['cetak'])){
+/*
+if (isset($_GET['gelombang'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

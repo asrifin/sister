@@ -242,7 +242,6 @@ $admin.='</tbody>
 }
 
 if($_GET['aksi']=="cetak"){
-$departemen=$_GET['departemen'];
 $admin .='<div class="panel-heading"><b>Laporan Tahap 2</b></div>';
 $admin .= '<form class="form-inline" method="get" action="cetaktahap2.php" enctype ="multipart/form-data" id="posts" target="_blank">
 <table class="table table-striped table-hover">';
@@ -250,11 +249,11 @@ $admin .= '<tr>
 	<td>Lokasi</td>
 		<td>:</td>
 	<td><select name="lokasi" class="form-control" id="lokasi" required>';
-$hasil = $koneksi_db->sql_query("SELECT * FROM psbcalon_lokasi ORDER BY nama asc");
+$hasil = $koneksi_db->sql_query("SELECT * FROM departemen ORDER BY nama asc");
 $admin .= '<option value="Semua">== Semua Lokasi ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
-$pilihan = ($datas['id']==$lokasi)?"selected":'';
-$admin .= '<option value="'.$datas['id'].'" '.$pilihan.'>'.$datas['nama'].'</option>';
+$pilihan = ($datas['replid']==$lokasi)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['nama'].'</option>';
 }
 $admin .='</select></td>
 </tr>
