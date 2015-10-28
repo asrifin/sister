@@ -19,7 +19,7 @@ var dir10 ='../keuangan/models/m_'+mnu10+'.php';
 var contentFR = contentFR2 ='';
 // main function load first 
     $(document).ready(function(){
-        cmbdepartemen('filter');
+        cmbdepartemen();
         contentFR+= '<form  style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpanSV(this); return false;" id="'+mnu+'FR">'
                         +'<input class="kwitansipenerimaansiswa_cari" id="idsiswabiayaTB" name="idsiswabiayaTB" type="hidden">' 
                         // info header 
@@ -208,11 +208,15 @@ var contentFR = contentFR2 ='';
 
                     +'</form>';
 
-        $('#nisS,#namasiswaS,#nisnS,#nopendaftaranS').on('keydown',function (e){ // kode grup
-            if(e.keyCode == 13) viewTB('penerimaansiswa');
-        });
-        $('#statusS').change(function (){
-            viewTB('penerimaansiswa');
+        // $('#nisS,#namasiswaS,#nisnS,#nopendaftaranS').on('keydown',function (e){ // kode grup
+        //     if(e.keyCode == 13) viewTB('penerimaansiswa');
+        // });
+        $('#departemenS').change(function (){
+            cmbtahunajaran();
+        });$('#tahunajaranS').change(function (){
+            cmbbiaya();
+        });$('#biayaS').change(function (){
+            viewTB('rekapitulasipenerimaansiswa');
         });
     }); 
 
@@ -272,9 +276,6 @@ var contentFR = contentFR2 ='';
             var v = $(this).val();
             cari+='&'+p+'='+v;
         });
-        if(subaksi=='formulir' || subaksi=='joiningf'){
-            cari+='&kelompokS='+$('#kelompokS').val();
-        }
 
         $.ajax({
             url : dir,
@@ -461,7 +462,7 @@ var contentFR = contentFR2 ='';
     }
 
 // combo departemen ---
-    function cmbdepartemen(typ){
+    function cmbdepartemen(){
         var u = dir2;
         var d = 'aksi=cmb'+mnu2;
         ajax(u,d).done(function (dt){
@@ -473,10 +474,8 @@ var contentFR = contentFR2 ='';
                     out+='<option value="'+item.replid+'"> '+item.nama+'</option>';
                 });
             }
-            if(typ=='filter') {
-                $('#departemenS').html(out);
-                cmbtahunajaran('filter');
-            }else $('#departemenTB').html(out);
+            $('#departemenS').html(out);
+            cmbtahunajaran();
         });
     }
 //end of combo departemen---
@@ -495,7 +494,8 @@ var contentFR = contentFR2 ='';
                 });
                 if(typ=='filter'){
                     $('#tingkatS').html(out);
-                    cmbsubtingkat('filter');
+                    viewTB('rekapitulasipenerimaansiswa');
+                    // cmbsubtingkat('filter');
                 }else{
                     $('#subtingkatTB').html(out);
                 }
@@ -527,7 +527,7 @@ var contentFR = contentFR2 ='';
     }
 
 // combo biaya  ---
-    function cmbbiaya(typ){
+    function cmbbiaya(){
         var u = dir3;
         var d = 'aksi=cmb'+mnu3;
         ajax(u,d).done(function (dt){
@@ -538,19 +538,14 @@ var contentFR = contentFR2 ='';
                 $.each(dt.biaya, function(id,item){
                     out+='<option value="'+item.replid+'">'+item.biaya+'</option>';
                 });
-                if(typ=='filter'){
-                    $('#biayaS').html(out);
-                    viewTB('penerimaansiswa');
-                }else{
-                    $('#biayaTB').html(out);
-                }
+                $('#biayaS').html(out);
+                viewTB('rekapitulasipenerimaansiswa');
             }
         });
     }
 
 // combo tahun ajaran  ---
-    function cmbtahunajaran(typ){
-        console.log('masuk tahu ajaran ');
+    function cmbtahunajaran(){
         var u= dir6;
         var d = 'aksi=cmb'+mnu6;
         ajax(u,d).done(function (dt){
@@ -562,12 +557,8 @@ var contentFR = contentFR2 ='';
                     var ta = item.tahunajaran+' - '+(parseInt(item.tahunajaran)+1);
                     out+='<option '+(item.aktif=='1'?'selected':'')+' value="'+item.replid+'">'+ta+'</option>';
                 });
-                if(typ=='filter'){
-                    $('#tahunajaranS').html(out);
-                    cmbtingkat('filter',dt.tahunajaran[0].replid);
-                }else{
-                    $('#tahunajaranTB').html(out);
-                }
+                $('#tahunajaranS').html(out);
+                cmbbiaya();
             }
         });
     }

@@ -35,18 +35,20 @@
         <thead>
             <tr style="color:white;"class="info">
                 <th class="text-center">No. Pendaftaran</th>
+                <th class="text-center">Nama</th>
                 <th class="text-center">NISN</th>
                 <th class="text-center">NIS</th>
-                <th class="text-center">Nama</th>
                 <th class="text-center">Tagihan</th>
                 <th class="text-center">Terbayar</th>
-                <th class="text-center">Bayar</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Invoice</th>
             </tr>
             <tr id="formulirTR" class="info">
                 <th class="text-center"><input type="text" data-transform="input-control" placeholder="cari ..." id="nopendaftaranS" class="penerimaansiswa_cari"></th>
+                <th class="text-center"><input id="namasiswaS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
                 <th class="text-center"><input id="nisnS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
                 <th class="text-center"><input id="nisS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
-                <th class="text-center"><input id="namasiswaS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
+                <th class="text-center"></th>
                 <th class="text-center"></th>
                 <th class="text-center"></th>
                 <th class="text-center">

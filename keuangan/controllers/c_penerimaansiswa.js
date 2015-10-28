@@ -21,9 +21,32 @@ var contentFR = contentFR2 ='';
     $(document).ready(function(){
         cmbdepartemen('filter');
         //form content
-        contentFR2+= '<form  style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpanSV2(this); return false;">'
-                    +'<input type="text" />'
-                +'</form>';
+        contentFR2+= '<div  style="overflow:scroll;height:500px;">'
+                        +'<table class="table">'
+                            +'<tr>'
+                                +'<td><b>Departemen</b></td>'
+                                +'<td id="departemen2TD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>Tahun Ajaran</b></td>'
+                                +'<td id="tahunajaran2TD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>Nama</b></td>'
+                                +'<td id="namasiswa2TD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>Kelas</b> </td>'
+                                +'<td id="kelas2TD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>NIS</b> </td>'
+                                +'<td id="nis2TD"></td>'
+                            +'</tr>'
+                        +'</table>'
+                        +'<div id="buttonDV"></div>'
+                    +'</div>';
+
         contentFR+= '<form  style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpanSV(this); return false;" id="'+mnu+'FR">'
                         +'<input class="kwitansipenerimaansiswa_cari" id="idsiswabiayaTB" name="idsiswabiayaTB" type="hidden">' 
                         // info header 
@@ -314,22 +337,58 @@ var contentFR = contentFR2 ='';
                 if (dt.status=='sukses') {
                     printPDF('kwitansipenerimaansiswa',dt.idpembayaran);
                     $.Dialog.close();
-                    viewTB();
+                    viewTB('penerimaansiswa');
                 }
             });
         }
     }
 
     // form pop up
-    function viewFR2(){
+    function viewFR2(idsiswa){
         $.Dialog({
             shadow: true,
             overlay: true,
             draggable: true,
-            width: '40%',
+            width: '33%',
             padding: 10,
             onShow: function(){
-                $.Dialog.title('History pembayaran'); 
+                ajax(dir,'aksi=invoiceView&replid='+idsiswa+'&tahunajaran='+$('#tahunajaranS').val()).done(function (dt){
+                    $('#namasiswa2TD').html(': '+dt.namasiswa);
+                    $('#nis2TD').html(': '+dt.nis);
+                    $('#kelas2TD').html(': '+dt.kelas);
+                    $('#tahunajaran2TD').html(': '+dt.tahunajaran);
+                    $('#departemen2TD').html(': '+dt.departemen);
+                    var button='';
+                    $.each(dt.biayaArr, function (id,item) {
+                        krg  = parseInt(item.biayaKurang);
+                        nett = parseInt(item.biayaNett);
+                        if(krg==0){ //lunas 
+                            info  = 'Lunas';
+                            color ='green';
+                            icon  ='checkmark';
+                            func  ='';
+                        }else if(krg==nett){ //blum
+                            info  = 'Belum';
+                            color ='red';
+                            icon  ='cancel-2';
+                            func  ='onclick="printPDF(\'invoicepenerimaansiswa\','+item.idsiswabiaya+');"';
+                        }else{ // kurg
+                            info  = 'Rp. '+(parseInt(item.biayaKurang)).setCurr();
+                            color ='yellow';
+                            icon  ='minus-2';
+                            func  ='onclick="printPDF(\'invoicePenerimaanSiswa\','+item.idsiswabiaya+');"';
+                        }
+                        
+                        button+='<input type="hidden" id="idsiswabiayaTB" value="'+item.idsiswabiaya+'" />'
+                                +'<button '+func+' class="shortcut fg-white bg-'+color+'">'
+                                    +'<i class="icon-'+icon+'"></i>'
+                                    +item.biaya
+                                    +'<small class="bg-'+color+' fg-white"><b>'+info+'</b></small>'
+                                +'</button>&nbsp;';
+                    });
+                    $('#buttonDV').html(button);
+                });
+                $.Dialog.title('Invoice'); 
                 $.Dialog.content(contentFR2);
             }
         });
@@ -471,7 +530,9 @@ var contentFR = contentFR2 ='';
         });
         // if(mn=='kwitansipenerimaansiswa') {
         if(idx!='') {
-            par+='&idpembayaran='+idx;
+            if(mn=='kwitansipenerimaansiswa') par+='&idpembayaran='+idx;
+            else  par+='&idsiswabiaya='+idx;
+            
             tok+=idx;
         }
         var x     = $('#id_loginS').val();
@@ -808,6 +869,8 @@ var contentFR = contentFR2 ='';
             else{
                 notif(dt.status,'green');
                 $('#histBayarTD').html('');histBayarFC();
+                viewTB('penerimaansiswa');
+                $.Dialog.close();
             }
         });
     }

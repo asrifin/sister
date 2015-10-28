@@ -125,9 +125,9 @@
 												    </label>
 												</div>
 											</td>
+											<td>'.$res['namasiswa'].'</td>
 											<td>'.$res['nis'].'</td>
 											<td>'.$res['nisn'].'</td>
-											<td>'.$res['namasiswa'].'</td>
 											<td>'.$res['tempatlahirsiswa'].', '.($res['tanggallahirsiswa']=='0000-00-00'?'-':tgl_indo($res['tanggallahirsiswa'])).'</td>
 											'.$btn.'
 										</tr>';
@@ -321,10 +321,5 @@
 
 
 		}
-	}
-	echo $out;
-
-	// ---------------------- //
-	// -- created by rovi -- //
-	// ---------------------- //
+	}echo $out;
 ?>

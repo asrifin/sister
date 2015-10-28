@@ -115,12 +115,12 @@
                     case 'pemutihanpenerimaansiswa':
                         require $d.'v_pemutihanpenerimaansiswa.php';
                     break;
-                    case 'diskon':
-                        require $d.'v_diskon.php';
-                    break;
-                    case 'detaildiskon':
-                        require $d.'v_detaildiskon.php';
-                    break;
+                    // case 'diskon':
+                    //     require $d.'v_diskon.php';
+                    // break;
+                    // case 'detaildiskon':
+                    //     require $d.'v_detaildiskon.php';
+                    // break;
                     case 'angsuran':
                         require $d.'v_angsuran.php';
                     break;

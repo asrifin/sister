@@ -91,34 +91,45 @@
 
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
-				$biaya         = isset($_POST['biayaS'])?filter($_POST['biayaS']):'';
+				$departemen    = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
+				$tahunajaran   = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$subtingkat    = isset($_POST['subtingkatS'])?filter($_POST['subtingkatS']):'';
-				$tingkat       = isset($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
+				$biaya         = isset($_POST['biayaS'])?filter($_POST['biayaS']):'';
+				
 				$nis           = isset($_POST['nisS'])?filter($_POST['nisS']):'';
 				$nisn          = isset($_POST['nisnS'])?filter($_POST['nisnS']):'';
 				$namasiswa     = isset($_POST['namasiswaS'])?filter($_POST['namasiswaS']):'';
 				$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
-				// $status        = (isset($_POST['statusS']) AND $_POST['statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'_statusS']).'"':'';
-				$sql = 'SELECT 	
-							v.idsiswa,
-							v.namasiswa,	
-							v.nis,
-							v.nopendaftaran,
-							v.nisn,
-							db.biaya
-						FROM 
-							psb_siswabiaya sb 
-							JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
-							JOIN vw_psb_siswa_kriteria v on sb.siswa = v.idsiswa 
+				$statusbayar = isset($_POST['statusS']) && $_POST['statusS']!=''?' AND getStatusBayar(sb.replid) ="'.filter($_POST['statusS']).'"':'';
+
+				$sql = 'SELECT
+							s.replid idsiswa,
+							s.nopendaftaran,
+							s.nis,
+							s.nisn,
+							s.namasiswa,
+							st.tingkat,
+							getBiayaNett(sb.replid)tagihan,
+							getBiayaTerbayar(sb.replid)terbayar,
+							getStatusBayar(sb.replid)statusBayar
+						FROM
+							psb_siswa s
+							JOIN psb_siswabiaya sb ON sb.siswa = s.replid
+							JOIN psb_detailbiaya db ON db.replid = sb.detailbiaya
+							JOIN psb_biaya b ON b.replid = db.biaya
+							JOIN aka_subtingkat st ON st.replid = db.subtingkat
+							JOIN psb_detailgelombang dg ON dg.replid = db.detailgelombang
 						WHERE
-							v.status!="2" AND 
-							v.idtingkat ='.$tingkat.' AND 
-							v.idsubtingkat ='.$subtingkat.' AND 
-							v.namasiswa LIKE "%'.$namasiswa.'%" AND 
-							v.nis LIKE "%'.$nis.'%" AND 
-							v.nisn LIKE "%'.$nisn.'%" AND 
-							v.nopendaftaran LIKE "%'.$nopendaftaran.'%" and 
-							db.biaya  ='.$biaya;
+							s. STATUS != "2"
+							AND dg.tahunajaran = '.$tahunajaran.'
+							AND dg.departemen= '.$departemen.'
+							AND st.replid = '.$subtingkat.'
+							AND b.replid = '.$biaya.'
+							'.$statusbayar.'
+						GROUP BY
+							s.replid
+						ORDER BY
+							st.replid';
 							// pr($sql);
 							// '.$status;
 				if(isset($_POST['starting'])){ 
@@ -139,26 +150,26 @@
 				if($jum!=0){	
 					$nox = $starting+1;
 					while($res = mysql_fetch_assoc($result)){
-						$terbayarTotal      = getTerbayarTotal($res['idsiswa'],$res['biaya']);
-						$biayaNett          = getBiayaNett2($res['idsiswa'],$res['biaya']);
-						$status = $terbayarTotal==$biayaNett?'lunas':($terbayarTotal==0?'belum':'kurang');
-						$color  = $terbayarTotal==$biayaNett?'green':($terbayarTotal==0?'red':'yellow');
-						
-						// if($_POST['statusS']==$status){
-							$btn ='<td align="center">
-										<button style="font-weight:bold;" onclick="viewFR('.$res['idsiswa'].')"; class="fg-white bg-'.$color.'">
-											'.$status.'
+						$color  = $res['statusBayar']=='lunas'?'green':($res['statusBayar']=='belum'?'red':'yellow');
+						$btn ='<td align="center">
+									<button style="font-weight:bold;" onclick="viewFR('.$res['idsiswa'].')"; class="fg-white bg-'.$color.'">
+										'.$res['statusBayar'].'
+									</button>
+							   </td>';
+					 	$out.= '<tr>
+									<td>'.getNoPendaftaran2($res['idsiswa']).'</td>
+									<td>'.$res['namasiswa'].'</td>
+									<td>'.$res['nisn'].'</td>
+									<td>'.$res['nis'].'</td>
+									<td>'.setuang($res['tagihan']).'</td>
+									<td>'.setuang($res['terbayar']).'</td>
+									'.$btn.'
+									<td align="center">
+										<button style="font-weight:bold;" onclick="viewFR2('.$res['idsiswa'].')"; class="fg-white bg-blue">
+											<i class="icon-copy"></i>
 										</button>
-								   </td>';
-						 	$out.= '<tr>
-										<td>'.getNoPendaftaran2($res['idsiswa']).'</td>
-										<td>'.$res['nisn'].'</td>
-										<td>'.$res['nis'].'</td>
-										<td>'.$res['namasiswa'].'</td>
-										<td>'.setuang($biayaNett).'</td>
-										<td>'.setuang($terbayarTotal).'</td>
-										'.$btn.'
-									</tr>';
+									</td>
+								</tr>';
 						// }
 					}
 				}else{ #kosong
@@ -171,95 +182,6 @@
 				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 			break; 
 			// tampil ---------------------------------------------------------------------
-
-			// head info ------------------------------------------------------------------
-			case 'headinfo':
-				switch ($_POST['subaksi']) {
-					case 'katalog':
-						$s = 'SELECT 
-								g.nama as grup,
-								l.nama as lokasi,
-								sum(b.harga)as totaset
-							  FROM 
-							  	'.$tb4.' b,
-							  	'.$tb3.' k,
-							  	'.$tb2.' l,
-							  	'.$tb.' g
-							  WHERE 
-								g.replid  = '.$_POST['grup'].' and 
-								b.katalog = k.replid and
-								g.lokasi  = l.replid and
-								g.replid  = k.grup';
-						$q    = mysql_query($s);
-						$stat = ($q)?'sukses':'gagal';
-						$r    = mysql_fetch_assoc($q);
-						$out  = json_encode(array(
-									'status'  =>$stat,
-									'grup'    =>$r['grup'],
-									'lokasi'  =>$r['lokasi'],
-									'totaset' =>number_format($r['totaset'])
-								));
-					break;
-
-					case 'barang':
-						$s = '	SELECT
-									g.replid,
-									g.nama as grup,(
-										SELECT nama
-										from sar_lokasi 
-										where replid = g.lokasi
-									)as lokasi,
-									IFNULL(tbjum.totbarang,0)totbarang,
-									tbjum.susut,
-									tbjum.nama as katalog,
-									tbjum.totaset,
-									tbjum.photo2
-								from 
-									sar_grup g
-									LEFT JOIN (
-										SELECT 
-											k.replid,
-											k.grup,
-											k.susut,
-											k.nama,
-											k.photo2,
-											count(*)totbarang,
-											sum(b.harga)totaset
-										from 
-											sar_katalog k,
-											sar_barang b
-										WHERE
-											k.replid = b.katalog AND
-											k.replid = '.$_POST['katalog'].'
-									)tbjum on tbjum.grup = g.replid
-								where 
-									tbjum.replid= '.$_POST['katalog'];
-						// var_dump($s);exit();
-						$e = mysql_query($s) or die(mysql_error());
-						$r = mysql_fetch_assoc($e);
-						if(!$e){
-							$stat='gagal';
-						}else{
-							$stat ='sukses';
-							$dt   = array(
-										'idkatalog' =>$r['replid'],
-										'katalog'   =>$r['katalog'],
-										'grup'      =>$r['grup'],
-										'photo2'    =>$r['photo2'],
-										'lokasi'    =>$r['lokasi'],
-										'susut'     =>$r['susut'],
-										'totbarang' =>$r['totbarang'],
-										'totaset'   =>number_format($r['totaset'])
-									);
-						}
-						$out  = json_encode(array(
-									'status' =>$stat,
-									'data'   =>$dt
-								));
-					break;
-				}
-			break;
-			// head info ------------------------------------------------------------------
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
@@ -322,12 +244,73 @@
 			break;
 			// delete ---------------------------------------------------------------------
 
-			case 'cmbakanbayar':
-				$out=json_encode(array(
-					'status' =>(akanBayarOpt($_POST['subaksi'],$_POST['siswa'])==null?'gagal':'sukses'),
-					'datax'  =>akanBayarOpt($_POST['subaksi'],$_POST['siswa'])
+			case 'invoiceView':
+				$s ='SELECT
+						d.nama departemen,
+						concat(ta.tahunajaran," - ",ta.tahunajaran+1)tahunajaran,
+						s.namasiswa,
+						s.nis,
+						s.nisn,
+						s.nopendaftaran,
+						CONCAT(t.tingkat," - ",st.subtingkat,"",k.kelas)kelas
+					FROM
+						psb_siswa s
+						LEFT JOIN psb_siswabiaya sb ON sb.siswa = s.replid
+						LEFT JOIN psb_detailbiaya db ON db.replid = sb.detailbiaya
+						LEFT JOIN psb_detailgelombang dg ON dg.replid = db.detailgelombang
+						LEFT JOIN departemen d ON d.replid = dg.departemen
+						LEFT JOIN aka_tahunajaran ta  ON ta.replid = dg.tahunajaran
+						LEFT JOIN aka_siswakelas sk ON sk.siswa = s.replid 
+						LEFT JOIN aka_detailkelas dk ON dk.replid = sk.detailkelas 
+						LEFT JOIN aka_kelas k ON k.replid = dk.kelas
+						LEFT JOIN aka_subtingkat st ON st.replid = k.subtingkat
+						LEFT JOIN aka_tingkat t ON t.replid = st.tingkat
+					WHERE
+						dg.tahunajaran = '.$_POST['tahunajaran'].'
+						AND s.replid = '.$_POST['replid'].' 
+						and dk.tahunajaran = '.$_POST['tahunajaran'].'
+					GROUP BY
+						s.replid';
+						// pr($s);
+				$e =mysql_query($s);
+				$r =mysql_fetch_assoc($e);
+
+				$s2 ='SELECT
+						s.replid idsiswa,
+						b.biaya,
+						sb.replid idsiswabiaya,
+						b.replid idbiaya,
+						dg.tahunajaran,(
+							getBiayaAfterDiskonReg(sb.replid,db.nominal) - sb.diskonkhusus 
+						) biayaNett,(
+							SELECT 	(getBiayaAfterDiskonReg(sb.replid,db.nominal) - sb.diskonkhusus-(IFNULL(SUM(nominal),0))) 
+							FROM keu_pembayaran 
+							where  siswabiaya = sb.replid
+						) biayaKurang
+					FROM
+						psb_biaya b
+						JOIN psb_detailbiaya db on db.biaya = b.replid
+						join psb_siswabiaya sb on sb.detailbiaya = db.replid
+						JOIN psb_siswa s on s.replid = sb.siswa
+						JOIN psb_detailgelombang dg on dg.replid = db.detailgelombang
+					WHERE
+						s.replid = '.$_POST['replid'].' AND 
+						dg.tahunajaran ='.$_POST['tahunajaran'];
+				$e2        =mysql_query($s2);
+				$biayaArr =array();
+				while ($r2=mysql_fetch_assoc($e2)) $biayaArr[]=$r2;
+				$out = json_encode(array(
+						'status'        =>(!$e?'gagal':'sukses'),
+						'namasiswa'     => $r['namasiswa'],
+						'departemen'    => $r['departemen'],
+						'tahunajaran'   => $r['tahunajaran'],
+						'nis'           => $r['nis'],
+						'nopendaftaran' => $r['nopendaftaran'],
+						'kelas'         => $r['kelas'],
+						'biayaArr'      => $biayaArr
 				));
 			break;
+
 
 			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':

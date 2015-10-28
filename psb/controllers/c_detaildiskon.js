@@ -6,7 +6,7 @@ var mnu4 ='biaya';
 var dir  ='models/m_'+mnu+'.php';
 var dir2 ='../akademik/models/m_'+mnu2+'.php';
 var dir3 ='../akademik/models/m_'+mnu3+'.php';
-var dir4  ='models/m_'+mnu4+'.php';
+var dir4  ='../keuangan/models/m_'+mnu4+'.php';
 
 
 var contentFR ='';
