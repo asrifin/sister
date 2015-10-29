@@ -50,15 +50,15 @@
                 <th class="text-center"><input id="nisS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
                 <th class="text-center"></th>
                 <th class="text-center"></th>
-                <th class="text-center"></th>
                 <th class="text-center">
-<!--                     <select  data-transform="input-control" class="cari text-center" id="statusS" name="statusS" >
+                    <select  data-transform="input-control" class="penerimaansiswa_cari text-center" id="statusS" name="statusS" >
                         <option value="">-Semua-</option>
                         <option class="bg-green fg-white" value="lunas">Lunas</option>
                         <option class="bg-yellow fg-white" value="kurang">Kurang</option>
                         <option class="bg-red fg-white" value="belum">Belum</option>
                     </select>
- -->                </th>
+                </th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody id="penerimaansiswa_tbody"></tbody>

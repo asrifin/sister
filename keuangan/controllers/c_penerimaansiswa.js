@@ -268,7 +268,7 @@ var contentFR = contentFR2 ='';
             type:"post",
             data: aksi+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="9"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();
@@ -308,7 +308,7 @@ var contentFR = contentFR2 ='';
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="9"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();
@@ -360,20 +360,20 @@ var contentFR = contentFR2 ='';
                     $('#departemen2TD').html(': '+dt.departemen);
                     var button='';
                     $.each(dt.biayaArr, function (id,item) {
-                        krg  = parseInt(item.biayaKurang);
-                        nett = parseInt(item.biayaNett);
-                        if(krg==0){ //lunas 
+                        statusBayar  = item.statusBayar;
+                        biayaKurang = 'Rp. '+parseInt(item.biayaNett).setCurr();
+                        if(statusBayar=='lunas'){ //lunas 
                             info  = 'Lunas';
                             color ='green';
                             icon  ='checkmark';
                             func  ='';
-                        }else if(krg==nett){ //blum
+                        }else if(statusBayar=='belum'){ //blum
                             info  = 'Belum';
                             color ='red';
                             icon  ='cancel-2';
                             func  ='onclick="printPDF(\'invoicepenerimaansiswa\','+item.idsiswabiaya+');"';
                         }else{ // kurg
-                            info  = 'Rp. '+(parseInt(item.biayaKurang)).setCurr();
+                            info  = biayaKurang;
                             color ='yellow';
                             icon  ='minus-2';
                             func  ='onclick="printPDF(\'invoicePenerimaanSiswa\','+item.idsiswabiaya+');"';
@@ -385,10 +385,8 @@ var contentFR = contentFR2 ='';
                                     +item.biaya
                                     +'<small class="bg-'+color+' fg-white"><b>'+info+'</b></small>'
                                 +'</button>&nbsp;';
-                    });
-                    $('#buttonDV').html(button);
-                });
-                $.Dialog.title('Invoice'); 
+                    });$('#buttonDV').html(button);
+                });$.Dialog.title('Invoice'); 
                 $.Dialog.content(contentFR2);
             }
         });

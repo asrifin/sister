@@ -131,7 +131,6 @@
 						ORDER BY
 							st.replid';
 							// pr($sql);
-							// '.$status;
 				if(isset($_POST['starting'])){ 
 					$starting=$_POST['starting'];
 				}else{
@@ -170,7 +169,6 @@
 										</button>
 									</td>
 								</tr>';
-						// }
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -255,16 +253,16 @@
 						CONCAT(t.tingkat," - ",st.subtingkat,"",k.kelas)kelas
 					FROM
 						psb_siswa s
-						LEFT JOIN psb_siswabiaya sb ON sb.siswa = s.replid
-						LEFT JOIN psb_detailbiaya db ON db.replid = sb.detailbiaya
-						LEFT JOIN psb_detailgelombang dg ON dg.replid = db.detailgelombang
-						LEFT JOIN departemen d ON d.replid = dg.departemen
-						LEFT JOIN aka_tahunajaran ta  ON ta.replid = dg.tahunajaran
-						LEFT JOIN aka_siswakelas sk ON sk.siswa = s.replid 
-						LEFT JOIN aka_detailkelas dk ON dk.replid = sk.detailkelas 
-						LEFT JOIN aka_kelas k ON k.replid = dk.kelas
-						LEFT JOIN aka_subtingkat st ON st.replid = k.subtingkat
-						LEFT JOIN aka_tingkat t ON t.replid = st.tingkat
+						JOIN psb_siswabiaya sb ON sb.siswa = s.replid
+						JOIN psb_detailbiaya db ON db.replid = sb.detailbiaya
+						JOIN psb_detailgelombang dg ON dg.replid = db.detailgelombang
+						JOIN departemen d ON d.replid = dg.departemen
+						JOIN aka_tahunajaran ta  ON ta.replid = dg.tahunajaran
+						JOIN aka_siswakelas sk ON sk.siswa = s.replid 
+						JOIN aka_detailkelas dk ON dk.replid = sk.detailkelas 
+						JOIN aka_kelas k ON k.replid = dk.kelas
+						JOIN aka_subtingkat st ON st.replid = k.subtingkat
+						JOIN aka_tingkat t ON t.replid = st.tingkat
 					WHERE
 						dg.tahunajaran = '.$_POST['tahunajaran'].'
 						AND s.replid = '.$_POST['replid'].' 
@@ -275,28 +273,22 @@
 				$e =mysql_query($s);
 				$r =mysql_fetch_assoc($e);
 
-				$s2 ='SELECT
-						s.replid idsiswa,
-						b.biaya,
-						sb.replid idsiswabiaya,
-						b.replid idbiaya,
-						dg.tahunajaran,(
-							getBiayaAfterDiskonReg(sb.replid,db.nominal) - sb.diskonkhusus 
-						) biayaNett,(
-							SELECT 	(getBiayaAfterDiskonReg(sb.replid,db.nominal) - sb.diskonkhusus-(IFNULL(SUM(nominal),0))) 
-							FROM keu_pembayaran 
-							where  siswabiaya = sb.replid
-						) biayaKurang
-					FROM
-						psb_biaya b
-						JOIN psb_detailbiaya db on db.biaya = b.replid
-						join psb_siswabiaya sb on sb.detailbiaya = db.replid
-						JOIN psb_siswa s on s.replid = sb.siswa
-						JOIN psb_detailgelombang dg on dg.replid = db.detailgelombang
-					WHERE
-						s.replid = '.$_POST['replid'].' AND 
-						dg.tahunajaran ='.$_POST['tahunajaran'];
-				$e2        =mysql_query($s2);
+				$s2 ='	SELECT
+							b.biaya,
+							sb.replid idsiswabiaya,
+							(getBiayaNett(sb.replid)-getBiayaTerbayar(sb.replid))biayaKurang,
+							getStatusBayar(sb.replid)statusBayar
+						FROM
+							psb_biaya b
+							JOIN psb_detailbiaya db on db.biaya = b.replid
+							join psb_siswabiaya sb on sb.detailbiaya = db.replid
+							JOIN psb_siswa s on s.replid = sb.siswa
+							JOIN psb_detailgelombang dg on dg.replid = db.detailgelombang
+						WHERE
+							s.replid = '.$_POST['replid'].' AND 
+							dg.tahunajaran ='.$_POST['tahunajaran'];
+				// pr($s2);
+				$e2       =mysql_query($s2);
 				$biayaArr =array();
 				while ($r2=mysql_fetch_assoc($e2)) $biayaArr[]=$r2;
 				$out = json_encode(array(

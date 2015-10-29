@@ -36,11 +36,11 @@
                 d.nama departemen,
                 s.nopendaftaran,
                 CONCAT(t.tingkat," - ",st.subtingkat,"",k.kelas)kelas,
-                db.nominal biayaAwal,
                 concat(ta.tahunajaran," - ",ta.tahunajaran+1) tahunajaran,
-                (getBiayaAfterDiskonReg('.$idsiswabiaya.',db.nominal)-sb.diskonkhusus) biayaNett,
-                round((getBiayaAfterDiskonReg('.$idsiswabiaya.',db.nominal)-sb.diskonkhusus)/a.angsuran,0) angsurNom,
-                (db.nominal - getBiayaAfterDiskonReg('.$idsiswabiaya.',db.nominal)+sb.diskonkhusus) diskon
+                db.nominal biayaAwal,
+                (db.nominal-getBiayaNett(sb.replid))diskonTotal,
+                getBiayaNett(sb.replid)biayaNett,
+                round(getBiayaNett(sb.replid)/a.angsuran,0) angsurNom
               FROM
                 psb_siswa s
                 LEFT JOIN psb_siswabiaya sb ON sb.siswa = s.replid
@@ -59,11 +59,9 @@
                 sb.replid ='.$idsiswabiaya.'  
               GROUP BY
                 s.replid';
-                // pr($s);
+           // pr($s);
         $e = mysql_query($s);
         $r = mysql_fetch_assoc($e);
-        // $terbayarAngsurankeReal = getTerbayarAngsuranke($_POST['replid'],$_POST['biaya']);
-        // pr($r);
         // Title content
         $out.='<body>
                   <table  width="100%">
@@ -138,7 +136,7 @@
                     </tr>
                     <tr>
                       <td>* Diskon </td>
-                      <td>: '.setuang($r['diskon']).' </td>
+                      <td>: '.setuang($r['diskonTotal']).' </td>
                       <td></td>
                     </tr>
                     <tr>
