@@ -36,7 +36,7 @@ $tempat     = isset($_GET['detail_tempatH'])?$_GET['detail_tempatH']:'';
       <html xmlns="http://www.w3.org/1999/xhtml">
         <head>
           <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-          <title>SISTER::'.$mod.' - '.$mnu.'</title>
+          <title>SISTER::'.$mod.' '.$mnu.'</title>
         </head>';
         $replid = (isset($_GET['replid']) AND $_GET['replid']!='')?filter($_GET['replid']):'';
     
