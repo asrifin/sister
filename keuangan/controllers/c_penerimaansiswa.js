@@ -361,7 +361,7 @@ var contentFR = contentFR2 ='';
                     var button='';
                     $.each(dt.biayaArr, function (id,item) {
                         statusBayar  = item.statusBayar;
-                        biayaKurang = 'Rp. '+parseInt(item.biayaNett).setCurr();
+                        biayaKurang = 'Rp. '+(parseInt(item.biayaKurang).setCurr());
                         if(statusBayar=='lunas'){ //lunas 
                             info  = 'Lunas';
                             color ='green';

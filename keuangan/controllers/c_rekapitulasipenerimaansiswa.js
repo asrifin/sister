@@ -5,7 +5,6 @@ var mnu6 ='tahunajaran';
 var mnu7 ='tingkat'; 
 var mnu8 ='subtingkat'; 
 var mnu9 ='kelas'; 
-var mnu10 ='viabayar'; 
 
 var dir  ='models/m_'+mnu+'.php';
 var dir2 ='../akademik/models/m_'+mnu2+'.php';
@@ -14,7 +13,6 @@ var dir6 ='../akademik/models/m_'+mnu6+'.php';
 var dir7 ='../akademik/models/m_'+mnu7+'.php';
 var dir8 ='../akademik/models/m_'+mnu8+'.php';
 var dir9 ='../akademik/models/m_'+mnu9+'.php';
-var dir10 ='../keuangan/models/m_'+mnu10+'.php';
 
 var contentFR = contentFR2 ='';
 // main function load first 
@@ -208,9 +206,6 @@ var contentFR = contentFR2 ='';
 
                     +'</form>';
 
-        // $('#nisS,#namasiswaS,#nisnS,#nopendaftaranS').on('keydown',function (e){ // kode grup
-        //     if(e.keyCode == 13) viewTB('penerimaansiswa');
-        // });
         $('#departemenS').change(function (){
             cmbtahunajaran();
         });$('#tahunajaranS').change(function (){
@@ -300,134 +295,6 @@ var contentFR = contentFR2 ='';
             data:d
         });
     }
-
-/*save (insert & update)*/
-    function simpanSV(e){
-        if(confirm('Anda yakin membayar ?')){
-            var url  = dir;
-            var data = $(e).serialize()+'&aksi=simpan';
-            ajax(url,data).done(function (dt) {
-                notif(dt.status,(dt.status=='sukses'?'green':'red'));
-                if (dt.status=='sukses') {
-                    printPDF('kwitansipenerimaansiswa',dt.idpembayaran);
-                    $.Dialog.close();
-                    viewTB();
-                }
-            });
-        }
-    }
-
-// form pop up
-    function viewFR(idsiswa){
-        $.Dialog({
-            shadow: true,
-            overlay: true,
-            draggable: true,
-            width: '40%',
-            padding: 10,
-            onShow: function(){
-                var u = dir ;
-                var d = 'aksi=ambiledit&replid='+idsiswa+'&biaya='+$('#biayaS').val()+'&subtingkat='+$('#subtingkatS').val();
-                ajax(u,d).done(function (dt){
-                    if(dt.status!='sukses') notif(dt.status,'red'); 
-                    else {
-                    // save action (button)
-                        if(dt.datax.lunasTotalAngsuran){
-                            $('#simpanBC').attr('style','display:none;'); 
-                            $('#terbayarTotalTD').removeClass('bg-yellow').addClass('bg-green'); 
-                            $('#tanggalTR').attr('style','display:none;');
-                        } 
-                    // info header 
-                        $('#tanggalTB').val(getToday());
-                        $('#idsiswabiayaTB').val(dt.datax.idsiswabiaya);
-                        $('#namasiswaTD').html(': '+dt.datax.namasiswa);
-                        $('#kelasTD').html(': '+dt.datax.kelas);
-                        $('#nisTD').html(': '+dt.datax.nis);
-                        $('#biayaTD').html(': '+dt.datax.biaya);
-                    // harus bayar 
-                        var biayaNett = parseInt(getUang(dt.datax.biayaNett));
-                        $('#biayaAwalTD').html(dt.datax.biayaAwal);
-                        $('#totalDiskonTD').html(dt.datax.totalDiskon);
-                        $('#biayaNettTD').html(dt.datax.biayaNett);
-                        $('#caraBayarTD').html(dt.datax.isAngsur2=='1'?'Angsur':'Kontan');
-                        cmbviabayar('rule',dt.datax.viabayar);
-                        cmbviabayar('facto',dt.datax.viabayar);
-                    // angsuran 
-                        if(dt.datax.isAngsur2=='0') {
-                            $('.angsuranTR').attr('style','display:none;');
-                            $('#terbayarAngsuranKeTR').attr('style','display:none;');
-                        }else $('.angsuranTR').removeAttr('style');
-
-                        $('#angsuranTD').html(dt.datax.angsuran+' x');
-                        $('#angsuranNominalTD').html('@ '+dt.datax.angsuranNominal);
-                    // sudah terbayar 
-                        var isAngsur2     = dt.datax.isAngsur2;
-                        var terbayarTotal = parseInt(getUang(dt.datax.terbayarTotal));
-                        var tbyrke        = dt.datax.terbayarAngsurankeRule;
-                        var aknbyrke      = dt.datax.akanBayarke;
-                            var angsurNom    = parseInt(getUang(dt.datax.angsuranNominal));
-                            var kuranganAngs = parseInt(dt.datax.kuranganAngsuran);
-                        var krgNomInfo=krgKeInfo='';
-                        var akanBayarTot=0;
-
-                        if(dt.datax.lunasTotalAngsuran){ // lunas TOTAL
-                            console.log('masuk lunas totoal angsuran');
-                            $('.akanBayarTR').attr('style','display:none;');
-                            $('.belumBayarTR').attr('style','display:none;');
-                        }else{ // belum lunas TOTAL
-                            if(!dt.datax.lunasPerAngsuran){ // kurang per @ANGSURAN
-                                console.log('..... angsuran kurang');
-                                krgNomInfo = '</br><span class="fg-red">( - Rp. '+(dt.datax.kuranganAngsuran.setCurr())+' )';
-                                krgKeInfo  = '</br><span class="fg-red">( kurangan ) </span>';
-                                akanBayarTot+=kuranganAngs;
-                                $('#akanBayarNominalTB2').val('Rp. '+dt.datax.kuranganAngsuran.setCurr());
-                                $('#akanBayarJenisTB1').attr('disabled',true);
-                                $('#akanBayarJenisTB2').attr('checked',true);
-                                $('#akanBayarNominalTB2').removeAttr('disabled');
-                                $('#pasTR').attr('style','display:none');
-                                // var terbayarTotal = parseInt(dt.datax.terbayarTotal);
-                                var akanBayar     = kuranganAngs;
-                                var belumBayarNominalTot = biayaNett - (terbayarTotal+akanBayar);
-                                $('#belumBayarNominalTotTD').html('Rp. '+(belumBayarNominalTot).setCurr());
-                            }else{ // LUNAS per @angsuran
-                                console.log('..... @angsuran lunas');
-                                akanBayarTot+=angsurNom;
-                            }
-                        }
-                        $('#kuranganAngsuranTB').val(akanBayarTot); // max nominal untuk membayar
-                        $('#terbayarAngsurankeRuleTD').html(tbyrke);
-                        $('#terbayarBaruTD').html(dt.datax.terbayarBaru+krgNomInfo);
-                        $('#terbayarTotalTD').html(dt.datax.terbayarTotal);
-                   // akan bayar
-                        $('#akanBayarNominalTB1').val('Rp. '+(angsurNom).setCurr());
-                        $('#akanBayarkeTD').html(dt.datax.akanBayarke+krgKeInfo);
-                        $('#akanBayarNominalTD').html(dt.datax.angsuranNominal);
-                        $('#akanBayarNominalTotTD').html('Rp. '+(akanBayarTot.setCurr()));
-                    // belum bayar
-                        var belumBayarNominalTot = biayaNett-(terbayarTotal+akanBayarTot);
-                        $('#belumBayarNominalTotTD').html('Rp. '+(belumBayarNominalTot.setCurr()));
-                        $('#belumBayarAngsurankeTD').html(dt.datax.belumBayarAngsuranke+' x');
-                    }
-                });
-                $.Dialog.title('Pembayaran Siswa'); 
-                $.Dialog.content(contentFR);
-            }
-        });
-    }
-
-// input uang --------------------------
-    function inputuang(e) {
-        $(e).maskMoney({
-            precision:0,
-            prefix:'Rp. ', 
-            // allowNegative: true, 
-            thousands:'.', 
-            // decimal:',', 
-            affixesStay: true
-        });
-    }
-// end of input uang --------------------------
-
 // notifikasi
     function notif(cont,clr) {
         var not = $.Notify({
@@ -568,135 +435,12 @@ var contentFR = contentFR2 ='';
         return xx;
     }
 
-    function numbValid(e){
-        if($(e).val()!=$(e).val().replace(/[^0-9]/g,'')){
-            $(e).val($(e).val().replace(/[^0-9]/g,''));
-        }
-    }
 
-    function validBayar(e1,e2,nom,nom2){
-        if(getUang($(e1).val())>nom) $(e2).html('maximal '+nom2);
-        else $(e2).html('');
-    }
-
-    function histBayarFC(){
-        if($('#histBayarTD').html()!='') $('#histBayarTD').html('');
-        else{
-            var url  = dir;
-            var data = '&aksi=histBayar&siswabiaya='+$('#idsiswabiayaTB').val();
-            $('#histBayarTD').html('<tr><td colspan="2" align="center"><img src="img/w8loader.gif"></td></tr>');
-            ajax(url,data).done(function (dt) {
-                if (dt.status!='sukses') notif(dt.status,'red'); //gagal
-                else{ // sukses
-                    var out='<table class="table bordered striped bg-green fg-white ">'
-                            +'<thead>'
-                                +'<tr>'
-                                    +'<th>no.</th>'
-                                    +'<th>Tanggal</th>'
-                                    +'<th>Nominal</th>'
-                                    +'<th>Aksi</th>'
-                                +'</tr>'
-                            +'</thead>'
-                            +'<tbody class="text-center">';
-                    if(dt.datax.length==0) out+='<tr><td colspan="4" class="text-center fg-white bg-orange">belum pernah membayar</td></tr>'
-                    else{
-                        $.each(dt.datax,function (id,item){
-                            out+='<tr class="bg-lime">'
-                                    +'<td>'+item.angsuranKe+'</td>'
-                                    +'<td>'+item.tanggal+'</td>'
-                                    +'<td>'+item.nominal+'</td>'
-                                    +'<td>'
-                                        +'<a data-hint="batalkan" onclick="del('+item.replid+');" class="button bg-white fg-green"><i class="icon-cancel-2"></i></a>&nbsp;'
-                                        +'<a data-hint="kwitansi" onclick="printPDF(\'kwitansipenerimaansiswa\','+item.replid+');" class="button bg-white fg-green"><i class="icon-libreoffice"></i></a>'
-                                    +'</td>'
-                                +'</tr>';
-                        });
-                            out+='</tbody>'
-                            +'<tfoot>'
-                                +'<tr>'
-                                    +'<th colspan="2" align="right">Total Terbayar </th>'
-                                    +'<th id="histBayarTotTD">'+dt.totNominal+'</th>'
-                                +'</tr>'
-                            +'</tfoot>'
-                        +'</table>';
-                    }$('#histBayarTD').html(out);
-                }
-            });
-        }
-    }
-    
-    function pilihAkanBayarJenis () {
-        $('#akanBayarNominalTB2').val('');
-        $('#akanBayarKuranganTD').html('');
-        $('#akanBayarNotif').html('');
-        if($('#akanBayarJenisTB1').is(':checked')){
-            $('#akanBayarNominalTB2').attr('disabled',true).removeAttr('required');
-            $('#akanBayarNominalTotTD').html($('#akanBayarNominalTB1').val());
-        }else{
-            $('#akanBayarNominalTB2').attr('required',true).removeAttr('disabled');
-            $('#akanBayarNominalTotTD').html($('#akanBayarNominalTB1').val());
-        }belumBayarFC();
-    }
-
-    function akanBayarSisaFC() {
-        var bayarNominal =getUang($('#akanBayarNominalTB2').val());
-        var angsuranNominal = parseInt(getUang($('#angsuranNominalTD').html()));
-        if($('#kuranganAngsuranTB').val()<angsuranNominal){ // ada tunggakan angsuran yang kurang
-            maxbyr  = parseInt($('#kuranganAngsuranTB').val()); // 9.212.500
-            kuranganNominal = maxbyr - bayarNominal;
-            if(kuranganNominal<0) $('#akanBayarNotif').html('<span align="justify" class="fg-white bg-red ">Max Rp. '+(parseInt(maxbyr).setCurr())+'</span>');
-            else $('#akanBayarNotif').html('');
-        }else{ // tifak ada tunggakan angsuran yg kurang 
-            maxbyr = angsuranNominal;
-            kuranganNominal = maxbyr - bayarNominal; 
-            if(kuranganNominal<=0) $('#akanBayarNotif').html('<span align="justify" class="fg-white bg-red ">Max Rp. '+(parseInt(maxbyr).setCurr())+'</span>');
-            else $('#akanBayarNotif').html('');
-        }$('#akanBayarKuranganTD').html(parseInt(kuranganNominal).setCurr());
-        $('#akanBayarNominalTotTD').html('Rp. '+parseInt(bayarNominal).setCurr());
-        belumBayarFC();
-    }
-
-    function belumBayarFC () {
-        var biayaNett=parseInt(getUang($('#biayaNettTD').html()));
-        var terbayarTotal=parseInt(getUang($('#terbayarTotalTD').html()));
-        var akanBayarNominalTot=parseInt(getUang($('#akanBayarNominalTotTD').html()));
-        var belumBayarNominalTot=biayaNett - (terbayarTotal+akanBayarNominalTot); 
-        console.log('nett='+biayaNett);
-        console.log('telah terbayar='+terbayarTotal);
-        console.log('akan terbayar='+akanBayarNominalTot);
-        console.log('belum bayar='+belumBayarNominalTot);
-        $('#belumBayarNominalTotTD').html('Rp. '+(belumBayarNominalTot.setCurr()));
-    }
     // number to currency (ex : 500000 -> 500.000)  
     Number.prototype.setCurr=function(){
         return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
     }
 
-
-// cmbo viabayar 
-    function cmbviabayar(typ,via) {
-        var d = 'aksi=cmb'+mnu10+(typ=='rule'?'&replid='+via:'');
-        ajax(dir10,d).done(function (dt){
-            var out='';
-            if (dt.status!='sukses') {
-                notif(dt.status,'red');
-                out+='<option value="">'+dt.status+'</option>'
-            }else{
-                $.each(dt.viabayar,function (id,item){
-                    out+='<option '+(via==item.replid?'selected':'')+' value="'+item.replid+'">'+item.viabayar+'</option>'
-                });
-                if(typ=='rule') {
-                    $('#viaBayarTD').html(dt.viabayar[0].viabayar);
-                }else {
-                    $('#viaBayarTB').html(out);
-                }
-            }
-        });
-    }   
-
-//    4.882.000
-//      600.000
-//    5.482.000
 
 // left pad (replace with 0)
     function lpadZero (n, length){
@@ -771,15 +515,4 @@ var contentFR = contentFR2 ='';
     function getLastDate() {
         var dd = lastDate(mm,yyyy);
         return dateFormatx('id',dd,monthFormat(mm),yyyy);
-    }
-
-    function del(idx){
-        if(confirm('hapus data ?'))
-        ajax(dir,'aksi=hapus&replid='+idx).done(function (dt){
-            if(dt.status!='sukses') notif(dt.status,'red');
-            else{
-                notif(dt.status,'green');
-                $('#histBayarTD').html('');histBayarFC();
-            }
-        });
     }

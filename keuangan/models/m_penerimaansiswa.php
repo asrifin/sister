@@ -121,10 +121,14 @@
 							JOIN psb_detailgelombang dg ON dg.replid = db.detailgelombang
 						WHERE
 							s. STATUS != "2"
+							AND s.nopendaftaran LIKE "%'.$nopendaftaran.'%"
 							AND dg.tahunajaran = '.$tahunajaran.'
 							AND dg.departemen= '.$departemen.'
 							AND st.replid = '.$subtingkat.'
 							AND b.replid = '.$biaya.'
+							AND s.namasiswa LIKE "%'.$namasiswa.'%" 
+							AND s.nis LIKE "%'.$nis.'%" 
+							AND s.nisn LIKE "%'.$nisn.'%" 
 							'.$statusbayar.'
 						GROUP BY
 							s.replid
