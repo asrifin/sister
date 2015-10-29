@@ -102,8 +102,9 @@ updatehargabeli($kode,$harga);
 }
 if($hasil){
 $admin .= '<div class="sukses"><b>Berhasil Menambah PO.</b></div>';
+pocetak($nopo);
 porefresh();
-//$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po&mod=yes" />';
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po&mod=yes" />';
 }else{
 $admin .= '<div class="error"><b>Gagal Menambah PO.</b></div>';
 		}		
@@ -131,9 +132,9 @@ $style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po
 
 if(isset($_POST['simpandetail'])){
 foreach ($_SESSION['product_id'] as $k=>$v){
-$_SESSION['product_id'][$k]['subdiscount']=$_POST['subdiscount'][$k];
-$_SESSION['product_id'][$k]['jumlah']=$_POST['jumlahpo'][$k];
-$_SESSION['product_id'][$k]['harga']=$_POST['harga'][$k];
+$_SESSION['product_id'][$k]['subdiscount']=int_filter($_POST['subdiscount'][$k]);
+$_SESSION['product_id'][$k]['jumlah']=int_filter($_POST['jumlahpo'][$k]);
+$_SESSION['product_id'][$k]['harga']=int_filter($_POST['harga'][$k]);
 $nilaidiscount=cekdiscount($_SESSION['product_id'][$k]['subdiscount'],$_SESSION['product_id'][$k]['harga']);
 $_SESSION['product_id'][$k]['subtotal'] =$_SESSION['product_id'][$k]['jumlah']*($_SESSION['product_id'][$k]['harga']-$nilaidiscount);
 }

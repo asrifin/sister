@@ -312,7 +312,7 @@ $pilihan = ($data['kode']==$kodecustomer)?"selected":'';
 			<option value="'.$data['kode'].'"'.$pilihan.'>'.$data['nama'].'</option>';
 }
 	$admin .= '</select>
-		<td>Cara Pembayaran</td>
+		<td>Status</td>
 		<td>:</td>
 		<td>'.$sel2.'</td>
 		</tr>';
@@ -497,7 +497,7 @@ $admin .= '
 	</tr>';	
 $admin .= '
 	<tr>
-		<td>Cara Pembayaran</td>
+		<td>Status</td>
 		<td>:</td>
 		<td>'.$carabayar.'</td>
 			<td></td>

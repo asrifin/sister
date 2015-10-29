@@ -29,7 +29,7 @@ $tglmulai 		= !isset($tglmulai) ? $tglnow : $tglmulai;
 $tglakhir 		= !isset($tglakhir) ? $tglnow : $tglakhir;
 $sel = '<select name="carabayar" class="form-control">';
 $arr2 = array ('Semua','Tunai','Transfer','Hutang');
-foreach ($arr5 as $k=>$v){
+foreach ($arr2 as $k=>$v){
 	$sel .= '<option value="'.$v.'">'.$v.'</option>';	
 	
 }
