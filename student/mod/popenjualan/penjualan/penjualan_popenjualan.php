@@ -192,7 +192,9 @@ $harga=$hargabeli;
 //End HPP memakai data beli terbaru
 $jenjang=$data['jenjang'];
 $jenis=$data['jenis'];
+$namabarang=getnamabarang($kode);
 $error 	= '';
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT id FROM pos_alur_stok WHERE kodebarang='$kode'")) == 0) $error .= "Error: lakukan Stok Awal terlebih dahulu terhadap '$namabarang'<br />";
 if (!$kode)  	$error .= "Error:  Kode Barang Tidak di Temukan<br />";
 if ($error){
 $admin .= '<div class="error">'.$error.'</div>';
