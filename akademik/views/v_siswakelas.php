@@ -50,9 +50,9 @@
                   </label>
                 </div>
               </th>
+              <th class="text-center">Nama </th>
               <th class="text-center">NIS</th>
               <th class="text-center">NISN</th>
-              <th class="text-center">Nama </th>
               <th class="text-center">Tempat, Tanggal Lahir</th>
               <th class="text-center">Aksi</th>
           </tr>
@@ -60,9 +60,9 @@
               <th class="text-center">
                   <button onclick="delSomeTR(); return false;" id="hapussemuaBC" style="display:none;" data-hint="hapus terpilih" class="bg-red fg-white"><i class="icon-cancel-2 "></i></button>
               </th>
+              <th class="text-center"><input type="text" data-transform="input-control" class="aktif_cari" placeholder="Nama" id="aktif_namasiswaS"></th>
               <th class="text-center"><input type="text" data-transform="input-control" class="aktif_cari" placeholder="NIS" id="aktif_nisS"></th>
               <th class="text-center"><input type="text" data-transform="input-control" class="aktif_cari" placeholder="NISN" id="aktif_nisnS"></th>
-              <th class="text-center"><input type="text" data-transform="input-control" class="aktif_cari" placeholder="Nama" id="aktif_namasiswaS"></th>
               <th class="text-center"></th>
               <th class="text-center"></th>
           </tr>

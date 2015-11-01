@@ -100,8 +100,8 @@ if(isset($_POST['deletecustomer'])){
 penjualanjasarefresh();
 }
 
-if(isset($_POST['hapusjasa'])){
-$kode 		= $_POST['kode'];
+if(isset($_GET['hapusjasa'])){
+$kode 		= $_GET['kode'];
 foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
 	{
@@ -306,7 +306,7 @@ $admin .= '
 		<td>'.$subtotal.'</td>
 		<td>'.$subtotal.'</td>
 		<td>
-		<a href="./admin.php?pilih=penjualanjasa&mod=yes&hapusbarang=ok&kode='.$kode.'" class="btn btn-danger">HAPUS</a></td>
+		<a href="./admin.php?pilih=penjualanjasa&mod=yes&hapusjasa=ok&kode='.$kode.'" class="btn btn-danger">HAPUS</a></td>
 	</tr>';
 	$total +=$subtotal;
 	$no++;

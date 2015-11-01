@@ -1,9 +1,10 @@
 var mnu  = 'diskon';
 var mnu2 = 'departemen';
 var mnu3 = 'biaya';
+
 var dir  = 'models/m_'+mnu+'.php';
 var dir2 = '../akademik/models/m_'+mnu2+'.php';
-var dir3 = 'models/m_'+mnu3+'.php';
+var dir3 = '../keuangan/models/m_'+mnu3+'.php';
 
 var contentFR = '';
 

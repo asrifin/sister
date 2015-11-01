@@ -37,18 +37,12 @@
             <th class="text-center">Kategori Anggaran </th>
             <th class="text-center">Rekening</th>
             <th class="text-center">Tujuan</th>
-            <th class="text-center">Jumlah</th>
-            <th class="text-center">Kuota Anggaran</th>
-            <th class="text-center">Sisa Anggaran</th>
             <th class="text-center">Aksi</th>
         </tr>
         <tr id="a_cariTR" class="info">
             <th class="text-center"><input data-transform="input-control" placeholder="cari ..." id="kategorianggaranS" class="cari" class="span1"></th>
             <th class="text-center"><input data-transform="input-control" placeholder="cari ..." id="detilrekeningS" class="cari"></th>
             <th class="text-center"><input data-transform="input-control" placeholder="cari ..." id="keteranganS" class="cari"></th>
-            <th class="text-center"></th>
-            <th class="text-center"></th>
-            <th class="text-center"></th>
             <th class="text-center"></th>
         </tr>
     </thead>

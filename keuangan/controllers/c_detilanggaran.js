@@ -13,7 +13,6 @@ var contentFR ='';
     
 // main function ---
     $(document).ready(function(){
-        // anggaran
         contentFR += '<form style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpanSV();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         +'<input name="kategorianggaranH" id="kategorianggaranH" type="hidden">' 
@@ -64,8 +63,11 @@ var contentFR ='';
         $('#kategorianggaranS').on('change',function (){ // kode grup
             viewTB();
         });
-        $('#departemenS,#tingkatS').on('change',function (){ // kode grup
-             cmbkategorianggaran('filter','');
+        $('#departemenS').on('change',function (){ // kode grup
+            cmbtingkat('filter',$(this).val(),'');
+        });
+        $('#tingkatS').on('change',function (){ // kode grup
+            cmbkategorianggaran('filter',$(this).val(),'');
         });
     }); 
     
@@ -240,16 +242,20 @@ var contentFR ='';
             
                 if(id==''){ //tambah
                     cmbdepartemen('form','');
+                    cmbtingkat('form',$('#departemenS').val(),$('#tingkatS').val());
+                    cmbkategorianggaran('form',$('#tingkatS').val(),'');
                     $('#kategorianggaranH').val($('#kategorianggaranS').val());
                 }else{ // edit
                     var u = dir;
                     var d = 'aksi=ambiledit&replid='+id;
                     ajax(u,d).done(function (dt) {
                         $('#idformH').val(id);
+                        cmbdepartemen('form',dt.iddepartemen);
+                        cmbtingkat('form',dt.iddepartemen,dt.idtingkat);
+                        cmbkategorianggaran('form',dt.idtingkat,dt.idkategorianggaran);
                         $('#kategorianggaranH').val(dt.idkategorianggaran);
                         $('#detilanggaranTB').val(dt.detilanggaran);
                         $('#keteranganTB').val(dt.keterangan);
-                        console.log(dt.keterangan);
                     });
                 }
             }
@@ -267,33 +273,10 @@ var contentFR ='';
         });
     }
 
-// departemen ---
-    function cmbdepartemen(typ,dep){
-        var u = dir3;
-        var d = 'aksi=cmb'+mnu3+(dep!=''?'&eplid='+dep:'');
-        ajax(u,d).done(function(dt){
-            var out='';
-            if(dt.status!='sukses'){
-                out+='<option value="">'+dt.status+'</option>';
-            }else{
-                $.each(dt.departemen, function(id,item){
-                	out+='<option '+((dep!='' && dep==item.replid)?'selected':'')+' value="'+item.replid+'">'+item.nama+'</option>';
-                });
-            }
-            if(typ=='form'){ //form 
-                $('#departemenTD').html(': '+dt.departemen[0].nama);
-                cmbtingkat('form','');
-            }else{ // filter
-                $('#departemenS').html(out);
-                cmbtingkat('filter','');
-            }
-        });
-    }
-
 // combo kategorianggaran ---
-    function cmbkategorianggaran(typ,ting){
+    function cmbkategorianggaran(typ,ting,kat){
         u =dir2;
-        d ='aksi=cmb'+mnu2+'&departemen='+$('#departemenS').val()+'&tingkat='+$('#tingkatS').val();
+        d ='aksi=cmb'+mnu2+'&departemen='+$('#departemenS').val()+'&tingkat='+$('#tingkatS').val()+(kat!=''?'&replid='+kat:'');
         ajax(u,d).done(function (dt){
             var out='';
             if(dt.status!='sukses'){
@@ -302,8 +285,8 @@ var contentFR ='';
                 if(dt.kategorianggaran.length==0){
                     out+='<option value="">kosong</option>';
                 }else{
-                    $.each(dt.kategorianggaran, function(id,item){
-                        out+='<option '+((ting!='' && ting==item.replid)?'selected':'')+' value="'+item.replid+'">'+item.kategorianggaran+' </option>';
+                    $.each(dt.kategorianggaran, function (id,item){
+                        out+='<option value="'+item.replid+'">'+item.kategorianggaran+' </option>';
                     });
                 }
             }
@@ -312,32 +295,6 @@ var contentFR ='';
                 viewTB();
             }else{ // form 
                 $('#kategorianggaranTD').html(': '+dt.kategorianggaran[0].kategorianggaran);
-            }
-        });
-    }
-// combo tingkat ---
-    function cmbtingkat(typ,ting){
-        u =dir5;
-        d ='aksi=cmb'+mnu5+'&departemen='+$('#departemenS').val();
-        ajax(u,d).done(function (dt){
-            var out='';
-            if(dt.status!='sukses'){
-                out+='<option value="">'+dt.status+'</option>';
-            }else{
-                if(dt.tingkat.length==0){
-                    out+='<option value="">kosong</option>';
-                }else{
-                    $.each(dt.tingkat, function(id,item){
-                        out+='<option '+((ting!='' && ting==item.replid)?'selected':'')+' value="'+item.replid+'">'+item.tingkat+' </option>';
-                    });
-                }
-            }
-            if(typ=='filter'){ // filter
-                $('#tingkatS').html(out);
-                cmbkategorianggaran('filter','');
-            }else{ // form 
-                $('#tingkatTD').html(': '+dt.tingkat[0].tingkat);
-                cmbkategorianggaran('form','');
             }
         });
     }
@@ -369,4 +326,52 @@ var contentFR ='';
         console.log('tok = '+x+tok);
         console.log('token = '+token);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
+    }
+
+// departemen ---
+    function cmbdepartemen(typ,dep){
+        var u = dir3;
+        var d = 'aksi=cmb'+mnu3;
+        ajax(u,d).done(function(dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.departemen, function(id,item){
+                    out+='<option '+((dep!='' && dep==item.replid)?'selected':'')+' value="'+item.replid+'">'+item.nama+'</option>';
+                });
+            }
+            if(typ=='form'){ //form 
+                $('#departemenTD').html(': '+dt.departemen[0].nama);
+            }else{ // filter
+                $('#departemenS').html(out);
+                cmbtingkat('filter',dt.departemen[0].replid,'');
+            }
+        });
+    }
+
+// combo tingkat ---
+    function cmbtingkat(typ,dep,ting){
+        u =dir5;
+        d ='aksi=cmb'+mnu5+'&departemen='+dep+(ting!=''?'&replid='+ting:'');
+        ajax(u,d).done(function (dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                if(dt.tingkat.length==0){
+                    out+='<option value="">kosong</option>';
+                }else{
+                    $.each(dt.tingkat, function(id,item){
+                        out+='<option '+(ting!='' && ting==item.replid?'selected':'')+' value="'+item.replid+'">'+item.tingkat+' </option>';
+                    });
+                }
+            }
+            if(typ=='filter'){ // filter
+                $('#tingkatS').html(out);
+                cmbkategorianggaran('filter',dt.tingkat[0].replid,'');
+            }else{ // form 
+                $('#tingkatTD').html(': '+dt.tingkat[0].tingkat);
+            }
+        });
     }

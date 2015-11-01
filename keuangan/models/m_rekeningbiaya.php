@@ -20,16 +20,22 @@
 				$sidx =1;
 			// if(isset($_GET['subaksi']) && $_GET['subaksi']=='wali'){
 				$ss='SELECT
-						replid,
-						nama,
-						kode
+						dr.replid,
+						dr.kode,
+						dr.nama detilRekening,
+						kr.nama kategoriRekening,
+						sr.nominal2 saldoRekening
 					FROM
-						keu_detilrekening 
+						keu_detilrekening dr 
+						JOIN keu_kategorirekening kr on kr.replid = dr.kategorirekening 
+						JOIN keu_saldorekening sr on sr.detilrekening=dr.replid 
 					WHERE
-						nama LIKE "%'.$searchTerm.'%" OR 
-						kode LIKE "%'.$searchTerm.'%" 
-						';
-			// }
+						sr.tahunajaran = '.$_GET['tahunajaran'].' and (
+							dr.nama LIKE "%'.$searchTerm.'%" OR 
+							dr.kode LIKE "%'.$searchTerm.'%" OR 
+							kr.nama LIKE "%'.$searchTerm.'%" 
+						)		
+					';
 			// pr($ss);
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
@@ -42,19 +48,22 @@
 			}
 			if ($page > $total_pages) $page=$total_pages;
 			$start 	= $limit*$page - $limit; // do not put $limit*($page - 1)
+			$ss.=' GROUP BY dr.replid';
 			if($total_pages!=0) {
-				$ss.='ORDER BY '.$sidx.' '.$sord.' LIMIT '.$start.','.$limit;
+				$ss.=' ORDER BY '.$sidx.' '.$sord.' LIMIT '.$start.','.$limit;
 			}else {
-				$ss.='ORDER BY '.$sidx.' '.$sord;
+				$ss.=' ORDER BY '.$sidx.' '.$sord;
 			}
 			// print_r($ss);exit();
 			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
 			$rows 	= array();
 			while($row = mysql_fetch_assoc($result)) {
 				$rows[]= array(
-					'replid' =>$row['replid'],
-					'kode'   =>$row['kode'],
-					'nama'   =>$row['nama']
+					'replid'           =>$row['replid'],
+					'kode'             =>$row['kode'],
+					'detilRekening'    =>$row['detilRekening'],
+					'kategoriRekening' =>$row['kategoriRekening'],
+					'saldoRekening'    =>setuang($row['saldoRekening'])
 				);
 			}$response=array(
 				'page'    =>$page,
@@ -76,21 +85,17 @@
 
 				$sql = 'SELECT 
 							rb.replid,
-							b.biaya,	
-							concat(dr.kode," - ",dr.nama)detilrekening
+							b.replid idbiaya,
+							b.biaya
 						FROM
 							'.$tb.' rb 
-							JOIN psb_biaya b ON b.replid = rb.biaya
-							left join keu_detilrekening dr on dr.replid = rb.detilrekening
+							JOIN psb_biaya b on b.replid = rb.biaya
 						WHERE
 							rb.departemen ='.$departemen.' AND
 							rb.tahunajaran ='.$tahunajaran.' AND
-							b.biaya LIKE "%'.$biaya.'%" and (
-								dr.nama LIKE "%'.$detilrekening.'%" OR
-								dr.kode LIKE "%'.$detilrekening.'%"
-							)
+							b.biaya LIKE "%'.$biaya.'%" 
 						ORDER BY 
-							b.biaya asc	';
+							b.biaya asc';
 				// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -108,7 +113,6 @@
 				$jum	= mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
-					// $nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
 									<button '.(isAksi('rekeningbiaya','u')?'onclick="viewFR('.$res['replid'].');"':'disabled').' data-hint="ubah">
@@ -116,7 +120,7 @@
 									</button>';
 						$out.= '<tr>
 									<td>'.$res['biaya'].'</td>
-									<td>'.$res['detilrekening'].'</td>
+									<td>'.getAllRekeningBiaya($res['idbiaya'],$departemen,$tahunajaran).'</td>
 									'.$btn.'
 								</tr>';
 					}
@@ -133,10 +137,25 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = 'UPDATE '.$tb.' set detilrekening = "'.$_POST['detilrekeningH'].'" WHERE replid ='.$_POST['replid'];
-				$e = mysql_query($s);
-				$stat = !$e?'gagal menyimpan':'sukses';
-				$out  = json_encode(array('status'=>$stat));
+				$stat3=$stat2=true;
+				if(isset($_POST['iDetilRekeningDelTR']) && $_POST['iDetilRekeningDelTR']!=''){
+					$sd = 'DELETE FROM keu_detilrekeningbiaya WHERE replid in ('.$_POST['iDetilRekeningDelTR'].')';
+					$ed = mysql_query($sd);
+					$stat3=!$ed?false:true;
+				}
+				if($stat3){
+					foreach ($_POST['idDetilRekeningTR'] as $i => $v) {
+						$s = 'keu_detilrekeningbiaya SET
+							 	rekeningbiaya ='.$_POST['idformH'].',
+								detilrekening = '.$_POST['detilRekening'.$v.'H'].', 
+						 		jenisrekening = "'.$_POST['jenisRekening'.$v.'TB'].'"';
+						$s2 = $_POST['idDetilRekeningBiaya'.$v.'H']==''?'INSERT INTO '.$s:'UPDATE '.$s.' WHERE replid ='.$_POST['idDetilRekeningBiaya'.$v.'H'];
+						$e = mysql_query($s2);
+						$stat2=!$e?false:true;
+					}
+				}
+				$stat = !$stat2?'gagal menyimpan':'sukses';
+				$out = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -152,29 +171,41 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s = 'SELECT
-							b.biaya,
-							rb.departemen,
-							rb.tahunajaran,	
-							dr.replid iddetilrekening,
-							concat(dr.kode," - ",dr.nama)detilrekening 
+				$s = '	SELECT rb.departemen,rb.tahunajaran,b.biaya
+						FROM keu_rekeningbiaya rb
+							JOIN psb_biaya b on b.replid= rb.biaya
+						WHERE rb.replid ='.$_POST['replid'];
+				$e  = mysql_query($s);
+				$r  = mysql_fetch_assoc($e);
+				
+				$s2 = '	SELECT
+							drb.replid idDetilRekeningBiaya,
+							dr.replid idDetilRekening,
+							CONCAT("[",dr.kode,"] ",dr.nama)detilRekening,
+							sr.nominal2 saldoRekening,
+							kr.nama  kategoriRekening,
+							drb.jenisrekening jenisRekening
 						FROM
-							'.$tb.' rb
-							JOIN psb_biaya b on b.replid = rb.biaya 
-							LEFT JOIN keu_detilrekening dr  on dr.replid = rb.detilrekening 
-						WHERE 
-							rb.replid='.$_POST['replid'];
-				$e 		= mysql_query($s);
-				// pr($s);
-				$r 		= mysql_fetch_assoc($e);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array(
-							'status'          =>$stat,
-							'biaya'           =>$r['biaya'],
-							'departemen'      =>$r['departemen'],
-							'tahunajaran'     =>$r['tahunajaran'],
-							'iddetilrekening' =>$r['iddetilrekening'],
-							'detilrekening' =>$r['detilrekening'],
+							keu_detilrekeningbiaya drb
+							JOIN keu_detilrekening dr on dr.replid = drb.detilrekening
+							JOIN keu_kategorirekening kr  on kr.replid = dr.kategorirekening
+							JOIN keu_saldorekening sr on sr.detilrekening = dr.replid
+						WHERE
+							drb.rekeningbiaya = '.$_POST['replid'].' and 
+							sr.tahunajaran ='.$r['tahunajaran'].'
+						ORDER BY 
+							drb.jenisrekening DESC';
+				// pr($s2);
+				$e2 = mysql_query($s2);
+				$detilrekeningbiaya = array();
+				while ($r2 = mysql_fetch_assoc($e2)) $detilrekeningbiaya[]=$r2;
+				$stat = ($e)?'sukses':'gagal';
+				$out  = json_encode(array(
+							'status'           =>$stat,
+							'biaya'            =>$r['biaya'],
+							'departemen'       =>$r['departemen'],
+							'tahunajaran'      =>$r['tahunajaran'],
+							'detilRekeningArr' =>$detilrekeningbiaya
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

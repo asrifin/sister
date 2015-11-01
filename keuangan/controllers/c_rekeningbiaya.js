@@ -3,18 +3,20 @@ var mnu2 = 'jenistagihan';
 var mnu3 = 'biaya';
 var mnu4 = 'departemen';
 var mnu5 = 'tahunajaran';
+var mnu6 = 'kategorirekening';
 
 var dir  = 'models/m_'+mnu+'.php';
 var dir2 = 'models/m_'+mnu2+'.php';
 var dir3 = 'models/m_'+mnu3+'.php';
 var dir4 = '../akademik/models/m_'+mnu4+'.php';
 var dir5 = '../akademik/models/m_'+mnu5+'.php';
+var dir6 = 'models/m_'+mnu6+'.php';
 var contentFR = '';
 // main function ---
     $(document).ready(function(){
         cmbdepartemen('filter','');
         contentFR += '<form  style="overflow:scroll;height:560px;" autocomplete="off" onsubmit="simpan();return false;">' 
-                        +'<input id="idformH" type="hidden">' 
+                        +'<input name="idformH" id="idformH" type="hidden">' 
 
                         +'<table class="table">'
                             +'<tr>'
@@ -32,10 +34,19 @@ var contentFR = '';
                         +'</table>'
 
                         // rekening
-                        +'<label>Rekening (COA)</label>'
-                        +'<input type="hidden" id="detilrekeningH" name="detilrekeningH" />'
-                        +'<input onfocus="autoSuggest(\'detilrekening\');" data-transform="input-control" required type="text" placeholder="Rekening (COA)" name="detilrekeningTB" id="detilrekeningTB"/>'
-
+                        +'<a class="button fg-white bg-blue" href="#" onclick="DetilRekeningFC(1,\'\');"><i class="icon-plus-2"></i></a>'
+                        +'<table class="table striped">'
+                            +'<thead>'
+                                +'<tr class="fg-white bg-blue">'
+                                    +'<th>Rekening</th>'
+                                    +'<th>kategori</th>'
+                                    +'<th>Saldo</th>'
+                                    +'<th>Jenis</th>'
+                                    +'<th>Hapus</th>'
+                                +'</tr>'
+                            +'</thead>'
+                            +'<tbody id="DetilRekeningTBL"></tbody>'
+                        +'</table>'
                         // button
                         +'<div class="form-actions">' 
                             +'<button id="simpanBC" class="button primary">simpan</button>&nbsp;'
@@ -52,6 +63,25 @@ var contentFR = '';
     }); 
 // end of save process ---
 
+// combo kategorirekening ---
+    // function cmbkategorirekening(el,kat){
+    //     var u= dir6;
+    //     var d='aksi=cmb'+mnu6;
+    //     ajax(u,d).done(function (dt) {
+    //         var out='';
+    //         if(dt.status!='sukses'){
+    //             out+='<option value="">'+dt.status+'</option>';
+    //         }else{
+    //             if(dt.kategorirekening.length==0){
+    //                 out+='<option value="">kosong</option>';
+    //             }else{
+    //                 $.each(dt.kategorirekening, function(id,item){
+    //                     out+='<option '+(kat==item.replid?' selected ':'')+' value="'+item.replid+'">'+item.nama+'</option>';
+    //                 });
+    //             }$('#kategoriRekening'+el+'TB').html('<option value="">-Pilih-</option>'+out);
+    //         }
+    //     });
+    // }
 // combo tahunajaran ---
     function cmbtahunajaran(typ,thn){
         var u= dir5;
@@ -108,10 +138,7 @@ var contentFR = '';
 
 //save process ---
     function simpan(){
-        var urlx ='&aksi=simpan';
-        // edit mode
-        if($('#idformH').val()!='') urlx += '&replid='+$('#idformH').val();
-
+        var urlx ='&aksi=simpan&iDetilRekeningDelTR='+iDetilRekeningDelTR;
         $.ajax({
             url:dir,
             cache:false,
@@ -126,7 +153,6 @@ var contentFR = '';
                     clr  = 'red';
                 }else{
                     $.Dialog.close();
-                    kosongkan();
                     viewTB();
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
@@ -176,11 +202,12 @@ var contentFR = '';
 
 //load  dialog form  ---
     function viewFR(id){
+        isClosedFR();
         $.Dialog({
             shadow: true,
             overlay: true,
             draggable: true,
-            width: 500,
+            width: '70%',
             padding: 10,
             onShow: function(){
                 var titl,cont;
@@ -193,8 +220,7 @@ var contentFR = '';
                         cmbdepartemen('form',r.departemen);
                         cmbtahunajaran('form',r.tahunajaran);
                         $('#biayaTD').html(': '+r.biaya);
-                        $('#detilrekeningTB').val(r.detilrekening);
-                        $('#detilrekeningH').val(r.iddetilrekening);
+                        DetilRekeningFC(r.detilRekeningArr.length,r.detilRekeningArr);
                     });
                 }
                 $.Dialog.title(titl);
@@ -287,43 +313,9 @@ function notif(cont,clr) {
 }
 // end of notifikasi
 
-//reset form ---
-    function kosongkan(){
-        $('#idformTB').val('');
-        $('#'+mnu+'TB').val('');
-        $('#keteranganTB').val('');
-    }
-//end of reset form ---
-
-//aktifkan process ---
-    function aktifkan(id){
-        var th  = $('#'+mnu+'TD_'+id).html();
-        var dep = $('#'+mnu2+'S').val();
-        //alert('d '+dep);
-        //return false;
-        if(confirm(' mengaktifkan "'+th+'"" ?'))
-        $.ajax({
-            url:dir,
-            type:'post',
-            data:'aksi=aktifkan&replid='+id+'&departemen='+dep,
-            dataType:'json',
-            success:function(dt){
-                var cont,clr;
-                if(dt.status!='sukses'){
-                    cont = '..Gagal Mengaktifkan '+th+' ..';
-                    clr  ='red';
-                }else{
-                    viewTB($('#departemenS').val());
-                    cont = '..Berhasil Mengaktifkan '+th+' ..';
-                    clr  ='green';
-                }notif(cont,clr);
-            }
-        });
-    }
-
 // autosuggest
-    function autoSuggest(el){
-        var urlx= '?aksi=autocomp';
+    function autoSuggest(el,idx){
+        var urlx= '?aksi=autocomp&tahunajaran='+$('#tahunajaranS').val();
         var col = [{
                 'align':'left',
                 'columnName':'kode',
@@ -332,39 +324,139 @@ function notif(cont,clr) {
                 'label':'Kode'
             },{   
                 'align':'left',
-                'columnName':'nama',
-                'width':'90',
-                'label':'detilRekening'
+                'columnName':'kategoriRekening',
+                'width':'20',
+                'label':'Kategori'
+            },{   
+                'align':'left',
+                'columnName':'detilRekening',
+                'width':'40',
+                'label':'Rekening'
         }];
 
         urly = dir+urlx;
-        $('#'+el+'TB').combogrid({
+        $('#'+el+idx+'TB').combogrid({
             debug:true,
             width:'900px',
             colModel: col ,
             url: urly,
             select: function( event, ui ) { // event setelah data terpilih 
-                $('#'+el+'H').val(ui.item.replid);
-                $('#'+el+'TB').val(ui.item.kode+' - '+ui.item.nama);
+                $('#'+el+idx+'H').val(ui.item.replid);
+                $('#'+el+idx+'TB').val(ui.item.kode+' - '+ui.item.detilRekening);
+                $('#kategoriRekening'+idx+'TD').html(ui.item.kategoriRekening);
+                $('#saldoRekening'+idx+'TD').html(ui.item.saldoRekening);
 
                 // validasi input (tidak sesuai data dr server)
-                    $('#'+el+'TB').on('keyup', function(e){
+                    $('#'+el+idx+'TB').on('keyup', function(e){
                         var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
                         var keyCode = $.ui.keyCode;
                         if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
-                            if($('#'+el+'H').val()!=''){
-                                $('#'+el+'H').val('');
-                                $('#'+el+'TB').val('');
+                            if($('#'+el+idx+'H').val()!=''){
+                                $('#'+el+idx+'H').val('');
+                                $('#'+el+idx+'TB').val('');
                             }
                         }
                     });
 
                     $('#'+el+'TB').on('blur,change',function(){
-                        if($('#'+el+'H').val()=='') {
-                            $('#'+el+'TB').val(''); // :: all 
+                        if($('#'+el+idx+'H').val()=='') {
+                            $('#'+el+idx+'TB').val(''); // :: all 
                         }
                     });
                 return false;
             }
         });
     }
+
+// rekening  ------------------------------
+    var iDetilRekeningTR = 1;
+    var iDetilRekeningDelTR = [];
+    var iDetilRekeningAddTR = [];
+    function DetilRekeningFC(nn,arr){
+        var tr='';
+        var isLoop=true;
+        if(arr.length==0 || arr==''){
+            if(nn==0) n=2;
+            else n=iDetilRekeningTR;
+            isLoop=false; 
+        }else{
+            n=arr.length;
+        }
+
+        for(var i=n; i>=iDetilRekeningTR; i--){
+            var ke = parseInt(i)-1;
+            var idDetilRekeningBiaya = (arr.length!=0)?arr[ke].idDetilRekeningBiaya:'';
+            var idDetilRekening      = (arr.length!=0)?arr[ke].idDetilRekening:'';
+            var kategoriRekening     = (arr.length!=0)?arr[ke].kategoriRekening:'';
+            var detilRekening        = (arr.length!=0)?arr[ke].detilRekening:'';
+            var saldoRekening        = (arr.length!=0)?'Rp. '+(parseInt(arr[ke].saldoRekening).setCurr()):'';
+            var jenisRekening        = (arr.length!=0)?arr[ke].jenisRekening:'';
+
+            tr+='<tr class="DetilRekeningTR" id="DetilRekeningTR_'+ke+'">'
+            //detil rekening
+                +'<td>'
+                    +'<input placeholder="cari rekening" onfocus="autoSuggest(\'detilRekening\','+ke+');" value="'+detilRekening+'" id="detilRekening'+ke+'TB" required type="text" data-transform="input-control">'
+                    +'<input type="hidden" value="'+idDetilRekening+'" name="detilRekening'+ke+'H" id="detilRekening'+ke+'H" />'
+                    +'<input type="hidden" value="'+ke+'" id="idDetilRekening'+ke+'TR" name="idDetilRekeningTR[]">' // array acuan
+                    +'<input type="hidden" value="'+idDetilRekeningBiaya+'" id="idDetilRekeningBiaya'+ke+'H" name="idDetilRekeningBiaya'+ke+'H">' // array acuan
+                +'</td>'
+            //kategori
+                +'<td id="kategoriRekening'+ke+'TD">'+kategoriRekening+'</td>'
+                    // +'<select class="kategoriRekening" id="kategoriRekening'+ke+'TB" name="kategoriRekening'+ke+'TB" data-transform="input-control"></select>'
+            //saldo rekening
+                +'<td align="right" id="saldoRekening'+ke+'TD">'+saldoRekening+'</td>'
+            //jenis (debit/kredit)
+                +'<td>'
+                    +'<select required align="center" id="jenisRekening'+ke+'TB" name="jenisRekening'+ke+'TB" data-transform="input-control">'
+                        +'<option value="">-Pilih-</option>'
+                        +'<option '+(jenisRekening=='d'?'selected':'')+' value="d">Debit</option>'
+                        +'<option '+(jenisRekening=='k'?'selected':'')+' value="k">Kredit</option>'
+                    +'</select>'
+                +'</td>'
+            // button hapus
+                +'<td align="center">'
+                    +'<a onclick="'+(idDetilRekening!=''?'if(confirm(\'melanjutkan untuk menghapus data?\')) DetilRekeningDel('+ke+',\''+idDetilRekeningBiaya+'\');':'DetilRekeningDel('+ke+',\''+idDetilRekeningBiaya+'\')')+'" '
+                        +'href="#" class="button bg-white fg-red">'
+                        +'<i class="icon-cancel-2"></i>'
+                    +'</a>'
+                +'</td>'
+            +'</tr>';
+        }
+        $('#DetilRekeningTBL').prepend(tr);
+
+        if(isLoop) {iDetilRekeningTR+=n;}
+        else {iDetilRekeningTR++;}
+    }
+// end of : kontak darurat ------------------------------
+
+// hapus DetilRekeningarurat terpilih
+    function DetilRekeningDel(ke,idDetilRekening){
+        if($('.DetilRekeningTR').length<=2){
+            notif('minimal 2 akun rekening','red');
+        }else{
+            if(idDetilRekening!='') iDetilRekeningDelTR.push(idDetilRekening); //jika ada hapus DB 
+            $('#DetilRekeningTR_'+ke).fadeOut('slow',function(){
+                $('#DetilRekeningTR_'+ke).remove();
+            });
+        }
+    }
+
+// close pop up _ form 
+    function isClosedFR () {
+        if($('.window-overlay').length<=0) {
+            iDetilRekeningTR=1; 
+            iDetilRekeningDelTR=[]; 
+        }
+    }
+
+    // currency to number (ex : Rp. 500.000 -> 500000)
+    function getCurr(n){  
+        var x = Number(n.replace(/[^0-9\,]+/g,""));
+        return x;
+    }
+
+    // number to currency (ex : 500000 -> 500.000)  
+    Number.prototype.setCurr=function(){
+        return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
+    }
+

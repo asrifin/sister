@@ -21,8 +21,8 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^angsuran/?$   								index.php?page=angsuran
 	RewriteRule   ^biaya/?$   									index.php?page=biaya
 	RewriteRule   ^detail-biaya/?$   							index.php?page=detailbiaya
-	RewriteRule   ^diskon/?$   									index.php?page=diskon
-	RewriteRule   ^detail-diskon/?$   							index.php?page=detaildiskon
+	#RewriteRule   ^diskon/?$   									index.php?page=diskon
+	#RewriteRule   ^detail-diskon/?$   							index.php?page=detaildiskon
 	RewriteRule   ^via-bayar/?$   								index.php?page=viabayar
 	
 	#transaksi keuangan siswa

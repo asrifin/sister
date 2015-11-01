@@ -9,7 +9,7 @@
 
   // pr($_GET);
   $mod   ='PSB';
-  $x     = $_SESSION['id_loginS'].$_GET['departemenS'].$_GET['tahunajaranS'].$_GET['tingkatS'].$_GET['subtingkatS'].$_GET['biayaS'].$_GET['nopendaftaranS'].$_GET['nisnS'].$_GET['nisS'];
+  $x     = $_SESSION['id_loginS'].$_GET['departemenS'].$_GET['tahunajaranS'].$_GET['tingkatS'].$_GET['subtingkatS'].$_GET['biayaS'].$_GET['nopendaftaranS'].$_GET['namasiswaS'].$_GET['nisnS'].$_GET['nisS'].$_GET['statusS'];
   $token = base64_encode($x);
 
   if(!isset($_SESSION)){ // belum login  
@@ -30,10 +30,12 @@
         $tingkat       = (isset($_GET['tingkatS']) AND $_GET['tingkatS']!='')?filter($_GET['tingkatS']):'';
         $subtingkat    = (isset($_GET['subtingkatS']) AND $_GET['subtingkatS']!='')?filter($_GET['subtingkatS']):'';
         $biaya         = (isset($_GET['biayaS']) AND $_GET['biayaS']!='')?filter($_GET['biayaS']):'';
+        
         $nopendaftaran = (isset($_GET['nopendaftaranS']) AND $_GET['nopendaftaranS']!='')?filter($_GET['nopendaftaranS']):'';
+        $namasiswa     = (isset($_GET['namasiswaS']) AND $_GET['namasiswaS']!='')?filter($_GET['namasiswaS']):'';
         $nisn          = (isset($_GET['nisnS']) AND $_GET['nisnS']!='')?filter($_GET['nisnS']):'';
         $nis           = (isset($_GET['nisS']) AND $_GET['nisS']!='')?filter($_GET['nisS']):'';
-        $namasiswa     = (isset($_GET['namasiswaS']) AND $_GET['namasiswaS']!='')?filter($_GET['namasiswaS']):'';
+        $status        = isset($_GET['statusS']) && $_GET['statusS']!=''?' AND getStatusBayar(sb.replid) ="'.filter($_GET['statusS']).'"':'';
         
         // Title content
         $out.='<body>';
@@ -71,26 +73,38 @@
                   </tr>
               </table><br />';
           // header
-          $s = 'SELECT  
-                  v.idsiswa,
-                  v.namasiswa,  
-                  v.nis,
-                  v.nopendaftaran,
-                  v.nisn,
-                  db.biaya
-                FROM 
-                  psb_siswabiaya sb 
-                  JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
-                  JOIN vw_psb_siswa_kriteria v on sb.siswa = v.idsiswa 
+          $s = 'SELECT
+                  s.replid idsiswa,
+                  s.nopendaftaran,
+                  s.nis,
+                  s.nisn,
+                  s.namasiswa,
+                  st.tingkat,
+                  getBiayaNett(sb.replid)tagihan,
+                  getBiayaTerbayar(sb.replid)terbayar,
+                  getStatusBayar(sb.replid)statusBayar
+                FROM
+                  psb_siswa s
+                  JOIN psb_siswabiaya sb ON sb.siswa = s.replid
+                  JOIN psb_detailbiaya db ON db.replid = sb.detailbiaya
+                  JOIN psb_biaya b ON b.replid = db.biaya
+                  JOIN aka_subtingkat st ON st.replid = db.subtingkat
+                  JOIN psb_detailgelombang dg ON dg.replid = db.detailgelombang
                 WHERE
-                  v.status!="2" AND 
-                  v.idtingkat ='.$tingkat.' AND 
-                  v.idsubtingkat ='.$subtingkat.' AND 
-                  v.namasiswa LIKE "%'.$namasiswa.'%" AND 
-                  v.nis LIKE "%'.$nis.'%" AND 
-                  v.nisn LIKE "%'.$nisn.'%" AND 
-                  v.nopendaftaran LIKE "%'.$nopendaftaran.'%" and 
-                  db.biaya  ='.$biaya;
+                  s. STATUS != "2"
+                  AND  s.nopendaftaran LIKE "%'.$nopendaftaran.'%"
+                  AND dg.tahunajaran = '.$tahunajaran.'
+                  AND dg.departemen= '.$departemen.'
+                  AND st.replid = '.$subtingkat.'
+                  AND b.replid = '.$biaya.'
+                  AND s.nis LIKE "%'.$nis.'%"
+                  AND s.nisn LIKE "%'.$nisn.'%"
+                  AND s.namasiswa LIKE "%'.$namasiswa.'%" 
+                  '.$status.'
+                GROUP BY
+                  s.replid
+                ORDER BY
+                  st.replid';
                 // pr($s);
             $e = mysql_query($s);
             $n = mysql_num_rows($e);
@@ -106,11 +120,7 @@
                       <td align="center">Status</td>
                     </tr>';
             while ($r = mysql_fetch_assoc($e)) {
-              $terbayarTotal      = getTerbayarTotal($r['idsiswa'],$r['biaya']);
-              $biayaNett          = getBiayaNett2($r['idsiswa'],$r['biaya']);
-              $status = $terbayarTotal==$biayaNett?'lunas':($terbayarTotal==0?'belum':'kurang');
-              $color  = $terbayarTotal==$biayaNett?'green':($terbayarTotal==0?'red':'orange');
-
+              $color  = $r['statusBayar']=='lunas'?'green':($r['statusBayar']=='belum'?'red':'orange');
               $out.='<tr>
                 <td align="center">'.getNoPendaftaran2($r['idsiswa']).'</td>
                 <td>'.$r['nisn'].'</td>
@@ -118,7 +128,7 @@
                 <td>'.$r['namasiswa'].'</td>
                 <td align="right">'.setuang($biayaNett).'</td>
                 <td align="right">'.setuang($terbayarTotal).'</td>
-                <td style="background-color:'.$color.';color:white;" align="center">'.$status.'</td>
+                <td style="background-color:'.$color.';color:white;" align="center">'.$r['statusBayar'].'</td>
               </tr>';
             }
           $out.='</table>';

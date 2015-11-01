@@ -173,6 +173,7 @@
 	// general function : query data 
 	function getField($f,$tb,$w='',$k=''){
 		$s = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = "'.$k.'"':'');
+		// pr($s);
 		$e = mysql_query($s) or die(mysql_error());
 		$r = mysql_fetch_assoc($e);
 		return ($f=='*' || $f=='all'?$r:$r[$f]);

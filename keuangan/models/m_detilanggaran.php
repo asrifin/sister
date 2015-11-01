@@ -141,6 +141,7 @@
 								detilanggaran    = "'.$_POST['detilanggaranTB'].'",
 								keterangan       = "'.$_POST['keteranganTB'].'"';
 				$s2  =(isset($_POST['replid']) AND $_POST['replid']!='')?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				// pr($s2);
 				$e   = mysql_query($s2);
 				$out = json_encode(array('status'=>!$e?'gagal':'sukses'));
 			break;
@@ -157,23 +158,24 @@
 
 			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
-				$s = '	SELECT 
-							da.detilanggaran,
-							ka.replid idkategorianggaran,
-							ka.tingkat,
-							ka.departemen,
-							da.keterangan
-						FROM '.$tb.' da 
-							JOIN keu_kategorianggaran ka on ka.replid = da.kategorianggaran
-						WHERE da.replid ='.$_POST['replid'];
-				// pr($s);
+				$s = 'SELECT
+						da.detilanggaran,
+						da.keterangan,
+						ka.departemen iddepartemen,
+						ka.tingkat idtingkat,
+						ka.replid idkategorianggaran
+					FROM
+						keu_detilanggaran da
+						JOIN keu_kategorianggaran ka on ka.replid = da.kategorianggaran
+					where
+						da.replid ='.$_POST['replid'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'             =>$stat,
-							'departemen'         =>$r['departemen'],
-							'tingkat'            =>$r['tingkat'],
+							'iddepartemen'       =>$r['iddepartemen'],
+							'idtingkat'          =>$r['idtingkat'],
 							'idkategorianggaran' =>$r['idkategorianggaran'],
 							'detilanggaran'      =>$r['detilanggaran'],
 							'keterangan'         =>$r['keterangan'],
@@ -270,11 +272,6 @@
 				}$out=json_encode($ar);
 			break;
 			// cmbtahunajaran -----------------------------------------------------------------
-
 			}
 	}echo $out;
-
-    // ---------------------- //
-    // -- created by rovi  -- //
-    // ---------------------- // 
 ?>

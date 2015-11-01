@@ -198,7 +198,6 @@ $_SESSION['product_id'][$k]['jumlah'] = $_SESSION['product_id'][$k]['jumlah'];
 
 }
 
-
 if(isset($_POST['deletecustomer'])){
 penjualanrefresh();
 }
@@ -391,6 +390,7 @@ $pilihan = ($data['nopo']==$kodepo)?"selected":'';
 		<td>:</td>
 		<td>'.$carabayar.'</td>
 		</tr>';
+		/*
 $admin .= '
 	<tr>
 		<td>Barang</td>
@@ -411,7 +411,7 @@ while ($data = $koneksi_db->sql_fetchrow($hasil)) {
 		<td>:</td>
 		<td>'.$termin.'Hari</td>
 		</tr>
-				';
+				';*/
 $admin .= '	
 	<tr><td colspan="5"><div id="Tbayar"></div></td>
 		<td>

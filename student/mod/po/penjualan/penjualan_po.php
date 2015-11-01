@@ -102,8 +102,9 @@ updatehargabeli($kode,$harga);
 }
 if($hasil){
 $admin .= '<div class="sukses"><b>Berhasil Menambah PO.</b></div>';
+pocetak($nopo);
 porefresh();
-//$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po&mod=yes" />';
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po&mod=yes" />';
 }else{
 $admin .= '<div class="error"><b>Gagal Menambah PO.</b></div>';
 		}		
@@ -131,9 +132,9 @@ $style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=po
 
 if(isset($_POST['simpandetail'])){
 foreach ($_SESSION['product_id'] as $k=>$v){
-$_SESSION['product_id'][$k]['subdiscount']=$_POST['subdiscount'][$k];
-$_SESSION['product_id'][$k]['jumlah']=$_POST['jumlahpo'][$k];
-$_SESSION['product_id'][$k]['harga']=$_POST['harga'][$k];
+$_SESSION['product_id'][$k]['subdiscount']=int_filter($_POST['subdiscount'][$k]);
+$_SESSION['product_id'][$k]['jumlah']=int_filter($_POST['jumlahpo'][$k]);
+$_SESSION['product_id'][$k]['harga']=int_filter($_POST['harga'][$k]);
 $nilaidiscount=cekdiscount($_SESSION['product_id'][$k]['subdiscount'],$_SESSION['product_id'][$k]['harga']);
 $_SESSION['product_id'][$k]['subtotal'] =$_SESSION['product_id'][$k]['jumlah']*($_SESSION['product_id'][$k]['harga']-$nilaidiscount);
 }
@@ -150,7 +151,9 @@ $kode=$data['kode'];
 $stok=$data['jumlah'];
 $harga=$data['hargabeli'];
 $jenjang=$data['jenjang'];
+$namabarang=getnamabarang($kode);
 $error 	= '';
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT id FROM pos_alur_stok WHERE kodebarang='$kode'")) == 0) $error .= "Error: lakukan Stok Awal terlebih dahulu terhadap '$namabarang'<br />";
 if (!$kode)  	$error .= "Error:  Kode Barang Tidak di Temukan<br />";
 if ($error){
 $admin .= '<div class="error">'.$error.'</div>';

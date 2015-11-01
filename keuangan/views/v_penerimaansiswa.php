@@ -35,28 +35,30 @@
         <thead>
             <tr style="color:white;"class="info">
                 <th class="text-center">No. Pendaftaran</th>
+                <th class="text-center">Nama</th>
                 <th class="text-center">NISN</th>
                 <th class="text-center">NIS</th>
-                <th class="text-center">Nama</th>
                 <th class="text-center">Tagihan</th>
                 <th class="text-center">Terbayar</th>
-                <th class="text-center">Bayar</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Invoice</th>
             </tr>
             <tr id="formulirTR" class="info">
                 <th class="text-center"><input type="text" data-transform="input-control" placeholder="cari ..." id="nopendaftaranS" class="penerimaansiswa_cari"></th>
+                <th class="text-center"><input id="namasiswaS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
                 <th class="text-center"><input id="nisnS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
                 <th class="text-center"><input id="nisS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
-                <th class="text-center"><input id="namasiswaS" type="text" data-transform="input-control" placeholder="cari ..."  class="penerimaansiswa_cari"></th>
                 <th class="text-center"></th>
                 <th class="text-center"></th>
                 <th class="text-center">
-<!--                     <select  data-transform="input-control" class="cari text-center" id="statusS" name="statusS" >
+                    <select  data-transform="input-control" class="penerimaansiswa_cari text-center" id="statusS" name="statusS" >
                         <option value="">-Semua-</option>
                         <option class="bg-green fg-white" value="lunas">Lunas</option>
                         <option class="bg-yellow fg-white" value="kurang">Kurang</option>
                         <option class="bg-red fg-white" value="belum">Belum</option>
                     </select>
- -->                </th>
+                </th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody id="penerimaansiswa_tbody"></tbody>
