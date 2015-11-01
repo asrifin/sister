@@ -1,4 +1,8 @@
 <?php
+	function getTahunAjaranByBiaya($idsiswabiaya){
+		$r=getField('idtahunajaran','vw_siswa_biaya','idsiswabiaya',$idsiswabiaya);
+		return $r;
+	}
 	function getAllRekeningBiaya($biaya,$dep,$thn){
 		$s='SELECT 
 				if(drb.jenisrekening="d","Debit","Kredit")jenisrekening,
@@ -459,7 +463,7 @@
 					count(*)angsuranke,
 					SUM(p.nominal)terbayarTotal,
 					p.nominal terbayarBaru
-				from  keu_pembayaran p 
+				from  keu_penerimaansiswa p 
 					JOIN psb_siswabiaya sb on sb.replid = p.siswabiaya
 					JOIN psb_detailbiaya db on db.replid = sb.detailbiaya 
 					LEFT JOIN (
@@ -468,7 +472,7 @@
 							SELECT 
 								pp.replid,
 								pp.tanggal
-							from  keu_pembayaran pp 
+							from  keu_penerimaansiswa pp 
 								JOIN psb_siswabiaya sb on sb.replid = pp.siswabiaya
 								JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
 							where 
@@ -603,12 +607,9 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['bukti'];
-	}function getDetJenisTrans($f,$w,$k){
-		$s='SELECT '.$f.' FROM keu_detjenistrans WHERE '.$w.'="'.$k.'"';
-		$e=mysql_query($s);
-		$r=mysql_fetch_assoc($e);
-		// var_dump($s);exit();
-		return $r[$f];
+	}function getDetJenisTransaksi($kode){
+		$r=getField('replid','keu_detjenistransaksi','kode',$kode);
+		return $r;
 	}function getKatModulPemb($nama){
 		$s='SELECT * FROM keu_katmodulpembayaran WHERE nama="'.($nama=='joiningf' || $nama=='joining fee'?'joining fee':$nama).'"';
 		// var_dump($s);exit();
@@ -750,7 +751,10 @@
 		$str = 'Rp. '.str_replace(',','.',number_format($str));
 		return $str;
 	}
-
+	function getIdKwitansi(){
+		$r=getField('max(idkwitansi)','keu_transaksi','','');
+		return $r==''?1:$r;
+	}
 	function nokwitansi($idpembayaran){
 		$s='SELECT
                 date(p.tanggal)d,

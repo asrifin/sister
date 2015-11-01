@@ -5,7 +5,8 @@
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
 
-	$mnu  = 'pembayaran';
+	// $mnu  = 'pembayaran';
+	$mnu  = 'penerimaansiswa';
 	$mnu2 = 'rekening';
 	$mnu3 = 'katalog';
 	$mnu4 = 'barang';
@@ -72,7 +73,7 @@
 			// history bayar
 			case 'histBayar':
 				$s ='SELECT p.replid, p.tanggal,p.nominal,p.idkwitansi
-					 FROM keu_pembayaran p 
+					 FROM '.$tb.' p 
 					 WHERE p.siswabiaya = '.$_POST['siswabiaya'].'
 					 ORDER BY p.tanggal ASC,p.replid ASC';
 				$e   = mysql_query($s);
@@ -187,9 +188,12 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$idkw = getField('max(idkwitansi)+1','keu_pembayaran','','');
+				// pr(getTahunAjaranByBiaya(654));
+				$idkww   = intval(getField('max(idkwitansi)',$tb,'',''));
+				$idkw    = $idkww==''?1:($idkww+1);
+				$nominal = getuang($_POST['akanBayarJenisTB']=='1'?$_POST['akanBayarNominalTB1']:$_POST['akanBayarNominalTB2']);
 				$s = 'INSERT INTO '.$tb.' set 	siswabiaya = '.$_POST['idsiswabiayaTB'].',
-												nominal    = '.getuang($_POST['akanBayarJenisTB']=='1'?$_POST['akanBayarNominalTB1']:$_POST['akanBayarNominalTB2']).',
+												nominal    = '.$nominal.',
 												viabayar2  = '.$_POST['viaBayarTB'].',
 												tanggal    = "'.tgl_indo6($_POST['tanggalTB']).'",
 												idkwitansi = '.$idkw;
@@ -198,17 +202,17 @@
 				$id = mysql_insert_id();
 				if(!$e) $stat='gagal_insert_pembayaran';
 				else{
-					/*// 2. simpan transaksi
-					$s2 = 'INSERT INTO keu_transaksi SET 	tahunbuku  ='.getTahunBuku('replid').',
-															pembayaran ='.$id.',
-															nominal    ='.$nominal.',
-															nomer      ="'.getNoTrans($_POST['subaksi']).'",
-															tanggal    ="'.date('Y-m-d').'",
-															uraian     ="'.$_POST['uraianTB'].'",
-															rekkas     ='.$_POST['rekkasH'].',
-															detjenistrans='.getDetJenisTrans('replid','kode',$detjenistrans).',
-															rekitem    ='.$_POST['rekitemH'];
-					$e2  = mysql_query($s2);
+					// 2. simpan transaksi
+						// tahunajaran   ='.getTahunAjaranByBiaya($_POST['idsiswabiayaTB']).',
+					$uraian = 'Pembayaran DPP siswa: Nama : ';
+					$s2 = 'INSERT INTO keu_transaksi SET 	
+							idref             ='.$id.',
+							idkwitansi        ='.getIdKwitansi().',
+							tanggal           ="'.tgl_indo6($_POST['tanggalTB']).'",
+							uraian            ="'.$uraian.'",
+							detjenistransaksi ='.getDetJenisTransaksi('siswa');
+					pr($s2);
+					/*$e2  = mysql_query($s2);
 					$id2 = mysql_insert_id();
 					if(!$e2) $stat='gagal_insert_transaksi';
 					else{
@@ -231,7 +235,7 @@
 							$stat = ($e5 OR $e6)?'sukses':'gagal_update_saldorekening';
 						}
 					}*/
-						$stat='sukses';
+						// $stat='sukses';
 				}$out = json_encode(array('status'=>$stat,'idpembayaran'=>$id));
 			break;
 			// add / edit -----------------------------------------------------------------
