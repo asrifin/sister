@@ -36,7 +36,7 @@
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-center">Detail Anggaran</th>
-            <th class="text-center">Keterangan</th>
+            <th class="text-center">Tujuan</th>
             <th class="text-center">Aksi</th>
         </tr>
         <tr id="a_cariTR" class="info">

@@ -565,7 +565,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                     +'<div class="row">'
                                         // kolom1 
                                         +'<div class="span12">'
-                                            +'<a  class="button"  href="#" onclick="saudaraFC();return false;"><i class="icon-plus-2"></i></a>'
+                                            +'<a  class="button"  href="#" onclick="saudaraFC(); return false;"><i class="icon-plus-2"></i></a>'
                                             +'<table class="table bordered hovered striped">'
                                                 +'<thead class="fg-white bg-blue">'
                                                     +'<tr>'

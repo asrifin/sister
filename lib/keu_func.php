@@ -1,5 +1,29 @@
 <?php
-	
+	function getAllRekeningBiaya($biaya,$dep,$thn){
+		$s='SELECT 
+				if(drb.jenisrekening="d","Debit","Kredit")jenisrekening,
+				if(drb.jenisrekening="d","green","red")color,
+				kr.nama kategorirekening,
+				concat("[",dr.kode,"] ",dr.nama)detilrekening
+			FROM
+				keu_rekeningbiaya rb 
+				JOIN keu_detilrekeningbiaya drb on drb.rekeningbiaya = rb.replid
+				JOIN keu_detilrekening dr on dr.replid = drb.detilrekening
+				JOIN keu_kategorirekening kr on kr.replid = dr.kategorirekening
+			WHERE
+				rb.departemen ='.$dep.' AND
+				rb.tahunajaran ='.$thn.' AND
+				rb.biaya = '.$biaya.'
+			ORDER BY 
+				drb.jenisrekening ASC ';
+				// pr($s);
+		$e=mysql_query($s);
+		$rekList='';
+
+		while ($r=mysql_fetch_assoc($e)) {
+			$rekList.='<b class="fg-'.$r['color'].'">['.$r['jenisrekening'].']  '.$r['kategorirekening'].'</b> : '.$r['detilrekening'].'<br>';
+		}return $rekList;
+	}	
 
 	function getBiayaNett($idBiaya,$idDiskReg,$diskKhus){
 		$biaya = !is_null($idDiskReg)?getBiayaDiskReg($idBiaya,$idDiskReg):getField('nominal','psb_detailbiaya','replid',$idBiaya);

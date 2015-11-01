@@ -30,7 +30,7 @@
         </tr>
         <tr id="cariTR" class="info">
             <th><input type="text" data-transform="input-control" class="cari" placeholder="cari ..." id="biayaS"></th>
-            <th><input type="text" id="detilrekeningS" class="cari" placeholder="cari ..." data-transform="input-control"></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>

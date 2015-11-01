@@ -81,15 +81,21 @@
 				$keterangan       = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$tahunajaran      = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 
-				$sql = 'SELECT at.replid,da.detilanggaran,da.keterangan,at.hargasatuan
-						FROM keu_detilanggaran da
-							LEFT JOIN '.$tb.' at on at.detilanggaran = da.replid
-						where 
-							at.tahunajaran = '.$tahunajaran.' and 
-							da.kategorianggaran = "'.$kategorianggaran.'"  and 
-							da.detilanggaran LIKE "%'.$detilanggaran.'%" and 
-							da.keterangan LIKE "%'.$keterangan.'%"
-						order by da.detilanggaran asc';
+				$sql = 'SELECT
+							ath.replid,
+							da.detilanggaran,
+							da.keterangan,
+							getAnggaranPerItem(ath.replid)kuotaAnggaran
+						FROM
+							keu_detilanggaran da
+						LEFT JOIN keu_anggarantahunan ath ON ath.detilanggaran = da.replid
+						WHERE
+							ath.tahunajaran = '.$tahunajaran.'
+							AND da.kategorianggaran = "'.$kategorianggaran.'"
+							AND da.detilanggaran LIKE "%'.$detilanggaran.'%"
+							AND da.keterangan LIKE "%'.$keterangan.'%"
+						ORDER BY
+							da.detilanggaran ASC';
 				// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -109,19 +115,27 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
-						$btn ='<td align="center">
+						$btn ='<td align="center" rowspan="2">
 									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
 								 </td>';
-					 	// kuota 	
+										// <div class="slider" data-role="slider" data-position="0" data-accuracy="0" data-colors="blue, red, yellow, green"></div>									
 						$out.= '<tr>
-									<td>'.$res['detilanggaran'].'</td>
-									<td>'.$res['keterangan'].'</td>
-									<td align="right">
-										<div class="progress-bar" data-role="progress-bar" data-color="bg-green" data-value="100"></div>
-										'.setuang($res['hargasatuan']).'</td>
+									<td rowspan="2">'.$res['detilanggaran'].'</td>
+									<td rowspan="2">'.$res['keterangan'].'</td>
+									<td colspan="2" xalign="right">
+										<div class="bg-green progress-bar" data-role="progress-bar" data-color="bg-red" data-value="25 "></div>
+									</td>
 									'.$btn.'
+								</tr>
+								<tr>
+									<td align="right">
+										'.setuang($res['kuotaAnggaran']/4).' 	
+									</td>
+									<td align="right">
+										'.setuang($res['kuotaAnggaran']).'
+									</td>
 								</tr>';
 						$nox++;
 					}
@@ -135,6 +149,16 @@
 				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 			break; 
 			// tampil ---------------------------------------------------------------------
+
+			case 'headerInfo':
+				$s ='SELECT getAnggaranPerKategori('.$_POST['kategorianggaran'].','.$_POST['tahunajaran'].') anggaranKuotaPerKategori';
+				$e =mysql_query($s);
+				$r =mysql_fetch_assoc($e);
+				$out =json_encode(array(
+					'status'                   =>(!$e?'gagal':'sukses'),
+					'anggaranKuotaPerKategori' => setuang($r['anggaranKuotaPerKategori'])
+				));
+			break;
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':

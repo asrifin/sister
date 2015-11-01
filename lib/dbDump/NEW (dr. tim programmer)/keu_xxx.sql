@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-10-28 14:31:42
+Date: 2015-11-01 18:35:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,14 +29,23 @@ CREATE TABLE `keu_anggarantahunan` (
   KEY `tahunajaran` (`tahunajaran`) USING BTREE,
   CONSTRAINT `keu_anggarantahunan_ibfk_1` FOREIGN KEY (`detilanggaran`) REFERENCES `keu_detilanggaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tahunajaranFK4` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_anggarantahunan
 -- ----------------------------
-INSERT INTO `keu_anggarantahunan` VALUES ('6', '5', '0', '3');
-INSERT INTO `keu_anggarantahunan` VALUES ('7', '5', '0', '5');
-INSERT INTO `keu_anggarantahunan` VALUES ('8', '5', '15000', '12');
+INSERT INTO `keu_anggarantahunan` VALUES ('9', '6', '0', '3');
+INSERT INTO `keu_anggarantahunan` VALUES ('10', '6', '0', '5');
+INSERT INTO `keu_anggarantahunan` VALUES ('11', '6', '22000', '12');
+INSERT INTO `keu_anggarantahunan` VALUES ('18', '9', '0', '3');
+INSERT INTO `keu_anggarantahunan` VALUES ('19', '9', '0', '5');
+INSERT INTO `keu_anggarantahunan` VALUES ('20', '9', '0', '12');
+INSERT INTO `keu_anggarantahunan` VALUES ('21', '10', '0', '3');
+INSERT INTO `keu_anggarantahunan` VALUES ('22', '10', '0', '5');
+INSERT INTO `keu_anggarantahunan` VALUES ('23', '10', '350000', '12');
+INSERT INTO `keu_anggarantahunan` VALUES ('24', '11', '0', '3');
+INSERT INTO `keu_anggarantahunan` VALUES ('25', '11', '0', '5');
+INSERT INTO `keu_anggarantahunan` VALUES ('26', '11', '45000', '12');
 
 -- ----------------------------
 -- Table structure for keu_brg
@@ -94,12 +103,15 @@ CREATE TABLE `keu_detilanggaran` (
   KEY `kategorianggaran` (`kategorianggaran`),
   KEY `detilanggaran` (`detilanggaran`),
   CONSTRAINT `kategorianggaranFK` FOREIGN KEY (`kategorianggaran`) REFERENCES `keu_kategorianggaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_detilanggaran
 -- ----------------------------
-INSERT INTO `keu_detilanggaran` VALUES ('5', '15', 'spidol', '');
+INSERT INTO `keu_detilanggaran` VALUES ('6', '15', 'Kertas HVS', 'untuk printing dokumen dll');
+INSERT INTO `keu_detilanggaran` VALUES ('9', '17', 'beras', 'cadangan beras ');
+INSERT INTO `keu_detilanggaran` VALUES ('10', '15', 'spidol', 'spidol papan tulis');
+INSERT INTO `keu_detilanggaran` VALUES ('11', '15', 'map A4 coklat', 'tempat berkas');
 
 -- ----------------------------
 -- Table structure for keu_detilrekening
@@ -820,6 +832,31 @@ INSERT INTO `keu_detilrekening_copy` VALUES ('344', '2', '9999', 'uuuu', 'jjj');
 INSERT INTO `keu_detilrekening_copy` VALUES ('345', '2', '9999', 'uuuu', 'jjj');
 
 -- ----------------------------
+-- Table structure for keu_detilrekeningbiaya
+-- ----------------------------
+DROP TABLE IF EXISTS `keu_detilrekeningbiaya`;
+CREATE TABLE `keu_detilrekeningbiaya` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `rekeningbiaya` int(11) NOT NULL,
+  `detilrekening` int(11) NOT NULL,
+  `jenisrekening` enum('d','k') DEFAULT NULL,
+  PRIMARY KEY (`replid`),
+  KEY `detilrekening` (`detilrekening`) USING BTREE,
+  KEY `rekeningbiaya` (`rekeningbiaya`) USING BTREE,
+  CONSTRAINT `detilrekeningFK3` FOREIGN KEY (`detilrekening`) REFERENCES `keu_detilrekening` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `rekeningbiayaFK` FOREIGN KEY (`rekeningbiaya`) REFERENCES `keu_rekeningbiaya` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of keu_detilrekeningbiaya
+-- ----------------------------
+INSERT INTO `keu_detilrekeningbiaya` VALUES ('5', '12', '4', 'd');
+INSERT INTO `keu_detilrekeningbiaya` VALUES ('7', '12', '137', 'k');
+INSERT INTO `keu_detilrekeningbiaya` VALUES ('9', '12', '118', 'k');
+INSERT INTO `keu_detilrekeningbiaya` VALUES ('11', '11', '2', 'd');
+INSERT INTO `keu_detilrekeningbiaya` VALUES ('12', '11', '196', 'k');
+
+-- ----------------------------
 -- Table structure for keu_detjenistrans
 -- ----------------------------
 DROP TABLE IF EXISTS `keu_detjenistrans`;
@@ -1025,12 +1062,15 @@ CREATE TABLE `keu_kategorianggaran` (
   CONSTRAINT `departemenFK4` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `detilrekeningFK` FOREIGN KEY (`detilrekening`) REFERENCES `keu_detilrekening` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tingkatFK` FOREIGN KEY (`tingkat`) REFERENCES `aka_tingkat` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_kategorianggaran
 -- ----------------------------
 INSERT INTO `keu_kategorianggaran` VALUES ('15', '1', '1', '1', 'ATK', 'alat tulis kantor');
+INSERT INTO `keu_kategorianggaran` VALUES ('16', '3', '1', '91', 'Logistik', 'ok');
+INSERT INTO `keu_kategorianggaran` VALUES ('17', '1', '1', '1', 'makanan', '');
+INSERT INTO `keu_kategorianggaran` VALUES ('18', '1', '6', '312', 'alat dapur', 'woke');
 
 -- ----------------------------
 -- Table structure for keu_kategorirek
@@ -1209,47 +1249,155 @@ CREATE TABLE `keu_nominalanggaran` (
   PRIMARY KEY (`replid`),
   KEY `anggarantahunan` (`anggarantahunan`) USING BTREE,
   CONSTRAINT `anggarantahunanFK` FOREIGN KEY (`anggarantahunan`) REFERENCES `keu_anggarantahunan` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=277 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_nominalanggaran
 -- ----------------------------
-INSERT INTO `keu_nominalanggaran` VALUES ('25', '6', '1', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('26', '6', '2', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('27', '6', '3', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('28', '6', '4', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('29', '6', '5', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('30', '6', '6', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('31', '6', '7', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('32', '6', '8', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('33', '6', '9', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('34', '6', '10', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('35', '6', '11', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('36', '6', '12', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('37', '7', '1', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('38', '7', '2', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('39', '7', '3', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('40', '7', '4', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('41', '7', '5', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('42', '7', '6', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('43', '7', '7', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('44', '7', '8', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('45', '7', '9', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('46', '7', '10', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('47', '7', '11', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('48', '7', '12', '0');
-INSERT INTO `keu_nominalanggaran` VALUES ('49', '8', '1', '10');
-INSERT INTO `keu_nominalanggaran` VALUES ('50', '8', '2', '10');
-INSERT INTO `keu_nominalanggaran` VALUES ('51', '8', '3', '10');
-INSERT INTO `keu_nominalanggaran` VALUES ('52', '8', '4', '10');
-INSERT INTO `keu_nominalanggaran` VALUES ('53', '8', '5', '10');
-INSERT INTO `keu_nominalanggaran` VALUES ('54', '8', '6', '100');
-INSERT INTO `keu_nominalanggaran` VALUES ('55', '8', '7', '10');
-INSERT INTO `keu_nominalanggaran` VALUES ('56', '8', '8', '10');
-INSERT INTO `keu_nominalanggaran` VALUES ('57', '8', '9', '10');
-INSERT INTO `keu_nominalanggaran` VALUES ('58', '8', '10', '10');
-INSERT INTO `keu_nominalanggaran` VALUES ('59', '8', '11', '10');
-INSERT INTO `keu_nominalanggaran` VALUES ('60', '8', '12', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('61', '9', '1', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('62', '9', '2', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('63', '9', '3', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('64', '9', '4', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('65', '9', '5', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('66', '9', '6', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('67', '9', '7', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('68', '9', '8', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('69', '9', '9', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('70', '9', '10', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('71', '9', '11', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('72', '9', '12', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('73', '10', '1', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('74', '10', '2', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('75', '10', '3', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('76', '10', '4', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('77', '10', '5', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('78', '10', '6', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('79', '10', '7', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('80', '10', '8', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('81', '10', '9', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('82', '10', '10', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('83', '10', '11', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('84', '10', '12', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('85', '11', '1', '20');
+INSERT INTO `keu_nominalanggaran` VALUES ('86', '11', '2', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('87', '11', '3', '1');
+INSERT INTO `keu_nominalanggaran` VALUES ('88', '11', '4', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('89', '11', '5', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('90', '11', '6', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('91', '11', '7', '7');
+INSERT INTO `keu_nominalanggaran` VALUES ('92', '11', '8', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('93', '11', '9', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('94', '11', '10', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('95', '11', '11', '55');
+INSERT INTO `keu_nominalanggaran` VALUES ('96', '11', '12', '4');
+INSERT INTO `keu_nominalanggaran` VALUES ('169', '18', '1', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('170', '18', '2', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('171', '18', '3', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('172', '18', '4', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('173', '18', '5', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('174', '18', '6', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('175', '18', '7', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('176', '18', '8', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('177', '18', '9', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('178', '18', '10', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('179', '18', '11', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('180', '18', '12', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('181', '19', '1', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('182', '19', '2', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('183', '19', '3', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('184', '19', '4', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('185', '19', '5', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('186', '19', '6', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('187', '19', '7', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('188', '19', '8', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('189', '19', '9', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('190', '19', '10', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('191', '19', '11', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('192', '19', '12', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('193', '20', '1', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('194', '20', '2', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('195', '20', '3', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('196', '20', '4', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('197', '20', '5', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('198', '20', '6', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('199', '20', '7', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('200', '20', '8', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('201', '20', '9', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('202', '20', '10', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('203', '20', '11', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('204', '20', '12', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('205', '21', '1', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('206', '21', '2', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('207', '21', '3', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('208', '21', '4', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('209', '21', '5', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('210', '21', '6', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('211', '21', '7', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('212', '21', '8', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('213', '21', '9', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('214', '21', '10', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('215', '21', '11', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('216', '21', '12', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('217', '22', '1', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('218', '22', '2', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('219', '22', '3', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('220', '22', '4', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('221', '22', '5', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('222', '22', '6', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('223', '22', '7', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('224', '22', '8', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('225', '22', '9', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('226', '22', '10', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('227', '22', '11', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('228', '22', '12', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('229', '23', '1', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('230', '23', '2', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('231', '23', '3', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('232', '23', '4', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('233', '23', '5', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('234', '23', '6', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('235', '23', '7', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('236', '23', '8', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('237', '23', '9', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('238', '23', '10', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('239', '23', '11', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('240', '23', '12', '5');
+INSERT INTO `keu_nominalanggaran` VALUES ('241', '24', '1', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('242', '24', '2', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('243', '24', '3', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('244', '24', '4', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('245', '24', '5', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('246', '24', '6', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('247', '24', '7', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('248', '24', '8', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('249', '24', '9', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('250', '24', '10', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('251', '24', '11', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('252', '24', '12', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('253', '25', '1', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('254', '25', '2', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('255', '25', '3', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('256', '25', '4', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('257', '25', '5', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('258', '25', '6', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('259', '25', '7', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('260', '25', '8', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('261', '25', '9', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('262', '25', '10', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('263', '25', '11', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('264', '25', '12', '0');
+INSERT INTO `keu_nominalanggaran` VALUES ('265', '26', '1', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('266', '26', '2', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('267', '26', '3', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('268', '26', '4', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('269', '26', '5', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('270', '26', '6', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('271', '26', '7', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('272', '26', '8', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('273', '26', '9', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('274', '26', '10', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('275', '26', '11', '10');
+INSERT INTO `keu_nominalanggaran` VALUES ('276', '26', '12', '10');
 
 -- ----------------------------
 -- Table structure for keu_pembayaran
@@ -1269,35 +1417,11 @@ CREATE TABLE `keu_pembayaran` (
   KEY `viabayar2` (`viabayar2`) USING BTREE,
   CONSTRAINT `siswabiayaFK2` FOREIGN KEY (`siswabiaya`) REFERENCES `psb_siswabiaya` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `viabayarFK3` FOREIGN KEY (`viabayar2`) REFERENCES `keu_viabayar` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_pembayaran
 -- ----------------------------
-INSERT INTO `keu_pembayaran` VALUES ('4', '602', '9000000', '1', '2015-07-10', '1', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('22', '634', '41500000', '1', '2015-10-21', '5', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('23', '648', '159091', '3', '2015-10-21', '6', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('25', '614', '41500000', '2', '2015-10-21', '8', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('29', '602', '212500', '3', '2015-10-22', '9', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('32', '602', '9212500', '3', '2015-10-23', '10', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('35', '622', '41500000', '3', '2015-10-22', '13', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('36', '602', '9212500', '3', '2015-10-24', '14', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('37', '646', '41500000', '1', '2015-10-13', '15', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('39', '658', '100000', '5', '2015-10-22', '17', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('41', '658', '62000', '5', '2015-10-22', '18', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('43', '674', '50000', '1', '2015-10-22', '20', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('49', '654', '160000', '3', '2015-10-23', '21', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('52', '658', '162000', '5', '2015-10-25', '24', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('53', '658', '162000', '5', '2015-10-26', '25', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('54', '666', '900000', '2', '2015-10-25', '26', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('55', '655', '700000', '2', '2015-10-25', '27', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('57', '657', '250000', '2', '2015-10-25', '29', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('58', '654', '7375', '3', '2015-10-24', '30', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('59', '678', '25650', '1', '2015-10-26', '31', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('60', '678', '25650', '1', '2015-10-26', '32', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('61', '678', '25650', '1', '2015-10-26', '33', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('62', '654', '167375', '3', '2015-10-26', '34', '', '0000-00-00 00:00:00');
-INSERT INTO `keu_pembayaran` VALUES ('63', '654', '167375', '3', '2015-10-27', '35', '', '0000-00-00 00:00:00');
 
 -- ----------------------------
 -- Table structure for keu_pembayaran_copy
@@ -1765,57 +1889,54 @@ CREATE TABLE `keu_rekeningbiaya` (
   `biaya` int(11) NOT NULL,
   `departemen` int(11) NOT NULL,
   `tahunajaran` int(11) NOT NULL,
-  `detilrekening` int(11) DEFAULT NULL,
   PRIMARY KEY (`replid`),
   KEY `biaya` (`biaya`) USING BTREE,
   KEY `tahunajaran` (`tahunajaran`) USING BTREE,
-  KEY `detilrekening` (`detilrekening`) USING BTREE,
   KEY `departemen` (`departemen`) USING BTREE,
   CONSTRAINT `biayaFK2` FOREIGN KEY (`biaya`) REFERENCES `psb_biaya` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `departemenFK2` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `detilrekeningFK2` FOREIGN KEY (`detilrekening`) REFERENCES `keu_detilrekening` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tahunajaranFK7` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of keu_rekeningbiaya
 -- ----------------------------
-INSERT INTO `keu_rekeningbiaya` VALUES ('1', '3', '1', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('2', '3', '1', '5', '10');
-INSERT INTO `keu_rekeningbiaya` VALUES ('3', '3', '1', '12', '200');
-INSERT INTO `keu_rekeningbiaya` VALUES ('4', '3', '2', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('5', '3', '2', '5', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('6', '3', '2', '12', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('7', '3', '3', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('8', '3', '3', '5', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('9', '3', '3', '12', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('10', '4', '1', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('11', '4', '1', '5', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('12', '4', '1', '12', '194');
-INSERT INTO `keu_rekeningbiaya` VALUES ('13', '4', '2', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('14', '4', '2', '5', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('15', '4', '2', '12', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('16', '4', '3', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('17', '4', '3', '5', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('18', '4', '3', '12', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('19', '7', '1', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('20', '7', '1', '5', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('21', '7', '1', '12', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('22', '7', '2', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('23', '7', '2', '5', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('24', '7', '2', '12', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('25', '7', '3', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('26', '7', '3', '5', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('27', '7', '3', '12', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('28', '8', '1', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('29', '8', '1', '5', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('30', '8', '1', '12', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('31', '8', '2', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('32', '8', '2', '5', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('33', '8', '2', '12', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('34', '8', '3', '3', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('35', '8', '3', '5', '2');
-INSERT INTO `keu_rekeningbiaya` VALUES ('36', '8', '3', '12', '2');
+INSERT INTO `keu_rekeningbiaya` VALUES ('1', '3', '1', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('2', '3', '1', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('3', '3', '1', '12');
+INSERT INTO `keu_rekeningbiaya` VALUES ('4', '3', '2', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('5', '3', '2', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('6', '3', '2', '12');
+INSERT INTO `keu_rekeningbiaya` VALUES ('7', '3', '3', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('8', '3', '3', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('9', '3', '3', '12');
+INSERT INTO `keu_rekeningbiaya` VALUES ('10', '4', '1', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('11', '4', '1', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('12', '4', '1', '12');
+INSERT INTO `keu_rekeningbiaya` VALUES ('13', '4', '2', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('14', '4', '2', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('15', '4', '2', '12');
+INSERT INTO `keu_rekeningbiaya` VALUES ('16', '4', '3', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('17', '4', '3', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('18', '4', '3', '12');
+INSERT INTO `keu_rekeningbiaya` VALUES ('19', '7', '1', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('20', '7', '1', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('21', '7', '1', '12');
+INSERT INTO `keu_rekeningbiaya` VALUES ('22', '7', '2', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('23', '7', '2', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('24', '7', '2', '12');
+INSERT INTO `keu_rekeningbiaya` VALUES ('25', '7', '3', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('26', '7', '3', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('27', '7', '3', '12');
+INSERT INTO `keu_rekeningbiaya` VALUES ('28', '8', '1', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('29', '8', '1', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('30', '8', '1', '12');
+INSERT INTO `keu_rekeningbiaya` VALUES ('31', '8', '2', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('32', '8', '2', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('33', '8', '2', '12');
+INSERT INTO `keu_rekeningbiaya` VALUES ('34', '8', '3', '3');
+INSERT INTO `keu_rekeningbiaya` VALUES ('35', '8', '3', '5');
+INSERT INTO `keu_rekeningbiaya` VALUES ('36', '8', '3', '12');
 
 -- ----------------------------
 -- Table structure for keu_saldorekening
@@ -1838,8 +1959,8 @@ CREATE TABLE `keu_saldorekening` (
 -- Records of keu_saldorekening
 -- ----------------------------
 INSERT INTO `keu_saldorekening` VALUES ('1184', '1', '3', '0', '0');
-INSERT INTO `keu_saldorekening` VALUES ('1185', '1', '5', '44444', '44444');
-INSERT INTO `keu_saldorekening` VALUES ('1186', '1', '12', '90000', '90000');
+INSERT INTO `keu_saldorekening` VALUES ('1185', '1', '5', '4500000', '4500000');
+INSERT INTO `keu_saldorekening` VALUES ('1186', '1', '12', '15000000', '15000000');
 INSERT INTO `keu_saldorekening` VALUES ('1187', '2', '3', '0', '0');
 INSERT INTO `keu_saldorekening` VALUES ('1188', '2', '5', '0', '0');
 INSERT INTO `keu_saldorekening` VALUES ('1189', '2', '12', '0', '0');

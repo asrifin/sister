@@ -42,7 +42,7 @@ var contentFR ='';
                                 +'<td id="detilanggaranTD"></td>'
                             +'</tr>'
                             +'<tr>'
-                                +'<td>Keterangan </td>'
+                                +'<td>Tujuan </td>'
                                 +'<td id="keteranganTD"></td>'
                             +'</tr>'
                             +'<tr>'
@@ -228,11 +228,13 @@ var contentFR ='';
         $('#cetakBC').on('click',function(){
             printPDF('anggaran');
         });
+        
         $('#cetak2BC').on('click',function(){
             printPDF('anggaran2');
         });$('#k_cetakBC').on('click',function(){
             printPDF('detilanggaran');
         });
+
         // search box
         $('#keteranganS,#detilanggaranS').on('keydown',function (e){ // kode grup
             if(e.keyCode == 13) viewTB();
@@ -243,7 +245,10 @@ var contentFR ='';
         $('#kategorianggaranS').on('change',function (){ // kode grup
             cmbtahunajaran('filter','')
         });
-        $('#departemenS,#tingkatS').on('change',function (){ // kode grup
+        $('#departemenS').on('change',function (){ // kode grup
+            cmbtingkat('filter',$(this).val(),'');
+        });
+        $('#tingkatS').on('change',function (){ // kode grup
              cmbkategorianggaran('filter','');
         });
     }); 
@@ -315,6 +320,7 @@ var contentFR ='';
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();
                 },500);
+                headerInfo();
             }
         });
 }
@@ -466,10 +472,10 @@ var contentFR ='';
             }
             if(typ=='form'){ //form 
                 $('#departemenTD').html(': '+dt.departemen[0].nama);
-                cmbtingkat('form','');
+                cmbtingkat('form',dt.departemen[0].replid,'');
             }else{ // filter
                 $('#departemenS').html(out);
-                cmbtingkat('filter','');
+                cmbtingkat('filter',dt.departemen[0].replid,'');
             }
         });
     }
@@ -500,9 +506,9 @@ var contentFR ='';
         });
     }
 // combo tingkat ---
-    function cmbtingkat(typ,ting){
+    function cmbtingkat(typ,dep,ting){
         u =dir5;
-        d ='aksi=cmb'+mnu5+'&departemen='+$('#departemenS').val();
+        d ='aksi=cmb'+mnu5+'&departemen='+dep+(ting!=''?'&replid='+ting:'');
         ajax(u,d).done(function (dt){
             var out='';
             if(dt.status!='sukses'){
@@ -641,4 +647,18 @@ var contentFR ='';
     // number to currency (ex : 500000 -> 500.000)  
     Number.prototype.setCurr=function(){
         return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
+    }
+
+    function  headerInfo () {
+        var thn = $('#tahunajaranS').val();
+        var kat = $('#kategorianggaranS').val();
+        if(thn=='' || kat==''){
+            $('#anggaranKuotaPerKategoriTB').val('Rp. 0');
+        }else{
+            var u = dir ;
+            var d = 'aksi=headerInfo&tahunajaran='+$('#tahunajaranS').val()+'&kategorianggaran='+$('#kategorianggaranS').val();
+            ajax(u,d).done(function  (dt) {
+                $('#anggaranKuotaPerKategoriTB').val(dt.anggaranKuotaPerKategori);
+            });
+        }
     }
