@@ -3,136 +3,15 @@ if (!defined('AURACMS_admin')) {
 	Header("Location: ../index.php");
 	exit;
 }
-$style_include[] = <<<style
-<style type="text/css">
-@import url("mod/news/css/news.css");
-</style>
-
-style;
-$JS_SCRIPT = <<<js
-<!-- TinyMCE -->
-<script type="text/javascript" src="js/tinymce/tinymce.min.js"></script>
+$JS_SCRIPT.= <<<js
 <script type="text/javascript">
-tinymce.init({
-        selector: "textarea",
-        plugins: [
-                "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
-                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-                "table contextmenu directionality emoticons template textcolor paste  textcolor filemanager"
-        ],
-
-        toolbar1: "| bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
-		toolbar2: "| cut copy paste pastetext | searchreplace | outdent indent blockquote | undo redo | link unlink anchor image media code jbimages | forecolor backcolor",
-		toolbar3: "| table | hr removeformat | subscript superscript | charmap emoticons | print fullscreen | ltr rtl | spellchecker | visualchars visualblocks nonbreaking template pagebreak restoredraft",
-        menubar: false,
-        toolbar_items_size: 'small',
-		image_advtab: true,
-forced_root_block : false,
-    force_p_newlines : 'false',
-    remove_linebreaks : false,
-    force_br_newlines : true,
-    remove_trailing_nbsp : false,
-    verify_html : false,
-        templates: [
-                {title: 'Test template 1', content: 'Test 1'},
-                {title: 'Test template 2', content: 'Test 2'}
-        ]
-		
-});</script>
-<!-- /TinyMCE -->
-<script type=text/javascript>
-
-	var allowsef = 1;
-		
-	// generate SEF urls 	
-	function genSEF(from,to) { 
-		if (allowsef == 1) {
-			var str = from.value.toLowerCase();
-			str = str.replace(/[^a-zA-Z 0-9]+/g,'');
-			str = str.replace(/\s+/g, "-");		
-			to.value = str;
-		}
-	}
-		
-</script>
-
+  $(function() {
+$( "#tglmulai" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#tglakhir" ).datepicker({ dateFormat: "yy-mm-dd" } );
+$( "#tgl" ).datepicker({ dateFormat: "yy-mm-dd" } );
+  });
+  </script>
 js;
-$style_include[] .= '<link rel="stylesheet" media="screen" href="mod/calendar/css/dynCalendar.css" />';
-$admin .= '
-<script language="javascript" type="text/javascript" src="mod/calendar/js/browserSniffer.js"></script>
-<script language="javascript" type="text/javascript" src="mod/calendar/js/dynCalendar.js"></script>';
-$wkt = <<<eof
-<script language="JavaScript" type="text/javascript">
-    
-    /**
-    * Example callback function
-    */
-    /*<![CDATA[*/
-    function exampleCallback_ISO3(date, month, year)
-    {
-        if (String(month).length == 1) {
-            month = '0' + month;
-        }
-    
-        if (String(date).length == 1) {
-            date = '0' + date;
-        }    
-        document.forms['posts'].tgl.value = year + '-' + month + '-' + date;
-    }
-    calendar3 = new dynCalendar('calendar3', 'exampleCallback_ISO3');
-    calendar3.setMonthCombo(true);
-    calendar3.setYearCombo(true);
-/*]]>*/     
-</script>
-eof;
-$wktmulai = <<<eof
-<script language="JavaScript" type="text/javascript">
-    
-    /**
-    * Example callback function
-    */
-    /*<![CDATA[*/
-    function exampleCallback_ISO3(date, month, year)
-    {
-        if (String(month).length == 1) {
-            month = '0' + month;
-        }
-    
-        if (String(date).length == 1) {
-            date = '0' + date;
-        }    
-        document.forms['posts'].tglmulai.value = year + '-' + month + '-' + date;
-    }
-    calendar3 = new dynCalendar('calendar3', 'exampleCallback_ISO3');
-    calendar3.setMonthCombo(true);
-    calendar3.setYearCombo(true);
-/*]]>*/     
-</script>
-eof;
-$wktakhir = <<<eof
-<script language="JavaScript" type="text/javascript">
-    
-    /**
-    * Example callback function
-    */
-    /*<![CDATA[*/
-    function exampleCallback_ISO2(date, month, year)
-    {
-        if (String(month).length == 1) {
-            month = '0' + month;
-        }
-    
-        if (String(date).length == 1) {
-            date = '0' + date;
-        }    
-        document.forms['posts'].tglakhir.value = year + '-' + month + '-' + date;
-    }
-    calendar2 = new dynCalendar('calendar2', 'exampleCallback_ISO2');
-    calendar2.setMonthCombo(true);
-    calendar2.setYearCombo(true);
-/*]]>*/     
-</script>
-eof;
 $JS_SCRIPT.= <<<js
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function() {
@@ -200,12 +79,12 @@ $admin .= '
 $admin .= '
 	<tr>
 		<td width="200px">Tanggal Mulai</td>
-		<td><input type="text" name="tglmulai" value="'.$tglmulai.'" class="form-control">&nbsp;'.$wktmulai.'</td>
+		<td><input type="text" name="tglmulai" value="'.$tglmulai.'" class="form-control"id="tglmulai"></td>
 	</tr>';
 $admin .= '
 	<tr>
 		<td width="200px">Tanggal Akhir</td>
-		<td><input type="text" name="tglakhir" value="'.$tglakhir.'" class="form-control">&nbsp;'.$wktakhir.'</td>
+		<td><input type="text" name="tglakhir"id="tglakhir" value="'.$tglakhir.'" class="form-control">&nbsp;'.$wktakhir.'</td>
 	</tr>';
 $admin .= '<tr>
 	<td></td>
@@ -400,7 +279,7 @@ $admin .= '
 	<tr>
 		<td>Tanggal</td>
 		<td>:</td>
-		<td><input type="text" name="tgl" value="'.$tgl.'">&nbsp;'.$wkt.'</td>
+		<td><input type="text" name="tgl" id="tgl" value="'.$tgl.'"class="form-control"></td>
 	</tr>
 	<tr>
 		<td>Nama Biaya</td>

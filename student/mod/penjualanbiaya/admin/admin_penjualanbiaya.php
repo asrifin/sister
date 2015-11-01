@@ -119,8 +119,8 @@ $admin .= '<div class="error"><b>Gagal Menambah Transaksi Biaya.</b></div>';
 }	
 }
 
-if(isset($_POST['hapusbiaya'])){
-$kode 		= $_POST['kode'];
+if(isset($_GET['hapusbiaya'])){
+$kode 		= $_GET['kode'];
 foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
 	{
@@ -287,7 +287,7 @@ $admin .= '
 		<td>'.$subtotal.'</td>
 		<td>'.$subtotal.'</td>
 		<td>
-		<a href="./admin.php?pilih=penjualanjasa&mod=yes&hapusbarang=ok&kode='.$kode.'" class="btn btn-danger">HAPUS</a></td>
+		<a href="./admin.php?pilih=penjualanbiaya&mod=yes&hapusbiaya=ok&kode='.$kode.'" class="btn btn-danger">HAPUS</a></td>
 	</tr>';
 	$total +=$subtotal;
 	$no++;

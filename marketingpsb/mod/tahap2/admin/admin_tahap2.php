@@ -147,7 +147,7 @@ $admin .= '
 	<tr>
 		<td>testmandarin</td>
 		<td>:</td>
-		<td><input type="text" name="testmandarin" id="idmandarin" size="25"class="form-control"  value="'.$testmandarin.'" ></td>
+		<td><input type="text" name="testmandarin" id="idtestmandarin" size="25"class="form-control"  value="'.$testmandarin.'" ></td>
 	</tr>
 	<tr>
 		<td>testenglish</td>

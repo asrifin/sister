@@ -100,8 +100,8 @@ if(isset($_POST['deletecustomer'])){
 penjualanjasarefresh();
 }
 
-if(isset($_POST['hapusjasa'])){
-$kode 		= $_POST['kode'];
+if(isset($_GET['hapusjasa'])){
+$kode 		= $_GET['kode'];
 foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
 	{
@@ -227,14 +227,14 @@ $admin .= '
 	<tr>
 		<td>Customer</td>
 		<td>:</td>
-		<td><select name="kodecustomer" id="combobox">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM psb_calonsiswa ORDER BY nama asc");
-$admin .= '<option value="">== Customer ==</option>';
-while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
-$pilihanj = ($datasj['replid']==$kodecustomer)?"selected":'';
-$admin .= '<option value="'.$datasj['replid'].'"'.$pilihanj.'>'.$datasj['nama'].'</option>';
+		<td><select class="form-select" name="kodecustomer"id="combobox">';
+$hasil = $koneksi_db->sql_query( "SELECT nis as kode,nama FROM aka_siswa ORDER BY nama ASC" );
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$pilihan = ($data['kode']==$kodecustomer)?"selected":'';
+	$admin .= '
+			<option value="'.$data['kode'].'"'.$pilihan.'>'.$data['nama'].'</option>';
 }
-$admin .='</select>
+	$admin .= '</select>
 		<td>Cara Pembayaran</td>
 		<td>:</td>
 		<td>'.$sel2.'</td>
@@ -306,7 +306,7 @@ $admin .= '
 		<td>'.$subtotal.'</td>
 		<td>'.$subtotal.'</td>
 		<td>
-		<a href="./admin.php?pilih=penjualanjasa&mod=yes&hapusbarang=ok&kode='.$kode.'" class="btn btn-danger">HAPUS</a></td>
+		<a href="./admin.php?pilih=penjualanjasa&mod=yes&hapusjasa=ok&kode='.$kode.'" class="btn btn-danger">HAPUS</a></td>
 	</tr>';
 	$total +=$subtotal;
 	$no++;

@@ -113,12 +113,21 @@ echo '
 		<td>:</td>
 		<td>'.getnamakelasnis($kodecustomer).'</td>
 	</tr>';	
+	if($sel2=='Pemesanan'){
+echo '
+	<tr>
+		<td>Status</td>
+		<td>:</td>
+		<td>'.($sel2).'</td>
+	</tr>';		
+	}else{
 echo '
 	<tr>
 		<td>Cara Pembayaran</td>
 		<td>:</td>
 		<td>'.($sel2).'</td>
 	</tr>';	
+	}
 echo '</table>';	
 echo '<b>Detail</b>';	
 echo '
