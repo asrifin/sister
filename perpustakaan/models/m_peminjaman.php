@@ -174,7 +174,7 @@
 				switch ($_POST['subaksi']) {
 					case 'sirkulasi':
 						// $member  = isset($_POST['memberS'])?filter(trim($_POST['memberS'])):'';
-						$member = isset($_POST['memberS']) && $_POST['memberS']!=''?' pj.replid='.filter($_POST['memberS']).' AND ':'';
+						$member =  $_POST['memberS']!=''?' pj.mtipe='.filter($_POST['memberS']).' AND ':'';
 						$barkode = isset($_POST['barkodeS'])?filter(trim($_POST['barkodeS'])):'';
 						$judul   = isset($_POST['judulS'])?filter(trim($_POST['judulS'])):'';
 						$tgl1   = isset($_POST['tgl1TB'])?tgl_indo6($_POST['tgl1TB']):'';
@@ -200,7 +200,7 @@
 										LEFT JOIN pus_buku pb ON pb.replid = pj.buku
 										LEFT JOIN pus_katalog pk ON pk.replid = pb.katalog
 									WHERE 
-										member like "%'.$member.'%" AND
+										'.$member.'
 										judul like "%'.$judul.'%" AND
 										barkode like "%'.$barkode.'%" AND
 										pj.tanggal1 between "'.$tgl1.'" AND "'.$tgl2.'" 
@@ -208,7 +208,7 @@
 										';
 										// tgl_pinjam between "'.tgl_indo6($_POST['tgl1TB']).'" AND "'.tgl_indo6($_POST['tgl2TB']).'" 
 						// print_r($sql);exit();
-						// var_dump($sql);exit(); 	
+						var_dump($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{

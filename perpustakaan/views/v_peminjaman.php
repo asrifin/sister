@@ -32,11 +32,11 @@
                 <div class="place-right">
 
                 <div class="input-control text span2" data-role="datepicker" data-format="dd-mm-yyyy" data-position="top" data-effect="slide">
-                    <input type="text" id="tgl1TB" name="tgl1TB" class="cari">
+                    <input type="text" id="tgl1TB" name="tgl1TB" class="sirkulasi_cari">
                     <button class="btn-date"></button>
                 </div> s/d
                 <div class="input-control text span2" data-role="datepicker" data-format="dd-mm-yyyy" data-position="top" data-effect="slide">
-                    <input type="text" id="tgl2TB" name="tgl2TB" class="cari">
+                    <input type="text" id="tgl2TB" name="tgl2TB" class="sirkulasi_cari">
                     <button class="btn-date"></button>
                 </div> 
                     <a href="#" onclick="viewTB('sirkulasi');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
@@ -68,7 +68,7 @@
                                     <th class="text-left"></th>
                                     <th class="text-center">
                                         <div class="input-control select">
-                                            <select onchange="viewTB();" data-hint="Peminjam" id="memberS" class="cari">
+                                            <select data-hint="Peminjam" id="memberS" class="sirkulasi_cari">
                                                 <option value="">Semua</option>
                                                 <option value="1">Siswa</option>
                                                 <option value="2">Guru</option>
@@ -77,13 +77,13 @@
                                         </div>
                                     </th>
                                     <!-- <th class="text-left"><input class="cari" placeholder="Id Member atau Nama" id="memberS" name="memberS"></th> -->
-                                    <th class="text-left"><input class="cari" placeholder="Barkode" id="barkodeS" name="barkodeS"></th>
-                                    <th class="text-left"><input class="cari" placeholder="Judul" id="judulS" name="judulS"></th>
+                                    <th class="text-left"><input class="sirkulasi_cari" placeholder="Barkode" id="barkodeS" name="barkodeS"></th>
+                                    <th class="text-left"><input class="sirkulasi_cari" placeholder="Judul" id="judulS" name="judulS"></th>
                                     <th class="text-left"></th>
                                     <th class="text-left"></th>
                                     <th class="text-center">
                                         <div class="input-control select">
-                                            <select onchange="viewTB();" data-hint="terlambat" id="terlambatS" class="cari"></select>
+                                            <select onchange="viewTB();" data-hint="terlambat" id="terlambatS" class="sirkulasi_cari"></select>
                                         </div>
                                     </th>
                                     <th class="text-left"></th>

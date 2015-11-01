@@ -209,7 +209,7 @@ var pinjamArr= kembaliArr =[];
         });
 
         //search sirkulasi---
-        $('#memberS,#barkodeS,#judulS').on('keydown',function (e){ 
+        $('#barkodeS,#judulS').on('keydown',function (e){ 
             if(e.keyCode == 13)  viewTB('sirkulasi');
         });
         
@@ -219,6 +219,9 @@ var pinjamArr= kembaliArr =[];
         });
         $('#lokasiS').on('change',function(){
             viewTB('statistik');
+        });
+        $('#memberS').on('change',function(){
+            viewTB('sirkulasi');
         });
 
         // set default this month
