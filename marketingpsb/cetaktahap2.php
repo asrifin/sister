@@ -7,6 +7,7 @@ global $koneksi_db,$url_situs;
 $golongan 		= $_GET['golongan'];
 $lokasi 		= $_GET['lokasi'];
 $gelombang 		= $_GET['gelombang'];
+$tingkat 		= $_GET['tingkat'];
 if($golongan=='Semua'){
          $wheregolongan="";
 }else{
@@ -22,7 +23,11 @@ if($gelombang=='Semua'){
 }else{
          $wheregelombang="and gelombang='$gelombang'";
 }
-
+if($tingkat=='Semua'){
+         $wheretingkat="";
+}else{
+         $wheretingkat="and tingkat='$tingkat'";
+}
 echo "<html><head><title>Laporan Tahap 2</title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
@@ -57,7 +62,7 @@ echo'
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
 if(!$detail){
-echo'<tr><td colspan="7"><h4>Laporan Tahap 2, Golongan :'.getgolongan($golongan).', Gelombang :'.getgelombang($gelombang).', Lokasi :'.getlokasi($lokasi).'</h4></td></tr>';
+echo'<tr><td colspan="7"><h4>Laporan Tahap 2, Golongan :'.getgolongan($golongan).', Gelombang :'.getgelombang($gelombang).', Lokasi :'.getlokasi($lokasi).', Tingkat :'.gettingkat($tingkat).'</h4></td></tr>';
 echo '
 <tr class="border">
             <td>No</td>
@@ -79,7 +84,7 @@ echo '
 		   <th>Diterima/Tidak</th>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM psbcalon_siswa where id<>'' $wheregolongan $wherelokasi $wheregelombang  order by id asc");	
+$s = mysql_query ("SELECT * FROM psbcalon_siswa where id<>''and freetrial <>'' $wheregolongan $wherelokasi $wheregelombang $wheretingkat  order by id asc");	
 while($data = mysql_fetch_array($s)){
 $kode=$data['kode'];
 $nama=$data['nama'];
@@ -108,15 +113,15 @@ echo '
 			<td>'.getgelombang($gelombang).'</td>
 			<td>'.gettingkat($tingkat).'</td>
             <td>'.$ket2.'</td>
-            <td>'.$followup.'</td>
-			<td>'.$freetrial.'</td>
-			<td>'.$beliform.'</td>
-			<td>'.$psikotest.'</td>
-			<td>'.$testmandarin.'</td>
-			<td>'.$testenglish.'</td>
-			<td>'.$testmath.'</td>
-			<td>'.$wawancaraortu.'</td>
-			<td>'.$diterima.'</td>
+            <td>'.tglindo($followup).'</td>
+			<td>'.tglindo($freetrial).'</td>
+			<td>'.tglindo($beliform).'</td>
+			<td>'.tglindo($psikotest).'</td>
+			<td>'.tglindo($testmandarin).'</td>
+			<td>'.tglindo($testenglish).'</td>
+			<td>'.tglindo($testmath).'</td>
+			<td>'.tglindo($wawancaraortu).'</td>
+			<td>'.tglindo($diterima).'</td>
 </tr>';
 $no++;
 }

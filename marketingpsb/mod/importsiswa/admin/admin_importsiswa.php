@@ -47,40 +47,47 @@ $jumlah = $cell->rowcount($sheet_index=0);
  
 $i = 2; // dimulai dari ke dua karena baris pertama berisi title
 while( $i<=$jumlah ){
- 
-   //$cell->val( baris,kolom )
-   $kode = $cell->val( $i,1 );
-   $nama  = $cell->val( $i,2 );
-   $kelamin = $cell->val( $i,3 );
-    $tgllahir = $cell->val( $i,4 );
-    $namaortu = $cell->val( $i,5 );
-	$telp = $cell->val( $i,6 );
-	$hp = $cell->val( $i,6 );
-	$email = $cell->val( $i,7 );
-	$alamat = $cell->val( $i,8 );
-	$freetrial=$cell->val( $i,9 );
 
+   //$cell->val( baris,kolom )
+$kode = $cell->val( $i,1 );
+$nama  = $cell->val( $i,2 );
+$kelamin = $cell->val( $i,3 );
+$tgllahir = $cell->val( $i,4 );
+$namaortu = $cell->val( $i,5 );
+$telp = '';
+$hp = $cell->val( $i,6 );
+$email = $cell->val( $i,7 );
+$alamat = $cell->val( $i,8 );
+$freetrial=$cell->val( $i,9 );
 $beliform=$cell->val( $i,10 );
-	$observasi=$cell->val( $i,11 );
+$observasi=$cell->val( $i,11 );
 $psikotest=$cell->val( $i,12 );
 $joiningfee=$cell->val( $i,13 );
-$dpp=$cell->valval( $i,14 );
+$dpp=$cell->val( $i,14 );
 $uangseragam=$cell->val( $i,15 );
 $uangbuku=$cell->val( $i,16 );
-	$info =$cell->val( $i,17 );
-$info=addslashes($info);
-if($username<>'' and $password<>''){
-$hasil  =  "INSERT INTO `psbcalon_siswa`VALUES ('','$kode','$nama','$lokasi','$golongan','$gelombang','$tingkat','$tgllahir','$namaortu','$alamat','$kota','$telp','$hp','$ket','$asalsekolah','$info','$kelamin','$info','$followup','$kelamin')";
-$sql ="INSERT INTO `useraura` (`user`,`password`,`nama`) VALUES ('$username','$password','$nama')";
+$ket =$cell->val( $i,17 );
+$ket=addslashes($ket);
+$ket2='';
+$info='sebelum pameran';
+$kota ='';
+$asalsekolah='';
+$followup='';
+$testmandarin='';
+$testenglish='';
+$testmath='';
+$wawancaraortu='';
+$diterima='';
+$uangmaterial='';
+
+$sql  =  "INSERT INTO `psbcalon_siswa`VALUES ('','$kode','$nama','$lokasi','$golongan','$gelombang','$tingkat','$tgllahir','$namaortu','$alamat','$kota','$telp','$hp','$ket','$asalsekolah','$info','$kelamin','$ket2','$followup','$freetrial','$beliform','$psikotest','$testmandarin','$testenglish','$testmath','$wawancaraortu','$diterima','$joiningfee','$dpp','$uangseragam','$uangbuku','$uangmaterial')";
 $hasil = mysql_query( $sql );
 if($hasil){
 $sukses++;
 }else{
 $gagal++;
 }
-}else{
-$gagal++;	
-}
+
    $i++;
 }
  //tampilkan report hasil import
@@ -95,26 +102,56 @@ $admin .='
  <form method="post" enctype="multipart/form-data" action="">
  <table class="table table-striped table-hover">
  <tr>
-		<td>Kelas</td>
+	<td>Lokasi</td>
 		<td>:</td>
-		<td>
-<select name="kelas" class="form-control">';
-$hasil = $koneksi_db->sql_query("SELECT * FROM kelas ORDER BY kelas");
-$admin .= '<option value="">== Pilih Kelas ==</option>';
+	<td><select name="lokasi" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * FROM departemen ORDER BY nama asc");
+$admin .= '<option value="">== Lokasi ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
-$admin .= '<option value="'.$datas['id'].'" '.$pilihan.'>'.$datas['kelas'].'</option>';
+$pilihan = ($datas['replid']==$lokasi)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['nama'].'</option>';
 }
 $admin .='</select></td>
-	</tr>
- <tr>
+</tr>
+<tr>
+	<td>Golongan</td>
+		<td>:</td>
+	<td><select name="golongan" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * from psb_golongan");
+$admin .= '<option value="">== Golongan ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$golongan)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['golongan'].'</option>';
+}
+$admin .='</select></td>
+</tr>
+<tr>
+	<td>Gelombang</td>
+		<td>:</td>
+	<td><select name="gelombang" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * from psb_gelombang");
+$admin .= '<option value="">== Gelombang ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$gelombang)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['gelombang'].'</option>';
+}
+$admin .='</select></td>
+</tr>
+<tr>
+	<td>Tingkat</td>
+		<td>:</td>
+	<td><select name="tingkat" class="form-control" required>';
+$hasil = $koneksi_db->sql_query("SELECT * from aka_tingkat");
+$admin .= '<option value="">== Tingkat ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$tingkat)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['tingkat'].'</option>';
+}
+$admin .='</select></td>
+</tr>
 	<td>Silakan Pilih File Excel </td>
 	<td>:</td>
 	<td><input name="upfile" type="file"></td>
- </tr>
- <tr>
-	<td>Contoh File Excel </td>
-	<td>:</td>
-	<td><a href="mod/importsiswa/admin/importsiswa.xls">importsiswa.xls</a></td>
  </tr>
  <tr>
 	<td></td>

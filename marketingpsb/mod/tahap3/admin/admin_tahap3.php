@@ -174,7 +174,7 @@ $admin.='
     </thead>';
 	$admin.='<tbody>';
 //$hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa where diterima<>''" );
-$hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa where diterima <> ''" );
+$hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa where diterima <> '' or joiningfee<>''" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $kode=$data['kode'];
 $nama=$data['nama'];
@@ -191,12 +191,12 @@ $admin.='<tr>
             <td>'.$nama.'</td>
             <td>'.getlokasi($lokasi).'</td>
             <td>'.getgolongan($golongan).'</td>
-            <td>'.$diterima.'</td>
-            <td>'.$joiningfee.'</td>
-			<td>'.$dpp.'</td>
-			<td>'.$uangseragam.'</td>
-			<td>'.$uangbuku.'</td>
-			<td>'.$uangmaterial.'</td>
+            <td>'.tglindo($diterima).'</td>
+            <td>'.tglindo($joiningfee).'</td>
+			<td>'.tglindo($dpp).'</td>
+			<td>'.tglindo($uangseragam).'</td>
+			<td>'.tglindo($uangbuku).'</td>
+			<td>'.tglindo($uangmaterial).'</td>
             <td> <a href="?pilih=tahap3&amp;mod=yes&amp;aksi=edit&amp;id='.$data['id'].'"><span class="btn btn-warning">Edit</span></a></td>
         </tr>';
 }   
@@ -211,7 +211,7 @@ $admin .= '<form class="form-inline" method="get" action="cetaktahap3.php" encty
 $admin .= '<tr>
 	<td>Lokasi</td>
 		<td>:</td>
-	<td><select name="lokasi" class="form-control" id="lokasi" required>';
+	<td><select name="lokasi" class="form-control" id="lokasi" >';
 $hasil = $koneksi_db->sql_query("SELECT * FROM departemen ORDER BY nama asc");
 $admin .= '<option value="Semua">== Semua Lokasi ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
@@ -223,7 +223,7 @@ $admin .='</select></td>
 <tr>
 	<td>Golongan</td>
 		<td>:</td>
-	<td><select name="golongan" class="form-control" id="golongan" required>';
+	<td><select name="golongan" class="form-control" id="golongan" >';
 $hasil = $koneksi_db->sql_query("SELECT * from psb_golongan order by replid asc");
 $admin .= '<option value="Semua">== Semua Golongan ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
@@ -235,7 +235,7 @@ $admin .='</select></td>
 $admin .= '<tr>
 	<td>gelombang</td>
 		<td>:</td>
-	<td><select name="gelombang" class="form-control" id="gelombang" required>';
+	<td><select name="gelombang" class="form-control" id="gelombang" >';
 $hasil = $koneksi_db->sql_query("SELECT * from psb_gelombang order by replid asc");
 $admin .= '<option value="Semua">== Semua Gelombang ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
@@ -244,8 +244,20 @@ $admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['gelombang
 }
 $admin .='</select></td>
 </tr>';
+$admin .='<tr>
+	<td>Tingkat</td>
+		<td>:</td>
+	<td><select name="tingkat" class="form-control">';
+$hasil = $koneksi_db->sql_query("SELECT * from aka_tingkat");
+$admin .= '<option value="Semua">== Tingkat ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$tingkat)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['tingkat'].'</option>';
+}
+$admin .='</select></td>
+</tr>';
 $admin .= '<tr>
-	<td></td>
+	<td></td><td></td>
 	<td><input type="submit" value="Cetak" name="submit" class="btn btn-success"></td>
 	</tr>
 </table></form>';
