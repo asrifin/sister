@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-10-28 14:28:14
+Date: 2015-11-02 20:37:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -4791,7 +4791,6 @@ INSERT INTO `aka_siswakelas` VALUES ('42', '191', '170');
 INSERT INTO `aka_siswakelas` VALUES ('44', '180', '170');
 INSERT INTO `aka_siswakelas` VALUES ('45', '193', '157');
 INSERT INTO `aka_siswakelas` VALUES ('46', '194', '157');
-INSERT INTO `aka_siswakelas` VALUES ('47', '195', '157');
 INSERT INTO `aka_siswakelas` VALUES ('48', '196', '157');
 INSERT INTO `aka_siswakelas` VALUES ('49', '197', '157');
 INSERT INTO `aka_siswakelas` VALUES ('50', '198', '157');

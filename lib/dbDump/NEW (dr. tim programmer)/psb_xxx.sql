@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-10-28 14:28:02
+Date: 2015-11-02 20:36:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -2308,7 +2308,6 @@ INSERT INTO `psb_siswa` VALUES ('191', '12', null, 'suzzan', '14', '', '', '1', 
 INSERT INTO `psb_siswa` VALUES ('192', '13', null, 'nana', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('193', '14', null, 'Cindy Frederricka', '123', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '13_fc0095bb80.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('194', '15', null, 'Jhony English', '124', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '13_8be84376be.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('195', '16', null, 'Sandy Wijaya', '125', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('196', '17', null, 'Marry Jane Riana', '126', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('197', '18', null, 'Sheryl Cecillia', '127', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('198', '19', null, 'Gerrard Brandon Chen', '212', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '13_da6c11582c.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
@@ -3325,7 +3324,6 @@ INSERT INTO `psb_siswaayah` VALUES ('44', '191', 'albert', '', '0000-00-00', '0'
 INSERT INTO `psb_siswaayah` VALUES ('45', '192', 'ani', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaayah` VALUES ('46', '193', 'josh Farro', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaayah` VALUES ('47', '194', 'Mc Gyver', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO `psb_siswaayah` VALUES ('48', '195', 'sihong thok', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaayah` VALUES ('49', '196', 'Bondan Hoek Toeng', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaayah` VALUES ('50', '197', 'Doni Kurniawan', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaayah` VALUES ('51', '198', 'Bhak Tong Tjik', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
@@ -3414,10 +3412,6 @@ INSERT INTO `psb_siswabiaya` VALUES ('658', '194', '6332', '5', '1', '5', '', '0
 INSERT INTO `psb_siswabiaya` VALUES ('659', '194', '6330', '2', '0', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('660', '194', '6331', '2', '0', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('661', '194', '6333', '2', '0', '0', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('662', '195', '6332', '2', '0', '0', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('663', '195', '6330', '2', '0', '0', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('664', '195', '6331', '2', '0', '0', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('665', '195', '6333', '2', '0', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('666', '196', '6332', '2', '0', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('667', '196', '6330', '2', '0', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('668', '196', '6331', '2', '0', '0', '', '0');
@@ -3540,7 +3534,6 @@ INSERT INTO `psb_siswaibu` VALUES ('44', '191', 'sussy', '', '0000-00-00', '0', 
 INSERT INTO `psb_siswaibu` VALUES ('45', '192', 'nini', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaibu` VALUES ('46', '193', 'jenna rice', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaibu` VALUES ('47', '194', 'stella orange', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO `psb_siswaibu` VALUES ('48', '195', 'cece nini', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaibu` VALUES ('49', '196', 'Nadia Pratiwi Chen', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaibu` VALUES ('50', '197', 'Marina Soe Tik', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaibu` VALUES ('51', '198', 'Devyna Windiati', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
