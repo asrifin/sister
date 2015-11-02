@@ -142,9 +142,9 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                             +'<select  data-transform="input-control" onchange=" getBiaya();"  required id="subtingkatTB" name="subtingkatTB"></select>'
                                             +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // golongan
-                                            +'<label>Golongan</label>'
-                                            +'<select data-transform="input-control"  onchange=" getBiaya();"  required id="golonganTBZ" name="golonganTBs"></select>'
-                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
+                                            +'<label style="display:none;">Golongan</label>'
+                                            +'<select  style="display:none;" data-transform="input-control"  onchange=" getBiaya();"  required id="golonganTBZ" name="golonganTBs"></select>'
+                                            +'<sub  style="display:none;" class="fg-red place-right">*wajib diisi</sub>'
                                         +'</div>'
                                             
                                         // kolom2
@@ -1445,7 +1445,8 @@ function notif(cont,clr) {
                 $('#golonganS').html(out);
                 viewTB();
             }else{
-                $('#golonganTBZ').html('<option value="">-Pilih Golongan -</option>'+out);
+                // $('#golonganTBZ').html('<option value="">-Pilih Golongan -</option>'+out);
+                $('#golonganTBZ').html(out);
             }
         });
     }
