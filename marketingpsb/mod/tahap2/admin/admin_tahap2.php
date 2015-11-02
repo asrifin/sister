@@ -93,6 +93,16 @@ $testenglish=$data['testenglish'];
 $testmath=$data['testmath'];
 $wawancaraortu=$data['wawancaraortu'];
 $diterima=$data['diterima'];
+$sel = '<select name="diterima" class="form-control" required>';
+$arr = array ('pending','terima','tidak');
+foreach ($arr as $k=>$v){
+	if ($diterima == $v){
+	$sel .= '<option value="'.$v.'" selected="selected">'.$v.'</option>';
+	}else {
+	$sel .= '<option value="'.$v.'">'.$v.'</option>';	
+	}
+}
+$sel .= '</select>'; 
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Tambah Calon Siswa</h3></div>';
 $admin .= '
@@ -122,7 +132,7 @@ $admin .= '
 	<tr>
 		<td>keterangan</td>
 		<td>:</td>
-		<td><input type="text" name="ket2" size="25"class="form-control"  value="'.$ket2.'" required></td>
+		<td><input type="text" name="ket2" size="25"class="form-control"  value="'.$ket2.'"></td>
 	</tr>
 	<tr>
 		<td>followup</td>
@@ -167,7 +177,7 @@ $admin .= '
 	<tr>
 		<td>diterima</td>
 		<td>:</td>
-		<td><input type="text" name="diterima" id="idditerima" size="25"class="form-control" value="'.$diterima.'" ></td>
+		<td>'.$sel.'</td>
 	</tr>
 		<tr>
 		<td></td>
@@ -189,6 +199,8 @@ $admin.='
 			<th>Nama</th>
            <th>Lokasi</th>
            <th>Golongan</th>
+		   <th>Gelombang</th> 
+           <th>Tingkat</th>
            <th>Ket</th>
            <th>Follow Up</th>
 		   <th>Free Trial</th>
@@ -203,12 +215,14 @@ $admin.='
         </tr>
     </thead>';
 	$admin.='<tbody>';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa where freetrial <>''" );
+$hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa order by kode asc" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $kode=$data['kode'];
 $nama=$data['nama'];
 $golongan=$data['golongan'];
+$gelombang=$data['gelombang'];
 $lokasi=$data['lokasi'];
+$tingkat=$data['tingkat'];
 $ket2=$data['ket2'];
 $followup=$data['followup'];
 $freetrial=$data['freetrial'];
@@ -224,6 +238,8 @@ $admin.='<tr>
             <td>'.$nama.'</td>
             <td>'.getlokasi($lokasi).'</td>
             <td>'.getgolongan($golongan).'</td>
+			<td>'.getgelombang($gelombang).'</td>
+            <td>'.gettingkat($tingkat).'</td>
             <td>'.$ket2.'</td>
             <td>'.tglindo($followup).'</td>
 			<td>'.tglindo($freetrial).'</td>
@@ -233,7 +249,7 @@ $admin.='<tr>
 			<td>'.tglindo($testenglish).'</td>
 			<td>'.tglindo($testmath).'</td>
 			<td>'.tglindo($wawancaraortu).'</td>
-			<td>'.tglindo($diterima).'</td>
+			<td>'.$diterima.'</td>
             <td> <a href="?pilih=tahap2&amp;mod=yes&amp;aksi=edit&amp;id='.$data['id'].'"><span class="btn btn-warning">Edit</span></a></td>
         </tr>';
 }   

@@ -84,7 +84,7 @@ echo '
 		   <th>Diterima/Tidak</th>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM psbcalon_siswa where id<>''and freetrial <>'' $wheregolongan $wherelokasi $wheregelombang $wheretingkat  order by id asc");	
+$s = mysql_query ("SELECT * FROM psbcalon_siswa where id<>'' $wheregolongan $wherelokasi $wheregelombang $wheretingkat  order by id asc");	
 while($data = mysql_fetch_array($s)){
 $kode=$data['kode'];
 $nama=$data['nama'];
@@ -121,7 +121,7 @@ echo '
 			<td>'.tglindo($testenglish).'</td>
 			<td>'.tglindo($testmath).'</td>
 			<td>'.tglindo($wawancaraortu).'</td>
-			<td>'.tglindo($diterima).'</td>
+			<td>'.$diterima.'</td>
 </tr>';
 $no++;
 }

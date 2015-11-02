@@ -80,7 +80,7 @@ echo '
 		   <th>Uang Material</th>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM psbcalon_siswa where id<>'' and joiningfee<>'' $wheregolongan $wherelokasi $wheregelombang $wheretingkat order by id asc");	
+$s = mysql_query ("SELECT * FROM psbcalon_siswa where id<>'' and diterima ='terima' $wheregolongan $wherelokasi $wheregelombang $wheretingkat order by id asc");	
 while($data = mysql_fetch_array($s)){
 $kode=$data['kode'];
 $nama=$data['nama'];
