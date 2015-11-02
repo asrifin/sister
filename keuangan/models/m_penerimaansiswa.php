@@ -199,44 +199,47 @@
 												idkwitansi = '.$idkw;
 
 				$e  = mysql_query($s);
-				$id = mysql_insert_id();
+				$idPenerimaanSiswa = mysql_insert_id();
 				if(!$e) $stat='gagal_insert_pembayaran';
 				else{
 					// 2. simpan transaksi
-						// tahunajaran   ='.getTahunAjaranByBiaya($_POST['idsiswabiayaTB']).',
-					$uraian = 'Pembayaran DPP siswa: Nama : ';
+					$idsiswa   = getField('idsiswa','vw_siswa_biaya','idsiswabiaya',$_POST['idsiswabiayaTB']);
+					$namasiswa = getField('namasiswa','psb_siswa','replid',$idsiswa);
+				//kelas --------
+					$sk='SELECT 	
+							concat((SELECT tingkat from aka_tingkat WHERE replid = idtingkat)," - ",
+							(SELECT subtingkat from aka_subtingkat WHERE replid = idsubtingkat),"",
+							(SELECT kelas from aka_kelas WHERE replid = idkelas ))kelas 
+						FROM vw_siswa_kelas 
+						WHERE 
+							idtahunajaran = "'.$_POST['idtahunajaranH'].'" AND 
+							idsiswa = "'.$idsiswa.'"';
+					$ek=mysql_query($sk);
+					$rk=mysql_fetch_assoc($ek);
+				// biaya
+					$biaya  = getField('(SELECT biaya FROM psb_biaya WHERE replid=idbiaya)','vw_siswa_biaya','idsiswabiaya',$_POST['idsiswabiayaTB']);
+					$uraian = 'Pembayaran '.$biaya.' siswa <br> Nama : '.$namasiswa.'<br> Kelas :'.$rk['kelas'];
+
 					$s2 = 'INSERT INTO keu_transaksi SET 	
-							idref             ='.$id.',
+							idref             ='.$idPenerimaanSiswa.',
 							idkwitansi        ='.getIdKwitansi().',
 							tanggal           ="'.tgl_indo6($_POST['tanggalTB']).'",
 							uraian            ="'.$uraian.'",
-							detjenistransaksi ='.getDetJenisTransaksi('siswa');
-					pr($s2);
-					/*$e2  = mysql_query($s2);
-					$id2 = mysql_insert_id();
+							detjenistransaksi ='.getDetJenisTransaksi('penerimaansiswa');
+					$e2  = mysql_query($s2);
+					$idTransaksi = mysql_insert_id();
 					if(!$e2) $stat='gagal_insert_transaksi';
 					else{
-						// 3. simpan jurnal
-						$s3 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekkasH'].', jenis = "d", nominal ='.$nominal;
-						$s4 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekitemH'].',jenis = "k", nominal ='.$nominal;
-						// $s3 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekkasH'].', debet ='.$nominal;
-						// $s4 = 'INSERT INTO keu_jurnal SET transaksi ='.$id2.', rek ='.$_POST['rekitemH'].', kredit ='.$nominal;
-						$e3 = mysql_query($s3);
-						$e4 = mysql_query($s4);
-
-						if(!$e3 OR !$e4) $stat = 'gagal_insert_jurnal';
-						else{
-							// 4. update saldo rekening
-							$s5   = 'UPDATE keu_saldorekening SET nominal2 = nominal2 + '.$nominal.' WHERE rekening ='.$_POST['rekkasH'].' AND tahunbuku='.getTahunBuku('replid');
-							$s6   = 'UPDATE keu_saldorekening SET nominal2 = nominal2 - '.$nominal.' WHERE rekening ='.$_POST['rekitemH'].' AND tahunbuku='.getTahunBuku('replid');
-							// var_dump($s6);exit();
-							$e5   = mysql_query($s5);
-							$e6   = mysql_query($s6);
-							$stat = ($e5 OR $e6)?'sukses':'gagal_update_saldorekening';
-						}
-					}*/
-						// $stat='sukses';
-				}$out = json_encode(array('status'=>$stat,'idpembayaran'=>$id));
+						$iddepartemen  = getField('iddepartemen','vw_siswa_biaya','idsiswabiaya',$_POST['idsiswabiayaTB']);
+						$idtahunajaran = getField('idtahunajaran','vw_siswa_biaya','idsiswabiaya',$_POST['idsiswabiayaTB']);
+						$idbiaya       = getField('idbiaya','vw_siswa_biaya','idsiswabiaya',$_POST['idsiswabiayaTB']);
+						$idrekeningbiaya     = getRekeningBiaya($iddepartemen,$idtahunajaran,$idbiaya);
+						$detrekeningbiayaArr = getDetRekeningBiayaArr($idrekeningbiaya);
+					// insert jurnal + update saldo rekening
+						$addJurnal           = addJurnal($idTransaksi,$detrekeningbiayaArr,$nominal,$idtahunajaran);
+						$stat=!$addJurnal?'gagal_insert_jurnal':'sukses';
+					}
+				}$out = json_encode(array('status'=>$stat,'idpembayaran'=>$idPenerimaanSiswa));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -443,8 +446,11 @@
 			// generate barcode -----------------------------------------------------------
 			}
 	}echo $out;
-
-    // ---------------------- //
-    // -- created by rovi  -- //
-    // ---------------------- // 
+					// $f = '	concat((SELECT tingkat from aka_tingkat WHERE replid = idtingkat)," - ",
+					// 		(SELECT subtingkat from aka_subtingkat WHERE replid = idsubtingkat),"",
+					// 		(SELECT kelas from aka_kelas WHERE replid = idkelas ))kelas';
+					// $w=[];
+					// $w[]=['idtahunajaran','=',$_POST['idtahunajaranH']];
+					// $w[]=['idsiswa','=',$idsiswa];
+					// $kelas = getFieldArr4($f,'vw_siswa_kelas','',$w);
 ?>

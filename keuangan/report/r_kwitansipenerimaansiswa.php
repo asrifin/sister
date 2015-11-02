@@ -9,7 +9,7 @@
 
   // pr($_GET);
   $mod   ='PSB';
-  $x     = $_SESSION['id_loginS'].$_GET['idsiswabiayaTB'].$_GET['idpembayaran'];
+  $x     = $_SESSION['id_loginS'].$_GET['idsiswabiayaTB'].$_GET['idpenerimaansiswa'];
   $token = base64_encode($x);
 
   if(!isset($_SESSION)){ // belum login  
@@ -26,7 +26,7 @@
           <title>SISTER::'.$mod.' - '.$mnu.'</title>
         </head>';
         // $replid = (isset($_GET['replid']) AND $_GET['replid']!='')?filter($_GET['replid']):'';
-        $idpembayaran = (isset($_GET['idpembayaran']) AND $_GET['idpembayaran']!='')?filter($_GET['idpembayaran']):'';
+        $idpenerimaansiswa = (isset($_GET['idpenerimaansiswa']) AND $_GET['idpenerimaansiswa']!='')?filter($_GET['idpenerimaansiswa']):'';
         $idsiswabiaya = (isset($_GET['idsiswabiayaTB']) AND $_GET['idsiswabiayaTB']!='')?filter($_GET['idsiswabiayaTB']):'';
         $s = 'SELECT
                 p.nominal,
@@ -34,13 +34,13 @@
                 b.biaya,
                 s.namasiswa
               FROM
-                keu_pembayaran p
+                keu_penerimaansiswa p
                 JOIN psb_siswabiaya sb ON sb.replid = p.siswabiaya
                 JOIN psb_detailbiaya db ON db.replid = sb.detailbiaya
                 JOIN psb_biaya b ON b.replid = db.biaya
                 JOIN psb_siswa s ON s.replid = sb.siswa
               WHERE
-                p.replid = '.$idpembayaran;
+                p.replid = '.$idpenerimaansiswa;
         $e = mysql_query($s);
         $r = mysql_fetch_assoc($e);
         // pr($r);
@@ -64,7 +64,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="2" align="right">No. Kwitansi : '.nokwitansi($idpembayaran).'</td>
+                      <td colspan="2" align="right">No. Kwitansi : '.kwitansiPenerimaanSiswa($idpenerimaansiswa).'</td>
                     </tr>
                     <tr>
                       <td>Sudah terima dari </td>

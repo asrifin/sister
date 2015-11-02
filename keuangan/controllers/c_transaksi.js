@@ -980,7 +980,8 @@ var detilanggaranArr=rekArr=[];
                                 +'<th id="totNominalTD" class="text-right">Rp. 0</th>'
                                 +'<th colspan="2"></th>'
                             +'</tr>';
-                        if(typx=='in_come'){ //income
+                        // if(typx=='in_come'){ //income
+                        if(typx=='in'){ //income
                             $('#reklawanDV').html(' Pemasukan');
                             if(id=='') { // add
                                 kodeTrans(typx);
@@ -1170,14 +1171,13 @@ var detilanggaranArr=rekArr=[];
             var counter=0;
             $.each(dt.jenisArr,function(id,item){
                 out+='<li class="node">'
-                        +'<a href="#"><span class="node-toggle"></span>'+item.jenistrans+'</a>'
+                        +'<a href="#"><span class="node-toggle"></span>'+item.jenistransaksi+'</a>'
                             +'<ul>'
                     $.each(item.detjenisArr, function (id,item) {
                         out+='<li style="padding-left:20px;">'
                                 +'<label>'
-                                    +'<input class="detjenisCB" onchange="loadAll();" name="detjenisTB['+item.iddetjenis+']" checked="checked" type="checkbox"> '
-                                    // +'<input class="detjenisCB" onchange="viewTB(\'ju\')" name="detjenisTB['+item.iddetjenis+']" checked="checked" type="checkbox"> '
-                                        +item.detjenistrans+''
+                                    +'<input class="detjenisCB" onchange="loadAll();" name="detjenisTB['+item.iddetjenistranksi+']" checked="checked" type="checkbox"> '
+                                        +item.detjenistransaksi+''
                                 +'</label>'
                             +'</li>';
                     }); out+='</ul>'

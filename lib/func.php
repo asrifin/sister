@@ -106,8 +106,10 @@
 			foreach ($w as $i => $v)  {
 				$ww.='AND '.$v[0].' '.$v[1].' "'.($v[1]=='LIKE'?'%':'').$v[2].($v[1]=='LIKE'?'%':'').'" ';// replid = 13
 			}$s.=substr($ww,4);
-		}$e = mysql_query($s);
+		}
+		$e = mysql_query($s);
 		$r=mysql_fetch_assoc($e);
+		// pr($s);
 		return $r[$f];
 	}	
 	

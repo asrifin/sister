@@ -49,6 +49,8 @@ var contentFR = contentFR2 ='';
 
         contentFR+= '<form  style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpanSV(this); return false;" id="'+mnu+'FR">'
                         +'<input class="kwitansipenerimaansiswa_cari" id="idsiswabiayaTB" name="idsiswabiayaTB" type="hidden">' 
+                        +'<input id="idtahunajaranH" name="idtahunajaranH" type="hidden">' 
+                        
                         // info header 
                         +'<table class="table">'
                             +'<tr>'
@@ -406,6 +408,7 @@ var contentFR = contentFR2 ='';
                 ajax(u,d).done(function (dt){
                     if(dt.status!='sukses') notif(dt.status,'red'); 
                     else {
+                        $('#idtahunajaranH').val($('#tahunajaranS').val());
                     // save action (button)
                         if(dt.datax.lunasTotalAngsuran){
                             $('#simpanBC').attr('style','display:none;'); 
@@ -528,7 +531,7 @@ var contentFR = contentFR2 ='';
         });
         // if(mn=='kwitansipenerimaansiswa') {
         if(idx!='') {
-            if(mn=='kwitansipenerimaansiswa') par+='&idpembayaran='+idx;
+            if(mn=='kwitansipenerimaansiswa') par+='&idpenerimaansiswa='+idx;
             else  par+='&idsiswabiaya='+idx;
             
             tok+=idx;

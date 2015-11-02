@@ -207,14 +207,24 @@
 
 			// jenis transaksi (checkbox)
 			case 'jenistrans':
-				$s = 'SELECT replid idjenis, nama jenistrans from keu_jenistrans';
+				$s = '	SELECT
+							replid idjenistransaksi,
+							jenistransaksi
+						FROM
+							keu_jenistransaksi';
 				$e = mysql_query($s);
 				$jenisArr=array();
 				if(!$e) $stat='gagal_ambil_jenis-trans';
 				else{
 					while ($r=mysql_fetch_assoc($e)) {
-						$s2= 'SELECT replid iddetjenis, nama detjenistrans FROM keu_detjenistrans WHERE jenistrans='.$r['idjenis'];
-						// print_r($s2);exit();
+						$s2= 'SELECT
+								replid iddetjenistransaksi,
+								detjenistransaksi
+							FROM
+								keu_detjenistransaksi
+							WHERE
+								jenistransaksi ='.$r['idjenistransaksi'];
+				// pr($s2);
 						$e2=mysql_query($s2);
 						if(!$e2) $stat='gagal_ambil_detil-jenis-trans';
 						else{
@@ -222,9 +232,9 @@
 							while ($r2=mysql_fetch_assoc($e2)) {
 								$detjenisArr[]=$r2;
 							}$jenisArr[] = array(
-								'idjenis'     => $r['idjenis'],
-								'jenistrans'  => $r['jenistrans'],
-								'detjenisArr' =>$detjenisArr
+								'idjenistransaksi' => $r['idjenistransaksi'],
+								'jenistransaksi'   => $r['jenistransaksi'],
+								'detjenisArr'      => $detjenisArr
 							);$stat='sukses';
 						}
 				 	}$out=json_encode(array('status'=>$stat,'jenisArr'=>$jenisArr));
@@ -406,7 +416,7 @@
 					case 'ju':
 						$jurnalArr = $ju_detjenistrans ='';
 						if(isset($_POST['jenisAllCB'])){ //select all
-							$s='SELECT replid FROM keu_detjenistrans';
+							$s='SELECT replid FROM keu_detjenistransaksi';
 							$e=mysql_query($s);
 							while($r=mysql_fetch_assoc($e)){
 								$jurnalArr.=','.$r['replid'];
@@ -419,7 +429,7 @@
 							}else{
 								$jurnalArr=0;
 							}
-						}$ju_detjenistrans=' AND detjenistrans in('.$jurnalArr.')';
+						}$ju_detjenistrans=' AND detjenistransaksi in('.$jurnalArr.')';
 						// var_dump($jurnalArr);exit();
 						
 						$ju_no     = isset($_POST['ju_noS'])?filter($_POST['ju_noS']):'';
@@ -427,19 +437,19 @@
 						$sql       = 'SELECT * 
 									from '.$tb.' 
 									WHERE 
-										(nomer like "%'.$ju_no.'%" OR nobukti like "%'.$ju_no.'%" ) AND
+										(idkwitansi like "%'.$ju_no.'%" OR nobukti like "%'.$ju_no.'%" ) AND
 										uraian like "%'.$ju_uraian.'%" '.$ju_detjenistrans.' AND 
 										tanggal between "'.tgl_indo6($_POST['tgl1TB']).'" AND "'.tgl_indo6($_POST['tgl2TB']).'" 
 									ORDER BY	
 										replid DESC';
-						// print_r($sql);exit(); 	
+										// pr($sql);
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
 							$starting=0;
 						}
 
-						$recpage = 5;//jumlah data per halaman
+						$recpage = 10;//jumlah data per halaman
 						$aksi    ='tampil';
 						$subaksi ='ju';
 						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
@@ -451,29 +461,22 @@
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
-								$jDetTrans = getDetJenisTrans('jenistrans','replid',$res['detjenistrans']);
-								$jTrans    = getJenisTrans('kode',$jDetTrans);
-								if($jTrans=='ju'){
-									$j='ju';
-								}else{
-									$j=$jTrans.'_come';
-								}
+								$jDetTrans = getJenisTransaksi($res['detjenistransaksi']);
 								$btn ='<td align="center">
-											<button data-hint="ubah"  class="button" onclick="loadFR(\''.$j.'\','.$res['replid'].');">
+											<button data-hint="ubah"  class="button" onclick="loadFR(\''.$jDetTrans.'\','.$res['replid'].');">
 												<i class="icon-pencil on-left"></i>
 											</button>
 											<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 											</button>
 										</td>';
-								$s2 = ' SELECT replid,rek,nominal,jenis
+								$s2 = ' SELECT *
 										FROM keu_jurnal 
 										WHERE 
 											transaksi ='.$res['replid'].'
 										ORDER BY 
-											jenis ASC';
+											jenisrekening ASC ';
 								$e2  = mysql_query($s2);
-						// var_dump($s2);exit(); 	
 								$tb2 ='';
 								if(mysql_num_rows($e2)!=0){
 	   								$tb2.='<table class="bordered striped lightBlue" width="100%">
@@ -483,33 +486,17 @@
 													<td width="20%">Kredit</td>
 												</tr>';
 		   							while($r2=mysql_fetch_assoc($e2)){
-										// $jDetTrans = getDetJenisTrans('jenistrans','replid',$res['detjenistrans']);
-										// $jTrans    = getJenisTrans('kode',$jDetTrans);
-										// $jRek      = getKatRekBy('jenis',getRekBy('kategorirekening',$r2['rek']));
-										// var_dump($jRek);exit();
-		   								if($jTrans=='ju'){
-		   									$debit=($r2['jenis']=='d'?$r2['nominal']:0);
-		   									$kredit=($r2['jenis']=='k'?$r2['nominal']:0);
-		   									// $debit=($jRek=='d'?$r2['nominal']:0);
-		   									// $kredit=($jRek=='k'?$r2['nominal']:0);
-		   								}else{
-		   									if($jTrans=='out'){
-		   										$debit=$r2['rek']==$res['rekitem']?$res['nominal']:0;
-		   										$kredit=$r2['rek']==$res['rekkas']?$res['nominal']:0;
-		   									}else{ // in
-		   										$debit=$r2['rek']==$res['rekkas']?$res['nominal']:0;
-		   										$kredit=$r2['rek']==$res['rekitem']?$res['nominal']:0;
-		   									}
-		   								}
+										$debit  =$r2['jenisrekening']=='d'?setuang($r2['nominal']):'-';
+										$kredit =$r2['jenisrekening']=='k'?setuang($r2['nominal']):'-';
 		   								$tb2.='<tr>
-			   										<td>'.getRekening($r2['rek']).'</td>
-			   										<td class="text-right">Rp. '.number_format($debit).',-</td>
-			   										<td class="text-right">Rp. '.number_format($kredit).',-</td>
+			   										<td>'.getRekening($r2['detilrekening']).'</td>
+			   										<td class="text-right">'.$debit.'</td>
+			   										<td class="text-right">'.$kredit.'</td>
 			   									</tr>';
 		   							}$tb2.='</table>';
 								}$out.= '<tr>
 											<td>'.tgl_indo($res['tanggal']).'</td>
-											<td style="font-weight:bold;">'.$res['nomer'].'<br>'.getDetJenisTrans2($res['replid']).'<br>'.$res['nobukti'].'</td>
+											<td style="font-weight:bold;">'.getDetJenisTrans2($res['replid']).'<br>'.$res['nobukti'].'</td>
 											<td>'.$res['uraian'].'</td>
 											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
 											'.$btn.'
@@ -1610,7 +1597,8 @@
 			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
-					case 'out_come';
+					// case 'out_come';
+					case 'out';
 						$s = 'SELECT 
 								t.*,
 								j.replid idjurnal 
@@ -1668,7 +1656,8 @@
 								));					
 					break;
 
-					case 'in_come';
+					// case 'in_come';
+					case 'in';
 						$s = 'SELECT 
 								t.*, 
 								j.replid idjurnal 
@@ -1676,8 +1665,8 @@
 							  	LEFT JOIN keu_jurnal j on j.transaksi = t.replid
 							  WHERE
 							  	t.replid ='.$_POST['replid'].' AND
-							  	j.jenis ="d"';
-						// var_dump($s);exit();
+							  	j.jenisrekening ="d"';
+							  	pr($s);
 						$e    = mysql_query($s);
 						$r    = mysql_fetch_assoc($e);
 						$stat = ($e)?'sukses':'gagal';
@@ -1686,11 +1675,10 @@
 							$stat ='sukses';
 							$transaksiArr = array(
 								// transaksi
-								'nomer'    =>$r['nomer'],
+								'nomer'    =>getDetJenisTrans2($_POST['replid']),
 								'nobukti'  =>$r['nobukti'],
 								'tanggal'  =>tgl_indo7($r['tanggal']),
-								'idrekkas' =>$r['rekkas'],
-								'rekkas'   =>getRekening($r['rekkas']),
+								// 'rekkas'   =>getRekening($r['rekkas']),
 								//jurnal
 								'income'   => array(
 									'idjurnal'  =>$r['idjurnal'],
@@ -1829,11 +1817,6 @@
 				$out=json_encode($ar);
 			break;
 			// cmbpelajaran -----------------------------------------------------------------
-
 			}
 	}echo $out;
-
-    // ---------------------- //
-    // -- created by rovi  -- //
-    // ---------------------- // 
 ?>

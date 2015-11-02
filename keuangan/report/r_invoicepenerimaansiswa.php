@@ -155,7 +155,7 @@
                     </tr>';
 
                   $s2 ='SELECT p.replid, p.tanggal,p.nominal
-                       FROM keu_pembayaran p 
+                       FROM keu_penerimaansiswa p 
                        WHERE p.siswabiaya = '.$idsiswabiaya.'
                        ORDER BY p.tanggal ASC, p.replid ASC';
                   $e2  = mysql_query($s2);
