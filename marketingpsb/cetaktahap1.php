@@ -7,6 +7,7 @@ global $koneksi_db,$url_situs;
 $golongan 		= $_GET['golongan'];
 $lokasi 		= $_GET['lokasi'];
 $gelombang 		= $_GET['gelombang'];
+$tingkat 		= $_GET['tingkat'];
 if($golongan=='Semua'){
          $wheregolongan="";
 }else{
@@ -21,6 +22,11 @@ if($gelombang=='Semua'){
          $wheregelombang="";
 }else{
          $wheregelombang="and gelombang='$gelombang'";
+}
+if($tingkat=='Semua'){
+         $wheretingkat="";
+}else{
+         $wheretingkat="and tingkat='$tingkat'";
 }
 echo "<html><head><title>Laporan Tahap 1</title>";
 echo '<style type="text/css">
@@ -56,7 +62,7 @@ echo'
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
 if(!$detail){
-echo'<tr><td colspan="7"><h4>Laporan Tahap 1, Golongan :'.getgolongan($golongan).', Gelombang :'.getgelombang($gelombang).', Lokasi :'.getlokasi($lokasi).'</h4></td></tr>';
+echo'<tr><td colspan="7"><h4>Laporan Tahap 1, Golongan :'.getgolongan($golongan).', Gelombang :'.getgelombang($gelombang).', Lokasi :'.getlokasi($lokasi).', Tingkat :'.gettingkat($tingkat).'</h4></td></tr>';
 echo '
 <tr class="border">
             <td>No</td>
@@ -79,7 +85,7 @@ echo '
 
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM psbcalon_siswa where id<>'' $wheregolongan $wherelokasi $wheregelombang  order by id asc");	
+$s = mysql_query ("SELECT * FROM psbcalon_siswa where id<>'' $wheregolongan $wherelokasi $wheregelombang $wheretingkat  order by id asc");	
 while($data = mysql_fetch_array($s)){
 $kode=$data['kode'];
 $nama=$data['nama'];
@@ -107,7 +113,7 @@ echo '
             <td>'.getgolongan($golongan).'</td>
 			<td>'.getgelombang($gelombang).'</td>
 			<td>'.gettingkat($tingkat).'</td>
-			<td>'.$tgllahir.'</td>
+			<td>'.tglindo($tgllahir).'</td>
             <td>'.$namaortu.'</td>
 			<td>'.$alamat.'</td>
 			<td>'.$kota.'</td>
@@ -116,7 +122,7 @@ echo '
 			<td>'.$ket.'</td>
 			<td>'.$asalsekolah.'</td>
 			<td>'.$info.'</td>
-			<td>'.getkelamin($kelamin).'</td>
+			<td>'.$kelamin.'</td>
 
 </tr>';
 $no++;

@@ -105,7 +105,16 @@ $ket     		= !isset($ket) ? '' : $ket;
 $asalsekolah     		= !isset($asalsekolah) ? '' : $asalsekolah;
 $info     		= !isset($info) ? '' : $info;
 $kelamin     		= !isset($kelamin) ? '' : $kelamin;
-
+$sel = '<select name="kelamin" class="form-control" required>';
+$arr = array ('P','L');
+foreach ($arr as $k=>$v){
+	if ($kelamin == $v){
+	$sel .= '<option value="'.$v.'" selected="selected">'.$v.'</option>';
+	}else {
+	$sel .= '<option value="'.$v.'">'.$v.'</option>';	
+	}
+}
+$sel .= '</select>'; 
 
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Tambah Calon Siswa</h3></div>';
@@ -173,59 +182,52 @@ $admin .='</select></td>
 	<tr>
 		<td>Tanggal Lahir</td>
 		<td>:</td>
-		<td><input type="text" name="tgllahir" size="25"class="form-control" id="idtgllahir" required></td>
+		<td><input type="text" name="tgllahir" size="25"class="form-control" id="idtgllahir"></td>
 	</tr>
 	<tr>
 		<td>Nama Orang Tua</td>
 		<td>:</td>
-		<td><input type="text" name="namaortu" size="25"class="form-control" required></td>
+		<td><input type="text" name="namaortu" size="25"class="form-control"></td>
 	</tr>
 	<tr>
 		<td>Alamat</td>
 		<td>:</td>
-		<td><input type="text" name="alamat" size="25"class="form-control" required></td>
+		<td><input type="text" name="alamat" size="25"class="form-control"></td>
 	</tr>
 	<tr>
 		<td>Kota</td>
 		<td>:</td>
-		<td><input type="text" name="kota" size="25"class="form-control" required></td>
+		<td><input type="text" name="kota" size="25"class="form-control"></td>
 	</tr>
 	<tr>
 		<td>Telepon</td>
 		<td>:</td>
-		<td><input type="text" name="telp" size="25"class="form-control" required></td>
+		<td><input type="text" name="telp" size="25"class="form-control"></td>
 	</tr>
 	<tr>
 		<td>HP</td>
 		<td>:</td>
-		<td><input type="text" name="hp" size="25"class="form-control" required></td>
+		<td><input type="text" name="hp" size="25"class="form-control"></td>
 	</tr>
 	<tr>
 		<td>Keterangan</td>
 		<td>:</td>
-		<td><input type="text" name="ket" size="25"class="form-control" required></td>
+		<td><input type="text" name="ket" size="25"class="form-control"></td>
 	</tr>
 	<tr>
 		<td>Asalsekolah</td>
 		<td>:</td>
-		<td><input type="text" name="asalsekolah" size="25"class="form-control" required></td>
+		<td><input type="text" name="asalsekolah" size="25"class="form-control"></td>
 	</tr>
 	<tr>
 		<td>Info</td>
 		<td>:</td>
-		<td><input type="text" name="info" size="25"class="form-control" required></td>
+		<td><input type="text" name="info" size="25"class="form-control"></td>
 	</tr>
 <tr>
 	<td>Jenis Kelamin</td>
 		<td>:</td>
-	<td><select name="kelamin" class="form-control" required>';
-$hasil = $koneksi_db->sql_query("SELECT * FROM hrd_kelamin ORDER BY id asc");
-$admin .= '<option value="">== Jenis Kelamin ==</option>';
-while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
-$pilihan = ($datas['id']==$kelamin)?"selected":'';
-$admin .= '<option value="'.$datas['id'].'" '.$pilihan.'>'.$datas['kelamin'].'</option>';
-}
-$admin .='</select></td>
+	<td>'.$sel.'</td>
 </tr>
 		<td></td>
 		<td></td>
@@ -290,6 +292,16 @@ $info=$data['info'];
 $kelamin=$data['kelamin'];
 $gelombang=$data['gelombang'];
 $tingkat=$data['tingkat'];
+$sel = '<select name="kelamin" class="form-control" required>';
+$arr = array ('P','L');
+foreach ($arr as $k=>$v){
+	if ($kelamin == $v){
+	$sel .= '<option value="'.$v.'" selected="selected">'.$v.'</option>';
+	}else {
+	$sel .= '<option value="'.$v.'">'.$v.'</option>';	
+	}
+}
+$sel .= '</select>'; 
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Tambah Calon Siswa</h3></div>';
 $admin .= '
@@ -356,42 +368,42 @@ $admin .='</select></td>
 	<tr>
 		<td>Tanggal Lahir</td>
 		<td>:</td>
-		<td><input type="text" name="tgllahir" size="25"class="form-control"   id="idtgllahir"value="'.$tgllahir.'" required></td>
+		<td><input type="text" name="tgllahir" size="25"class="form-control"   id="idtgllahir"value="'.$tgllahir.'"></td>
 	</tr>
 	<tr>
 		<td>Nama Orang Tua</td>
 		<td>:</td>
-		<td><input type="text" name="namaortu" size="25"class="form-control"  value="'.$namaortu.'" required></td>
+		<td><input type="text" name="namaortu" size="25"class="form-control"  value="'.$namaortu.'"></td>
 	</tr>
 	<tr>
 		<td>Alamat</td>
 		<td>:</td>
-		<td><input type="text" name="alamat" size="25"class="form-control"  value="'.$alamat.'" required></td>
+		<td><input type="text" name="alamat" size="25"class="form-control"  value="'.$alamat.'"></td>
 	</tr>
 	<tr>
 		<td>Kota</td>
 		<td>:</td>
-		<td><input type="text" name="kota" size="25"class="form-control"  value="'.$kota.'" required></td>
+		<td><input type="text" name="kota" size="25"class="form-control"  value="'.$kota.'"></td>
 	</tr>
 	<tr>
 		<td>Telepon</td>
 		<td>:</td>
-		<td><input type="text" name="telp" size="25"class="form-control"  value="'.$telp.'" required></td>
+		<td><input type="text" name="telp" size="25"class="form-control"  value="'.$telp.'"></td>
 	</tr>
 	<tr>
 		<td>HP</td>
 		<td>:</td>
-		<td><input type="text" name="hp" size="25"class="form-control"  value="'.$hp.'" required></td>
+		<td><input type="text" name="hp" size="25"class="form-control"  value="'.$hp.'"></td>
 	</tr>
 	<tr>
 		<td>Keterangan</td>
 		<td>:</td>
-		<td><input type="text" name="ket" size="25"class="form-control"  value="'.$ket.'" required></td>
+		<td><input type="text" name="ket" size="25"class="form-control"  value="'.$ket.'" ></td>
 	</tr>
 	<tr>
 		<td>Asal Sekolah</td>
 		<td>:</td>
-		<td><input type="text" name="asalsekolah" size="25"class="form-control"  value="'.$asalsekolah.'" required></td>
+		<td><input type="text" name="asalsekolah" size="25"class="form-control"  value="'.$asalsekolah.'"></td>
 	</tr>
 	<tr>
 		<td>Info</td>
@@ -401,14 +413,7 @@ $admin .='</select></td>
 <tr>
 	<td>Jenis Kelamin</td>
 		<td>:</td>
-	<td><select name="kelamin" class="form-control" required>';
-$hasil = $koneksi_db->sql_query("SELECT * FROM hrd_kelamin ORDER BY id asc");
-$admin .= '<option value="">== Jenis Kelamin ==</option>';
-while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
-$pilihan = ($datas['id']==$kelamin)?"selected":'';
-$admin .= '<option value="'.$datas['id'].'" '.$pilihan.'>'.$datas['kelamin'].'</option>';
-}
-$admin .='</select></td>
+	<td>'.$sel.'</td>
 </tr>
 	<tr>
 		<td></td>
@@ -472,7 +477,7 @@ $admin.='<tr>
             <td>'.getgolongan($golongan).'</td>
 			<td>'.getgelombang($gelombang).'</td>
 			<td>'.gettingkat($tingkat).'</td>
-			<td>'.$tgllahir.'</td>
+			<td>'.tglindo($tgllahir).'</td>
             <td>'.$namaortu.'</td>
 			<td>'.$alamat.'</td>
 			<td>'.$kota.'</td>
@@ -481,7 +486,7 @@ $admin.='<tr>
 			<td>'.$ket.'</td>
 			<td>'.$asalsekolah.'</td>
 			<td>'.$info.'</td>
-			<td>'.getkelamin($kelamin).'</td>
+			<td>'.$kelamin.'</td>
 <td><a href="?pilih=tahap1&amp;mod=yes&amp;aksi=del&amp;id='.$data['id'].'" onclick="return confirm(\'Apakah Anda Yakin Ingin Menghapus Data Ini ?\')"><span class="btn btn-danger">Hapus</span></a> <a href="?pilih=tahap1&amp;mod=yes&amp;aksi=edit&amp;id='.$data['id'].'"><span class="btn btn-warning">Edit</span></a></td>
         </tr>';
 }   
@@ -496,7 +501,7 @@ $admin .= '<form class="form-inline" method="get" action="cetaktahap1.php" encty
 $admin .= '<tr>
 	<td>Lokasi</td>
 		<td>:</td>
-	<td><select name="lokasi" class="form-control" id="lokasi" required>';
+	<td><select name="lokasi" class="form-control" id="lokasi" >';
 $hasil = $koneksi_db->sql_query("SELECT * FROM departemen ORDER BY nama asc");
 $admin .= '<option value="Semua">== Semua Lokasi ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
@@ -508,7 +513,7 @@ $admin .='</select></td>
 <tr>
 	<td>Golongan</td>
 		<td>:</td>
-	<td><select name="golongan" class="form-control" id="golongan" required>';
+	<td><select name="golongan" class="form-control" id="golongan" >';
 $hasil = $koneksi_db->sql_query("SELECT * from psb_golongan order by replid asc");
 $admin .= '<option value="Semua">== Semua Golongan ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
@@ -518,9 +523,9 @@ $admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['golongan'
 $admin .='</select></td>
 </tr>';
 $admin .= '<tr>
-	<td>gelombang</td>
+	<td>Gelombang</td>
 		<td>:</td>
-	<td><select name="gelombang" class="form-control" id="gelombang" required>';
+	<td><select name="gelombang" class="form-control" id="gelombang">';
 $hasil = $koneksi_db->sql_query("SELECT * from psb_gelombang order by replid asc");
 $admin .= '<option value="Semua">== Semua Gelombang ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
@@ -529,9 +534,20 @@ $admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['gelombang
 }
 $admin .='</select></td>
 </tr>';
-
+$admin .='<tr>
+	<td>Tingkat</td>
+		<td>:</td>
+	<td><select name="tingkat" class="form-control">';
+$hasil = $koneksi_db->sql_query("SELECT * from aka_tingkat");
+$admin .= '<option value="Semua">== Tingkat ==</option>';
+while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
+$pilihan = ($datas['replid']==$tingkat)?"selected":'';
+$admin .= '<option value="'.$datas['replid'].'" '.$pilihan.'>'.$datas['tingkat'].'</option>';
+}
+$admin .='</select></td>
+</tr>';
 $admin .= '<tr>
-	<td></td>
+	<td></td><td></td>
 	<td><input type="submit" value="Cetak" name="submit" class="btn btn-success"></td>
 	</tr>
 </table></form>';
