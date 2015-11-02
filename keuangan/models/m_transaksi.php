@@ -1666,7 +1666,7 @@
 							  WHERE
 							  	t.replid ='.$_POST['replid'].' AND
 							  	j.jenisrekening ="d"';
-							  	pr($s);
+							  	// pr($s);
 						$e    = mysql_query($s);
 						$r    = mysql_fetch_assoc($e);
 						$stat = ($e)?'sukses':'gagal';
@@ -1674,7 +1674,7 @@
 						else{ //sukses
 							$stat ='sukses';
 							$transaksiArr = array(
-								// transaksi
+								// transaksiArrsi
 								'nomer'    =>getDetJenisTrans2($_POST['replid']),
 								'nobukti'  =>$r['nobukti'],
 								'tanggal'  =>tgl_indo7($r['tanggal']),
