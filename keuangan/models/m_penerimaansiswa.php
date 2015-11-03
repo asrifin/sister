@@ -197,6 +197,7 @@
 												viabayar2  = '.$_POST['viaBayarTB'].',
 												tanggal    = "'.tgl_indo6($_POST['tanggalTB']).'",
 												idkwitansi = '.$idkw;
+												// pr($s);
 
 				$e  = mysql_query($s);
 				$idPenerimaanSiswa = mysql_insert_id();
@@ -225,7 +226,7 @@
 							idkwitansi        ='.getIdKwitansi().',
 							tanggal           ="'.tgl_indo6($_POST['tanggalTB']).'",
 							uraian            ="'.$uraian.'",
-							detjenistransaksi ='.getDetJenisTransaksi('penerimaansiswa');
+							detjenistransaksi ='.getDetJenisTransaksi('in','siswa');
 					$e2  = mysql_query($s2);
 					$idTransaksi = mysql_insert_id();
 					if(!$e2) $stat='gagal_insert_transaksi';
@@ -245,11 +246,17 @@
 			
 			// delete ---------------------------------------------------------------------
 			case 'hapus':
+				$detjenistransaksi = getDetJenisTransaksi('in','siswa');
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
-				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$mnu));
+				if(!$e){
+					$stat='gagal_hapus_penerimaansiswa';
+				}else{
+					$del=delRecord('keu_transaksi',array('idref' => $_POST['replid'],'detjenistransaksi'=>$detjenistransaksi));
+					// pr($del);
+					$stat=!$del?'gagal_hapus_transaksi':'sukses';
+				}$out  = json_encode(array('status'=>$stat,'terhapus'=>$mnu));
 			break;
 			// delete ---------------------------------------------------------------------
 

@@ -5,6 +5,17 @@
 	require_once  'psb_func.php';
 	require_once  'pus_func.php';
 
+	function delRecord($tb,$w){
+		$ww='';
+		foreach ($w as $i => $v) {
+			$ww.=' AND '.$i.'='.$v;
+		}
+		$www=substr($ww,4);
+		// pr($www);
+		$s='DELETE FROM '.$tb.' WHERE '.$www;
+		$e=mysql_query($s);
+		return $e;
+	}
 	function Terbilang($x) {
 		$ambil = array("", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas");
 		if ($x < 12) 
@@ -175,10 +186,11 @@
 	// general function : query data 
 	function getField($f,$tb,$w='',$k=''){
 		$s = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = "'.$k.'"':'');
-		// pr($s);
 		$e = mysql_query($s) or die(mysql_error());
 		$r = mysql_fetch_assoc($e);
-		return ($f=='*' || $f=='all'?$r:$r[$f]);
+		$ret = ($f=='*' || $f=='all'?$r:$r[$f]);
+		// pr($ret);
+		return $ret;
 	}
 	function vd($x){
 		echo '<pre>';

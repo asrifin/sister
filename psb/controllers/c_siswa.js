@@ -1511,7 +1511,10 @@ function notif(cont,clr) {
                                 if(item.isDiskon=='2' || item.isDiskon=='3' ) { // 2=khusus || (3=reg & khusus)
                                     out+='<tr>'
                                         +'<td>Diskon Khusus </td>'
-                                        +'<td><div class="input-control text"><input value="'+(item.ketdiskonkhusus!=''?item.ketdiskonkhusus:'')+'" '+(dt.levelurutan==1 || dt.levelurutan==2?' name="ketdiskonkhusus'+item.replid+'TB"':'disabled')+' placeholder="keterangan diskon" type="text" id="ketdiskonkhusus'+item.replid+'TB" /></div></td>'
+                                        +'<td><div class="input-control text">'
+                                            +'<input data-hint="No.SK" data-transform="input-control" type="text" placeholder="no. SK" id="noskTB" name="noskTB" />'
+                                            +'<input data-hint="Keterangan" value="'+(item.ketdiskonkhusus!=''?item.ketdiskonkhusus:'')+'" '+(dt.levelurutan==1 || dt.levelurutan==2?' name="ketdiskonkhusus'+item.replid+'TB"':'disabled')+' placeholder="keterangan diskon" type="text" id="ketdiskonkhusus'+item.replid+'TB" /></div>'
+                                        +'</td>'
                                         +'<td>'
                                             +'<div class="input-control text"><input onkeyup="getBiayaNett('+item.replid+');" value="'+(item.diskonkhusus!=''?item.diskonkhusus:'Rp. 0')+'" class="text-right diskonkhususTB" onfocus="inputuang(this);" placeholder="nominal" type="text" id="diskonkhusus'+item.replid+'TB" '+(dt.levelurutan==1 || dt.levelurutan==2?' name="diskonkhusus'+item.replid+'TB"':'disabled')+'></div>'
                                             +'<sup style="font-weight:bold;" class="fg-red">* Diisi oleh Petugas Khusus </sup>'

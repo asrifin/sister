@@ -16,8 +16,8 @@
 <form id="filterFR">
     <!-- button -->
     <a href="#"  id="ju_addBC" onclick="loadFR('ju','');" class="button bg-blue fg-white" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></a>
-    <a href="#" id="in_addBC"  onclick="loadFR('in_come','');"class="button bg-green fg-white" data-hint="Pemasukan"><i class="icon-download-2"></i></a>
-    <a href="#" id="out_addBC"  onclick="loadFR('out_come','');"class="button bg-red fg-white" data-hint="Pengeluaran"><i class="icon-upload-3"></i></a>
+    <a href="#" id="in_addBC"  onclick="loadFR('in','');"class="button bg-green fg-white" data-hint="Pemasukan"><i class="icon-download-2"></i></a>
+    <a href="#" id="out_addBC"  onclick="loadFR('out','');"class="button bg-red fg-white" data-hint="Pengeluaran"><i class="icon-upload-3"></i></a>
     <a href="#" id="optionBC" data-hint="Selengkapnya..." class="button bg-gray fg-white"><i class="icon-grid"></i></a>
 
     <!-- filter :: tanggal -->
@@ -81,10 +81,10 @@
             <div style="background-color:#dddddd;"  class="frames">
                 <!-- jurnal umum -->
                 <div class="frame" id="juTAB">    
-                    <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top">
+<!--                     <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
                     </button>
-                    <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
+ -->                    <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
 
@@ -105,7 +105,7 @@
                                 <th style="display:visible;"class="text-center  uraianCOL">Detil Jurnal</th>
                                 <th class="text-center">Aksi</th>
                             </tr>
-                            <tr style="display:none;" id="juTR" class="info">
+                            <tr xstyle="display:none;" id="juTR" class="info">
                                 <th class="text-center"></th>
                                 <th class="text-center">
                                     <div class="input-control text">

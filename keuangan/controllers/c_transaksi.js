@@ -3,12 +3,14 @@ var mnu2 ='lokasi';
 var mnu3 ='departemen'; 
 var mnu4 ='tahunajaran'; 
 var mnu5 ='tingkat'; 
+var mnu6 ='detjenistransaksi'; 
 
 var dir  ='models/m_'+mnu+'.php';
 var dir2 ='models/m_'+mnu2+'.php';
 var dir3 ='../akademik/models/m_'+mnu3+'.php';
 var dir4 ='../akademik/models/m_'+mnu4+'.php';
 var dir5 ='../akademik/models/m_'+mnu5+'.php';
+var dir6 ='models/m_'+mnu6+'.php';
 
 var contentFR ='';
 var detilanggaranArr=rekArr=[];
@@ -65,6 +67,10 @@ var detilanggaranArr=rekArr=[];
                         // nomer transaksi
                         +'<h5 class="place-right fg-green" style="font-weight:bold;" id="nomerTB"></h5>'
                         
+                        //jenis transaksi 
+                        +'<label>Jenis Transaksi</label>'
+                        +'<select required data-transform="input-control" name="detjenistransaksiTB" id="detjenistransaksiTB" ></select>'
+
                         // no bukti (kwitansi)
                         +'<label>No. Bukti </label>'
                         +'<div class="input-control text">'
@@ -418,7 +424,7 @@ var detilanggaranArr=rekArr=[];
         var data = 'aksi=hapus&replid='+id;
         if(confirm('melanjutkan untuk menghapus data?'))
         ajax(url,data).done(function(dt){
-            notif(dt.status+' menghapus '+dt.terhapus,dt.status!='sukses'?'red':'green');
+            notif(dt.status+' menghapus data',dt.status!='sukses'?'red':'green');
             if(dt.status=='sukses') viewTB('ju');
         });
     }
@@ -682,8 +688,9 @@ var detilanggaranArr=rekArr=[];
 
   // autosuggest
     function autoSuggest(jenis,el,subaksi,tingkat){
+    console.log($('#tanggalTB').val());
         if(subaksi=='rek'){ //rekening
-            var urlx= '?aksi=autocomp&subaksi='+subaksi+(jenis!=''?'&jenis='+jenis:'');
+            var urlx= '?aksi=autocomp&subaksi='+subaksi+'&tanggal='+$('#tanggalTB').val()+(jenis!=''?'&jenis='+jenis:'');
             var col = [{
                     'align':'left',
                     'columnName':'kode',
@@ -945,6 +952,7 @@ var detilanggaranArr=rekArr=[];
                             kodeTrans(typx);
                             addRekTR(typx,2);
                             titl ='Tambah  Jurnal Umum ';
+                            cmbdetjenistransaksi('ju','');
                         } else { //edit
                             titl ='Ubah Jurnal Umum';
                             var url  = dir;
@@ -959,12 +967,14 @@ var detilanggaranArr=rekArr=[];
                                 var jurnal = dt.transaksiArr.jurnalArr;
                                 var n = jurnal.length;
                                 addRekTR(typx,n,jurnal);
+                                cmbdetjenistransaksi('ju',dt.transaksiArr.detjenistransaksi);
                             });
                         }
                     }else{ // in_come / out_come
                         $('.uraianDV').attr('style','display:none;');
                         $('.rekkasDV').removeAttr('style');
                         $('#rekkasTB').attr('required',true);
+                        $('#tanggalTB').val(getToday());
                         autoSuggest('rekkas','rekkas','rek','');
                         $('#kwitansiDV').removeAttr('style');
                         
@@ -976,7 +986,7 @@ var detilanggaranArr=rekArr=[];
                             +'<th class="text-center">Hapus</th>'
                         +'</tr>';
                         tr3+='<tr style="color:white;"class="info">'
-                                +'<th '+(typx=='out_come'?'colspan="2"':'')+'></th>'
+                                +'<th '+(typx=='out'?'colspan="2"':'')+'></th>'
                                 +'<th id="totNominalTD" class="text-right">Rp. 0</th>'
                                 +'<th colspan="2"></th>'
                             +'</tr>';
@@ -987,6 +997,7 @@ var detilanggaranArr=rekArr=[];
                                 kodeTrans(typx);
                                 addRekTR(typx,1);
                                 titl='Tambah Transaksi Pemasukan';
+                                cmbdetjenistransaksi('in','');
                             }else{ //edit
                                 $('#addTRBC').attr('style','display:none;');
                                 titl ='Ubah Transaksi Pemasukan';
@@ -999,11 +1010,13 @@ var detilanggaranArr=rekArr=[];
                                     $('#tanggalTB').val(dt.transaksiArr.tanggal);
                                     $('#rekkasTB').val(dt.transaksiArr.rekkas);
                                     $('#rekkasH').val(dt.transaksiArr.idrekkas);
+                                    $('#rekkasH').val(dt.transaksiArr.idrekkas);
                                     var income = dt.transaksiArr.income;
                                     addRekTR(typx,1,income);
+                                    cmbdetjenistransaksi('in',dt.transaksiArr.detjenistransaksi);
                                 });
                             }
-                        }else if(typx=='out_come'){ // outcome 
+                        }else if(typx=='out'){ // outcome 
                             $('.detilanggaranDV').attr('style','display:visible;');
                             $('#detilanggaranTB').attr('required',true);
                             $('#reklawanDV').html(' Pengeluaran');
@@ -1027,6 +1040,7 @@ var detilanggaranArr=rekArr=[];
                                 addRekTR(typx,1);
                                 console.log('mode add , typxe : '+typx);
                                 titl='Tambah Transaksi Pengeluaran';
+                                cmbdetjenistransaksi('out','');
                             }else{ //edit
                                 titl ='Ubah Transaksi Pengeluaran';
                                 var url  = dir;
@@ -1048,6 +1062,7 @@ var detilanggaranArr=rekArr=[];
 
                                     var outcome= dt.transaksiArr.outcome;
                                     addRekTR(typx,1,outcome);
+                                    cmbdetjenistransaksi('out',dt.transaksiArr.detjenistransaksi);
                                 });
                             }
                         }
@@ -1239,6 +1254,21 @@ var detilanggaranArr=rekArr=[];
         });
     }
 
+// combo detjenistransaksi  ---
+    function cmbdetjenistransaksi(typ,idx){
+        var u = dir6;
+        var d = 'aksi=cmb'+mnu6+'&kode='+typ+(idx!=''?'&replid='+idx:'');
+        ajax(u,d).done(function (dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.detjenistransaksi, function(id,item){
+                    out+='<option '+(item.replid==idx?'selected':'')+' value="'+item.replid+'">'+item.detjenistransaksi+'</option>';
+                });
+            }$('#detjenistransaksiTB').html('<option value="">-Pilih-</option>'+out);
+        });
+    }
 // combo departemen  ---
     function cmbdepartemen(el){
         var u = dir3;
@@ -1377,4 +1407,5 @@ var detilanggaranArr=rekArr=[];
             }
         });
     }
+
 

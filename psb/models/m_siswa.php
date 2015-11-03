@@ -272,6 +272,7 @@
 							$f=',sb.replid idsiswabiaya,
 								sb.angsuran,
 								sb.diskonkhusus,
+								sb.nodiskonkhusus,
 								sb.viabayar,
 								sb.isAngsur2,
 								sb.ketdiskonkhusus';
@@ -535,11 +536,12 @@
 									
 									$isAngsur2       = isset($_POST['isAngsur2'.$biaya.'TB'])?',isAngsur2 ="'.$_POST['isAngsur2'.$biaya.'TB'].'"':'';
 									$angsuran        = ',angsuran ='.($_POST['isAngsur2'.$biaya.'TB']=='1'?$_POST['angsuran'.$biaya.'TB']:'0');
+									$nodiskonkhusus  = isset($_POST['nodiskonkhusus'.$biaya.'TB'])?',nodiskonkhusus ='.getuang($_POST['nodiskonkhusus'.$biaya.'TB']):'';
 									$diskonkhusus    = isset($_POST['diskonkhusus'.$biaya.'TB'])?',diskonkhusus ='.getuang($_POST['diskonkhusus'.$biaya.'TB']):'';
 									$ketdiskonkhusus = isset($_POST['ketdiskonkhusus'.$biaya.'TB'])?',ketdiskonkhusus ="'.$_POST['ketdiskonkhusus'.$biaya.'TB'].'"':'';
 									$viabayar        = isset($_POST['viabayar'.$biaya.'TB'])?',viabayar ="'.$_POST['viabayar'.$biaya.'TB'].'"':'';
 									$siswabiayaS     = $pre.' psb_siswabiaya SET '.$f.' detailbiaya ='.$v.'
-														'.$angsuran.$diskonkhusus.$ketdiskonkhusus.$isAngsur2.$viabayar.$w;
+														'.$angsuran.$diskonkhusus.$nodiskonkhusus.$ketdiskonkhusus.$isAngsur2.$viabayar.$w;
 														// pr($siswabiayaS);
 									$ss.=$siswabiayaS;
 									$siswabiayaE    = mysql_query($siswabiayaS);

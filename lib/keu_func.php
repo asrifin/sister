@@ -671,9 +671,18 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['bukti'];
-	}function getDetJenisTransaksi($kode){
-		$r=getField('replid','keu_detjenistransaksi','kode',$kode);
-		return $r;
+	}function getDetJenisTransaksi($jTrans,$katTrans){
+		$s='SELECT dj.replid
+			FROM keu_detjenistransaksi dj
+				JOIN keu_kategoritransaksi kt on kt.replid = dj.kategoritransaksi
+				JOIN keu_jenistransaksi jt  on jt.replid = dj.jenistransaksi
+			WHERE 
+				jt.kode = "'.$jTrans.'" AND 
+				kt.kategoritransaksi = "'.$katTrans.'"';
+		// pr($s);
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['replid'];
 	}function getKatModulPemb($nama){
 		$s='SELECT * FROM keu_katmodulpembayaran WHERE nama="'.($nama=='joiningf' || $nama=='joining fee'?'joining fee':$nama).'"';
 		// var_dump($s);exit();
@@ -681,7 +690,7 @@
 		$r=mysql_fetch_assoc($e);
 		return $r['detjenistrans'];
 	}
-	function getDetJenisTrans2($id){
+	function getNoKwitansi($id){
 		$s  = '	SELECT 
 					b.buktitransaksi,
 					CASE j.kode
@@ -718,6 +727,7 @@
 			$in=1;
 		}
 		$kode=getBuktiTrans2($typ).'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
+		pr($kode);
 		return $kode;
 	}function getNoTrans($typ){
 		$s = 'SELECT LPAD(max(replid),4,0)replid from keu_transaksi';
@@ -825,7 +835,8 @@
 	}
 	function getIdKwitansi(){
 		$r=getField('max(idkwitansi)','keu_transaksi','','');
-		return $r==''?1:$r;
+		// pr($r);
+		return $r==''?1:($r+1);
 	}
 	function kwitansiPenerimaanSiswa($idpenerimaansiswa){
 		$s='SELECT

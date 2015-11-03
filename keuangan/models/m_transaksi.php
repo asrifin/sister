@@ -40,6 +40,7 @@
 						$jenis = ' AND k.nama IN ("kas","aktiva") OR r.nama LIKE "%piutang%"';
 				}
 
+				pr($_GET['tanggal']);
 				if(isset($_GET['subaksi']) && $_GET['subaksi']=='rek'){ // rekening
 					$ss='SELECT
 							r.replid,
@@ -49,9 +50,9 @@
 						FROM
 							keu_detilrekening r 
 							LEFT JOIN keu_kategorirekening k on k.replid = r.kategorirekening
-							LEFT JOIN keu_saldorekening s on s.rekening = r.replid
+							LEFT JOIN keu_saldorekening s on s.detilrekening = r.replid
 						WHERE
-							(
+							s.tahunajaran = '.$_POST['tahunajaran'].' and (
 								r.kode LIKE "%'.$searchTerm.'%"
 								OR r.nama LIKE "%'.$searchTerm.'%"
 							)'.$rekArr.$jenis;
@@ -120,6 +121,7 @@
 				// 			d.replid ';
 				
 				// }
+				// pr($ss);
 				if(!$sidx) 
 					$sidx =1;
 				// print_r($ss);exit();
@@ -308,7 +310,7 @@
 		   							}$tb2.='</table>';
 								}$out.= '<tr>
 											<td>'.tgl_indo($res['tanggal']).'</td>
-											<td style="font-weight:bold;">'.$res['nomer'].'<br>'.getDetJenisTrans2($res['replid']).'<br>'.$res['nobukti'].'</td>
+											<td style="font-weight:bold;">'.$res['nomer'].'<br>'.getNoKwitansi($res['replid']).'<br>'.$res['nobukti'].'</td>
 											<td>'.$res['uraian'].'</td>
 											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
 										</tr>';
@@ -496,7 +498,7 @@
 		   							}$tb2.='</table>';
 								}$out.= '<tr>
 											<td>'.tgl_indo($res['tanggal']).'</td>
-											<td style="font-weight:bold;">'.getDetJenisTrans2($res['replid']).'<br>'.$res['nobukti'].'</td>
+											<td style="font-weight:bold;">'.getNoKwitansi($res['replid']).'<br>'.$res['nobukti'].'</td>
 											<td>'.$res['uraian'].'</td>
 											<td style="display:visible;" class="uraianCOL">'.$tb2.'</td>
 											'.$btn.'
@@ -1397,7 +1399,7 @@
 						}
 					}
 				}else{ // in / our
-					if($sub=='in_come'){
+					if($sub=='in'){
 						// 1. simpan transaksi
 						$totNominal = 0;
 						$rekArr     = $_POST[$sub.'_idTR'];
@@ -1406,16 +1408,16 @@
 						foreach ($rekArr as $i => $v) {
 							$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
 							// $jenis = $_POST[$sub.'_jenis'.$v.'TB'];
-							$s1 = 'keu_transaksi SET 	tahunbuku     ='.getTahunBuku('replid').',
-														rekkas        ='.$_POST['rekkasH'].',
-														uraian        ="'.$_POST[$sub.'_uraian'.$v.'TB'].'",
-														rekitem       ='.$_POST[$sub.'_rek'.$v.'H'].',
-														nominal       ='.$nom.',
-														nomer         ="'.getNoTrans2($sub).'",
-														tanggal       ="'.tgl_indo6($_POST['tanggalTB']).'",
-														detjenistrans ='.getDetJenisTrans('replid','kode',$_POST['detjenistransH']).',
-														nobukti       ="'.$_POST['nobuktiTB'].'"';
-							$s  = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1;
+														// nomer         ="'.getNoTrans2($sub).'",
+														// detjenistrans ='.getDetJenisTrans('replid','kode',$_POST['detjenistransH']).',
+													// getDetJenisTransaksi('penerimaansiswa')
+							$s1 = 'keu_transaksi SET 	uraian  ="'.$_POST[$sub.'_uraian'.$v.'TB'].'",
+														nominal ='.$nom.',
+														tanggal ="'.tgl_indo6($_POST['tanggalTB']).'",
+														nobukti ="'.$_POST['nobuktiTB'].'"
+														';
+														// detjenistransaksi ="'.getDetJenisTransaksi('in',).'"
+							$s  = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1.',detjenistransaksi='.getDetJenisTransaksi('penerimaansiswa');
 							$e  = mysql_query($s);
 
 							$idx = mysql_insert_id();
@@ -1542,55 +1544,29 @@
 			
 			// delete ---------------------------------------------------------------------
 			case 'hapus':
-				// $out='mbuh';
-				// get transact's info
-				$sb = 'SELECT * FROM '.$tb.' WHERE replid='.$_POST['replid'];
-				$eb = mysql_query($sb);
-				$rb = mysql_fetch_assoc($eb);
-
 				// delete transact
+				$detjenistransaksi = getField('detjenistransaksi','keu_transaksi','replid',$_POST['replid']);
+				$idref=getField('idref','keu_transaksi','replid',$_POST['replid']);
 				$sd = 'DELETE FROM '.$tb.' WHERE replid='.$_POST['replid'];
 				$ed = mysql_query($sd);
 				if(!$ed) $stat = 'gagal_hapus_transaksi';
 				else{
-					// get number of record will be resetted
-					$sa = 'SELECT * FROM '.$tb;
-					$ea = mysql_query($sa);
-					$na = mysql_num_rows($ea);
-					// reset kode transaksi -> 0 
-					if($na==0){
-						$st = 'TRUNCATE TABLE keu_transaksi';
-						$et = mysql_query($st);
-						$stat=!$et?'gagal':'sukses_truncate_transaksi';
+					// checking detail jenis transaksi (penerimaan siswa --> delete keu_peneirmaansiswa)
+					$sr = 'SELECT 
+								kt.kategoritransaksi,
+								jt.kode
+							FROM keu_detjenistransaksi dj
+								JOIN keu_jenistransaksi jt on jt.replid = dj.jenistransaksi
+								JOIN keu_kategoritransaksi kt on kt.replid = dj.kategoritransaksi
+							WHERE dj.replid ='.$detjenistransaksi;
+					$er=mysql_query($sr);
+					$rr=mysql_fetch_assoc($er);
+					// delete tb penerimaan siswa 
+					if($rr['kategoritransaksi']=='siswa' && $rr['kode']=='in'){
+						$del=delRecord('keu_penerimaansiswa',array('replid'=>$idref));
+						$stat=!$del?'gagal_hapus_penerimaan_siswa':'sukses';
 					}
-
-					// delete pembayaran (optional)
-					if($rb['pembayaran']!=0){
-						$sy = 'DELETE * FROM keu_pembayaran WHERE replid='.$rb['pembayaran'];
-						$ey = mysql_query($sy);
-						if(!$ey){
-							$stat='gagal_hapus_pembayaran';
-							break;
-						}
-					}
-
-					// get jurnal's info (debit/kredit)
-					$sij = 'SELECT * FROM keu_jurnal WHERE transaksi = '.$_POST['replid'];
-					$eij = mysql_query($sij);
-					while ($rij=mysql_fetch_assoc($eij)) {
-						// reverse saldo rekening by : rek
-						$ss ='UPDATE keu_saldorekening SET nominal2=nominal2'.($rij['jenis']=='k'?'+':'-').$rij['nominal'].' WHERE rekening = '.$rij['rek'];
-						$es = mysql_query($ss);
-						if(!$es) $stat='gagal_update_saldorekeking';
-						else{
-							// delete jurnal by transaksi
-							$sj   = 'DELETE FROM keu_jurnal WHERE transaksi= '.$_POST['replid'];
-							$ej   = mysql_query($sj);
-							$stat =!$ej?'gagal_hapus_jurnal':'sukses';
-						}
-					}
-				}
-				$out = json_encode(array('status'=>$stat,'terhapus'=>$rb['nomer']));
+				}$out = json_encode(array('status'=>$stat));
 			break;
 			// delete ---------------------------------------------------------------------
 
@@ -1658,14 +1634,27 @@
 
 					// case 'in_come';
 					case 'in';
-						$s = 'SELECT 
-								t.*, 
-								j.replid idjurnal 
-							  FROM '.$tb.' t 
-							  	LEFT JOIN keu_jurnal j on j.transaksi = t.replid
-							  WHERE
-							  	t.replid ='.$_POST['replid'].' AND
-							  	j.jenisrekening ="d"';
+						$s = 'SELECT
+									t.replid,
+									t.tanggal,
+									t.idkwitansi,
+									t.detjenistransaksi,
+									t.nobukti,(
+										SELECT detilrekening 
+										FROM keu_jurnal 
+										WHERE transaksi = t.replid and jenisrekening = "d"
+									)idrekkas,(
+										SELECT detilrekening 
+										FROM keu_jurnal 
+										WHERE transaksi = t.replid and jenisrekening = "k"
+									)idrekitem,
+									t.uraian,(
+										SELECT nominal FROM keu_jurnal WHERE transaksi = t.replid and jenisrekening = "k"
+									)nominal,(
+										SELECT replid from keu_jurnal WHERE transaksi = t.replid and jenisrekening="k"
+									)idjurnal
+								FROM keu_transaksi t
+								WHERE t.replid ='.$_POST['replid'];
 							  	// pr($s);
 						$e    = mysql_query($s);
 						$r    = mysql_fetch_assoc($e);
@@ -1673,17 +1662,20 @@
 						if(!$e) $stat='gagal';
 						else{ //sukses
 							$stat ='sukses';
+							// $rekkas=getField();
 							$transaksiArr = array(
-								// transaksiArrsi
-								'nomer'    =>getDetJenisTrans2($_POST['replid']),
-								'nobukti'  =>$r['nobukti'],
-								'tanggal'  =>tgl_indo7($r['tanggal']),
-								// 'rekkas'   =>getRekening($r['rekkas']),
-								//jurnal
+								// header (transaksi)
+								'nomer'             =>getNoKwitansi($_POST['replid']),
+								'nobukti'           =>$r['nobukti'],
+								'tanggal'           =>tgl_indo7($r['tanggal']),
+								'idrekkas'          =>$r['idrekkas'],
+								'rekkas'            =>getRekening($r['idrekkas']),
+								'detjenistransaksi' =>$r['detjenistransaksi'],
+								// detail (jurnal)
 								'income'   => array(
 									'idjurnal'  =>$r['idjurnal'],
-									'idrekitem' =>$r['rekitem'],
-									'rekitem'   =>getRekening($r['rekitem']),
+									'idrekitem' =>$r['idrekitem'],
+									'rekitem'   =>getRekening($r['idrekitem']),
 									'nominal'   =>setuang($r['nominal']),
 									'uraian'    =>$r['uraian']
 								),
