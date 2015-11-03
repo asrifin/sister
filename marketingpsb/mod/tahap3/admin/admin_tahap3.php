@@ -174,7 +174,7 @@ $admin.='
     </thead>';
 	$admin.='<tbody>';
 //$hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa where diterima<>''" );
-$hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa where diterima <> '' or joiningfee<>''" );
+$hasil = $koneksi_db->sql_query( "SELECT * FROM psbcalon_siswa where diterima ='terima'" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $kode=$data['kode'];
 $nama=$data['nama'];
@@ -191,7 +191,7 @@ $admin.='<tr>
             <td>'.$nama.'</td>
             <td>'.getlokasi($lokasi).'</td>
             <td>'.getgolongan($golongan).'</td>
-            <td>'.tglindo($diterima).'</td>
+            <td>'.$diterima.'</td>
             <td>'.tglindo($joiningfee).'</td>
 			<td>'.tglindo($dpp).'</td>
 			<td>'.tglindo($uangseragam).'</td>
