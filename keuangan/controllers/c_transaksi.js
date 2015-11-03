@@ -688,20 +688,24 @@ var detilanggaranArr=rekArr=[];
 
   // autosuggest
     function autoSuggest(jenis,el,subaksi,tingkat){
-    console.log($('#tanggalTB').val());
         if(subaksi=='rek'){ //rekening
             var urlx= '?aksi=autocomp&subaksi='+subaksi+'&tanggal='+$('#tanggalTB').val()+(jenis!=''?'&jenis='+jenis:'');
             var col = [{
                     'align':'left',
                     'columnName':'kode',
                     'hide':true,
-                    'width':'10',
+                    'width':'7',
                     'label':'Kode'
                 },{   
                     'align':'left',
                     'columnName':'nama',
-                    'width':'90',
+                    'width':'20',
                     'label':'Rekening'
+                },{   
+                    'align':'right',
+                    'columnName':'saldoSementara',
+                    'width':'20',
+                    'label':'Saldo'
             }];
         }else if(subaksi=='detilanggaran'){ // anggaran 
             // var urlx= '?aksi=autocomp&subaksi='+subaksi+'&tingkat='+tingkat;
@@ -809,7 +813,7 @@ var detilanggaranArr=rekArr=[];
             select: function( event, ui ) { // event setelah data terpilih 
                 $('#'+el+'H').val(ui.item.replid);
                 if (subaksi=='rek') { // rekening 
-                    $('#'+el+'TB').val(ui.item.kode+' - '+ui.item.nama+' [ Saldo : Rp. '+parseInt(ui.item.saldoSementara).setCurr()  +' ]');
+                    $('#'+el+'TB').val(ui.item.kode+' - '+ui.item.nama+' [ Saldo : '+ui.item.saldoSementara+' ]');
                     $('#'+el+'sisaH').val(ui.item.saldoSementara);
                     collectArr();
                 }else if(subaksi=='detilanggaran'){ // anggaran 
@@ -1008,8 +1012,7 @@ var detilanggaranArr=rekArr=[];
                                     $('#nomerTB').html(dt.transaksiArr.nomer);
                                     $('#nobuktiTB').val(dt.transaksiArr.nobukti);
                                     $('#tanggalTB').val(dt.transaksiArr.tanggal);
-                                    $('#rekkasTB').val(dt.transaksiArr.rekkas);
-                                    $('#rekkasH').val(dt.transaksiArr.idrekkas);
+                                    $('#rekkasTB').val(dt.transaksiArr.rekkas+' ['+dt.transaksiArr.saldoSementara+']');
                                     $('#rekkasH').val(dt.transaksiArr.idrekkas);
                                     var income = dt.transaksiArr.income;
                                     addRekTR(typx,1,income);
@@ -1257,7 +1260,8 @@ var detilanggaranArr=rekArr=[];
 // combo detjenistransaksi  ---
     function cmbdetjenistransaksi(typ,idx){
         var u = dir6;
-        var d = 'aksi=cmb'+mnu6+'&kode='+typ+(idx!=''?'&replid='+idx:'');
+        var d = 'aksi=cmb'+mnu6+'&kode='+typ;
+        // +(idx!=''?'&replid='+idx:'');
         ajax(u,d).done(function (dt){
             var out='';
             if(dt.status!='sukses'){

@@ -835,7 +835,6 @@
 	}
 	function getIdKwitansi(){
 		$r=getField('max(idkwitansi)','keu_transaksi','','');
-		// pr($r);
 		return $r==''?1:($r+1);
 	}
 	function kwitansiPenerimaanSiswa($idpenerimaansiswa){
