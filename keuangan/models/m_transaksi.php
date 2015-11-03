@@ -1406,43 +1406,61 @@
 						$rekArr     = $_POST[$sub.'_idTR'];
 						$stat1=$stat2=$stat3=true;
 						$xx='';
-						foreach ($rekArr as $i => $v) {
-							$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
-							$s1  = 'keu_transaksi SET 	uraian            ="'.$_POST[$sub.'_uraian'.$v.'TB'].'",
-														tanggal           ="'.tgl_indo6($_POST['tanggalTB']).'",
-														nobukti           ="'.$_POST['nobuktiTB'].'"';
-							$s = (isset($_POST['idformH']) AND $_POST['idformH']!='')?'UPDATE '.$s1.' WHERE replid='.$_POST['idformH']:'INSERT INTO '.$s1.',idkwitansi ='.getIdKwitansi().',detjenistransaksi='.$_POST['detjenistransaksiTB'];
-							$xx.=$s;
+						// pr($_POST['idformH']);
+						if(isset($_POST['idformH']) && $_POST['idformH']!=''){ // edit
+							$s  = 'UPDATE keu_transaksi SET 	
+										uraian  ="'.$_POST[$sub.'_uraian1TB'].'",
+										tanggal ="'.tgl_indo6($_POST['tanggalTB']).'",
+										nobukti ="'.$_POST['nobuktiTB'].'"
+									WHERE replid='.$_POST['idformH'];
 							$e   = mysql_query($s);
-							$idx = mysql_insert_id();
-							$id  = ($idx!='' OR !empty($idx))?$idx:$_POST['idformH'];
-							// 2. simpan jurnal umum 
-							if(!$e) $stat1= false;
-							else {
-								// jurnal debit & kredit
-								$nom = getuang($_POST[$sub.'_nominal'.$v.'TB']);
-								$sjd = ' keu_jurnal SET 
-										detilrekening ='.$_POST['rekkasH'].',
-										nominal       ='.$nom.',
-										jenisrekening ="d"';
-								$sjk = ' keu_jurnal SET 
-										detilrekening ='.$_POST[$sub.'_rek'.$v.'H'].',
-										nominal       ='.$nom.',
-										jenisrekening ="k"';
-								if($_POST[$sub.'_mode'.$v.'H']=='edit'){ //edit
-									$sjd2 = 'UPDATE '.$sjd.' WHERE transaksi='.$id.' AND jenis="d"';
-									$sjk2 = 'UPDATE '.$sjk.' WHERE transaksi='.$id.' AND jenis="k"';
-								}else{ // add
-									$sjd2 = 'INSERT INTO '.$sjd.',transaksi ='.$id; 
-									$sjk2 = 'INSERT INTO '.$sjk.',transaksi ='.$id; 
+							// update jurnal
+							$stat1=!$e?false:true;
+							$sjd = 'UPDATE  keu_jurnal SET 
+									detilrekening ='.$_POST['rekkasH'].',
+									nominal       ='.getuang($_POST[$sub.'_nominal1TB']).'
+									WHERE 
+										jenisrekening ="d" and 
+										transaksi     ='.$_POST['idformH'];
+							$ejd= mysql_query($sjd);
+							$sjk = 'UPDATE  keu_jurnal SET 
+									detilrekening ='.$_POST[$sub.'_rek1H'].',
+									nominal       ='.getuang($_POST[$sub.'_nominal1TB']).'
+									WHERE 
+										jenisrekening ="k" and 
+										transaksi     ='.$_POST['idformH'];
+							$ejk = mysql_query($sjk);
+							$stat2=!$ejk || !$ejd?false:true;
+						}else{ // add
+							foreach ($rekArr as $i => $v) {
+								$nom = intval(getuang($_POST[$sub.'_nominal'.$v.'TB']));
+								$s1  = 'INSERT INTO keu_transaksi SET 	
+											uraian  ="'.$_POST[$sub.'_uraian'.$v.'TB'].'",
+											tanggal ="'.tgl_indo6($_POST['tanggalTB']).'",
+											nobukti ="'.$_POST['nobuktiTB'].'"';
+								$e   = mysql_query($s);
+								$idx = mysql_insert_id();
+								// 2. simpan jurnal umum 
+								if(!$e) $stat1= false;
+								else {
+									// jurnal debit & kredit
+									$nom = getuang($_POST[$sub.'_nominal'.$v.'TB']);
+									$sjd = ' INSERT INTO keu_jurnal SET 
+												detilrekening ='.$_POST['rekkasH'].',
+												nominal       ='.$nom.',
+												jenisrekening ="d",
+												transaksi     ='.$id; 
+									$sjk = 'INSERT INTO keu_jurnal SET 
+												detilrekening ='.$_POST[$sub.'_rek'.$v.'H'].',
+												nominal       ='.$nom.',
+												jenisrekening ="k",
+												transaksi     ='.$id; 
+									$ejd = mysql_query($sjk);
+									$ejk = mysql_query($sjd);
+									$stat2 =(!$ejd AND !$ejk)?false:true;
 								}
-								// pr($sjd2);
-								$ejd2 = mysql_query($sjk2);
-								$ejk2 = mysql_query($sjd2);
-								$stat2 =(!$ejd2 AND !$ejk2)?false:true;
 							}
 						}
-						// pr($xx);
 						$stat=!$stat1?'gagal_insert_transaksi':(!$stat2?'gagal_jurnal':(!$stat3?'gagal_update_saldoawal':'sukses'));						
 					}else{ // out_come
 						// 1. simpan transaksi
@@ -1536,12 +1554,16 @@
 								JOIN keu_jenistransaksi jt on jt.replid = dj.jenistransaksi
 								JOIN keu_kategoritransaksi kt on kt.replid = dj.kategoritransaksi
 							WHERE dj.replid ='.$detjenistransaksi;
+					// pr($sr);
 					$er=mysql_query($sr);
 					$rr=mysql_fetch_assoc($er);
 					// delete tb penerimaan siswa 
+					
 					if($rr['kategoritransaksi']=='siswa' && $rr['kode']=='in'){
 						$del=delRecord('keu_penerimaansiswa',array('replid'=>$idref));
 						$stat=!$del?'gagal_hapus_penerimaan_siswa':'sukses';
+					}else{
+						$stat='sukses';
 					}
 				}$out = json_encode(array('status'=>$stat));
 			break;
@@ -1639,20 +1661,23 @@
 						if(!$e) $stat='gagal';
 						else{ //sukses
 							$stat ='sukses';
-							// $rekkas=getField();
+							$kodekas = getField('kode','keu_detilrekening','replid',$r['idrekkas']);
+							$namakas = getField('nama','keu_detilrekening','replid',$r['idrekkas']);
 							$transaksiArr = array(
 								// header (transaksi)
 								'nomer'             =>getNoKwitansi($_POST['replid']),
 								'nobukti'           =>$r['nobukti'],
 								'tanggal'           =>tgl_indo7($r['tanggal']),
 								'idrekkas'          =>$r['idrekkas'],
-								'rekkas'            =>getRekening($r['idrekkas']),
+								'rekkas'            =>$kodekas.' - '.$namakas,
+								'saldokas'          =>setuang(getSaldoRek($r['idrekkas'],getField('replid','aka_tahunajaran','tahunajaran',substr($r['tanggal'],0,4)))),
 								'detjenistransaksi' =>$r['detjenistransaksi'],
 								// detail (jurnal)
 								'income'   => array(
 									'idjurnal'  =>$r['idjurnal'],
 									'idrekitem' =>$r['idrekitem'],
 									'rekitem'   =>getRekening($r['idrekitem']),
+									'rekitemsaldo'  =>setuang(getSaldoRek($r['idrekitem'],getField('replid','aka_tahunajaran','tahunajaran',substr($r['tanggal'],0,4)))),
 									'nominal'   =>setuang($r['nominal']),
 									'uraian'    =>$r['uraian']
 								),

@@ -1,5 +1,10 @@
 <?php
-	
+	function getSaldoRek($idRek,$idThn){
+		$s='SELECT nominal2 FROM keu_saldorekening WHERE detilrekening='.$idRek.' AND tahunajaran='.$idThn;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['nominal2'];
+	}	
 	function getTglTransaksi($idTransaksi){
 		$s=getField('tanggal','keu_transaksi','replid',$idTransaksi);
 		return $s;

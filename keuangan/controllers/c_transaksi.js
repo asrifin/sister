@@ -102,16 +102,18 @@ var detilanggaranArr=rekArr=[];
                         // +'</div>'
 
                         // rekening kas (optional)
-                        +'<label style="display:none;" class="rekkasDV">Perkiraan Kas/Bank</label>'
+                        +'<label style="display:none;" class="rekkasDV">Rekening Kas/Bank</label>'
                         +'<div style="display:none;" class="input-control text rekkasDV">'
-                            +'<input type="hidden" name="rekkassisaH" id="rekkassisaH">'
                             +'<input type="hidden" name="rekkasH" id="rekkasH">'
                             +'<input placeholder="rek. kas / bank" id="rekkasTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+                        // saldo kas 
+                        +'<label style="display:none;" class="rekkasDV">Saldo</label>'
+                        +'<div name="rekkassaldo" id="rekkassaldo" style="display:none;" class="input-control text rekkasDV">-</div>'
 
                         // rekening perkiraan 
-                        +'<legend style="font-weight:bold;">Perkiraan <span style="font-weight:bold;" id="reklawanDV"></span> : '
+                        +'<legend style="font-weight:bold;">Detail <span style="font-weight:bold;" id="reklawanDV"></span> : '
                             +'<a id="addTRBC" href="#" class="place-right button bg-blue fg-white">'
                                 +'<i class="icon-plus-2"></i>'
                             +'</a>'
@@ -628,13 +630,14 @@ var detilanggaranArr=rekArr=[];
                 var detilanggaran   = (typeof arr!='undefined')?arr.detilanggaran:'';
                 var idrekitem       = (typeof arr!='undefined')?arr.idrekitem:'';
                 var rekitem         = (typeof arr!='undefined')?arr.rekitem:'';
+                var rekitemsaldo    = (typeof arr!='undefined')?arr.rekitemsaldo:'';
                 var nominal         = (typeof arr!='undefined')?arr.nominal:'Rp. 0';
                 var uraian          = (typeof arr!='undefined')?arr.uraian:'';
                 var mode            = (typeof arr!='undefined')?'edit':'add'; 
                 console.log(jenis);
                     
                 tr+='<tr class="rekTR" id="rekTR_'+ke+'">';
-                if(typ=='out_come'){
+                if(typ=='out'){
                     // anggaran
                     tr+='<td align="center">'
                         +'<div class="input-control text size7">'
@@ -660,6 +663,8 @@ var detilanggaranArr=rekArr=[];
                                 +'</span>';
                             }
                         tr+='</td>'
+                        // saldo item
+                        +'<td align="right" id="'+typ+'_rek'+ke+'saldo">'+rekitemsaldo+'</td>'
                         // nominal
                         +'<td>'
                             +'<div class="input-control text">'
@@ -813,8 +818,8 @@ var detilanggaranArr=rekArr=[];
             select: function( event, ui ) { // event setelah data terpilih 
                 $('#'+el+'H').val(ui.item.replid);
                 if (subaksi=='rek') { // rekening 
-                    $('#'+el+'TB').val(ui.item.kode+' - '+ui.item.nama+' [ Saldo : '+ui.item.saldoSementara+' ]');
-                    $('#'+el+'sisaH').val(ui.item.saldoSementara);
+                    $('#'+el+'TB').val(ui.item.kode+' - '+ui.item.nama);
+                    $('#'+el+'saldo').html(ui.item.saldoSementara);
                     collectArr();
                 }else if(subaksi=='detilanggaran'){ // anggaran 
                     collectArr();
@@ -945,7 +950,7 @@ var detilanggaranArr=rekArr=[];
                     if(typx=='ju'){ //ju
                         tr+='<tr style="color:white;"class="info">'
                                 +'<th class="text-center">Jenis</th>'
-                                +'<th class="text-center">Rek Perkiraan</th>'
+                                +'<th class="text-center">Rekening Lawan</th>'
                                 +'<th class="text-center">Nominal</th>'
                                 +'<th class="text-center">Hapus</th>'
                             +'</tr>';
@@ -983,14 +988,16 @@ var detilanggaranArr=rekArr=[];
                         $('#kwitansiDV').removeAttr('style');
                         
                         tr+='<tr style="color:white;"class="info">'
-                            +(typx=='out_come'?'<th class="text-center">Detail Anggaran</th>':'')
-                            +'<th class="text-center">Kode dan Perkiraan</th>'
+                            +(typx=='out'?'<th class="text-center">Detail Anggaran</th>':'')
+                            +'<th class="text-center">Rekening Lawan</th>'
+                            +'<th class="text-center">Saldo</th>'
                             +'<th class="text-center">Nominal</th>'
                             +'<th class="text-center">Uraian</th>'
                             +'<th class="text-center">Hapus</th>'
                         +'</tr>';
                         tr3+='<tr style="color:white;"class="info">'
                                 +'<th '+(typx=='out'?'colspan="2"':'')+'></th>'
+                                +'<th></th>'
                                 +'<th id="totNominalTD" class="text-right">Rp. 0</th>'
                                 +'<th colspan="2"></th>'
                             +'</tr>';
@@ -1012,7 +1019,8 @@ var detilanggaranArr=rekArr=[];
                                     $('#nomerTB').html(dt.transaksiArr.nomer);
                                     $('#nobuktiTB').val(dt.transaksiArr.nobukti);
                                     $('#tanggalTB').val(dt.transaksiArr.tanggal);
-                                    $('#rekkasTB').val(dt.transaksiArr.rekkas+' ['+dt.transaksiArr.saldoSementara+']');
+                                    $('#rekkasTB').val(dt.transaksiArr.rekkas);
+                                    $('#rekkassaldo').html(dt.transaksiArr.saldokas);
                                     $('#rekkasH').val(dt.transaksiArr.idrekkas);
                                     var income = dt.transaksiArr.income;
                                     addRekTR(typx,1,income);
@@ -1142,11 +1150,11 @@ var detilanggaranArr=rekArr=[];
         }else{ // transaksi (in/out)
             if(getCurr($('#totNominalTD').html())==0) out.msg.push('nominal tidak boleh Rp. 0');
 
-            if($('#subaksiH').val() == 'in_come') { // income
+            if($('#subaksiH').val() == 'in') { // income
                 out.status=true;
             }else{ // outcome
                 var totRekItem   = getCurr($('#totNominalTD').html());
-                var saldoKas     = getCurr($('#rekkassisaH').val());
+                var saldoKas     = getCurr($('#rekkassaldo').val());
                 var selisihSaldo = saldoKas - totRekItem;
                 if (selisihSaldo<0) {
                     out.msg.push('saldo kas kurang Rp. '+Math.abs(selisihSaldo).setCurr());
