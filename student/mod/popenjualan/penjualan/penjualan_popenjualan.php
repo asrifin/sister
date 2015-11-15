@@ -175,6 +175,7 @@ if(isset($_POST['tambahbarang'])){
 $_SESSION['kodecustomer'] = $_POST['kodecustomer'];
 $kodebarang 		= $_POST['kodebarang'];
 $jumlah 		= '1';
+$tgl 		= $_POST['tgl'];
 $hasil =  $koneksi_db->sql_query( "SELECT * FROM pos_produk WHERE kode='$kodebarang'" );
 $data = $koneksi_db->sql_fetchrow($hasil);
 $id=$data['id'];
