@@ -174,6 +174,7 @@ $_SESSION['product_id'][$k]['subtotal'] =$_SESSION['product_id'][$k]['jumlah']*(
 if(isset($_POST['tambahbarang'])){
 $_SESSION['kodecustomer'] = $_POST['kodecustomer'];
 $kodebarang 		= $_POST['kodebarang'];
+$tgl 		= $_POST['tgl'];
 $jumlah 		= '1';
 $hasil =  $koneksi_db->sql_query( "SELECT * FROM pos_produk WHERE kode='$kodebarang'" );
 $data = $koneksi_db->sql_fetchrow($hasil);
@@ -354,6 +355,7 @@ $admin .= '
 <th><b>Jenjang</b></</th>
 		<th><b>Kode</b></</th>
 		<th><b>Nama</b></td>
+		<th><b>Harga Beli</b></</th>
 		<th><b>Jumlah</b></</td>
 		<th><b>Harga</b></</th>
 <th><b>Discount</b></</th>
@@ -366,6 +368,7 @@ foreach ($_SESSION['product_id'] as $k=>$v){
 $subdiscount = $_SESSION['product_id'][$k]['subdiscount'];
 $jumlah = $_SESSION['product_id'][$k]['jumlah'];
 $harga = $_SESSION['product_id'][$k]['harga'];
+$hargabeli = $_SESSION['product_id'][$k]['hargabeli'];
 $jenjang = $_SESSION['product_id'][$k]["jenjang"];
 $kode = $_SESSION['product_id'][$k]["kode"];
 $subtotal=$_SESSION['product_id'][$k]["subtotal"];
@@ -376,6 +379,7 @@ $admin .= '
 		<td>'.getjenjang($jenjang).'</td>
 			<td>'.$kode.'</td>
 		<td>'.getnamabarang($kode).'</td>
+		<td>'.$hargabeli.'</td>
 		<td><input align="right" type="text" name="jumlahpo['.$k.']" value="'.$jumlah.'"class="form-control"></td>
 		<td><input align="right" type="text" name="harga['.$k.']" value="'.$harga.'"class="form-control"></td>
 		<td><input align="right" type="text" name="subdiscount['.$k.']" value="'.$subdiscount.'"class="form-control"></td>
