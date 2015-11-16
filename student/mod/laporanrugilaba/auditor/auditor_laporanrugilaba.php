@@ -146,7 +146,7 @@ $admin .='<tr>
 $hasilj = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk where jenis='JASA'" );
 $admin .='
 <tr>
-		<td colspan="4" class="warning"><b>PENJUALAN</b></td>
+		<td colspan="4" class="warning"><b>PENJUALAN JASA</b></td>
 		</tr>
 <tr>
 		<td width="300px"><b>Jenis</b></td>
