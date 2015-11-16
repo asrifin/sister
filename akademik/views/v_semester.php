@@ -8,7 +8,7 @@
 <nav class="breadcrumbs">
     <ul>
         &nbsp;
-        <button class="place-left" <?php echo isAksi('user','c')?'onclick="viewFR(\'\')"':'disabled'; ?> data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
+        <!-- <button class="place-left" <?php echo isAksi('user','c')?'onclick="viewFR(\'\')"':'disabled'; ?> data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> -->
         <li><a href="tahun-ajaran">Tahun Ajaran</a></li>
         <li class="active"><a href="#"><b>Semester</b></a></li>
     </ul>
@@ -22,24 +22,14 @@
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-center">Semester </th>
-            <th class="text-center">Bulan</th>
+            <th class="text-center">Tanggal</th>
             <th class="text-center">Aksi</th>
-        </tr>
-        <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-center"></th>
-            <th class="text-center"></th>
-            <th class="text-center"></th>
         </tr>
     </thead>
 
     <tbody id="tbody">
-        <!-- row table -->
     </tbody>
     <tfoot>
         
     </tfoot>
 </table>
-
-<!--// ---------------------- //
-    // -- created by epiii -- //
-    // ---------------------- // -->

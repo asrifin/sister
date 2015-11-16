@@ -6,13 +6,10 @@
   require_once '../../lib/func.php';
   $mnu = 'transaksi';
   $pre = 'ju_';
-
-  // echo '<pre>';
-  // print_r($_GET);
-  // echo '</pre>';
-  // exit();
+pr($_GET);
   $jenis==$jenis2='';
-  foreach ($_GET['detjenisTB'] as $i => $v) {
+  // foreach ($_GET['detjenisTB'] as $i => $v) {
+  foreach ($_GET['detjenistransaksiTB'] as $i => $v) {
     $jenis.=$v;
     $jenis2.=','.$i;
   }$jenis2=substr($jenis2,1);
@@ -49,7 +46,7 @@
                   tanggal between "'.tgl_indo6($_GET['tgl1TB']).'" AND "'.tgl_indo6($_GET['tgl2TB']).'" 
                 ORDER BY  
                   replid DESC';
-          // print_r($s1);exit();
+                  pr($s1);
           $e1 = mysql_query($s1);
           $n1 = mysql_num_rows($e1);
           $out.='<body>
@@ -66,9 +63,11 @@
           $out.='<table width=100%"">
                   <tr>
                     <td>Tanggal : '.$_GET['tgl1TB'].' s/d '.$_GET['tgl2TB'].'</td>
-                    <td align="right">Tahun Buku :</td>
-                    <td width="5%" align="right">'.getTahunBuku('nama').'</td>
+                    <td align="right"></td>
+                    <td width="5%" align="right"></td>
                   </tr>';
+                    // <td align="right">Tahun Buku :</td>
+                    // <td width="5%" align="right">'.getTahunBuku('nama').'</td>
           $out.='</table>';
           $out.='<table class="isi" width="100%">
                     <tr class="head">
@@ -153,8 +152,4 @@
           $mpdf->Output();
   //   }
   // }
-  // ---------------------- //
-  // -- created by epiii -- //
-  // ---------------------- // 
-
 ?>

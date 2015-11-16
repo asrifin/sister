@@ -21,94 +21,88 @@
           <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>SISTER::Keu - Laporan Laba / Rugi</title>
-          </head>';
+          </head>
+          <body>
+            <table width="100%">
+                <tr>
+                  <td width="41%">
+                    <img width="100" src="../../images/logo.png" alt="" />
+                  </td>
+                  <td>
+                    <b>Laporan Laba / Rugi</b>
+                  </td>
+                </tr>
+          </table><br />          ';
         // table content
-            $pendapatanTot=$biayaTot=0;
-            $s=' SELECT
-                d.kode,
-                d.nama,
-                j.nominal
+            $s1='SELECT
+                kr.replid,  
+                kr.nama kategorirekening,
+                sj.posisi
               FROM
-                keu_transaksi t
-                LEFT JOIN keu_jurnal j ON j.transaksi = t.replid
-                LEFT JOIN keu_detilrekening d ON d.replid = j.rek
-                LEFT JOIN keu_kategorirekening k ON k.replid = d.kategorirekening
+                keu_jenisreport jr
+                JOIN keu_subjenisreport sj on sj.jenisreport = jr.replid
+                JOIN keu_kategorirekening kr on kr.replid = sj.kategorirekening
               WHERE
-                k.nama=';
-            $s1 = $s.'"pendapatan"';
-            $s2 = $s.'"biaya"';
-            $e1  = mysql_query($s1);
-            $n1  = mysql_num_rows($e1);
-            $e2  = mysql_query($s2);
-            $n2  = mysql_num_rows($e2);
+                jr.jenisreport = "labarugi" 
+              ORDER BY 
+                sj.posisi asc';
+                // pr($s1);
+            $e1 = mysql_query($s1);
+            $n1 = mysql_num_rows($e1);
             
-            $out.='<body>
-                    <table width="100%">
-                      <tr>
-                        <td width="38%">
-                          <img width="100" src="../../images/logo.png" alt="" />
-                        </td>
-                        <td>
-                          <b>Laporan Laba / Rugi</b>
-                        </td>
-                        <td align="right">
-                          <b>Tahun Buku : '.getTahunBuku('nama').'</b>
-                        </td>
-                      </tr>
-                    </table><br />';
-
-            $out.='<table class="isi" width="100%">
-                  <tr class="head">
-                            <td align="center">Kode Rekening </td>
-                            <td align="center">Nama Rekening</td>
-                            <td align="center">Debet</td>
-                            <td align="center">Kredit</td>
-                  </tr>';
-            $nox = 1;
-            $debetTot = $kreditTot = 0;
-            if($n==0){
-              $out.='<tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>';
-            }else{
-              while ($r=mysql_fetch_assoc($e)) {
-                $jenis = getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r['detjenistrans']));
-                $clr   ='';
-                if($jenis=='ju'){ // ju
-                  $debit=99;
-                  $kredit=0;
-                }else{
-                  if($jenis=='out'){ // outcome
-                    $debit  = $r['rekkas']==$r['rek']?0:$r['nominal'];
-                    $kredit = $r['rekitem']==$r['rek']?0:$r['nominal'];
-                  }else{ // income
-                    $debit  = $r['rekkas']==$r['rek']?$r['nominal']:0;
-                    $kredit = $r['rekitem']==$r['rek']?$r['nominal']:0;
-                  }
-                }
-                $debitTot+=$debit;
-                $kreditTot+=$kredit;                
-
-                $out.= '<tr>
-                      <td>'.$r['kode'].'</td>
-                      <td>'.$r['nama'].'</td>
-                      <td align="right">Rp. '.number_format($debit).'</td>
-                      <td align="right">Rp. '.number_format($kredit).'</td>
+            $out.='<table width="100%" class="isi">
+                            <thead>
+                                <tr class="head">
+                                    <th width="50%" class="text-left">Rekening</th>
+                                    <th width="25%" class="text-right">Nominal</th>
+                                    <th  width="25%" class="text-right">Sub Total</th>
+                                </tr>
+                            </thead>';
+                      $out.='<tbody>';
+                      $grandTot=0;
+                    while ($r1=mysql_fetch_assoc($e1)) {
+                    $out.='<tr>
+                        <td class="fg-white  bg-'.($r1['posisi']=='l'?'lightGreen':'red').'" colspan="3">'.$r1['kategorirekening'].'</td>
                     </tr>';
-                $nox++;
-                $debet+=($r['debet']);
-                $kredit+=($r['kredit']);
-              }
-            }
-            $out.= '<tr class="head"><td colspan="2" align="right">Jumlah :</td>
-              <td align="right"><b>Rp. '.number_format($debitTot).'</b></td>
-              <td align="right"><b>Rp. '.number_format($kreditTot).'</b></td>
-            </tr>';
-            $out.='</table>';
-            echo $out;
+                  $s2='SELECT
+                    dr.replid,
+                    CONCAT(dr.kode," - ",dr.nama)detilrekening,
+                    sum(j.nominal)nominal
+                  FROM
+                    keu_jurnal j 
+                    JOIN keu_transaksi t on t.replid = j.transaksi
+                    JOIN keu_detilrekening dr on dr.replid = j.detilrekening
+                  WHERE
+                    dr.kategorirekening ='.$r1['replid'].' and 
+                    t.tanggal BETWEEN "'.tgl_indo6($_GET['tgl1']).'" and "'.tgl_indo6($_GET['tgl2']).'"
+                  GROUP BY dr.replid';
+                  // pr($s2);
+                  $e2=mysql_query($s2);
+                  $subtot=0;
+                  while ($r2=mysql_fetch_assoc($e2)) {
+                    $out.='<tr>
+                      <td>'.$r2['detilrekening'].'</td>
+                      <td  align="right">'.setuang($r2['nominal']).'</td>
+                    </tr>';
+                    $subtot+=$r2['nominal'];
+                      $grandTot=$r1['posisi']=='r'?($grandTot-$r2['nominal']):($grandTot+$r2['nominal']);
+                  }
+                $out.='<tr>
+                  <td colspan="2"></td>
+                  <td align="right">'.setuang($subtot).'</td>
+                </tr>';
+                    $out.='</tr>';
+                    }
+                          $out.='</tbody>
+                          <tfoot>
+                            <tr class="fg-white bg-'.($grandTot<0?'red':'green').'">
+                              <th colspan="2" align="right" >'.($grandTot<0?' Rugi':'Laba').'</th>
+                              <th align="right">'.setuang($grandTot).'</th>
+                            </tr>
+                          </tfoot>';
+            $out.='</table>';               
+
+          echo $out;
   
         #generate html -> PDF ------------
           $out2 = ob_get_contents();
@@ -121,8 +115,4 @@
           $mpdf->Output();
     }
   }
-  // ---------------------- //
-  // -- created by epiii -- //
-  // ---------------------- // 
-
 ?>

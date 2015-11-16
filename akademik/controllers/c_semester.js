@@ -14,29 +14,16 @@ var contentFR = '';
                         +'<input id="idformH" type="hidden">' 
                         
                         // Tahun Ajaran
-                        +'<label>Tahun Ajaran</label>'
-                        +'<div class="input-control text">'
-                            +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
-                            +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        
-                        // Semester
-                        +'<label>Semester</label>'
-                        +'<div>'
-                            +'<div class="input-control radio margin3" >'
-                                +'<label>'
-                                    +'<input value="1" required type="radio" name="semesterTB" />'
-                                    +'<span class="check"></span>'
-                                    +'Ganjil'
-                                +'</label>'
-                                +'<label>'
-                                    +'<input value="2" required type="radio" name="semesterTB" />'
-                                    +'<span class="check"></span>'
-                                    +'Genap'
-                                +'</label>'
-                            +'</div>'
-                        +'</div>'
+                        +'<table>'
+                            +'<tr>'
+                                +'<td>Tahun Ajaran</td>'
+                                +'<td id="tahunajaranTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>Semester</td>'
+                                +'<td id="semesterTD"></td>'
+                            +'</tr>'
+                        +'</table>'
 
                         // tanggal mulai 
                         +'<label>Tanggal Mulai</label>'
@@ -61,8 +48,6 @@ var contentFR = '';
                             +'<button class="button primary">simpan</button>&nbsp;'
                         +'</div>'
                     +'</form>';
-
-
         //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
@@ -79,13 +64,6 @@ var contentFR = '';
         });$('#keteranganS').keydown(function(e){
             if(e.keyCode==13)
                 viewTB();
-        });
-
-        // search button
-        $('#cariBC').on('click',function(){
-            $('#cariTR').toggle('slow');
-            $('#tingkatS').val('');
-            $('#keteraganS').val('');
         });
     }); 
 // end of save process ---
@@ -183,22 +161,13 @@ var contentFR = '';
                 var titlex;
                 var u = dir;
                 var d = 'aksi=ambiledit&replid='+id;
-                if(id!=''){ // edit
-                    ajax(u,d).done(function(dt){
-                        $('#idformH').val(id);
-                        $('#tahunajaranH').val($('#tahunajaranS').val());
-                        $('#tahunajaranTB').val(dt.tahunajaran);
-                        $('#tglMulaiTB').val(dt.tglMulai);
-                        $('#tglSelesaiTB').val(dt.tglSelesai);
-                        $.each($('input[name="semesterTB"]'),function(){
-                            if(dt.semester==$(this).val())
-                                $(this).attr('checked',true);
-                        })
-                    });
-                }else{ // add
-                    $('#tahunajaranH').val($('#tahunajaranS').val());
-                    cmbtahunajaran('form',$('#tahunajaranS').val());
-                }
+                ajax(u,d).done(function (dt){
+                    $('#idformH').val(id);
+                    $('#tahunajaranTD').html(': '+dt.tahunajaran);
+                    $('#semesterTD').html(': '+dt.semester);
+                    $('#tglMulaiTB').val(dt.tglMulai);
+                    $('#tglSelesaiTB').val(dt.tglSelesai);
+                });
                 $.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
             }

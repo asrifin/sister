@@ -23,7 +23,7 @@
 						WHERE 
 							tahunajaran ='.$tahunajaran.' 
 						ORDER 
-							BY tglMulai asc';
+							BY semester asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -47,13 +47,13 @@
 									<button data-hint="ubah" '.(isAksi('semester','u')?'onclick="viewFR('.$r['replid'].');"':'disabled').'  >
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" '.(isAksi('semester','d')?'onclick="del('.$r['replid'].');"':'disabled').'>
-										<i class="icon-remove on-left"></i>
-									</button>
 								 </td>';
+									// <button data-hint="hapus" '.(isAksi('semester','d')?'onclick="del('.$r['replid'].');"':'disabled').'>
+									// 	<i class="icon-remove on-left"></i>
+									// </button>
 						$out.= '<tr>
 									<td>'.$r['semester'].'</td>
-									<td align="center">'.tgl_indo5($r['tglMulai']).' - '.tgl_indo5($r['tglSelesai']).'</td>
+									<td align="center">'.($r['tglMulai']=='0000-00-00'?'':tgl_indo5($r['tglMulai'])).' - '.($r['tglSelesai']=='0000-00-00'?'':tgl_indo5($r['tglSelesai'])).'</td>
 									'.$btn.'
 								</tr>';
 						// $nox++;
@@ -71,18 +71,12 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunajaran = "'.$_POST['tahunajaranH'].'",
-								semester    = "'.$_POST['semesterTB'].'",
-								tglMulai    = "'.tgl_indo6($_POST['tglMulaiTB']).'",
-								tglSelesai  = "'.tgl_indo6($_POST['tglSelesaiTB']).'"';
-
-				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e2 = mysql_query($s2);
-				if(!$e2){
-					$stat = 'gagal menyimpan';
-				}else{
-					$stat = 'sukses';
-				}$out = json_encode(array('status'=>$stat));
+				$s = 'UPDATE '.$tb.' set 	tglMulai    = "'.tgl_indo6($_POST['tglMulaiTB']).'",
+											tglSelesai  = "'.tgl_indo6($_POST['tglSelesaiTB']).'"
+									WHERE 	replid='.$_POST['replid'];
+				$e = mysql_query($s);
+				$stat =!$e?'gagal menyimpan':'sukses';
+				$out = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -103,12 +97,11 @@
 						s.semester,
 						s.tglMulai,
 						s.tglSelesai,
-						t.tahunajaran
+						concat(t.tahunajaran," - ",(t.tahunajaran+1))tahunajaran
 					FROM
 						aka_semester s
 						LEFT JOIN aka_tahunajaran t ON t.replid = s.tahunajaran
-					WHERE
-						s.replid='.$_POST['replid'];
+					WHERE s.replid='.$_POST['replid'];
 					// var_dump($s);exit();
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
@@ -117,8 +110,8 @@
 							'status'      =>$stat,
 							'tahunajaran' =>$r['tahunajaran'],
 							'semester'    =>$r['semester'],
-							'tglMulai'    =>tgl_indo5($r['tglMulai']),
-							'tglSelesai'  =>tgl_indo5($r['tglSelesai']),
+							'tglMulai'    =>$r['tglMulai']=='0000-00-00'?'':tgl_indo5($r['tglMulai']),
+							'tglSelesai'  =>$r['tglSelesai']=='0000-00-00'?'':tgl_indo5($r['tglSelesai']),
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

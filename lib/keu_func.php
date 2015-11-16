@@ -264,7 +264,7 @@
 				) t1 ON t1.detilanggaran = d.replid
 			WHERE
 				d.replid = '.$id;
-				// var_dump($s);exit();
+pr($s);
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r[$typ];
@@ -419,26 +419,34 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['nama'];
-	}function getKuotaAnggaran($anggaran){
-		$s='SELECT
-				SUM(n.nominal)kuotaNum,
-				ifnull(t1.terpakaiNum,0)terpakaiNum,
-				ifnull((SUM(n.nominal)-t1.terpakaiNum),SUM(n.nominal))sisaNum,
-				ifnull(round(((t1.terpakaiNum)/SUM(n.nominal)*100)),0)terpakaiPerc
-			FROM
-				keu_detilanggaran d
-				LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
-				LEFT JOIN (
-					SELECT t.detilanggaran, SUM(t.nominal) terpakaiNum 
-					FROM keu_transaksi t
-					GROUP BY t.detilanggaran
-				)t1 on t1.detilanggaran = d.replid
-			WHERE d.replid='.$anggaran;
-		var_dump($s);
+	}
+	function getAnggaranKuota($idx){
+		$s='SELECT getAnggaranKuota('.$idx.')anggaranKuota';
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
-		return $r;
-	}function getPembayaran($siswa,$modul){
+		return $r['anggaranKuota'];
+	}
+	// function getKuotaAnggaran($anggaran){
+	// 	$s='SELECT
+	// 			SUM(n.nominal)kuotaNum,
+	// 			ifnull(t1.terpakaiNum,0)terpakaiNum,
+	// 			ifnull((SUM(n.nominal)-t1.terpakaiNum),SUM(n.nominal))sisaNum,
+	// 			ifnull(round(((t1.terpakaiNum)/SUM(n.nominal)*100)),0)terpakaiPerc
+	// 		FROM
+	// 			keu_detilanggaran d
+	// 			LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
+	// 			LEFT JOIN (
+	// 				SELECT t.detilanggaran, SUM(t.nominal) terpakaiNum 
+	// 				FROM keu_transaksi t
+	// 				GROUP BY t.detilanggaran
+	// 			)t1 on t1.detilanggaran = d.replid
+	// 		WHERE d.replid='.$anggaran;
+	// 	var_dump($s);
+	// 	$e=mysql_query($s);
+	// 	$r=mysql_fetch_assoc($e);
+	// 	return $r;
+	// }
+	function getPembayaran($siswa,$modul){
 		$s ='SELECT max(replid) modul
 			FROM keu_pembayaran
 			WHERE

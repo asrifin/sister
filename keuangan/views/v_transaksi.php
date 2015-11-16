@@ -84,7 +84,8 @@
 <!--                     <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
                     </button>
- -->                    <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
+ -->                    
+                    <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
 
@@ -135,10 +136,10 @@
                     <div class="input-control select span3">
                         <select class="bb_cari" onchange="viewTB('bb');" id="bb_detilrekeningS" name="bb_detilrekeningS"></select>
                     </div>
-<!--                     <button  class="bg-blue fg-white" id="bb_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="bb_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
- -->                    <div id="bb_tbody"></div>
+                    <div id="bb_tbody"></div>
                 </div>
 
                 <!-- neraca saldo -->
@@ -202,10 +203,10 @@
 
                 <!-- laba / rugi-->
                 <div class="frame" id="lrTAB">
-<!--                     <button  class="bg-blue fg-white" id="lr_cetakBC" data-hint="cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="lr_cetakBC" data-hint="cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
- -->                    <div id="lr_tbody"></div>
+                    <div id="lr_tbody"></div>
                 </div>
 
                 <!-- laporan Neraca -->
