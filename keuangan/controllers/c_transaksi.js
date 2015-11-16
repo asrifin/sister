@@ -234,10 +234,6 @@ var detilanggaranArr=rekArr=[];
                     tok+=$(this).val();
                 } 
             });
-            // tok+=$('#tgl1TB').val();
-            // tok+=$('#tgl2TB').val();
-            // par+='&tgl1TB='+$('#tgl1TB').val();
-            // par+='&tgl2TB='+$('#tgl2TB').val();
         }else if(mn=='li'){
             var opt = $('form#filterFR2').serialize();
             $('.jenisLaporanCB').each(function(id,item){
@@ -246,7 +242,6 @@ var detilanggaranArr=rekArr=[];
                     tok+=$(this).val();
                 } 
             });
-        // }else if(mn=='out_come' ||mn=='in_come'){
         }else if(mn=='kwitansi'){
             var n = $('.rekTR').length;
             tok+=n;
@@ -256,10 +251,6 @@ var detilanggaranArr=rekArr=[];
         par+='&tgl1='+$('#tgl1TB').val()+'&tgl2='+$('#tgl2TB').val();
         var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
-        // console.log('mn  ='+mn);
-        // console.log('par  ='+par);
-        // console.log('token berfore='+x+tok);
-        // console.log('token after='+token);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
 

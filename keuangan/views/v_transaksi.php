@@ -211,6 +211,9 @@
 
                 <!-- laporan Neraca -->
                 <div class="frame" id="lnTAB">
+                    <button  class="bg-blue fg-white" id="ln_cetakBC" data-hint="cetak" data-hint-position="top">
+                        <i class="icon-printer" ></i>
+                    </button>
                     <div id="ln_tbody"></div>
                 </div>
 
