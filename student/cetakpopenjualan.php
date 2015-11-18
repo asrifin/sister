@@ -71,7 +71,9 @@ font-family: "Times New Roman", Times, serif;
 echo "</head><body>";
 echo'
 <table align="center">
-<tr><td colspan="7"><img style="margin-right:5px; margin-top:5px; padding:1px; background:#ffffff; float:left;" src="images/logo.png" height="70px"></td></tr>';
+<tr><td colspan="7"><img style="margin-right:5px; margin-top:5px; padding:1px; background:#ffffff; float:left;" src="images/logo.png" height="70px"><br>
+<b>Elyon Christian School</b><br>
+Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 if($detail!='ok'){
 echo'<tr><td colspan="7"><h4>Laporan Pemesanan, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Customer '.$namacustomer.'</h4></td></tr>';
 echo '
