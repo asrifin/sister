@@ -53,13 +53,14 @@ $admin .= '
 		<td>'.$sel.'	
 		</td>
 	</tr>';
-	$admin .= '<tr>
+$admin .= '<tr>
 	<td>Customer </td>
 	<td><select name="kodecustomer" id="combobox">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM psb_calonsiswa ORDER BY nama asc");
+$hasilj = $koneksi_db->sql_query("SELECT nis as kode,nama FROM aka_siswa ORDER BY nama ASC");
 $admin .= '<option value="Semua"> Semua </option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
-$admin .= '<option value="'.$datasj['replid'].'">'.$datasj['nama'].'</option>';
+	$pilihan = ($datasj['kode']==$kodecustomer)?"selected":'';
+$admin .= '<option value="'.$datasj['kode'].'">'.$datasj['nama'].'</option>';
 }
 $admin .='</select></td>
 </tr>';
