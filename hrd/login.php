@@ -36,6 +36,10 @@ if (!cek_login ()){
 <input type="hidden" value="1" name="loguser" />
 <input type="submit" name="submit_login" class="button" value="Login" />
 </form>
+<form action="../" method="post" name="login" id="loginForm">
+<div  class="loginbutton"><br>
+<input type="submit" name="submit_login" class="button" value="MENU UTAMA" /></div>
+</form>
 </div>
 </div>
 <?php
