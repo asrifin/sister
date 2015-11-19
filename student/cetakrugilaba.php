@@ -81,7 +81,7 @@ echo'<tr>
 $hasilj = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk where jenis='JASA'" );
 echo'
 <tr>
-		<td colspan="4" class="primary"><b>PENJUALAN</b></td>
+		<td colspan="4" class="primary"><b>PENJUALAN JASA</b></td>
 		</tr>
 <tr>
 		<td width="300px"><b>Jenis</b></td>

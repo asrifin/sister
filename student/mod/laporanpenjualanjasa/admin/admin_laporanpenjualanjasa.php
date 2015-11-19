@@ -56,10 +56,22 @@ $admin .= '
 	$admin .= '<tr>
 	<td>Customer </td>
 	<td><select name="kodecustomer" id="combobox">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM psb_calonsiswa ORDER BY nama asc");
+$hasilj = $koneksi_db->sql_query("SELECT nis as kode,namasiswa as nama FROM psb_siswa ORDER BY nama ASC");
 $admin .= '<option value="Semua"> Semua </option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
-$admin .= '<option value="'.$datasj['replid'].'">'.$datasj['nama'].'</option>';
+	$pilihan = ($datasj['kode']==$kodecustomer)?"selected":'';
+$admin .= '<option value="'.$datasj['kode'].'">'.$datasj['nama'].'</option>';
+}
+$admin .='</select></td>
+</tr>';
+$admin .= '<tr>
+	<td>User </td>
+	<td><select name="kodeuser" id="combobox4">';
+$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_useraura where user<>'superadmin' ORDER BY user ASC");
+$admin .= '<option value="Semua"> Semua </option>';
+while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
+	$pilihan = ($datasj['user']==$kodeuser)?"selected":'';
+$admin .= '<option value="'.$datasj['user'].'">'.$datasj['user'].'</option>';
 }
 $admin .='</select></td>
 </tr>';

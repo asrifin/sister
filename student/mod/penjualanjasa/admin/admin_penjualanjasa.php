@@ -228,7 +228,7 @@ $admin .= '
 		<td>Customer</td>
 		<td>:</td>
 		<td><select class="form-select" name="kodecustomer"id="combobox">';
-$hasil = $koneksi_db->sql_query( "SELECT nis as kode,nama FROM aka_siswa ORDER BY nama ASC" );
+$hasil = $koneksi_db->sql_query( "SELECT nis as kode,namasiswa as nama FROM psb_siswa ORDER BY nama ASC" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $pilihan = ($data['kode']==$kodecustomer)?"selected":'';
 	$admin .= '

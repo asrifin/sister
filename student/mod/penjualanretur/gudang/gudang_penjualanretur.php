@@ -287,11 +287,11 @@ $admin .= '
 		<td>Kode Customer</td>
 		<td>:</td>
 		<td><select name="kodecustomer" id="combobox2">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM psb_calonsiswa ORDER BY nama asc");
+$hasilj = $koneksi_db->sql_query("SELECT nis,namasiswa as nama FROM psb_siswa ORDER BY nama asc");
 $admin .= '<option value="">== Customer ==</option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
-$pilihanj = ($datasj['replid']==$kodecustomer)?"selected":'';
-$admin .= '<option value="'.$datasj['replid'].'"'.$pilihanj.'>'.$datasj['nama'].'</option>';
+$pilihanj = ($datasj['nis']==$kodecustomer)?"selected":'';
+$admin .= '<option value="'.$datasj['nis'].'"'.$pilihanj.'>'.$datasj['nama'].'</option>';
 }
 $admin .='</select>
 ';

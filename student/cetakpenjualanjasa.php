@@ -12,6 +12,7 @@ $jenisproduk 		= $_GET['jenisproduk'];
 $kodebarang 		= $_GET['kodebarang'];
 $jenisproduk 		= $_GET['jenisproduk'];
 $kodecustomer 		= $_GET['kodecustomer'];
+$kodeuser 		= $_GET['kodeuser'];
 $namacustomer = getnamacustomer($kodecustomer);
 if($jenisproduk!='Semua'){
          $wherekodebarang="";
@@ -28,8 +29,15 @@ $namakodebarang=getnamabarang($kodebarang);
 }
 if($kodecustomer=='Semua'){
          $wherecustomer="";
+		 $namacustomer='Semua';
 }else{
          $wherecustomer="and kodecustomer='$kodecustomer'";
+}
+if($kodeuser=='Semua'){
+         $whereuser="";
+		 $kodeuser='Semua';
+}else{
+         $whereuser="and user='$kodeuser'";
 }
 switch ($carabayar) {
    case 'Tunai':
@@ -70,7 +78,7 @@ echo'
 Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
 
 if($detail!='ok'){
-echo'<tr><td colspan="7"><h4>Laporan Penjualan Jasa, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Customer '.$namacustomer.'</h4></td></tr>';
+echo'<tr><td colspan="7"><h4>Laporan Penjualan Jasa, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Customer '.$namacustomer.', User '.$kodeuser.'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
@@ -83,7 +91,7 @@ echo '
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `pos_penjualanjasa` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus $wherecustomer  order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `pos_penjualanjasa` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus $wherecustomer $whereuser  order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $nofaktur = $datas['nofaktur'];
@@ -126,7 +134,7 @@ echo '
 </tr>';
 echo '</table>';
 }else{
-echo'<tr><td colspan="8"><h4>Laporan Penjualan Jasa, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Customer '.$namacustomer.'</h4></td></tr>';
+echo'<tr><td colspan="8"><h4>Laporan Penjualan Jasa, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Customer '.$namacustomer.', User '.$kodeuser.'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
@@ -145,7 +153,7 @@ echo '
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `pos_penjualanjasa` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus  $wherecustomer order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `pos_penjualanjasa` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus  $wherecustomer $whereuser order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $nofaktur = $datas['nofaktur'];

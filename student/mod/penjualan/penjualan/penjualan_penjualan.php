@@ -515,7 +515,7 @@ $admin .= '
 		<td>Kode Faktur</td>
 		<td>:</td>
 		<td><select id="combobox"  name="kodefaktur"  class="form-control">';
-$hasil = $koneksi_db->sql_query( "SELECT pj.nofaktur,pj.total,sis.nama as nama FROM pos_penjualan pj,aka_siswa sis ORDER BY pj.id DESC" );
+$hasil = $koneksi_db->sql_query( "SELECT pj.nofaktur,pj.total,sis.namasiswa as nama FROM pos_penjualan pj,psb_siswa sis ORDER BY pj.id DESC" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 	$admin .= '
 			<option value="'.$data['nofaktur'].'">'.$data['nofaktur'].' ~ '.getnamasupplier($data['nama']).' ~ '.rupiah_format($data['total']).'</option>';
