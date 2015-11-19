@@ -1,4 +1,5 @@
-CREATE DEFINER=`root`@`localhost` FUNCTION `getBiayaAfterDiskonReg`(`idsiswabiaya` INT) RETURNS decimal(14,0)
+CREATE DEFINER = `root`@`localhost` FUNCTION `getBiayaAfterDiskonReg`(`idsiswabiaya` INT)
+ RETURNS decimal(14,0)
     READS SQL DATA
 BEGIN
 		declare biayaAfterDR DECIMAL default getBiayaAwal(idsiswabiaya);
@@ -23,4 +24,5 @@ BEGIN
 			SET biayaAfterDR=biayaAfterDR-(biayaAfterDR*vDiskon/100);
 		END loop LOOP1;
 		return biayaAfterDR;
-END
+END;
+

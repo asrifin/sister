@@ -1,4 +1,5 @@
-CREATE DEFINER=`root`@`localhost` FUNCTION `getDiskonKhusus`(`idsiswa` int,`idbiaya` int) RETURNS int(11)
+CREATE DEFINER = `root`@`localhost` FUNCTION `getDiskonKhusus`(`idsiswa` int,`idbiaya` int)
+ RETURNS int(11)
 BEGIN
 	DECLARE hasil int;
 		SELECT
@@ -9,4 +10,5 @@ BEGIN
 			db.biaya = idbiaya and 
 			sb.siswa = idsiswa;
 	RETURN hasil;
-END
+END;
+

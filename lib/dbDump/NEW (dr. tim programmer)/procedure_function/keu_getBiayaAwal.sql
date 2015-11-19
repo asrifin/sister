@@ -1,4 +1,5 @@
-CREATE DEFINER=`root`@`localhost` FUNCTION `getBiayaAwal`(`idsiswabiaya` INT) RETURNS decimal(11,0)
+CREATE DEFINER = `root`@`localhost` FUNCTION `getBiayaAwal`(`idsiswabiaya` INT)
+ RETURNS decimal(11,0)
 BEGIN
 	DECLARE hasil int;
 		SELECT
@@ -8,4 +9,5 @@ BEGIN
 		WHERE 
 			sb.replid = idsiswabiaya;
 	RETURN hasil;
-END
+END;
+
