@@ -56,7 +56,7 @@ $admin .= '
 	$admin .= '<tr>
 	<td>Customer </td>
 	<td><select name="kodecustomer" id="combobox">';
-$hasilj = $koneksi_db->sql_query("SELECT nis as kode,nama FROM aka_siswa ORDER BY nama ASC");
+$hasilj = $koneksi_db->sql_query("SELECT nis as kode,namasiswa as nama FROM psb_siswa ORDER BY nama ASC");
 $admin .= '<option value="Semua"> Semua </option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
 	$pilihan = ($datasj['kode']==$kodecustomer)?"selected":'';

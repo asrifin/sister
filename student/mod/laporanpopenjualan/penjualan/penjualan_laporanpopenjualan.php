@@ -57,7 +57,7 @@ $admin .= '
 $admin .= '<tr>
 	<td>Customer </td>
 	<td><select name="kodecustomer" class="form-control" id="combobox">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM aka_siswa ORDER BY nama asc");
+$hasilj = $koneksi_db->sql_query("SELECT nis,namasiswa as nama FROM psb_siswa ORDER BY nama asc");
 $admin .= '<option value="Semua"> Semua </option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
 $admin .= '<option value="'.$datasj['nis'].'">'.$datasj['nama'].'&nbsp;&nbsp;('.$datasj['nis'].')</option>';
