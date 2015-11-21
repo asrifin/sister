@@ -1,5 +1,45 @@
-CREATE TRIGGER `ins_psb_biaya` AFTER INSERT ON `psb_biaya`
- FOR EACH ROW BEGIN
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : local
+Source Server Version : 50620
+Source Host           : localhost:3306
+Source Database       : sister_siadu
+
+Target Server Type    : MYSQL
+Target Server Version : 50620
+File Encoding         : 65001
+
+Date: 2015-11-20 09:53:29
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for psb_biaya
+-- ----------------------------
+DROP TABLE IF EXISTS `psb_biaya`;
+CREATE TABLE `psb_biaya` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `biaya` varchar(100) NOT NULL,
+  `kode` varchar(50) NOT NULL,
+  `isAngsur` int(1) NOT NULL DEFAULT '1',
+  `isDiskon` int(1) NOT NULL DEFAULT '0',
+  `keterangan` text,
+  PRIMARY KEY (`replid`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of psb_biaya
+-- ----------------------------
+INSERT INTO `psb_biaya` VALUES ('3', 'Formulir', 'formulir', '0', '0', 'Formulr Pendafataran');
+INSERT INTO `psb_biaya` VALUES ('4', 'DPP', 'dpp', '1', '3', 'Uang Gedung');
+INSERT INTO `psb_biaya` VALUES ('7', 'SPP', 'spp', '0', '3', 'sumbangan per bulan ');
+INSERT INTO `psb_biaya` VALUES ('8', 'Joining Fee', 'joining_fee', '1', '3', 'biaya yg dibayar sekali saat masuk');
+INSERT INTO `psb_biaya` VALUES ('9', 'Lain - Lain', '', '1', '1', '');
+DROP TRIGGER IF EXISTS `ins_psb_biaya`;
+DELIMITER ;;
+CREATE TRIGGER `ins_psb_biaya` AFTER INSERT ON `psb_biaya` FOR EACH ROW BEGIN
 
 /*INSERT psb_detailbiaya */
 /*detail detail gelombang -----------------------------------------------------------------------*/
@@ -66,3 +106,5 @@ CREATE TRIGGER `ins_psb_biaya` AFTER INSERT ON `psb_biaya`
 		end loop LOOP1;
 	end BLOCK1;
 END
+;;
+DELIMITER ;

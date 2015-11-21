@@ -489,33 +489,20 @@
 					case 'ns':
 						$kode = isset($_POST['ns_kodeS'])?$_POST['ns_kodeS']:'';
 						$nama = isset($_POST['ns_namaS'])?filter($_POST['ns_namaS']):'';
-						$s = 'SELECT
-									d.replid,
-									d.kode,
-									d.nama,IFNULL((
-										SELECT  
-											sum(kj.nominal)
-										FROM	
-											keu_jurnal kj
-										WHERE 
-											kj.jenis = "d" AND kj.rek= d.replid
-									),0)nomDeb,IFNULL((
-										SELECT  
-											sum(kj.nominal)
-										FROM	
-											keu_jurnal kj
-										WHERE 
-											kj.jenis = "k" AND kj.rek= d.replid
-									),0)nomKre
-								FROM
-									keu_jurnal j 
-									LEFT JOIN keu_detilrekening d on d.replid = j.rek
-									LEFT JOIN keu_saldorekening s on s.rekening = d.replid
-								WHERE	
-									s.tahunbuku = '.getTahunBuku('replid').'
-								GROUP BY
-									j.rek';
-						// print_r($s);exit(); 	
+									// -- CONCAT(dr.kode," - ",dr.nama)detilrekening,
+						$s = '	SELECT 
+									j.detilrekening replid, 
+									dr.kode,
+									dr.nama,
+									getSaldoRekeningByTgl(j.detilrekening,"2015-11-01","2016-11-01")saldoRekening
+								FROM keu_jurnal j 
+									JOIN keu_detilrekening dr on dr.replid = j.detilrekening
+									JOIN keu_transaksi t on t.replid = j.transaksi
+								WHERE 
+									t.tanggal BETWEEN "'.tgl_indo6($_POST['tgl1']).'" and "'.tgl_indo6($_POST['tgl2']).'"
+								GROUP BY j.detilrekening
+								ORDER BY dr.kode asc,dr.nama asc';
+								// pr($s);
 						$aksi    ='tampil';
 						$subaksi ='ns';
 						$e       = mysql_query($s);
@@ -524,13 +511,13 @@
 						$debitTot=$kreditTot=0;
 						if($n!=0){	
 							while($r = mysql_fetch_assoc($e)){	
-								$debitTot+=$r['nomDeb'];
-								$kreditTot+=$r['nomKre'];								
+								$debitTot+=($r['saldoRekening']<0?0:$r['saldoRekening']);
+								$kreditTot+=($r['saldoRekening']>0?0:abs($r['saldoRekening']));
 								$out.= '<tr>
-											<td>'.$r['kode'].'</td>
+											<td align="center">'.$r['kode'].'</td>
 											<td>'.$r['nama'].'</td>
-											<td class="text-right">Rp. '.number_format($r['nomDeb']).'</td>
-											<td class="text-right">Rp. '.number_format($r['nomKre']).'</td>
+											<td class="text-right">'.($r['saldoRekening']<0?'':setuang($r['saldoRekening'])).'</td>
+											<td class="text-right">'.($r['saldoRekening']>0?'':setuang(abs($r['saldoRekening']))).'</td>
 										</tr>';
 							}
 						}else{ #kosong
@@ -538,11 +525,9 @@
 									<td  colspan="4" ><span style="color:red;text-align:center;">
 									... data tidak ditemukan...</span></td></tr>';
 						}
-						#link paging
-						// var_dump($debitTot);exit();
 						$out.= '<tr class="info"><td colspan="2" class="text-right">Jumlah :</td>
-							<td class="text-right"><b>Rp. '.number_format($debitTot).'</b></td>
-							<td class="text-right"><b>Rp. '.number_format($kreditTot).'</b></td>
+							<td class="text-right"><b>'.setuang($debitTot).'</b></td>
+							<td class="text-right"><b>'.setuang($kreditTot).'</b></td>
 						</tr>';
 						// $out.='<tr class="info"><td colspan="4">'.$obj->total.'</td></tr>';
 					break;
@@ -599,6 +584,7 @@
 															WHERE
 																d.replid ='.$res['replid'].'
 															ORDER BY
+																t.tanggal ASC,
 																d.kategorirekening ASC,
 																d.kode ASC';
 															// pr($s2);
@@ -724,7 +710,7 @@
 						
 						$out.='<table width="100%" class="table">
 		                        <thead>
-		                            <tr class="info fg-white">
+		                            <tr class="fg-white bg-blue">
 		                                <th width="50%" class="text-left">Rekening</th>
 		                                <th width="25%" class="text-right">Nominal</th>
 		                                <th  width="25%" class="text-right">Sub Total</th>
@@ -733,9 +719,7 @@
                 			$out.='<tbody>';
                 			$grandTot=0;
             				while ($r1=mysql_fetch_assoc($e1)) {
-        						$out.='<tr>
-        								<td class="fg-white  bg-'.($r1['posisi']=='l'?'lightGreen':'red').'" colspan="3">'.$r1['kategorirekening'].'</td>
-    								</tr>';
+        						$out.='<tr><td class="fg-white  bg-'.($r1['posisi']=='l'?'lightGreen':'red').'" colspan="3">'.$r1['kategorirekening'].'</td></tr>';
     							$s2='SELECT
 										dr.replid,
 										CONCAT(dr.kode," - ",dr.nama)detilrekening,
@@ -761,15 +745,15 @@
     							}
 								$out.='<tr>
 									<td colspan="2"></td>
-									<td align="right">'.setuang($subtot).'</td>
+									<td class="fg-white bg-'.($r1['posisi']=='l'?'green':'red').'" align="right">'.setuang($subtot).'</td>
 								</tr>';
         						$out.='</tr>';
             				}
                         	$out.='</tbody>
                         	<tfoot>
-                        		<tr class="fg-white bg-'.($grandTot<0?'red':'green').'">
+                        		<tr class="fg-white bg-blue">
                         			<th colspan="2" align="right" >'.($grandTot<0?' Rugi':'Laba').'</th>
-                        			<th align="right">'.setuang($grandTot).'</th>
+                        			<th class="fg-white bg-'.($grandTot<0?'red':'green').'" align="right">'.setuang($grandTot).'</th>
                         		</tr>
                         	</tfoot>';
 						$out.='</table>';                 
@@ -823,32 +807,44 @@
 												$out.='<tr>';
 													$out.='<td class="fg-white bg-green" colspan="3">'.$rl['kategorirekening'].'</td>';
 		                                		$out.='</tr>';
-	                                			$ssl='	SELECT
-															dr.replid,
-															CONCAT(dr.kode, " - ", dr.nama) detilrekening,
-															sum(j.nominal) nominal,
-															j.jenisrekening
-														FROM
-															keu_jurnal j
-															JOIN keu_transaksi t ON t.replid = j.transaksi
-															JOIN keu_detilrekening dr ON dr.replid = j.detilrekening
-														WHERE
-															dr.kategorirekening = '.$rl['replid'].'
-															AND t.tanggal BETWEEN "'.tgl_indo6($_POST['tgl1']).'"
-															AND "'.tgl_indo6($_POST['tgl2']).'"
-														GROUP BY
-															dr.replid';
-															// pr($ssl);
+	                                			$ssl='	SELECT 
+															t.replid,
+															t.detilrekening,
+															sum(concat(t.operator,t.nominal))nominal
+														from (
+															SELECT
+																dr.replid,
+																CONCAT(dr.kode," - ",dr.nama)detilrekening,
+																j.nominal nominal,
+																t.tanggal,
+																j.jenisrekening,
+																dr.kategorirekening,
+																getOperatorDetRekening(j.detilrekening,j.jenisrekening)operator
+															FROM
+																keu_jurnal j 
+																JOIN keu_transaksi t on t.replid = j.transaksi
+																JOIN keu_detilrekening dr on dr.replid = j.detilrekening
+															WHERE 
+																t.tanggal BETWEEN "'.tgl_indo6($_POST['tgl1']).'"
+																AND "'.tgl_indo6($_POST['tgl2']).'"
+															ORDER BY 
+																j.detilrekening asc,
+																j.jenisrekening asc
+														)t
+														WHERE t.kategorirekening = '.$rl['replid'].'
+														GROUP BY t.replid';
+												// pr($ssl);
 												$eel=mysql_query($ssl);
 												$subtotal=0;
 												// looping detil rekekning ------------------------------------------------------------------
 												while ($rrl=mysql_fetch_assoc($eel)) {
 													$out.='<tr>
 														<td>'.$rrl['detilrekening'].'</td>
-														<td align="right">'.($rrl['jenisrekening']=='k'?'<span class="fg-red">-'.setuang($rrl['nominal']).'</span>':setuang($rrl['nominal'])).'</td>
+														<td align="right">'.($rrl['nominal']<0?'<span class="fg-red">'.setuang($rrl['nominal']).'</span>':setuang($rrl['nominal'])).'</td>
 														<td></td>
 													</tr>';
-													$subtotal=($rrl['jenisrekening']=='k'?($subtotal-$rrl['nominal']):($subtotal+$rrl['nominal']));
+													$subtotal+=$rrl['nominal'];
+													// $subtotal=($rrl['nominal']<0?($subtotal-$rrl['nominal']):($subtotal+$rrl['nominal']));
 												}$grandtotall+=$subtotal;
 												// subtotal
 												$out.='<tr>
