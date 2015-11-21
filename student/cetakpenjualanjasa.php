@@ -236,7 +236,15 @@ echo '
 echo '</table>';
 }
 /****************************/
-echo "</body</html>";
+echo "</body></html>";
+if ($_GET['submit']=='Excell'){
+$tgl=date('d-m-Y');
+$filename = "Penjualan_Jasa_$tgl";  
+header("Content-Type: application/force-download");
+header("Cache-Control: no-cache, must-revalidate");
+header("Expires:0");
+header("content-disposition: attachment;filename=$filename.xls");
+}
 /*
 if (isset($_GET['tglmulai'])){
 echo "<script language=javascript>
