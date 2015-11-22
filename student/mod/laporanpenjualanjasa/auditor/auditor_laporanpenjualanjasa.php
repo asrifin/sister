@@ -103,7 +103,7 @@ $admin .='</select></td>
 </tr>';		
 $admin .= '<tr>
 	<td></td>
-	<td><input type="submit" value="Cetak" name="submit" class="btn btn-success"></td>
+	<td><input type="submit" value="Cetak" name="submit" class="btn btn-success">&nbsp;&nbsp;<input type="submit" value="Excell" name="submit" class="btn btn-warning"></td>
 	</tr>
 </table></form>';
 $admin .= '</table>';
