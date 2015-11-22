@@ -73,7 +73,7 @@
                 <li><a href="#lrTAB">Laporan Laba/Rugi</a></li>
                 <li><a href="#nlTAB">Neraca Lajur</a></li>
                 <li><a href="#pkbTAB">Posisi Kas dan Bank</a></li>
-                <li><a href="#btTAB">Buku Tambahan</a></li>
+                <!-- <li><a href="#btTAB">Buku Tambahan</a></li> -->
                 <li><a href="#liTAB">Penerimaan & Pengeluaran</a></li>
                 <li><a href="#lsTAB">Laporan Sarpras </a></li>
             </ul>
@@ -147,10 +147,10 @@
 <!--                     <button  class="bg-blue fg-white" id="nsBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
                     </button> -->
-<!--                     <button  class="bg-blue fg-white" id="ns_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="ns_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
- -->                    <table class="table hovered bordered striped">
+                    <table class="table hovered bordered striped">
                         <thead>
                             <tr style="color:white;"class="info">
                                 <th class="text-center">Kode Rekening </th>
@@ -175,9 +175,9 @@
 
                 <!-- neraca lajur-->
                 <div class="frame" id="nlTAB">
-<!--                     <button  class="bg-blue fg-white" id="nl_cetakBC" data-hint="Pencarian" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="nl_cetakBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-printer" ></i>
-                    </button> -->
+                    </button>
                     <table class="table hovered bordered striped">
                         <thead>
                             <tr style="color:white;" class="info">
@@ -219,17 +219,17 @@
 
                 <!-- posisi kas / bank -->
                 <div class="frame" id="pkbTAB">
-                    <!-- <button  class="bg-blue fg-white" id="pkb_cetakBC" data-hint="cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="pkb_cetakBC" data-hint="cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
-                    </button> -->
+                    </button>
                     <div id="pkb_tbody"></div>
                 </div>
 
                 <!-- buku tambahan -->
-                <div class="frame" id="btTAB">
+<!--                 <div class="frame" id="btTAB">
                     <div id="bt_tbody"></div>
                 </div>
-
+ -->
                 <!-- Laporam Penerimaan-->
                 <div class="frame" id="liTAB">
                     <!--filtering  -->
@@ -292,9 +292,9 @@
                     <!-- <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top"> -->
                         <!-- <i class="icon-search" ></i> -->
                     <!-- </button> -->
-                    <!-- <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="ls_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
-                    </button> -->
+                    </button>
 
                     <table  class="table hovered bordered striped">
                         <thead>

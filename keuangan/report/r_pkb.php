@@ -7,12 +7,8 @@
   require_once '../../lib/func.php';
   $mnu   = 'transaksi';
   $pre   = 'pkb_';
-  $x     = $_SESSION['id_loginS'].$_GET['tgl1TB'].$_GET['tgl2TB'];
+  $x     = $_SESSION['id_loginS'].$_GET[$pre.'detilrekeningS'];
   $token = base64_encode($x);
-  // echo '<pre>';
-  // print_r($_GET);
-  // echo '</pre>';
-  // exit();
 
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
@@ -25,175 +21,165 @@
         <html xmlns="http://www.w3.org/1999/xhtml">
           <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-            <title>SISTER::Keu - Posisi Kas Bank'.$mnu.'</title>
+            <title>SISTER::Keu - Laporan Kas Bank </title>
           </head>';
-      $out.='<body>';
-      $s  = 'SELECT
-                  d.replid,
-                  d.kode kode,
-                  d.nama nama,
-                  s.nominal saldoAwal,
-                  s.nominal2 saldoAkhir
-                FROM
-                  keu_transaksi t
-                  LEFT JOIN keu_jurnal j ON t.replid = j.transaksi
-                  LEFT JOIN keu_detilrekening d ON d.replid = j.rek
-                  LEFT JOIN keu_kategorirekening k ON k.replid = d.kategorirekening
-                  LEFT JOIN keu_saldorekening s  ON s.rekening = d.replid
+      $out.='<body>
+              <table width="100%">
+                <tr>
+                  <td width="39%">
+                    <img width="100" src="../../images/logo.png" alt="" />
+                  </td>
+                  <td>
+                    <b>Laporan Kas Bank</b>
+                  </td>
+                </tr>
+              </table>'; 
+            $pkb_detilrekening = (isset($_GET['pkb_detilrekeningS']) AND $_GET['pkb_detilrekeningS']!='')?' dr.replid = '.$_GET['pkb_detilrekeningS'].' AND ':'';
+            $s  = 'SELECT 
+                  j.detilrekening replid, 
+                  CONCAT(dr.kode," - ",dr.nama)detilrekening,
+                  sr.nominal
+                FROM keu_jurnal j 
+                  JOIN keu_detilrekening dr on dr.replid = j.detilrekening
+                  JOIN keu_saldorekening sr on dr.replid = sr.detilrekening
+                  JOIN keu_kategorirekening kr  on kr.replid = dr.kategorirekening
+                  JOIN keu_transaksi t on t.replid = j.transaksi
                 WHERE 
-                  t.tahunbuku='.getTahunBuku('replid').' AND(
-                    k.nama ="KAS" OR 
-                    k.nama ="BANK"
-                  ) AND  t.tanggal between "'.tgl_indo6($_GET['tgl1TB']).'" AND "'.tgl_indo6($_GET['tgl2TB']).'" 
-                GROUP BY
-                  d.kode
-                ORDER BY
-                  d.kategorirekening ASC,
-                  d.kode ASC';
-            // var_dump($s);exit();
+                  (kr.nama LIKE "%KAS%" OR kr.nama LIKE "%BANK%" )  and 
+                  t.tanggal BETWEEN "'.tgl_indo6($_GET['tgl1']).'" and "'.tgl_indo6($_GET['tgl2']).'"
+                GROUP BY j.detilrekening
+                ORDER BY dr.kode asc,dr.nama asc';
+                  // pr($sql);
             $e   = mysql_query($s);
             $jum = mysql_num_rows($e);
-            $out ='';$totaset=0;
+            $totaset=0;
             if($jum!=0){  
               while($r = mysql_fetch_assoc($e)){
-                // $out.='<ul class="fg-gray" style="list-style:none;">';
-                  // $out.=' <span>['.$r['kode'].'] '.$r['nama'].'</span> 
-                  //     <b class="place-right fg-'.($r['saldoAwal']<0?'red':($r['saldoAwal']==0?'blue':'green')).'">
-                  //       Saldo Awal : Rp.'.number_format($r['saldoAwal']).'
-                  //     </b>';
-                    
-                  $out.='<table width="100%">
-                    <tr>
-                      <td align="left">
-                        ['.$r['kode'].'] '.$r['nama'].' 
-                      </td>
-                      <td align="right">
-                        Saldo Awal : Rp. '.number_format($r['saldoAwal']).'
-                      </td>
-                    </tr>
-                  </table>';
+                  $out.=' <div>'.$r['detilrekening'].'</div> ';
                     // tabel penerimaan -------------------------------------
-                    $out.='<div>Penerimaan :</div>';
-                    $out.='<table width="100%" class="table hovered bordered striped">
+                    $out.='<table width="100%">
+                            <tr>
+                                <td>Penerimaan : </td>
+                                <td align="right"> Saldo Awal : '.setuang($r['nominal']).'</td>
+                            </tr>
+                          </table>';
+                              $out.='<table width="100%" class="isi">
                                       <thead>
-                                          <tr style="color:white;"class="info">
-                                              <th class="text-center">Tanggal </th>
-                                              <th class="text-center">No. Transaksi</th>
-                                              <th class="text-center">Uraian</th>
-                                              <th class="text-center">Nominal</th>
+                                          <tr class="head">
+                                              <th class="center">Tanggal </th>
+                                              <th class="center">No. Transaksi</th>
+                                              <th class="center">Uraian</th>
+                                              <th class="center">Nominal</th>
                                           </tr>
                                       </thead>
                                       <tbody class="fg-black">';
-                                      $s2='SELECT 
-                              t.replid,
+                        $s2='SELECT
+                              j.nominal,
                               t.tanggal,
-                              t.nomer,
                               t.uraian,
-                                  d.nama,
-                                  j.nominal,
-                                  j.rek,
-                                  t.rekkas,
-                                  t.rekitem,
-                                  t.detjenistrans
-                              FROM
-                              keu_transaksi t 
-                                  LEFT JOIN keu_jurnal j ON t.replid = j.transaksi 
-                                  LEFT JOIN keu_detilrekening d ON d.replid = j.rek
-                              WHERE 
-                                d.replid='.$r['replid'].' AND 
-                                j.jenis = "d"
-                              ORDER BY
-                                  d.kategorirekening ASC, 
-                              d.kode ASC';
+                              t.replid idTransaksi
+                            FROM
+                              keu_jurnal j
+                              JOIN keu_transaksi t ON t.replid = j.transaksi
+                            WHERE
+                              j.detilrekening = '.$r['replid'].'
+                              AND j.jenisrekening ="d" 
+                              AND t.tanggal BETWEEN "'.tgl_indo6($_GET['tgl1']).'"
+                              AND "'.tgl_indo6($_GET['tgl2']).'"
+                            ORDER BY
+                              t.tanggal ASC';
+                              // pr($s2);
                           $e2       =mysql_query($s2);
-                          $debitTot =0;
+                          $masukTot =0;
                           if(mysql_num_rows($e2)<=0){
                             $out.='<tr>
-                              <td colspan="4" class="fg-red text-center">data kosong</td>
+                              <td colspan="4" align="center">data kosong</td>
                             </tr>';
                           }else{
                             while ($r2=mysql_fetch_assoc($e2)) {
-                              $debitTot+=$r2['nominal'];
+                              $masukTot+=$r2['nominal'];
                               $out.='<tr >
                                 <td width="10%">'.tgl_indo5($r2['tanggal']).'</td>
-                                <td  width="20%">'.$r2['nomer'].'</td>
+                                <td  width="20%">'.getNoKwitansi($r2['idTransaksi']).'</td>
                                 <td  width="30%">'.$r2['uraian'].'</td>
-                                <td style="font-weight:bold;" class="text-right fg-green" width="20%">Rp. '.number_format($r2['nominal']).'</td>
+                                <td align="right" width="20%">'.setuang($r2['nominal']).'</td>
                               </tr>';
                             }
                           }$out.='</tbody>
                                       <tfoot>
                                         <tr class="info fg-white">
-                                          <th colspan="3" class="text-right">Jumlah : </th>
-                                          <th class="text-right">Rp. '.number_format($debitTot).'</th>
+                                          <th colspan="3"  align="right" >Jumlah : </th>
+                                          <th  align="right" >'.setuang($masukTot).'</th>
                                         </tr>
                                       </tfoot>
                                   </table>';
 
                     // tabel pengeluaran -------------------------------------
                     $out.='<div>Pengeluaran :</div>';
-                    $out.='<table width="100%" class="table hovered bordered striped">
+                              $out.='<table width="100%" class="isi">
                                       <thead>
-                                          <tr style="color:white;"class="info">
-                                              <th class="text-center">Tanggal </th>
-                                              <th class="text-center">No. Transaksi</th>
-                                              <th class="text-center">Uraian</th>
-                                              <th class="text-center">Nominal</th>
+                                          <tr class="head">
+                                              <th align="center">Tanggal </th>
+                                              <th align="center">No. Transaksi</th>
+                                              <th align="center">Uraian</th>
+                                              <th align="center">Nominal</th>
                                           </tr>
                                       </thead>
                                       <tbody class="fg-black">';
-                                      $s3='SELECT 
-                              t.replid,
+                          $s3='SELECT
+                              j.nominal,
                               t.tanggal,
-                              t.nomer,
                               t.uraian,
-                                  d.nama,
-                                  j.nominal,
-                                  j.rek,
-                                  t.rekkas,
-                                  t.rekitem,
-                                  t.detjenistrans
-                              FROM
-                              keu_transaksi t 
-                                  LEFT JOIN keu_jurnal j ON t.replid = j.transaksi 
-                                  LEFT JOIN keu_detilrekening d ON d.replid = j.rek
-                              WHERE 
-                                d.replid='.$r['replid'].' AND 
-                                j.jenis = "k"
-                              ORDER BY
-                                  d.kategorirekening ASC, 
-                              d.kode ASC';
+                              t.replid idTransaksi
+                            FROM
+                              keu_jurnal j
+                              JOIN keu_transaksi t ON t.replid = j.transaksi
+                            WHERE
+                              j.detilrekening = '.$r['replid'].'
+                              AND j.jenisrekening ="k" 
+                              AND t.tanggal BETWEEN "'.tgl_indo6($_GET['tgl1']).'"
+                              AND "'.tgl_indo6($_GET['tgl2']).'"
+                            ORDER BY
+                              t.tanggal ASC';
                           $e3 =mysql_query($s3);
-                          $kreditTot =0;
+                          $keluarTot =0;
 
                           if(mysql_num_rows($e3)<=0){
                             $out.='<tr>
-                              <td colspan="4" class="fg-red text-center">data kosong</td>
+                              <td colspan="4" align="center">data kosong</td>
                             </tr>';
                           }else{
                             while ($r3=mysql_fetch_assoc($e3)) {
-                              $kreditTot+=$r3['nominal'];
-                              $out.='<tr >
+                              $keluarTot+=$r3['nominal'];
+                              $out.='<tr>
                                 <td width="10%">'.tgl_indo5($r3['tanggal']).'</td>
-                                <td  width="20%">'.$r3['nomer'].'</td>
+                                <td  width="20%">'.getNoKwitansi($r3['idTransaksi']).'</td>
                                 <td  width="30%">'.$r3['uraian'].'</td>
-                                <td  style="font-weight:bold;"  class="text-right fg-red" width="20%">Rp. '.number_format($r3['nominal']).'</td>
+                                <td align="right" width="20%">'.setuang($r3['nominal']).'</td>
                               </tr>';
                             }
                           }$out.='</tbody>
                                       <tfoot>
                                         <tr class="info fg-white">
-                                          <th colspan="3" class="text-right">Jumlah : </th>
-                                          <th class="text-right">Rp. '.number_format($kreditTot).'</th>
+                                          <th colspan="3" align="right">Jumlah : </th>
+                                          <th align="right">'.setuang($keluarTot).'</th>
                                         </tr>
                                       </tfoot>
                                   </table>';
-                              $out.='<b class="place-right"> Saldo Akhir : Rp. '.number_format($r['saldoAkhir']).'</b><br><br>';
-                              $out.='<hr>';
+                              $saldoAkhir = $r['nominal']+$masukTot-$keluarTot;
+                          $out.='<table width="100%">
+                                  <tr>
+                                      <td align="right"> Saldo Akhir : '.setuang($saldoAkhir).'</td>
+                                  </tr>
+                                </table>';
+                          $out.='<hr>';
               }
+            }else{ #kosong
+              $out.= '<tr align="center">
+                  <td  colspan=9 ><span style="color:red;text-align:center;">
+                  ... data tidak ditemukan...</span></td></tr>';
             }
-          $out.='</body>';
-          echo $out;
+            echo $out;
   
         #generate html -> PDF ------------
           $out2 = ob_get_contents();
@@ -206,8 +192,4 @@
           $mpdf->Output();
     }
   }
-  // ---------------------- //
-  // -- created by epiii -- //
-  // ---------------------- // 
-
 ?>

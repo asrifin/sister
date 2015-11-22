@@ -5,7 +5,7 @@
     require_once '../../lib/tglindo.php';
     require_once '../../lib/func.php';
     $mnu = 'transaksi';
-    $pre = 'ju_';
+    $pre = 'ls_';
     // pr($_GET);
     
     $jenis==$jenis2='';
@@ -29,7 +29,7 @@
           <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
               <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-              <title>SISTER::Keu - Jurnal Umum '.$mnu.'</title>
+              <title>SISTER::Keu - Laporan Sarpras'.$mnu.'</title>
             </head>';
           $out.='<body>
                   <table width="100%">
@@ -38,7 +38,7 @@
                         <img width="100" src="../../images/logo.png" alt="" />
                       </td>
                       <td>
-                        <b>Jurnal Umum</b>
+                        <b>Laporan Sarpras</b>
                       </td>
                     </tr>
                     <tr>
@@ -63,9 +63,9 @@
                   $jurnalArr=0;
                 }
               }$ju_detjenistrans=' AND detjenistransaksi in('.$jurnalArr.')';
-              // pr($ju_detjenistrans);
               $ju_no     = isset($_GET['ju_noS'])?filter($_GET['ju_noS']):'';
               $ju_uraian = isset($_GET['ju_uraianS'])?filter($_GET['ju_uraianS']):'';
+              // pr($ju_detjenistrans);
               $s= 'SELECT * 
                     from keu_transaksi
                     WHERE 

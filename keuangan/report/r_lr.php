@@ -21,18 +21,20 @@
           <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>SISTER::Keu - Laporan Laba / Rugi</title>
-          </head>
-          <body>
-            <table width="100%">
-                <tr>
-                  <td width="41%">
-                    <img width="100" src="../../images/logo.png" alt="" />
-                  </td>
-                  <td>
-                    <b>Laporan Laba / Rugi</b>
-                  </td>
-                </tr>
-          </table><br />          ';
+          </head>';
+  
+      $out.='<body>
+          <table width="100%">
+            <tr>
+              <td width="39%">
+                <img width="100" src="../../images/logo.png" alt="" />
+              </td>
+              <td>
+                <b>Laporan Laba Rugi</b>
+              </td>
+            </tr>
+          </table>';
+          $out.='<b align="right">Tgl : '.$_GET['tgl1'].' s/d '.$_GET['tgl2'].'</b>';
         // table content
             $s1='SELECT
                 kr.replid,  
@@ -61,8 +63,8 @@
                       $out.='<tbody>';
                       $grandTot=0;
                     while ($r1=mysql_fetch_assoc($e1)) {
-                    $out.='<tr>
-                        <td class="fg-white  bg-'.($r1['posisi']=='l'?'lightGreen':'red').'" colspan="3">'.$r1['kategorirekening'].'</td>
+                    $out.='<tr class="head">
+                        <td colspan="3">'.$r1['kategorirekening'].'</td>
                     </tr>';
                   $s2='SELECT
                     dr.replid,
@@ -83,19 +85,20 @@
                     $out.='<tr>
                       <td>'.$r2['detilrekening'].'</td>
                       <td  align="right">'.setuang($r2['nominal']).'</td>
+                      <td></td>
                     </tr>';
                     $subtot+=$r2['nominal'];
                       $grandTot=$r1['posisi']=='r'?($grandTot-$r2['nominal']):($grandTot+$r2['nominal']);
                   }
                 $out.='<tr>
                   <td colspan="2"></td>
-                  <td align="right">'.setuang($subtot).'</td>
+                  <td style="background-color:lightGrey;" align="right">'.setuang($subtot).'</td>
                 </tr>';
                     $out.='</tr>';
                     }
                           $out.='</tbody>
                           <tfoot>
-                            <tr class="fg-white bg-'.($grandTot<0?'red':'green').'">
+                            <tr>
                               <th colspan="2" align="right" >'.($grandTot<0?' Rugi':'Laba').'</th>
                               <th align="right">'.setuang($grandTot).'</th>
                             </tr>

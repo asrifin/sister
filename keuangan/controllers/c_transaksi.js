@@ -33,6 +33,15 @@ var detilanggaranArr=rekArr=[];
         $('#lr_cetakBC').on('click',function(){
             printPDF('lr');
         });
+        $('#ls_cetakBC').on('click',function(){
+            printPDF('ls');
+        });
+        $('#ln_cetakBC').on('click',function(){
+            printPDF('ln');
+        });
+        $('#nl_cetakBC').on('click',function(){
+            printPDF('nl');
+        });
         $('#pkb_cetakBC').on('click',function(){
             printPDF('pkb');
         });
@@ -1195,14 +1204,14 @@ var detilanggaranArr=rekArr=[];
         ajax(url,data).done(function (dt) {
             var out='';
             var counter=0;
-            $.each(dt.jenisArr,function(id,item){
+            $.each(dt.jenisArr,function (id,item){
                 out+='<li class="node">'
                         +'<a href="#"><span class="node-toggle"></span>'+item.jenistransaksi+'</a>'
                             +'<ul>'
                     $.each(item.detjenisArr, function (id,item) {
                         out+='<li style="padding-left:20px;">'
                                 +'<label>'
-                                    +'<input class="detjenisCB" onchange="loadAll();" name="detjenisTB['+item.iddetjenistranksi+']" checked="checked" type="checkbox"> '
+                                    +'<input class="detjenisCB" onchange="loadAll();" name="detjenisTB['+item.iddetjenistransaksi+']" checked="checked" type="checkbox"> '
                                         +item.detjenistransaksi+''
                                 +'</label>'
                             +'</li>';

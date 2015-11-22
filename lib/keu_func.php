@@ -1,4 +1,16 @@
 <?php
+	// function getTahunAjaranByTgl(){
+	// 	$s='SELECT nominal FROM keu_saldorekening WHERE detilrekening='.$idRek.' AND tahunajaran='.$idThn;
+	// 	$e=mysql_query($s);
+	// 	$r=mysql_fetch_assoc($e);
+	// 	return $r['nominal'];
+	// }
+	function getSaldoAwalRek($idRek,$idThn){
+		$s='SELECT nominal FROM keu_saldorekening WHERE detilrekening='.$idRek.' AND tahunajaran='.$idThn;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['nominal'];
+	}
 	function getSaldoRek($idRek,$idThn){
 		$s='SELECT nominal2 FROM keu_saldorekening WHERE detilrekening='.$idRek.' AND tahunajaran='.$idThn;
 		$e=mysql_query($s);
