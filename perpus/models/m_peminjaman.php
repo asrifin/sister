@@ -208,7 +208,7 @@
 										';
 										// tgl_pinjam between "'.tgl_indo6($_POST['tgl1TB']).'" AND "'.tgl_indo6($_POST['tgl2TB']).'" 
 						// print_r($sql);exit();
-						var_dump($sql);exit(); 	
+						// var_dump($sql);exit(); 	
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
 						}else{
