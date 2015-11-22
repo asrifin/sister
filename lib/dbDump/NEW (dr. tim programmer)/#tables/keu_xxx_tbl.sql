@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-11-20 09:58:56
+Date: 2015-11-22 09:48:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1028,18 +1028,18 @@ CREATE TABLE `keu_jurnal` (
 -- ----------------------------
 -- Records of keu_jurnal
 -- ----------------------------
-INSERT INTO `keu_jurnal` VALUES ('203', '138', '193', '300000', 'k', '2015-11-19 14:11:22');
-INSERT INTO `keu_jurnal` VALUES ('204', '138', '1', '300000', 'd', '2015-11-19 14:11:22');
-INSERT INTO `keu_jurnal` VALUES ('205', '139', '263', '100000', 'd', '2015-11-19 14:13:08');
-INSERT INTO `keu_jurnal` VALUES ('206', '139', '4', '100000', 'k', '2015-11-19 14:13:08');
-INSERT INTO `keu_jurnal` VALUES ('207', '140', '14', '300000', 'd', '2015-11-19 14:18:29');
-INSERT INTO `keu_jurnal` VALUES ('208', '140', '194', '300000', 'k', '2015-11-19 14:18:29');
-INSERT INTO `keu_jurnal` VALUES ('209', '141', '35', '4500000', 'd', '2015-11-19 17:34:37');
-INSERT INTO `keu_jurnal` VALUES ('210', '141', '4', '4500000', 'k', '2015-11-19 17:34:38');
-INSERT INTO `keu_jurnal` VALUES ('211', '142', '1', '20000', 'k', '2015-11-19 17:35:57');
-INSERT INTO `keu_jurnal` VALUES ('212', '142', '83', '20000', 'd', '2015-11-19 17:35:57');
-INSERT INTO `keu_jurnal` VALUES ('213', '143', '4', '35000', 'd', '2015-11-19 17:37:05');
-INSERT INTO `keu_jurnal` VALUES ('214', '143', '198', '35000', 'k', '2015-11-19 17:37:05');
+INSERT INTO `keu_jurnal` VALUES ('203', '138', '193', '300000', 'k', '2015-11-19 07:11:22');
+INSERT INTO `keu_jurnal` VALUES ('204', '138', '1', '300000', 'd', '2015-11-19 07:11:22');
+INSERT INTO `keu_jurnal` VALUES ('205', '139', '263', '100000', 'd', '2015-11-19 07:13:08');
+INSERT INTO `keu_jurnal` VALUES ('206', '139', '4', '100000', 'k', '2015-11-19 07:13:08');
+INSERT INTO `keu_jurnal` VALUES ('207', '140', '14', '300000', 'd', '2015-11-19 07:18:29');
+INSERT INTO `keu_jurnal` VALUES ('208', '140', '194', '300000', 'k', '2015-11-19 07:18:29');
+INSERT INTO `keu_jurnal` VALUES ('209', '141', '35', '4500000', 'd', '2015-11-19 10:34:37');
+INSERT INTO `keu_jurnal` VALUES ('210', '141', '4', '4500000', 'k', '2015-11-19 10:34:38');
+INSERT INTO `keu_jurnal` VALUES ('211', '142', '1', '20000', 'k', '2015-11-19 10:35:57');
+INSERT INTO `keu_jurnal` VALUES ('212', '142', '83', '20000', 'd', '2015-11-19 10:35:57');
+INSERT INTO `keu_jurnal` VALUES ('213', '143', '4', '35000', 'd', '2015-11-19 10:37:05');
+INSERT INTO `keu_jurnal` VALUES ('214', '143', '198', '35000', 'k', '2015-11-19 10:37:05');
 
 -- ----------------------------
 -- Table structure for keu_kategorianggaran
@@ -3169,6 +3169,7 @@ CREATE TABLE `keu_transaksi` (
   `anggarantahunan` int(11) NOT NULL DEFAULT '0',
   `detjenistransaksi` int(11) NOT NULL,
   `idref` int(11) NOT NULL,
+  `type` enum('sar','') DEFAULT NULL,
   PRIMARY KEY (`replid`),
   KEY `detjenistransaksi` (`detjenistransaksi`) USING BTREE,
   CONSTRAINT `detjenistransaksiFK` FOREIGN KEY (`detjenistransaksi`) REFERENCES `keu_detjenistransaksi` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -3177,12 +3178,12 @@ CREATE TABLE `keu_transaksi` (
 -- ----------------------------
 -- Records of keu_transaksi
 -- ----------------------------
-INSERT INTO `keu_transaksi` VALUES ('138', '1', '', '2015-11-02', 'Penerimaan dari donatur', '0', '3', '0');
-INSERT INTO `keu_transaksi` VALUES ('139', '2', '', '2015-11-05', 'bayar PDAM', '34', '6', '0');
-INSERT INTO `keu_transaksi` VALUES ('140', '3', '', '2015-11-19', 'Pembayaran Formulir siswa <br> Nama : jacklyn anastasha<br> Kelas :Toddler - 1A', '0', '1', '5');
-INSERT INTO `keu_transaksi` VALUES ('141', '4', '', '2015-11-19', 'komputer', '37', '6', '0');
-INSERT INTO `keu_transaksi` VALUES ('142', '7', '', '2015-11-19', 'bayar gaji pegawai', '0', '7', '0');
-INSERT INTO `keu_transaksi` VALUES ('143', '6', '', '2015-11-19', 'sumbangan xxx', '0', '7', '0');
+INSERT INTO `keu_transaksi` VALUES ('138', '1', '', '2015-11-02', 'Penerimaan dari donatur', '0', '3', '0', null);
+INSERT INTO `keu_transaksi` VALUES ('139', '2', '', '2015-11-05', 'bayar PDAM', '34', '6', '0', null);
+INSERT INTO `keu_transaksi` VALUES ('140', '3', '', '2015-11-19', 'Pembayaran Formulir siswa <br> Nama : jacklyn anastasha<br> Kelas :Toddler - 1A', '0', '1', '5', null);
+INSERT INTO `keu_transaksi` VALUES ('141', '4', '', '2015-11-19', 'komputer', '37', '6', '0', 'sar');
+INSERT INTO `keu_transaksi` VALUES ('142', '7', '', '2015-11-19', 'bayar gaji pegawai', '0', '7', '0', null);
+INSERT INTO `keu_transaksi` VALUES ('143', '6', '', '2015-11-19', 'sumbangan xxx', '0', '7', '0', null);
 
 -- ----------------------------
 -- Table structure for keu_viabayar
@@ -3202,3 +3203,5 @@ INSERT INTO `keu_viabayar` VALUES ('1', 'Kartu Kredit', 'pembayaran via kartu kr
 INSERT INTO `keu_viabayar` VALUES ('2', 'Kartu Debit ', 'pembayaran melalui debt card . misal : ATM/debt card BCA, dll');
 INSERT INTO `keu_viabayar` VALUES ('3', 'Transfer Bank', 'pembayaran via tranfer antar sejenis/beda bank');
 INSERT INTO `keu_viabayar` VALUES ('5', 'Uang Tunai', 'bayar uang dengan uang cash');
+
+
